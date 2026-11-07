@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.git.BranchIdentityTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-11-03T00:55:53" hostname="MacBook-Pro.local" time="0.063">
+  <properties/>
+  <testcase name="detached current branch retains its full head identity" classname="com.bontecou.syncmd.services.git.BranchIdentityTest" time="0.033"/>
+  <testcase name="branch reviews expose full object identity for current local and remote refs" classname="com.bontecou.syncmd.services.git.BranchIdentityTest" time="0.03"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,5 @@
+<resources>
+    <string name="conflict_renamed_differently">Renamed differently</string>
+    <string name="conflict_choose_filename">Choose the filename to keep</string>
+    <string name="conflict_filename_cleanup">The other filenames in this conflict will be removed when you resolve and stage.</string>
+</resources>

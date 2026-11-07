@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.git.RemoteAuthenticationTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-11-02T20:54:01" hostname="MacBook-Pro.local" time="0.146">
+  <properties/>
+  <testcase name="HTTP request guard blocks redirects even when authorization is already cached" classname="com.bontecou.syncmd.services.git.RemoteAuthenticationTest" time="0.001"/>
+  <testcase name="HTTPS parser rejects inline secrets query tokens and unsupported transports" classname="com.bontecou.syncmd.services.git.RemoteAuthenticationTest" time="0.002"/>
+  <testcase name="legacy Github token is not even read for another host or insecure URL" classname="com.bontecou.syncmd.services.git.RemoteAuthenticationTest" time="0.005"/>
+  <testcase name="selected branch clone checks out that branch and missing branch leaves no destination" classname="com.bontecou.syncmd.services.git.RemoteAuthenticationTest" time="0.131"/>
+  <testcase name="push credentials use the configured push URL and isolate repository policies" classname="com.bontecou.syncmd.services.git.RemoteAuthenticationTest" time="0.006"/>
+  <testcase name="credentials answer only the selected HTTPS repository challenge" classname="com.bontecou.syncmd.services.git.RemoteAuthenticationTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[Nov 02, 2026 4:54:01 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit4822352399361770120/junit11903107217213647277/.gitsync-clone-9312481162833552844
+Nov 02, 2026 4:54:01 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=sample-branch commit=695ce4892124afd2262fc9667b08f925f547bc87
+Nov 02, 2026 4:54:01 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 2 files, skipped 0
+Nov 02, 2026 4:54:01 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/sample-branch (695ce48)
+Nov 02, 2026 4:54:01 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit4822352399361770120/junit11903107217213647277/.gitsync-clone-5890639882525704867
+]]></system-err>
+</testsuite>

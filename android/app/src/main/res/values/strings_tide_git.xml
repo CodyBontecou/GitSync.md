@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Tide redesign copy for the Git tools screen (GitScreen + branch/tag/stash components). English only. -->
+<resources>
+    <string name="tide_git_committing">Committing…</string>
+    <string name="tide_git_branch_operation">Branch operation</string>
+    <string name="tide_git_git_operation">Git operation</string>
+</resources>

@@ -30,6 +30,30 @@ final class FolderGitServiceTests: XCTestCase {
         XCTAssertEqual(try String(contentsOf: root.appendingPathComponent("Notes/private.secret"), encoding: .utf8), "private\n")
     }
 
+    func testOSAndEditorLitterIsIgnoredByDefaultWithoutTouchingTheFolder() async throws {
+        let root = try temporaryFolder()
+        defer { try? FileManager.default.removeItem(at: root) }
+        try write("# Note\n", to: "Note.md", root: root)
+        try write("x", to: ".DS_Store", root: root)
+        try write("old\n", to: ".trash/old.md", root: root)
+        try write("x", to: "Notes/Thumbs.db", root: root)
+
+        let result = try await service.inspect(at: root)
+
+        XCTAssertFalse(try XCTUnwrap(result.files.first { $0.path == "Note.md" }).isIgnored)
+        for litter in [".DS_Store", ".trash/old.md", "Notes/Thumbs.db"] {
+            XCTAssertTrue(try XCTUnwrap(result.files.first { $0.path == litter }).isIgnored, "\(litter) should be ignored by default")
+        }
+        XCTAssertFalse(FileManager.default.fileExists(atPath: root.appendingPathComponent(".gitignore").path),
+                       "Default rules must not add files to the user's folder")
+
+        // The created repository keeps the rules in .git/info/exclude so later syncs skip the litter too.
+        _ = try await prepare(root, id: UUID(), inspection: result, paths: ["Note.md"])
+        let exclude = try String(contentsOf: root.appendingPathComponent(".git/info/exclude"), encoding: .utf8)
+        XCTAssertTrue(exclude.contains(".DS_Store") && exclude.contains(".trash/"))
+        XCTAssertTrue(try isIgnored(root: root, path: ".DS_Store"))
+    }
+
     func testLocationAllowlistDoesNotTrustContainerNamesInsideAnArbitraryFolder() async throws {
         let root = try temporaryFolder()
         defer { try? FileManager.default.removeItem(at: root) }

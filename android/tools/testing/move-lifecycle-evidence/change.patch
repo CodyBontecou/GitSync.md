@@ -1,0 +1,338 @@
+--- before/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/MoveRepositoryScreen.kt
++++ after/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/MoveRepositoryScreen.kt
+@@ -47,7 +47,11 @@
+     val error by settings.errorMessage.collectAsState()
+     var location by rememberSaveable(path, recoveryId) { mutableStateOf<String?>(null) }
+     var confirming by remember { mutableStateOf<com.bontecou.syncmd.storage.RepositoryMoveReview?>(null) }
+-    LaunchedEffect(path, recoveryId) { settings.clearMoveReview() }
++    val screenOwner = remember(settings, path, recoveryId) { Any() }
++    DisposableEffect(settings, screenOwner) {
++        settings.openMoveReview(screenOwner)
++        onDispose { settings.closeMoveReview(screenOwner) }
++    }
+     val current = review?.takeIf { if (recoveryId == null) it.plan.source == path else it.metadata.restoringRecoveryId == recoveryId }
+     val pendingSource = if (recoveryId == null) path else journals.firstOrNull { it.plan.id == recoveryId }?.plan?.recovery?.path ?: current?.plan?.source
+     val pending = journals.filter { it.phase != RepositoryMovePhase.DISCARDING_RECOVERY &&
+@@ -65,10 +69,10 @@
+             if (path.isNotEmpty()) TideCard(padding = 16.dp) {
+                 SelectionContainer { Text(path, style = TideType.mono(12.5.sp).copy(textDirection = TextDirection.Ltr), color = c.ink) }
+             }
+-            FolderLocationField(location, { location = it; settings.clearMoveReview() }, enabled = !busy, title = stringResource(R.string.ui_destination_parent_folder_c6c4f97e))
++            FolderLocationField(location, { location = it; settings.clearMoveReview(screenOwner) }, enabled = !busy, title = stringResource(R.string.ui_destination_parent_folder_c6c4f97e))
+             if (busy) VaultOpsProgress(if (destructive) "Moving and saving repository settings…" else "Reviewing files and Git metadata…")
+             if (pending.isEmpty()) VaultOpsButton(stringResource(R.string.ui_review_destination_59808b00), {
+-                if (recoveryId == null) settings.prepareMove(path, location) else settings.prepareRecoveryRestore(recoveryId, location)
++                if (recoveryId == null) settings.prepareMove(path, location, screenOwner) else settings.prepareRecoveryRestore(recoveryId, location, screenOwner)
+             }, Modifier.testTag("move-review"), enabled = !busy)
+             current?.let { item ->
+                 VaultOpsHeading(stringResource(R.string.ui_reviewed_destination_7173c3da), Modifier.padding(top = 8.dp))
+@@ -104,7 +108,7 @@
+     if (confirmation != null) VaultOpsSheet(onDismissRequest = { confirming = null },
+         title = if (recoveryId == null) "Move this working copy?" else "Restore this recovery copy?",
+         icon = { TideModalIcon(glyph = "→", tint = c.ink) },
+-        confirmButton = { VaultOpsButton(if (recoveryId == null) "Move" else "Restore", { confirming = null; settings.moveReviewed(confirmation, onBack) }, Modifier.testTag("move-final-confirm")) },
++        confirmButton = { VaultOpsButton(if (recoveryId == null) "Move" else "Restore", { confirming = null; settings.moveReviewed(confirmation, screenOwner, onBack) }, Modifier.testTag("move-final-confirm")) },
+         dismissButton = { VaultOpsTextButton(stringResource(R.string.publication_cancel), { confirming = null }, Modifier.fillMaxWidth()) }) {
+         Text(stringResource(R.string.ui_1_s_2_schoose_an_unused_destination_and_ke_6161c527, (confirmation.plan.destination).toString(),
+             (if (confirmation.plan.copyRequired) "The original will be retained as a recovery copy. " else "").toString()))
+--- before/app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/MoveReviewState.kt
++++ after/app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/MoveReviewState.kt
+@@ -0,0 +1,55 @@
++package com.bontecou.syncmd.ui.viewmodels
++
++import com.bontecou.syncmd.storage.RepositoryMoveReview
++import kotlinx.coroutines.flow.MutableStateFlow
++import kotlinx.coroutines.flow.asStateFlow
++
++/** Atomic screen/request ownership. Accepted filesystem work survives its screen; navigation does not. */
++internal class MoveReviewState {
++    private val lock = Any()
++    private var screen: Any? = null
++    private var request: Any = Any()
++    private var executing: RepositoryMoveReview? = null
++    private val mutableReview = MutableStateFlow<RepositoryMoveReview?>(null)
++    val review = mutableReview.asStateFlow()
++
++    fun open(owner: Any) = synchronized(lock) {
++        screen = owner
++        invalidatePending()
++    }
++    fun close(owner: Any) = synchronized(lock) {
++        if (screen === owner) {
++            screen = null
++            invalidatePending()
++        }
++    }
++    fun begin(owner: Any? = null): Any? = synchronized(lock) {
++        if (executing != null || (owner != null && screen !== owner)) return@synchronized null
++        invalidatePending()
++        request
++    }
++    fun isRequestCurrent(token: Any): Boolean = synchronized(lock) { request === token && executing == null }
++    fun publish(token: Any, value: RepositoryMoveReview): Boolean = synchronized(lock) {
++        if (request !== token || executing != null) return@synchronized false
++        mutableReview.value = value
++        true
++    }
++    fun clear(owner: Any? = null) = synchronized(lock) {
++        if (owner == null || screen === owner) invalidatePending()
++    }
++    fun claim(value: RepositoryMoveReview, owner: Any? = null): Boolean = synchronized(lock) {
++        if (executing != null || mutableReview.value !== value || (owner != null && screen !== owner)) return@synchronized false
++        executing = value
++        request = Any()
++        true
++    }
++    fun finish(value: RepositoryMoveReview) = synchronized(lock) {
++        if (executing === value) executing = null
++        if (mutableReview.value === value) mutableReview.value = null
++    }
++    fun ownsScreen(owner: Any): Boolean = synchronized(lock) { screen === owner }
++    private fun invalidatePending() {
++        request = Any()
++        if (executing == null) mutableReview.value = null
++    }
++}
+--- before/app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/SettingsViewModel.kt
++++ after/app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/SettingsViewModel.kt
+@@ -57,9 +57,8 @@
+     private val clonePublications = com.bontecou.syncmd.storage.clonePublications(context)
+     private val credentials = com.bontecou.syncmd.security.RepositoryCredentialStore(context)
+     private val locations = com.bontecou.syncmd.storage.RepositoryLocations(context)
+-    private val _moveReview = MutableStateFlow<com.bontecou.syncmd.storage.RepositoryMoveReview?>(null)
+-    val moveReview = _moveReview.asStateFlow()
+-    @Volatile private var moveReviewOwner: Any = Any()
++    private val moveReviews = MoveReviewState()
++    val moveReview = moveReviews.review
+     private val _moveJournals = MutableStateFlow<List<RepositoryMoveJournal>>(emptyList())
+     val moveJournals = _moveJournals.asStateFlow()
+     private val _selectedRepository = MutableStateFlow("")
+@@ -229,12 +228,12 @@
+         persist(repos, history, selected, pending)
+     }
+ 
+-    private fun mutate(action: suspend () -> Unit, onSuccess: () -> Unit = {}, destructive: Boolean = false) {
++    private fun mutate(action: suspend () -> Unit, onSuccess: () -> Unit = {}, destructive: Boolean = false, onFinally: () -> Unit = {}) {
+         if (destructive && _destructiveBusy.value) return
+         if (destructive) _destructiveBusy.value = true
+         viewModelScope.launch {
+-            initialLoad.await()
+             try {
++                initialLoad.await()
+                 withContext(Dispatchers.IO) {
+                     persistence.withLock {
+                         _isLoading.value = true
+@@ -245,7 +244,10 @@
+                 onSuccess()
+             } catch (e: CancellationException) { throw e
+             } catch (e: Exception) { _errorMessage.value = e.message ?: "Repository operation failed"
+-            } finally { if (destructive) _destructiveBusy.value = false }
++            } finally {
++                if (destructive) _destructiveBusy.value = false
++                onFinally()
++            }
+         }
+     }
+ 
+@@ -478,20 +480,20 @@
+     })
+     fun reportStorageError(message: String) { _errorMessage.value = message }
+ 
+-    fun prepareMove(path: String, selection: String?) {
++    fun prepareMove(path: String, selection: String?, screenOwner: Any? = null) {
+         if (_destructiveBusy.value) return
+-        val owner = Any().also { moveReviewOwner = it; _moveReview.value = null }
++        val owner = moveReviews.begin(screenOwner) ?: return
+         mutate({
+-            if (moveReviewOwner !== owner) return@mutate
++            if (!moveReviews.isRequestCurrent(owner)) return@mutate
+             val original = _allRepositories.value.firstOrNull { it.path == canonical(path) } ?: error("Repository is no longer added")
+             prepareMoveNow(original, selection, null, owner)
+         })
+     }
+-    fun prepareRecoveryRestore(id: String, selection: String?) {
++    fun prepareRecoveryRestore(id: String, selection: String?, screenOwner: Any? = null) {
+         if (_destructiveBusy.value) return
+-        val owner = Any().also { moveReviewOwner = it; _moveReview.value = null }
++        val owner = moveReviews.begin(screenOwner) ?: return
+         mutate({
+-            if (moveReviewOwner !== owner) return@mutate
++            if (!moveReviews.isRequestCurrent(owner)) return@mutate
+             val journal = moves.read(id)
+             require(journal.phase == RepositoryMovePhase.COMMITTED && journal.plan.copyRequired) { "Finish the pending move first" }
+             require(_allRepositories.value.none { it.path == journal.plan.recovery.path }) { "The recovery copy is already added. Move it from its repository entry." }
+@@ -512,28 +514,28 @@
+         val metadata = com.bontecou.syncmd.storage.RepositoryMoveMetadata(original, info.remoteUrl, info.branch,
+             credentials.recordVersion(original.path), credentials.recordVersion(plan.destination),
+             if (plan.copyRequired) credentials.recordVersion(plan.recovery.path) else null, restoringId)
+-        if (moveReviewOwner === owner) _moveReview.value = com.bontecou.syncmd.storage.RepositoryMoveReview(plan, metadata)
+-    }
+-    fun clearMoveReview() {
+-        if (!_destructiveBusy.value) { moveReviewOwner = Any(); _moveReview.value = null }
+-    }
+-    fun moveReviewed(review: com.bontecou.syncmd.storage.RepositoryMoveReview, onReady: () -> Unit = {}) {
+-        if (_destructiveBusy.value || _moveReview.value !== review) return
++        moveReviews.publish(owner, com.bontecou.syncmd.storage.RepositoryMoveReview(plan, metadata))
++    }
++    fun openMoveReview(owner: Any) { moveReviews.open(owner) }
++    fun closeMoveReview(owner: Any) { moveReviews.close(owner) }
++    fun clearMoveReview(owner: Any? = null) { moveReviews.clear(owner) }
++    fun moveReviewed(review: com.bontecou.syncmd.storage.RepositoryMoveReview, screenOwner: Any? = null, onReady: () -> Unit = {}) {
++        if (_destructiveBusy.value || !moveReviews.claim(review, screenOwner)) return
+         mutate({
+-            com.bontecou.syncmd.storage.requireCurrentMoveReview(review, _moveReview.value)
+-            validateMoveCatalog(review.plan, review.metadata)
+             try {
++                com.bontecou.syncmd.storage.requireCurrentMoveReview(review, moveReview.value)
++                validateMoveCatalog(review.plan, review.metadata)
+                 val done = moves.execute(review.plan, gson.toJson(review.metadata), beforeMove = {
+-                    com.bontecou.syncmd.storage.requireCurrentMoveReview(review, _moveReview.value)
++                    com.bontecou.syncmd.storage.requireCurrentMoveReview(review, moveReview.value)
+                     checkMoveCredentials(review.plan, review.metadata)
+                 }, commit = ::commitMove)
+                 finishMove(done)
+                 _operationMessage.value = if (done.plan.copyRequired) "Repository moved. Its original is retained in Move recoveries." else "Repository moved"
+             } finally {
+-                if (_moveReview.value === review) _moveReview.value = null
+                 reloadMoveJournals()
+             }
+-        }, onReady, destructive = true)
++        }, { if (screenOwner == null || moveReviews.ownsScreen(screenOwner)) onReady() }, destructive = true,
++            onFinally = { moveReviews.finish(review) })
+     }
+     fun resumeMove(id: String) = mutate({
+         try {
+--- before/app/src/test/kotlin/com/bontecou/syncmd/ui/viewmodels/MoveReviewLifecycleTest.kt
++++ after/app/src/test/kotlin/com/bontecou/syncmd/ui/viewmodels/MoveReviewLifecycleTest.kt
+@@ -0,0 +1,131 @@
++package com.bontecou.syncmd.ui.viewmodels
++
++import com.bontecou.syncmd.services.git.RepositoryOperationCoordinator
++import com.bontecou.syncmd.services.repositories.RepositoryMove
++import com.bontecou.syncmd.storage.RepositoryMoveMetadata
++import com.bontecou.syncmd.storage.RepositoryMoveReview
++import com.bontecou.syncmd.storage.requireCurrentMoveReview
++import kotlinx.coroutines.*
++import org.eclipse.jgit.api.Git
++import org.junit.Test
++import org.junit.Assert.*
++import org.junit.Rule
++import org.junit.rules.TemporaryFolder
++import java.io.File
++
++/** Production review owner plus actual Git move preparation/execution; no Android lifecycle simulation. */
++class MoveReviewLifecycleTest {
++    @get:Rule val temporary = TemporaryFolder()
++    private fun repository(): File = temporary.newFolder().canonicalFile.also { root ->
++        Git.init().setDirectory(root).setInitialBranch("main").call().use { git ->
++            File(root, "README.md").writeText("Generated lifecycle fixture\n")
++            git.add().addFilepattern(".").call()
++            git.commit().setMessage("Fixture").setAuthor("Fixture", "fixture@example.invalid").call()
++        }
++        File(root, "draft.md").writeText("Untracked é🙂\r\n")
++    }
++    private fun contents(root: File) = root.walkTopDown().filter { it.isFile }
++        .associate { it.relativeTo(root).invariantSeparatorsPath to it.readBytes().toList() }
++    private suspend fun review(moves: RepositoryMove, source: File) = RepositoryMoveReview(
++        moves.prepare(source.path, temporary.newFolder().path, temporary.newFolder().path),
++        RepositoryMoveMetadata(SavedRepository("Fixture", source.path, dateAdded = 123L), null, "main", null, null, null))
++
++    @Test fun leavingWhilePreparationWaitsCannotPublishItsDestination(): Unit = runBlocking {
++        val source = repository(); val before = contents(source)
++        val moves = RepositoryMove(temporary.newFolder()); val state = MoveReviewState(); val owner = Any()
++        state.open(owner); val request = state.begin(owner)!!
++        val entered = CompletableDeferred<Unit>(); val release = CompletableDeferred<Unit>()
++        val holder = launch(Dispatchers.IO) {
++            RepositoryOperationCoordinator.withRepository(source.path) { entered.complete(Unit); release.await() }
++        }
++        entered.await()
++        val waiting = async(start = CoroutineStart.UNDISPATCHED) { state.publish(request, review(moves, source)) }
++        try { assertFalse(waiting.isCompleted); state.close(owner) }
++        finally { release.complete(Unit); holder.join() }
++        assertFalse(withTimeout(10_000) { waiting.await() }); assertNull(state.review.value)
++        assertEquals(before, contents(source)); assertTrue(moves.journals().isEmpty())
++    }
++    @Test fun newerFolderRequestRejectsLatePreparation(): Unit = runBlocking {
++        val source = repository(); val moves = RepositoryMove(temporary.newFolder()); val state = MoveReviewState()
++        val owner = Any(); state.open(owner); val old = state.begin(owner)!!
++        val oldReview = review(moves, source); val latest = state.begin(owner)!!; val latestReview = review(moves, source)
++        assertTrue(state.publish(latest, latestReview)); assertFalse(state.publish(old, oldReview))
++        assertSame(latestReview, state.review.value)
++    }
++    @Test fun oldScreenDisposalCannotClearReopenedScreen(): Unit = runBlocking {
++        val source = repository(); val moves = RepositoryMove(temporary.newFolder()); val state = MoveReviewState()
++        val old = Any(); val active = Any(); state.open(old); state.open(active)
++        val shown = review(moves, source); state.publish(state.begin(active)!!, shown)
++        state.close(old)
++        assertSame(shown, state.review.value); assertTrue(state.ownsScreen(active)); assertFalse(state.ownsScreen(old))
++    }
++    @Test fun departedScreenCannotRequestOrConfirmCurrentScreenMove(): Unit = runBlocking {
++        val source = repository(); val moves = RepositoryMove(temporary.newFolder()); val state = MoveReviewState()
++        val old = Any(); val active = Any(); state.open(old); state.close(old); state.open(active)
++        val shown = review(moves, source); state.publish(state.begin(active)!!, shown)
++        assertNull(state.begin(old)); assertFalse(state.claim(shown, old)); assertSame(shown, state.review.value)
++        assertTrue(state.claim(shown, active))
++    }
++    @Test fun acceptedMoveFinishesAfterScreenClosesWithoutOwningItsNavigation(): Unit = runBlocking { accepted(false) }
++    @Test fun newScreenCannotCancelAcceptedMoveOrReceiveOldCompletion(): Unit = runBlocking { accepted(true) }
++    private suspend fun accepted(reopen: Boolean) = coroutineScope {
++        val source = repository(); val before = contents(source); val moves = RepositoryMove(temporary.newFolder())
++        val state = MoveReviewState(); val old = Any(); val latest = Any(); state.open(old)
++        val shown = review(moves, source); state.publish(state.begin(old)!!, shown); assertTrue(state.claim(shown, old))
++        val entered = CompletableDeferred<Unit>(); val release = CompletableDeferred<Unit>()
++        val holder = launch(Dispatchers.IO) {
++            RepositoryOperationCoordinator.withRepository(source.path) { entered.complete(Unit); release.await() }
++        }
++        entered.await(); var commits = 0
++        val waiting = async(start = CoroutineStart.UNDISPATCHED) {
++            try { moves.execute(shown.plan, "fixture", beforeMove = { requireCurrentMoveReview(shown, state.review.value) }) { commits++ } }
++            finally { state.finish(shown) }
++        }
++        try {
++            assertFalse(waiting.isCompleted); state.close(old)
++            if (reopen) { state.open(latest); assertNull(state.begin(latest)); state.clear(latest) }
++            assertSame(shown, state.review.value); assertFalse(state.claim(shown, old))
++        } finally { release.complete(Unit); holder.join() }
++        withTimeout(10_000) { waiting.await() }
++        assertEquals(1, commits); assertFalse(source.exists()); assertEquals(before, contents(File(shown.plan.destination)))
++        assertNull(state.review.value); assertFalse(state.ownsScreen(old))
++        if (reopen) { assertTrue(state.ownsScreen(latest)); assertNotNull(state.begin(latest)) }
++    }
++    @Test fun failedMoveReleasesClaimAndPreservesNewWork(): Unit = runBlocking {
++        val source = repository(); val moves = RepositoryMove(temporary.newFolder()); val state = MoveReviewState(); val owner = Any()
++        state.open(owner); val shown = review(moves, source); state.publish(state.begin(owner)!!, shown)
++        File(source, "draft.md").appendText("New unsaved work\n"); val before = contents(source)
++        assertTrue(state.claim(shown, owner))
++        val failure = runCatching {
++            try { moves.execute(shown.plan, "fixture", beforeMove = { requireCurrentMoveReview(shown, state.review.value) }) { fail("Must not commit") } }
++            finally { state.finish(shown) }
++        }.exceptionOrNull()
++        assertNotNull(failure); assertEquals(before, contents(source)); assertTrue(moves.journals().isEmpty())
++        assertFalse(File(shown.plan.destination).exists()); assertNull(state.review.value); assertNotNull(state.begin(owner))
++    }
++    @Test fun clearingFolderSelectionRevokesDisplayedConfirmation(): Unit = runBlocking {
++        val source = repository(); val moves = RepositoryMove(temporary.newFolder()); val state = MoveReviewState(); val owner = Any()
++        state.open(owner); val shown = review(moves, source); state.publish(state.begin(owner)!!, shown)
++        state.clear(owner)
++        assertFalse(state.claim(shown, owner)); assertNull(state.review.value); assertTrue(moves.journals().isEmpty())
++    }
++    @Test fun preMoveFailureCanReleaseClaimForFreshReview(): Unit = runBlocking {
++        val source = repository(); val before = contents(source); val moves = RepositoryMove(temporary.newFolder())
++        val state = MoveReviewState(); val owner = Any(); state.open(owner)
++        val shown = review(moves, source); state.publish(state.begin(owner)!!, shown); assertTrue(state.claim(shown, owner))
++        // The ViewModel's mutation-finally invokes this even when its catalog read fails before the action.
++        state.finish(shown)
++        val fresh = review(moves, source); assertTrue(state.publish(state.begin(owner)!!, fresh)); assertTrue(state.claim(fresh, owner))
++        assertEquals(before, contents(source)); assertTrue(moves.journals().isEmpty())
++    }
++    @Test fun repeatedOldCleanupCannotClearFreshScreenReview(): Unit = runBlocking {
++        val source = repository(); val moves = RepositoryMove(temporary.newFolder()); val state = MoveReviewState()
++        val old = Any(); val active = Any(); state.open(old)
++        val shown = review(moves, source); state.publish(state.begin(old)!!, shown); assertTrue(state.claim(shown, old))
++        state.finish(shown); state.close(old); state.open(active)
++        val fresh = review(moves, source); state.publish(state.begin(active)!!, fresh)
++        state.finish(shown)
++        assertSame(fresh, state.review.value); assertTrue(state.ownsScreen(active)); assertTrue(state.claim(fresh, active))
++    }
++
++}

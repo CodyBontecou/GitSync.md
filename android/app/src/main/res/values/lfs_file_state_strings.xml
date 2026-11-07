@@ -1,0 +1,7 @@
+<resources>
+    <string name="lfs_file_local_edits">Local edits · kept during download</string>
+    <string name="lfs_file_available">File contents available</string>
+    <string name="lfs_file_pointer">Pointer · download file contents</string>
+    <string name="lfs_cache_verified">Verified cache</string>
+    <string name="lfs_cache_missing">Not cached</string>
+</resources>

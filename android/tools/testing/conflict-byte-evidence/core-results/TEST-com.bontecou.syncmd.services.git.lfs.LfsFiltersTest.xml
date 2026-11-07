@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.git.lfs.LfsFiltersTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-11-03T00:56:31" hostname="MacBook-Pro.local" time="0.182">
+  <properties/>
+  <testcase name="existing pointer is never wrapped in a second pointer" classname="com.bontecou.syncmd.services.git.lfs.LfsFiltersTest" time="0.011"/>
+  <testcase name="malformed or extended pointer fails staging without changing the index" classname="com.bontecou.syncmd.services.git.lfs.LfsFiltersTest" time="0.007"/>
+  <testcase name="cache streams verifies and refuses corrupted objects and mismatching downloads" classname="com.bontecou.syncmd.services.git.lfs.LfsFiltersTest" time="0.055"/>
+  <testcase name="object storage never follows a metadata symlink" classname="com.bontecou.syncmd.services.git.lfs.LfsFiltersTest" time="0.005"/>
+  <testcase name="pointer parser accepts only complete bounded SHA256 identities" classname="com.bontecou.syncmd.services.git.lfs.LfsFiltersTest" time="0.0"/>
+  <testcase name="stage commit and status use pointer blobs while preserving hydrated worktree" classname="com.bontecou.syncmd.services.git.lfs.LfsFiltersTest" time="0.057"/>
+  <testcase name="checkout uses verified cached object and nested attributes are respected" classname="com.bontecou.syncmd.services.git.lfs.LfsFiltersTest" time="0.047"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

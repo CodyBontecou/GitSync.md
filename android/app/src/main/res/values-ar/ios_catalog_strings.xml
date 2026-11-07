@@ -1,0 +1,1229 @@
+<!-- Generated from the sibling iOS catalog by tools/localization/import_ios_catalog.py. -->
+<resources>
+    <string name="account_alternative_exists" formatted="false">"يوجد اتصال بديل محفوظ بالفعل. راجعه قبل ترحيل المزيد من بيانات اعتماد URL."</string>
+    <string name="account_api_error">"خطأ في واجهة GitHub البرمجية: HTTP %1$d"</string>
+    <string name="account_assigned_disconnected" formatted="false">"حساب GitHub المعيّن غير متصل. اختر حسابًا لهذا المستودع."</string>
+    <string name="account_basic_requires_http" formatted="false">"تتطلب المصادقة باسم المستخدم والرمز عنوان HTTP أو HTTPS"</string>
+    <string name="account_browser_failed" formatted="false">"تعذر فتح المتصفح. أعد المحاولة أو استخدم رمز الوصول الشخصي."</string>
+    <string name="account_choose_authentication" formatted="false">"اختر المصادقة لهذا العنوان"</string>
+    <string name="account_choose_credentials" formatted="false">"اختر بيانات الاعتماد لهذا الاتصال"</string>
+    <string name="account_choose_location_again" formatted="false">"اختر موقع الاستنساخ مرة أخرى"</string>
+    <string name="account_choose_public_access" formatted="false">"اختر الوصول دون بيانات اعتماد الشبكة لهذا العنوان"</string>
+    <string name="account_choose_ssh_or_https" formatted="false">"اختر مفتاح SSH خاصًا لعنوان SSH، أو مصادقة HTTPS لعنوان HTTPS."</string>
+    <string name="account_choose_storage" formatted="false">"اختر التخزين في الإعدادات"</string>
+    <string name="account_cleanup_failed" formatted="false">"تم تشفير تسجيل الدخول إلى GitHub، لكن تعذر تنظيف التفضيلات المحلية القديمة. أعد المحاولة عندما يتوفر التخزين."</string>
+    <string name="account_clone_credentials_changed" formatted="false">"تغيّرت بيانات الاعتماد المحفوظة أثناء الاستنساخ. راجع الاتصال قبل إعادة المحاولة."</string>
+    <string name="account_clone_destination_changed" formatted="false">"تغيّرت وجهة الاستنساخ؛ تم الاحتفاظ باتصالها"</string>
+    <string name="account_clone_failed_network" formatted="false">"تعذر استنساخ المستودع. تحقق من عنوان URL وبيانات اعتماد الوصول والفرع واتصال الشبكة. تم الاحتفاظ بالمجلدات الموجودة."</string>
+    <string name="account_clone_failed_retry" formatted="false">"فشل الاستنساخ — حاول مرة أخرى."</string>
+    <string name="account_clone_in_use" formatted="false">"هذا الاستنساخ مفتوح بالفعل أو يحتاج إلى مراجعة في المستودعات المحلية."</string>
+    <string name="account_clone_interrupted" formatted="false">"يحتاج الاستنساخ المتوقف إلى مراجعة. تم الاحتفاظ بملفاته؛ أعد ربطه من المستودعات المحلية."</string>
+    <string name="account_clone_storage_note">"%1$s\n\nموقع الاستنساخ ثابت على تخزين التطبيق في Android/media للتوافق مع Obsidian."</string>
+    <string name="account_configuration_changed" formatted="false">"تغيّر إعداد المستودع. أعد التحميل قبل إزالة بيانات الاعتماد."</string>
+    <string name="account_connection_recovery_failed" formatted="false">"فشل حفظ الاتصال وتعذر حفظ استعادة بيانات الاعتماد. أعد إدخال بيانات الاعتماد."</string>
+    <string name="account_connection_save_failed" formatted="false">"تعذر حفظ اتصال المستودع"</string>
+    <string name="account_connection_unreadable" formatted="false">"تعذر فتح الاتصال المحفوظ. أعد إدخال بيانات اعتماد المستودع."</string>
+    <string name="account_credentials_changed_reload" formatted="false">"تغيّرت بيانات الاعتماد المحفوظة. أعد التحميل قبل الحفظ."</string>
+    <string name="account_destination_exists" formatted="false">"الوجهة موجودة بالفعل. أعد ربطها من المستودعات المحلية، أو اختر موقعًا فارغًا جديدًا. لم يتم حذف أي ملفات."</string>
+    <string name="account_enter_new_credentials" formatted="false">"أدخل بيانات الاعتماد الجديدة"</string>
+    <string name="account_enter_ssh_key" formatted="false">"أدخل مفتاح SSH الخاص"</string>
+    <string name="account_enter_username_secret" formatted="false">"أدخل اسم مستخدم ورمزًا أو كلمة مرور"</string>
+    <string name="account_enter_valid_url" formatted="false">"أدخل عنوان URL صالحًا للمستودع، مع بيانات الاعتماد في الحقول المنفصلة."</string>
+    <string name="account_finish_migration" formatted="false">"أكمل تسجيل الدخول إلى GitHub لإنهاء ترحيل بيانات الاعتماد السابقة."</string>
+    <string name="account_github_requires_https" formatted="false">"يتطلب الوصول عبر حساب GitHub عنوان HTTPS على github.com"</string>
+    <string name="account_invalid_repository_name" formatted="false">"اسم مستودع GitHub غير صالح"</string>
+    <string name="account_invalid_repository_url" formatted="false">"عنوان URL للمستودع غير صالح"</string>
+    <string name="account_load_author_failed" formatted="false">"تعذر تحميل هوية المؤلف"</string>
+    <string name="account_load_failed" formatted="false">"تعذر تحميل بيانات GitHub"</string>
+    <string name="account_migration_changed" formatted="false">"تغيّرت بيانات الاعتماد المحفوظة. أعد تحميل الترحيل."</string>
+    <string name="account_migration_recovery_failed" formatted="false">"تعذر حفظ استعادة بيانات الاعتماد. راجع هذا الاتصال."</string>
+    <string name="account_migration_unverified" formatted="false">"تعذر التحقق من بيانات الاعتماد المشفرة. تم الاحتفاظ ببيانات اعتماد URL."</string>
+    <string name="account_move_changed" formatted="false">"تغيّرت بيانات اعتماد المستودع بعد المراجعة. راجع النقل مرة أخرى."</string>
+    <string name="account_move_finish_failed" formatted="false">"تعذر إنهاء استعادة نقل بيانات الاعتماد"</string>
+    <string name="account_move_persist_failed" formatted="false">"تعذر حفظ بيانات اعتماد المستودع المنقولة"</string>
+    <string name="account_move_recovery_changed" formatted="false">"تغيّرت بيانات الاعتماد المنقولة أثناء الاستعادة. راجع اتصال الوجهة قبل المتابعة."</string>
+    <string name="account_move_recovery_failed" formatted="false">"تعذر حفظ استعادة نقل بيانات الاعتماد. تم الاحتفاظ بجميع نسخ العمل."</string>
+    <string name="account_move_verify_failed" formatted="false">"تعذر التحقق من بيانات اعتماد المستودع المنقولة"</string>
+    <string name="account_no_alternative" formatted="false">"لا توجد بيانات اعتماد بديلة محفوظة لهذا العنوان"</string>
+    <string name="account_no_backup_folder" formatted="false">"لا يتوفر مجلد نسخ احتياطي للتطبيق على وحدة التخزين الخاصة بهذا المستودع. تم الاحتفاظ بنسخة العمل."</string>
+    <string name="account_no_matching_repositories">"لا توجد مستودعات تطابق \"⁨%1$s⁩\""</string>
+    <string name="account_no_remote" formatted="false">"لم يتم إعداد أي مستودع بعيد"</string>
+    <string name="account_no_url_credentials" formatted="false">"لا توجد بيانات اعتماد URL مدعومة للترحيل"</string>
+    <string name="account_not_authenticated" formatted="false">"لم تتم المصادقة — سجّل الدخول أولًا."</string>
+    <string name="account_open_connection_failed" formatted="false">"تعذر فتح الاتصال"</string>
+    <string name="account_prepare_sign_in_failed" formatted="false">"تعذر تجهيز تسجيل دخول آمن إلى GitHub. أعد المحاولة عندما يتوفر التخزين."</string>
+    <string name="account_previous_address_missing" formatted="false">"لم يُسجَّل العنوان البعيد السابق. تحقّق من عنوان GitHub المقترح هذا واختر المصادقة قبل الاستنساخ."</string>
+    <string name="account_previous_connection_unavailable" formatted="false">"لا يمكن استعادة الاتصال السابق. راجع عنوان URL واختر المصادقة صراحةً؛ تم الاحتفاظ بالملفات الحالية وبيانات الاعتماد المحفوظة."</string>
+    <string name="account_publication_confirm_failed" formatted="false">"تعذر تأكيد اتصال النشر"</string>
+    <string name="account_publication_conflict" formatted="false">"يحتوي هذا المجلد بالفعل على اتصال محفوظ مختلف. تم الاحتفاظ ببيانات الاعتماد الحالية."</string>
+    <string name="account_publication_recovery" formatted="false">"تحتاج بيانات اعتماد النشر إلى استعادة. تم الاحتفاظ بالمجلد."</string>
+    <string name="account_publication_verify_failed" formatted="false">"تعذر التحقق من اتصال النشر"</string>
+    <string name="account_reenter_credentials" formatted="false">"أعد إدخال بيانات اعتماد المستودع"</string>
+    <string name="account_reload_public_access" formatted="false">"أعد تحميل اتصال الوصول العام المحفوظ"</string>
+    <string name="account_remote_url_changed" formatted="false">"تغيّر عنوان URL البعيد. راجع اتصال المستودع قبل المصادقة."</string>
+    <string name="account_removal_subject" formatted="false">"هذا الحساب"</string>
+    <string name="account_remove_credentials_failed" formatted="false">"تعذرت إزالة بيانات الاعتماد المحفوظة"</string>
+    <string name="account_remove_failed" formatted="false">"تعذرت إزالة تسجيل الدخول إلى GitHub. أعد المحاولة عندما يتوفر التخزين."</string>
+    <string name="account_repository_name_length" formatted="false">"أدخل اسم مستودع من 1 إلى 120 حرفًا"</string>
+    <string name="account_review_github_connection" formatted="false">"راجع اتصال حساب GitHub"</string>
+    <string name="account_review_interrupted_clone" formatted="false">"راجع الاستنساخ المتوقف قبل بدء استنساخ آخر. تم الاحتفاظ بملفاته."</string>
+    <string name="account_save_author_failed" formatted="false">"تعذر حفظ هوية المؤلف"</string>
+    <string name="account_save_connection_failed" formatted="false">"تعذر حفظ الاتصال"</string>
+    <string name="account_save_sign_in_failed" formatted="false">"تعذر حفظ تسجيل الدخول إلى GitHub بأمان. أعد المحاولة عندما يتوفر التخزين."</string>
+    <string name="account_save_sign_in_short" formatted="false">"تعذر حفظ تسجيل الدخول بأمان"</string>
+    <string name="account_saved_connection_changed" formatted="false">"تغيّر الاتصال المحفوظ. راجع المصادقة قبل الاستنساخ مرة أخرى."</string>
+    <string name="account_saved_credentials_unreadable" formatted="false">"تعذر فتح بيانات الاعتماد المحفوظة. اختر الوصول العام أو أدخل بيانات اعتماد جديدة."</string>
+    <string name="account_select_connected_account" formatted="false">"اختر حساب GitHub متصلًا وعنوان HTTPS على github.com"</string>
+    <string name="account_select_failed" formatted="false">"تعذر تحديد حساب GitHub. أعد المحاولة عندما يتوفر التخزين."</string>
+    <string name="account_select_github_account" formatted="false">"اختر حساب GitHub"</string>
+    <string name="account_select_repository_account" formatted="false">"اختر حساب GitHub لهذا المستودع"</string>
+    <string name="account_select_repository_github_account" formatted="false">"اختر حساب GitHub الخاص بالمستودع"</string>
+    <string name="account_session_open_failed" formatted="false">"تعذر فتح تخزين GitHub الآمن. سجّل الدخول مجددًا لاستعادة الجلسة."</string>
+    <string name="account_session_recovery_failed" formatted="false">"فشلت استعادة تخزين GitHub الآمن. أعد محاولة تسجيل الدخول عندما يتوفر التخزين."</string>
+    <string name="account_session_save_failed" formatted="false">"تعذر الحفظ في تخزين GitHub الآمن. أعد محاولة تسجيل الدخول."</string>
+    <string name="account_session_verify_failed" formatted="false">"تعذر التحقق من تخزين GitHub الآمن. أعد محاولة تسجيل الدخول."</string>
+    <string name="account_sign_in_before_account_access" formatted="false">"سجّل الدخول إلى GitHub قبل اختيار الوصول عبر الحساب"</string>
+    <string name="account_sign_in_failed" formatted="false">"فشل تسجيل الدخول"</string>
+    <string name="account_sign_in_repository_account" formatted="false">"سجّل الدخول إلى حساب GitHub الخاص بالمستودع"</string>
+    <string name="account_sign_in_unverified" formatted="false">"تعذر التحقق من تسجيل الدخول إلى GitHub. ابدأ تسجيل الدخول من جديد."</string>
+    <string name="account_sign_out_failed" formatted="false">"تعذر تسجيل الخروج بأمان. أعد المحاولة عندما يتوفر التخزين."</string>
+    <string name="account_ssh_not_approved" formatted="false">"لم تتم الموافقة على مفتاح مضيف SSH. أعد المحاولة عندما تتمكن من التحقق من بصمة الخادم."</string>
+    <string name="account_ssh_requires_ssh_address" formatted="false">"لا يمكن استخدام مفاتيح SSH إلا مع عناوين مستودعات SSH"</string>
+    <string name="account_ssh_trust_unreadable" formatted="false">"تعذر فتح ثقة SSH المحفوظة. راجع ثقة خادم SSH في الإعدادات."</string>
+    <string name="account_storage_attention" formatted="false">"يحتاج تخزين GitHub الآمن إلى مراجعة. تم الاحتفاظ ببيانات الاعتماد الحالية؛ أعد محاولة تسجيل الدخول."</string>
+    <string name="account_token_empty" formatted="false">"لا يمكن أن يكون الرمز فارغًا"</string>
+    <string name="account_token_invalid">"رمز GitHub غير صالح أو منتهي الصلاحية (HTTP %1$d)"</string>
+    <string name="account_updated_just_now" formatted="false">"الآن"</string>
+    <string name="account_valid_branch" formatted="false">"أدخل اسم فرع صالحًا"</string>
+    <string name="automation_shortcut_label">"%1$s: ⁨%2$s⁩"</string>
+    <string name="background_allow_push" formatted="false">"السماح بالنشر التلقائي"</string>
+    <string name="background_binding">"الفرع ⁨%1$s⁩ فقط، ويتتبع ⁨%2$s/%3$s⁩. يتطلب تغيير الفرع أو المجلد أو الاتصال أو الحساب مراجعة جديدة."</string>
+    <string name="background_changed" formatted="false">"تغيّر المجلد أو الفرع أو الاتصال. راجعه مجددًا."</string>
+    <string name="background_current" formatted="false">"محدّث"</string>
+    <string name="background_empty" formatted="false">"لا توجد مستودعات محلية مسجلة."</string>
+    <string name="background_error" formatted="false">"تعذر إكمال هذا الإجراء. أعد التحميل وراجع المستودع الحالي والإعدادات."</string>
+    <string name="background_forget" formatted="false">"إزالة السياسة المحفوظة"</string>
+    <string name="background_include" formatted="false">"إدراج هذا المستودع"</string>
+    <string name="background_never" formatted="false">"لم يُفحص بعد"</string>
+    <string name="background_pull" formatted="false">"سحب التغييرات البعيدة تلقائيًا"</string>
+    <string name="background_push" formatted="false">"إنشاء التزامات ودفع التغييرات المحلية تلقائيًا"</string>
+    <string name="background_push_confirm" formatted="false">"السماح بالنشر التلقائي؟"</string>
+    <string name="background_push_detail" formatted="false">"يمكن لـ GitSync.md إضافة التغييرات المحلية إلى الفهرس وإنشاء التزامات بهوية مؤلف كل مستودع ورفعها للمستودعات المدرجة إلى فرعها الذي تمت مراجعته. لا ينفّذ أبدًا دفعًا إجباريًا ولا يدمج السجلات المتباعدة ولا يبدّل الفروع. يؤدي إيقافه إلى منع الخطوات المستقبلية؛ وتبقى الالتزامات وعمليات الرفع المكتملة."</string>
+    <string name="background_queued" formatted="false">"طُلب الفحص. في انتظار Android واتصال."</string>
+    <string name="background_reload" formatted="false">"إعادة تحميل"</string>
+    <string name="background_reset" formatted="false">"إعادة ضبط مزامنة الخلفية"</string>
+    <string name="background_reset_detail" formatted="false">"لا تسمح إعدادات مزامنة الخلفية غير المقروءة بتنفيذ عمل. تزيل إعادة الضبط سياساتها وحالاتها المحفوظة فقط وتوقف كلا الوضعين التلقائيين. تبقى ملفات المستودعات والحسابات وميزات المزامنة الأخرى. راجع كل مستودع قبل إدراجه مجددًا."</string>
+    <string name="background_run" formatted="false">"افحص الآن"</string>
+    <string name="background_running" formatted="false">"جارٍ فحص المستودعات…"</string>
+    <string name="background_stop" formatted="false">"إيقاف الفحص"</string>
+    <string name="background_stopped" formatted="false">"توقف الفحص"</string>
+    <string name="background_unavailable" formatted="false">"نسخة العمل هذه لم تعد مسجلة. أعد توصيلها وراجع سياستها مجددًا."</string>
+    <string name="background_updated" formatted="false">"تمت مزامنة التغييرات"</string>
+    <string name="background_wait_network" formatted="false">"في انتظار اتصال بالإنترنت"</string>
+    <string name="background_wait_power" formatted="false">"بانتظار توصيل مصدر طاقة خارجي"</string>
+    <string name="background_wait_wifi" formatted="false">"بانتظار شبكة Wi-Fi"</string>
+    <string name="background_wrong_branch" formatted="false">"نسخة العمل على فرع آخر. عُد إلى السابق أو راجعها مجددًا."</string>
+    <string name="callback_action" formatted="false">"الإجراء المطلوب"</string>
+    <string name="callback_authorized_scope" formatted="false">"تشغّل الروابط المصرّح بها الإجراء المحفوظ دون طلب تأكيد آخر. تتوقف الروابط المعدّلة أو الملغاة هنا. أدر الأذونات في إجراءات المستودع ← الروابط المصرّح بها."</string>
+    <string name="callback_auto_return" formatted="false">"العودة تلقائيًا بعد هذا التشغيل"</string>
+    <string name="callback_background_attention" formatted="false">"يتطلب ردّ النداء الانتباه. راجع نتيجته المحفوظة في إجراءات المستودع. انقر لإرجاع نتيجة متاحة."</string>
+    <string name="callback_background_busy" formatted="false">"كان هناك إجراء آخر قيد التشغيل بالفعل. لم يُشغّل ردّ النداء هذا. استخدم الرابط مجددًا بعد انتهاء الإجراء."</string>
+    <string name="callback_background_channel" formatted="false">"إجراءات الاستدعاء المصرّح بها"</string>
+    <string name="callback_background_complete" formatted="false">"اكتمل الاستدعاء. انقر لإعادة النتيجة إلى التطبيق المستدعي الموافق عليه."</string>
+    <string name="callback_background_complete_no_return" formatted="false">"اكتمل الاستدعاء. افتح إجراءات المستودع لمراجعة النتيجة المحفوظة."</string>
+    <string name="callback_background_consent" formatted="false">"نفّذ كل استخدام لهذا الرابط مرة واحدة دون فتح GitSync.md، باستخدام المستودع والفرع والاتصال/الحساب المحفوظ الذي راجعته. تُحفَظ النتائج في إجراءات المستودع. عند السماح بالإشعارات، انقر على إشعار الاكتمال لإعادة النتيجة إلى التطبيق المستدعي الموافق عليه. العودة التلقائية غير متاحة في هذا الوضع. بعد انقطاع العملية، راجع المستودع واستخدم الرابط مجددًا؛ لا تُستأنف الإجراءات المنقطعة تلقائيًا أبدًا."</string>
+    <string name="callback_background_results_unavailable" formatted="false">"لا يمكن قراءة نتائج ردود النداء المحفوظة. تبقى التصاريح منفصلة. يؤدي مسح النتائج أيضًا إلى مسح نتائج اختصارات الشاشة الرئيسية."</string>
+    <string name="callback_background_return_expired" formatted="false">"نتيجة الاستدعاء هذه غير متاحة أو تغيّر التصريح الخاص بها. راجع إجراءات المستودع قبل استخدام الرابط مجددًا."</string>
+    <string name="callback_background_running" formatted="false">"ردّ النداء المصرّح به قيد التشغيل"</string>
+    <string name="callback_busy" formatted="false">"وصل طلب آخر بينما كان هذا الطلب مفتوحًا. لم يُضَف إلى قائمة الانتظار ولم يُنفَّذ. أكمل هذا الطلب أو أغلقه قبل فتح آخر."</string>
+    <string name="callback_cancel" formatted="false">"إلغاء الطلب"</string>
+    <string name="callback_choose" formatted="false">"يوجد أكثر من مجلد بهذا الاسم. اختر نسخة العمل المقصودة."</string>
+    <string name="callback_close" formatted="false">"إغلاق"</string>
+    <string name="callback_connection" formatted="false">"يستخدم إعدادات الاتصال والحساب ومؤلف التغييرات المحفوظة لهذا المستودع. يؤدي تغيير الفرع أو الاتصال اللذين راجعتهما إلى إيقاف هذا الطلب."</string>
+    <string name="callback_copy_authorized" formatted="false">"التصريح ونسخ الرابط"</string>
+    <string name="callback_create_link" formatted="false">"إنشاء رابط أتمتة مصرّح به"</string>
+    <string name="callback_delivery_failed" formatted="false">"لم يتمكن أي تطبيق من فتح وجهة العودة. نتيجتك محفوظة هنا. يمكنك إعادة محاولة العودة دون تكرار إجراء Git."</string>
+    <string name="callback_destinations" formatted="false">"وجهات إعادة النتيجة"</string>
+    <string name="callback_error" formatted="false">"الطلب يحتاج إلى مراجعة"</string>
+    <string name="callback_error_destination">"عند الخطأ: %1$s"</string>
+    <string name="callback_expired" formatted="false">"لا يوجد طلب نشط. بعد إعادة تشغيل GitSync.md، افتح رابط استدعاء جديدًا لمراجعته مجددًا."</string>
+    <string name="callback_grant_consent" formatted="false">"يمكن لأي شخص لديه هذا الرابط تشغيل هذا الإجراء ونص رسالة الالتزام نفسيهما على هذا المستودع دون طلب تأكيد آخر، بما يشمل التغييرات المحلية المستقبلية. يظل الفرع والاتصال والحساب ووجهات إعادة النتيجة ثابتة. احتفظ بالرابط سريًا. يمكنك إلغاء التصريح به من «إجراءات المستودع» ثم «الروابط المصرّح بها». إنشاء الرابط لا يشغّل Git."</string>
+    <string name="callback_grant_disabled" formatted="false">"أُلغي التصريح"</string>
+    <string name="callback_grant_enabled" formatted="false">"مصرّح به لعمليات التشغيل المستقبلية"</string>
+    <string name="callback_grant_forget" formatted="false">"نسيان الرابط الملغى تصريحه"</string>
+    <string name="callback_grant_manage" formatted="false">"الروابط المصرّح بها"</string>
+    <string name="callback_grant_refresh" formatted="false">"تحديث الروابط المصرّح بها"</string>
+    <string name="callback_grant_reset" formatted="false">"إعادة ضبط تصاريح الروابط"</string>
+    <string name="callback_grant_reset_scope" formatted="false">"هل تريد إزالة جميع تصاريح الروابط المحفوظة، بما فيها السجلات غير القابلة للقراءة؟ ستتوقف جميع الروابط المصرّح بها الحالية عن العمل. أنشئ روابط جديدة من طلب أتمتة تمت مراجعته. سيتم الاحتفاظ بالمستودعات والملفات والحسابات واختصارات الشاشة الرئيسية."</string>
+    <string name="callback_grant_return" formatted="false">"إعادة النتائج تلقائيًا إلى الوجهات التي راجعتها"</string>
+    <string name="callback_grant_revoke" formatted="false">"إلغاء تصريح الرابط"</string>
+    <string name="callback_grant_revoke_scope" formatted="false">"سيفقد كل من يستخدم هذا الرابط الإذن بتشغيل هذا الإجراء أو إرجاع النتائج تلقائيًا. قد يكون العمل الذي أُرسل إلى Git قد اكتمل بالفعل."</string>
+    <string name="callback_grant_unreadable" formatted="false">"تعذّرت قراءة الروابط المصرّح بها. تم الاحتفاظ بالسجلات المحفوظة، ولا يمكن تشغيلها حتى تُصلح."</string>
+    <string name="callback_link_copied">"تم نسخ الرابط المصرّح به %1$s. احتفظ به سريًا والصقه في الأتمتة الخاصة بك. لا يمكن استرجاع رمزه لاحقًا؛ أنشئ رابطًا آخر عند الحاجة."</string>
+    <string name="callback_link_failed" formatted="false">"تعذّر نسخ الرابط المصرّح به. راجع المستودع مجددًا، وتحقق من الروابط المصرّح بها قبل إعادة المحاولة."</string>
+    <string name="callback_no_destination" formatted="false">"لم يُقدَّم عنوان URL للعودة. تبقى النتيجة هنا."</string>
+    <string name="callback_preparing" formatted="false">"جارٍ مراجعة المستودع المحلي…"</string>
+    <string name="callback_result_branch">"الفرع: %1$s"</string>
+    <string name="callback_result_changes">"الملفات المتغيرة: %1$s"</string>
+    <string name="callback_result_commit">"الالتزام: %1$s"</string>
+    <string name="callback_result_pulled" formatted="false">"تم سحب التغييرات البعيدة."</string>
+    <string name="callback_result_saved" formatted="false">"حُفظ التزامك محليًا. لم يتم تأكيد رفعه."</string>
+    <string name="callback_result_skipped" formatted="false">"لم تكن هناك تغييرات محلية تحتاج إلى رفع."</string>
+    <string name="callback_return" formatted="false">"إعادة النتيجة إلى التطبيق المستدعي"</string>
+    <string name="callback_return_scope" formatted="false">"تفتح إعادة النتيجة الوجهة أدناه وتشارك نتيجة الإجراء ومعرّفات الفرع والالتزام. لا تُضمَّن بيانات الاعتماد ولا مسارات المجلدات المحلية مطلقًا. اختر العودة التلقائية قبل الموافقة على التشغيل، أو أعد النتيجة بنفسك بعده."</string>
+    <string name="callback_returned" formatted="false">"تم تسليم النتيجة إلى Android. يتحكم التطبيق المستقبِل فيما يحدث بعد ذلك."</string>
+    <string name="callback_run" formatted="false">"السماح والتشغيل مرة واحدة"</string>
+    <string name="callback_running" formatted="false">"جارٍ تنفيذ الإجراء الموافق عليه…"</string>
+    <string name="callback_scope" formatted="false">"طلب تطبيق آخر أو رابط تنفيذ إجراء Git. راجع المستودع والإجراء قبل السماح بهذا التشغيل لمرة واحدة."</string>
+    <string name="callback_success" formatted="false">"اكتمل الإجراء"</string>
+    <string name="callback_success_destination">"عند النجاح: %1$s"</string>
+    <string name="callback_title" formatted="false">"طلب أتمتة"</string>
+    <string name="callback_unknown_action" formatted="false">"إجراء غير معروف"</string>
+    <string name="clone_location_reconnect" formatted="false">"يحتاج المجلد إلى إعادة الاتصال"</string>
+    <string name="clone_location_title" formatted="false">"موقع الاستنساخ"</string>
+    <string name="clone_recovery_added" formatted="false">"تمت إضافة المستودع المستنسخ"</string>
+    <string name="clone_recovery_cancel_failed" formatted="false">"تعذّر تجاهل استرداد هذا الاستنساخ. تحقق من تخزين التطبيق وحاول مجددًا. حُفظت ملفاته."</string>
+    <string name="clone_recovery_cannot_dismiss" formatted="false">"تغيّرت تفاصيل الاسترداد هذه أو لا يمكن إزالتها بأمان. حدّث لمراجعتها مجددًا."</string>
+    <string name="clone_recovery_confirm_body" formatted="false">"سيتوقف الاسترداد التلقائي. تبقى مجلدات المستودعات والاتصالات المحفوظة على هذا الجهاز. يمكنك إضافة مستودع مكتمل من المستودعات المحلية."</string>
+    <string name="clone_recovery_confirm_title" formatted="false">"تجاهل استرداد هذا الاستنساخ؟"</string>
+    <string name="clone_recovery_damaged" formatted="false">"لا يمكن قراءة تفاصيل الاسترداد هذه. يمكنك تجاهل هذا الاسترداد وإعادة ربط مجلد مكتمل يدويًا."</string>
+    <string name="clone_recovery_dismiss" formatted="false">"تجاهل الاسترداد"</string>
+    <string name="clone_recovery_dismissed" formatted="false">"تم تجاهل الاسترداد. حُفظت ملفات المستودع والاتصالات المحفوظة."</string>
+    <string name="clone_recovery_refresh" formatted="false">"تحديث عمليات استرداد الاستنساخ"</string>
+    <string name="clone_recovery_retry" formatted="false">"إعادة محاولة إضافة الاستنساخ"</string>
+    <string name="clone_recovery_review_needed" formatted="false">"تحتاج بعض عمليات الاستنساخ المنقطعة إلى مراجعة في المستودعات المحلية. حُفظت ملفاتها."</string>
+    <string name="clone_recovery_unavailable" formatted="false">"استرداد الاستنساخ غير متاح. تحقق من تخزين التطبيق وحاول مجددًا."</string>
+    <string name="clone_recovery_unreadable" formatted="false">"تفاصيل استرداد الاستنساخ غير قابلة للقراءة"</string>
+    <string name="clone_registration_failed" formatted="false">"تعذرت إضافة المستودع المستنسخ. حُفظت ملفاته. أعد محاولة إضافته، أو أعد ربط مجلده من المستودعات المحلية."</string>
+    <string name="commit_screen" formatted="false">"إيداع"</string>
+    <string name="conflict_choose_filename" formatted="false">"اختر اسم الملف الذي تريد الاحتفاظ به"</string>
+    <string name="conflict_current_deleted" formatted="false">"حذف الفرع الحالي هذا الملف. اختيار «خاصتنا» يزيله."</string>
+    <string name="conflict_filename_cleanup" formatted="false">"ستُزال أسماء الملفات الأخرى في هذا التعارض عند حله وإضافته إلى منطقة التجهيز."</string>
+    <string name="conflict_incoming_deleted" formatted="false">"حذف الفرع الوارد هذا الملف. اختيار «خاصتهم» يزيله."</string>
+    <string name="conflict_renamed_differently" formatted="false">"أُعيدت تسميته بشكل مختلف"</string>
+    <string name="connection_endpoint_count">"تم حفظ %1$d من الاتصالات المرتبطة بنقاط نهاية. تعديل origin يُبقي الاتصالات الأخرى؛ اختيار الوصول العام يزيل جميع بيانات الاعتماد المحفوظة."</string>
+    <string name="connection_keep_public_recovered" formatted="false">"الإبقاء على الوصول العام · تبقى بيانات الاعتماد المستردة غير نشطة"</string>
+    <string name="connection_keep_saved" formatted="false">"الاحتفاظ ببيانات الاعتماد المحفوظة"</string>
+    <string name="connection_migration_fetch" formatted="false">"عنوان الجلب"</string>
+    <string name="connection_migration_push" formatted="false">"عنوان الرفع"</string>
+    <string name="connection_new_basic" formatted="false">"اسم مستخدم ورمز جديدان"</string>
+    <string name="connection_public_access" formatted="false">"وصول عام · بلا بيانات اعتماد"</string>
+    <string name="connection_url_credentials_body" formatted="false">"انقل بيانات اعتماد HTTPS المدعومة إلى التخزين المشفّر وأزلها من عناوين URL البعيدة في Git. تُحفَظ عناوين الجلب والرفع المنفصلة."</string>
+    <string name="connection_url_credentials_migrate" formatted="false">"نقل بيانات اعتماد URL إلى التخزين الآمن"</string>
+    <string name="connection_url_credentials_preserve" formatted="false">"تكون الأولوية لبيانات الاعتماد الآمنة الموجودة وخيارات الوصول العام الصريحة. لا تُعرَض هنا أبدًا أسماء المستخدمين والرموز الموجودة في عناوين URL."</string>
+    <string name="connection_url_credentials_title" formatted="false">"بيانات الاعتماد في عناوين URL البعيدة"</string>
+    <string name="connection_use_alternative" formatted="false">"استخدام بيانات اعتماد محفوظة بديلة"</string>
+    <string name="diagnostics_action_failed" formatted="false">"تعذر على التشخيصات إكمال هذا الإجراء. تم الاحتفاظ بالسجلات الحالية."</string>
+    <string name="diagnostics_all" formatted="false">"الكل"</string>
+    <string name="diagnostics_clear_entries">"السجلات المراد إزالتها: %1$d، بما فيها السجلات المخفية بالمرشح. يمكن للعمليات الجديدة إضافة سجلات بعد ذلك."</string>
+    <string name="diagnostics_clear_recovery" formatted="false">"هل تريد إزالة كل التشخيصات المحفوظة، بما فيها البيانات غير المقروءة؟ يمكن للعمليات الجديدة إضافة سجلات بعد ذلك."</string>
+    <string name="diagnostics_cleared" formatted="false">"تم مسح سجل التشخيص"</string>
+    <string name="diagnostics_copied" formatted="false">"تم نسخ السجلات الظاهرة"</string>
+    <string name="diagnostics_empty" formatted="false">"لا توجد سجلات تشخيص بعد. ستظهر إجراءات Git هنا."</string>
+    <string name="diagnostics_errors" formatted="false">"أخطاء"</string>
+    <string name="diagnostics_filtered_empty" formatted="false">"لا توجد سجلات تطابق هذا المرشح."</string>
+    <string name="diagnostics_operation_clone" formatted="false">"استنساخ"</string>
+    <string name="diagnostics_operation_conflict" formatted="false">"تعارض"</string>
+    <string name="diagnostics_operation_fetch" formatted="false">"جلب"</string>
+    <string name="diagnostics_operation_lfs" formatted="false">"Git LFS"</string>
+    <string name="diagnostics_operation_push" formatted="false">"دفع"</string>
+    <string name="diagnostics_operation_rebase" formatted="false">"إعادة تأسيس"</string>
+    <string name="diagnostics_operation_revert" formatted="false">"تراجع"</string>
+    <string name="diagnostics_operation_tag" formatted="false">"وسم"</string>
+    <string name="diagnostics_outcome_attention" formatted="false">"يتطلب الانتباه"</string>
+    <string name="diagnostics_outcome_cancelled" formatted="false">"أُلغي"</string>
+    <string name="diagnostics_outcome_completed" formatted="false">"اكتمل"</string>
+    <string name="diagnostics_outcome_started" formatted="false">"بدأ"</string>
+    <string name="diagnostics_outcome_stopped" formatted="false">"توقف"</string>
+    <string name="diagnostics_reason_cancelled" formatted="false">"أُلغي الإجراء"</string>
+    <string name="diagnostics_reason_lfs_contents" formatted="false">"اكتمل Git؛ ما زالت بعض محتويات LFS بحاجة إلى التنزيل"</string>
+    <string name="diagnostics_reason_lfs_lock" formatted="false">"منع قفل LFS على الخادم النشر"</string>
+    <string name="diagnostics_reason_local_changes" formatted="false">"تحتاج التغييرات المحلية إلى مراجعة"</string>
+    <string name="diagnostics_reason_network" formatted="false">"لم تكتمل عملية الشبكة"</string>
+    <string name="diagnostics_reason_review" formatted="false">"تحتاج حالة المستودع إلى مراجعة"</string>
+    <string name="diagnostics_reason_storage" formatted="false">"الوصول إلى التخزين غير متاح"</string>
+    <string name="diagnostics_reason_trust" formatted="false">"يلزم اعتماد الخادم أو مراجعة الثقة"</string>
+    <string name="diagnostics_reason_unknown" formatted="false">"توقف الإجراء. راجع حالة المستودع وإعدادات الاتصال."</string>
+    <string name="diagnostics_share_title" formatted="false">"مشاركة التشخيصات"</string>
+    <string name="diagnostics_warnings" formatted="false">"تحذيرات"</string>
+    <string name="dialogs_error_branch_exists">"الفرع «⁨%1$s⁩» موجود بالفعل.\n\nاختر اسمًا مختلفًا."</string>
+    <string name="dialogs_error_cannot_delete_current_branch" formatted="false">"لا يمكن حذف الفرع الحالي.\n\nانتقل إلى فرع آخر أولًا."</string>
+    <string name="dialogs_error_commit_failed">"فشل الإيداع: %1$s"</string>
+    <string name="dialogs_error_dirty_work_tree" formatted="false">"لا يمكن تنفيذ هذه العملية مع وجود تغييرات غير مودعة.\n\nأنشئ إيداعًا لتغييراتك أو احفظها في stash أولًا."</string>
+    <string name="dialogs_error_invalid_branch_name" formatted="false">"اسم الفرع غير صالح.\n\nاستخدم أحرفًا وأرقامًا وشرطات وشرطات سفلية."</string>
+    <string name="dialogs_error_invalid_repository" formatted="false">"لا يبدو أن هذا مستودع Git صالح.\n\nتأكد من أن المسار يشير إلى مجلد .git أو إلى مجلد عمل."</string>
+    <string name="dialogs_error_network" formatted="false">"خطأ في الشبكة. تحقق من اتصالك وحاول مرة أخرى."</string>
+    <string name="dialogs_error_pull_failed">"فشل السحب: %1$s"</string>
+    <string name="dialogs_error_push_failed">"فشل الدفع: %1$s"</string>
+    <string name="dialogs_error_repository_not_found">"لم يُعثر على المستودع في: ⁨%1$s⁩\n\nتحقق من المسار وحاول مرة أخرى."</string>
+    <string name="dialogs_error_title" formatted="false">"خطأ"</string>
+    <string name="dialogs_info_title" formatted="false">"معلومات"</string>
+    <string name="dialogs_success_title" formatted="false">"تم بنجاح"</string>
+    <string name="dialogs_timestamp_unknown" formatted="false">"غير معروف"</string>
+    <string name="dialogs_warning_title" formatted="false">"تحذير"</string>
+    <string name="discard_clear_staging" formatted="false">"إلغاء التجهيز"</string>
+    <string name="discard_review_all" formatted="false">"سيتم تجاهل التغييرات المتتبعة والملفات الجديدة المدرجة أدناه نهائيًا. سيتم الاحتفاظ بالملفات المتجاهلة."</string>
+    <string name="discard_review_empty" formatted="false">"لا توجد تغييرات لتجاهلها."</string>
+    <string name="discard_review_operation" formatted="false">"سيؤدي هذا أيضًا إلى إلغاء عملية Git النشطة."</string>
+    <string name="discard_review_unborn" formatted="false">"لا يوجد التزام بعد. يؤدي هذا إلى إلغاء تجهيز الملفات المدرجة مع الاحتفاظ بمحتوياتها."</string>
+    <string name="discovery_scanned">"تم فحص ⁨%1$s⁩. اختر نسخ العمل التي تريد إضافتها."</string>
+    <string name="file_clone_failure" formatted="false">"تعذر استنساخ المستودع المحلي. تحقق من مجلد المصدر وإذن الوصول إلى التخزين والفرع. تم الاحتفاظ بالمجلدات الموجودة."</string>
+    <string name="file_clone_guidance" formatted="false">"استنسخ مستودعًا على الجهاز باستخدام الوصول المحلي. للتخزين المشترك، امنح إذن الوصول إلى المجلد في الإعدادات أولًا."</string>
+    <string name="file_delete_body" formatted="false">"سيُحذف الملف من هذا الجهاز. سيعرضه Git كملف محذوف إذا كان متتبعًا."</string>
+    <string name="file_delete_title" formatted="false">"حذف الملف؟"</string>
+    <string name="file_issue_access_denied" formatted="false">"رُفض الوصول إلى التخزين. تحقق من أذونات هذا المجلد."</string>
+    <string name="file_issue_already_exists" formatted="false">"يوجد ملف أو مجلد بهذا الاسم بالفعل. اختر اسمًا آخر."</string>
+    <string name="file_issue_binary" formatted="false">"لا يمكن تحرير هذا الملف الثنائي كنص."</string>
+    <string name="file_issue_external_change" formatted="false">"تغيّر هذا الملف خارج المحرر. أعد تحميل أحدث نسخة قبل الحفظ. تعديلاتك ما زالت هنا."</string>
+    <string name="file_issue_file_unavailable" formatted="false">"لم يعد الملف متاحًا. تحقق من إذن الوصول إلى التخزين."</string>
+    <string name="file_issue_folder_unavailable" formatted="false">"لم يعد المجلد متاحًا. تحقق من إذن الوصول إلى التخزين."</string>
+    <string name="file_issue_invalid_name" formatted="false">"أدخل اسم ملف دون فواصل المسارات."</string>
+    <string name="file_issue_not_utf8" formatted="false">"هذا الملف ليس نصًا بترميز UTF-8. افتحه في محرر خارجي."</string>
+    <string name="file_issue_operation_failed" formatted="false">"فشلت عملية الملف. تحقق من إذن الوصول إلى التخزين وحاول مجددًا."</string>
+    <string name="file_issue_protected_path" formatted="false">"اختر ملفًا داخل هذا المستودع، خارج بيانات Git الوصفية والروابط الرمزية."</string>
+    <string name="file_issue_read_failed" formatted="false">"تعذرت قراءة هذا الملف أو المجلد. تحقق من إذن الوصول إلى التخزين."</string>
+    <string name="file_issue_too_large" formatted="false">"حجم هذا الملف أكبر من 2 MB. افتحه في محرر خارجي."</string>
+    <string name="file_local_access" formatted="false">"وصول محلي"</string>
+    <string name="file_reload_body" formatted="false">"يستبدل هذا تعديلاتك غير المحفوظة بالملف الموجود على القرص."</string>
+    <string name="file_reload_title" formatted="false">"إعادة تحميل الملف؟"</string>
+    <string name="file_renamed" formatted="false">"تمت إعادة التسمية"</string>
+    <string name="file_save_title" formatted="false">"حفظ التغييرات؟"</string>
+    <string name="file_saved" formatted="false">"تم الحفظ"</string>
+    <string name="files_folder" formatted="false">"مجلد"</string>
+    <string name="files_hide_hidden" formatted="false">"إخفاء الملفات المخفية"</string>
+    <string name="files_show_hidden" formatted="false">"إظهار الملفات المخفية"</string>
+    <string name="folder_access_not_enabled" formatted="false">"لم يُفعّل الوصول إلى المجلدات. يمكنك متابعة استخدام مساحة تخزين التطبيق."</string>
+    <string name="folder_picker_unavailable" formatted="false">"لا يتوفر منتقي مجلدات على هذا الجهاز"</string>
+    <string name="folder_settings_unavailable" formatted="false">"إعدادات التخزين في Android غير متاحة. لا تزال مساحة تخزين التطبيق متاحة."</string>
+    <string name="folder_unusable" formatted="false">"تعذر استخدام هذا المجلد"</string>
+    <string name="git_fetch" formatted="false">"جلب\nفلتر"</string>
+    <string name="git_native_public_only" formatted="false">"يدعم بروتوكول Git الأصلي الوصول العام فقط. استخدم HTTPS أو SSH للمصادقة."</string>
+    <string name="gitops_action_failed" formatted="false">"تعذّر على Git إكمال هذا الإجراء"</string>
+    <string name="gitops_branch_action_failed" formatted="false">"تعذّر إكمال إجراء الفرع"</string>
+    <string name="gitops_branch_action_failed_refresh" formatted="false">"تعذّر إكمال إجراء الفرع. حدّث حالة المستودع."</string>
+    <string name="gitops_branch_changed" formatted="false">"تغيّر الفرع. راجع الفرع الحالي قبل المحاولة مرة أخرى."</string>
+    <string name="gitops_branch_changed_commit_push" formatted="false">"تغيّر الفرع الحالي. حدّث قبل تنفيذ commit وpush."</string>
+    <string name="gitops_branch_changed_push" formatted="false">"تغيّر الفرع الحالي. حدّث قبل تنفيذ push."</string>
+    <string name="gitops_branch_changed_while_loading" formatted="false">"تغيّر الفرع الحالي أثناء التحميل. حدّث وراجع مرة أخرى."</string>
+    <string name="gitops_branch_name_empty" formatted="false">"لا يمكن أن يكون اسم الفرع فارغًا"</string>
+    <string name="gitops_branch_needs_commit" formatted="false">"نفّذ commit لملف قبل إنشاء فرع."</string>
+    <string name="gitops_branch_or_commit_changed" formatted="false">"تغيّر الفرع الحالي أو الـ commit. حدّث وراجع مرة أخرى."</string>
+    <string name="gitops_branch_pushed" formatted="false">"تم تنفيذ push للفرع"</string>
+    <string name="gitops_branches_refresh_failed" formatted="false">"تعذّر تحديث الفروع"</string>
+    <string name="gitops_changes_load_failed" formatted="false">"تعذّر تحميل التغييرات"</string>
+    <string name="gitops_commit_changed" formatted="false">"تغيّر الـ commit. حدّث السجل وراجع مرة أخرى."</string>
+    <string name="gitops_commit_message_empty" formatted="false">"لا يمكن أن تكون رسالة الـ commit فارغة"</string>
+    <string name="gitops_committed_push_stopped" formatted="false">"تم تنفيذ commit محليًا. توقف push؛ أعد المحاولة عندما تكون جاهزًا."</string>
+    <string name="gitops_committed_pushed" formatted="false">"تم تنفيذ commit وpush"</string>
+    <string name="gitops_committed_pushing" formatted="false">"تم تنفيذ commit محليًا. جارٍ تنفيذ push…"</string>
+    <string name="gitops_committed_ready" formatted="false">"تم تنفيذ commit محليًا. جاهز لتنفيذ push متى شئت."</string>
+    <string name="gitops_conflict_batch_choose" formatted="false">"اختر نسختنا أو نسختهم للحل الجماعي"</string>
+    <string name="gitops_conflict_changed_draft" formatted="false">"تغيّر التعارض. لا تزال مسودتك معروضة. انسخ أي نص تريد الاحتفاظ به، ثم أغلق وراجع التعارض الحالي."</string>
+    <string name="gitops_conflict_not_resolved" formatted="false">"تعذّر حل التعارض"</string>
+    <string name="gitops_conflicts_changed" formatted="false">"تغيّرت التعارضات. حدّث قبل الحل."</string>
+    <string name="gitops_conflicts_refresh_failed" formatted="false">"تعذّر تحديث تعارضات الدمج"</string>
+    <string name="gitops_conflicts_remain" formatted="false">"بعض التعارضات لا تزال دون حل. راجع قائمة التعارضات المحدّثة."</string>
+    <string name="gitops_file_diff_load_failed" formatted="false">"تعذّر تحميل فروقات الملف"</string>
+    <string name="gitops_history_action_failed" formatted="false">"تعذّر على Git إكمال إجراء السجل هذا"</string>
+    <string name="gitops_history_changed" formatted="false">"تغيّر سجل المستودع. حدّث وراجع مرة أخرى."</string>
+    <string name="gitops_history_refresh_failed" formatted="false">"تعذّر تحديث السجل"</string>
+    <string name="gitops_lfs_endpoint_damaged" formatted="false">"لا يمكن فتح موافقات نقاط نهاية LFS المحفوظة. أعد تعيينها في الإعدادات قبل المحاولة مرة أخرى."</string>
+    <string name="gitops_lfs_endpoint_invalid" formatted="false">"عنوان نقطة نهاية LFS غير صالح"</string>
+    <string name="gitops_lfs_extensions_review_failed" formatted="false">"تعذّرت مراجعة تتبّع الامتدادات. أعد التحميل وتحقق من السمات الحالية والتعارضات والوصول إلى الملفات قبل المحاولة مرة أخرى."</string>
+    <string name="gitops_lfs_failed" formatted="false">"تعذّر إكمال Git LFS. تحقق من الاتصال وحالة التتبّع الحالية، ثم أعد التحميل وحاول مجددًا. تم الاحتفاظ بملفاتك وعمليات الـ commit المحلية."</string>
+    <string name="gitops_lfs_inspect_failed" formatted="false">"تعذّر فحص Git LFS. تحقق من الوصول إلى التخزين وحالة المستودع، ثم أعد التحميل."</string>
+    <string name="gitops_lfs_locks_check_failed" formatted="false">"تعذّر التحقق من أقفال الخادم. حدّث قبل أي تغيير آخر."</string>
+    <string name="gitops_lfs_locks_denied" formatted="false">"رفض الخادم الوصول إلى قائمة الأقفال. تحقق من اتصال المستودع وأذونات push."</string>
+    <string name="gitops_lfs_locks_unavailable" formatted="false">"تعذّر التحقق من أقفال الخادم. تحقق من الاتصال وحالة المستودع، ثم حدّث قبل أي تغيير آخر."</string>
+    <string name="gitops_merge_message_empty" formatted="false">"لا يمكن أن تكون رسالة الدمج فارغة"</string>
+    <string name="gitops_merge_session_changed" formatted="false">"تغيّرت جلسة الدمج. حدّث قبل المتابعة."</string>
+    <string name="gitops_merge_stopped">"توقف الدمج: ⁨%1$s⁩"</string>
+    <string name="gitops_merge_successful">"نجح الدمج: ⁨%1$s⁩"</string>
+    <string name="gitops_operation_failed" formatted="false">"فشلت عملية Git"</string>
+    <string name="gitops_pull_incomplete" formatted="false">"لم يكتمل pull"</string>
+    <string name="gitops_rebase_choose_conflict" formatted="false">"اختر التعارض الذي تمت مراجعته"</string>
+    <string name="gitops_rebase_choose_filename" formatted="false">"اختر اسم الملف الذي تمت مراجعته"</string>
+    <string name="gitops_rebase_conflict_changed" formatted="false">"تغيّر التعارض أو ملفات العمل. تم الاحتفاظ بمسودتك؛ حدّث قبل الحل."</string>
+    <string name="gitops_rebase_failed" formatted="false">"تعذّر على Git إكمال هذا الإجراء. تحقق من الاتصال إذا كان الجلب جاريًا، ثم حدّث حالة إعادة التأسيس قبل المحاولة مرة أخرى."</string>
+    <string name="gitops_rebase_needs_review" formatted="false">"إعادة التأسيس تحتاج إلى مراجعة"</string>
+    <string name="gitops_rebase_open_editor" formatted="false">"افتح محرر التعارضات قبل الحل"</string>
+    <string name="gitops_rebase_refresh_session" formatted="false">"حدّث جلسة إعادة التأسيس"</string>
+    <string name="gitops_rebase_review_first" formatted="false">"راجع إعادة التأسيس أولًا"</string>
+    <string name="gitops_remote_merge_failed" formatted="false">"تعذّر على Git إكمال هذا الإجراء. تحقق من الاتصال، ثم راجع الحالة الحالية للمستودع قبل المحاولة مرة أخرى."</string>
+    <string name="gitops_repository_changed_review" formatted="false">"تغيّر المستودع المحدد. راجع العملية مرة أخرى."</string>
+    <string name="gitops_review_local_changes_failed" formatted="false">"تعذّرت مراجعة التغييرات المحلية"</string>
+    <string name="gitops_stash_changed" formatted="false">"تغيّرت قائمة stash. راجع الـ stash الحالي قبل المحاولة مرة أخرى."</string>
+    <string name="gitops_status_refresh_failed" formatted="false">"تعذّر تحديث حالة المستودع"</string>
+    <string name="gitops_tag_changed" formatted="false">"تغيّر الوسم. راجع الوسم الحالي قبل المحاولة مرة أخرى."</string>
+    <string name="gitops_tag_name_empty" formatted="false">"لا يمكن أن يكون اسم الوسم فارغًا"</string>
+    <string name="gitops_tag_needs_commit" formatted="false">"نفّذ commit لملف قبل إنشاء وسم."</string>
+    <string name="gitops_upstream_load_failed" formatted="false">"تعذّر تحميل فرع upstream"</string>
+    <string name="gitops_upstream_save_failed" formatted="false">"تعذّر حفظ فرع upstream"</string>
+    <string name="guide_back" formatted="false">"العودة"</string>
+    <string name="guide_clone_body" formatted="false">"استنسخ مستودعات GitHub أو المستودعات العامة أو المستضافة ذاتيًا أو عبر SSH. تحتفظ كل نسخة عمل باتصالها وفرعها الخاصين."</string>
+    <string name="guide_clone_title" formatted="false">"مستودعاتك على Android"</string>
+    <string name="guide_continue" formatted="false">"متابعة"</string>
+    <string name="guide_edit_body" formatted="false">"تصفح الملفات وحررها هنا، أو اختر مجلدًا على الجهاز لمحرر آخر مثل Obsidian. راجع صلاحية الوصول إلى المجلد في الإعدادات قبل الاستنساخ."</string>
+    <string name="guide_edit_title" formatted="false">"حرر ملفاتك حيث تعمل"</string>
+    <string name="guide_git_body" formatted="false">"افحص الفروق، وأضف التغييرات المحددة إلى منطقة التجهيز، وأنشئ التزامات محلية. ادفع التغييرات عندما تكون جاهزًا. تتوفر الفروع والسجل والوسوم وحل التعارضات وGit LFS من شاشة المستودع."</string>
+    <string name="guide_git_title" formatted="false">"راجع قبل النشر"</string>
+    <string name="guide_login" formatted="false">"تسجيل الدخول باستخدام GitHub"</string>
+    <string name="guide_save_error" formatted="false">"تعذر حفظ تقدم الجولة. يمكنك المتابعة؛ قد تظهر الجولة مجددًا في المرة القادمة."</string>
+    <string name="guide_start_body" formatted="false">"اربط حسابًا، أو استنسخ من عنوان URL، أو جرب المثال دون اتصال. يمكنك أيضًا اختيار موقع التخزين الآن."</string>
+    <string name="guide_start_title" formatted="false">"اختر كيف تبدأ"</string>
+    <string name="guide_step">"الخطوة %1$d من 4"</string>
+    <string name="help_copy_email" formatted="false">"نسخ البريد الإلكتروني للدعم"</string>
+    <string name="help_email_copied" formatted="false">"تم نسخ البريد الإلكتروني للدعم"</string>
+    <string name="help_feedback" formatted="false">"إرسال ملاحظات"</string>
+    <string name="help_open_failed" formatted="false">"لم يتمكن أي تطبيق من فتح هذا الرابط. يمكنك نسخ البريد الإلكتروني للدعم بدلاً من ذلك."</string>
+    <string name="help_title" formatted="false">"معلومات"</string>
+    <string name="history_screen" formatted="false">"السجل"</string>
+    <string name="http_transport_warning" formatted="false">"HTTP غير مشفر. يمكن قراءة بيانات المستودع وأي اسم مستخدم أو رمز تدخله أثناء النقل. استخدم HTTPS عند توفره."</string>
+    <string name="language_settings_legacy" formatted="false">"قبل Android 13، يتبع هذا التطبيق لغة الجهاز."</string>
+    <string name="language_settings_title" formatted="false">"اللغة"</string>
+    <string name="language_settings_unavailable" formatted="false">"تعذّر فتح إعدادات اللغة."</string>
+    <string name="lfs_cache_missing" formatted="false">"غير مخزّن مؤقتًا"</string>
+    <string name="lfs_cache_verified" formatted="false">"ذاكرة تخزين مؤقت متحقق منها"</string>
+    <string name="lfs_error_authentication" formatted="false">"لم تعد طريقة التخويل تطابق هذه المراجعة. ألغِ وراجع نقطة النهاية مجددًا."</string>
+    <string name="lfs_error_credentials" formatted="false">"أدخل اسم مستخدم ورمزًا أو كلمة مرور منفصلة صالحة لنقطة نهاية LFS."</string>
+    <string name="lfs_error_damaged" formatted="false">"تحتاج اعتمادات نقاط نهاية LFS المحفوظة إلى مراجعة. أعد تعيينها في الإعدادات قبل المحاولة مجددًا."</string>
+    <string name="lfs_error_recovery" formatted="false">"تعذر حفظ استعادة اعتمادات نقاط نهاية LFS. أعد تعيين الاعتمادات في الإعدادات قبل إعادة المحاولة."</string>
+    <string name="lfs_error_reset" formatted="false">"تعذر إعادة تعيين اعتمادات نقاط نهاية LFS. راجع الاعتمادات المحفوظة قبل إعادة المحاولة."</string>
+    <string name="lfs_error_revoke" formatted="false">"تعذر إلغاء اعتماد نقطة نهاية LFS. أعد تحميل الاعتمادات المحفوظة قبل إعادة المحاولة."</string>
+    <string name="lfs_error_save" formatted="false">"تعذر حفظ اعتماد نقطة نهاية LFS. راجع الاعتمادات المحفوظة قبل إعادة المحاولة."</string>
+    <string name="lfs_extensions_exact_fallback" formatted="false">"تحتفظ الملفات الكبيرة المحددة ذات الامتدادات غير المعروفة بقواعد المسار الدقيق."</string>
+    <string name="lfs_extensions_updated" formatted="false">"تم تحديث قواعد تتبع الامتدادات. راجع .gitattributes والملفات المتأثرة وأضفها إلى منطقة التجهيز قبل إنشاء التزام."</string>
+    <string name="lfs_file_available" formatted="false">"محتويات الملف متاحة"</string>
+    <string name="lfs_file_local_edits" formatted="false">"تعديلات محلية · تُحفظ أثناء التنزيل"</string>
+    <string name="lfs_file_pointer" formatted="false">"مؤشر · نزّل محتويات الملف"</string>
+    <string name="lfs_local_edits_kept" formatted="false">"تم الاحتفاظ بالتعديلات المحلية."</string>
+    <string name="lfs_lock_candidates_empty" formatted="false">"لا تتوفر ملفات مفهرسة غير مقفلة ومعلّمة بأنها قابلة للقفل. أضف قواعد lockable إلى .gitattributes وحدّث القائمة لمراجعتها."</string>
+    <string name="lfs_lock_create_action" formatted="false">"قفل الملف"</string>
+    <string name="lfs_lock_create_review">"قفل %1$s…"</string>
+    <string name="lfs_lock_create_title" formatted="false">"قفل هذا الملف؟"</string>
+    <string name="lfs_lock_force_action" formatted="false">"إجبار التحرير"</string>
+    <string name="lfs_lock_force_review" formatted="false">"إجبار التحرير…"</string>
+    <string name="lfs_lock_ours" formatted="false">"مملوك لاتصالك الحالي"</string>
+    <string name="lfs_lock_owner_missing" formatted="false">"لم يقدّمه الخادم"</string>
+    <string name="lfs_lock_release_action" formatted="false">"تحرير"</string>
+    <string name="lfs_lock_release_review" formatted="false">"تحرير القفل…"</string>
+    <string name="lfs_lock_release_title" formatted="false">"تحرير هذا القفل؟"</string>
+    <string name="lfs_lock_theirs" formatted="false">"مملوك لاتصال آخر"</string>
+    <string name="lfs_lock_unverified" formatted="false">"الملكية غير متحقّق منها"</string>
+    <string name="lfs_locks_check" formatted="false">"التحقّق من ملكية الأقفال"</string>
+    <string name="lfs_locks_empty" formatted="false">"لا توجد أقفال على الخادم لهذا الفرع."</string>
+    <string name="lfs_locks_intro" formatted="false">"تحقّق من الملكية على الخادم قبل تغيير الأقفال. يغيّر القفل بيانات الخادم الوصفية؛ وتبقى الملفات المحلية والتغييرات المجهّزة والالتزامات كما هي."</string>
+    <string name="lfs_locks_list" formatted="false">"عرض الأقفال بصلاحية القراءة"</string>
+    <string name="lfs_locks_read_only" formatted="false">"قائمة للقراءة فقط · لم يتم التحقّق من الملكية"</string>
+    <string name="lfs_locks_refreshed" formatted="false">"تم تحديث أقفال الخادم."</string>
+    <string name="lfs_locks_remote">"المستودع البعيد: %1$s"</string>
+    <string name="lfs_locks_server">"خادم LFS: %1$s"</string>
+    <string name="lfs_locks_title" formatted="false">"أقفال الخادم"</string>
+    <string name="lfs_locks_unsupported" formatted="false">"هذا الخادم لا يدعم أقفال Git LFS."</string>
+    <string name="lfs_tracking_updated" formatted="false">"تم تحديث قواعد التتبع. راجع .gitattributes والملفات المحددة وأضفها إلى منطقة التجهيز، ثم أنشئ التزامًا."</string>
+    <string name="m3_editor_preview" formatted="false">"معاينة"</string>
+    <string name="m3_editor_write" formatted="false">"كتابة"</string>
+    <string name="m3_open_in_editor" formatted="false">"فتح في المحرر"</string>
+    <string name="m3_paywall_paid_with_play" formatted="false">"يُدفع بحساب Google Play الخاص بك"</string>
+    <string name="m3_pick_a_file" formatted="false">"اختر ملفًا لعرض تغييراته."</string>
+    <string name="modified" formatted="false">"معدّل"</string>
+    <string name="move_cancelled" formatted="false">"تم إلغاء النقل. تم الاحتفاظ بنسخة العمل الأصلية."</string>
+    <string name="move_confirm_action" formatted="false">"نقل"</string>
+    <string name="move_confirm_action_restore" formatted="false">"استعادة"</string>
+    <string name="move_confirm_title_restore" formatted="false">"هل تريد استعادة نسخة الاسترداد هذه؟"</string>
+    <string name="move_done" formatted="false">"تم نقل المستودع"</string>
+    <string name="move_done_retained" formatted="false">"تم نقل المستودع. يتم الاحتفاظ بالنسخة الأصلية في «عمليات استرداد النقل»."</string>
+    <string name="move_error_destination_other" formatted="false">"الوجهة مسجلة لمستودع آخر"</string>
+    <string name="move_error_destination_registered" formatted="false">"يوجد مستودع آخر مسجل بالفعل في هذه الوجهة"</string>
+    <string name="move_error_finish_pending" formatted="false">"أنهِ النقل المعلّق أولاً"</string>
+    <string name="move_error_finish_pending_repository" formatted="false">"أنهِ النقل المعلّق لهذا المستودع أولاً"</string>
+    <string name="move_error_recovery_added" formatted="false">"نسخة الاسترداد مضافة بالفعل. انقلها من إدخال المستودع الخاص بها."</string>
+    <string name="move_error_restored_registered" formatted="false">"أصبح الموقع المستعاد مسجلاً بشكل مختلف؛ لم تتم الكتابة فوق أي إعدادات"</string>
+    <string name="move_error_settings_changed" formatted="false">"تغيّرت إعدادات المستودع. راجع استرداد النقل قبل المتابعة."</string>
+    <string name="move_error_settings_review" formatted="false">"تحتاج إعدادات النقل إلى مراجعة؛ تم الاحتفاظ بجميع نسخ العمل"</string>
+    <string name="move_error_stale_review" formatted="false">"تغيّرت مراجعة نقل المستودع. راجع الوجهة مرة أخرى قبل النقل."</string>
+    <string name="move_intro_restore" formatted="false">"استعد النسخة الأصلية المحتفظ بها كمستودع منفصل. تبقى نسخة العمل الحالية في مكانها."</string>
+    <string name="move_progress_reviewing" formatted="false">"جارٍ مراجعة الملفات وبيانات Git الوصفية…"</string>
+    <string name="move_recovered_name">"⁨%1$s⁩ (مستردة)"</string>
+    <string name="move_recovery_attention">"يحتاج استرداد النقل إلى مراجعة: ⁨%1$s⁩"</string>
+    <string name="move_recovery_done" formatted="false">"اكتمل استرداد النقل"</string>
+    <string name="move_recovery_removed" formatted="false">"تمت إزالة نسخة الاسترداد"</string>
+    <string name="move_title_restore" formatted="false">"استعادة نسخة الاسترداد"</string>
+    <string name="notes_acknowledge" formatted="false">"فهمت"</string>
+    <string name="notes_connections_body" formatted="false">"أدر حسابات GitHub وهوية مؤلف المستودع. اتصل عبر HTTPS أو SSH، واختر موقع تخزين الاستنساخ، وأعد ربط النسخ المحلية، وراجع نقل المستودعات أو إزالتها."</string>
+    <string name="notes_connections_title" formatted="false">"الاتصالات والتخزين"</string>
+    <string name="notes_files_body" formatted="false">"راجع تتبّع Git LFS، ونزّل المحتوى المفقود، وتحقق من تحذيرات أقفال الخادم. يحتفظ التشخيص بسجل محلي محدود مع نسخ ومشاركة البيانات المصفّاة."</string>
+    <string name="notes_files_title" formatted="false">"الملفات الكبيرة والتشخيص"</string>
+    <string name="notes_version">"Android ⁦%1$s⁩ · الإصدار البنائي %2$d"</string>
+    <string name="notes_workflow_body" formatted="false">"تصفّح الملفات وحرّرها، وراجع فروق التغييرات المجهّزة وغير المجهّزة، وأنشئ التزامات محلية، وارفع الالتزامات الموجودة، واعمل مع الفروع والسجل والوسوم وإعادة التأسيس."</string>
+    <string name="notes_workflow_title" formatted="false">"سير عمل المستودع"</string>
+    <string name="obsidian_forgotten" formatted="false">"تم تعطيل عمليات التسليم المستقبلية. أعدّ اتصالًا جديدًا لإعادة ربط هذا المجلد."</string>
+    <string name="obsidian_interrupted" formatted="false">"توقف الاتصال. لن يُعاد تشغيل أي طلب تلقائيًا. أعدّ اتصالًا جديدًا قبل إعادة المحاولة في Obsidian."</string>
+    <string name="obsidian_return" formatted="false">"العودة إلى Obsidian"</string>
+    <string name="obsidian_title" formatted="false">"اتصالات Obsidian"</string>
+    <string name="paywall_bought_before" formatted="false">"هل اشتريت GitSync.md من قبل؟ إنه مفتوح بالفعل. إن لم يكن كذلك، فانقر على استعادة الشراء."</string>
+    <string name="paywall_buy" formatted="false">"افتح قفل GitSync.md"</string>
+    <string name="paywall_buy_vault">"افتح القفل واستنسخ ⁨%1$s⁩"</string>
+    <string name="paywall_check_branch_missing">"لم يُعثر على ⁨%1$s⁩"</string>
+    <string name="paywall_check_branch_missing_detail">"الفرع ⁨%1$s⁩ غير موجود في هذا المستودع البعيد. تحقق من اسم الفرع، ثم افحص مجددًا."</string>
+    <string name="paywall_check_cant_connect" formatted="false">"تعذّر الاتصال"</string>
+    <string name="paywall_check_confirm_key" formatted="false">"أكّد المفتاح عند الاستنساخ"</string>
+    <string name="paywall_check_connected" formatted="false">"متصل"</string>
+    <string name="paywall_check_headline_ready" formatted="false">"خزنتك\nجاهزة."</string>
+    <string name="paywall_check_headline_unreachable" formatted="false">"تعذّر الوصول\nإلى هذا المستودع."</string>
+    <string name="paywall_check_lfs_none" formatted="false">"لا شيء"</string>
+    <string name="paywall_check_lfs_used" formatted="false">"مستخدمة · مدعومة"</string>
+    <string name="paywall_check_no_obsidian" formatted="false">"لا يوجد ‎.obsidian بعد"</string>
+    <string name="paywall_check_on_clone" formatted="false">"يُفحص عند الاستنساخ"</string>
+    <string name="paywall_check_read_only" formatted="false">"قراءة فقط"</string>
+    <string name="paywall_check_read_write" formatted="false">"قراءة · كتابة"</string>
+    <string name="paywall_close" formatted="false">"إغلاق"</string>
+    <string name="paywall_error_purchase_failed" formatted="false">"تعذّر على Google Play إتمام الشراء. حاول مرة أخرى بعد لحظات."</string>
+    <string name="paywall_error_store_unavailable" formatted="false">"تعذّر الوصول إلى Google Play الآن. حاول مرة أخرى بعد لحظات."</string>
+    <string name="paywall_foot_blocked_unlocked" formatted="false">"لم يُنزَّل أي شيء."</string>
+    <string name="paywall_pending" formatted="false">"في انتظار الموافقة. ستُضاف خزنتك فور إتمام الشراء."</string>
+    <string name="paywall_pill_checking" formatted="false">"جارٍ الفحص…"</string>
+    <string name="paywall_pill_needs_access" formatted="false">"يحتاج إلى صلاحية"</string>
+    <string name="paywall_pill_ready" formatted="false">"جاهزة"</string>
+    <string name="paywall_pill_unreachable" formatted="false">"يتعذّر الوصول"</string>
+    <string name="paywall_point_again_body" formatted="false">"هاتف جديد، خزنة جديدة، دمج متشابك. كل خزنة، كل تحديث."</string>
+    <string name="paywall_point_again_title" formatted="false">"موجود عندما تحتاج إليه مجددًا"</string>
+    <string name="paywall_point_clone_body" formatted="false">"السجل الكامل، لذا تعمل إضافة Git من اليوم الأول."</string>
+    <string name="paywall_point_clone_title" formatted="false">"استنساخ مباشر إلى Obsidian"</string>
+    <string name="paywall_point_signin_body" formatted="false">"‏GitHub أو SSH أو رمز مميز. بلا طرفية ولا ملفات إعداد."</string>
+    <string name="paywall_point_signin_title" formatted="false">"تسجيل الدخول جاهز"</string>
+    <string name="paywall_price_fallback" formatted="false">"$9.99"</string>
+    <string name="paywall_price_note" formatted="false">"مرة واحدة · بلا اشتراك"</string>
+    <string name="paywall_price_once">"‏⁨%1$s⁩ مرة واحدة"</string>
+    <string name="paywall_restore" formatted="false">"استعادة الشراء"</string>
+    <string name="paywall_restore_none" formatted="false">"لم يُعثر على عملية شراء سابقة لحساب Google هذا."</string>
+    <string name="paywall_row_access" formatted="false">"صلاحية القراءة والكتابة"</string>
+    <string name="paywall_row_branch" formatted="false">"الفرع"</string>
+    <string name="paywall_row_checking" formatted="false">"جارٍ الفحص"</string>
+    <string name="paywall_row_lfs" formatted="false">"ملفات Git LFS"</string>
+    <string name="paywall_row_obsidian" formatted="false">"خزنة Obsidian"</string>
+    <string name="paywall_row_size" formatted="false">"الحجم وعدد الملفات"</string>
+    <string name="paywall_terms" formatted="false">"الشروط"</string>
+    <string name="paywall_unlock_subtitle" formatted="false">"افتح القفل لإضافة خزنتك. بعدها يمكن لإضافة Obsidian Git أن تتولى الأمر."</string>
+    <string name="paywall_unlock_subtitle_vault" formatted="false">"افتح القفل لاستنساخ خزنتك إلى Obsidian. بعدها يمكن لإضافة Obsidian Git أن تتولى الأمر."</string>
+    <string name="paywall_unlock_title" formatted="false">"أعدّه مرة واحدة.\nوانتهى الأمر."</string>
+    <string name="paywall_unreachable_auth" formatted="false">"رفض المستودع البعيد بيانات الاعتماد هذه. تحقق من طريقة تسجيل الدخول، ثم افحص مجددًا."</string>
+    <string name="paywall_unreachable_network" formatted="false">"تعذّر على GitSync.md الوصول إلى المستودع البعيد. تحقق من العنوان واتصالك، ثم افحص مجددًا."</string>
+    <string name="paywall_unreachable_not_found" formatted="false">"لا يوجد مستودع على هذا العنوان. تحقق من عنوان URL، ثم افحص مجددًا."</string>
+    <string name="publication_accounts" formatted="false">"GitHub الحساب"</string>
+    <string name="publication_adopt" formatted="false">"استخدام المستودع"</string>
+    <string name="publication_adopt_title" formatted="false">"هل تريد استخدام هذا المستودع؟"</string>
+    <string name="publication_adopt_warning">"لدى GitHub المستودع ⁦%1$s/%2$s⁩ (%3$s)، بمعرّف %4$d. لا يثبت تطابق الاسم أن هذه المحاولة أنشأته. هل تريد استخدام هذا المستودع الفارغ لالتزامك المحفوظ؟\n\n⁦%5$s⁩"</string>
+    <string name="publication_back" formatted="false">"العودة"</string>
+    <string name="publication_cancel" formatted="false">"إلغاء"</string>
+    <string name="publication_discard_close" formatted="false">"المغادرة دون حفظ التعديلات"</string>
+    <string name="publication_discard_title" formatted="false">"تجاهل هذه المراجعة؟"</string>
+    <string name="publication_discard_warning" formatted="false">"هل تريد إزالة خيارات المراجعة المحفوظة هذه والتعديلات غير المحفوظة؟ تبقى ملفات العمل دون تغيير. لم يبدأ الإعداد أو النشر لهذه المراجعة."</string>
+    <string name="publication_file_unsupported" formatted="false">"تحويل المحتوى غير مدعوم"</string>
+    <string name="publication_finish" formatted="false">"إكمال الإعداد"</string>
+    <string name="publication_include" formatted="false">"تضمين الملف"</string>
+    <string name="publication_leave_title" formatted="false">"حفظ مراجعتك؟"</string>
+    <string name="publication_leave_warning" formatted="false">"لم تُحفَظ تعديلات الحساب أو المؤلف أو الرسالة أو الوجهة."</string>
+    <string name="publication_phase_preparing" formatted="false">"استئناف الإعداد المحلي"</string>
+    <string name="publication_prepare_title" formatted="false">"إعداد هذه اللقطة؟"</string>
+    <string name="publication_prepare_warning" formatted="false">"ينشئ هذا بيانات Git الوصفية ويلتزم فقط بالملفات المحددة محليًا. تبقى ملفات العمل في مكانها. تُضاف قواعد تجاهل محلية للملفات المستبعدة. لم يُنشأ مستودع GitHub بعد. تُثبَّت اختيارات الملفات والمؤلف والحساب عند بدء الإعداد. يظل الاسم ومستوى الظهور قابلين للتعديل حتى يبدأ إنشاء المستودع."</string>
+    <string name="publication_private_label" formatted="false">"خاص"</string>
+    <string name="publication_public_label" formatted="false">"عامة"</string>
+    <string name="publication_save_close" formatted="false">"حفظ ومغادرة"</string>
+    <string name="publication_save_destination" formatted="false">"حفظ الوجهة"</string>
+    <string name="publication_sensitive_title" formatted="false">"تضمين ملف حساس؟"</string>
+    <string name="publication_sensitive_warning">"قد يحتوي ⁦%1$s⁩ على بيانات اعتماد أو معلومات خاصة. لا تضمّنه إلا بعد التحقق من محتوياته. قد يحتفظ سجل Git المنشور به بعد حذفه."</string>
+    <string name="publication_stopping" formatted="false">"جارٍ الإيقاف بأمان…"</string>
+    <string name="publication_work_adopt" formatted="false">"جارٍ التحقق من المستودع الذي راجعته…"</string>
+    <string name="publication_work_check" formatted="false">"جارٍ التحقق من الوجهة الأصلية…"</string>
+    <string name="publication_work_inspect" formatted="false">"جارٍ فحص المجلد…"</string>
+    <string name="publication_work_load" formatted="false">"جارٍ قراءة التقدم المحفوظ…"</string>
+    <string name="publication_work_reconnect" formatted="false">"جارٍ التحقق من الوصول إلى المجلد…"</string>
+    <string name="publication_work_refresh" formatted="false">"جارٍ تحديث مراجعة الملفات…"</string>
+    <string name="publication_work_save" formatted="false">"جارٍ حفظ مراجعتك…"</string>
+    <string name="pull_all_attention" formatted="false">"اكتمل الجلب؛ يلزم تنزيل بعض محتويات LFS. افتح Git LFS لإعادة المحاولة."</string>
+    <string name="pull_all_back" formatted="false">"العودة"</string>
+    <string name="pull_all_background_attention" formatted="false">"يتطلب جلب الكل انتباهك. اضغط لمراجعة الملخّص المحفوظ."</string>
+    <string name="pull_all_background_busy" formatted="false">"جلب الكل يعمل بالفعل. افتح جلب الكل لإيقافه أو مراجعة التقدّم."</string>
+    <string name="pull_all_background_complete" formatted="false">"اكتمل جلب الكل. راجع الملخّص المحفوظ."</string>
+    <string name="pull_all_background_counts">"محدَّث: %1$d · مُحدَّث مسبقًا: %2$d · LFS يحتاج مراجعة: %3$d · محظور: %4$d · فاشل: %5$d"</string>
+    <string name="pull_all_background_running" formatted="false">"جلب الكل يعمل دون فتح التطبيق. اختر إيقاف لمنع بدء المستودعات المتبقية."</string>
+    <string name="pull_all_background_title" formatted="false">"جلب الكل في الخلفية"</string>
+    <string name="pull_all_current" formatted="false">"لا توجد تغييرات واردة"</string>
+    <string name="pull_all_empty" formatted="false">"لا توجد مستودعات محلية لجلب التحديثات منها. استنسخ مستودعًا أو استورده أولًا."</string>
+    <string name="pull_all_failed" formatted="false">"تعذّر بدء جلب الكل. راجع إعدادات المستودعات وأعد المحاولة."</string>
+    <string name="pull_all_progress">"المستودعات المفحوصة: %1$d / %2$d"</string>
+    <string name="pull_all_stop" formatted="false">"إيقاف جلب الكل"</string>
+    <string name="pull_all_stopping" formatted="false">"سيُوقَف بعد العملية الحالية…"</string>
+    <string name="pull_all_title" formatted="false">"جلب الكل"</string>
+    <string name="pull_all_widget_description" formatted="false">"اجلب التحديثات ونفّذ fast-forward لكل المستودعات المحلية دون فتح GitSync.md."</string>
+    <string name="pull_all_widget_subtitle" formatted="false">"الجلب وfast-forward فقط"</string>
+    <string name="pull_screen" formatted="false">"سحب"</string>
+    <string name="push_all_repositories" formatted="false">"جميع المستودعات، بما فيها المستودعات المستقبلية"</string>
+    <string name="push_cancelled" formatted="false">"تم إلغاء الربط مع GitHub."</string>
+    <string name="push_channel" formatted="false">"تحديثات المستودعات"</string>
+    <string name="push_enable" formatted="false">"أبلغني عند حدوث تغييرات على GitHub"</string>
+    <string name="push_existing" formatted="false">"هل سبق أن ثبّت تطبيق GitHub؟"</string>
+    <string name="push_existing_account" formatted="false">"اسم مستخدم GitHub أو المؤسسة"</string>
+    <string name="push_existing_connect" formatted="false">"ربط تثبيت موجود"</string>
+    <string name="push_failed" formatted="false">"تعذّر على المزامنة عبر الإشعارات إكمال هذا الإجراء. تحقّق من الإشعارات والاتصال والوصول إلى GitHub، ثم حدّث الاتصال. تم الاحتفاظ بالملفات المحلية."</string>
+    <string name="push_link" formatted="false">"ربط GitHub"</string>
+    <string name="push_manage_github" formatted="false">"إدارة على GitHub"</string>
+    <string name="push_no_connections" formatted="false">"اربط حسابًا أو مؤسسة على GitHub لاختيار المستودعات التي يمكنها إرسال التحديثات."</string>
+    <string name="push_no_match" formatted="false">"لا توجد نسخة عمل يمكن الوصول إليها تطابق مستودع GitHub هذا وفرع التتبع البعيد. راجع الاتصال والفرع والوصول إلى المجلد."</string>
+    <string name="push_notification">"تغيّر فرع GitHub ⁨%1$s⁩. اضغط للتحقق من نسخة العمل هذه."</string>
+    <string name="push_open_failed" formatted="false">"تعذّر فتح هذا الرابط. تحقّق من المتصفح أو إعدادات Android ثم أعد المحاولة."</string>
+    <string name="push_open_settings" formatted="false">"فتح إعدادات الإشعارات"</string>
+    <string name="push_owner" formatted="false">"سجّل الدخول بصفتك مالك الحساب الشخصي أو أحد مالكي المؤسسة لربط هذا التثبيت."</string>
+    <string name="push_permission" formatted="false">"اسمح بالإشعارات في إعدادات Android قبل تفعيل المزامنة عبر الإشعارات."</string>
+    <string name="push_refresh" formatted="false">"تحديث الاتصال"</string>
+    <string name="push_registered" formatted="false">"تم تسجيل الجهاز للإشعارات."</string>
+    <string name="push_registration_pending" formatted="false">"تسجيل الإشعارات قيد الانتظار. حدّث الاتصال عند الاتصال بالشبكة."</string>
+    <string name="push_result">"تم الفحص: %1$d · تم التحديث: %2$d · تحتاج إلى مراجعة: %3$d"</string>
+    <string name="push_result_current" formatted="false">"محدّث بالفعل"</string>
+    <string name="push_result_review" formatted="false">"تحتاج إلى مراجعة قبل التحديث"</string>
+    <string name="push_scope" formatted="false">"اربط تطبيق GitSync.md على GitHub لتلقّي تحديثات المستودعات. يمكن لنسخ العمل المطابقة والخالية من التغييرات المحلية جلب التحديثات والتقدّم السريع في الخلفية. اضغط على إشعار للتحقق مجددًا. المزامنة عبر الإشعارات لا تنشئ التزامات ولا ترفع تغييرات ولا تبدّل الفروع؛ تتطلب التغييرات المحلية والسجلات المتباعدة مراجعتك."</string>
+    <string name="push_selected_repositories" formatted="false">"المستودعات المحددة"</string>
+    <string name="push_stopped" formatted="false">"توقف هذا التحقق. ربما اكتملت العمليات التي أُرسلت إلى Git؛ راجع المستودع قبل إعادة المحاولة."</string>
+    <string name="push_suspended" formatted="false">"تم تعليق الوصول إلى GitHub"</string>
+    <string name="push_title" formatted="false">"المزامنة عبر الإشعارات"</string>
+    <string name="push_unavailable" formatted="false">"الإشعارات الفورية غير متاحة في هذا الإصدار."</string>
+    <string name="push_unlink" formatted="false">"إزالة الاتصال"</string>
+    <string name="push_unlink_scope" formatted="false">"هل تريد إزالة توجيه المزامنة عبر الإشعارات لهذا التثبيت على GitHub من هذا الجهاز؟ لن يُزال تطبيق GitHub. استخدم «إدارة على GitHub» لتغيير وصوله إلى المستودعات أو إزالته."</string>
+    <string name="rebase_accept_local_deletion" formatted="false">"قبول الحذف المحلي"</string>
+    <string name="rebase_accept_upstream_deletion" formatted="false">"قبول حذف الفرع المتتبَّع"</string>
+    <string name="rebase_checkout_review_required" formatted="false">"تغيّرت بيانات استعادة استخراج الملفات أو تعذّرت قراءتها. راجع عملك المحلي قبل استخدام أداة Git أو إلغاء إعادة التأسيس."</string>
+    <string name="rebase_problem_active_operation" formatted="false">"أكمل عملية Git الجارية قبل بدء إعادة التأسيس."</string>
+    <string name="rebase_problem_local_branch" formatted="false">"انتقل إلى فرع محلي قبل إعادة التأسيس."</string>
+    <string name="rebase_problem_local_changes" formatted="false">"ثبّت جميع التغييرات المحلية أو احفظها مؤقتًا قبل إعادة التأسيس."</string>
+    <string name="rebase_problem_upstream" formatted="false">"اضبط فرع تتبّع بعيدًا قبل إعادة التأسيس."</string>
+    <string name="rebase_skip_body" formatted="false">"يستبعد الالتزام الحالي من إعادة التطبيق. راجع تغييراته قبل تخطيه؛ فقد يؤدي ذلك إلى إزالة عمل محلي من السجل الناتج."</string>
+    <string name="rebase_use_local" formatted="false">"استخدام الالتزام المحلي"</string>
+    <string name="rebase_use_upstream" formatted="false">"استخدام الفرع المتتبَّع"</string>
+    <string name="remote_address_formats" formatted="false">"استخدم HTTP/HTTPS، SSH، git://, file://, أو المالك/الريبو."</string>
+    <string name="remote_merge_counts">"التزامات محلية: %1$d · التزامات واردة: %2$d"</string>
+    <string name="remote_merge_destination">"إلى الفرع المحلي: ⁦%1$s⁩"</string>
+    <string name="remote_merge_in_flight" formatted="false">"جارٍ إكمال إجراء Git…"</string>
+    <string name="remote_merge_incoming_oid">"الالتزام الوارد: ⁦%1$s⁩"</string>
+    <string name="remote_merge_local_oid">"الالتزام المحلي: ⁦%1$s⁩"</string>
+    <string name="remote_merge_title" formatted="false">"دمج مع المستودع البعيد"</string>
+    <string name="remote_merge_upstream">"من المنبع: ⁦%1$s⁩"</string>
+    <string name="remote_normalized_target">"عنوان المستودع: %1$s"</string>
+    <string name="repository_actions_behind" formatted="false">"اسحب الإيداعات الواردة قبل الدفع."</string>
+    <string name="repository_actions_blocked" formatted="false">"الإجراء يحتاج إلى انتباه"</string>
+    <string name="repository_actions_branch">"الفرع: ⁨%1$s⁩\nالإيداع الذي تمت مراجعته: ⁨%2$s⁩"</string>
+    <string name="repository_actions_cancel" formatted="false">"إلغاء"</string>
+    <string name="repository_actions_changes">"المسارات المتغيرة: %1$d"</string>
+    <string name="repository_actions_confirm" formatted="false">"تشغيل مرة واحدة"</string>
+    <string name="repository_actions_destination">"الفرع المتتبَّع: ⁨%1$s / %2$s⁩"</string>
+    <string name="repository_actions_dirty" formatted="false">"تمنع التغييرات المحلية سحب الإيداعات الواردة. أنشئ إيداعًا لها أو احفظها في stash أولًا."</string>
+    <string name="repository_actions_diverged" formatted="false">"تباعد السجلان المحلي والبعيد. اختر دمجًا أو إعادة تأسيس صراحةً في أدوات التحكم في Git."</string>
+    <string name="repository_actions_failed" formatted="false">"تعذر إكمال الإجراء. تحقق من الاتصال والحساب والثقة والوصول إلى المجلد، ثم راجع الحالة الحالية قبل إعادة المحاولة."</string>
+    <string name="repository_actions_local_saved" formatted="false">"تم حفظ الإيداع المحلي؛ لم يتم تأكيد الرفع. راجع الحالة الحالية ثم أعد المحاولة لرفع هذا الإيداع."</string>
+    <string name="repository_actions_message" formatted="false">"رسالة الإيداع"</string>
+    <string name="repository_actions_no_changes" formatted="false">"لا توجد إيداعات لرفعها"</string>
+    <string name="repository_actions_pull" formatted="false">"سحب المستودع"</string>
+    <string name="repository_actions_pulled" formatted="false">"تم سحب التغييرات الواردة"</string>
+    <string name="repository_actions_push" formatted="false">"دفع المستودع"</string>
+    <string name="repository_actions_pushed" formatted="false">"تم رفع الإيداع"</string>
+    <string name="repository_actions_reload" formatted="false">"إعادة تحميل المستودعات"</string>
+    <string name="repository_actions_remote_missing" formatted="false">"الفرع المتتبَّع المضبوط غير موجود على الخادم. راجع أدوات التحكم في Git."</string>
+    <string name="repository_actions_scope" formatted="false">"اختر مستودعًا محليًا وراجع فرعه الحالي قبل تشغيل إجراء."</string>
+    <string name="repository_actions_stale" formatted="false">"هذه المراجعة أو الموافقة لم تعد سارية. راجع الحالة الحالية للمستودع وأكّد الإجراء مجددًا."</string>
+    <string name="repository_actions_status" formatted="false">"قراءة الحالة"</string>
+    <string name="repository_actions_status_ready" formatted="false">"تمت قراءة الحالة دون الوصول إلى الشبكة"</string>
+    <string name="repository_actions_stop" formatted="false">"إيقاف الإجراء"</string>
+    <string name="repository_actions_stopped" formatted="false">"تم الإيقاف. ربما اكتملت عملية Git أو نفّذت الرفع بالفعل. راجع الحالة الحالية قبل إعادة المحاولة؛ تم الاحتفاظ بالإيداعات والملفات المحفوظة."</string>
+    <string name="repository_actions_sync" formatted="false">"مزامنة المستودع"</string>
+    <string name="repository_actions_synced" formatted="false">"تم السحب والدفع"</string>
+    <string name="repository_actions_title" formatted="false">"إجراءات المستودع"</string>
+    <string name="repository_actions_unconfigured" formatted="false">"اضبط فرعًا بعيدًا متتبَّعًا في أدوات التحكم في Git قبل تشغيل هذا الإجراء."</string>
+    <string name="repository_actions_unsafe" formatted="false">"انتقل إلى فرع محلي وأكمل أولًا عملية Git النشطة أو حلّ التعارض."</string>
+    <string name="repository_actions_unsettled" formatted="false">"استمرت الملفات في التغيّر أثناء التجهيز. راجع الفهرس والملفات قبل إعادة المحاولة."</string>
+    <string name="repository_actions_write_scope" formatted="false">"يضيف الدفع والمزامنة جميع التغييرات الحالية غير المتجاهَلة إلى منطقة التجهيز، وينشئان إيداعًا عند الحاجة، ثم يرفعان الإيداعات المعلّقة. تجلب المزامنة التغييرات أولًا وتُجري تقديمًا سريعًا عندما يكون ذلك آمنًا. تؤدي التعارضات وتباعد السجل والحالة البعيدة غير الآمنة إلى إيقاف الإجراء. إذا فشل الرفع، يُحتفظ بأي إيداع محلي جديد لإعادة المحاولة."</string>
+    <string name="repository_add_none_new" formatted="false">"اختر مستودعًا واحدًا على الأقل لم تتم إضافته"</string>
+    <string name="repository_clone_deleted" formatted="false">"تم حذف النسخة المحلية"</string>
+    <string name="repository_discovery_branch_unknown" formatted="false">"HEAD منفصل أو بلا التزام أول"</string>
+    <string name="repository_discovery_clean" formatted="false">"لا تغييرات"</string>
+    <string name="repository_discovery_dirty" formatted="false">"تغييرات محلية"</string>
+    <string name="repository_history_files_deleted" formatted="false">"حُذفت الملفات المحلية"</string>
+    <string name="repository_history_files_kept" formatted="false">"بقيت الملفات المحلية"</string>
+    <string name="repository_history_tracking_removed" formatted="false">"أُزيل تتبع Git · بقيت ملفات العمل"</string>
+    <string name="repository_history_unavailable" formatted="false">"سجل المستودع غير متاح"</string>
+    <string name="repository_imported_files_kept" formatted="false">"يتم الاحتفاظ بملفات المستودعات المستوردة على هذا الجهاز"</string>
+    <string name="repository_metadata_unavailable" formatted="false">"بيانات المستودع الوصفية غير متاحة"</string>
+    <string name="repository_no_commits" formatted="false">"لا توجد التزامات"</string>
+    <string name="repository_no_longer_added" formatted="false">"لم يعد المستودع مضافًا"</string>
+    <string name="repository_removed_files_kept" formatted="false">"تمت إزالة المستودع من التطبيق. تم الاحتفاظ بالملفات المحلية."</string>
+    <string name="repository_restore_backup_first" formatted="false">"استعد النسخة الاحتياطية لبيانات Git الوصفية قبل إعادة توصيل هذا المجلد"</string>
+    <string name="repository_shortcut_active" formatted="false">"مفوَّض ومثبَّت"</string>
+    <string name="repository_shortcut_add" formatted="false">"إضافة اختصار إلى الشاشة الرئيسية"</string>
+    <string name="repository_shortcut_busy" formatted="false">"يوجد إجراء قيد التشغيل بالفعل. لم تتم إضافة هذا الاختصار إلى قائمة الانتظار. انتظر ثم اضغط عليه مجددًا."</string>
+    <string name="repository_shortcut_consent" formatted="false">"تفتح كل ضغطة GitSync.md وتشغّل هذا الإجراء مرة واحدة دون السؤال مجددًا. يظل الاختصار مرتبطًا بهذا المستودع والفرع والاتصال أو الحساب المحفوظ. يُسمح بإيداعات محلية جديدة. تؤدي تغييرات الارتباطات إلى إيقاف الاختصار؛ راجعها وأنشئ اختصارًا جديدًا للموافقة عليها. يمكنك إلغاء التفويض هنا في أي وقت."</string>
+    <string name="repository_shortcut_forget" formatted="false">"نسيان الاختصار المعطّل"</string>
+    <string name="repository_shortcut_inactive" formatted="false">"غير نشط. قد تكون موافقة الشاشة الرئيسية معلّقة، أو تم إلغاء التفويض."</string>
+    <string name="repository_shortcut_manage" formatted="false">"اختصارات الشاشة الرئيسية"</string>
+    <string name="repository_shortcut_refresh" formatted="false">"تحديث الاختصارات"</string>
+    <string name="repository_shortcut_request" formatted="false">"طلب الاختصار"</string>
+    <string name="repository_shortcut_requested" formatted="false">"تم طلب الاختصار. وافق عليه في الشاشة الرئيسية، ثم حدّث الاختصارات للتحقق من حالته."</string>
+    <string name="repository_shortcut_revoke" formatted="false">"إلغاء التفويض"</string>
+    <string name="repository_shortcut_revoke_scope" formatted="false">"سيتوقف هذا الاختصار عن تشغيل إجراءات Git. قد يبقى رمزه على الشاشة الرئيسية معطّلًا حتى تزيله. يتطلب إنشاء اختصار جديد موافقة جديدة."</string>
+    <string name="repository_shortcut_revoked" formatted="false">"تم إلغاء تفويض الاختصار"</string>
+    <string name="repository_shortcut_unsupported" formatted="false">"تعذر على الشاشة الرئيسية قبول طلب هذا الاختصار. استخدم الإجراءات الموجودة في هذه الشاشة."</string>
+    <string name="repository_sync_not_recorded" formatted="false">"لم يُسجَّل"</string>
+    <string name="resolve_local_action" formatted="false">"الحل"</string>
+    <string name="resolve_local_body" formatted="false">"سنقوم بإجراء تغييراتك المحلية، ثم ندمجها مع جهاز التحكم عن بعد. إذا كانت هناك تعارضات، فيمكنك حلها في الشاشة التالية."</string>
+    <string name="resolve_local_commit_merge" formatted="false">"الالتزام والدمج"</string>
+    <string name="resolve_local_committing" formatted="false">"جارٍ إيداع التغييرات المحلية…"</string>
+    <string name="resolve_local_default_message" formatted="false">"التغييرات المحلية من GitSync.md"</string>
+    <string name="resolve_local_message_label" formatted="false">"رسالة الالتزام"</string>
+    <string name="resolve_local_superseded" formatted="false">"تغيّر المستودع المحدد. راجع التغييرات المحلية مرة أخرى."</string>
+    <string name="resolve_local_title" formatted="false">"عمليات التحرير المحلية تمنع هذا السحب"</string>
+    <string name="settings_folder_unavailable" formatted="false">"يتطلب الوصول إلى المجلد انتباهك"</string>
+    <string name="shortcut_background_attention" formatted="false">"الاختصار يحتاج إلى انتباه. افتح إجراءات المستودع وراجع حالته قبل إعادة المحاولة."</string>
+    <string name="shortcut_background_channel" formatted="false">"إجراءات اختصارات الشاشة الرئيسية"</string>
+    <string name="shortcut_background_complete" formatted="false">"اكتمل إجراء الاختصار. افتح إجراءات المستودع لمراجعة النتيجة."</string>
+    <string name="shortcut_background_consent" formatted="false">"شغّل كل ضغطة مرة واحدة في الخلفية باستخدام هذا المستودع والفرع والاتصال أو الحساب المحفوظ. تُحفظ النتائج هنا وتظهر في الإشعارات عند السماح بذلك. يتطلب التشغيل المنقطع ضغطة أخرى. يمكنك إلغاء هذا التفويض هنا."</string>
+    <string name="shortcut_background_interrupted" formatted="false">"انقطع التنفيذ. لن يُعاد التشغيل تلقائيًا. راجع المستودع قبل الضغط مجددًا."</string>
+    <string name="shortcut_background_option" formatted="false">"التشغيل دون فتح GitSync.md"</string>
+    <string name="shortcut_background_running" formatted="false">"إجراء الاختصار قيد التشغيل"</string>
+    <string name="shortcut_results_clear_scope" formatted="false">"احذف نتائج تنفيذ اختصارات الشاشة الرئيسية وعمليات الاستدعاء الراجع المحفوظة. تبقى تفويضاتها دون تغيير. لن تُعاد الإجراءات المنقطعة تلقائيًا."</string>
+    <string name="shortcut_results_unavailable" formatted="false">"تعذرت قراءة نتائج الاختصارات المحفوظة. يظل التفويض منفصلًا عنها."</string>
+    <string name="ssh_hide_private_key" formatted="false">"إخفاء المفتاح الخاص"</string>
+    <string name="ssh_show_private_key" formatted="false">"إظهار المفتاح الخاص"</string>
+    <string name="ssh_trust_error_changed" formatted="false">"تغيرت ثقة SSH أثناء المراجعة. راجع سجل الخادم الحالي وأعد محاولة الاتصال."</string>
+    <string name="ssh_trust_error_damaged" formatted="false">"تحتاج ثقة SSH المحفوظة إلى مراجعة. أعد تعيين ثقة خوادم SSH في الإعدادات قبل المحاولة مجددًا."</string>
+    <string name="ssh_trust_error_recovery" formatted="false">"تعذر حفظ استعادة ثقة SSH. راجع ثقة خوادم SSH في الإعدادات قبل إعادة المحاولة."</string>
+    <string name="ssh_trust_error_remove" formatted="false">"تعذرت إزالة الثقة بخادم SSH. راجع سجل الخادم الحالي قبل إعادة المحاولة."</string>
+    <string name="ssh_trust_error_reset" formatted="false">"تعذر مسح الثقة بخوادم SSH. راجع السجلات المحفوظة قبل إعادة المحاولة."</string>
+    <string name="staged" formatted="false">"مرحّل"</string>
+    <string name="stash_screen" formatted="false">"تخزين مؤقت"</string>
+    <string name="storage_app_saved" formatted="false">"ستستخدم النسخ المستنسخة الجديدة مساحة تخزين التطبيق"</string>
+    <string name="storage_default_saved" formatted="false">"تم حفظ موقع الاستنساخ الافتراضي"</string>
+    <string name="tide_git_branch_operation" formatted="false">"عملية فرع"</string>
+    <string name="tide_git_committing" formatted="false">"جارٍ إنشاء الالتزام…"</string>
+    <string name="tide_git_git_operation" formatted="false">"عملية Git"</string>
+    <string name="tide_home_state_checking" formatted="false">"جارٍ الفحص…"</string>
+    <string name="tide_home_state_unreadable" formatted="false">"يحتاج إلى مراجعة"</string>
+    <string name="tide_merge_conflict_deleted_headline" formatted="false">"حُذف في أحد الطرفين وعُدّل في الآخر."</string>
+    <string name="tide_merge_conflict_headline" formatted="false">"عدّل الطرفان هذا الملف."</string>
+    <string name="tide_merge_conflict_pick" formatted="false">"اختر النسخة التي تريد الاحتفاظ بها، أو عدّل النتيجة يدويًا."</string>
+    <string name="tide_merge_conflict_renamed_headline" formatted="false">"أُعيدت تسميته بطريقتين مختلفتين."</string>
+    <string name="tide_merge_conflict_result" formatted="false">"النتيجة"</string>
+    <string name="tide_merge_conflict_result_hint" formatted="false">"هذا ما يتم تنظيمه\nالرمز المميز أو كلمة المرور"</string>
+    <string name="tide_merge_diff_added" formatted="false">"مضاف"</string>
+    <string name="tide_merge_diff_binary_body" formatted="false">"لا يمكن عرض المحتوى الثنائي كنص."</string>
+    <string name="tide_merge_diff_changed" formatted="false">"تم التغيير"</string>
+    <string name="tide_merge_diff_copied" formatted="false">"منسوخ"</string>
+    <string name="tide_merge_diff_deleted" formatted="false">"محذوف"</string>
+    <string name="tide_merge_diff_hunk_line">"السطر %1$d"</string>
+    <string name="tide_merge_diff_line_added">"مضاف: %1$s"</string>
+    <string name="tide_merge_diff_line_removed">"محذوف: %1$s"</string>
+    <string name="tide_merge_diff_modified" formatted="false">"معدّل"</string>
+    <string name="tide_merge_diff_renamed" formatted="false">"أعيدت تسميته"</string>
+    <string name="tide_merge_diff_summary">"الملفات: %1$d · ⁦+%2$d ‎−%3$d⁩"</string>
+    <string name="tide_merge_diff_type_changed" formatted="false">"تغيير النوع"</string>
+    <string name="tide_merge_ours_filename" formatted="false">"خاصتنا"</string>
+    <string name="tide_merge_rebase_ready_headline" formatted="false">"راجع هذه الخطوة قبل المتابعة."</string>
+    <string name="tide_merge_side_deleted" formatted="false">"محذوف"</string>
+    <string name="tide_merge_theirs" formatted="false">"خاصتهم"</string>
+    <string name="tide_merge_theirs_count">"من المستودع البعيد: ⁦↓%1$d⁩"</string>
+    <string name="tide_merge_theirs_filename" formatted="false">"خاصتهم"</string>
+    <string name="tide_merge_upstream_loading" formatted="false">"جارٍ قراءة إعدادات الفرع…"</string>
+    <string name="tide_merge_upstream_section" formatted="false">"التتبع"</string>
+    <string name="tide_merge_upstream_unset" formatted="false">"لم يُعيّن فرع متتبَّع"</string>
+    <string name="tide_merge_yours" formatted="false">"نسختك"</string>
+    <string name="tide_merge_yours_count">"المحلي: ⁦↑%1$d⁩"</string>
+    <string name="tide_onboarding_picker_clear" formatted="false">"مسح البحث"</string>
+    <string name="tide_onboarding_picker_no_matches" formatted="false">"لا نتائج مطابقة"</string>
+    <string name="tide_settings_not_signed_in" formatted="false">"لم يتم تسجيل الدخول"</string>
+    <string name="tide_settings_sign_out_message">"يزيل GitSync.md الرمز الخاص بـ⁨%1$s⁩ من هذا الجهاز. تبقى مستودعاتك وملفاتها في مكانها."</string>
+    <string name="tide_settings_sign_out_title" formatted="false">"تسجيل الخروج من GitHub؟"</string>
+    <string name="tide_settings_signed_in" formatted="false">"تم تسجيل الدخول"</string>
+    <string name="tide_settings_this_account" formatted="false">"حساب GitHub هذا"</string>
+    <string name="tide_settings_version_line">"⁦GitSync.md %1$s (%2$d)⁩"</string>
+    <string name="tide_vault_check_for_changes" formatted="false">"التحقق من التغييرات"</string>
+    <string name="tide_vault_conflict_detail" formatted="false">"توقفت عملية Git مؤقتًا. حلّ كل ملف متعارض للمتابعة."</string>
+    <string name="tide_vault_eyebrow_both_moved" formatted="false">"تغيّر الطرفان"</string>
+    <string name="tide_vault_eyebrow_conflict" formatted="false">"تعارض"</string>
+    <string name="tide_vault_eyebrow_empty" formatted="false">"مستودع فارغ"</string>
+    <string name="tide_vault_eyebrow_in_sync" formatted="false">"متزامن"</string>
+    <string name="tide_vault_eyebrow_new_on_remote" formatted="false">"جديد في المستودع البعيد"</string>
+    <string name="tide_vault_eyebrow_ready_to_commit" formatted="false">"جاهز لإنشاء التزام"</string>
+    <string name="tide_vault_eyebrow_ready_to_push" formatted="false">"جاهز للدفع"</string>
+    <string name="tide_vault_eyebrow_unreadable" formatted="false">"تعذّرت القراءة"</string>
+    <string name="tide_vault_files_section" formatted="false">"الملفات"</string>
+    <string name="tide_vault_from_remote">"من المستودع البعيد: ⁦↓%1$d⁩"</string>
+    <string name="tide_vault_git" formatted="false">"GIT"</string>
+    <string name="tide_vault_headline_behind">"جديد في المستودع البعيد: %1$d"</string>
+    <string name="tide_vault_headline_unreadable" formatted="false">"تعذّرت قراءة هذه الخزنة."</string>
+    <string name="tide_vault_more" formatted="false">"المزيد من خيارات الخزنة"</string>
+    <string name="tide_vault_moved_on" formatted="false">"تغيّر المستودع البعيد أثناء كتابتك."</string>
+    <string name="tide_vault_no_changes_body" formatted="false">"تظهر هنا تعديلاتك في Obsidian."</string>
+    <string name="tide_vault_no_changes_title" formatted="false">"لا تغييرات على هذا الهاتف"</string>
+    <string name="tide_vault_reading" formatted="false">"جارٍ قراءة هذه الخزنة…"</string>
+    <string name="tide_vault_resolve" formatted="false">"الحل"</string>
+    <string name="tide_vault_sub_ahead" formatted="false">"تم إنشاء الالتزامات ولم تُدفع بعد"</string>
+    <string name="tide_vault_sub_empty" formatted="false">"أضف ملاحظة، ثم أنشئ التزامًا بها من هنا."</string>
+    <string name="tide_vault_sub_in_sync" formatted="false">"لا شيء ينتظر على هذا الهاتف"</string>
+    <string name="tide_vault_yours">"المحلي: ⁦↑%1$d⁩"</string>
+    <string name="tracking_metadata_size">"بيانات Git الوصفية: %1$s"</string>
+    <string name="tracking_remove_permanent_title" formatted="false">"إزالة سجل Git نهائيًا؟"</string>
+    <string name="tracking_removed_backup">"تمت إزالة تتبع Git. نسخة احتياطية تم التحقق منها: ⁨%1$s⁩"</string>
+    <string name="tracking_removed_files_kept" formatted="false">"تمت إزالة تتبع Git. تم الاحتفاظ بملفات العمل."</string>
+    <string name="ui_1_s_2_s_all_working_files_and_local_git_hi_872b2983">"%1$s\n%2$s\n\nستبقى جميع ملفات العمل وسجل Git المحلي على هذا الجهاز. يمكنك إعادة ربط المجلد لاحقًا."</string>
+    <string name="ui_1_s_2_s_this_permanently_deletes_this_app_fffd860e">"%1$s\n%2$s\n\nيؤدي هذا إلى حذف هذه النسخة المُدارة بواسطة التطبيق نهائيًا، بما في ذلك الالتزامات التي لم تُرسل إلى المستودع البعيد والتغييرات المحفوظة في stash والملفات غير المحفوظة. لن يتغير المستودع البعيد."</string>
+    <string name="ui_1_s_bytes_81cdb385">"البايتات: ⁨%1$s⁩"</string>
+    <string name="ui_1_s_characters_bde60398">"الأحرف: ⁨%1$s⁩"</string>
+    <string name="ui_1_s_lines_2_s_bytes_c30a0cd1">"الأسطر: ⁨%1$s⁩، البايتات: ⁨%2$s⁩"</string>
+    <string name="ui_1_s_local_commits_2_s_upstream_commits_77dc6fa8">"%1$s التزامات محلية · %2$s التزامات في الفرع المتتبَّع"</string>
+    <string name="ui_abort_rebase_fd5cfc32" formatted="false">"إلغاء إعادة التأسيس…"</string>
+    <string name="ui_about_4efca0d1" formatted="false">"حول"</string>
+    <string name="ui_all_conflicts_are_staged_continue_replayin_b86b2a5a" formatted="false">"جُهّزت كل التعارضات. تابع إعادة تطبيق الالتزامات. إذا أبلغ Git عن NOTHING_TO_COMMIT، فراجع ما إذا كان ينبغي تخطي الالتزام الفارغ."</string>
+    <string name="ui_all_local_changes_to_this_file_will_be_per_0919f539" formatted="false">"سيتم تجاهل كافة التغييرات المحلية التي تم إجراؤها على هذا الملف نهائيًا."</string>
+    <string name="ui_allow_local_folder_access_0b2888fb" formatted="false">"السماح بالوصول إلى المجلدات المحلية"</string>
+    <string name="ui_app_0d04bfeb" formatted="false">"التطبيق"</string>
+    <string name="ui_app_settings_da645334" formatted="false">"إعدادات التطبيق"</string>
+    <string name="ui_apply_tracking_choice_47a2e187" formatted="false">"تطبيق خيار التتبع"</string>
+    <string name="ui_authentication_66880d2d" formatted="false">"المصادقة\nتغيير"</string>
+    <string name="ui_back_639807a2" formatted="false">"العودة"</string>
+    <string name="ui_back_aceb696a" formatted="false">"→ العودة"</string>
+    <string name="ui_back_f645ed02" formatted="false">"→  العودة"</string>
+    <string name="ui_backup_1_s_6ad01ca6">"النسخة الاحتياطية: %1$s"</string>
+    <string name="ui_base_7b47361a" formatted="false">"الأساس"</string>
+    <string name="ui_binary_large_or_lfs_file_choose_an_entire_52c3278a" formatted="false">"ملف ثنائي أو كبير أو LFS: اختر نسخة أحد الطرفين بالكامل."</string>
+    <string name="ui_branch_52656e81" formatted="false">"الفرع"</string>
+    <string name="ui_branch_optional_e9dedf99" formatted="false">"الفرع (اختياري)"</string>
+    <string name="ui_browsing_with_this_account_28a8b330" formatted="false">"التصفح بهذا الحساب"</string>
+    <string name="ui_cancel_pending_move_0858583b" formatted="false">"إلغاء النقل المعلّق"</string>
+    <string name="ui_changes_bbd4b6a8" formatted="false">"التغييرات"</string>
+    <string name="ui_choose_a_connected_account_for_this_reposi_c4817ea9" formatted="false">"اختر حسابًا متصلًا لهذا المستودع."</string>
+    <string name="ui_choose_a_device_folder_d00b7daf" formatted="false">"اختيار مجلد على الجهاز"</string>
+    <string name="ui_choose_an_authentication_method_before_clo_c89124ba" formatted="false">"اختر طريقة مصادقة قبل الاستنساخ."</string>
+    <string name="ui_choose_another_folder_b50df380" formatted="false">"اختيار مجلد آخر"</string>
+    <string name="ui_choose_local_device_or_attached_storage_cl_69bc112f" formatted="false">"اختر وحدة تخزين محلية أو متصلة بالجهاز. لا توفر خدمات المستندات السحابية نظام ملفات يمكن لمحرك Git هذا استخدامه."</string>
+    <string name="ui_choose_the_account_used_to_browse_github_e_93e8a27f" formatted="false">"اختر الحساب المستخدم لتصفح GitHub. يحتفظ كل مستودع بحسابه المعيّن؛ يمكنك تغييره في اتصال المستودع."</string>
+    <string name="ui_choose_the_default_folder_for_new_clones_e_9782dc64" formatted="false">"اختر المجلد الافتراضي للنسخ المستنسخة الجديدة. تبقى المستودعات الحالية في مواقعها."</string>
+    <string name="ui_clear_all_diagnostics_e2d6a185" formatted="false">"مسح كل التشخيصات؟"</string>
+    <string name="ui_clear_log_a8858ac7" formatted="false">"مسح السجل"</string>
+    <string name="ui_clone_again_e05eb495" formatted="false">"استنساخ من جديد"</string>
+    <string name="ui_clone_again_review_the_previous_branch_and_33cba147" formatted="false">"استنساخ مجددًا · راجع الفرع والاتصال السابقين قبل البدء."</string>
+    <string name="ui_clone_storage_47cafc8a" formatted="false">"تخزين النسخ المستنسخة"</string>
+    <string name="ui_commit_author_e9376b3a" formatted="false">"مؤلف الالتزام"</string>
+    <string name="ui_commit_message_a4b361b7" formatted="false">"رسالة الإيداع…"</string>
+    <string name="ui_commit_sha_d0bc6028" formatted="false">"SHA الإيداع"</string>
+    <string name="ui_confirm_eebdd24a" formatted="false">"تأكيد"</string>
+    <string name="ui_continue_rebase_7a14e965" formatted="false">"مواصلة إعادة التأسيس"</string>
+    <string name="ui_create_a_file_or_folder_using_new_655c5596" formatted="false">"أنشئ ملفًا أو مجلدًا باستخدام «جديد»."</string>
+    <string name="ui_current_default_d914f86e" formatted="false">"المجلد الافتراضي الحالي"</string>
+    <string name="ui_current_separate_push_address_1_s_2a6ef8f9">"عنوان الدفع المنفصل الحالي: %1$s"</string>
+    <string name="ui_debug_info_697b4941" formatted="false">"معلومات تصحيح الأخطاء"</string>
+    <string name="ui_delete_1_s_6474596f">"هل تريد حذف «%1$s»؟"</string>
+    <string name="ui_delete_e2d0a549" formatted="false">"حذف"</string>
+    <string name="ui_delete_file_28e18dc9" formatted="false">"حذف الملف"</string>
+    <string name="ui_delete_local_files_09697434" formatted="false">"هل تريد حذف الملفات المحلية؟"</string>
+    <string name="ui_delete_local_files_20424441" formatted="false">"حذف الملفات المحلية"</string>
+    <string name="ui_destination_1_s_0df94639">"الوجهة: ⁨%1$s⁩"</string>
+    <string name="ui_destination_parent_folder_c6c4f97e" formatted="false">"المجلد الأصل للوجهة"</string>
+    <string name="ui_discard_draft_cb30147e" formatted="false">"تجاهل المسودة"</string>
+    <string name="ui_discard_eb1a70e3" formatted="false">"تجاهل"</string>
+    <string name="ui_discard_resolution_draft_47c16148" formatted="false">"تجاهل مسودة الحل؟"</string>
+    <string name="ui_dismiss_48845bff" formatted="false">"إغلاق"</string>
+    <string name="ui_edit_commit_author_443f376d" formatted="false">"تعديل مؤلف الالتزام"</string>
+    <string name="ui_edit_connection_047f9f95" formatted="false">"تعديل الاتصال"</string>
+    <string name="ui_edit_resolution_9a6cda88" formatted="false">"تعديل الحل"</string>
+    <string name="ui_edit_the_content_here_to_manually_resolve_1985871d" formatted="false">"عدّل المحتوى هنا لحلّ التعارض يدويًا"</string>
+    <string name="ui_email_969ccbd3" formatted="false">"البريد الإلكتروني"</string>
+    <string name="ui_empty_folder_ca1fd454" formatted="false">"مجلد فارغ"</string>
+    <string name="ui_enable_access_9d7caf64" formatted="false">"تفعيل الوصول"</string>
+    <string name="ui_enter_credentials_again_or_choose_public_a_40a9f45f" formatted="false">"أدخل بيانات الاعتماد مجددًا أو اختر الوصول العام للعنوان الجديد."</string>
+    <string name="ui_error_54a0e8c1" formatted="false">"خطأ"</string>
+    <string name="ui_fetch_and_review_rebase_c81979af" formatted="false">"الجلب ومراجعة إعادة التأسيس"</string>
+    <string name="ui_file_operation_failed_f78a328b" formatted="false">"فشلت عملية الملف"</string>
+    <string name="ui_finish_move_recovery_44113cea" formatted="false">"إنهاء استرداد النقل"</string>
+    <string name="ui_github_sign_in_a2e50311" formatted="false">"GitHub تسجيل الدخول\nيستخدم تسجيل الدخول"</string>
+    <string name="ui_gitsync_md_needs_shared_storage_access_to_f1b339ea" formatted="false">"يحتاج GitSync.md إلى الوصول إلى التخزين المشترك لإدارة نسخ عمل Git الفعلية في مجلدات الجهاز. اختر المجلدات التي تريد استخدامها بعد تفعيل الوصول في إعدادات Android."</string>
+    <string name="ui_go_back_and_select_a_repository_c3eedd39" formatted="false">"ارجع واختر مستودعًا."</string>
+    <string name="ui_hash_a9106914" formatted="false">"التجزئة"</string>
+    <string name="ui_i_understand_that_another_owner_may_still_b4a12b2d" formatted="false">"أفهم أن مالكًا آخر قد لا يزال يعدّل هذا الملف."</string>
+    <string name="ui_include_the_ssh_username_in_the_address_gi_beb09b5a" formatted="false">"ضمّن اسم مستخدم SSH في العنوان: git@host:team/repo.git أو ssh://git@host:2222/team/repo.git."</string>
+    <string name="ui_keep_editing_e76fd2ad" formatted="false">"متابعة التعديل"</string>
+    <string name="ui_key_passphrase_optional_eb84a9d2" formatted="false">"عبارة مرور المفتاح (اختيارية)"</string>
+    <string name="ui_keys_are_encrypted_on_this_device_and_used_cb039887" formatted="false">"المفاتيح مشفرة على هذا الجهاز وتُستخدم لعنوان المستودع المحفوظ فقط. تحقق من بصمة الخادم عند الاتصال لأول مرة."</string>
+    <string name="ui_last_sync_a0d540dd" formatted="false">"آخر مزامنة"</string>
+    <string name="ui_leave_blank_to_use_the_server_s_default_br_077388af" formatted="false">"اتركه فارغًا لاستخدام الفرع الافتراضي للخادم."</string>
+    <string name="ui_lfs_endpoint_username_4a49e1f5" formatted="false">"اسم مستخدم نقطة نهاية LFS"</string>
+    <string name="ui_loading_dc380888" formatted="false">"جارٍ التحميل"</string>
+    <string name="ui_loading_repos_2f4f4a93" formatted="false">"جارٍ تحميل المستودعات"</string>
+    <string name="ui_local_repositories_ddcf4270" formatted="false">"المستودعات المحلية"</string>
+    <string name="ui_manage_github_accounts_e8277e8b" formatted="false">"إدارة حسابات GitHub"</string>
+    <string name="ui_matching_public_key_optional_2ca984f0" formatted="false">"المفتاح العام المطابق (اختياري)"</string>
+    <string name="ui_merge_8851aaa7" formatted="false">"دمج"</string>
+    <string name="ui_more_d47d7cb0" formatted="false">"المزيد"</string>
+    <string name="ui_move_recoveries_90731b9e" formatted="false">"عمليات استرداد النقل"</string>
+    <string name="ui_move_repository_1c4a6083" formatted="false">"نقل المستودع"</string>
+    <string name="ui_name_in_gitsync_md_893ad211" formatted="false">"الاسم في GitSync.md"</string>
+    <string name="ui_new_commits_in_this_repository_will_use_th_ac4a98e2" formatted="false">"ستستخدم الالتزامات الجديدة في هذا المستودع هذا الاسم والبريد الإلكتروني. تحتفظ الالتزامات الحالية بمؤلفها الأصلي."</string>
+    <string name="ui_new_file_44dedd0f" formatted="false">"ملف جديد"</string>
+    <string name="ui_new_token_or_password_fc54aafe" formatted="false">"رمز أو كلمة مرور جديدة"</string>
+    <string name="ui_no_changes_to_display_11be6ffc" formatted="false">"لا تغييرات لعرضها"</string>
+    <string name="ui_no_commits_found_64ccb533" formatted="false">"لم يتم العثور على أي إيداعات"</string>
+    <string name="ui_no_connected_accounts_local_repositories_r_cf41e629" formatted="false">"لا توجد حسابات متصلة. تبقى المستودعات المحلية متاحة."</string>
+    <string name="ui_no_local_changes_56319dc5" formatted="false">"لا تغييرات محلية"</string>
+    <string name="ui_no_repository_555da78f" formatted="false">"لا يوجد مستودع"</string>
+    <string name="ui_no_stashes_found_ace2fa6f" formatted="false">"لم يتم العثور على أي تغييرات مخبأة"</string>
+    <string name="ui_no_tags_in_this_repository_3b060f73" formatted="false">"لا وسوم في هذا المستودع"</string>
+    <string name="ui_ok_565339bc" formatted="false">"حسنًا"</string>
+    <string name="ui_open_ed077f3d" formatted="false">"فتح"</string>
+    <string name="ui_open_git_lfs_f7aff155" formatted="false">"فتح Git LFS"</string>
+    <string name="ui_open_in_files_e1d250d0" formatted="false">"فتح في الملفات"</string>
+    <string name="ui_opening_file_de0df916" formatted="false">"جارٍ فتح الملف…"</string>
+    <string name="ui_owner_1_s_599ca9ce">"المالك: %1$s"</string>
+    <string name="ui_parents_1_s_914efbd0">"الآباء (⁨%1$s⁩)"</string>
+    <string name="ui_path_62fa5a5b" formatted="false">"المسار"</string>
+    <string name="ui_platform_c78ffe19" formatted="false">"المنصة"</string>
+    <string name="ui_pull_with_rebase_6d25f1e0" formatted="false">"السحب مع إعادة التأسيس"</string>
+    <string name="ui_rebase_in_progress_3ecd9c42" formatted="false">"إعادة التأسيس قيد التنفيذ"</string>
+    <string name="ui_rebase_onto_reviewed_upstream_c3b8fb93" formatted="false">"إعادة التأسيس على الفرع المتتبَّع الذي تمت مراجعته"</string>
+    <string name="ui_reconnect_bf8a9eab" formatted="false">"إعادة الاتصال"</string>
+    <string name="ui_recovery_needs_attention_recognized_workin_89ce1116" formatted="false">"يحتاج الاسترداد إلى مراجعة. يتم الاحتفاظ بنسخ العمل المعروفة."</string>
+    <string name="ui_refresh_0e916101" formatted="false">"تحديث"</string>
+    <string name="ui_refresh_rebase_state_39c06a2c" formatted="false">"تحديث حالة إعادة التأسيس"</string>
+    <string name="ui_reload_author_18a711d8" formatted="false">"إعادة تحميل المؤلف"</string>
+    <string name="ui_reload_connection_ceed2dae" formatted="false">"إعادة تحميل الاتصال"</string>
+    <string name="ui_reload_from_disk_d4288839" formatted="false">"إعادة التحميل من القرص"</string>
+    <string name="ui_remove_1_s_e4dd7c24">"إزالة %1$s؟"</string>
+    <string name="ui_remove_1_s_this_removes_it_from_gitsync_md_0a6b198d">"إزالة «%1$s»؟\n\nيؤدي هذا إلى إزالته من GitSync.md. تبقى جميع الملفات المحلية وسجل Git على هذا الجهاز، ويمكنك إعادة ربطه لاحقًا. لن يتأثر مستودعك البعيد."</string>
+    <string name="ui_remove_all_custom_endpoint_approvals_and_t_ffc30a9e" formatted="false">"أزل كل اعتمادات نقاط النهاية المخصصة وبيانات اعتمادها المحفوظة على هذا الجهاز. ستحتاج كل نقطة نهاية واتجاه نقل إلى مراجعة جديدة."</string>
+    <string name="ui_remove_c3812fc4" formatted="false">"إزالة"</string>
+    <string name="ui_remove_credentials_1b0700a3" formatted="false">"إزالة بيانات الاعتماد"</string>
+    <string name="ui_remove_from_app_0d20b3a2" formatted="false">"إزالة من التطبيق"</string>
+    <string name="ui_remove_from_gitsync_md_ead6e2d6" formatted="false">"من GitSync.md؟"</string>
+    <string name="ui_remove_git_tracking_1f8255d9" formatted="false">"إزالة تتبع Git؟"</string>
+    <string name="ui_remove_git_tracking_d3e1065f" formatted="false">"إزالة تتبع Git"</string>
+    <string name="ui_remove_recovery_copy_b24c79b1" formatted="false">"إزالة نسخة الاسترداد"</string>
+    <string name="ui_remove_repository_fc68168b" formatted="false">"إزالة المستودع"</string>
+    <string name="ui_remove_saved_credentials_31ce2de8" formatted="false">"إزالة بيانات الاعتماد المحفوظة"</string>
+    <string name="ui_remove_saved_credentials_efb15b59" formatted="false">"إزالة بيانات الاعتماد المحفوظة؟"</string>
+    <string name="ui_remove_the_retained_original_a09b39c8" formatted="false">"إزالة الأصل المحتفظ به؟"</string>
+    <string name="ui_remove_tracking_4b40d72c" formatted="false">"إزالة التتبع"</string>
+    <string name="ui_rename_3064d79a" formatted="false">"إعادة تسمية"</string>
+    <string name="ui_rename_file_e3526ab6" formatted="false">"إعادة تسمية الملف"</string>
+    <string name="ui_replayed_local_commit_cb0e9ca0" formatted="false">"الالتزام المحلي المُعاد تطبيقه"</string>
+    <string name="ui_replays_local_commits_on_the_configured_up_709bdce6" formatted="false">"يُعيد تطبيق الالتزامات المحلية على الفرع المتتبَّع المُعدّ. قد تتغير معرّفات الالتزامات المحلية. تُحفَظ بنية الدمج الحالية. لا يُدفَع أي شيء."</string>
+    <string name="ui_repo_path_a3f06032" formatted="false">"مسار المستودع"</string>
+    <string name="ui_repositories_assigned_to_this_account_will_ecd1d245" formatted="false">"ستحتاج المستودعات المعيّنة لهذا الحساب إلى تسجيل الدخول مجددًا أو اختيار حساب آخر في اتصال المستودع. تبقى ملفاتك والتزاماتك المحلية في مكانها."</string>
+    <string name="ui_repository_connection_1188001b" formatted="false">"اتصال المستودع"</string>
+    <string name="ui_repository_operation_failed_f1152917" formatted="false">"فشلت العملية على المستودع"</string>
+    <string name="ui_repository_url_c83db013" formatted="false">"عنوان المستودع"</string>
+    <string name="ui_resolve_1_s_94accfee">"حلّ %1$s"</string>
+    <string name="ui_resolve_and_stage_ebded3a7" formatted="false">"الحل والتجهيز"</string>
+    <string name="ui_resolved_content_69213720" formatted="false">"المحتوى بعد الحل"</string>
+    <string name="ui_resolved_contents_55ceff37" formatted="false">"المحتوى بعد الحل"</string>
+    <string name="ui_resolving_1_s_5e8ada92">"جارٍ حلّ التعارض: ⁨%1$s⁩"</string>
+    <string name="ui_restore_as_a_separate_repository_6253e37c" formatted="false">"استعادة كمستودع منفصل"</string>
+    <string name="ui_retained_original_1_s_61bc9b73">"النسخة الأصلية المحتفظ بها: ⁨%1$s⁩"</string>
+    <string name="ui_retry_942087cc" formatted="false">"إعادة المحاولة"</string>
+    <string name="ui_return_to_repositories_c97a4463" formatted="false">"العودة إلى المستودعات"</string>
+    <string name="ui_revert_commit_a2d355f7" formatted="false">"عكس الالتزام"</string>
+    <string name="ui_review_destination_59808b00" formatted="false">"مراجعة الوجهة"</string>
+    <string name="ui_review_restored_folder_66729a70" formatted="false">"مراجعة المجلد المستعاد"</string>
+    <string name="ui_save_1509f561" formatted="false">"حفظ"</string>
+    <string name="ui_save_author_1c24b32a" formatted="false">"حفظ المؤلف"</string>
+    <string name="ui_save_connection_df24ef12" formatted="false">"حفظ الاتصال"</string>
+    <string name="ui_saving_uses_this_address_for_both_fetch_an_48c82edc" formatted="false">"عند الحفظ يُستخدم هذا العنوان للجلب والدفع معًا. اجلب بعد ذلك لتحديث حالة المستودع البعيد."</string>
+    <string name="ui_selected_folder_0cf59bef" formatted="false">"المجلد المحدد"</string>
+    <string name="ui_share_backup_archive_ee4ba873" formatted="false">"مشاركة أرشيف النسخة الاحتياطية"</string>
+    <string name="ui_some_diagnostics_could_not_be_read_or_save_19e3372d" formatted="false">"تعذرت قراءة بعض التشخيصات أو حفظها. تم الاحتفاظ بالبيانات الحالية. امسح السجل لبدء التسجيل من جديد."</string>
+    <string name="ui_ssh_private_key_0e92a613" formatted="false">"SSH مفتاح خاص"</string>
+    <string name="ui_stage_de838855" formatted="false">"تجهيز"</string>
+    <string name="ui_the_active_destination_stays_in_place_gits_a4f1f68a" formatted="false">"تبقى الوجهة النشطة في مكانها. يتحقق GitSync.md من أن الأصل المحتفظ به لا يتضمن تعديلات لاحقة قبل حذف ملفاته وسجل Git نهائيًا."</string>
+    <string name="ui_the_folder_can_move_directly_on_this_stora_7b29fabb" formatted="false">"يمكن نقل المجلد مباشرة على وحدة التخزين هذه."</string>
+    <string name="ui_the_previous_github_account_is_disconnecte_628a1f8c" formatted="false">"حساب GitHub السابق غير متصل. اختر حسابًا متصلًا أو طريقة مصادقة أخرى."</string>
+    <string name="ui_the_replayed_local_commit_deletes_this_fil_ab00656d" formatted="false">"يحذف الالتزام المحلي المُعاد تطبيقه هذا الملف."</string>
+    <string name="ui_the_review_changed_cancel_and_refresh_serv_c7ee804c" formatted="false">"تغيّرت المراجعة. ألغِ العملية وحدّث أقفال الخادم."</string>
+    <string name="ui_this_history_entry_is_unavailable_c2c9f4e0" formatted="false">"إدخال السجل هذا غير متاح."</string>
+    <string name="ui_this_removes_another_connection_s_lock_coo_880defbf" formatted="false">"يؤدي هذا إلى إزالة قفل اتصال آخر. نسّق مع مالكه قبل المتابعة."</string>
+    <string name="ui_this_repository_will_use_public_access_unt_c94fad61" formatted="false">"سيستخدم هذا المستودع الوصول العام حتى تختار المصادقة مجددًا. لن يُستخدم حساب GitHub الذي سجلت الدخول إليه لهذا المستودع. سيبقى عنوانا الجلب والدفع كما هما."</string>
+    <string name="ui_unable_to_open_file_2787a028" formatted="false">"تعذر فتح الملف"</string>
+    <string name="ui_unstage_033f86f9" formatted="false">"إلغاء التجهيز"</string>
+    <string name="ui_update_the_address_or_authentication_for_t_f11e4ba2" formatted="false">"حدّث العنوان أو طريقة المصادقة لنسخة العمل هذه. تبقى الملفات المحلية والالتزامات والتغييرات المجهّزة في مكانها."</string>
+    <string name="ui_upstream_94adc696" formatted="false">"الفرع المتتبَّع"</string>
+    <string name="ui_upstream_deleted_this_file_40765116" formatted="false">"حذف الفرع المتتبَّع هذا الملف."</string>
+    <string name="ui_use_app_storage_d199e8e0" formatted="false">"استخدام مساحة تخزين التطبيق"</string>
+    <string name="ui_use_for_new_clones_be174c95" formatted="false">"استخدام للنسخ المستنسخة الجديدة"</string>
+    <string name="ui_use_saved_default_3bb7260d" formatted="false">"استخدام الإعداد الافتراضي المحفوظ"</string>
+    <string name="ui_username_e3b89e9d" formatted="false">"اسم المستخدم"</string>
+    <string name="ui_your_edits_have_not_been_saved_625899a4" formatted="false">"لم يتم حفظ تعديلاتك."</string>
+    <string name="ui_your_unsubmitted_text_will_be_discarded_th_15717285" formatted="false">"سيُتجاهل النص الذي لم ترسله. سيبقى ملف العمل دون تغيير."</string>
+    <string name="untracked" formatted="false">"غير متتبع"</string>
+    <string name="upstream_branch" formatted="false">"الفرع"</string>
+    <string name="upstream_local_branch">"الفرع المحلي: %1$s"</string>
+    <string name="upstream_remote" formatted="false">"المستودع البعيد"</string>
+    <string name="upstream_title" formatted="false">"الفرع المتتبَّع"</string>
+    <string name="upstream_unavailable" formatted="false">"اختر فرعًا محليًا له مستودع بعيد مهيّأ وأكمل أي عملية Git نشطة أولًا."</string>
+    <string name="vault_copy_url" formatted="false">"نسخ عنوان URL للمستودع"</string>
+    <string name="vault_l10n_app_external_storage" formatted="false">"التخزين الخارجي للتطبيق"</string>
+    <string name="vault_l10n_app_storage" formatted="false">"تخزين التطبيق"</string>
+    <string name="vault_l10n_backup_clip_label" formatted="false">"نسخة احتياطية من بيانات Git الوصفية"</string>
+    <string name="vault_l10n_backup_share_failed" formatted="false">"يتعذّر مشاركة أرشيف النسخة الاحتياطية"</string>
+    <string name="vault_l10n_backup_share_title" formatted="false">"مشاركة النسخة الاحتياطية من بيانات Git الوصفية"</string>
+    <string name="vault_l10n_backup_unavailable" formatted="false">"أرشيف النسخة الاحتياطية غير متاح"</string>
+    <string name="vault_l10n_branch_value">"الفرع: ⁨%1$s⁩"</string>
+    <string name="vault_l10n_clone_changed_reconnect" formatted="false">"تغيّر الاستنساخ المكتمل. أعد توصيل مجلده من المستودعات المحلية."</string>
+    <string name="vault_l10n_clone_finish_save_failed" formatted="false">"تعذّر إكمال حفظ المستودع المستنسخ. أعد محاولة إضافته."</string>
+    <string name="vault_l10n_clone_history_changed" formatted="false">"تغيّر سجل الاستنساخ"</string>
+    <string name="vault_l10n_clone_history_removed" formatted="false">"أُزيل سجل الاستنساخ"</string>
+    <string name="vault_l10n_clone_not_awaiting" formatted="false">"لم يعد هذا الاستنساخ بانتظار الاسترداد"</string>
+    <string name="vault_l10n_clone_recovery_cancelled" formatted="false">"أُلغي استرداد الاستنساخ"</string>
+    <string name="vault_l10n_clone_recovery_changed" formatted="false">"تغيّر استرداد الاستنساخ"</string>
+    <string name="vault_l10n_clone_recovery_changed_review" formatted="false">"تغيّر استرداد الاستنساخ. راجعه مرة أخرى."</string>
+    <string name="vault_l10n_clone_recovery_dismissed_error" formatted="false">"تم تجاهل استرداد الاستنساخ"</string>
+    <string name="vault_l10n_clone_recovery_unavailable" formatted="false">"لم يعد استرداد الاستنساخ متاحًا. أعد توصيل مجلده من المستودعات المحلية."</string>
+    <string name="vault_l10n_clone_removed_or_registered" formatted="false">"أُزيل هذا الاستنساخ أو سُجّل مرة أخرى. راجع إدخاله الحالي."</string>
+    <string name="vault_l10n_default_location_save_failed" formatted="false">"تعذّر حفظ موقع الاستنساخ الافتراضي"</string>
+    <string name="vault_l10n_deletion_review_changed" formatted="false">"تغيّرت مراجعة حذف المستودع. راجع النسخة المستنسخة مرة أخرى قبل حذفها."</string>
+    <string name="vault_l10n_device_storage" formatted="false">"تخزين الجهاز"</string>
+    <string name="vault_l10n_enable_shared_storage" formatted="false">"فعّل الوصول إلى التخزين المشترك، ثم اختر المجلد مرة أخرى. يظل تخزين التطبيق متاحًا دون هذا الإذن."</string>
+    <string name="vault_l10n_enable_shared_storage_before" formatted="false">"فعّل الوصول إلى التخزين المشترك قبل اختيار المجلد"</string>
+    <string name="vault_l10n_folder_access_removed" formatted="false">"أُزيل الوصول إلى المجلد. اختر هذا المجلد مرة أخرى قبل المتابعة."</string>
+    <string name="vault_l10n_folder_access_save_failed" formatted="false">"تعذّر حفظ الوصول إلى المجلد"</string>
+    <string name="vault_l10n_folder_cloud_provider" formatted="false">"اختر مجلدًا على هذا الجهاز أو على وحدة تخزين متصلة. لا يستطيع محرك Git هذا استخدام موفّر مستندات سحابي مباشرة."</string>
+    <string name="vault_l10n_folder_no_links" formatted="false">"اختر مجلدًا لا يتضمن مساره روابط رمزية"</string>
+    <string name="vault_l10n_folder_no_volume" formatted="false">"لا يحدد هذا المجلد وحدة تخزين على الجهاز"</string>
+    <string name="vault_l10n_folder_not_writable" formatted="false">"لا يدعم هذا المجلد ملفات Git قابلة للكتابة. تحقّق من الوصول ومن المساحة المتاحة."</string>
+    <string name="vault_l10n_folder_outside_git_metadata" formatted="false">"اختر مجلد عمل خارج بيانات Git الوصفية"</string>
+    <string name="vault_l10n_folder_outside_volume" formatted="false">"المجلد المحدد خارج وحدة التخزين الخاصة به"</string>
+    <string name="vault_l10n_folder_registered_differently_kept" formatted="false">"هذا المجلد مسجّل بالفعل بطريقة مختلفة. حُفظت الإعدادات الحالية."</string>
+    <string name="vault_l10n_folder_registered_differently_review" formatted="false">"هذا المجلد مسجّل بالفعل بطريقة مختلفة. راجعه في المستودعات المحلية."</string>
+    <string name="vault_l10n_folder_repository_choose_again" formatted="false">"اختر مجلد المستودع مرة أخرى لاستعادة الوصول"</string>
+    <string name="vault_l10n_folder_retain_access_failed" formatted="false">"تعذّر الاحتفاظ بإذن القراءة والكتابة لهذا المجلد"</string>
+    <string name="vault_l10n_folder_unavailable" formatted="false">"المجلد المحدد غير متاح"</string>
+    <string name="vault_l10n_github_user" formatted="false">"مستخدم GitHub"</string>
+    <string name="vault_l10n_history_changed_clone_kept" formatted="false">"تغيّر سجل المستودعات. حُفظ الاستنساخ المكتمل؛ راجعه في المستودعات المحلية."</string>
+    <string name="vault_l10n_last_sync_value">"آخر مزامنة: %1$s"</string>
+    <string name="vault_l10n_local_remote" formatted="false">"مستودع بعيد محلي"</string>
+    <string name="vault_l10n_local_remote_named">"مستودع بعيد محلي: ⁨%1$s⁩"</string>
+    <string name="vault_l10n_move_destination_exists" formatted="false">"الوجهة موجودة بالفعل. حُفظت الملفات الموجودة."</string>
+    <string name="vault_l10n_not_managed_location" formatted="false">"هذا ليس موقع استنساخ يديره التطبيق"</string>
+    <string name="vault_l10n_obsidian_prepare_failed" formatted="false">"أُضيف المستودع، لكن تعذّر تجهيز اتصال Obsidian الخاص به. أعد المحاولة من الإعدادات ← اتصالات Obsidian."</string>
+    <string name="vault_l10n_obsidian_review" formatted="false">"تحتاج بعض اتصالات Obsidian إلى مراجعة. أعد المحاولة من الإعدادات ← اتصالات Obsidian."</string>
+    <string name="vault_l10n_publication_access_removed" formatted="false">"أُزيل الوصول إلى مجلد النشر. اختر المجلد الأصلي مرة أخرى."</string>
+    <string name="vault_l10n_publication_account_changed" formatted="false">"تغيّر حساب النشر"</string>
+    <string name="vault_l10n_publication_device_folder_again" formatted="false">"اختر مجلد الجهاز الأصلي مرة أخرى لاستعادة الوصول إلى النشر"</string>
+    <string name="vault_l10n_publication_folder_choose_again" formatted="false">"اختر مجلد النشر الأصلي مرة أخرى لاستعادة الوصول"</string>
+    <string name="vault_l10n_publication_folder_different" formatted="false">"يختلف هذا المجلد عن النشر الذي رُوجع. حُفظت الملفات الموجودة."</string>
+    <string name="vault_l10n_publication_grant_different" formatted="false">"هذا الإذن يخص مجلدًا مختلفًا. اختر مجلد النشر الأصلي."</string>
+    <string name="vault_l10n_publication_needs_attention" formatted="false">"يحتاج النشر إلى انتباهك. حُفظت الملفات المحفوظة."</string>
+    <string name="vault_l10n_publication_no_links" formatted="false">"اختر مجلد النشر دون روابط رمزية"</string>
+    <string name="vault_l10n_publication_original_no_links" formatted="false">"اختر مجلد النشر الأصلي دون روابط رمزية"</string>
+    <string name="vault_l10n_publication_original_unavailable" formatted="false">"مجلد النشر الأصلي غير متاح"</string>
+    <string name="vault_l10n_publication_other_destination" formatted="false">"تسجيل النشر يخص وجهة أخرى"</string>
+    <string name="vault_l10n_publication_overlaps" formatted="false">"يتداخل هذا المجلد مع مستودع مسجّل. راجع إدخاله الحالي قبل النشر."</string>
+    <string name="vault_l10n_publication_progress_unavailable" formatted="false">"تقدّم النشر المحفوظ غير متاح"</string>
+    <string name="vault_l10n_publication_reconnect_account" formatted="false">"أعد توصيل حساب GitHub المحدد"</string>
+    <string name="vault_l10n_publication_select_account" formatted="false">"اختر حساب GitHub متصلًا"</string>
+    <string name="vault_l10n_publication_settings_changed" formatted="false">"تغيّرت إعدادات مستودع النشر"</string>
+    <string name="vault_l10n_publication_settings_repair" formatted="false">"تحتاج إعدادات المستودع إلى إصلاح قبل النشر"</string>
+    <string name="vault_l10n_publication_sign_in" formatted="false">"سجّل الدخول إلى حساب GitHub المحدد لهذا النشر"</string>
+    <string name="vault_l10n_publication_stopped" formatted="false">"تم الإيقاف. التقدّم المحفوظ جاهز للمراجعة؛ قد تكون نتيجة الشبكة الأخيرة غير مؤكدة."</string>
+    <string name="vault_l10n_publication_verify_account" formatted="false">"تحقّق من حساب GitHub المحدد قبل النشر"</string>
+    <string name="vault_l10n_recovery_needs_access" formatted="false">"يحتاج استرداد المستودع إلى الوصول إلى المجلد. اختر المجلد المتأثر مرة أخرى في المستودعات المحلية."</string>
+    <string name="vault_l10n_repository_already_added" formatted="false">"هذا المستودع مضاف بالفعل"</string>
+    <string name="vault_l10n_repository_folder_choose_again" formatted="false">"اختر مجلد هذا المستودع مرة أخرى لاستعادة الوصول المحفوظ."</string>
+    <string name="vault_l10n_repository_name_required" formatted="false">"اسم المستودع مطلوب"</string>
+    <string name="vault_l10n_repository_settings_save_failed" formatted="false">"تعذّر حفظ إعدادات المستودعات؛ تحقّق من المساحة المتاحة"</string>
+    <string name="vault_l10n_sample_open_failed">"تعذّر فتح المستودع النموذجي: %1$s"</string>
+    <string name="vault_l10n_sample_repository_name" formatted="false">"مستودع نموذجي"</string>
+    <string name="vault_l10n_settings_load_failed">"تعذّر تحميل الإعدادات: %1$s"</string>
+    <string name="vault_l10n_settings_save_failed" formatted="false">"تعذّر حفظ الإعدادات"</string>
+    <string name="vault_l10n_shared_storage_removed" formatted="false">"أُزيل الوصول إلى التخزين المشترك. فعّله لفتح هذا المستودع."</string>
+    <string name="vault_l10n_size_bytes">"%1$s بايت"</string>
+    <string name="vault_l10n_size_kb">"%1$s ك.ب"</string>
+    <string name="vault_l10n_size_mb">"%1$s م.ب"</string>
+    <string name="vault_l10n_storage_choose_folder_first" formatted="false">"اختر مجلدًا أولًا"</string>
+    <string name="vault_l10n_storage_location_changed" formatted="false">"تغيّر موقع التخزين هذا. اختر المجلد مرة أخرى."</string>
+    <string name="vault_l10n_storage_needs_attention" formatted="false">"يحتاج التخزين إلى انتباهك"</string>
+    <string name="vault_l10n_tracking_review_changed" formatted="false">"تغيّرت مراجعة إيقاف التتبع. راجع المستودع وخيار النسخ الاحتياطي مرة أخرى."</string>
+    <string name="vault_l10n_volume_unavailable" formatted="false">"وحدة التخزين هذه غير متاحة"</string>
+    <string name="vault_l10n_volume_unavailable_reconnect" formatted="false">"وحدة التخزين هذه غير متاحة. أعد توصيلها واختر المجلد مرة أخرى."</string>
+    <string name="vault_open_in_files_failed" formatted="false">"تعذّر فتح هذا المجلد في تطبيق الملفات."</string>
+    <string name="vault_repository_fallback" formatted="false">"المستودع"</string>
+    <string name="vault_url_copied" formatted="false">"تم النسخ!"</string>
+    <plurals name="account_updated_days">
+        <item quantity="zero">"منذ %1$d ي"</item>
+        <item quantity="one">"منذ %1$d ي"</item>
+        <item quantity="two">"منذ %1$d ي"</item>
+        <item quantity="few">"منذ %1$d ي"</item>
+        <item quantity="many">"منذ %1$d ي"</item>
+        <item quantity="other">"منذ %1$d ي"</item>
+    </plurals>
+    <plurals name="account_updated_hours">
+        <item quantity="zero">"منذ %1$d س"</item>
+        <item quantity="one">"منذ %1$d س"</item>
+        <item quantity="two">"منذ %1$d س"</item>
+        <item quantity="few">"منذ %1$d س"</item>
+        <item quantity="many">"منذ %1$d س"</item>
+        <item quantity="other">"منذ %1$d س"</item>
+    </plurals>
+    <plurals name="account_updated_minutes">
+        <item quantity="zero">"منذ %1$d د"</item>
+        <item quantity="one">"منذ %1$d د"</item>
+        <item quantity="two">"منذ %1$d د"</item>
+        <item quantity="few">"منذ %1$d د"</item>
+        <item quantity="many">"منذ %1$d د"</item>
+        <item quantity="other">"منذ %1$d د"</item>
+    </plurals>
+    <plurals name="account_updated_months">
+        <item quantity="zero">"منذ %1$d شهر"</item>
+        <item quantity="one">"منذ %1$d شهر"</item>
+        <item quantity="two">"منذ %1$d شهر"</item>
+        <item quantity="few">"منذ %1$d شهر"</item>
+        <item quantity="many">"منذ %1$d شهر"</item>
+        <item quantity="other">"منذ %1$d شهر"</item>
+    </plurals>
+    <plurals name="account_updated_weeks">
+        <item quantity="zero">"منذ %1$d أسبوع"</item>
+        <item quantity="one">"منذ %1$d أسبوع"</item>
+        <item quantity="two">"منذ %1$d أسبوع"</item>
+        <item quantity="few">"منذ %1$d أسبوع"</item>
+        <item quantity="many">"منذ %1$d أسبوع"</item>
+        <item quantity="other">"منذ %1$d أسبوع"</item>
+    </plurals>
+    <plurals name="account_updated_years">
+        <item quantity="zero">"منذ %1$d سنة"</item>
+        <item quantity="one">"منذ %1$d سنة"</item>
+        <item quantity="two">"منذ %1$d سنة"</item>
+        <item quantity="few">"منذ %1$d سنة"</item>
+        <item quantity="many">"منذ %1$d سنة"</item>
+        <item quantity="other">"منذ %1$d سنة"</item>
+    </plurals>
+    <plurals name="dialogs_error_merge_conflicts">
+        <item quantity="zero">"عدد التعارضات غير المحلولة في الدمج: %1$d.\n\nحلّها قبل إكمال الدمج."</item>
+        <item quantity="one">"عدد التعارضات غير المحلولة في الدمج: %1$d.\n\nحلّها قبل إكمال الدمج."</item>
+        <item quantity="two">"عدد التعارضات غير المحلولة في الدمج: %1$d.\n\nحلّها قبل إكمال الدمج."</item>
+        <item quantity="few">"عدد التعارضات غير المحلولة في الدمج: %1$d.\n\nحلّها قبل إكمال الدمج."</item>
+        <item quantity="many">"عدد التعارضات غير المحلولة في الدمج: %1$d.\n\nحلّها قبل إكمال الدمج."</item>
+        <item quantity="other">"عدد التعارضات غير المحلولة في الدمج: %1$d.\n\nحلّها قبل إكمال الدمج."</item>
+    </plurals>
+    <plurals name="diff_changed_lines">
+        <item quantity="zero">"⁦+%1$s -%2$s⁩ أسطر"</item>
+        <item quantity="one">"⁦+%1$s -%2$s⁩ سطر"</item>
+        <item quantity="two">"⁦+%1$s -%2$s⁩ سطران"</item>
+        <item quantity="few">"⁦+%1$s -%2$s⁩ أسطر"</item>
+        <item quantity="many">"⁦+%1$s -%2$s⁩ سطرًا"</item>
+        <item quantity="other">"⁦+%1$s -%2$s⁩ سطر"</item>
+    </plurals>
+    <plurals name="gitops_merge_stopped_conflicts">
+        <item quantity="zero">"توقف الدمج: ⁨%1$s⁩ (%2$d تعارضات)"</item>
+        <item quantity="one">"توقف الدمج: ⁨%1$s⁩ (تعارض واحد: %2$d)"</item>
+        <item quantity="two">"توقف الدمج: ⁨%1$s⁩ (تعارضان: %2$d)"</item>
+        <item quantity="few">"توقف الدمج: ⁨%1$s⁩ (%2$d تعارضات)"</item>
+        <item quantity="many">"توقف الدمج: ⁨%1$s⁩ (%2$d تعارضًا)"</item>
+        <item quantity="other">"توقف الدمج: ⁨%1$s⁩ (%2$d تعارض)"</item>
+    </plurals>
+    <plurals name="lfs_downloaded_objects">
+        <item quantity="zero">"لم تُنزّل أي كائنات (%1$d)."</item>
+        <item quantity="one">"تم تنزيل كائن واحد (%1$d)."</item>
+        <item quantity="two">"تم تنزيل كائنين (%1$d)."</item>
+        <item quantity="few">"تم تنزيل %1$d كائنات."</item>
+        <item quantity="many">"تم تنزيل %1$d كائنًا."</item>
+        <item quantity="other">"تم تنزيل %1$d كائن."</item>
+    </plurals>
+    <plurals name="lfs_extensions_more">
+        <item quantity="zero">"ولا توجد ملفات حالية إضافية (%1$d). راجع تغييرات Git قبل إنشاء إيداع."</item>
+        <item quantity="one">"وملف حالي إضافي (%1$d). راجع تغييرات Git قبل إنشاء إيداع."</item>
+        <item quantity="two">"وملفان حاليان إضافيان (%1$d). راجع تغييرات Git قبل إنشاء إيداع."</item>
+        <item quantity="few">"و%1$d ملفات حالية إضافية. راجع تغييرات Git قبل إنشاء إيداع."</item>
+        <item quantity="many">"و%1$d ملفًا حاليًا إضافيًا. راجع تغييرات Git قبل إنشاء إيداع."</item>
+        <item quantity="other">"و%1$d ملف حالي إضافي. راجع تغييرات Git قبل إنشاء إيداع."</item>
+    </plurals>
+    <plurals name="lfs_extensions_retained">
+        <item quantity="zero">"لا توجد ملفات حالية (%1$d) تحتفظ بخيارات تتبع صريحة."</item>
+        <item quantity="one">"ملف حالي (%1$d) يحتفظ بخيار التتبع المحدد له."</item>
+        <item quantity="two">"ملفان حاليان (%1$d) يحتفظان بخياري التتبع المحددين لهما."</item>
+        <item quantity="few">"%1$d ملفات حالية تحتفظ بخيارات التتبع المحددة لها."</item>
+        <item quantity="many">"%1$d ملفًا حاليًا يحتفظ بخيار التتبع المحدد له."</item>
+        <item quantity="other">"%1$d ملف حالي يحتفظ بخيار التتبع المحدد له."</item>
+    </plurals>
+    <plurals name="lfs_restored_files">
+        <item quantity="zero">"لم تُستعد أي ملفات (%1$d)."</item>
+        <item quantity="one">"تمت استعادة ملف واحد (%1$d)."</item>
+        <item quantity="two">"تمت استعادة ملفين (%1$d)."</item>
+        <item quantity="few">"تمت استعادة %1$d ملفات."</item>
+        <item quantity="many">"تمت استعادة %1$d ملفًا."</item>
+        <item quantity="other">"تمت استعادة %1$d ملف."</item>
+    </plurals>
+    <plurals name="lfs_tracking_files">
+        <item quantity="zero">"لا ملفات (%1$d)"</item>
+        <item quantity="one">"ملف واحد (%1$d)"</item>
+        <item quantity="two">"ملفان (%1$d)"</item>
+        <item quantity="few">"%1$d ملفات"</item>
+        <item quantity="many">"%1$d ملفًا"</item>
+        <item quantity="other">"%1$d ملف"</item>
+    </plurals>
+    <plurals name="move_plan_summary">
+        <item quantity="zero">"لا ملفات (%1$s) بما فيها بيانات Git الوصفية · %2$s"</item>
+        <item quantity="one">"ملف واحد (%1$s) بما فيه بيانات Git الوصفية · %2$s"</item>
+        <item quantity="two">"ملفان (%1$s) بما فيهما بيانات Git الوصفية · %2$s"</item>
+        <item quantity="few">"%1$s ملفات بما فيها بيانات Git الوصفية · %2$s"</item>
+        <item quantity="many">"%1$s ملفًا بما فيها بيانات Git الوصفية · %2$s"</item>
+        <item quantity="other">"%1$s ملف بما فيها بيانات Git الوصفية · %2$s"</item>
+    </plurals>
+    <plurals name="rebase_additional_blocked_paths">
+        <item quantity="zero">"لا توجد مسارات محظورة إضافية غير معروضة (%1$d)."</item>
+        <item quantity="one">"لم يُعرض مسار محظور إضافي واحد (%1$d)."</item>
+        <item quantity="two">"لم يُعرض مساران محظوران إضافيان (%1$d)."</item>
+        <item quantity="few">"لم تُعرض %1$d مسارات محظورة إضافية."</item>
+        <item quantity="many">"لم يُعرض %1$d مسارًا محظورًا إضافيًا."</item>
+        <item quantity="other">"%1$d مسار محظور إضافي غير معروض."</item>
+    </plurals>
+    <plurals name="rebase_local_commits">
+        <item quantity="zero">"لا توجد التزامات محلية (%1$d)"</item>
+        <item quantity="one">"%1$d التزام محلي"</item>
+        <item quantity="two">"التزامان محليان (%1$d)"</item>
+        <item quantity="few">"%1$d التزامات محلية"</item>
+        <item quantity="many">"%1$d التزامًا محليًا"</item>
+        <item quantity="other">"%1$d التزام محلي"</item>
+    </plurals>
+    <plurals name="rebase_upstream_commits">
+        <item quantity="zero">"لا توجد التزامات في الفرع المتتبَّع (%1$d)"</item>
+        <item quantity="one">"%1$d التزام في الفرع المتتبَّع"</item>
+        <item quantity="two">"التزامان في الفرع المتتبَّع (%1$d)"</item>
+        <item quantity="few">"%1$d التزامات في الفرع المتتبَّع"</item>
+        <item quantity="many">"%1$d التزامًا في الفرع المتتبَّع"</item>
+        <item quantity="other">"%1$d التزام في الفرع المتتبَّع"</item>
+    </plurals>
+    <plurals name="repositories_added">
+        <item quantity="zero">"لم تتم إضافة مستودعات (%1$d)"</item>
+        <item quantity="one">"تمت إضافة مستودع واحد (%1$d)"</item>
+        <item quantity="two">"تمت إضافة مستودعين (%1$d)"</item>
+        <item quantity="few">"تمت إضافة %1$d مستودعات"</item>
+        <item quantity="many">"تمت إضافة %1$d مستودعًا"</item>
+        <item quantity="other">"تمت إضافة %1$d مستودع"</item>
+    </plurals>
+    <plurals name="repository_picker_count">
+        <item quantity="zero">"· لا مستودعات (%1$d)"</item>
+        <item quantity="one">"· مستودع واحد (%1$d)"</item>
+        <item quantity="two">"· مستودعان (%1$d)"</item>
+        <item quantity="few">"· %1$d مستودعات"</item>
+        <item quantity="many">"· %1$d مستودعًا"</item>
+        <item quantity="other">"· %1$d مستودع"</item>
+    </plurals>
+    <plurals name="tide_vault_changes_on_phone">
+        <item quantity="zero">"لا تغييرات على هذا الهاتف"</item>
+        <item quantity="one">"تغيير على هذا الهاتف"</item>
+        <item quantity="two">"تغييران على هذا الهاتف"</item>
+        <item quantity="few">"تغييرات على هذا الهاتف"</item>
+        <item quantity="many">"تغييرًا على هذا الهاتف"</item>
+        <item quantity="other">"تغيير على هذا الهاتف"</item>
+    </plurals>
+    <plurals name="tide_vault_conflicts_to_resolve">
+        <item quantity="zero">"لا تعارضات للحل"</item>
+        <item quantity="one">"تعارض يجب حله"</item>
+        <item quantity="two">"تعارضان يجب حلهما"</item>
+        <item quantity="few">"تعارضات يجب حلها"</item>
+        <item quantity="many">"تعارضًا يجب حله"</item>
+        <item quantity="other">"تعارض يجب حله"</item>
+    </plurals>
+</resources>

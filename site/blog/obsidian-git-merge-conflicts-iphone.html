@@ -52,6 +52,9 @@
   "mainEntityOfPage": "https://gitsync.md/blog/obsidian-git-merge-conflicts-iphone"
 }
 </script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="../site.css">
 <link rel="stylesheet" href="../content.css">
 <script type="application/ld+json">
@@ -91,22 +94,33 @@
 
 <header class="site-header">
   <nav class="shell navigation" aria-label="Main navigation">
-    <a class="brand" href="/" aria-label="GitSync.md home"><span class="brand-mark" aria-hidden="true"><img src="../assets/gitsync-app-icon.png" width="192" height="192" alt="" decoding="async"></span>GITSYNC<span class="brand-extension">.MD</span></a>
-    <div class="nav-links"><a href="/#features">The app</a><a href="/#workflow">How it works</a><a href="/blog/">Guides <span aria-hidden="true">↗</span></a></div>
-    <a class="button button-small" href="/#download">Get the app <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-external"/></svg></a>
+    <a class="brand" href="/" aria-label="GitSync.md home">gitsync<span class="brand-extension">.md</span></a>
+    <div class="nav-links"><a href="/#app">The app</a><a href="/#workflow">How it works</a><a href="/blog/" class="is-active">Guides</a><a href="/compare/obsidian-sync-vs-git">Compare</a><a href="/#faq">FAQ</a></div>
+    <a class="button button-small" href="/#download">Get the app</a>
   </nav>
 </header>
 
 <main id="main">
-  <header class="article-hero"><div class="container hero-grid">
-    <div class="article-title"><nav class="eyebrow article-breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li><a href="/blog/">Guides</a></li><li aria-current="page">Merge conflicts</li></ol></nav>
+  <div class="container guide-layout">
+      <header class="article-hero">
+        <div class="article-title"><nav class="eyebrow article-breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li><a href="/blog/">Guides</a></li><li aria-current="page">Merge conflicts</li></ol></nav>
       <h1>Fix Obsidian Git merge conflicts on iPhone<span class="accent">.</span></h1>
       <p class="subtitle">Preserve your notes, identify the active Git operation, and review each file before completing a merge or rebase. GitSync.md’s Conflict Center provides the native controls for that workflow.</p>
-      <div class="meta-line"><time datetime="2026-10-26">October 26, 2026</time><span>By <a href="/about" rel="author">Cody Bontecou</a></span><span>iPhone + iPad</span></div>
+      <div class="meta-line"><span>guides / obsidian · 5 min read · updated Oct 2026</span><time datetime="2026-10-26">October 26, 2026</time><span>By <a href="/about" rel="author">Cody Bontecou</a></span><span>iPhone + iPad</span></div>
     </div>
-    <aside class="toc-card" aria-label="Article outline"><div class="toc-title">In this guide</div><ol><li><a href="#state">Identify the Git state</a></li><li><a href="#preserve">Preserve unsynced notes</a></li><li><a href="#resolve">Resolve text files</a></li><li><a href="#special-files">Attachments and renames</a></li><li><a href="#finish">Finish and verify</a></li><li><a href="#prevent">Reduce repeat conflicts</a></li></ol></aside>
-  </div></header>
-  <div class="container"><div class="article-shell article-shell-single"><article class="article-body">
+      </header>
+      <aside class="guide-aside" aria-label="Guide sidebar">
+        <div class="guide-aside-sticky">
+        <div class="rail-card" role="group" aria-label="What you'll see"><div class="toc-title">What you'll see</div><ul class="rail-states"><li><span class="rail-dot rail-dot-ahead" aria-hidden="true"></span><strong>↑2</strong> on this iPhone</li><li><span class="rail-dot rail-dot-diverged" aria-hidden="true"></span><strong>diverged</strong> · resolve</li><li><span class="rail-dot rail-dot-behind" aria-hidden="true"></span><strong>↓1</strong> from Mac</li></ul></div>
+        <nav class="toc-card" aria-label="Article outline"><div class="toc-title">On this page</div><ol><li><a href="#pull-first">Pull first, then push</a></li><li><a href="#pick-version">Pick a version</a></li><li><a href="#stop-repeat">Stop it happening again</a></li></ol></nav>
+        <div class="aside-cta aside-cta-wide">
+          <p class="aside-cta-title">Real Git on your iPhone.</p>
+          <p class="aside-cta-price">iPhone + iPad: $19.99 once · No subscription</p>
+          <a class="aside-cta-button" href="/v/web-homepage-113" target="_blank" rel="noopener">Download on the App Store</a>
+        </div>
+        </div>
+      </aside>
+      <article class="article-body">
         <div class="tldr"><div class="tldr-title">Start here</div><ol>
           <li>Pause automatic Git actions in both apps and preserve unsynced notes.</li>
           <li>Check whether Git has actually started a merge or rebase. A stopped fast-forward pull is a different state.</li>
@@ -115,17 +129,27 @@
         </ol></div>
         <p>This guide describes GitSync.md’s native conflict tools on iPhone and iPad. Obsidian Git has its own mobile Git implementation and commands. Do not run both clients against the same working copy at once. For a stuck or unfamiliar state, preserve the files and finish recovery on desktop.</p>
 
-        <h2 id="state">Is it a conflict, or did the pull stop before merging?</h2>
+        <h2 id="pull-first">Pull first, then push</h2>
+        <p>When your Mac pushed while your iPhone was holding commits of its own, the push is rejected until you bring the remote changes in. Pull first, resolve anything that overlaps, then push. If the edits touch different files, Git can combine them without asking you anything.</p>
+        <pre tabindex="0" role="region" aria-label="Rejected push and the equivalent Git commands"><code>! [rejected]  main -&gt; main (fetch first)
+
+# GitSync.md does this for you:
+git fetch origin
+git rebase origin/main</code></pre>
+        <h3 id="state">Is it a conflict, or did the pull stop before merging?</h3>
         <p>GitSync.md’s automatic pull only accepts a clean fast-forward. It stops when local edits need attention or local and remote history have diverged. That message does not necessarily mean a merge has started or that conflict markers have been written.</p>
         <p>Open the repository in GitSync.md and review its status. If no merge or rebase is active, first decide how to preserve local edits and reconcile the commits using the manual Git workflow. If a merge or rebase is already active, use that operation’s conflict controls rather than starting another pull.</p>
         <p>If the error is authentication, a missing branch, or a missing repository, use the <a href="/blog/obsidian-git-not-working-iphone">general troubleshooting guide</a> instead.</p>
 
-        <h2 id="preserve">Preserve the versions before choosing one</h2>
+        <h3 id="preserve">Preserve the versions before choosing one</h3>
         <p>Pause Obsidian Git timers and GitSync.md’s automatic actions. Keep a separate copy of unsynced notes before resolving or aborting. Do not delete the vault, remove <code>.git</code>, or force-push to make the warning disappear.</p>
         <p>A conflict usually means Git needs your decision about competing edits. For example, both devices might have changed the same line in <code>Plan.md</code>. Choosing a complete side can discard useful content from the other side.</p>
         <p><a href="https://git-scm.com/docs/git-merge">Git’s merge documentation</a> explains conflict states and the difference between resolving files and completing the operation. The steps below use GitSync.md’s interface.</p>
 
-        <h2 id="resolve">Resolve the files in Conflict Center</h2>
+        <h2 id="pick-version">Pick a version</h2>
+        <p>When both sides changed the same lines, GitSync.md shows them next to each other. Keep yours, keep theirs, or keep both and tidy up after.</p>
+        <div class="callout tip"><span class="callout-label">Tip</span><p>On iPad and iPhone Duo, the two versions open side by side across the whole screen.</p></div>
+        <h3 id="resolve">Resolve the files in Conflict Center</h3>
         <ol>
           <li>Open the repository’s Git controls and find <strong>Conflict Center</strong>. Check whether it identifies a merge or a rebase.</li>
           <li>Open an unresolved text file and inspect both sides. Compare the actual text before selecting Ours or Theirs.</li>
@@ -148,11 +172,11 @@ Start: 11:00
 Bring the budget draft and the agenda.</code></pre>
         <p>Review the entire note, including lines outside the edited paragraph. If you manually edited conflict markers, confirm that marker lines are gone and that the intended text remains.</p>
 
-        <h2 id="special-files">Attachments, renamed files, and deletions</h2>
+        <h3 id="special-files">Attachments, renamed files, and deletions</h3>
         <p>Binary attachments cannot be merged as text in GitSync.md’s editor. Conflict Center lets you select Ours or Theirs at the file level. If you need both versions, preserve independent copies before picking one.</p>
         <p>For a rename/rename conflict, the editor asks which path to keep. Review both names and contents. A delete/modify conflict requires a deliberate choice about whether the file should remain. Do not apply one blanket choice to the whole vault just because most conflicts look similar.</p>
 
-        <h2 id="finish">Finish the operation, then verify</h2>
+        <h3 id="finish">Finish the operation, then verify</h3>
         <ul>
           <li><strong>Merge:</strong> after every conflict is resolved, enter the merge commit message and use the completion control. GitSync.md labels this Complete or Complete Merge depending on the surface.</li>
           <li><strong>Rebase:</strong> use <strong>Continue Rebase</strong>. Another commit may produce another conflict; repeat the review until the operation finishes.</li>
@@ -160,7 +184,7 @@ Bring the budget draft and the agenda.</code></pre>
         <p>Resolving one file does not itself push a commit. Check repository status, read the resulting note in Obsidian, and inspect the history before pushing. Verify the exact note and commit on the remote, then pull on the other device.</p>
         <p>GitSync.md also exposes <strong>Abort Merge</strong> and <strong>Abort Rebase</strong>. These cancel the active operation; they are not a replacement for keeping a separate copy of local work first. Move recovery to desktop if you are unsure which edits would remain.</p>
 
-        <h2 id="prevent">Reduce the next conflict</h2>
+        <h2 id="stop-repeat">Stop it happening again</h2>
         <p>For repeated workspace-setting conflicts, review <a href="/blog/obsidian-gitignore">your Obsidian .gitignore policy</a> after resolving the current operation.</p>
         <ol>
           <li>Pull before starting to write on a device.</li>
@@ -175,7 +199,8 @@ Bring the budget draft and the agenda.</code></pre>
           <li><a href="/v/web-homepage-113">GitSync.md on the App Store</a></li>
         </ul></div>
 
-  </article></div></div>
+  </article>
+    </div>
   <section class="content-download" aria-labelledby="download-heading">
     <div class="shell content-download-layout">
       <div>
@@ -196,9 +221,9 @@ Bring the budget draft and the agenda.</code></pre>
 
 <footer class="site-footer">
   <div class="shell footer-layout">
-    <a class="brand" href="/" aria-label="GitSync.md home"><span class="brand-mark" aria-hidden="true"><img src="../assets/gitsync-app-icon.png" width="192" height="192" alt="" decoding="async"></span>GITSYNC<span class="brand-extension">.MD</span></a>
+    <a class="brand" href="/" aria-label="GitSync.md home">gitsync<span class="brand-extension">.md</span></a>
     <p>Independently built by <a href="https://codybontecou.com" target="_blank" rel="noopener">Cody Bontecou</a>.<br>© 2026 GitSync.md</p>
-    <div class="footer-links"><a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener">Source</a><a href="/blog/">Guides</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
+    <div class="footer-links"><a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener">Source</a><a href="/blog/">Guides</a><a href="/compare/obsidian-sync-vs-git">Compare</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
     <a class="back-top" href="#top" aria-label="Back to top">↑</a>
   </div>
 </footer>

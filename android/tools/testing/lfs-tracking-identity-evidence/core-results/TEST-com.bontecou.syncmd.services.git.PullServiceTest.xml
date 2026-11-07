@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.git.PullServiceTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-11-02T19:08:39" hostname="MacBook-Pro.local" time="0.928">
+  <properties/>
+  <testcase name="isClean returns false for dirty repository" classname="com.bontecou.syncmd.services.git.PullServiceTest" time="0.085"/>
+  <testcase name="pull succeeds for clean repository" classname="com.bontecou.syncmd.services.git.PullServiceTest" time="0.086"/>
+  <testcase name="getChangeCount returns correct number" classname="com.bontecou.syncmd.services.git.PullServiceTest" time="0.083"/>
+  <testcase name="getSyncStatus returns ahead and behind counts" classname="com.bontecou.syncmd.services.git.PullServiceTest" time="0.086"/>
+  <testcase name="canPull returns true when clean and up-to-date" classname="com.bontecou.syncmd.services.git.PullServiceTest" time="0.088"/>
+  <testcase name="canPull returns false when dirty" classname="com.bontecou.syncmd.services.git.PullServiceTest" time="0.088"/>
+  <testcase name="fetch succeeds even when dirty" classname="com.bontecou.syncmd.services.git.PullServiceTest" time="0.084"/>
+  <testcase name="isClean returns true for clean repository" classname="com.bontecou.syncmd.services.git.PullServiceTest" time="0.083"/>
+  <testcase name="planPull returns plan" classname="com.bontecou.syncmd.services.git.PullServiceTest" time="0.082"/>
+  <testcase name="getPullBlockingReason returns reason when blocked" classname="com.bontecou.syncmd.services.git.PullServiceTest" time="0.081"/>
+  <testcase name="getStatus returns clean repository" classname="com.bontecou.syncmd.services.git.PullServiceTest" time="0.082"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

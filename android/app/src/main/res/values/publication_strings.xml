@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="publication_back">Back</string>
+    <string name="publication_accounts">GitHub account</string>
+    <string name="publication_save_destination">Save destination</string>
+    <string name="publication_prepare_title">Prepare this snapshot?</string>
+    <string name="publication_prepare_warning">This creates Git metadata and commits only your selected files locally. Your working files stay in place. Excluded files receive local ignore rules. No GitHub repository is created yet. File selection, author and account freeze after preparation starts. Name and visibility remain editable until repository creation begins.</string>
+    <string name="publication_finish">Finish setup</string>
+    <string name="publication_private_label">private</string>
+    <string name="publication_public_label">public</string>
+    <string name="publication_adopt_title">Use this repository?</string>
+    <string name="publication_adopt_warning">GitHub has %1$s/%2$s (%3$s), repository ID %4$d. A matching name does not prove this attempt created it. Use this empty repository for your saved commit?\n\n%5$s</string>
+    <string name="publication_adopt">Use repository</string>
+    <string name="publication_sensitive_title">Include sensitive file?</string>
+    <string name="publication_sensitive_warning">%1$s may contain credentials or private information. Include it only after checking its contents. Published Git history may retain it after deletion.</string>
+    <string name="publication_include">Include file</string>
+    <string name="publication_file_unsupported">Unsupported content conversion</string>
+    <string name="publication_cancel">Cancel</string>
+    <string name="publication_discard_title">Discard this review?</string>
+    <string name="publication_discard_warning">Remove these saved review choices and unsaved edits? Working files stay untouched. Preparation and publication have not started for this review.</string>
+    <string name="publication_stopping">Stopping safely…</string>
+    <string name="publication_leave_title">Save your review?</string>
+    <string name="publication_leave_warning">Account, author, message or destination edits have not been saved.</string>
+    <string name="publication_save_close">Save and leave</string>
+    <string name="publication_discard_close">Leave without saving edits</string>
+    <string name="publication_work_load">Reading saved progress…</string>
+    <string name="publication_work_inspect">Inspecting the folder…</string>
+    <string name="publication_work_save">Saving your review…</string>
+    <string name="publication_work_refresh">Refreshing file review…</string>
+    <string name="publication_work_check">Checking the original destination…</string>
+    <string name="publication_work_adopt">Verifying the reviewed repository…</string>
+    <string name="publication_work_reconnect">Checking folder access…</string>
+    <string name="publication_phase_preparing">Resume local preparation</string>
+</resources>

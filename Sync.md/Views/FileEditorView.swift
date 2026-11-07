@@ -15,6 +15,7 @@ struct FileEditorView: View {
     let fileURL: URL
 
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
     @State private var liveURL: URL
     @State private var content: String = ""
@@ -27,6 +28,17 @@ struct FileEditorView: View {
     @State private var showRenameModal = false
     @State private var renameText: String = ""
     @State private var showSaveToast = false
+    @State private var showCommitSheet = false
+    @State private var showPreview = false
+    @State private var autosaveTask: Task<Void, Never>?
+    /// Lines that differ from HEAD, and which ones (for the gutter bar).
+    @State private var linesChanged: Int?
+    @State private var changedLines: Set<Int> = []
+    /// Width this screen gets; at regular width with room for two panes
+    /// (iPhone Duo open, iPad) the commit panel sits beside the editor.
+    @State private var screenWidth: CGFloat = 0
+
+    private static let autosaveDelay: Duration = .seconds(2)
 
     init(repoID: UUID, fileURL: URL) {
         self.repoID = repoID
@@ -38,15 +50,108 @@ struct FileEditorView: View {
     private var isDirty: Bool { content != originalContent }
     private var language: SyntaxLanguage { SyntaxLanguage.detect(fileExtension: liveURL.pathExtension) }
 
+    /// Path of the open file relative to the vault root, symlinks resolved on
+    /// both sides (the vault URL comes back through /var -> /private/var).
+    private var relativePath: String? {
+        let base = state.vaultURL(for: repoID).resolvingSymlinksInPath().standardizedFileURL.pathComponents
+        let file = liveURL.resolvingSymlinksInPath().standardizedFileURL.pathComponents
+        guard file.count > base.count, Array(file.prefix(base.count)) == base else { return nil }
+        return file.dropFirst(base.count).joined(separator: "/")
+    }
+
+    /// "VoxVault / daily" — where this file lives.
+    private var locationLine: String {
+        let vault = state.repo(id: repoID)?.displayName ?? ""
+        guard let rel = relativePath else { return vault }
+        let folder = (rel as NSString).deletingLastPathComponent
+        return folder.isEmpty ? vault : "\(vault) / \(folder)"
+    }
+
+    /// "VoxVault / daily · saved" — beside the commit panel (board "DuoEditor")
+    /// the floating saved pill is hidden, so the save state rides the subtitle.
+    private var editorSubtitle: String {
+        guard showsCommitPanel, !isBinary else { return locationLine }
+        let status = isSaving
+            ? String(localized: "saving…")
+            : (isDirty ? String(localized: "editing") : String(localized: "saved"))
+        return locationLine.isEmpty ? status : "\(locationLine) · \(status)"
+    }
+
+    /// True when git sees this file as changed since the last commit.
+    private var hasUncommittedChanges: Bool {
+        guard let rel = relativePath?.precomposedStringWithCanonicalMapping else { return false }
+        return (state.statusEntriesByRepo[repoID] ?? []).contains { $0.path == rel }
+    }
+
+    private var showsSyncPill: Bool {
+        !showsCommitPanel && !isBinary && !isDirty && (showSaveToast || hasUncommittedChanges)
+    }
+
+    private var showsCommitPanel: Bool {
+        horizontalSizeClass == .regular && screenWidth >= EditorLayout.commitPanelMinWidth
+    }
+
+    private enum EditorLayout {
+        static let commitPanelMinWidth: CGFloat = 700
+    }
+
     var body: some View {
+        HStack(spacing: 0) {
+            editorPane
+            if showsCommitPanel {
+                Rectangle().fill(Tide.line).frame(width: 1).ignoresSafeArea()
+                CommitSheetView(repoID: repoID, embedded: true)
+                    .frame(width: min(440, screenWidth * 0.46))
+                    .transition(.move(edge: .trailing).combined(with: .opacity))
+            }
+        }
+        .onGeometryChange(for: CGFloat.self) { $0.size.width } action: { screenWidth = $0 }
+        .animation(.easeInOut(duration: 0.2), value: showsCommitPanel)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar { editorToolbar }
+        .sheet(isPresented: $showCommitSheet) { CommitSheetView(repoID: repoID) }
+        .onAppear { loadContent() }
+        .task { await refreshChangeSummary() }
+        .onChange(of: content) { scheduleAutosave() }
+        .onChange(of: state.statusEntriesByRepo[repoID] ?? []) {
+            Task { await refreshChangeSummary() }
+        }
+        .onDisappear {
+            autosaveTask?.cancel()
+            if isDirty { performSave(dismissKeyboard: false) }
+        }
+        .alert(
+            String(localized: "Unable to Update File"),
+            isPresented: Binding(
+                get: { operationError != nil },
+                set: { if !$0 { operationError = nil } }
+            )
+        ) {
+            Button(String(localized: "OK"), role: .cancel) { operationError = nil }
+        } message: {
+            Text(operationError ?? "")
+        }
+    }
+
+    private var editorPane: some View {
         ZStack {
-            Color.brutalBg.ignoresSafeArea()
+            Tide.card.ignoresSafeArea()
 
             if isBinary {
                 binaryState
             } else {
-                CodeEditorView(text: $content, language: language)
-                    .padding(.horizontal, 8)
+                if showPreview && language == .markdown {
+                    ScrollView {
+                        TideMarkdownView(text: content)
+                            .padding(.horizontal, 20)
+                            .padding(.top, 14)
+                            .padding(.bottom, 96)
+                    }
+                    .scrollIndicators(.hidden)
+                } else {
+                    CodeEditorView(text: $content, language: language, changedLines: changedLines)
+                        .padding(.horizontal, 4)
+                }
             }
 
             if showDeleteConfirm {
@@ -73,99 +178,163 @@ struct FileEditorView: View {
         }
         .overlay(alignment: .bottom) {
             Group {
-                if showSaveToast {
-                    BToast(message: String(localized: "Saved"), systemImage: "checkmark")
+                if showsSyncPill && !showDeleteConfirm && !showRenameModal {
+                    syncPill
+                        .padding(.horizontal, Tide.gutter)
+                        .padding(.bottom, 14)
                         .transition(.move(edge: .bottom).combined(with: .opacity))
-                        .allowsHitTesting(false)
                 }
             }
-            .animation(.spring(duration: 0.4, bounce: 0.15), value: showSaveToast)
+            .animation(.spring(duration: 0.4, bounce: 0.15), value: showsSyncPill)
         }
         .animation(.easeOut(duration: 0.15), value: showDeleteConfirm)
         .animation(.easeOut(duration: 0.15), value: showRenameModal)
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                Text(fileName.uppercased())
-                    .bType(.monoCaption, weight: .black)
-                    .foregroundStyle(Color.brutalText)
-                    .tracking(2)
+    }
+
+    @ToolbarContentBuilder
+    private var editorToolbar: some ToolbarContent {
+        ToolbarItem(placement: .principal) {
+            VStack(spacing: 1) {
+                Text(fileName)
+                    .font(TideFont.sans(15, .semibold, relativeTo: .headline))
+                    .foregroundStyle(Tide.ink)
                     .lineLimit(1)
+                    .truncationMode(.middle)
+                if !editorSubtitle.isEmpty {
+                    Text(editorSubtitle)
+                        .font(TideFont.mono(11))
+                        .foregroundStyle(Tide.inkFaint)
+                        .lineLimit(1)
+                        .truncationMode(.head)
+                }
             }
-            ToolbarItem(placement: .topBarTrailing) {
-                HStack(spacing: 16) {
-                    if !isBinary {
-                        Button {
-                            performSave()
-                        } label: {
-                            Text("Save")
-                                .bType(.monoCaption)
-                                .foregroundStyle(isDirty ? Color.brutalAccent : Color.brutalTextFaint)
-                                // 44x44pt hit target, glyph stays compact.
-                                .frame(minWidth: 44, minHeight: 44)
-                                .contentShape(Rectangle())
-                        }
-                        .buttonStyle(.plain)
-                        .disabled(!isDirty || isSaving)
+            .accessibilityElement(children: .combine)
+        }
+        ToolbarItem(placement: .topBarTrailing) {
+            HStack(spacing: 4) {
+                if !isBinary && language == .markdown {
+                    Button {
+                        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                        showPreview.toggle()
+                    } label: {
+                        Text(showPreview ? String(localized: "Edit") : String(localized: "Preview"))
+                            .font(TideFont.sans(13, .medium, relativeTo: .subheadline))
+                            .foregroundStyle(Tide.ink)
+                            .padding(.horizontal, 14)
+                            .frame(height: 34)
+                            .overlay(Capsule().strokeBorder(Color.brutalBorderSoft, lineWidth: 1))
+                            .frame(minWidth: 44, minHeight: 44)
+                            .contentShape(Rectangle())
                     }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel(showPreview ? String(localized: "Edit") : String(localized: "Preview"))
+                }
+                if !isBinary {
+                    Button {
+                        performSave()
+                    } label: {
+                        Text("Save")
+                            .font(TideFont.sans(13, .semibold, relativeTo: .subheadline))
+                            .foregroundStyle(isDirty ? Tide.paper : Tide.inkFaint)
+                            .padding(.horizontal, 14)
+                            .frame(height: 34)
+                            .background(Capsule().fill(isDirty ? Tide.ink : Color.clear))
+                            .overlay(
+                                Capsule().strokeBorder(isDirty ? Color.clear : Color.brutalBorderSoft, lineWidth: 1)
+                            )
+                            // 44x44pt hit target, pill stays compact.
+                            .frame(minWidth: 44, minHeight: 44)
+                            .contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
+                    .disabled(!isDirty || isSaving)
+                }
+                Menu {
                     Button {
                         renameText = fileName
                         showRenameModal = true
                     } label: {
-                        Image(systemName: "pencil")
-                            .bType(.mono, weight: .semibold)
-                            .foregroundStyle(Color.brutalText)
-                            // Icon-only toolbar action: 44x44pt hit target.
-                            .frame(width: 44, height: 44)
-                            .contentShape(Rectangle())
+                        Label(String(localized: "Rename File"), systemImage: "pencil")
                     }
-                    .accessibilityLabel(String(localized: "Rename File"))
-                    Button {
+                    Button(role: .destructive) {
                         showDeleteConfirm = true
                     } label: {
-                        Image(systemName: "trash")
-                            .bType(.mono, weight: .semibold)
-                            .foregroundStyle(Color.brutalError)
-                            // Icon-only toolbar action: 44x44pt hit target.
-                            .frame(width: 44, height: 44)
-                            .contentShape(Rectangle())
+                        Label(String(localized: "Delete File"), systemImage: "trash")
                     }
-                    .accessibilityLabel(String(localized: "Delete File"))
+                } label: {
+                    Image(systemName: "ellipsis")
+                        .font(.system(size: 17, weight: .semibold))
+                        .foregroundStyle(Tide.ink)
+                        // Icon-only toolbar action: 44x44pt hit target.
+                        .frame(width: 44, height: 44)
+                        .contentShape(Rectangle())
+                        .accessibilityHidden(true)
                 }
+                .accessibilityLabel(String(localized: "More file options"))
             }
         }
-        .onAppear { loadContent() }
-        .alert(
-            String(localized: "Unable to Update File"),
-            isPresented: Binding(
-                get: { operationError != nil },
-                set: { if !$0 { operationError = nil } }
-            )
-        ) {
-            Button(String(localized: "OK"), role: .cancel) { operationError = nil }
-        } message: {
-            Text(operationError ?? "")
+    }
+
+    // MARK: - Saved pill
+
+    /// Dark floating pill: saved state, plus a Commit shortcut while this
+    /// file has changes git hasn't committed yet.
+    private var syncPill: some View {
+        HStack(spacing: 10) {
+            Circle()
+                .fill(hasUncommittedChanges ? Tide.heroAhead : Tide.heroSynced)
+                .frame(width: 8, height: 8)
+                .accessibilityHidden(true)
+            Text(savedPillText)
+                .font(TideFont.sans(14, .medium, relativeTo: .subheadline))
+                .foregroundStyle(Tide.heroText)
+                .lineLimit(1)
+            if hasUncommittedChanges {
+                Button {
+                    showCommitSheet = true
+                } label: {
+                    Text(String(localized: "Commit"))
+                        .font(TideFont.sans(14, .semibold, relativeTo: .subheadline))
+                        .foregroundStyle(Tide.heroBg)
+                        .padding(.horizontal, 16)
+                        .frame(minHeight: 38)
+                        .background(Capsule().fill(Tide.heroText))
+                        .frame(minHeight: 44)
+                        .contentShape(Capsule())
+                }
+                .buttonStyle(.plain)
+            }
         }
+        .padding(.leading, 16)
+        .padding(.trailing, hasUncommittedChanges ? 4 : 16)
+        .frame(minHeight: 50)
+        .background(Capsule().fill(Tide.heroBg))
+        .shadow(color: .black.opacity(0.22), radius: 15, y: 10)
+        .accessibilityElement(children: .contain)
     }
 
     // MARK: - Binary Fallback
 
     private var binaryState: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: 0) {
             Spacer()
-            // Decorative emoji glyph (lock ornament, carries no information)
-            // — fixed size per Issue #16's decorative allowance.
-            Text("🔒")
-                .font(.system(size: 44))
+            Image(systemName: "lock")
+                .font(.system(size: 20, weight: .semibold))
+                .foregroundStyle(Tide.inkMid)
+                .frame(width: 48, height: 48)
+                .background(RoundedRectangle(cornerRadius: 16, style: .continuous).fill(Tide.well))
+                .accessibilityHidden(true)
+                .padding(.bottom, 16)
             Text("Binary File")
-                .bType(.mono, weight: .bold)
-                .foregroundStyle(Color.brutalText)
-                .tracking(1)
+                .tideDisplay(26)
             Text("This file cannot be edited as text")
-                .bType(.monoCaption, weight: .regular)
-                .foregroundStyle(Color.brutalTextFaint)
+                .font(TideFont.sans(15, relativeTo: .subheadline))
+                .foregroundStyle(Tide.inkMid)
+                .multilineTextAlignment(.center)
+                .padding(.top, 8)
             Spacer()
         }
+        .padding(.horizontal, 32)
     }
 
     // MARK: - Operations
@@ -184,8 +353,38 @@ struct FileEditorView: View {
         originalContent = text
     }
 
-    private func performSave() {
-        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    /// "Saved · 3 lines changed" — the change is measured against HEAD.
+    private var savedPillText: String {
+        guard hasUncommittedChanges else { return String(localized: "Saved") }
+        guard let linesChanged, linesChanged > 0 else { return String(localized: "Saved · not committed") }
+        return linesChanged == 1
+            ? String(localized: "Saved · 1 line changed")
+            : String(localized: "Saved · \(linesChanged) lines changed")
+    }
+
+    /// Debounced autosave: writes once typing pauses.
+    private func scheduleAutosave() {
+        autosaveTask?.cancel()
+        guard isDirty, !isBinary else { return }
+        autosaveTask = Task {
+            try? await Task.sleep(for: Self.autosaveDelay)
+            guard !Task.isCancelled, isDirty else { return }
+            performSave(dismissKeyboard: false)
+        }
+    }
+
+    private func refreshChangeSummary() async {
+        guard !isBinary, let rel = relativePath else { return }
+        let summary = await state.changeSummary(repoID: repoID, path: rel)
+        linesChanged = summary.count
+        changedLines = summary.lines
+    }
+
+    private func performSave(dismissKeyboard: Bool = true) {
+        if dismissKeyboard {
+            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+        }
+        autosaveTask?.cancel()
         guard !isSaving, let replacement = content.data(using: .utf8) else { return }
         let expected = loadedBytes
         let savedContent = content
@@ -210,6 +409,9 @@ struct FileEditorView: View {
                 originalContent = savedContent
                 state.detectChanges(repoID: repoID)
                 isSaving = false
+                await refreshChangeSummary()
+                // Edits typed while the write was queued still need saving.
+                scheduleAutosave()
                 showSaveToast = true
                 try? await Task.sleep(for: .seconds(1.8))
                 showSaveToast = false

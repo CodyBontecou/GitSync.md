@@ -1,0 +1,236 @@
+{
+  "new_keys": [
+    "tide_merge_yours",
+    "tide_merge_diff_copied",
+    "tide_merge_diff_error_title",
+    "tide_merge_diff_binary_body",
+    "tide_merge_diff_empty_title",
+    "tide_merge_diff_empty_body",
+    "tide_merge_diff_stats_a11y",
+    "tide_merge_diff_line_added",
+    "tide_merge_diff_line_removed",
+    "tide_merge_diff_hunk_line",
+    "tide_merge_diff_summary",
+    "tide_merge_conflict_headline",
+    "tide_merge_conflict_deleted_headline",
+    "tide_merge_conflict_renamed_headline",
+    "tide_merge_conflict_pick",
+    "tide_merge_conflict_unresolved",
+    "tide_merge_conflict_list_count",
+    "tide_merge_merge_complete_title",
+    "tide_merge_merge_unresolved_title",
+    "tide_merge_behind_kicker",
+    "tide_merge_both_moved",
+    "tide_merge_diff_discard",
+    "tide_merge_diff_unstaged",
+    "tide_merge_in_sync_kicker",
+    "tide_merge_moved_on",
+    "tide_merge_theirs_count",
+    "tide_merge_yours_count"
+  ],
+  "new_values": 675,
+  "new_authored_values": 475,
+  "reviewed_reused_values": 200,
+  "formatted_values": 200,
+  "unformatted_values": 475,
+  "remaining_merge_strings": [
+    "tide_merge_rebase_initial",
+    "tide_merge_behind_headline",
+    "tide_merge_ahead_kicker",
+    "tide_merge_ahead_headline",
+    "tide_merge_in_sync_headline",
+    "tide_merge_rebase_conflicts_headline",
+    "tide_merge_rebase_blocked_headline",
+    "tide_merge_rebase_ready_headline",
+    "tide_merge_rebase_done_headline",
+    "tide_merge_rebase_aborted_headline",
+    "tide_merge_merge_initial",
+    "tide_merge_merge_paused_kicker",
+    "tide_merge_merge_paused_headline",
+    "tide_merge_merge_done_kicker",
+    "tide_merge_merge_done_headline",
+    "tide_merge_plan_section",
+    "tide_merge_upstream_section",
+    "tide_merge_upstream_set",
+    "tide_merge_upstream_unset",
+    "tide_merge_upstream_unset_body",
+    "tide_merge_upstream_loading"
+  ],
+  "locales": {
+    "ar": {
+      "qualifier": "ar",
+      "verified_values": 27,
+      "formatted_values": 8,
+      "unformatted_values": 19,
+      "xml_sha256": "5ae540ad5468e2a1a27a7ebbb6617d8a823e294335ddc7af0dd6284d3ded7ae1"
+    },
+    "da": {
+      "qualifier": "da",
+      "verified_values": 27,
+      "formatted_values": 8,
+      "unformatted_values": 19,
+      "xml_sha256": "afc5e7c0140f20b3ff4535607dad60b3c8d28a3a84bfee173d4c64a569e16eb2"
+    },
+    "de": {
+      "qualifier": "de",
+      "verified_values": 27,
+      "formatted_values": 8,
+      "unformatted_values": 19,
+      "xml_sha256": "f58b49550f685ac4c47bfb03c7c1567938f83ccbc0872a94e69ca1b59ae288d4"
+    },
+    "es": {
+      "qualifier": "es",
+      "verified_values": 27,
+      "formatted_values": 8,
+      "unformatted_values": 19,
+      "xml_sha256": "c60a9591e2bcb1ff2d05fb6a8efb8db9361193ec3fff80346dba0e4cbadedca6"
+    },
+    "fi": {
+      "qualifier": "fi",
+      "verified_values": 27,
+      "formatted_values": 8,
+      "unformatted_values": 19,
+      "xml_sha256": "66009eebccc32b420373cfd6f355d10e262e3bcb0b6013bdff4079b79cc71ef1"
+    },
+    "fr": {
+      "qualifier": "fr",
+      "verified_values": 27,
+      "formatted_values": 8,
+      "unformatted_values": 19,
+      "xml_sha256": "f4f9b968371ef75d3452c07e679ecd6bdd2216e79774bcc3ab5b9979b24c19a0"
+    },
+    "he": {
+      "qualifier": "iw",
+      "verified_values": 27,
+      "formatted_values": 8,
+      "unformatted_values": 19,
+      "xml_sha256": "d36663dcb59957685a6217aeab86e88a43ea0010d83da800943c43a441ac1e8e"
+    },
+    "hi": {
+      "qualifier": "hi",
+      "verified_values": 27,
+      "formatted_values": 8,
+      "unformatted_values": 19,
+      "xml_sha256": "63f05ebf0fa1103be7085870a30585d16a75bbfe95777a4a88c12cc4afbdedcd"
+    },
+    "hu": {
+      "qualifier": "hu",
+      "verified_values": 27,
+      "formatted_values": 8,
+      "unformatted_values": 19,
+      "xml_sha256": "6fe23b539a5a378980ec7dd87a0da70d76202b304d43d9054b246b723059b76e"
+    },
+    "id": {
+      "qualifier": "in",
+      "verified_values": 27,
+      "formatted_values": 8,
+      "unformatted_values": 19,
+      "xml_sha256": "e1b69ebabacd2554cb8b26c745827a4afe7d25fdccc66407fffb68ca920f803e"
+    },
+    "it": {
+      "qualifier": "it",
+      "verified_values": 27,
+      "formatted_values": 8,
+      "unformatted_values": 19,
+      "xml_sha256": "b53ef76299f51cb766bc60fb8630c0e53a907315e7ab6833ba5a03442138cbaf"
+    },
+    "ja": {
+      "qualifier": "ja",
+      "verified_values": 27,
+      "formatted_values": 8,
+      "unformatted_values": 19,
+      "xml_sha256": "5f8ecab2b69e0db7f52ef1b2b5472d6dff5863029c279e9c7e21e1f69b9e7ef6"
+    },
+    "ko": {
+      "qualifier": "ko",
+      "verified_values": 27,
+      "formatted_values": 8,
+      "unformatted_values": 19,
+      "xml_sha256": "6de74ce6f0c6a3af9bd20a1c0a3da9d669fb7a9a891e62b0e08e04d8c2c60e76"
+    },
+    "nb": {
+      "qualifier": "nb",
+      "verified_values": 27,
+      "formatted_values": 8,
+      "unformatted_values": 19,
+      "xml_sha256": "8567f528a28489d8dc54437304ce779bd7a9c17d2d675fb701bac29c4127473d"
+    },
+    "nl": {
+      "qualifier": "nl",
+      "verified_values": 27,
+      "formatted_values": 8,
+      "unformatted_values": 19,
+      "xml_sha256": "37c5e7a0106fd283fa2274050c90564718a97095aeea0d1b20e5202af0b7f4da"
+    },
+    "pl": {
+      "qualifier": "pl",
+      "verified_values": 27,
+      "formatted_values": 8,
+      "unformatted_values": 19,
+      "xml_sha256": "4d4388f41c68f5c48794e52ee3479c914090f843f2e60a3fea665a5156d88a37"
+    },
+    "pt-BR": {
+      "qualifier": "pt-rBR",
+      "verified_values": 27,
+      "formatted_values": 8,
+      "unformatted_values": 19,
+      "xml_sha256": "14ec80b70bcbc88ab16903d42b01b47ccef174341aaa5db0ae006e6df258d767"
+    },
+    "ru": {
+      "qualifier": "ru",
+      "verified_values": 27,
+      "formatted_values": 8,
+      "unformatted_values": 19,
+      "xml_sha256": "9d4daf97531da6c855e58d27495a473da705f7f6cd4a0f325824c384579db722"
+    },
+    "sv": {
+      "qualifier": "sv",
+      "verified_values": 27,
+      "formatted_values": 8,
+      "unformatted_values": 19,
+      "xml_sha256": "d5ba8cd70d91fea80a596234539d76a6917dfb01060e0e13eed2794624f91740"
+    },
+    "th": {
+      "qualifier": "th",
+      "verified_values": 27,
+      "formatted_values": 8,
+      "unformatted_values": 19,
+      "xml_sha256": "d85a4c37bbb8bff2920d0ece52282a7986119d9337c25c49baa84dbc5c4c5a93"
+    },
+    "tr": {
+      "qualifier": "tr",
+      "verified_values": 27,
+      "formatted_values": 8,
+      "unformatted_values": 19,
+      "xml_sha256": "c7975db8f691e09df6e957c6e4517815b7221571222851ee6e2bb4e6e133828e"
+    },
+    "uk": {
+      "qualifier": "uk",
+      "verified_values": 27,
+      "formatted_values": 8,
+      "unformatted_values": 19,
+      "xml_sha256": "f59c1a2ee18ad011fbad4d8f5d38bdff806bb871da22012a5ae5c5d74cec3452"
+    },
+    "vi": {
+      "qualifier": "vi",
+      "verified_values": 27,
+      "formatted_values": 8,
+      "unformatted_values": 19,
+      "xml_sha256": "a0aa4aeb042b2a5c75717c68d2cbf09c09315ac201101e046338bcebe9fcdf9b"
+    },
+    "zh-Hans": {
+      "qualifier": "b+zh+Hans",
+      "verified_values": 27,
+      "formatted_values": 8,
+      "unformatted_values": 19,
+      "xml_sha256": "c976ecf7b9af62cc6800d856926f80010fecfb69d4598c174aec082dd7172ad4"
+    },
+    "zh-Hant": {
+      "qualifier": "b+zh+Hant",
+      "verified_values": 27,
+      "formatted_values": 8,
+      "unformatted_values": 19,
+      "xml_sha256": "f61598646d8939f8cdb228dc83a9468042f91d97f578af327e6bad6ada31ca1f"
+    }
+  }
+}

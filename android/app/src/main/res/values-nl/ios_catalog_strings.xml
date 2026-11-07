@@ -1,0 +1,1141 @@
+<!-- Generated from the sibling iOS catalog by tools/localization/import_ios_catalog.py. -->
+<resources>
+    <string name="account_alternative_exists" formatted="false">"Er is al een andere alternatieve verbinding opgeslagen. Controleer die voordat je meer URL-inloggegevens migreert."</string>
+    <string name="account_api_error">"GitHub API-fout: HTTP %1$d"</string>
+    <string name="account_assigned_disconnected" formatted="false">"Het toegewezen GitHub-account is ontkoppeld. Selecteer een account voor deze repository."</string>
+    <string name="account_basic_requires_http" formatted="false">"Verificatie met gebruikersnaam en token vereist een HTTP- of HTTPS-adres"</string>
+    <string name="account_browser_failed" formatted="false">"Kon de browser niet openen. Probeer het opnieuw of gebruik een Personal Access Token."</string>
+    <string name="account_choose_authentication" formatted="false">"Kies de verificatie voor dit adres"</string>
+    <string name="account_choose_credentials" formatted="false">"Kies inloggegevens voor deze verbinding"</string>
+    <string name="account_choose_location_again" formatted="false">"Kies de kloonlocatie opnieuw"</string>
+    <string name="account_choose_public_access" formatted="false">"Kies toegang zonder netwerkinloggegevens voor dit adres"</string>
+    <string name="account_choose_ssh_or_https" formatted="false">"Kies een persoonlijke SSH-sleutel voor een SSH-adres of HTTPS-verificatie voor een HTTPS-adres."</string>
+    <string name="account_choose_storage" formatted="false">"Kies opslag in Instellingen"</string>
+    <string name="account_cleanup_failed" formatted="false">"De GitHub-aanmelding is versleuteld, maar oude lokale voorkeuren konden niet worden opgeruimd. Probeer het opnieuw wanneer de opslag beschikbaar is."</string>
+    <string name="account_clone_credentials_changed" formatted="false">"Opgeslagen inloggegevens zijn tijdens het klonen gewijzigd. Controleer de verbinding voordat je het opnieuw probeert."</string>
+    <string name="account_clone_destination_changed" formatted="false">"De kloonbestemming is gewijzigd; de verbinding is behouden"</string>
+    <string name="account_clone_failed_network" formatted="false">"De repository kon niet worden gekloond. Controleer de URL, toegangsgegevens, branch en netwerkverbinding. Bestaande mappen zijn behouden."</string>
+    <string name="account_clone_failed_retry" formatted="false">"Klonen mislukt — probeer het opnieuw."</string>
+    <string name="account_clone_in_use" formatted="false">"Deze kloon is al geopend of moet worden gecontroleerd in Lokale repository’s."</string>
+    <string name="account_clone_interrupted" formatted="false">"De onderbroken kloon moet worden gecontroleerd. De bestanden zijn behouden; koppel hem opnieuw via Lokale repository’s."</string>
+    <string name="account_clone_storage_note">"%1$s\n\nDe kloonlocatie is vastgezet op de app-opslag in Android/media voor compatibiliteit met Obsidian."</string>
+    <string name="account_configuration_changed" formatted="false">"De repositoryconfiguratie is gewijzigd. Laad opnieuw voordat je inloggegevens verwijdert."</string>
+    <string name="account_connection_recovery_failed" formatted="false">"Opslaan van de verbinding is mislukt en herstel van inloggegevens kon niet worden opgeslagen. Voer de inloggegevens opnieuw in."</string>
+    <string name="account_connection_save_failed" formatted="false">"Kon de repositoryverbinding niet opslaan"</string>
+    <string name="account_connection_unreadable" formatted="false">"De opgeslagen verbinding kan niet worden geopend. Voer de inloggegevens van de repository opnieuw in."</string>
+    <string name="account_credentials_changed_reload" formatted="false">"Opgeslagen inloggegevens zijn gewijzigd. Laad opnieuw voordat je opslaat."</string>
+    <string name="account_destination_exists" formatted="false">"De bestemming bestaat al. Koppel hem opnieuw via Lokale repository’s of kies een nieuwe lege locatie. Er zijn geen bestanden verwijderd."</string>
+    <string name="account_enter_new_credentials" formatted="false">"Voer de nieuwe inloggegevens in"</string>
+    <string name="account_enter_ssh_key" formatted="false">"Voer de persoonlijke SSH-sleutel in"</string>
+    <string name="account_enter_username_secret" formatted="false">"Voer een gebruikersnaam en token of wachtwoord in"</string>
+    <string name="account_enter_valid_url" formatted="false">"Voer een geldige repository-URL in, met de inloggegevens in de aparte velden."</string>
+    <string name="account_finish_migration" formatted="false">"Voltooi de GitHub-aanmelding om het migreren van eerdere inloggegevens af te ronden."</string>
+    <string name="account_github_requires_https" formatted="false">"Toegang met een GitHub-account vereist een github.com HTTPS-adres"</string>
+    <string name="account_invalid_repository_name" formatted="false">"Ongeldige GitHub-repositorynaam"</string>
+    <string name="account_invalid_repository_url" formatted="false">"Ongeldige repository-URL"</string>
+    <string name="account_load_author_failed" formatted="false">"Kon de auteursidentiteit niet laden"</string>
+    <string name="account_load_failed" formatted="false">"Kan GitHub-gegevens niet laden"</string>
+    <string name="account_migration_changed" formatted="false">"Opgeslagen inloggegevens zijn gewijzigd. Laad de migratie opnieuw."</string>
+    <string name="account_migration_recovery_failed" formatted="false">"Herstel van inloggegevens kon niet worden opgeslagen. Controleer deze verbinding."</string>
+    <string name="account_migration_unverified" formatted="false">"Versleutelde inloggegevens konden niet worden geverifieerd. URL-inloggegevens zijn behouden."</string>
+    <string name="account_move_changed" formatted="false">"De inloggegevens van de repository zijn na controle gewijzigd. Controleer de verplaatsing opnieuw."</string>
+    <string name="account_move_finish_failed" formatted="false">"Kon het herstel van de verplaatsing van inloggegevens niet voltooien"</string>
+    <string name="account_move_persist_failed" formatted="false">"Kon verplaatste repository-inloggegevens niet opslaan"</string>
+    <string name="account_move_recovery_changed" formatted="false">"Verplaatste inloggegevens zijn tijdens het herstel gewijzigd. Controleer de doelverbinding voordat je doorgaat."</string>
+    <string name="account_move_recovery_failed" formatted="false">"Herstel van de verplaatsing van inloggegevens kon niet worden opgeslagen. Alle werkkopieën zijn behouden."</string>
+    <string name="account_move_verify_failed" formatted="false">"Verplaatste repository-inloggegevens konden niet worden geverifieerd"</string>
+    <string name="account_no_alternative" formatted="false">"Er zijn geen alternatieve inloggegevens opgeslagen voor dit adres"</string>
+    <string name="account_no_backup_folder" formatted="false">"Er is geen back-upmap van de app beschikbaar op het opslagvolume van deze repository. Je werkkopie is behouden."</string>
+    <string name="account_no_matching_repositories">"Geen repository’s komen overeen met ‘%1$s’"</string>
+    <string name="account_no_remote" formatted="false">"Er is geen remote geconfigureerd"</string>
+    <string name="account_no_url_credentials" formatted="false">"Geen ondersteunde URL-inloggegevens om te migreren"</string>
+    <string name="account_not_authenticated" formatted="false">"Niet geverifieerd — log eerst in."</string>
+    <string name="account_open_connection_failed" formatted="false">"Kon de verbinding niet openen"</string>
+    <string name="account_prepare_sign_in_failed" formatted="false">"Kon de beveiligde GitHub-aanmelding niet voorbereiden. Probeer het opnieuw wanneer de opslag beschikbaar is."</string>
+    <string name="account_previous_address_missing" formatted="false">"Het vorige externe adres is niet vastgelegd. Controleer deze voorgestelde GitHub-URL en kies de verificatie voordat je kloont."</string>
+    <string name="account_previous_connection_unavailable" formatted="false">"De vorige verbinding kan niet worden hersteld. Controleer de URL en kies de verificatie expliciet; bestaande bestanden en opgeslagen inloggegevens zijn behouden."</string>
+    <string name="account_publication_confirm_failed" formatted="false">"Kon de publicatieverbinding niet bevestigen"</string>
+    <string name="account_publication_conflict" formatted="false">"Deze map heeft al een andere opgeslagen verbinding. Bestaande inloggegevens zijn behouden."</string>
+    <string name="account_publication_recovery" formatted="false">"Publicatie-inloggegevens moeten worden hersteld. De map is behouden."</string>
+    <string name="account_publication_verify_failed" formatted="false">"Kon de publicatieverbinding niet verifiëren"</string>
+    <string name="account_reenter_credentials" formatted="false">"Voer de inloggegevens van de repository opnieuw in"</string>
+    <string name="account_reload_public_access" formatted="false">"Laad de opgeslagen verbinding met openbare toegang opnieuw"</string>
+    <string name="account_remote_url_changed" formatted="false">"De externe URL is gewijzigd. Controleer de repositoryverbinding voordat je je verifieert."</string>
+    <string name="account_removal_subject" formatted="false">"dit account"</string>
+    <string name="account_remove_credentials_failed" formatted="false">"Kon opgeslagen inloggegevens niet verwijderen"</string>
+    <string name="account_remove_failed" formatted="false">"Kon de GitHub-aanmelding niet verwijderen. Probeer het opnieuw wanneer de opslag beschikbaar is."</string>
+    <string name="account_repository_name_length" formatted="false">"Voer een repositorynaam van 1–120 tekens in"</string>
+    <string name="account_review_github_connection" formatted="false">"Controleer de verbinding met het GitHub-account"</string>
+    <string name="account_review_interrupted_clone" formatted="false">"Controleer de onderbroken kloon voordat je een nieuwe start. De bestanden zijn behouden."</string>
+    <string name="account_save_author_failed" formatted="false">"Kon de auteursidentiteit niet opslaan"</string>
+    <string name="account_save_connection_failed" formatted="false">"Kon de verbinding niet opslaan"</string>
+    <string name="account_save_sign_in_failed" formatted="false">"Kon de GitHub-aanmelding niet veilig opslaan. Probeer het opnieuw wanneer de opslag beschikbaar is."</string>
+    <string name="account_save_sign_in_short" formatted="false">"Kon de aanmelding niet veilig opslaan"</string>
+    <string name="account_saved_connection_changed" formatted="false">"De opgeslagen verbinding is gewijzigd. Controleer de verificatie voordat je opnieuw kloont."</string>
+    <string name="account_saved_credentials_unreadable" formatted="false">"Opgeslagen inloggegevens kunnen niet worden geopend. Kies openbare toegang of voer nieuwe inloggegevens in."</string>
+    <string name="account_select_connected_account" formatted="false">"Selecteer een gekoppeld GitHub-account en een github.com HTTPS-adres"</string>
+    <string name="account_select_failed" formatted="false">"Kon het GitHub-account niet selecteren. Probeer het opnieuw wanneer de opslag beschikbaar is."</string>
+    <string name="account_select_github_account" formatted="false">"Selecteer een GitHub-account"</string>
+    <string name="account_select_repository_account" formatted="false">"Selecteer een GitHub-account voor deze repository"</string>
+    <string name="account_select_repository_github_account" formatted="false">"Selecteer het GitHub-account van de repository"</string>
+    <string name="account_session_open_failed" formatted="false">"Beveiligde GitHub-opslag kon niet worden geopend. Log opnieuw in om de sessie te herstellen."</string>
+    <string name="account_session_recovery_failed" formatted="false">"Herstel van beveiligde GitHub-opslag is mislukt. Log opnieuw in wanneer de opslag beschikbaar is."</string>
+    <string name="account_session_save_failed" formatted="false">"Beveiligde GitHub-opslag kon niet worden opgeslagen. Log opnieuw in."</string>
+    <string name="account_session_verify_failed" formatted="false">"Beveiligde GitHub-opslag kon niet worden geverifieerd. Log opnieuw in."</string>
+    <string name="account_sign_in_before_account_access" formatted="false">"Log in bij GitHub voordat je toegang via een account kiest"</string>
+    <string name="account_sign_in_failed" formatted="false">"Inloggen mislukt"</string>
+    <string name="account_sign_in_repository_account" formatted="false">"Log in met het GitHub-account van de repository"</string>
+    <string name="account_sign_in_unverified" formatted="false">"De GitHub-aanmelding kon niet worden geverifieerd. Start de aanmelding opnieuw."</string>
+    <string name="account_sign_out_failed" formatted="false">"Kon niet veilig uitloggen. Probeer het opnieuw wanneer de opslag beschikbaar is."</string>
+    <string name="account_ssh_not_approved" formatted="false">"De SSH-hostsleutel is niet goedgekeurd. Probeer het opnieuw wanneer je de vingerafdruk van de server kunt controleren."</string>
+    <string name="account_ssh_requires_ssh_address" formatted="false">"SSH-sleutels kunnen alleen worden gebruikt met SSH-repositoryadressen"</string>
+    <string name="account_ssh_trust_unreadable" formatted="false">"Opgeslagen SSH-vertrouwen kan niet worden geopend. Controleer het SSH-serververtrouwen in Instellingen."</string>
+    <string name="account_storage_attention" formatted="false">"Beveiligde GitHub-opslag vraagt aandacht. Bestaande inloggegevens zijn behouden; log opnieuw in."</string>
+    <string name="account_token_empty" formatted="false">"Token mag niet leeg zijn"</string>
+    <string name="account_token_invalid">"GitHub-token is ongeldig of verlopen (HTTP %1$d)"</string>
+    <string name="account_updated_just_now" formatted="false">"zojuist"</string>
+    <string name="account_valid_branch" formatted="false">"Voer een geldige branchnaam in"</string>
+    <string name="automation_shortcut_label">"%1$s: %2$s"</string>
+    <string name="background_allow_push" formatted="false">"Automatisch publiceren toestaan"</string>
+    <string name="background_binding">"Alleen branch %1$s, die %2$s/%3$s volgt. Een wijziging van branch, map, verbinding of account vereist een nieuwe controle."</string>
+    <string name="background_changed" formatted="false">"Map, branch of verbinding gewijzigd. Controleer opnieuw."</string>
+    <string name="background_current" formatted="false">"Bijgewerkt"</string>
+    <string name="background_empty" formatted="false">"Er zijn geen lokale repositories geregistreerd."</string>
+    <string name="background_error" formatted="false">"Deze actie kon niet worden voltooid. Herlaad en controleer de huidige repository en instellingen."</string>
+    <string name="background_forget" formatted="false">"Opgeslagen beleid verwijderen"</string>
+    <string name="background_include" formatted="false">"Deze repository opnemen"</string>
+    <string name="background_never" formatted="false">"Nog niet gecontroleerd"</string>
+    <string name="background_pull" formatted="false">"Externe wijzigingen automatisch ophalen"</string>
+    <string name="background_push" formatted="false">"Lokale wijzigingen automatisch committen en pushen"</string>
+    <string name="background_push_confirm" formatted="false">"Automatisch publiceren toestaan?"</string>
+    <string name="background_push_detail" formatted="false">"GitSync.md kan lokale wijzigingen stagen, commits maken met de auteursidentiteit van elke repository en ze voor opgenomen repositories uploaden op de gecontroleerde branch. De app voert nooit een force-push uit, voegt geen uiteengelopen geschiedenissen samen en wisselt niet van branch. Uitschakelen stopt toekomstige stappen; voltooide commits en uploads blijven behouden."</string>
+    <string name="background_queued" formatted="false">"Controle aangevraagd. Wachten op Android en een verbinding."</string>
+    <string name="background_reload" formatted="false">"Opnieuw laden"</string>
+    <string name="background_reset" formatted="false">"Achtergrondsynchronisatie resetten"</string>
+    <string name="background_reset_detail" formatted="false">"Onleesbare instellingen voor achtergrondsynchronisatie kunnen geen werk toestaan. Resetten verwijdert alleen het opgeslagen beleid en de status en zet beide automatische modi uit. Repositorybestanden, accounts en andere synchronisatiefuncties blijven behouden. Controleer elke repository voordat je die opnieuw opneemt."</string>
+    <string name="background_run" formatted="false">"Nu controleren"</string>
+    <string name="background_running" formatted="false">"Repositories controleren…"</string>
+    <string name="background_stop" formatted="false">"Controle stoppen"</string>
+    <string name="background_stopped" formatted="false">"Controle gestopt"</string>
+    <string name="background_unavailable" formatted="false">"Deze werkkopie is niet meer geregistreerd. Verbind haar opnieuw en controleer het beleid nogmaals."</string>
+    <string name="background_updated" formatted="false">"Wijzigingen gesynchroniseerd"</string>
+    <string name="background_wait_network" formatted="false">"Wachten op een internetverbinding"</string>
+    <string name="background_wait_power" formatted="false">"Wachten op externe voeding"</string>
+    <string name="background_wait_wifi" formatted="false">"Wachten op Wi-Fi"</string>
+    <string name="background_wrong_branch" formatted="false">"De werkkopie gebruikt een andere branch. Ga terug of controleer opnieuw."</string>
+    <string name="callback_action" formatted="false">"Gevraagde actie"</string>
+    <string name="callback_authorized_scope" formatted="false">"Geautoriseerde links voeren de opgeslagen actie uit zonder opnieuw te vragen. Gewijzigde of ingetrokken links stoppen hier. Beheer machtigingen via Repositoryacties → Geautoriseerde links."</string>
+    <string name="callback_auto_return" formatted="false">"Na deze uitvoering automatisch terugkeren"</string>
+    <string name="callback_background_attention" formatted="false">"De callback vraagt aandacht. Bekijk het opgeslagen resultaat bij Repository-acties. Tik om een beschikbaar resultaat terug te sturen."</string>
+    <string name="callback_background_busy" formatted="false">"Er was al een andere actie bezig. Deze callback is niet uitgevoerd. Gebruik de link opnieuw als die actie klaar is."</string>
+    <string name="callback_background_channel" formatted="false">"Geautoriseerde callbackacties"</string>
+    <string name="callback_background_complete" formatted="false">"Callback voltooid. Tik om het resultaat terug te sturen naar de goedgekeurde aanroepende app."</string>
+    <string name="callback_background_complete_no_return" formatted="false">"Callback voltooid. Open Repositoryacties om het opgeslagen resultaat te bekijken."</string>
+    <string name="callback_background_consent" formatted="false">"Voer elk gebruik van deze link één keer uit zonder GitSync.md te openen, met de beoordeelde repository, branch en opgeslagen verbinding/account. Resultaten worden opgeslagen in Repositoryacties. Als meldingen zijn toegestaan, tik je op de voltooiingsmelding om het resultaat terug te sturen naar de goedgekeurde aanroepende app. Automatisch terugkeren is in deze modus niet beschikbaar. Beoordeel na een procesonderbreking de repository en gebruik de link opnieuw; onderbroken acties starten nooit automatisch opnieuw."</string>
+    <string name="callback_background_results_unavailable" formatted="false">"Opgeslagen callbackresultaten kunnen niet worden gelezen. Autorisaties blijven apart bewaard. Resultaten wissen verwijdert ook de resultaten van snelkoppelingen op het startscherm."</string>
+    <string name="callback_background_return_expired" formatted="false">"Dit callbackresultaat is niet beschikbaar of de autorisatie is gewijzigd. Beoordeel Repositoryacties voordat je de link opnieuw gebruikt."</string>
+    <string name="callback_background_running" formatted="false">"Geautoriseerde callback wordt uitgevoerd"</string>
+    <string name="callback_busy" formatted="false">"Er kwam een ander verzoek binnen terwijl dit verzoek open was. Het is niet in de wachtrij geplaatst of uitgevoerd. Voltooi of sluit dit verzoek voordat je een ander opent."</string>
+    <string name="callback_cancel" formatted="false">"Verzoek annuleren"</string>
+    <string name="callback_choose" formatted="false">"Meerdere mappen hebben deze naam. Kies de bedoelde werkkopie."</string>
+    <string name="callback_close" formatted="false">"Sluiten"</string>
+    <string name="callback_connection" formatted="false">"Gebruikt de opgeslagen verbindings-, account- en auteursinstellingen van deze repository. Wijzigingen aan de gecontroleerde branch of verbinding stoppen dit verzoek."</string>
+    <string name="callback_copy_authorized" formatted="false">"Autoriseren en link kopiëren"</string>
+    <string name="callback_create_link" formatted="false">"Geautoriseerde automatiseringslink maken"</string>
+    <string name="callback_delivery_failed" formatted="false">"Geen app kon de retourbestemming openen. Je resultaat blijft hier bewaard. Je kunt opnieuw proberen terug te keren zonder de Git-actie te herhalen."</string>
+    <string name="callback_destinations" formatted="false">"Terugkeerbestemmingen"</string>
+    <string name="callback_error" formatted="false">"Het verzoek vereist aandacht"</string>
+    <string name="callback_error_destination">"Bij fout: %1$s"</string>
+    <string name="callback_expired" formatted="false">"Er is geen actief verzoek. Open na het herstarten van GitSync.md een nieuwe callbacklink om deze opnieuw te beoordelen."</string>
+    <string name="callback_grant_consent" formatted="false">"Iedereen met deze link kan precies deze actie met dit commitbericht in deze repository uitvoeren zonder nieuwe bevestiging, ook voor toekomstige lokale wijzigingen. De branch, verbinding, account en terugkeerbestemmingen blijven vaststaan. Houd de link privé. Je kunt hem intrekken via Repositoryacties → Geautoriseerde links. Een link maken voert Git niet uit."</string>
+    <string name="callback_grant_disabled" formatted="false">"Ingetrokken"</string>
+    <string name="callback_grant_enabled" formatted="false">"Geautoriseerd voor toekomstige uitvoeringen"</string>
+    <string name="callback_grant_forget" formatted="false">"Ingetrokken link vergeten"</string>
+    <string name="callback_grant_manage" formatted="false">"Geautoriseerde links"</string>
+    <string name="callback_grant_refresh" formatted="false">"Geautoriseerde links vernieuwen"</string>
+    <string name="callback_grant_reset" formatted="false">"Geautoriseerde links resetten"</string>
+    <string name="callback_grant_reset_scope" formatted="false">"Alle opgeslagen linkautorisaties verwijderen, inclusief onleesbare gegevens? Alle bestaande geautoriseerde links werken dan niet meer. Maak nieuwe links vanuit een gecontroleerd automatiseringsverzoek. Repository’s, bestanden, accounts en snelkoppelingen op het startscherm blijven behouden."</string>
+    <string name="callback_grant_return" formatted="false">"Resultaten automatisch terugsturen naar de gecontroleerde bestemmingen"</string>
+    <string name="callback_grant_revoke" formatted="false">"Link intrekken"</string>
+    <string name="callback_grant_revoke_scope" formatted="false">"Iedereen die deze link gebruikt, verliest de toestemming om deze actie uit te voeren of resultaten automatisch terug te sturen. Werk dat al naar Git is gestuurd, kan voltooid zijn."</string>
+    <string name="callback_grant_unreadable" formatted="false">"Geautoriseerde links konden niet worden gelezen. Opgeslagen gegevens zijn behouden en kunnen pas na herstel worden uitgevoerd."</string>
+    <string name="callback_link_copied">"Geautoriseerde link %1$s gekopieerd. Houd hem privé en plak hem in je automatisering. Het token kan later niet worden teruggehaald; maak indien nodig een andere link."</string>
+    <string name="callback_link_failed" formatted="false">"De geautoriseerde link kon niet worden gekopieerd. Beoordeel de repository opnieuw en controleer Geautoriseerde links voordat je het opnieuw probeert."</string>
+    <string name="callback_no_destination" formatted="false">"Er is geen retour-URL opgegeven. Het resultaat blijft hier."</string>
+    <string name="callback_preparing" formatted="false">"Lokale repository beoordelen…"</string>
+    <string name="callback_result_branch">"Branch: %1$s"</string>
+    <string name="callback_result_changes">"Gewijzigde bestanden: %1$s"</string>
+    <string name="callback_result_commit">"Commit: %1$s"</string>
+    <string name="callback_result_pulled" formatted="false">"Externe wijzigingen zijn opgehaald."</string>
+    <string name="callback_result_saved" formatted="false">"Je commit is lokaal opgeslagen. De upload is niet bevestigd."</string>
+    <string name="callback_result_skipped" formatted="false">"Er hoefden geen lokale wijzigingen te worden geüpload."</string>
+    <string name="callback_return" formatted="false">"Resultaat terugsturen naar de aanroepende app"</string>
+    <string name="callback_return_scope" formatted="false">"Bij terugsturen wordt de onderstaande bestemming geopend en worden het actieresultaat en de branch- en commit-ID’s gedeeld. Inloggegevens en lokale mappaden worden nooit meegestuurd. Kies automatisch terugsturen voordat je de uitvoering goedkeurt, of stuur het resultaat daarna zelf terug."</string>
+    <string name="callback_returned" formatted="false">"Resultaat overgedragen aan Android. De ontvangende app bepaalt wat er daarna gebeurt."</string>
+    <string name="callback_run" formatted="false">"Toestaan en één keer uitvoeren"</string>
+    <string name="callback_running" formatted="false">"Goedgekeurde actie uitvoeren…"</string>
+    <string name="callback_scope" formatted="false">"Een andere app of link heeft een Git-actie aangevraagd. Controleer de repository en de actie voordat je deze eenmalige uitvoering toestaat."</string>
+    <string name="callback_success" formatted="false">"Actie voltooid"</string>
+    <string name="callback_success_destination">"Bij succes: %1$s"</string>
+    <string name="callback_title" formatted="false">"Automatiseringsverzoek"</string>
+    <string name="callback_unknown_action" formatted="false">"Onbekende actie"</string>
+    <string name="clone_location_reconnect" formatted="false">"Map moet opnieuw worden verbonden"</string>
+    <string name="clone_location_title" formatted="false">"Locatie van kloon"</string>
+    <string name="clone_recovery_added" formatted="false">"Gekloonde repository toegevoegd"</string>
+    <string name="clone_recovery_cancel_failed" formatted="false">"Dit kloonherstel kon niet worden afgesloten. Controleer de appopslag en probeer het opnieuw. De bestanden zijn behouden."</string>
+    <string name="clone_recovery_cannot_dismiss" formatted="false">"Deze herstelgegevens zijn gewijzigd of kunnen niet veilig worden verwijderd. Vernieuw om ze opnieuw te beoordelen."</string>
+    <string name="clone_recovery_confirm_body" formatted="false">"Automatisch herstel stopt. Repositorymappen en opgeslagen verbindingen blijven op dit apparaat. Je kunt een voltooide repository toevoegen via Lokale repository’s."</string>
+    <string name="clone_recovery_confirm_title" formatted="false">"Dit kloonherstel afsluiten?"</string>
+    <string name="clone_recovery_damaged" formatted="false">"Deze herstelgegevens kunnen niet worden gelezen. Je kunt dit herstel afsluiten en een voltooide map handmatig opnieuw verbinden."</string>
+    <string name="clone_recovery_dismiss" formatted="false">"Herstel afsluiten"</string>
+    <string name="clone_recovery_dismissed" formatted="false">"Herstel afgesloten. Repositorybestanden en opgeslagen verbindingen zijn behouden."</string>
+    <string name="clone_recovery_refresh" formatted="false">"Kloonherstel vernieuwen"</string>
+    <string name="clone_recovery_retry" formatted="false">"Kloon opnieuw proberen toe te voegen"</string>
+    <string name="clone_recovery_review_needed" formatted="false">"Sommige onderbroken klonen moeten worden beoordeeld in Lokale repository’s. Hun bestanden zijn behouden."</string>
+    <string name="clone_recovery_unavailable" formatted="false">"Kloonherstel is niet beschikbaar. Controleer de appopslag en probeer het opnieuw."</string>
+    <string name="clone_recovery_unreadable" formatted="false">"Onleesbare kloonherstelgegevens"</string>
+    <string name="clone_registration_failed" formatted="false">"Het gekloonde repository kon niet worden toegevoegd. De bestanden zijn behouden. Probeer het opnieuw toe te voegen of verbind de map opnieuw via Lokale repositories."</string>
+    <string name="commit_screen" formatted="false">"Commit"</string>
+    <string name="conflict_choose_filename" formatted="false">"Kies de bestandsnaam om te behouden"</string>
+    <string name="conflict_current_deleted" formatted="false">"De huidige branch heeft dit bestand verwijderd. Kiezen voor “Onze” verwijdert het."</string>
+    <string name="conflict_filename_cleanup" formatted="false">"De andere bestandsnamen in dit conflict worden verwijderd wanneer je het oplost en staged."</string>
+    <string name="conflict_incoming_deleted" formatted="false">"De inkomende branch heeft dit bestand verwijderd. Kiezen voor “Hun” verwijdert het."</string>
+    <string name="conflict_renamed_differently" formatted="false">"Anders hernoemd"</string>
+    <string name="connection_endpoint_count">"Er zijn %1$d eindpuntgebonden verbindingen opgeslagen. Bewerken van origin behoudt de andere verbindingen; kiezen voor openbare toegang verwijdert alle opgeslagen inloggegevens."</string>
+    <string name="connection_keep_public_recovered" formatted="false">"Openbare toegang behouden · herstelde inloggegevens blijven inactief"</string>
+    <string name="connection_keep_saved" formatted="false">"Opgeslagen inloggegevens behouden"</string>
+    <string name="connection_migration_fetch" formatted="false">"Ophaaladres"</string>
+    <string name="connection_migration_push" formatted="false">"Pushadres"</string>
+    <string name="connection_new_basic" formatted="false">"Nieuwe gebruikersnaam en token"</string>
+    <string name="connection_public_access" formatted="false">"Openbare toegang · geen inloggegevens"</string>
+    <string name="connection_url_credentials_body" formatted="false">"Verplaats ondersteunde HTTPS-inloggegevens naar versleutelde opslag en verwijder ze uit externe Git-URL’s. Afzonderlijke adressen voor ophalen en pushen blijven behouden."</string>
+    <string name="connection_url_credentials_migrate" formatted="false">"URL-inloggegevens naar veilige opslag verplaatsen"</string>
+    <string name="connection_url_credentials_preserve" formatted="false">"Bestaande veilige inloggegevens en expliciete keuzes voor openbare toegang krijgen voorrang. Gebruikersnamen en tokens uit URL’s worden hier nooit getoond."</string>
+    <string name="connection_url_credentials_title" formatted="false">"Inloggegevens in externe URL’s"</string>
+    <string name="connection_use_alternative" formatted="false">"Andere opgeslagen inloggegevens gebruiken"</string>
+    <string name="diagnostics_action_failed" formatted="false">"Deze diagnostische actie kon niet worden voltooid. Bestaande vermeldingen zijn behouden."</string>
+    <string name="diagnostics_all" formatted="false">"Alle"</string>
+    <string name="diagnostics_clear_entries">"Te verwijderen vermeldingen: %1$d, inclusief vermeldingen die door het filter verborgen zijn. Nieuwe bewerkingen kunnen daarna vermeldingen toevoegen."</string>
+    <string name="diagnostics_clear_recovery" formatted="false">"Alle opgeslagen diagnostiek verwijderen, inclusief onleesbare gegevens. Nieuwe bewerkingen kunnen daarna vermeldingen toevoegen."</string>
+    <string name="diagnostics_cleared" formatted="false">"Diagnostisch logboek gewist"</string>
+    <string name="diagnostics_copied" formatted="false">"Zichtbare vermeldingen gekopieerd"</string>
+    <string name="diagnostics_empty" formatted="false">"Nog geen diagnostische vermeldingen. Git-acties verschijnen hier."</string>
+    <string name="diagnostics_errors" formatted="false">"Fouten"</string>
+    <string name="diagnostics_filtered_empty" formatted="false">"Geen vermeldingen komen overeen met dit filter."</string>
+    <string name="diagnostics_operation_clone" formatted="false">"Klonen"</string>
+    <string name="diagnostics_operation_conflict" formatted="false">"Conflict"</string>
+    <string name="diagnostics_operation_fetch" formatted="false">"Ophalen"</string>
+    <string name="diagnostics_operation_lfs" formatted="false">"Git LFS"</string>
+    <string name="diagnostics_operation_push" formatted="false">"Push"</string>
+    <string name="diagnostics_operation_rebase" formatted="false">"Rebase"</string>
+    <string name="diagnostics_operation_revert" formatted="false">"Terugdraaien"</string>
+    <string name="diagnostics_operation_tag" formatted="false">"Tag"</string>
+    <string name="diagnostics_outcome_attention" formatted="false">"Aandacht nodig"</string>
+    <string name="diagnostics_outcome_cancelled" formatted="false">"Geannuleerd"</string>
+    <string name="diagnostics_outcome_completed" formatted="false">"Voltooid"</string>
+    <string name="diagnostics_outcome_started" formatted="false">"Gestart"</string>
+    <string name="diagnostics_outcome_stopped" formatted="false">"Gestopt"</string>
+    <string name="diagnostics_reason_cancelled" formatted="false">"De actie is geannuleerd"</string>
+    <string name="diagnostics_reason_lfs_contents" formatted="false">"Git is voltooid; sommige LFS-inhoud moet nog worden gedownload"</string>
+    <string name="diagnostics_reason_lfs_lock" formatted="false">"Een LFS-vergrendeling op de server blokkeerde het publiceren"</string>
+    <string name="diagnostics_reason_local_changes" formatted="false">"Lokale wijzigingen moeten worden gecontroleerd"</string>
+    <string name="diagnostics_reason_network" formatted="false">"De netwerkbewerking is niet voltooid"</string>
+    <string name="diagnostics_reason_review" formatted="false">"De status van de repository moet worden gecontroleerd"</string>
+    <string name="diagnostics_reason_storage" formatted="false">"Toegang tot opslag is niet beschikbaar"</string>
+    <string name="diagnostics_reason_trust" formatted="false">"Servergoedkeuring of vertrouwenscontrole is vereist"</string>
+    <string name="diagnostics_reason_unknown" formatted="false">"De actie is gestopt. Controleer de repositorystatus en verbindingsinstellingen."</string>
+    <string name="diagnostics_share_title" formatted="false">"Diagnostiek delen"</string>
+    <string name="diagnostics_warnings" formatted="false">"Waarschuwingen"</string>
+    <string name="dialogs_error_branch_exists">"Branch \'%1$s\' bestaat al.\n\nKies een andere naam."</string>
+    <string name="dialogs_error_cannot_delete_current_branch" formatted="false">"De huidige branch kan niet worden verwijderd.\n\nSchakel eerst over naar een andere branch."</string>
+    <string name="dialogs_error_commit_failed">"Commit mislukt: %1$s"</string>
+    <string name="dialogs_error_dirty_work_tree" formatted="false">"Deze bewerking kan niet worden uitgevoerd met niet-gecommitte wijzigingen.\n\nCommit je wijzigingen eerst of zet ze in de stash."</string>
+    <string name="dialogs_error_invalid_branch_name" formatted="false">"Ongeldige branchnaam.\n\nGebruik alfanumerieke tekens, koppeltekens en underscores."</string>
+    <string name="dialogs_error_invalid_repository" formatted="false">"Dit lijkt geen geldige Git-repository te zijn.\n\nZorg dat het pad naar een .git-map of een werkmap verwijst."</string>
+    <string name="dialogs_error_network" formatted="false">"Netwerkfout. Controleer je verbinding en probeer het opnieuw."</string>
+    <string name="dialogs_error_pull_failed">"Pull mislukt: %1$s"</string>
+    <string name="dialogs_error_push_failed">"Push mislukt: %1$s"</string>
+    <string name="dialogs_error_repository_not_found">"Repository niet gevonden op: %1$s\n\nControleer het pad en probeer het opnieuw."</string>
+    <string name="dialogs_error_title" formatted="false">"Fout"</string>
+    <string name="dialogs_info_title" formatted="false">"Informatie"</string>
+    <string name="dialogs_success_title" formatted="false">"Gelukt"</string>
+    <string name="dialogs_timestamp_unknown" formatted="false">"Onbekend"</string>
+    <string name="dialogs_warning_title" formatted="false">"Waarschuwing"</string>
+    <string name="discard_clear_staging" formatted="false">"Index leegmaken"</string>
+    <string name="discard_review_all" formatted="false">"Bijgehouden wijzigingen en de hieronder vermelde nieuwe bestanden worden permanent verwijderd. Genegeerde bestanden blijven behouden."</string>
+    <string name="discard_review_empty" formatted="false">"Er zijn geen wijzigingen om te verwerpen."</string>
+    <string name="discard_review_operation" formatted="false">"Hiermee wordt ook de actieve Git-bewerking afgebroken."</string>
+    <string name="discard_review_unborn" formatted="false">"Er is nog geen commit. Dit verwijdert de vermelde bestanden uit de index en behoudt hun inhoud."</string>
+    <string name="discovery_scanned">"%1$s gescand. Kies de werkkopieën die je wilt toevoegen."</string>
+    <string name="file_clone_failure" formatted="false">"De lokale repository kon niet worden gekloond. Controleer de bronmap, opslagtoegang en branch. Bestaande mappen zijn behouden."</string>
+    <string name="file_clone_guidance" formatted="false">"Kloon een repository op het apparaat met lokale toegang. Geef voor gedeelde opslag eerst toegang tot de map in Instellingen."</string>
+    <string name="file_delete_body" formatted="false">"Het bestand wordt van dit apparaat verwijderd. Git toont het als verwijderd als het werd gevolgd."</string>
+    <string name="file_delete_title" formatted="false">"Bestand verwijderen?"</string>
+    <string name="file_issue_access_denied" formatted="false">"Opslagtoegang is geweigerd. Controleer de machtigingen van deze map."</string>
+    <string name="file_issue_already_exists" formatted="false">"Er bestaat al een bestand of map met deze naam. Kies een andere naam."</string>
+    <string name="file_issue_binary" formatted="false">"Dit binaire bestand kan niet als tekst worden bewerkt."</string>
+    <string name="file_issue_external_change" formatted="false">"Dit bestand is buiten de editor gewijzigd. Herlaad de nieuwste versie voordat je opslaat. Je wijzigingen zijn er nog."</string>
+    <string name="file_issue_file_unavailable" formatted="false">"Het bestand is niet meer beschikbaar. Controleer de opslagtoegang."</string>
+    <string name="file_issue_folder_unavailable" formatted="false">"De map is niet meer beschikbaar. Controleer de opslagtoegang."</string>
+    <string name="file_issue_invalid_name" formatted="false">"Voer een bestandsnaam zonder padscheidingstekens in."</string>
+    <string name="file_issue_not_utf8" formatted="false">"Dit bestand is geen UTF-8-tekst. Open het in een externe editor."</string>
+    <string name="file_issue_operation_failed" formatted="false">"De bestandsbewerking is mislukt. Controleer de opslagtoegang en probeer opnieuw."</string>
+    <string name="file_issue_protected_path" formatted="false">"Kies een bestand in deze repository, buiten Git-metagegevens en symbolische koppelingen."</string>
+    <string name="file_issue_read_failed" formatted="false">"Dit bestand of deze map kan niet worden gelezen. Controleer de opslagtoegang."</string>
+    <string name="file_issue_too_large" formatted="false">"Dit bestand is groter dan 2 MB. Open het in een externe editor."</string>
+    <string name="file_local_access" formatted="false">"Lokale toegang"</string>
+    <string name="file_reload_body" formatted="false">"Dit vervangt je niet-opgeslagen wijzigingen door het bestand op schijf."</string>
+    <string name="file_reload_title" formatted="false">"Bestand opnieuw laden?"</string>
+    <string name="file_renamed" formatted="false">"Hernoemd"</string>
+    <string name="file_save_title" formatted="false">"Wijzigingen opslaan?"</string>
+    <string name="file_saved" formatted="false">"Opgeslagen"</string>
+    <string name="files_folder" formatted="false">"Map"</string>
+    <string name="files_hide_hidden" formatted="false">"Verborgen bestanden verbergen"</string>
+    <string name="files_show_hidden" formatted="false">"Verborgen bestanden tonen"</string>
+    <string name="folder_access_not_enabled" formatted="false">"Maptoegang is niet ingeschakeld. Je kunt de app-opslag blijven gebruiken."</string>
+    <string name="folder_picker_unavailable" formatted="false">"Er is geen mapkiezer beschikbaar op dit apparaat"</string>
+    <string name="folder_settings_unavailable" formatted="false">"De opslaginstellingen van Android zijn niet beschikbaar. App-opslag blijft beschikbaar."</string>
+    <string name="folder_unusable" formatted="false">"Deze map kon niet worden gebruikt"</string>
+    <string name="git_fetch" formatted="false">"Fetch"</string>
+    <string name="git_native_public_only" formatted="false">"Het eigen Git-protocol ondersteunt alleen openbare toegang. Gebruik HTTPS of SSH voor authenticatie."</string>
+    <string name="gitops_action_failed" formatted="false">"Git kon deze actie niet voltooien"</string>
+    <string name="gitops_branch_action_failed" formatted="false">"Branchactie kon niet worden voltooid"</string>
+    <string name="gitops_branch_action_failed_refresh" formatted="false">"Branchactie kon niet worden voltooid. Vernieuw de repositorystatus."</string>
+    <string name="gitops_branch_changed" formatted="false">"Branch gewijzigd. Controleer de huidige branch voordat je het opnieuw probeert."</string>
+    <string name="gitops_branch_changed_commit_push" formatted="false">"De huidige branch is gewijzigd. Vernieuw voordat je commit en pusht."</string>
+    <string name="gitops_branch_changed_push" formatted="false">"De huidige branch is gewijzigd. Vernieuw voordat je pusht."</string>
+    <string name="gitops_branch_changed_while_loading" formatted="false">"De huidige branch is tijdens het laden gewijzigd. Vernieuw en controleer opnieuw."</string>
+    <string name="gitops_branch_name_empty" formatted="false">"Branchnaam mag niet leeg zijn"</string>
+    <string name="gitops_branch_needs_commit" formatted="false">"Commit een bestand voordat je een branch maakt."</string>
+    <string name="gitops_branch_or_commit_changed" formatted="false">"Huidige branch of commit gewijzigd. Vernieuw en controleer opnieuw."</string>
+    <string name="gitops_branch_pushed" formatted="false">"Branch gepusht"</string>
+    <string name="gitops_branches_refresh_failed" formatted="false">"Kan branches niet vernieuwen"</string>
+    <string name="gitops_changes_load_failed" formatted="false">"Kan wijzigingen niet laden"</string>
+    <string name="gitops_commit_changed" formatted="false">"Commit gewijzigd. Vernieuw de geschiedenis en controleer opnieuw."</string>
+    <string name="gitops_commit_message_empty" formatted="false">"Commitbericht mag niet leeg zijn"</string>
+    <string name="gitops_committed_push_stopped" formatted="false">"Lokaal gecommit. Push gestopt; probeer opnieuw wanneer je klaar bent."</string>
+    <string name="gitops_committed_pushed" formatted="false">"Gecommit en gepusht"</string>
+    <string name="gitops_committed_pushing" formatted="false">"Lokaal gecommit. Bezig met pushen…"</string>
+    <string name="gitops_committed_ready" formatted="false">"Lokaal gecommit. Klaar om te pushen wanneer je wilt."</string>
+    <string name="gitops_conflict_batch_choose" formatted="false">"Kies die van ons of die van hen voor een batchoplossing"</string>
+    <string name="gitops_conflict_changed_draft" formatted="false">"Conflict gewijzigd. Je concept wordt nog getoond. Kopieer de tekst die je wilt bewaren, sluit daarna en controleer het huidige conflict."</string>
+    <string name="gitops_conflict_not_resolved" formatted="false">"Conflict kon niet worden opgelost"</string>
+    <string name="gitops_conflicts_changed" formatted="false">"Conflicten gewijzigd. Vernieuw voordat je ze oplost."</string>
+    <string name="gitops_conflicts_refresh_failed" formatted="false">"Kan mergeconflicten niet vernieuwen"</string>
+    <string name="gitops_conflicts_remain" formatted="false">"Sommige conflicten zijn nog niet opgelost. Controleer de vernieuwde conflictlijst."</string>
+    <string name="gitops_file_diff_load_failed" formatted="false">"Kan bestandsdiff niet laden"</string>
+    <string name="gitops_history_action_failed" formatted="false">"Git kon deze geschiedenisactie niet voltooien"</string>
+    <string name="gitops_history_changed" formatted="false">"Repositorygeschiedenis gewijzigd. Vernieuw en controleer opnieuw."</string>
+    <string name="gitops_history_refresh_failed" formatted="false">"Kan geschiedenis niet vernieuwen"</string>
+    <string name="gitops_lfs_endpoint_damaged" formatted="false">"Opgeslagen goedkeuringen voor LFS-endpoints kunnen niet worden geopend. Stel ze opnieuw in via Instellingen voordat je het opnieuw probeert."</string>
+    <string name="gitops_lfs_endpoint_invalid" formatted="false">"Ongeldig LFS-endpointadres"</string>
+    <string name="gitops_lfs_extensions_review_failed" formatted="false">"Kan extensietracking niet controleren. Laad opnieuw en controleer bestaande attributen, conflicten en bestandstoegang voordat je het opnieuw probeert."</string>
+    <string name="gitops_lfs_failed" formatted="false">"Kan Git LFS niet voltooien. Controleer de verbinding en de huidige trackingstatus, laad opnieuw en probeer het nogmaals. Je lokale bestanden en commits zijn bewaard."</string>
+    <string name="gitops_lfs_inspect_failed" formatted="false">"Kan Git LFS niet inspecteren. Controleer de opslagtoegang en de repositorystatus en laad daarna opnieuw."</string>
+    <string name="gitops_lfs_locks_check_failed" formatted="false">"Kan serververgrendelingen niet controleren. Vernieuw vóór een volgende wijziging."</string>
+    <string name="gitops_lfs_locks_denied" formatted="false">"De server weigerde toegang tot de lijst met vergrendelingen. Controleer de repositoryverbinding en pushrechten."</string>
+    <string name="gitops_lfs_locks_unavailable" formatted="false">"Kan serververgrendelingen niet controleren. Controleer de verbinding en de repositorystatus en vernieuw vóór een volgende wijziging."</string>
+    <string name="gitops_merge_message_empty" formatted="false">"Mergebericht mag niet leeg zijn"</string>
+    <string name="gitops_merge_session_changed" formatted="false">"Mergesessie gewijzigd. Vernieuw voordat je doorgaat."</string>
+    <string name="gitops_merge_stopped">"Merge gestopt: %1$s"</string>
+    <string name="gitops_merge_successful">"Merge geslaagd: %1$s"</string>
+    <string name="gitops_operation_failed" formatted="false">"Git-bewerking mislukt"</string>
+    <string name="gitops_pull_incomplete" formatted="false">"Pull is niet voltooid"</string>
+    <string name="gitops_rebase_choose_conflict" formatted="false">"Kies het gecontroleerde conflict"</string>
+    <string name="gitops_rebase_choose_filename" formatted="false">"Kies de gecontroleerde bestandsnaam"</string>
+    <string name="gitops_rebase_conflict_changed" formatted="false">"Het conflict of de werkbestanden zijn gewijzigd. Je concept is bewaard; vernieuw voordat je het oplost."</string>
+    <string name="gitops_rebase_failed" formatted="false">"Git kon deze actie niet voltooien. Controleer bij het ophalen de verbinding en vernieuw daarna de rebasestatus voordat je het opnieuw probeert."</string>
+    <string name="gitops_rebase_needs_review" formatted="false">"Rebase moet worden gecontroleerd"</string>
+    <string name="gitops_rebase_open_editor" formatted="false">"Open de conflicteditor voordat je oplost"</string>
+    <string name="gitops_rebase_refresh_session" formatted="false">"Vernieuw de rebasesessie"</string>
+    <string name="gitops_rebase_review_first" formatted="false">"Controleer eerst de rebase"</string>
+    <string name="gitops_remote_merge_failed" formatted="false">"Git kon deze actie niet voltooien. Controleer de verbinding en daarna de huidige repositorystatus voordat je het opnieuw probeert."</string>
+    <string name="gitops_repository_changed_review" formatted="false">"De geselecteerde repository is gewijzigd. Controleer de bewerking opnieuw."</string>
+    <string name="gitops_review_local_changes_failed" formatted="false">"Kan lokale wijzigingen niet controleren"</string>
+    <string name="gitops_stash_changed" formatted="false">"Stashlijst gewijzigd. Controleer de huidige stash voordat je het opnieuw probeert."</string>
+    <string name="gitops_status_refresh_failed" formatted="false">"Kan repositorystatus niet vernieuwen"</string>
+    <string name="gitops_tag_changed" formatted="false">"Tag gewijzigd. Controleer de huidige tag voordat je het opnieuw probeert."</string>
+    <string name="gitops_tag_name_empty" formatted="false">"Tagnaam mag niet leeg zijn"</string>
+    <string name="gitops_tag_needs_commit" formatted="false">"Commit een bestand voordat je een tag maakt."</string>
+    <string name="gitops_upstream_load_failed" formatted="false">"Kan upstream-branch niet laden"</string>
+    <string name="gitops_upstream_save_failed" formatted="false">"Kan upstream-branch niet opslaan"</string>
+    <string name="guide_back" formatted="false">"Terug"</string>
+    <string name="guide_clone_body" formatted="false">"Kloon GitHub-repositories, openbare of zelf gehoste repositories en repositories via SSH. Elke werkkopie behoudt zijn eigen verbinding en branch."</string>
+    <string name="guide_clone_title" formatted="false">"Je repositories op Android"</string>
+    <string name="guide_continue" formatted="false">"Doorgaan"</string>
+    <string name="guide_edit_body" formatted="false">"Blader hier door bestanden en bewerk ze, of kies een apparaatmap voor een andere editor zoals Obsidian. Controleer vóór het klonen de maptoegang in Instellingen."</string>
+    <string name="guide_edit_title" formatted="false">"Bewerk waar je werkt"</string>
+    <string name="guide_git_body" formatted="false">"Bekijk verschillen, zet geselecteerde wijzigingen klaar en maak lokale commits. Push wanneer je klaar bent. Branches, geschiedenis, tags, conflictoplossing en Git LFS zijn beschikbaar op het repositoryscherm."</string>
+    <string name="guide_git_title" formatted="false">"Controleer vóór het publiceren"</string>
+    <string name="guide_login" formatted="false">"Inloggen met GitHub"</string>
+    <string name="guide_save_error" formatted="false">"De voortgang van de rondleiding kon niet worden opgeslagen. Je kunt doorgaan; de rondleiding verschijnt mogelijk de volgende keer opnieuw."</string>
+    <string name="guide_start_body" formatted="false">"Koppel een account, kloon vanaf een URL of probeer het offline voorbeeld. Je kunt nu ook een opslaglocatie kiezen."</string>
+    <string name="guide_start_title" formatted="false">"Kies hoe je begint"</string>
+    <string name="guide_step">"Stap %1$d van 4"</string>
+    <string name="help_copy_email" formatted="false">"E-mailadres van ondersteuning kopiëren"</string>
+    <string name="help_email_copied" formatted="false">"E-mailadres van ondersteuning gekopieerd"</string>
+    <string name="help_feedback" formatted="false">"Feedback versturen"</string>
+    <string name="help_open_failed" formatted="false">"Geen app kon deze link openen. Je kunt het e-mailadres van de ondersteuning kopiëren."</string>
+    <string name="help_title" formatted="false">"Hulp"</string>
+    <string name="history_screen" formatted="false">"Geschiedenis"</string>
+    <string name="http_transport_warning" formatted="false">"HTTP is niet versleuteld. Repositorygegevens en ingevoerde gebruikersnamen of tokens kunnen tijdens de overdracht worden gelezen. Gebruik HTTPS indien beschikbaar."</string>
+    <string name="language_settings_legacy" formatted="false">"Vóór Android 13 gebruikt deze app de taal van het apparaat."</string>
+    <string name="language_settings_title" formatted="false">"Taal"</string>
+    <string name="language_settings_unavailable" formatted="false">"De taalinstellingen konden niet worden geopend."</string>
+    <string name="lfs_cache_missing" formatted="false">"Niet in cache"</string>
+    <string name="lfs_cache_verified" formatted="false">"Geverifieerde cache"</string>
+    <string name="lfs_error_authentication" formatted="false">"De autorisatiemethode komt niet meer overeen met deze controle. Annuleer en controleer het eindpunt opnieuw."</string>
+    <string name="lfs_error_credentials" formatted="false">"Voer een geldige, afzonderlijke gebruikersnaam en token of wachtwoord voor het LFS-eindpunt in."</string>
+    <string name="lfs_error_damaged" formatted="false">"Opgeslagen LFS-eindpuntgoedkeuringen moeten worden gecontroleerd. Stel ze opnieuw in via Instellingen voordat je het opnieuw probeert."</string>
+    <string name="lfs_error_recovery" formatted="false">"Het herstel van LFS-eindpuntgoedkeuringen kon niet worden opgeslagen. Stel de goedkeuringen opnieuw in via Instellingen voordat je het opnieuw probeert."</string>
+    <string name="lfs_error_reset" formatted="false">"LFS-eindpuntgoedkeuringen konden niet opnieuw worden ingesteld. Controleer de opgeslagen goedkeuringen voordat je het opnieuw probeert."</string>
+    <string name="lfs_error_revoke" formatted="false">"LFS-eindpuntgoedkeuring kon niet worden ingetrokken. Laad de opgeslagen goedkeuringen opnieuw voordat je het opnieuw probeert."</string>
+    <string name="lfs_error_save" formatted="false">"LFS-eindpuntgoedkeuring kon niet worden opgeslagen. Controleer de opgeslagen goedkeuringen voordat je het opnieuw probeert."</string>
+    <string name="lfs_extensions_exact_fallback" formatted="false">"Geselecteerde grote bestanden met onbekende extensies behouden regels voor het exacte pad."</string>
+    <string name="lfs_extensions_updated" formatted="false">"Trackingregels voor extensies bijgewerkt. Controleer .gitattributes en de betrokken bestanden en voeg ze vóór het committen toe aan de index."</string>
+    <string name="lfs_file_available" formatted="false">"Bestandsinhoud beschikbaar"</string>
+    <string name="lfs_file_local_edits" formatted="false">"Lokale wijzigingen · blijven behouden tijdens downloaden"</string>
+    <string name="lfs_file_pointer" formatted="false">"Verwijzing · bestandsinhoud downloaden"</string>
+    <string name="lfs_local_edits_kept" formatted="false">"Lokale bewerkingen zijn behouden."</string>
+    <string name="lfs_lock_candidates_empty" formatted="false">"Geen onvergrendelde bestanden in de index zijn als vergrendelbaar gemarkeerd. Voeg lockable-regels toe aan .gitattributes en vernieuw de lijst."</string>
+    <string name="lfs_lock_create_action" formatted="false">"Bestand vergrendelen"</string>
+    <string name="lfs_lock_create_review">"%1$s vergrendelen…"</string>
+    <string name="lfs_lock_create_title" formatted="false">"Dit bestand vergrendelen?"</string>
+    <string name="lfs_lock_force_action" formatted="false">"Geforceerd vrijgeven"</string>
+    <string name="lfs_lock_force_review" formatted="false">"Geforceerd vrijgeven…"</string>
+    <string name="lfs_lock_ours" formatted="false">"Eigendom van je huidige verbinding"</string>
+    <string name="lfs_lock_owner_missing" formatted="false">"Niet opgegeven door de server"</string>
+    <string name="lfs_lock_release_action" formatted="false">"Vrijgeven"</string>
+    <string name="lfs_lock_release_review" formatted="false">"Vergrendeling vrijgeven…"</string>
+    <string name="lfs_lock_release_title" formatted="false">"Deze vergrendeling vrijgeven?"</string>
+    <string name="lfs_lock_theirs" formatted="false">"Eigendom van een andere verbinding"</string>
+    <string name="lfs_lock_unverified" formatted="false">"Eigendom niet geverifieerd"</string>
+    <string name="lfs_locks_check" formatted="false">"Eigendom van vergrendelingen controleren"</string>
+    <string name="lfs_locks_empty" formatted="false">"Geen serververgrendelingen op deze branch."</string>
+    <string name="lfs_locks_intro" formatted="false">"Controleer het eigendom op de server voordat je vergrendelingen wijzigt. Vergrendelen wijzigt servermetadata; lokale bestanden, wijzigingen in de index en commits blijven behouden."</string>
+    <string name="lfs_locks_list" formatted="false">"Vergrendelingen met leestoegang tonen"</string>
+    <string name="lfs_locks_read_only" formatted="false">"Alleen-lezenlijst · eigendom niet geverifieerd"</string>
+    <string name="lfs_locks_refreshed" formatted="false">"Serververgrendelingen vernieuwd."</string>
+    <string name="lfs_locks_remote">"Remote: %1$s"</string>
+    <string name="lfs_locks_server">"LFS-server: %1$s"</string>
+    <string name="lfs_locks_title" formatted="false">"Serververgrendelingen"</string>
+    <string name="lfs_locks_unsupported" formatted="false">"Deze server ondersteunt geen Git LFS-vergrendelingen."</string>
+    <string name="lfs_tracking_updated" formatted="false">"Trackingregels bijgewerkt. Controleer .gitattributes en de geselecteerde bestanden, voeg ze toe aan de index en maak daarna een commit."</string>
+    <string name="m3_editor_preview" formatted="false">"Voorbeeld"</string>
+    <string name="m3_editor_write" formatted="false">"Schrijven"</string>
+    <string name="m3_open_in_editor" formatted="false">"Openen in editor"</string>
+    <string name="m3_paywall_paid_with_play" formatted="false">"Betaald met je Google Play-account"</string>
+    <string name="m3_pick_a_file" formatted="false">"Kies een bestand om de wijzigingen te zien."</string>
+    <string name="modified" formatted="false">"Gewijzigd"</string>
+    <string name="move_cancelled" formatted="false">"Verplaatsing geannuleerd. De oorspronkelijke werkkopie is bewaard."</string>
+    <string name="move_confirm_action" formatted="false">"Verplaatsen"</string>
+    <string name="move_confirm_action_restore" formatted="false">"Terugzetten"</string>
+    <string name="move_confirm_title_restore" formatted="false">"Deze herstelkopie terugzetten?"</string>
+    <string name="move_done" formatted="false">"Repository verplaatst"</string>
+    <string name="move_done_retained" formatted="false">"Repository verplaatst. Het origineel wordt bewaard in Verplaatsingsherstel."</string>
+    <string name="move_error_destination_other" formatted="false">"De bestemming is geregistreerd voor een andere repository"</string>
+    <string name="move_error_destination_registered" formatted="false">"Er is al een andere repository geregistreerd op deze bestemming"</string>
+    <string name="move_error_finish_pending" formatted="false">"Voltooi eerst de wachtende verplaatsing"</string>
+    <string name="move_error_finish_pending_repository" formatted="false">"Voltooi eerst de wachtende verplaatsing van deze repository"</string>
+    <string name="move_error_recovery_added" formatted="false">"De herstelkopie is al toegevoegd. Verplaats deze vanuit het repository-item."</string>
+    <string name="move_error_restored_registered" formatted="false">"De herstelde locatie is nu anders geregistreerd; er zijn geen instellingen overschreven"</string>
+    <string name="move_error_settings_changed" formatted="false">"De repository-instellingen zijn gewijzigd. Controleer het herstel van de verplaatsing voordat je doorgaat."</string>
+    <string name="move_error_settings_review" formatted="false">"De verplaatsingsinstellingen moeten worden gecontroleerd; alle werkkopieën zijn bewaard"</string>
+    <string name="move_error_stale_review" formatted="false">"De controle van de verplaatsing is gewijzigd. Controleer de bestemming opnieuw voordat je verplaatst."</string>
+    <string name="move_intro_restore" formatted="false">"Zet het bewaarde origineel terug als aparte repository. De huidige werkkopie blijft op zijn plaats."</string>
+    <string name="move_progress_reviewing" formatted="false">"Bestanden en Git-metadata controleren…"</string>
+    <string name="move_recovered_name">"%1$s (hersteld)"</string>
+    <string name="move_recovery_attention">"Herstel van verplaatsing vereist aandacht: %1$s"</string>
+    <string name="move_recovery_done" formatted="false">"Herstel van verplaatsing voltooid"</string>
+    <string name="move_recovery_removed" formatted="false">"Herstelkopie verwijderd"</string>
+    <string name="move_title_restore" formatted="false">"Herstelkopie terugzetten"</string>
+    <string name="notes_acknowledge" formatted="false">"Begrepen"</string>
+    <string name="notes_connections_body" formatted="false">"Beheer GitHub-accounts en de auteursidentiteit van repositories. Verbind via HTTPS of SSH, kies kloonopslag, verbind lokale kopieën opnieuw en beoordeel het verplaatsen of verwijderen van repositories."</string>
+    <string name="notes_connections_title" formatted="false">"Verbindingen en opslag"</string>
+    <string name="notes_files_body" formatted="false">"Beoordeel Git LFS-tracking, download ontbrekende inhoud en bekijk waarschuwingen over serververgrendelingen. Diagnostiek houdt een begrensd lokaal logboek bij met gefilterd kopiëren en delen."</string>
+    <string name="notes_files_title" formatted="false">"Grote bestanden en diagnostiek"</string>
+    <string name="notes_version">"Android %1$s · build %2$d"</string>
+    <string name="notes_workflow_body" formatted="false">"Blader door bestanden en bewerk ze, beoordeel gestagede en ongestagede verschillen, commit lokaal, push bestaande commits en werk met branches, geschiedenis, tags en rebase."</string>
+    <string name="notes_workflow_title" formatted="false">"Repositoryworkflow"</string>
+    <string name="obsidian_forgotten" formatted="false">"Toekomstige overdrachten zijn uitgeschakeld. Bereid een nieuwe verbinding voor om deze map opnieuw te verbinden."</string>
+    <string name="obsidian_interrupted" formatted="false">"Verbinding gestopt. Geen enkel verzoek wordt automatisch herhaald. Bereid een nieuwe verbinding voor voordat je het opnieuw probeert in Obsidian."</string>
+    <string name="obsidian_return" formatted="false">"Terug naar Obsidian"</string>
+    <string name="obsidian_title" formatted="false">"Obsidian-verbindingen"</string>
+    <string name="paywall_bought_before" formatted="false">"GitSync.md al eerder gekocht? Dan is het al ontgrendeld. Zo niet, tik op Aankoop herstellen."</string>
+    <string name="paywall_buy" formatted="false">"GitSync.md ontgrendelen"</string>
+    <string name="paywall_buy_vault">"Ontgrendel en kloon %1$s"</string>
+    <string name="paywall_check_branch_missing">"%1$s niet gevonden"</string>
+    <string name="paywall_check_branch_missing_detail">"De branch %1$s staat niet op deze remote. Controleer de branchnaam en controleer opnieuw."</string>
+    <string name="paywall_check_cant_connect" formatted="false">"geen verbinding"</string>
+    <string name="paywall_check_confirm_key" formatted="false">"sleutel bevestigen bij klonen"</string>
+    <string name="paywall_check_connected" formatted="false">"verbonden"</string>
+    <string name="paywall_check_headline_ready" formatted="false">"Je kluis\nis klaar."</string>
+    <string name="paywall_check_headline_unreachable" formatted="false">"Deze repository\nis niet bereikbaar."</string>
+    <string name="paywall_check_lfs_none" formatted="false">"geen"</string>
+    <string name="paywall_check_lfs_used" formatted="false">"gebruikt · ondersteund"</string>
+    <string name="paywall_check_no_obsidian" formatted="false">"nog geen .obsidian"</string>
+    <string name="paywall_check_on_clone" formatted="false">"gecontroleerd bij klonen"</string>
+    <string name="paywall_check_read_only" formatted="false">"alleen-lezen"</string>
+    <string name="paywall_check_read_write" formatted="false">"lezen · schrijven"</string>
+    <string name="paywall_close" formatted="false">"Sluiten"</string>
+    <string name="paywall_error_purchase_failed" formatted="false">"Google Play kon de aankoop niet voltooien. Probeer het zo opnieuw."</string>
+    <string name="paywall_error_store_unavailable" formatted="false">"Google Play is nu niet bereikbaar. Probeer het zo opnieuw."</string>
+    <string name="paywall_foot_blocked_unlocked" formatted="false">"Er is niets gedownload."</string>
+    <string name="paywall_pending" formatted="false">"Wachten op goedkeuring. Je kluis wordt toegevoegd zodra de aankoop rond is."</string>
+    <string name="paywall_pill_checking" formatted="false">"controleren…"</string>
+    <string name="paywall_pill_needs_access" formatted="false">"toegang nodig"</string>
+    <string name="paywall_pill_ready" formatted="false">"klaar"</string>
+    <string name="paywall_pill_unreachable" formatted="false">"onbereikbaar"</string>
+    <string name="paywall_point_again_body" formatted="false">"Nieuwe telefoon, nieuwe kluis, een lastige merge. Elke kluis, elke update."</string>
+    <string name="paywall_point_again_title" formatted="false">"Er wanneer je het weer nodig hebt"</string>
+    <string name="paywall_point_clone_body" formatted="false">"Volledige geschiedenis, dus de Git-plug-in werkt vanaf dag één."</string>
+    <string name="paywall_point_clone_title" formatted="false">"Direct in Obsidian gekloond"</string>
+    <string name="paywall_point_signin_body" formatted="false">"GitHub, SSH of een token. Geen terminal, geen configuratiebestanden."</string>
+    <string name="paywall_point_signin_title" formatted="false">"Inloggen geregeld"</string>
+    <string name="paywall_price_fallback" formatted="false">"$9.99"</string>
+    <string name="paywall_price_note" formatted="false">"eenmalig · geen abonnement"</string>
+    <string name="paywall_price_once">"eenmalig %1$s"</string>
+    <string name="paywall_restore" formatted="false">"Aankoop herstellen"</string>
+    <string name="paywall_restore_none" formatted="false">"Geen eerdere aankoop gevonden voor dit Google-account."</string>
+    <string name="paywall_row_access" formatted="false">"Lees- en schrijftoegang"</string>
+    <string name="paywall_row_branch" formatted="false">"Branch"</string>
+    <string name="paywall_row_checking" formatted="false">"controleren"</string>
+    <string name="paywall_row_lfs" formatted="false">"Git LFS-bestanden"</string>
+    <string name="paywall_row_obsidian" formatted="false">"Obsidian-kluis"</string>
+    <string name="paywall_row_size" formatted="false">"Grootte en aantal bestanden"</string>
+    <string name="paywall_terms" formatted="false">"Voorwaarden"</string>
+    <string name="paywall_unlock_subtitle" formatted="false">"Ontgrendel om je kluis toe te voegen. Daarna kan de Obsidian Git-plug-in het overnemen."</string>
+    <string name="paywall_unlock_subtitle_vault" formatted="false">"Ontgrendel om je kluis in Obsidian te klonen. Daarna kan de Obsidian Git-plug-in het overnemen."</string>
+    <string name="paywall_unlock_title" formatted="false">"Eén keer instellen.\nVoorgoed geregeld."</string>
+    <string name="paywall_unreachable_auth" formatted="false">"De remote heeft deze inloggegevens geweigerd. Controleer de inlogmethode en controleer opnieuw."</string>
+    <string name="paywall_unreachable_network" formatted="false">"GitSync.md kon de remote niet bereiken. Controleer het adres en je verbinding en controleer opnieuw."</string>
+    <string name="paywall_unreachable_not_found" formatted="false">"Er staat geen repository op dit adres. Controleer de URL en controleer opnieuw."</string>
+    <string name="publication_accounts" formatted="false">"GitHub Rekening"</string>
+    <string name="publication_adopt" formatted="false">"Repository gebruiken"</string>
+    <string name="publication_adopt_title" formatted="false">"Deze repository gebruiken?"</string>
+    <string name="publication_adopt_warning">"GitHub heeft %1$s/%2$s (%3$s), repository-ID %4$d. Een overeenkomende naam bewijst niet dat deze poging de repository heeft gemaakt. Deze lege repository gebruiken voor je opgeslagen commit?\n\n%5$s"</string>
+    <string name="publication_back" formatted="false">"Terug"</string>
+    <string name="publication_cancel" formatted="false">"Annuleren"</string>
+    <string name="publication_discard_close" formatted="false">"Verlaten zonder bewerkingen op te slaan"</string>
+    <string name="publication_discard_title" formatted="false">"Deze beoordeling weggooien?"</string>
+    <string name="publication_discard_warning" formatted="false">"Deze opgeslagen beoordelingskeuzes en onopgeslagen bewerkingen verwijderen? Werkbestanden blijven onaangeroerd. Voorbereiden en publiceren zijn voor deze beoordeling nog niet gestart."</string>
+    <string name="publication_file_unsupported" formatted="false">"Inhoudsconversie niet ondersteund"</string>
+    <string name="publication_finish" formatted="false">"Configuratie afronden"</string>
+    <string name="publication_include" formatted="false">"Bestand opnemen"</string>
+    <string name="publication_leave_title" formatted="false">"Je beoordeling opslaan?"</string>
+    <string name="publication_leave_warning" formatted="false">"Wijzigingen aan account, auteur, bericht of bestemming zijn niet opgeslagen."</string>
+    <string name="publication_phase_preparing" formatted="false">"Lokale voorbereiding hervatten"</string>
+    <string name="publication_prepare_title" formatted="false">"Deze momentopname voorbereiden?"</string>
+    <string name="publication_prepare_warning" formatted="false">"Dit maakt Git-metadata en commit alleen de geselecteerde bestanden lokaal. Je werkbestanden blijven op hun plaats. Uitgesloten bestanden krijgen lokale negeerregels. Er wordt nog geen GitHub-repository gemaakt. Bestandsselectie, auteur en account worden vastgezet zodra de voorbereiding begint. Naam en zichtbaarheid blijven bewerkbaar totdat het maken van de repository begint."</string>
+    <string name="publication_private_label" formatted="false">"privé"</string>
+    <string name="publication_public_label" formatted="false">"openbaar"</string>
+    <string name="publication_save_close" formatted="false">"Opslaan en verlaten"</string>
+    <string name="publication_save_destination" formatted="false">"Bestemming opslaan"</string>
+    <string name="publication_sensitive_title" formatted="false">"Gevoelig bestand opnemen?"</string>
+    <string name="publication_sensitive_warning">"%1$s kan inloggegevens of privégegevens bevatten. Neem het pas op nadat je de inhoud hebt gecontroleerd. Gepubliceerde Git-geschiedenis kan het na verwijdering blijven bevatten."</string>
+    <string name="publication_stopping" formatted="false">"Veilig stoppen…"</string>
+    <string name="publication_work_adopt" formatted="false">"Beoordeelde repository verifiëren…"</string>
+    <string name="publication_work_check" formatted="false">"Oorspronkelijke bestemming controleren…"</string>
+    <string name="publication_work_inspect" formatted="false">"Map inspecteren…"</string>
+    <string name="publication_work_load" formatted="false">"Opgeslagen voortgang lezen…"</string>
+    <string name="publication_work_reconnect" formatted="false">"Maptoegang controleren…"</string>
+    <string name="publication_work_refresh" formatted="false">"Bestandsbeoordeling vernieuwen…"</string>
+    <string name="publication_work_save" formatted="false">"Beoordeling opslaan…"</string>
+    <string name="pull_all_attention" formatted="false">"Pull voltooid; sommige LFS-inhoud moet nog worden gedownload. Open Git LFS om het opnieuw te proberen."</string>
+    <string name="pull_all_back" formatted="false">"Terug"</string>
+    <string name="pull_all_background_attention" formatted="false">"Alles ophalen heeft aandacht nodig. Tik om het opgeslagen overzicht te bekijken."</string>
+    <string name="pull_all_background_busy" formatted="false">"Alles ophalen is al bezig. Open Alles ophalen om te stoppen of de voortgang te bekijken."</string>
+    <string name="pull_all_background_complete" formatted="false">"Alles ophalen is voltooid. Bekijk het opgeslagen overzicht."</string>
+    <string name="pull_all_background_counts">"Bijgewerkt: %1$d · Actueel: %2$d · LFS-aandacht: %3$d · Geblokkeerd: %4$d · Mislukt: %5$d"</string>
+    <string name="pull_all_background_running" formatted="false">"Alles ophalen wordt uitgevoerd zonder de app te openen. Kies Stoppen om de overige repositories niet meer te starten."</string>
+    <string name="pull_all_background_title" formatted="false">"Alles op de achtergrond ophalen"</string>
+    <string name="pull_all_current" formatted="false">"Geen inkomende wijzigingen"</string>
+    <string name="pull_all_empty" formatted="false">"Geen lokale repositories om op te halen. Kloon of importeer eerst een repository."</string>
+    <string name="pull_all_failed" formatted="false">"Alles ophalen kon niet starten. Controleer de repository-instellingen en probeer het opnieuw."</string>
+    <string name="pull_all_progress">"Gecontroleerde repositories: %1$d / %2$d"</string>
+    <string name="pull_all_stop" formatted="false">"Alles ophalen stoppen"</string>
+    <string name="pull_all_stopping" formatted="false">"Stopt na de huidige bewerking…"</string>
+    <string name="pull_all_title" formatted="false">"Alles ophalen"</string>
+    <string name="pull_all_widget_description" formatted="false">"Alle lokale repositories ophalen en via fast-forward bijwerken zonder GitSync.md te openen."</string>
+    <string name="pull_all_widget_subtitle" formatted="false">"Alleen ophalen en fast-forward"</string>
+    <string name="pull_screen" formatted="false">"Pullen"</string>
+    <string name="push_all_repositories" formatted="false">"Alle repository’s, ook toekomstige"</string>
+    <string name="push_cancelled" formatted="false">"De verbinding met GitHub is geannuleerd."</string>
+    <string name="push_channel" formatted="false">"Repository-updates"</string>
+    <string name="push_enable" formatted="false">"Melden wanneer GitHub verandert"</string>
+    <string name="push_existing" formatted="false">"GitHub-app al geïnstalleerd?"</string>
+    <string name="push_existing_account" formatted="false">"GitHub-gebruikersnaam of organisatie"</string>
+    <string name="push_existing_connect" formatted="false">"Bestaande installatie verbinden"</string>
+    <string name="push_failed" formatted="false">"Push-synchronisatie kon deze actie niet voltooien. Controleer meldingen, netwerkverbinding en GitHub-toegang en vernieuw de verbinding. Lokale bestanden zijn behouden."</string>
+    <string name="push_link" formatted="false">"GitHub verbinden"</string>
+    <string name="push_manage_github" formatted="false">"Beheren op GitHub"</string>
+    <string name="push_no_connections" formatted="false">"Verbind een GitHub-account of organisatie om te kiezen welke repository’s updates mogen verzenden."</string>
+    <string name="push_no_match" formatted="false">"Geen toegankelijke werkkopie komt overeen met deze GitHub-repository en de gevolgde externe branch. Controleer de verbinding, de branch en de maptoegang."</string>
+    <string name="push_notification">"GitHub-branch %1$s is gewijzigd. Tik om deze werkkopie te controleren."</string>
+    <string name="push_open_failed" formatted="false">"Deze link kon niet worden geopend. Controleer de browser of de Android-instellingen en probeer het opnieuw."</string>
+    <string name="push_open_settings" formatted="false">"Meldingsinstellingen openen"</string>
+    <string name="push_owner" formatted="false">"Meld je aan als eigenaar van het persoonlijke account of de organisatie om deze installatie te verbinden."</string>
+    <string name="push_permission" formatted="false">"Sta meldingen toe in de Android-instellingen voordat je push-synchronisatie inschakelt."</string>
+    <string name="push_refresh" formatted="false">"Verbinding vernieuwen"</string>
+    <string name="push_registered" formatted="false">"Apparaat geregistreerd voor meldingen."</string>
+    <string name="push_registration_pending" formatted="false">"Registratie voor meldingen is in behandeling. Vernieuw de verbinding zodra je online bent."</string>
+    <string name="push_result">"Gecontroleerd: %1$d · Bijgewerkt: %2$d · Te beoordelen: %3$d"</string>
+    <string name="push_result_current" formatted="false">"Al bijgewerkt"</string>
+    <string name="push_result_review" formatted="false">"Moet vóór bijwerken worden beoordeeld"</string>
+    <string name="push_scope" formatted="false">"Verbind de GitHub-app van GitSync.md om repository-updates te ontvangen. Overeenkomende werkkopieën zonder lokale wijzigingen kunnen op de achtergrond ophalen en via fast-forward bijwerken. Tik op een melding om opnieuw te controleren. Push-synchronisatie maakt nooit commits, uploadt geen wijzigingen en wisselt niet van branch; lokale wijzigingen en uiteenlopende geschiedenissen moet je zelf beoordelen."</string>
+    <string name="push_selected_repositories" formatted="false">"Geselecteerde repository’s"</string>
+    <string name="push_stopped" formatted="false">"Deze controle is gestopt. Werk dat al aan Git is doorgegeven, kan voltooid zijn; controleer de repository voordat je het opnieuw probeert."</string>
+    <string name="push_suspended" formatted="false">"GitHub-toegang is opgeschort"</string>
+    <string name="push_title" formatted="false">"Push-synchronisatie"</string>
+    <string name="push_unavailable" formatted="false">"Pushmeldingen zijn niet beschikbaar in deze build."</string>
+    <string name="push_unlink" formatted="false">"Verbinding verwijderen"</string>
+    <string name="push_unlink_scope" formatted="false">"De routering voor push-synchronisatie voor deze GitHub-installatie op dit apparaat verwijderen? Hiermee verwijder je de GitHub-app niet. Gebruik Beheren op GitHub om de toegang tot repository’s te wijzigen of de app te verwijderen."</string>
+    <string name="rebase_accept_local_deletion" formatted="false">"Lokale verwijdering accepteren"</string>
+    <string name="rebase_accept_upstream_deletion" formatted="false">"Verwijdering door upstream accepteren"</string>
+    <string name="rebase_checkout_review_required" formatted="false">"Het herstel van de checkout is gewijzigd of onleesbaar. Controleer je lokale werk voordat je een Git-tool gebruikt of de rebase afbreekt."</string>
+    <string name="rebase_problem_active_operation" formatted="false">"Rond de actieve Git-bewerking af voordat je een rebase start."</string>
+    <string name="rebase_problem_local_branch" formatted="false">"Schakel over naar een lokale branch voordat je een rebase uitvoert."</string>
+    <string name="rebase_problem_local_changes" formatted="false">"Commit alle lokale wijzigingen of sla ze op in een stash voordat je een rebase uitvoert."</string>
+    <string name="rebase_problem_upstream" formatted="false">"Stel een externe upstream-branch in voordat je een rebase uitvoert."</string>
+    <string name="rebase_skip_body" formatted="false">"Laat de huidige commit weg uit het opnieuw toepassen. Controleer de wijzigingen voordat je overslaat; dit kan lokaal werk uit de resulterende geschiedenis verwijderen."</string>
+    <string name="rebase_use_local" formatted="false">"Lokale commit gebruiken"</string>
+    <string name="rebase_use_upstream" formatted="false">"Upstream gebruiken"</string>
+    <string name="remote_address_formats" formatted="false">": Gebruik HTTP/HTTPS SSH, git://, file://, of eigenaar/repo."</string>
+    <string name="remote_merge_counts">"Lokale commits: %1$d · Inkomende commits: %2$d"</string>
+    <string name="remote_merge_destination">"Naar lokale branch: %1$s"</string>
+    <string name="remote_merge_in_flight" formatted="false">"Git-actie afronden…"</string>
+    <string name="remote_merge_incoming_oid">"Inkomende commit: %1$s"</string>
+    <string name="remote_merge_local_oid">"Lokale commit: %1$s"</string>
+    <string name="remote_merge_title" formatted="false">"Samenvoegen met extern"</string>
+    <string name="remote_merge_upstream">"Van upstream: %1$s"</string>
+    <string name="remote_normalized_target">"Repositoryadres: %1$s"</string>
+    <string name="repository_actions_behind" formatted="false">"Haal binnenkomende commits op voordat je pusht."</string>
+    <string name="repository_actions_blocked" formatted="false">"Actie vereist aandacht"</string>
+    <string name="repository_actions_branch">"Branch: %1$s\nGecontroleerde commit: %2$s"</string>
+    <string name="repository_actions_cancel" formatted="false">"Annuleren"</string>
+    <string name="repository_actions_changes">"Gewijzigde paden: %1$d"</string>
+    <string name="repository_actions_confirm" formatted="false">"Eenmaal uitvoeren"</string>
+    <string name="repository_actions_destination">"Upstream: %1$s / %2$s"</string>
+    <string name="repository_actions_dirty" formatted="false">"Lokale wijzigingen verhinderen het ophalen van binnenkomende commits. Commit ze eerst of zet ze in de stash."</string>
+    <string name="repository_actions_diverged" formatted="false">"De lokale en externe geschiedenis lopen uiteen. Kies uitdrukkelijk merge of rebase via de Git-bediening."</string>
+    <string name="repository_actions_failed" formatted="false">"De actie kon niet worden voltooid. Controleer verbinding, account, vertrouwen en maptoegang en bekijk de huidige status voordat je het opnieuw probeert."</string>
+    <string name="repository_actions_local_saved" formatted="false">"Lokale commit opgeslagen; de upload is niet bevestigd. Controleer de huidige status en probeer die commit opnieuw te uploaden."</string>
+    <string name="repository_actions_message" formatted="false">"Commitbericht"</string>
+    <string name="repository_actions_no_changes" formatted="false">"Geen commits om te uploaden"</string>
+    <string name="repository_actions_pull" formatted="false">"Repository pullen"</string>
+    <string name="repository_actions_pulled" formatted="false">"Binnenkomende wijzigingen opgehaald"</string>
+    <string name="repository_actions_push" formatted="false">"Repository pushen"</string>
+    <string name="repository_actions_pushed" formatted="false">"Commit geüpload"</string>
+    <string name="repository_actions_reload" formatted="false">"Repository’s opnieuw laden"</string>
+    <string name="repository_actions_remote_missing" formatted="false">"De ingestelde upstreambranch ontbreekt op de server. Controleer de Git-bediening."</string>
+    <string name="repository_actions_scope" formatted="false">"Kies een lokale repository en controleer de huidige branch voordat je een actie uitvoert."</string>
+    <string name="repository_actions_stale" formatted="false">"Deze controle of goedkeuring is niet meer actueel. Controleer de huidige status van de repository en bevestig de actie opnieuw."</string>
+    <string name="repository_actions_status" formatted="false">"Status lezen"</string>
+    <string name="repository_actions_status_ready" formatted="false">"Status gelezen zonder netwerktoegang"</string>
+    <string name="repository_actions_stop" formatted="false">"Actie stoppen"</string>
+    <string name="repository_actions_stopped" formatted="false">"Gestopt. Een Git-bewerking kan al zijn voltooid of geüpload. Controleer de huidige status voordat je het opnieuw probeert; opgeslagen commits en bestanden zijn behouden."</string>
+    <string name="repository_actions_sync" formatted="false">"Repository synchroniseren"</string>
+    <string name="repository_actions_synced" formatted="false">"Opgehaald en gepusht"</string>
+    <string name="repository_actions_title" formatted="false">"Repositoryacties"</string>
+    <string name="repository_actions_unconfigured" formatted="false">"Stel een externe upstreambranch in via de Git-bediening voordat je deze actie uitvoert."</string>
+    <string name="repository_actions_unsafe" formatted="false">"Schakel over naar een lokale branch en rond eerst de actieve Git-bewerking of het conflict af."</string>
+    <string name="repository_actions_unsettled" formatted="false">"Bestanden bleven veranderen tijdens het stagen. Controleer de index en bestanden voordat je het opnieuw probeert."</string>
+    <string name="repository_actions_write_scope" formatted="false">"Push en Synchroniseren voegen alle huidige, niet genegeerde wijzigingen toe aan de staging area, maken zo nodig een commit en uploaden openstaande commits. Synchroniseren haalt eerst wijzigingen op en voert een fast-forward uit als dat veilig is. Conflicten, uiteenlopende geschiedenis en een onveilige externe status stoppen de actie. Als uploaden mislukt, blijft een nieuwe lokale commit behouden om opnieuw te proberen."</string>
+    <string name="repository_add_none_new" formatted="false">"Kies minstens één repository die nog niet is toegevoegd"</string>
+    <string name="repository_clone_deleted" formatted="false">"Lokale kloon verwijderd"</string>
+    <string name="repository_discovery_branch_unknown" formatted="false">"Losgekoppelde HEAD of nog geen eerste commit"</string>
+    <string name="repository_discovery_clean" formatted="false">"Geen wijzigingen"</string>
+    <string name="repository_discovery_dirty" formatted="false">"Lokale wijzigingen"</string>
+    <string name="repository_history_files_deleted" formatted="false">"Lokale bestanden gewist"</string>
+    <string name="repository_history_files_kept" formatted="false">"Lokale bestanden behouden"</string>
+    <string name="repository_history_tracking_removed" formatted="false">"Git-tracking verwijderd · werkbestanden behouden"</string>
+    <string name="repository_history_unavailable" formatted="false">"De repositorygeschiedenis is niet beschikbaar"</string>
+    <string name="repository_imported_files_kept" formatted="false">"Bestanden van geïmporteerde repository’s blijven op dit apparaat bewaard"</string>
+    <string name="repository_metadata_unavailable" formatted="false">"Repositorymetadata niet beschikbaar"</string>
+    <string name="repository_no_commits" formatted="false">"Geen commits"</string>
+    <string name="repository_no_longer_added" formatted="false">"De repository is niet meer toegevoegd"</string>
+    <string name="repository_removed_files_kept" formatted="false">"Repository uit de app verwijderd. Lokale bestanden zijn bewaard."</string>
+    <string name="repository_restore_backup_first" formatted="false">"Zet de back-up van de Git-metadata terug voordat je deze map opnieuw koppelt"</string>
+    <string name="repository_shortcut_active" formatted="false">"Toegestaan en vastgezet"</string>
+    <string name="repository_shortcut_add" formatted="false">"Snelkoppeling aan startscherm toevoegen"</string>
+    <string name="repository_shortcut_busy" formatted="false">"Er wordt al een actie uitgevoerd. Deze snelkoppeling is niet in de wachtrij gezet. Wacht en tik er daarna opnieuw op."</string>
+    <string name="repository_shortcut_consent" formatted="false">"Elke tik opent GitSync.md en voert deze actie eenmaal uit zonder opnieuw te vragen. De snelkoppeling blijft gekoppeld aan deze repository, branch en opgeslagen verbinding of account. Nieuwe lokale commits zijn toegestaan. Gewijzigde koppelingen stoppen de snelkoppeling; controleer ze en maak een nieuwe snelkoppeling om ze goed te keuren. Je kunt de toestemming hier altijd intrekken."</string>
+    <string name="repository_shortcut_forget" formatted="false">"Uitgeschakelde snelkoppeling vergeten"</string>
+    <string name="repository_shortcut_inactive" formatted="false">"Niet actief. Goedkeuring op het startscherm kan nog openstaan of de toestemming is ingetrokken."</string>
+    <string name="repository_shortcut_manage" formatted="false">"Snelkoppelingen op startscherm"</string>
+    <string name="repository_shortcut_refresh" formatted="false">"Snelkoppelingen vernieuwen"</string>
+    <string name="repository_shortcut_request" formatted="false">"Snelkoppeling aanvragen"</string>
+    <string name="repository_shortcut_requested" formatted="false">"Snelkoppeling aangevraagd. Keur deze goed op je startscherm en vernieuw daarna de snelkoppelingen om de status te controleren."</string>
+    <string name="repository_shortcut_revoke" formatted="false">"Toestemming intrekken"</string>
+    <string name="repository_shortcut_revoke_scope" formatted="false">"Deze snelkoppeling voert geen Git-acties meer uit. Het pictogram op het startscherm kan uitgeschakeld blijven totdat je het verwijdert. Een nieuwe snelkoppeling vereist opnieuw goedkeuring."</string>
+    <string name="repository_shortcut_revoked" formatted="false">"Toestemming voor snelkoppeling ingetrokken"</string>
+    <string name="repository_shortcut_unsupported" formatted="false">"Je startscherm kon deze snelkoppeling niet accepteren. Gebruik de acties op dit scherm."</string>
+    <string name="repository_sync_not_recorded" formatted="false">"Niet vastgelegd"</string>
+    <string name="resolve_local_action" formatted="false">"Oplossen"</string>
+    <string name="resolve_local_body" formatted="false">": We zullen uw lokale wijzigingen opslaan en vervolgens met de remote versie mengen. Indien er conflicten optreden, kunt u deze op het volgende scherm oplossen."</string>
+    <string name="resolve_local_commit_merge" formatted="false">"Commit &amp; merge"</string>
+    <string name="resolve_local_committing" formatted="false">"Lokale wijzigingen committen…"</string>
+    <string name="resolve_local_default_message" formatted="false">"Lokale wijzigingen van GitSync.md"</string>
+    <string name="resolve_local_message_label" formatted="false">"Verplichtingsbericht"</string>
+    <string name="resolve_local_superseded" formatted="false">"De geselecteerde repository is gewijzigd. Controleer de lokale wijzigingen opnieuw."</string>
+    <string name="resolve_local_title" formatted="false">": Lokaal bewerken blokkeert deze pull."</string>
+    <string name="settings_folder_unavailable" formatted="false">"Toegang tot de map vereist aandacht"</string>
+    <string name="shortcut_background_attention" formatted="false">"Snelkoppeling vereist aandacht. Open de repositoryacties en controleer de status voordat je het opnieuw probeert."</string>
+    <string name="shortcut_background_channel" formatted="false">"Acties van snelkoppelingen"</string>
+    <string name="shortcut_background_complete" formatted="false">"Snelkoppelingsactie voltooid. Open de repositoryacties om het resultaat te bekijken."</string>
+    <string name="shortcut_background_consent" formatted="false">"Voer elke tik eenmaal op de achtergrond uit met deze repository, branch en opgeslagen verbinding of account. Resultaten worden hier opgeslagen en indien toegestaan in meldingen getoond. Een onderbroken uitvoering vereist een nieuwe tik. Je kunt deze toestemming hier intrekken."</string>
+    <string name="shortcut_background_interrupted" formatted="false">"De uitvoering is onderbroken. Deze wordt niet automatisch herhaald. Controleer de repository voordat je opnieuw tikt."</string>
+    <string name="shortcut_background_option" formatted="false">"Uitvoeren zonder GitSync.md te openen"</string>
+    <string name="shortcut_background_running" formatted="false">"Snelkoppelingsactie wordt uitgevoerd"</string>
+    <string name="shortcut_results_clear_scope" formatted="false">"Verwijder opgeslagen uitvoeringsresultaten van snelkoppelingen en callbacks. Hun toestemmingen blijven ongewijzigd. Onderbroken acties worden niet automatisch herhaald."</string>
+    <string name="shortcut_results_unavailable" formatted="false">"Opgeslagen snelkoppelingsresultaten kunnen niet worden gelezen. Toestemming wordt afzonderlijk beheerd."</string>
+    <string name="ssh_hide_private_key" formatted="false">"Privésleutel verbergen"</string>
+    <string name="ssh_show_private_key" formatted="false">"Privésleutel tonen"</string>
+    <string name="ssh_trust_error_changed" formatted="false">"Het SSH-vertrouwen is gewijzigd tijdens de controle. Controleer de huidige serververmelding en probeer opnieuw te verbinden."</string>
+    <string name="ssh_trust_error_damaged" formatted="false">"Opgeslagen SSH-vertrouwen moet worden gecontroleerd. Stel het vertrouwen in SSH-servers opnieuw in via Instellingen voordat je het opnieuw probeert."</string>
+    <string name="ssh_trust_error_recovery" formatted="false">"Het herstel van SSH-vertrouwen kon niet worden opgeslagen. Controleer het SSH-serververtrouwen in Instellingen voordat je het opnieuw probeert."</string>
+    <string name="ssh_trust_error_remove" formatted="false">"SSH-serververtrouwen kon niet worden verwijderd. Controleer de huidige serververmelding voordat je het opnieuw probeert."</string>
+    <string name="ssh_trust_error_reset" formatted="false">"SSH-serververtrouwen kon niet worden gewist. Controleer de opgeslagen vermeldingen voordat je het opnieuw probeert."</string>
+    <string name="staged" formatted="false">"klaargezet"</string>
+    <string name="stash_screen" formatted="false">"Stash"</string>
+    <string name="storage_app_saved" formatted="false">"Nieuwe klonen gebruiken de appopslag"</string>
+    <string name="storage_default_saved" formatted="false">"Standaardlocatie voor klonen opgeslagen"</string>
+    <string name="tide_git_branch_operation" formatted="false">"Branchbewerking"</string>
+    <string name="tide_git_committing" formatted="false">"Committen…"</string>
+    <string name="tide_git_git_operation" formatted="false">"Git-bewerking"</string>
+    <string name="tide_home_state_checking" formatted="false">"Controleren…"</string>
+    <string name="tide_home_state_unreadable" formatted="false">"Controle nodig"</string>
+    <string name="tide_merge_conflict_deleted_headline" formatted="false">"Aan de ene kant verwijderd, aan de andere kant bewerkt."</string>
+    <string name="tide_merge_conflict_headline" formatted="false">"Beide kanten hebben dit bestand bewerkt."</string>
+    <string name="tide_merge_conflict_pick" formatted="false">"Kies de versie die je wilt behouden of bewerk het resultaat met de hand."</string>
+    <string name="tide_merge_conflict_renamed_headline" formatted="false">"Op twee verschillende manieren hernoemd."</string>
+    <string name="tide_merge_conflict_result" formatted="false">"-resultaat"</string>
+    <string name="tide_merge_conflict_result_hint" formatted="false">": dit wordt op het podium gepresenteerd."</string>
+    <string name="tide_merge_diff_added" formatted="false">"Toegevoegd"</string>
+    <string name="tide_merge_diff_binary_body" formatted="false">"Binaire inhoud kan niet als tekst worden weergegeven."</string>
+    <string name="tide_merge_diff_changed" formatted="false">"Gewijzigd"</string>
+    <string name="tide_merge_diff_copied" formatted="false">"Gekopieerd"</string>
+    <string name="tide_merge_diff_deleted" formatted="false">"Verwijderd"</string>
+    <string name="tide_merge_diff_hunk_line">"regel %1$d"</string>
+    <string name="tide_merge_diff_line_added">"Toegevoegd: %1$s"</string>
+    <string name="tide_merge_diff_line_removed">"Verwijderd: %1$s"</string>
+    <string name="tide_merge_diff_modified" formatted="false">"Gewijzigd"</string>
+    <string name="tide_merge_diff_renamed" formatted="false">"Hernoemd"</string>
+    <string name="tide_merge_diff_summary">"Bestanden: %1$d · +%2$d −%3$d"</string>
+    <string name="tide_merge_diff_type_changed" formatted="false">"type gewijzigd"</string>
+    <string name="tide_merge_ours_filename" formatted="false">"Onze"</string>
+    <string name="tide_merge_rebase_ready_headline" formatted="false">"Controleer deze stap voordat je doorgaat."</string>
+    <string name="tide_merge_side_deleted" formatted="false">"verwijderd"</string>
+    <string name="tide_merge_theirs" formatted="false">"Hun"</string>
+    <string name="tide_merge_theirs_count">"↓%1$d van de remote"</string>
+    <string name="tide_merge_theirs_filename" formatted="false">"Hun"</string>
+    <string name="tide_merge_upstream_loading" formatted="false">"Branchinstellingen lezen…"</string>
+    <string name="tide_merge_upstream_section" formatted="false">"Tracking"</string>
+    <string name="tide_merge_upstream_unset" formatted="false">"Geen upstream ingesteld"</string>
+    <string name="tide_merge_yours" formatted="false">"Jouw versie"</string>
+    <string name="tide_merge_yours_count">"↑%1$d lokaal"</string>
+    <string name="tide_onboarding_picker_clear" formatted="false">"Zoekopdracht wissen"</string>
+    <string name="tide_onboarding_picker_no_matches" formatted="false">"Geen resultaten"</string>
+    <string name="tide_settings_not_signed_in" formatted="false">"Niet ingelogd"</string>
+    <string name="tide_settings_sign_out_message">"GitSync.md vergeet het token voor %1$s op dit apparaat. Je repositories en hun bestanden blijven waar ze zijn."</string>
+    <string name="tide_settings_sign_out_title" formatted="false">"Uitloggen bij GitHub?"</string>
+    <string name="tide_settings_signed_in" formatted="false">"ingelogd"</string>
+    <string name="tide_settings_this_account" formatted="false">"dit GitHub-account"</string>
+    <string name="tide_settings_version_line">"GitSync.md %1$s (%2$d)"</string>
+    <string name="tide_vault_check_for_changes" formatted="false">"Controleren op wijzigingen"</string>
+    <string name="tide_vault_conflict_detail" formatted="false">"De Git-bewerking is gepauzeerd. Los elk conflicterend bestand op om verder te gaan."</string>
+    <string name="tide_vault_eyebrow_both_moved" formatted="false">"Beide kanten gewijzigd"</string>
+    <string name="tide_vault_eyebrow_conflict" formatted="false">"Conflict"</string>
+    <string name="tide_vault_eyebrow_empty" formatted="false">"Lege repository"</string>
+    <string name="tide_vault_eyebrow_in_sync" formatted="false">"Gesynchroniseerd"</string>
+    <string name="tide_vault_eyebrow_new_on_remote" formatted="false">"Nieuw op de remote"</string>
+    <string name="tide_vault_eyebrow_ready_to_commit" formatted="false">"Klaar voor commit"</string>
+    <string name="tide_vault_eyebrow_ready_to_push" formatted="false">"Klaar voor push"</string>
+    <string name="tide_vault_eyebrow_unreadable" formatted="false">"Lezen mislukt"</string>
+    <string name="tide_vault_files_section" formatted="false">"Bestanden"</string>
+    <string name="tide_vault_from_remote">"↓%1$d van de remote"</string>
+    <string name="tide_vault_git" formatted="false">"GIT"</string>
+    <string name="tide_vault_headline_behind">"Nieuw op de remote: %1$d"</string>
+    <string name="tide_vault_headline_unreadable" formatted="false">"Deze kluis kon niet worden gelezen."</string>
+    <string name="tide_vault_more" formatted="false">"Meer kluisopties"</string>
+    <string name="tide_vault_moved_on" formatted="false">"De remote is gewijzigd terwijl je schreef."</string>
+    <string name="tide_vault_no_changes_body" formatted="false">"Bewerkingen die je in Obsidian maakt, verschijnen hier."</string>
+    <string name="tide_vault_no_changes_title" formatted="false">"Geen wijzigingen op deze telefoon"</string>
+    <string name="tide_vault_reading" formatted="false">"Deze kluis wordt gelezen…"</string>
+    <string name="tide_vault_resolve" formatted="false">"Oplossen"</string>
+    <string name="tide_vault_sub_ahead" formatted="false">"Gecommit, nog niet gepusht"</string>
+    <string name="tide_vault_sub_empty" formatted="false">"Voeg een notitie toe en commit die hier."</string>
+    <string name="tide_vault_sub_in_sync" formatted="false">"Niets in afwachting op deze telefoon"</string>
+    <string name="tide_vault_yours">"↑%1$d lokaal"</string>
+    <string name="tracking_metadata_size">"Git-metadata: %1$s"</string>
+    <string name="tracking_remove_permanent_title" formatted="false">"Git-geschiedenis definitief verwijderen?"</string>
+    <string name="tracking_removed_backup">"Git-tracking verwijderd. Gecontroleerde back-up: %1$s"</string>
+    <string name="tracking_removed_files_kept" formatted="false">"Git-tracking verwijderd. Werkbestanden zijn bewaard."</string>
+    <string name="ui_1_s_2_s_all_working_files_and_local_git_hi_872b2983">"%1$s\n%2$s\n\nAlle werkbestanden en de lokale Git-geschiedenis blijven op dit apparaat. Je kunt de map later opnieuw verbinden."</string>
+    <string name="ui_1_s_2_s_this_permanently_deletes_this_app_fffd860e">"%1$s\n%2$s\n\nDit verwijdert deze door de app beheerde kloon permanent, inclusief niet-gepushte commits, stashes en niet-opgeslagen bestanden. De externe repository blijft ongewijzigd."</string>
+    <string name="ui_1_s_bytes_81cdb385">"Bytes: %1$s"</string>
+    <string name="ui_1_s_characters_bde60398">"Tekens: %1$s"</string>
+    <string name="ui_1_s_lines_2_s_bytes_c30a0cd1">"Regels: %1$s, bytes: %2$s"</string>
+    <string name="ui_1_s_local_commits_2_s_upstream_commits_77dc6fa8">"%1$s lokale commits · %2$s upstream-commits"</string>
+    <string name="ui_abort_rebase_fd5cfc32" formatted="false">"Rebase afbreken…"</string>
+    <string name="ui_about_4efca0d1" formatted="false">"Over"</string>
+    <string name="ui_all_conflicts_are_staged_continue_replayin_b86b2a5a" formatted="false">"Alle conflictoplossingen zijn klaargezet. Ga door met het opnieuw toepassen van commits. Als Git NOTHING_TO_COMMIT meldt, bekijk dan of je de lege commit moet overslaan."</string>
+    <string name="ui_all_local_changes_to_this_file_will_be_per_0919f539" formatted="false">": Alle lokale wijzigingen in deze bestand worden permanent verwijderd."</string>
+    <string name="ui_allow_local_folder_access_0b2888fb" formatted="false">"Toegang tot lokale mappen toestaan"</string>
+    <string name="ui_app_0d04bfeb" formatted="false">"App"</string>
+    <string name="ui_app_settings_da645334" formatted="false">"App-instellingen"</string>
+    <string name="ui_apply_tracking_choice_47a2e187" formatted="false">"Trackingkeuze toepassen"</string>
+    <string name="ui_authentication_66880d2d" formatted="false">"Authenticatie"</string>
+    <string name="ui_back_639807a2" formatted="false">"TERUG"</string>
+    <string name="ui_back_aceb696a" formatted="false">"← Terug"</string>
+    <string name="ui_back_f645ed02" formatted="false">"←  TERUG"</string>
+    <string name="ui_backup_1_s_6ad01ca6">"Back-up: %1$s"</string>
+    <string name="ui_base_7b47361a" formatted="false">"Basis"</string>
+    <string name="ui_binary_large_or_lfs_file_choose_an_entire_52c3278a" formatted="false">"Binair, groot of LFS-bestand: kies een volledige kant."</string>
+    <string name="ui_branch_52656e81" formatted="false">"Branch"</string>
+    <string name="ui_branch_optional_e9dedf99" formatted="false">"Branch (optioneel)"</string>
+    <string name="ui_browsing_with_this_account_28a8b330" formatted="false">"Bladeren met dit account"</string>
+    <string name="ui_cancel_pending_move_0858583b" formatted="false">"Wachtende verplaatsing annuleren"</string>
+    <string name="ui_changes_bbd4b6a8" formatted="false">"Wijzigingen"</string>
+    <string name="ui_choose_a_connected_account_for_this_reposi_c4817ea9" formatted="false">"Kies een verbonden account voor deze repository."</string>
+    <string name="ui_choose_a_device_folder_d00b7daf" formatted="false">"Map op het apparaat kiezen"</string>
+    <string name="ui_choose_an_authentication_method_before_clo_c89124ba" formatted="false">"Kies een authenticatiemethode voordat je kloont."</string>
+    <string name="ui_choose_another_folder_b50df380" formatted="false">"Andere map kiezen"</string>
+    <string name="ui_choose_local_device_or_attached_storage_cl_69bc112f" formatted="false">"Kies lokale of aangesloten opslag. Aanbieders van clouddocumenten bieden geen bestandssysteem dat deze Git-engine kan gebruiken."</string>
+    <string name="ui_choose_the_account_used_to_browse_github_e_93e8a27f" formatted="false">"Kies het account om GitHub te verkennen. Elke repository behoudt het toegewezen account; wijzig dit bij Repositoryverbinding."</string>
+    <string name="ui_choose_the_default_folder_for_new_clones_e_9782dc64" formatted="false">"Kies de standaardmap voor nieuwe klonen. Bestaande repositories behouden hun huidige locatie."</string>
+    <string name="ui_clear_all_diagnostics_e2d6a185" formatted="false">"Alle diagnostiek wissen?"</string>
+    <string name="ui_clear_log_a8858ac7" formatted="false">"Logboek wissen"</string>
+    <string name="ui_clone_again_e05eb495" formatted="false">"Opnieuw klonen"</string>
+    <string name="ui_clone_again_review_the_previous_branch_and_33cba147" formatted="false">"Opnieuw klonen · controleer de vorige branch en verbinding voordat je begint."</string>
+    <string name="ui_clone_storage_47cafc8a" formatted="false">"Opslag voor klonen"</string>
+    <string name="ui_commit_author_e9376b3a" formatted="false">"Auteur van commit"</string>
+    <string name="ui_commit_message_a4b361b7" formatted="false">"Commitbericht…"</string>
+    <string name="ui_commit_sha_d0bc6028" formatted="false">"Commit SHA"</string>
+    <string name="ui_confirm_eebdd24a" formatted="false">"Bevestigen"</string>
+    <string name="ui_continue_rebase_7a14e965" formatted="false">": Verderrebaseeringsproces"</string>
+    <string name="ui_create_a_file_or_folder_using_new_655c5596" formatted="false">"Maak een bestand of map met Nieuw."</string>
+    <string name="ui_current_default_d914f86e" formatted="false">"Huidige standaardmap"</string>
+    <string name="ui_current_separate_push_address_1_s_2a6ef8f9">"Huidig afzonderlijk pushadres: %1$s"</string>
+    <string name="ui_debug_info_697b4941" formatted="false">"Foutopsporingsinformatie"</string>
+    <string name="ui_delete_1_s_6474596f">"\"%1$s\" verwijderen?"</string>
+    <string name="ui_delete_e2d0a549" formatted="false">"Verwijderen"</string>
+    <string name="ui_delete_file_28e18dc9" formatted="false">"Bestand verwijderen"</string>
+    <string name="ui_delete_local_files_09697434" formatted="false">"Lokale bestanden verwijderen?"</string>
+    <string name="ui_delete_local_files_20424441" formatted="false">": Lokale bestanden verwijderen"</string>
+    <string name="ui_destination_1_s_0df94639">"Bestemming: %1$s"</string>
+    <string name="ui_destination_parent_folder_c6c4f97e" formatted="false">"Bovenliggende doelmap"</string>
+    <string name="ui_discard_draft_cb30147e" formatted="false">"Concept verwerpen"</string>
+    <string name="ui_discard_eb1a70e3" formatted="false">"Verwerpen"</string>
+    <string name="ui_discard_resolution_draft_47c16148" formatted="false">"Oplossingsconcept verwerpen?"</string>
+    <string name="ui_dismiss_48845bff" formatted="false">"Sluiten"</string>
+    <string name="ui_edit_commit_author_443f376d" formatted="false">"Commitauteur bewerken"</string>
+    <string name="ui_edit_connection_047f9f95" formatted="false">"Verbinding bewerken"</string>
+    <string name="ui_edit_resolution_9a6cda88" formatted="false">"Oplossing bewerken"</string>
+    <string name="ui_edit_the_content_here_to_manually_resolve_1985871d" formatted="false">"Bewerk hier de inhoud om het conflict handmatig op te lossen"</string>
+    <string name="ui_email_969ccbd3" formatted="false">"E-mail"</string>
+    <string name="ui_empty_folder_ca1fd454" formatted="false">"Lege map"</string>
+    <string name="ui_enable_access_9d7caf64" formatted="false">"Toegang inschakelen"</string>
+    <string name="ui_enter_credentials_again_or_choose_public_a_40a9f45f" formatted="false">"Voer de inloggegevens opnieuw in of kies openbare toegang voor het nieuwe adres."</string>
+    <string name="ui_error_54a0e8c1" formatted="false">"Fout"</string>
+    <string name="ui_fetch_and_review_rebase_c81979af" formatted="false">"Ophalen en rebase controleren"</string>
+    <string name="ui_file_operation_failed_f78a328b" formatted="false">"Bestandsbewerking mislukt"</string>
+    <string name="ui_finish_move_recovery_44113cea" formatted="false">"Herstel van verplaatsing voltooien"</string>
+    <string name="ui_github_sign_in_a2e50311" formatted="false">"GitHub Inloggen\nMet"</string>
+    <string name="ui_gitsync_md_needs_shared_storage_access_to_f1b339ea" formatted="false">"GitSync.md heeft toegang tot gedeelde opslag nodig om echte Git-werkkopieën in apparaatmappen te beheren. Kies de gewenste mappen nadat je toegang hebt ingeschakeld in de Android-instellingen."</string>
+    <string name="ui_go_back_and_select_a_repository_c3eedd39" formatted="false">"Ga terug en selecteer een repository."</string>
+    <string name="ui_hash_a9106914" formatted="false">"Hash"</string>
+    <string name="ui_i_understand_that_another_owner_may_still_b4a12b2d" formatted="false">"Ik begrijp dat een andere eigenaar dit bestand mogelijk nog bewerkt."</string>
+    <string name="ui_include_the_ssh_username_in_the_address_gi_beb09b5a" formatted="false">"Neem de SSH-gebruikersnaam op in het adres: git@host:team/repo.git of ssh://git@host:2222/team/repo.git."</string>
+    <string name="ui_keep_editing_e76fd2ad" formatted="false">"Verder bewerken"</string>
+    <string name="ui_key_passphrase_optional_eb84a9d2" formatted="false">"Wachtzin voor sleutel (optioneel)"</string>
+    <string name="ui_keys_are_encrypted_on_this_device_and_used_cb039887" formatted="false">"Sleutels zijn op dit apparaat versleuteld en worden alleen gebruikt voor het opgeslagen repositoryadres. Controleer de vingerafdruk van de server bij de eerste verbinding."</string>
+    <string name="ui_last_sync_a0d540dd" formatted="false">"Laatste sync"</string>
+    <string name="ui_leave_blank_to_use_the_server_s_default_br_077388af" formatted="false">"Laat leeg om de standaardbranch van de server te gebruiken."</string>
+    <string name="ui_lfs_endpoint_username_4a49e1f5" formatted="false">"Gebruikersnaam voor LFS-eindpunt"</string>
+    <string name="ui_loading_dc380888" formatted="false">"Laden"</string>
+    <string name="ui_loading_repos_2f4f4a93" formatted="false">"Repositories laden"</string>
+    <string name="ui_local_repositories_ddcf4270" formatted="false">"Lokale repository’s"</string>
+    <string name="ui_manage_github_accounts_e8277e8b" formatted="false">"GitHub-accounts beheren"</string>
+    <string name="ui_matching_public_key_optional_2ca984f0" formatted="false">"Bijbehorende openbare sleutel (optioneel)"</string>
+    <string name="ui_merge_8851aaa7" formatted="false">"Samenvoegen"</string>
+    <string name="ui_more_d47d7cb0" formatted="false">"Meer"</string>
+    <string name="ui_move_recoveries_90731b9e" formatted="false">"Verplaatsingsherstel"</string>
+    <string name="ui_move_repository_1c4a6083" formatted="false">"Repository verplaatsen"</string>
+    <string name="ui_name_in_gitsync_md_893ad211" formatted="false">"Naam in GitSync.md"</string>
+    <string name="ui_new_commits_in_this_repository_will_use_th_ac4a98e2" formatted="false">"Nieuwe commits in deze repository gebruiken deze naam en dit e-mailadres. Bestaande commits behouden hun oorspronkelijke auteur."</string>
+    <string name="ui_new_file_44dedd0f" formatted="false">"– Nieuwe bestand"</string>
+    <string name="ui_new_token_or_password_fc54aafe" formatted="false">"Nieuw token of wachtwoord"</string>
+    <string name="ui_no_changes_to_display_11be6ffc" formatted="false">"Geen wijzigingen om te tonen"</string>
+    <string name="ui_no_commits_found_64ccb533" formatted="false">"Geen commits gevonden"</string>
+    <string name="ui_no_connected_accounts_local_repositories_r_cf41e629" formatted="false">"Geen verbonden accounts. Lokale repository’s blijven beschikbaar."</string>
+    <string name="ui_no_local_changes_56319dc5" formatted="false">"Geen lokale wijzigingen"</string>
+    <string name="ui_no_repository_555da78f" formatted="false">"Geen repository"</string>
+    <string name="ui_no_stashes_found_ace2fa6f" formatted="false">"Geen stashes gevonden"</string>
+    <string name="ui_no_tags_in_this_repository_3b060f73" formatted="false">"Geen tags in dit repository"</string>
+    <string name="ui_ok_565339bc" formatted="false">"OK"</string>
+    <string name="ui_open_ed077f3d" formatted="false">"Openen"</string>
+    <string name="ui_open_git_lfs_f7aff155" formatted="false">"Git LFS openen"</string>
+    <string name="ui_open_in_files_e1d250d0" formatted="false">"Openen in bestanden"</string>
+    <string name="ui_opening_file_de0df916" formatted="false">"Bestand openen…"</string>
+    <string name="ui_owner_1_s_599ca9ce">"Eigenaar: %1$s"</string>
+    <string name="ui_parents_1_s_914efbd0">"Ouders (%1$s)"</string>
+    <string name="ui_path_62fa5a5b" formatted="false">"Pad"</string>
+    <string name="ui_platform_c78ffe19" formatted="false">"Platform"</string>
+    <string name="ui_pull_with_rebase_6d25f1e0" formatted="false">"Draaien met rebase"</string>
+    <string name="ui_rebase_in_progress_3ecd9c42" formatted="false">"Rebase wordt uitgevoerd"</string>
+    <string name="ui_rebase_onto_reviewed_upstream_c3b8fb93" formatted="false">"Rebasen op gecontroleerde upstream"</string>
+    <string name="ui_reconnect_bf8a9eab" formatted="false">"Opnieuw verbinden"</string>
+    <string name="ui_recovery_needs_attention_recognized_workin_89ce1116" formatted="false">"Herstel vereist aandacht. Herkende werkkopieën blijven bewaard."</string>
+    <string name="ui_refresh_0e916101" formatted="false">"Vernieuwen"</string>
+    <string name="ui_refresh_rebase_state_39c06a2c" formatted="false">"Rebase-status vernieuwen"</string>
+    <string name="ui_reload_author_18a711d8" formatted="false">"Auteur opnieuw laden"</string>
+    <string name="ui_reload_connection_ceed2dae" formatted="false">"Verbinding opnieuw laden"</string>
+    <string name="ui_reload_from_disk_d4288839" formatted="false">"Opnieuw laden vanaf schijf"</string>
+    <string name="ui_remove_1_s_e4dd7c24">"%1$s verwijderen?"</string>
+    <string name="ui_remove_1_s_this_removes_it_from_gitsync_md_0a6b198d">"‘%1$s’ verwijderen?\n\nDit verwijdert het uit GitSync.md. Alle lokale bestanden en de Git-geschiedenis blijven op dit apparaat en je kunt het later opnieuw verbinden. De externe repository wordt niet gewijzigd."</string>
+    <string name="ui_remove_all_custom_endpoint_approvals_and_t_ffc30a9e" formatted="false">"Verwijder alle aangepaste eindpuntgoedkeuringen en hun opgeslagen aanmeldgegevens op dit apparaat. Elk eindpunt en elke overdrachtsrichting vereist een nieuwe controle."</string>
+    <string name="ui_remove_c3812fc4" formatted="false">"Verwijderen"</string>
+    <string name="ui_remove_credentials_1b0700a3" formatted="false">"Inloggegevens verwijderen"</string>
+    <string name="ui_remove_from_app_0d20b3a2" formatted="false">"Verwijderen uit app"</string>
+    <string name="ui_remove_from_gitsync_md_ead6e2d6" formatted="false">"Verwijderen uit GitSync.md?"</string>
+    <string name="ui_remove_git_tracking_1f8255d9" formatted="false">"Git-tracking verwijderen?"</string>
+    <string name="ui_remove_git_tracking_d3e1065f" formatted="false">"Git-tracking verwijderen"</string>
+    <string name="ui_remove_recovery_copy_b24c79b1" formatted="false">"Herstelkopie verwijderen"</string>
+    <string name="ui_remove_repository_fc68168b" formatted="false">"Repository verwijderen"</string>
+    <string name="ui_remove_saved_credentials_31ce2de8" formatted="false">"Opgeslagen inloggegevens verwijderen"</string>
+    <string name="ui_remove_saved_credentials_efb15b59" formatted="false">"Opgeslagen inloggegevens verwijderen?"</string>
+    <string name="ui_remove_the_retained_original_a09b39c8" formatted="false">"Bewaard origineel verwijderen?"</string>
+    <string name="ui_remove_tracking_4b40d72c" formatted="false">"Tracking verwijderen"</string>
+    <string name="ui_rename_3064d79a" formatted="false">": Naam wijzigen"</string>
+    <string name="ui_rename_file_e3526ab6" formatted="false">": Bestand herbenoemen"</string>
+    <string name="ui_replayed_local_commit_cb0e9ca0" formatted="false">"Opnieuw toegepaste lokale commit"</string>
+    <string name="ui_replays_local_commits_on_the_configured_up_709bdce6" formatted="false">"Past lokale commits opnieuw toe op de ingestelde upstream. Lokale commit-ID’s kunnen veranderen. De bestaande samenvoegstructuur blijft behouden. Er wordt niets gepusht."</string>
+    <string name="ui_repo_path_a3f06032" formatted="false">"Repo-pad"</string>
+    <string name="ui_repositories_assigned_to_this_account_will_ecd1d245" formatted="false">"Voor repository’s die aan dit account zijn toegewezen, moet je opnieuw inloggen of een ander account kiezen bij Repositoryverbinding. Je lokale bestanden en commits blijven bewaard."</string>
+    <string name="ui_repository_connection_1188001b" formatted="false">"Repositoryverbinding"</string>
+    <string name="ui_repository_operation_failed_f1152917" formatted="false">"Repositorybewerking mislukt"</string>
+    <string name="ui_repository_url_c83db013" formatted="false">"Repository-URL"</string>
+    <string name="ui_resolve_1_s_94accfee">"%1$s oplossen"</string>
+    <string name="ui_resolve_and_stage_ebded3a7" formatted="false">"Oplossen en klaarzetten"</string>
+    <string name="ui_resolved_content_69213720" formatted="false">"Opgeloste inhoud"</string>
+    <string name="ui_resolved_contents_55ceff37" formatted="false">"Opgeloste inhoud"</string>
+    <string name="ui_resolving_1_s_5e8ada92">"Oplossen: %1$s"</string>
+    <string name="ui_restore_as_a_separate_repository_6253e37c" formatted="false">"Herstellen als aparte repository"</string>
+    <string name="ui_retained_original_1_s_61bc9b73">"Bewaard origineel: %1$s"</string>
+    <string name="ui_retry_942087cc" formatted="false">"Herhaal"</string>
+    <string name="ui_return_to_repositories_c97a4463" formatted="false">"Terug naar repositories"</string>
+    <string name="ui_revert_commit_a2d355f7" formatted="false">"Commit terugdraaien"</string>
+    <string name="ui_review_destination_59808b00" formatted="false">"Bestemming controleren"</string>
+    <string name="ui_review_restored_folder_66729a70" formatted="false">"Herstelde map controleren"</string>
+    <string name="ui_save_1509f561" formatted="false">"Bewaren"</string>
+    <string name="ui_save_author_1c24b32a" formatted="false">"Auteur opslaan"</string>
+    <string name="ui_save_connection_df24ef12" formatted="false">"Verbinding opslaan"</string>
+    <string name="ui_saving_uses_this_address_for_both_fetch_an_48c82edc" formatted="false">"Bij het opslaan wordt dit adres voor zowel fetch als push gebruikt. Voer daarna fetch uit om de externe status te vernieuwen."</string>
+    <string name="ui_selected_folder_0cf59bef" formatted="false">"Geselecteerde map"</string>
+    <string name="ui_share_backup_archive_ee4ba873" formatted="false">"Back-uparchief delen"</string>
+    <string name="ui_some_diagnostics_could_not_be_read_or_save_19e3372d" formatted="false">"Sommige diagnostiek kon niet worden gelezen of opgeslagen. Bestaande gegevens zijn behouden. Wis het logboek om opnieuw te beginnen met registreren."</string>
+    <string name="ui_ssh_private_key_0e92a613" formatted="false">"SSH Privé sleutel"</string>
+    <string name="ui_stage_de838855" formatted="false">"Klaarzetten"</string>
+    <string name="ui_the_active_destination_stays_in_place_gits_a4f1f68a" formatted="false">"De actieve bestemming blijft bestaan. GitSync.md controleert of het bewaarde origineel geen latere wijzigingen bevat voordat de bestanden en Git-geschiedenis permanent worden verwijderd."</string>
+    <string name="ui_the_folder_can_move_directly_on_this_stora_7b29fabb" formatted="false">"De map kan rechtstreeks op dit opslagvolume worden verplaatst."</string>
+    <string name="ui_the_previous_github_account_is_disconnecte_628a1f8c" formatted="false">"Het vorige GitHub-account is niet verbonden. Kies een verbonden account of een andere authenticatiemethode."</string>
+    <string name="ui_the_replayed_local_commit_deletes_this_fil_ab00656d" formatted="false">"De opnieuw toegepaste lokale commit verwijdert dit bestand."</string>
+    <string name="ui_the_review_changed_cancel_and_refresh_serv_c7ee804c" formatted="false">"De beoordeelde gegevens zijn gewijzigd. Annuleer en vernieuw de serververgrendelingen."</string>
+    <string name="ui_this_history_entry_is_unavailable_c2c9f4e0" formatted="false">"Dit geschiedenisitem is niet beschikbaar."</string>
+    <string name="ui_this_removes_another_connection_s_lock_coo_880defbf" formatted="false">"Dit verwijdert de vergrendeling van een andere verbinding. Stem dit af met de eigenaar voordat je doorgaat."</string>
+    <string name="ui_this_repository_will_use_public_access_unt_c94fad61" formatted="false">"Deze repository gebruikt openbare toegang totdat je opnieuw authenticatie kiest. Je aangemelde GitHub-account wordt hiervoor niet gebruikt. De fetch- en pushadressen blijven ongewijzigd."</string>
+    <string name="ui_unable_to_open_file_2787a028" formatted="false">"Kan bestand niet openen"</string>
+    <string name="ui_unstage_033f86f9" formatted="false">"Terugzetten"</string>
+    <string name="ui_update_the_address_or_authentication_for_t_f11e4ba2" formatted="false">"Werk het adres of de authenticatie van deze werkkopie bij. Lokale bestanden, commits en gestagede wijzigingen blijven behouden."</string>
+    <string name="ui_upstream_94adc696" formatted="false">"Upstream"</string>
+    <string name="ui_upstream_deleted_this_file_40765116" formatted="false">"Upstream heeft dit bestand verwijderd."</string>
+    <string name="ui_use_app_storage_d199e8e0" formatted="false">"App-opslag gebruiken"</string>
+    <string name="ui_use_for_new_clones_be174c95" formatted="false">"Gebruiken voor nieuwe klonen"</string>
+    <string name="ui_use_saved_default_3bb7260d" formatted="false">"Opgeslagen standaard gebruiken"</string>
+    <string name="ui_username_e3b89e9d" formatted="false">"Gebruikersnaam"</string>
+    <string name="ui_your_edits_have_not_been_saved_625899a4" formatted="false">"Je wijzigingen zijn niet opgeslagen."</string>
+    <string name="ui_your_unsubmitted_text_will_be_discarded_th_15717285" formatted="false">"Je niet-ingediende tekst wordt verworpen. Het werkbestand blijft ongewijzigd."</string>
+    <string name="untracked" formatted="false">"Niet gevolgd"</string>
+    <string name="upstream_branch" formatted="false">"-tak"</string>
+    <string name="upstream_local_branch">"Lokale branch: %1$s"</string>
+    <string name="upstream_remote" formatted="false">"Remote"</string>
+    <string name="upstream_title" formatted="false">"Gevolgde branch"</string>
+    <string name="upstream_unavailable" formatted="false">"Kies een lokale branch met een ingestelde remote en rond eerst alle actieve Git-bewerkingen af."</string>
+    <string name="vault_copy_url" formatted="false">"Repository-URL kopiëren"</string>
+    <string name="vault_l10n_app_external_storage" formatted="false">"Externe app-opslag"</string>
+    <string name="vault_l10n_app_storage" formatted="false">"App-opslag"</string>
+    <string name="vault_l10n_backup_clip_label" formatted="false">"Back-up van Git-metadata"</string>
+    <string name="vault_l10n_backup_share_failed" formatted="false">"Kan het back-uparchief niet delen"</string>
+    <string name="vault_l10n_backup_share_title" formatted="false">"Back-up van Git-metadata delen"</string>
+    <string name="vault_l10n_backup_unavailable" formatted="false">"Het back-uparchief is niet beschikbaar"</string>
+    <string name="vault_l10n_branch_value">"Branch: %1$s"</string>
+    <string name="vault_l10n_clone_changed_reconnect" formatted="false">"De voltooide kloon is gewijzigd. Koppel de map opnieuw via Lokale repository’s."</string>
+    <string name="vault_l10n_clone_finish_save_failed" formatted="false">"Kan het opslaan van de gekloonde repository niet voltooien. Probeer hem opnieuw toe te voegen."</string>
+    <string name="vault_l10n_clone_history_changed" formatted="false">"De kloongeschiedenis is gewijzigd"</string>
+    <string name="vault_l10n_clone_history_removed" formatted="false">"De kloongeschiedenis is verwijderd"</string>
+    <string name="vault_l10n_clone_not_awaiting" formatted="false">"Deze kloon wacht niet langer op herstel"</string>
+    <string name="vault_l10n_clone_recovery_cancelled" formatted="false">"Het kloonherstel is geannuleerd"</string>
+    <string name="vault_l10n_clone_recovery_changed" formatted="false">"Het kloonherstel is gewijzigd"</string>
+    <string name="vault_l10n_clone_recovery_changed_review" formatted="false">"Het kloonherstel is gewijzigd. Controleer het opnieuw."</string>
+    <string name="vault_l10n_clone_recovery_dismissed_error" formatted="false">"Het kloonherstel is genegeerd"</string>
+    <string name="vault_l10n_clone_recovery_unavailable" formatted="false">"Het kloonherstel is niet meer beschikbaar. Koppel de map opnieuw via Lokale repository’s."</string>
+    <string name="vault_l10n_clone_removed_or_registered" formatted="false">"Deze kloon is verwijderd of opnieuw geregistreerd. Controleer de huidige vermelding."</string>
+    <string name="vault_l10n_default_location_save_failed" formatted="false">"Kan de standaardlocatie voor klonen niet opslaan"</string>
+    <string name="vault_l10n_deletion_review_changed" formatted="false">"De controle voor het verwijderen van de repository is gewijzigd. Controleer de kloon opnieuw voordat je hem verwijdert."</string>
+    <string name="vault_l10n_device_storage" formatted="false">"Apparaatopslag"</string>
+    <string name="vault_l10n_enable_shared_storage" formatted="false">"Schakel toegang tot gedeelde opslag in en kies de map daarna opnieuw. App-opslag blijft beschikbaar zonder deze toestemming."</string>
+    <string name="vault_l10n_enable_shared_storage_before" formatted="false">"Schakel toegang tot gedeelde opslag in voordat je de map kiest"</string>
+    <string name="vault_l10n_folder_access_removed" formatted="false">"De maptoegang is ingetrokken. Kies deze map opnieuw voordat je verdergaat."</string>
+    <string name="vault_l10n_folder_access_save_failed" formatted="false">"Kan maptoegang niet opslaan"</string>
+    <string name="vault_l10n_folder_cloud_provider" formatted="false">"Kies een map op dit apparaat of op een aangesloten opslagvolume. Deze Git-engine kan een clouddocumentprovider niet rechtstreeks gebruiken."</string>
+    <string name="vault_l10n_folder_no_links" formatted="false">"Kies een map zonder symbolische koppelingen in het pad"</string>
+    <string name="vault_l10n_folder_no_volume" formatted="false">"Deze map verwijst niet naar een opslagvolume van het apparaat"</string>
+    <string name="vault_l10n_folder_not_writable" formatted="false">"Deze map ondersteunt geen beschrijfbare Git-bestanden. Controleer de toegang en de beschikbare opslag."</string>
+    <string name="vault_l10n_folder_outside_git_metadata" formatted="false">"Kies een werkmap buiten de Git-metadata"</string>
+    <string name="vault_l10n_folder_outside_volume" formatted="false">"De geselecteerde map ligt buiten het opslagvolume"</string>
+    <string name="vault_l10n_folder_registered_differently_kept" formatted="false">"Deze map is al anders geregistreerd. De bestaande instellingen zijn bewaard."</string>
+    <string name="vault_l10n_folder_registered_differently_review" formatted="false">"Deze map is al anders geregistreerd. Controleer hem in Lokale repository’s."</string>
+    <string name="vault_l10n_folder_repository_choose_again" formatted="false">"Kies de repositorymap opnieuw om de toegang te herstellen"</string>
+    <string name="vault_l10n_folder_retain_access_failed" formatted="false">"Kan lees- en schrijftoegang tot deze map niet behouden"</string>
+    <string name="vault_l10n_folder_unavailable" formatted="false">"De geselecteerde map is niet beschikbaar"</string>
+    <string name="vault_l10n_github_user" formatted="false">"GitHub-gebruiker"</string>
+    <string name="vault_l10n_history_changed_clone_kept" formatted="false">"De repositorygeschiedenis is gewijzigd. De voltooide kloon is bewaard; controleer hem in Lokale repository’s."</string>
+    <string name="vault_l10n_last_sync_value">"Laatste sync: %1$s"</string>
+    <string name="vault_l10n_local_remote" formatted="false">"Lokale remote"</string>
+    <string name="vault_l10n_local_remote_named">"Lokale remote: %1$s"</string>
+    <string name="vault_l10n_move_destination_exists" formatted="false">"De bestemming bestaat al. Bestaande bestanden zijn bewaard."</string>
+    <string name="vault_l10n_not_managed_location" formatted="false">"Dit is geen door de app beheerde kloonlocatie"</string>
+    <string name="vault_l10n_obsidian_prepare_failed" formatted="false">"Repository toegevoegd, maar de Obsidian-verbinding kon niet worden voorbereid. Probeer het opnieuw via Instellingen → Obsidian-verbindingen."</string>
+    <string name="vault_l10n_obsidian_review" formatted="false">"Sommige Obsidian-verbindingen moeten worden gecontroleerd. Probeer het opnieuw via Instellingen → Obsidian-verbindingen."</string>
+    <string name="vault_l10n_publication_access_removed" formatted="false">"De toegang tot de publicatiemap is ingetrokken. Kies de oorspronkelijke map opnieuw."</string>
+    <string name="vault_l10n_publication_account_changed" formatted="false">"Het publicatieaccount is gewijzigd"</string>
+    <string name="vault_l10n_publication_device_folder_again" formatted="false">"Kies de oorspronkelijke apparaatmap opnieuw om de publicatietoegang te herstellen"</string>
+    <string name="vault_l10n_publication_folder_choose_again" formatted="false">"Kies de oorspronkelijke publicatiemap opnieuw om de toegang te herstellen"</string>
+    <string name="vault_l10n_publication_folder_different" formatted="false">"Deze map wijkt af van de gecontroleerde publicatie. Bestaande bestanden zijn bewaard."</string>
+    <string name="vault_l10n_publication_grant_different" formatted="false">"Deze toestemming hoort bij een andere map. Kies de oorspronkelijke publicatiemap."</string>
+    <string name="vault_l10n_publication_needs_attention" formatted="false">"De publicatie vraagt aandacht. Opgeslagen bestanden zijn bewaard."</string>
+    <string name="vault_l10n_publication_no_links" formatted="false">"Kies de publicatiemap zonder symbolische koppelingen"</string>
+    <string name="vault_l10n_publication_original_no_links" formatted="false">"Kies de oorspronkelijke publicatiemap zonder symbolische koppelingen"</string>
+    <string name="vault_l10n_publication_original_unavailable" formatted="false">"De oorspronkelijke publicatiemap is niet beschikbaar"</string>
+    <string name="vault_l10n_publication_other_destination" formatted="false">"De publicatieregistratie hoort bij een andere bestemming"</string>
+    <string name="vault_l10n_publication_overlaps" formatted="false">"Deze map overlapt met een geregistreerde repository. Controleer de bestaande vermelding voordat je publiceert."</string>
+    <string name="vault_l10n_publication_progress_unavailable" formatted="false">"De opgeslagen publicatievoortgang is niet beschikbaar"</string>
+    <string name="vault_l10n_publication_reconnect_account" formatted="false">"Koppel het geselecteerde GitHub-account opnieuw"</string>
+    <string name="vault_l10n_publication_select_account" formatted="false">"Selecteer een gekoppeld GitHub-account"</string>
+    <string name="vault_l10n_publication_settings_changed" formatted="false">"De instellingen van de publicatierepository zijn gewijzigd"</string>
+    <string name="vault_l10n_publication_settings_repair" formatted="false">"De repository-instellingen moeten worden hersteld voordat je publiceert"</string>
+    <string name="vault_l10n_publication_sign_in" formatted="false">"Log in bij het GitHub-account dat voor deze publicatie is geselecteerd"</string>
+    <string name="vault_l10n_publication_stopped" formatted="false">"Gestopt. De opgeslagen voortgang is klaar om te controleren; het laatste netwerkresultaat kan onzeker zijn."</string>
+    <string name="vault_l10n_publication_verify_account" formatted="false">"Verifieer het geselecteerde GitHub-account voordat je publiceert"</string>
+    <string name="vault_l10n_recovery_needs_access" formatted="false">"Repositoryherstel heeft maptoegang nodig. Kies de betreffende map opnieuw in Lokale repository’s."</string>
+    <string name="vault_l10n_repository_already_added" formatted="false">"Deze repository is al toegevoegd"</string>
+    <string name="vault_l10n_repository_folder_choose_again" formatted="false">"Kies de map van deze repository opnieuw om de opgeslagen toegang te herstellen."</string>
+    <string name="vault_l10n_repository_name_required" formatted="false">"Een repositorynaam is vereist"</string>
+    <string name="vault_l10n_repository_settings_save_failed" formatted="false">"Kan repository-instellingen niet opslaan; controleer de beschikbare opslag"</string>
+    <string name="vault_l10n_sample_open_failed">"Kan de voorbeeldrepository niet openen: %1$s"</string>
+    <string name="vault_l10n_sample_repository_name" formatted="false">"Voorbeeldrepository"</string>
+    <string name="vault_l10n_settings_load_failed">"Instellingen laden mislukt: %1$s"</string>
+    <string name="vault_l10n_settings_save_failed" formatted="false">"Kan instellingen niet opslaan"</string>
+    <string name="vault_l10n_shared_storage_removed" formatted="false">"De toegang tot gedeelde opslag is ingetrokken. Schakel deze in om deze repository te openen."</string>
+    <string name="vault_l10n_size_bytes">"%1$s B"</string>
+    <string name="vault_l10n_size_kb">"%1$s KB"</string>
+    <string name="vault_l10n_size_mb">"%1$s MB"</string>
+    <string name="vault_l10n_storage_choose_folder_first" formatted="false">"Kies eerst een map"</string>
+    <string name="vault_l10n_storage_location_changed" formatted="false">"Deze opslaglocatie is gewijzigd. Kies de map opnieuw."</string>
+    <string name="vault_l10n_storage_needs_attention" formatted="false">"Opslag vraagt aandacht"</string>
+    <string name="vault_l10n_tracking_review_changed" formatted="false">"De controle voor het stoppen met volgen is gewijzigd. Controleer de repository en de back-upkeuze opnieuw."</string>
+    <string name="vault_l10n_volume_unavailable" formatted="false">"Dit opslagvolume is niet beschikbaar"</string>
+    <string name="vault_l10n_volume_unavailable_reconnect" formatted="false">"Dit opslagvolume is niet beschikbaar. Sluit het opnieuw aan en kies de map opnieuw."</string>
+    <string name="vault_open_in_files_failed" formatted="false">"Kan deze map niet openen in Bestanden."</string>
+    <string name="vault_repository_fallback" formatted="false">"Repository"</string>
+    <string name="vault_url_copied" formatted="false">"Gekopieerd!"</string>
+    <plurals name="account_updated_days">
+        <item quantity="one">"%1$d d geleden"</item>
+        <item quantity="other">"%1$d d geleden"</item>
+    </plurals>
+    <plurals name="account_updated_hours">
+        <item quantity="one">"%1$d u geleden"</item>
+        <item quantity="other">"%1$d u geleden"</item>
+    </plurals>
+    <plurals name="account_updated_minutes">
+        <item quantity="one">"%1$d min geleden"</item>
+        <item quantity="other">"%1$d min geleden"</item>
+    </plurals>
+    <plurals name="account_updated_months">
+        <item quantity="one">"%1$d mnd geleden"</item>
+        <item quantity="other">"%1$d mnd geleden"</item>
+    </plurals>
+    <plurals name="account_updated_weeks">
+        <item quantity="one">"%1$d wk geleden"</item>
+        <item quantity="other">"%1$d wk geleden"</item>
+    </plurals>
+    <plurals name="account_updated_years">
+        <item quantity="one">"%1$d jaar geleden"</item>
+        <item quantity="other">"%1$d jaar geleden"</item>
+    </plurals>
+    <plurals name="dialogs_error_merge_conflicts">
+        <item quantity="one">"De merge heeft %1$d onopgelost conflict.\n\nLos het op voordat je de merge voltooit."</item>
+        <item quantity="other">"De merge heeft %1$d onopgeloste conflicten.\n\nLos ze op voordat je de merge voltooit."</item>
+    </plurals>
+    <plurals name="diff_changed_lines">
+        <item quantity="one">"+%1$s -%2$s regel"</item>
+        <item quantity="other">"+%1$s -%2$s regels"</item>
+    </plurals>
+    <plurals name="gitops_merge_stopped_conflicts">
+        <item quantity="one">"Merge gestopt: %1$s (%2$d conflict)"</item>
+        <item quantity="other">"Merge gestopt: %1$s (%2$d conflicten)"</item>
+    </plurals>
+    <plurals name="lfs_downloaded_objects">
+        <item quantity="one">"%1$d object gedownload."</item>
+        <item quantity="other">"%1$d objecten gedownload."</item>
+    </plurals>
+    <plurals name="lfs_extensions_more">
+        <item quantity="one">"En nog %1$d huidig bestand. Bekijk de Git-wijzigingen voordat je commit."</item>
+        <item quantity="other">"En nog %1$d huidige bestanden. Bekijk de Git-wijzigingen voordat je commit."</item>
+    </plurals>
+    <plurals name="lfs_extensions_retained">
+        <item quantity="one">"%1$d huidig bestand behoudt zijn expliciete volgkeuze."</item>
+        <item quantity="other">"%1$d huidige bestanden behouden hun expliciete volgkeuzes."</item>
+    </plurals>
+    <plurals name="lfs_restored_files">
+        <item quantity="one">"%1$d bestand hersteld."</item>
+        <item quantity="other">"%1$d bestanden hersteld."</item>
+    </plurals>
+    <plurals name="lfs_tracking_files">
+        <item quantity="one">"%1$d bestand"</item>
+        <item quantity="other">"%1$d bestanden"</item>
+    </plurals>
+    <plurals name="move_plan_summary">
+        <item quantity="one">"%1$s bestand inclusief Git-metadata · %2$s"</item>
+        <item quantity="other">"%1$s bestanden inclusief Git-metadata · %2$s"</item>
+    </plurals>
+    <plurals name="rebase_additional_blocked_paths">
+        <item quantity="one">"%1$d extra geblokkeerd pad wordt niet getoond."</item>
+        <item quantity="other">"%1$d extra geblokkeerde paden worden niet getoond."</item>
+    </plurals>
+    <plurals name="rebase_local_commits">
+        <item quantity="one">"%1$d lokale commit"</item>
+        <item quantity="other">"%1$d lokale commits"</item>
+    </plurals>
+    <plurals name="rebase_upstream_commits">
+        <item quantity="one">"%1$d upstream-commit"</item>
+        <item quantity="other">"%1$d upstream-commits"</item>
+    </plurals>
+    <plurals name="repositories_added">
+        <item quantity="one">"%1$d repository toegevoegd"</item>
+        <item quantity="other">"%1$d repository’s toegevoegd"</item>
+    </plurals>
+    <plurals name="repository_picker_count">
+        <item quantity="one">"· %1$d repository"</item>
+        <item quantity="other">"· %1$d repositories"</item>
+    </plurals>
+    <plurals name="tide_vault_changes_on_phone">
+        <item quantity="one">"wijziging op deze telefoon"</item>
+        <item quantity="other">"wijzigingen op deze telefoon"</item>
+    </plurals>
+    <plurals name="tide_vault_conflicts_to_resolve">
+        <item quantity="one">"op te lossen conflict"</item>
+        <item quantity="other">"op te lossen conflicten"</item>
+    </plurals>
+</resources>

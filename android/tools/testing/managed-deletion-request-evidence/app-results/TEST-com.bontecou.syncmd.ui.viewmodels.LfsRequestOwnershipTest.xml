@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.ui.viewmodels.LfsRequestOwnershipTest" tests="14" skipped="0" failures="0" errors="0" timestamp="2026-11-02T21:04:32" hostname="MacBook-Pro.local" time="1.203">
+  <properties/>
+  <testcase name="cachedHydrationSuccessSurvivesFailedFollowupInspection" classname="com.bontecou.syncmd.ui.viewmodels.LfsRequestOwnershipTest" time="0.754"/>
+  <testcase name="supersededQueuedLoadDoesNotInspectThePreviousRepositoryAfterItsLeaseOpens" classname="com.bontecou.syncmd.ui.viewmodels.LfsRequestOwnershipTest" time="0.042"/>
+  <testcase name="queuedCachedHydrationKeepsTheOldPointerAfterRepositorySwitch" classname="com.bontecou.syncmd.ui.viewmodels.LfsRequestOwnershipTest" time="0.041"/>
+  <testcase name="unsupportedOwnershipAndReadOnlyRefreshesRetainTypedStatusWithoutWrites" classname="com.bontecou.syncmd.ui.viewmodels.LfsRequestOwnershipTest" time="0.029"/>
+  <testcase name="clearingViewModelRevokesNonCancellableQueuedLockWrite" classname="com.bontecou.syncmd.ui.viewmodels.LfsRequestOwnershipTest" time="0.026"/>
+  <testcase name="currentOwnerLockWriteRunsOnceAndReleasesItsBusyState" classname="com.bontecou.syncmd.ui.viewmodels.LfsRequestOwnershipTest" time="0.028"/>
+  <testcase name="extensionTrackingSuccessSurvivesFailedFollowupInspection" classname="com.bontecou.syncmd.ui.viewmodels.LfsRequestOwnershipTest" time="0.046"/>
+  <testcase name="sameRepositoryExplicitReloadSupersedesAQueuedTrackingChoice" classname="com.bontecou.syncmd.ui.viewmodels.LfsRequestOwnershipTest" time="0.029"/>
+  <testcase name="exactTrackingSuccessSurvivesFailedFollowupInspection" classname="com.bontecou.syncmd.ui.viewmodels.LfsRequestOwnershipTest" time="0.032"/>
+  <testcase name="queuedExactTrackingDoesNotWriteThePreviouslySelectedRepository" classname="com.bontecou.syncmd.ui.viewmodels.LfsRequestOwnershipTest" time="0.025"/>
+  <testcase name="queuedExtensionRulesDoNotOutliveTheirScreenOwner" classname="com.bontecou.syncmd.ui.viewmodels.LfsRequestOwnershipTest" time="0.029"/>
+  <testcase name="initialInspectionAndTrackingPlanComeFromOneSerializedSnapshot" classname="com.bontecou.syncmd.ui.viewmodels.LfsRequestOwnershipTest" time="0.056"/>
+  <testcase name="currentOwnerCanApplyOnceAndPublishItsFreshPlan" classname="com.bontecou.syncmd.ui.viewmodels.LfsRequestOwnershipTest" time="0.026"/>
+  <testcase name="queuedLockCreationDoesNotContactServerAfterRepositorySwitch" classname="com.bontecou.syncmd.ui.viewmodels.LfsRequestOwnershipTest" time="0.039"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+]]></system-err>
+</testsuite>

@@ -1,0 +1,2 @@
+12 JDK Bidi/formatter probes pass: six handles, two RTL fallbacks, four version/build displays.
+Library spot checks only; no Android/Compose rendering or production composable execution.

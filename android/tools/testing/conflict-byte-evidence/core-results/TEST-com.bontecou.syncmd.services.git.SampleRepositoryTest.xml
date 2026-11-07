@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.git.SampleRepositoryTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-11-03T00:56:21" hostname="MacBook-Pro.local" time="0.16">
+  <properties/>
+  <testcase name="occupied workspace is never overwritten" classname="com.bontecou.syncmd.services.git.SampleRepositoryTest" time="0.0"/>
+  <testcase name="sample supports real offline diff commit push and pull" classname="com.bontecou.syncmd.services.git.SampleRepositoryTest" time="0.063"/>
+  <testcase name="reopening preserves user practice edits" classname="com.bontecou.syncmd.services.git.SampleRepositoryTest" time="0.039"/>
+  <testcase name="removed sample can be restored from its on-device remote" classname="com.bontecou.syncmd.services.git.SampleRepositoryTest" time="0.058"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

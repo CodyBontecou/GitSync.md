@@ -1,0 +1,350 @@
+--- before/app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryCallbackGrantTest.kt
++++ after/app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryCallbackGrantTest.kt
+@@ -321,7 +321,7 @@
+             instrumentation.runOnMainSync { settings.prepareMove(root.path, RepositoryLocations.APP) }
+             withTimeout(10_000) { while (settings.moveReview.value == null && settings.errorMessage.value == null) delay(10) }
+             assertNull(settings.errorMessage.value); val move = settings.moveReview.value!!.plan
+-            instrumentation.runOnMainSync { settings.moveReviewed() }
++            instrumentation.runOnMainSync { settings.moveReviewed(settings.moveReview.value!!) }
+             try { withTimeout(15_000) { while (settings.destructiveBusy.value) delay(10) } }
+             catch (timeout: TimeoutCancellationException) {
+                 throw AssertionError("Owned move did not finish: busy=${settings.destructiveBusy.value}; loading=${settings.isLoading.value}; error_present=${settings.errorMessage.value!=null}; source_exists=${root.exists()}; destination_exists=${File(move.destination).exists()}",timeout)
+--- before/app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryMoveTest.kt
++++ after/app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryMoveTest.kt
+@@ -166,7 +166,7 @@
+     }
+     private fun executeReviewedMove(model: SettingsViewModel, review: RepositoryMoveReview) {
+         var done = false
+-        instrumentation.runOnMainSync { model.moveReviewed { done = true } }
++        instrumentation.runOnMainSync { model.moveReviewed(model.moveReview.value!!) { done = true } }
+         compose.waitUntil(15_000) { done || model.errorMessage.value != null }
+         assertNull(model.errorMessage.value); assertTrue(done)
+         assertEquals(review.plan.destination, model.allRepositories.value.single().path)
+@@ -293,7 +293,7 @@
+         val initial = preferences.all.toMap()
+         val review = review(model, source)
+         failNext = true
+-        instrumentation.runOnMainSync { model.moveReviewed() }
++        instrumentation.runOnMainSync { model.moveReviewed(model.moveReview.value!!) }
+         compose.waitUntil(15_000) { model.errorMessage.value != null && !model.destructiveBusy.value }
+         assertTrue(model.errorMessage.value.orEmpty().contains("Could not save connection"))
+         assertEquals(initial, preferences.all)
+@@ -330,7 +330,7 @@
+         val reviewed = review(model, source)
+         assertTrue("The emulator must exercise its real data/shared-storage boundary", reviewed.plan.copyRequired)
+         var done = false
+-        instrumentation.runOnMainSync { model.moveReviewed { done = true } }
++        instrumentation.runOnMainSync { model.moveReviewed(model.moveReview.value!!) { done = true } }
+         compose.waitUntil(15_000) { done || model.errorMessage.value != null }
+         assertNull(model.errorMessage.value); assertTrue(done)
+         assertFalse(source.exists())
+@@ -414,7 +414,7 @@
+         val source = source(); val model = model(); register(model, source)
+         val reviewed = review(model, source)
+         store.save(source.path, "https://github.com/fixture/notes.git", Credentials.None)
+-        instrumentation.runOnMainSync { model.moveReviewed() }
++        instrumentation.runOnMainSync { model.moveReviewed(model.moveReview.value!!) }
+         compose.waitUntil(10_000) { model.errorMessage.value != null }
+         assertTrue(model.errorMessage.value.orEmpty().contains("credentials changed"))
+         assertTrue(source.exists()); assertFalse(File(reviewed.plan.destination).exists()); assertTrue(moves.journals().isEmpty())
+@@ -442,7 +442,7 @@
+         val model = model(failing); register(model, source)
+         val reviewed = review(model, source)
+         failNext = true
+-        instrumentation.runOnMainSync { model.moveReviewed() }
++        instrumentation.runOnMainSync { model.moveReviewed(model.moveReview.value!!) }
+         compose.waitUntil(15_000) { model.errorMessage.value != null }
+         assertTrue(model.errorMessage.value.orEmpty().contains("Could not save repository settings"))
+         assertFalse(source.exists())
+@@ -460,7 +460,7 @@
+         val source = source(); val auth = bindAccount(source); val model = model(); register(model, source)
+         val first = review(model, source)
+         var moved = false
+-        instrumentation.runOnMainSync { model.moveReviewed { moved = true } }
++        instrumentation.runOnMainSync { model.moveReviewed(model.moveReview.value!!) { moved = true } }
+         compose.waitUntil(15_000) { moved || model.errorMessage.value != null }; assertNull(model.errorMessage.value)
+         val originalRecoveryId = model.moveJournals.value.single().plan.id
+         File(first.plan.destination, "active-edit.md").writeText("Keep active edits\n")
+@@ -493,7 +493,7 @@
+         val source = source(); val auth = bindAccount(source); val model = model(); register(model, source)
+         val reviewed = review(model, source)
+         var done = false
+-        instrumentation.runOnMainSync { model.moveReviewed { done = true } }
++        instrumentation.runOnMainSync { model.moveReviewed(model.moveReview.value!!) { done = true } }
+         compose.waitUntil(15_000) { done || model.errorMessage.value != null }; assertNull(model.errorMessage.value)
+         val destination = File(reviewed.plan.destination)
+         File(destination, "new-active.md").writeText("Keep this after cleanup\n")
+@@ -566,14 +566,14 @@
+         val model = model(); register(model, source)
+         val reviewed = review(model, source); assertFalse(reviewed.plan.copyRequired)
+         app.contentResolver.releasePersistableUriPermission(grantedUri, Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+-        instrumentation.runOnMainSync { model.moveReviewed() }
++        instrumentation.runOnMainSync { model.moveReviewed(model.moveReview.value!!) }
+         compose.waitUntil(10_000) { model.errorMessage.value != null }
+         assertTrue(source.isDirectory); assertFalse(File(reviewed.plan.destination).exists()); assertTrue(moves.journals().isEmpty())
+         grant()
+         instrumentation.runOnMainSync { model.clearError() }
+         val retry = review(model, source)
+         var done = false
+-        instrumentation.runOnMainSync { model.moveReviewed { done = true } }
++        instrumentation.runOnMainSync { model.moveReviewed(model.moveReview.value!!) { done = true } }
+         compose.waitUntil(15_000) { done || model.errorMessage.value != null }; assertNull(model.errorMessage.value); assertTrue(done)
+         val destination = File(retry.plan.destination)
+         assertEquals(inode, android.system.Os.stat(destination.path).st_ino)
+--- before/app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryShortcutDeviceTest.kt
++++ after/app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryShortcutDeviceTest.kt
+@@ -217,7 +217,7 @@
+             movedFixtures += File(destination)
+             movedFixtures += move.recoveryOwner
+             movedFixtures += move.stagingOwner
+-            instrumentation.runOnMainSync { settings.moveReviewed() }
++            instrumentation.runOnMainSync { settings.moveReviewed(settings.moveReview.value!!) }
+             withTimeout(15_000) { while (settings.destructiveBusy.value) delay(10) }
+             assertNull(settings.errorMessage.value)
+             assertFalse(root.exists()); assertEquals(destination, settings.allRepositories.value.single().path)
+--- before/app/src/main/kotlin/com/bontecou/syncmd/storage/RepositoryMoveMetadata.kt
++++ after/app/src/main/kotlin/com/bontecou/syncmd/storage/RepositoryMoveMetadata.kt
+@@ -8,3 +8,10 @@
+     val sourceCredentialVersion: String?, val destinationCredentialVersion: String?, val recoveryCredentialVersion: String?,
+     val restoringRecoveryId: String? = null, val version: Int = 1)
+ data class RepositoryMoveReview(val plan: RepositoryMovePlan, val metadata: RepositoryMoveMetadata)
++
++/** Recheck the exact displayed review inside RepositoryMove.execute's checkout leases. */
++internal fun requireCurrentMoveReview(review: RepositoryMoveReview, current: RepositoryMoveReview?) {
++    check(current === review && review.plan.source == review.metadata.original.path) {
++        "Repository move review changed. Review the destination again before moving it."
++    }
++}
+--- before/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/MoveRepositoryScreen.kt
++++ after/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/MoveRepositoryScreen.kt
+@@ -40,13 +40,13 @@
+ @OptIn(ExperimentalMaterial3Api::class)
+ @Composable
+ fun MoveRepositoryScreen(path: String, recoveryId: String? = null, settings: SettingsViewModel, onBack: () -> Unit) {
+-    val review by settings.moveReview.collectAsState()
++    val review = settings.moveReview.collectAsState().value
+     val journals by settings.moveJournals.collectAsState()
+     val busy by settings.isLoading.collectAsState()
+     val destructive by settings.destructiveBusy.collectAsState()
+     val error by settings.errorMessage.collectAsState()
+     var location by rememberSaveable(path, recoveryId) { mutableStateOf<String?>(null) }
+-    var confirming by remember { mutableStateOf(false) }
++    var confirming by remember { mutableStateOf<com.bontecou.syncmd.storage.RepositoryMoveReview?>(null) }
+     LaunchedEffect(path, recoveryId) { settings.clearMoveReview() }
+     val current = review?.takeIf { if (recoveryId == null) it.plan.source == path else it.metadata.restoringRecoveryId == recoveryId }
+     val pendingSource = if (recoveryId == null) path else journals.firstOrNull { it.plan.id == recoveryId }?.plan?.recovery?.path ?: current?.plan?.source
+@@ -84,7 +84,7 @@
+                 }
+                 VaultOpsNote(stringResource(if (item.plan.copyRequired) R.string.ui_this_crosses_storage_volumes_gitsync_md_wi_559c0a3d
+                     else R.string.ui_the_folder_can_move_directly_on_this_stora_7b29fabb), Modifier.padding(horizontal = 4.dp))
+-                VaultOpsButton(if (recoveryId == null) "Move working copy" else "Restore as a separate repository", { confirming = true },
++                VaultOpsButton(if (recoveryId == null) "Move working copy" else "Restore as a separate repository", { confirming = item },
+                     Modifier.testTag("move-confirm"), enabled = !busy && pending.isEmpty())
+             }
+             pending.forEach { journal ->
+@@ -100,12 +100,13 @@
+             error?.let { VaultOpsBanner(it, Modifier.testTag("move-error"), danger = true) }
+         }
+     }
+-    if (confirming && current != null) VaultOpsSheet(onDismissRequest = { confirming = false },
++    val confirmation = confirming?.takeIf { it === current }
++    if (confirmation != null) VaultOpsSheet(onDismissRequest = { confirming = null },
+         title = if (recoveryId == null) "Move this working copy?" else "Restore this recovery copy?",
+         icon = { TideModalIcon(glyph = "→", tint = c.ink) },
+-        confirmButton = { VaultOpsButton(if (recoveryId == null) "Move" else "Restore", { confirming = false; settings.moveReviewed(onBack) }, Modifier.testTag("move-final-confirm")) },
+-        dismissButton = { VaultOpsTextButton(stringResource(R.string.publication_cancel), { confirming = false }, Modifier.fillMaxWidth()) }) {
+-        Text(stringResource(R.string.ui_1_s_2_schoose_an_unused_destination_and_ke_6161c527, (current.plan.destination).toString(),
+-            (if (current.plan.copyRequired) "The original will be retained as a recovery copy. " else "").toString()))
++        confirmButton = { VaultOpsButton(if (recoveryId == null) "Move" else "Restore", { confirming = null; settings.moveReviewed(confirmation, onBack) }, Modifier.testTag("move-final-confirm")) },
++        dismissButton = { VaultOpsTextButton(stringResource(R.string.publication_cancel), { confirming = null }, Modifier.fillMaxWidth()) }) {
++        Text(stringResource(R.string.ui_1_s_2_schoose_an_unused_destination_and_ke_6161c527, (confirmation.plan.destination).toString(),
++            (if (confirmation.plan.copyRequired) "The original will be retained as a recovery copy. " else "").toString()))
+     }
+ }
+--- before/app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/SettingsViewModel.kt
++++ after/app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/SettingsViewModel.kt
+@@ -59,6 +59,7 @@
+     private val locations = com.bontecou.syncmd.storage.RepositoryLocations(context)
+     private val _moveReview = MutableStateFlow<com.bontecou.syncmd.storage.RepositoryMoveReview?>(null)
+     val moveReview = _moveReview.asStateFlow()
++    @Volatile private var moveReviewOwner: Any = Any()
+     private val _moveJournals = MutableStateFlow<List<RepositoryMoveJournal>>(emptyList())
+     val moveJournals = _moveJournals.asStateFlow()
+     private val _selectedRepository = MutableStateFlow("")
+@@ -477,21 +478,30 @@
+     })
+     fun reportStorageError(message: String) { _errorMessage.value = message }
+ 
+-    fun prepareMove(path: String, selection: String?) = mutate({
+-        val original = _allRepositories.value.firstOrNull { it.path == canonical(path) } ?: error("Repository is no longer added")
+-        prepareMoveNow(original, selection, null)
+-    })
+-    fun prepareRecoveryRestore(id: String, selection: String?) = mutate({
+-        val journal = moves.read(id)
+-        require(journal.phase == RepositoryMovePhase.COMMITTED && journal.plan.copyRequired) { "Finish the pending move first" }
+-        require(_allRepositories.value.none { it.path == journal.plan.recovery.path }) { "The recovery copy is already added. Move it from its repository entry." }
+-        val previous = moveMetadata(journal).original
+-        val restored = previous.copy(name = "${previous.name} (recovered)", alias = previous.alias.takeIf { it.isNotBlank() }?.let { "$it (recovered)" }.orEmpty(),
+-            path = journal.plan.recovery.path, dateAdded = System.currentTimeMillis(), managedStorage = false)
+-        prepareMoveNow(restored, selection, id, File(journal.plan.source).name)
+-    })
+-    private suspend fun prepareMoveNow(original: SavedRepository, selection: String?, restoringId: String?, folderName: String = File(original.path).name) {
+-        _moveReview.value = null
++    fun prepareMove(path: String, selection: String?) {
++        if (_destructiveBusy.value) return
++        val owner = Any().also { moveReviewOwner = it; _moveReview.value = null }
++        mutate({
++            if (moveReviewOwner !== owner) return@mutate
++            val original = _allRepositories.value.firstOrNull { it.path == canonical(path) } ?: error("Repository is no longer added")
++            prepareMoveNow(original, selection, null, owner)
++        })
++    }
++    fun prepareRecoveryRestore(id: String, selection: String?) {
++        if (_destructiveBusy.value) return
++        val owner = Any().also { moveReviewOwner = it; _moveReview.value = null }
++        mutate({
++            if (moveReviewOwner !== owner) return@mutate
++            val journal = moves.read(id)
++            require(journal.phase == RepositoryMovePhase.COMMITTED && journal.plan.copyRequired) { "Finish the pending move first" }
++            require(_allRepositories.value.none { it.path == journal.plan.recovery.path }) { "The recovery copy is already added. Move it from its repository entry." }
++            val previous = moveMetadata(journal).original
++            val restored = previous.copy(name = "${previous.name} (recovered)", alias = previous.alias.takeIf { it.isNotBlank() }?.let { "$it (recovered)" }.orEmpty(),
++                path = journal.plan.recovery.path, dateAdded = System.currentTimeMillis(), managedStorage = false)
++            prepareMoveNow(restored, selection, id, owner, File(journal.plan.source).name)
++        })
++    }
++    private suspend fun prepareMoveNow(original: SavedRepository, selection: String?, restoringId: String?, owner: Any, folderName: String = File(original.path).name) {
+         require(moves.journals().none { it.phase !in listOf(RepositoryMovePhase.COMMITTED, RepositoryMovePhase.DISCARDING_RECOVERY) &&
+             (it.plan.source == original.path || it.plan.destination == original.path) }) { "Finish the pending move for this repository first" }
+         val parent = locations.resolve(selection).path
+@@ -502,19 +512,27 @@
+         val metadata = com.bontecou.syncmd.storage.RepositoryMoveMetadata(original, info.remoteUrl, info.branch,
+             credentials.recordVersion(original.path), credentials.recordVersion(plan.destination),
+             if (plan.copyRequired) credentials.recordVersion(plan.recovery.path) else null, restoringId)
+-        _moveReview.value = com.bontecou.syncmd.storage.RepositoryMoveReview(plan, metadata)
+-    }
+-    fun clearMoveReview() { if (!_destructiveBusy.value) _moveReview.value = null }
+-    fun moveReviewed(onReady: () -> Unit = {}) {
+-        val review = _moveReview.value ?: return
+-        if (_destructiveBusy.value) return
++        if (moveReviewOwner === owner) _moveReview.value = com.bontecou.syncmd.storage.RepositoryMoveReview(plan, metadata)
++    }
++    fun clearMoveReview() {
++        if (!_destructiveBusy.value) { moveReviewOwner = Any(); _moveReview.value = null }
++    }
++    fun moveReviewed(review: com.bontecou.syncmd.storage.RepositoryMoveReview, onReady: () -> Unit = {}) {
++        if (_destructiveBusy.value || _moveReview.value !== review) return
+         mutate({
++            com.bontecou.syncmd.storage.requireCurrentMoveReview(review, _moveReview.value)
+             validateMoveCatalog(review.plan, review.metadata)
+             try {
+-                val done = moves.execute(review.plan, gson.toJson(review.metadata), beforeMove = { checkMoveCredentials(review.plan, review.metadata) }, commit = ::commitMove)
++                val done = moves.execute(review.plan, gson.toJson(review.metadata), beforeMove = {
++                    com.bontecou.syncmd.storage.requireCurrentMoveReview(review, _moveReview.value)
++                    checkMoveCredentials(review.plan, review.metadata)
++                }, commit = ::commitMove)
+                 finishMove(done)
+                 _operationMessage.value = if (done.plan.copyRequired) "Repository moved. Its original is retained in Move recoveries." else "Repository moved"
+-            } finally { _moveReview.value = null; reloadMoveJournals() }
++            } finally {
++                if (_moveReview.value === review) _moveReview.value = null
++                reloadMoveJournals()
++            }
+         }, onReady, destructive = true)
+     }
+     fun resumeMove(id: String) = mutate({
+--- before/app/src/test/kotlin/com/bontecou/syncmd/ui/viewmodels/RepositoryMoveConsentTest.kt
++++ after/app/src/test/kotlin/com/bontecou/syncmd/ui/viewmodels/RepositoryMoveConsentTest.kt
+@@ -0,0 +1,92 @@
++package com.bontecou.syncmd.ui.viewmodels
++
++import com.bontecou.syncmd.services.git.RepositoryOperationCoordinator
++import com.bontecou.syncmd.services.repositories.RepositoryMove
++import com.bontecou.syncmd.services.repositories.RepositoryMovePhase
++import com.bontecou.syncmd.storage.RepositoryMoveMetadata
++import com.bontecou.syncmd.storage.RepositoryMoveReview
++import com.bontecou.syncmd.storage.requireCurrentMoveReview
++import kotlinx.coroutines.*
++import org.eclipse.jgit.api.Git
++import org.junit.Test
++import org.junit.Assert.*
++import org.junit.Rule
++import org.junit.rules.TemporaryFolder
++import java.io.File
++import java.util.concurrent.atomic.AtomicReference
++
++/** Actual move/checkout leases and filesystem writes; the Android catalog/credential stores are not invoked. */
++class RepositoryMoveConsentTest {
++    @get:Rule val temporary = TemporaryFolder()
++    private fun repository(name: String): File = temporary.newFolder(name).canonicalFile.also { root ->
++        Git.init().setDirectory(root).setInitialBranch("main").call().use { git ->
++            File(root, "README.md").writeText("Generated move fixture\n")
++            git.add().addFilepattern(".").call()
++            git.commit().setMessage("Fixture").setAuthor("Fixture", "fixture@example.invalid").call()
++        }
++        File(root, "draft.md").writeText("Untracked é🙂\r\n")
++    }
++    private fun contents(root: File) = root.walkTopDown().filter { it.isFile }
++        .associate { it.relativeTo(root).invariantSeparatorsPath to it.readBytes().toList() }
++    private fun metadata(root: File) = RepositoryMoveMetadata(
++        SavedRepository("Fixture", root.path, dateAdded = 123L), null, "main", null, null, null)
++
++    @Test fun clearedReviewCannotMoveAfterWaitingForSourceLease(): Unit = runBlocking { rejected("cleared") }
++    @Test fun equalReplacementReviewRevokesOldConfirmation(): Unit = runBlocking { rejected("equal") }
++    @Test fun anotherDestinationDoesNotRetargetOldConfirmation(): Unit = runBlocking { rejected("destination") }
++    @Test fun anotherRepositoryDoesNotRetargetOldConfirmation(): Unit = runBlocking { rejected("repository") }
++    @Test fun mismatchedMetadataCannotMove(): Unit = runBlocking { rejected("metadata") }
++
++    private suspend fun rejected(change: String) = coroutineScope {
++        val source = repository("source"); val other = repository("other")
++        val parent = temporary.newFolder("destination"); val recovery = temporary.newFolder("recovery")
++        val journals = temporary.newFolder("journals"); val moves = RepositoryMove(journals)
++        val plan = moves.prepare(source.path, parent.path, recovery.path)
++        val shown = RepositoryMoveReview(plan, metadata(source))
++        val review = if (change == "metadata") shown.copy(metadata = metadata(other)) else shown
++        val current = AtomicReference<RepositoryMoveReview?>(review)
++        val before = contents(source); val otherBefore = contents(other)
++        val entered = CompletableDeferred<Unit>(); val release = CompletableDeferred<Unit>()
++        val holder = launch(Dispatchers.IO) {
++            RepositoryOperationCoordinator.withRepository(source.path) { entered.complete(Unit); release.await() }
++        }
++        entered.await()
++        var commits = 0
++        val waiting = async(start = CoroutineStart.UNDISPATCHED) {
++            runCatching {
++                moves.execute(review.plan, "fixture", beforeMove = { requireCurrentMoveReview(review, current.get()) }) { commits++ }
++            }
++        }
++        try {
++            assertFalse(waiting.isCompleted)
++            when (change) {
++                "cleared" -> current.set(null)
++                "equal" -> current.set(shown.copy())
++                "destination" -> current.set(shown.copy(plan = plan.copy(destination = File(parent, "different").path)))
++                "repository" -> current.set(shown.copy(plan = plan.copy(source = other.path), metadata = metadata(other)))
++            }
++        } finally { release.complete(Unit); holder.join() }
++        val failure = withTimeout(10_000) { waiting.await() }.exceptionOrNull()
++        assertTrue(failure.toString(), failure is IllegalStateException)
++        assertTrue(failure!!.message.orEmpty().contains("review changed"))
++        assertEquals(0, commits); assertEquals(before, contents(source)); assertEquals(otherBefore, contents(other))
++        assertFalse(File(plan.destination).exists()); assertFalse(plan.stagingOwner.exists()); assertFalse(plan.recoveryOwner.exists())
++        assertTrue(moves.journals().isEmpty())
++    }
++
++    @Test fun currentReviewMovesExactlyItsCheckout(): Unit = runBlocking { accepted(false) }
++    @Test fun currentCrossVolumeReviewRetainsExactOriginal(): Unit = runBlocking { accepted(true) }
++    private suspend fun accepted(copy: Boolean) {
++        val source = repository("source"); val other = repository("other"); val before = contents(source); val otherBefore = contents(other)
++        val parent = temporary.newFolder("destination"); val recovery = temporary.newFolder("recovery")
++        val moves = RepositoryMove(temporary.newFolder("journals"), sameVolume = { _, _ -> !copy })
++        val review = RepositoryMoveReview(moves.prepare(source.path, parent.path, recovery.path), metadata(source))
++        var commits = 0
++        val done = moves.execute(review.plan, "fixture", beforeMove = { requireCurrentMoveReview(review, review) }) {
++            commits++; assertEquals(review.plan.destination, it.plan.destination)
++        }
++        assertEquals(RepositoryMovePhase.COMMITTED, done.phase); assertEquals(1, commits)
++        assertFalse(source.exists()); assertEquals(before, contents(File(review.plan.destination))); assertEquals(otherBefore, contents(other))
++        if (copy) assertEquals(before, contents(review.plan.recovery)) else assertFalse(review.plan.recovery.exists())
++    }
++}

@@ -1,0 +1,14 @@
+<resources>
+    <plurals name="rebase_local_commits">
+        <item quantity="one">%1$d local commit</item>
+        <item quantity="other">%1$d local commits</item>
+    </plurals>
+    <plurals name="rebase_upstream_commits">
+        <item quantity="one">%1$d upstream commit</item>
+        <item quantity="other">%1$d upstream commits</item>
+    </plurals>
+    <plurals name="rebase_additional_blocked_paths">
+        <item quantity="one">%1$d additional blocked path is not shown.</item>
+        <item quantity="other">%1$d additional blocked paths are not shown.</item>
+    </plurals>
+</resources>

@@ -1,0 +1,34 @@
+<resources>
+    <string name="repository_actions_title">Repository actions</string>
+    <string name="repository_actions_scope">Choose a local repository and review its current branch before running an action.</string>
+    <string name="repository_actions_reload">Reload repositories</string>
+    <string name="repository_actions_branch">Branch: %1$s\nReviewed commit: %2$s</string>
+    <string name="repository_actions_destination">Upstream: %1$s / %2$s</string>
+    <string name="repository_actions_stop">Stop action</string>
+    <string name="repository_actions_status">Read Status</string>
+    <string name="repository_actions_pull">Pull Repository</string>
+    <string name="repository_actions_push">Push Repository</string>
+    <string name="repository_actions_sync">Sync Repository</string>
+    <string name="repository_actions_message">Commit message</string>
+    <string name="repository_actions_write_scope">Push and Sync stage all current non-ignored changes and create a commit if needed, then upload outstanding commits. Sync first fetches and fast-forwards when safe. Conflicts, divergence and unsafe remote state stop the action. A failed upload keeps any new local commit for retry.</string>
+    <string name="repository_actions_confirm">Run once</string>
+    <string name="repository_actions_cancel">Cancel</string>
+    <string name="repository_actions_status_ready">Status read without network access</string>
+    <string name="repository_actions_pulled">Pulled incoming changes</string>
+    <string name="repository_actions_pushed">Commit uploaded</string>
+    <string name="repository_actions_synced">Pulled and pushed</string>
+    <string name="repository_actions_no_changes">No commits to upload</string>
+    <string name="repository_actions_blocked">Action needs attention</string>
+    <string name="repository_actions_local_saved">Local commit saved; upload was not confirmed. Review current state and retry to upload that commit.</string>
+    <string name="repository_actions_failed">Could not complete the action. Check connection, account, trust and folder access, then review current state before retrying.</string>
+    <string name="repository_actions_stopped">Stopped. A Git operation may already have finished or uploaded. Review current state before retrying; saved commits and files were kept.</string>
+    <string name="repository_actions_changes">Changed paths: %1$d</string>
+    <string name="repository_actions_stale">This review or approval is no longer current. Review the repository’s current state and confirm the action again.</string>
+    <string name="repository_actions_unsafe">Switch to a local branch and finish the active Git operation or conflict first.</string>
+    <string name="repository_actions_unconfigured">Configure a remote upstream branch in Git controls before running this action.</string>
+    <string name="repository_actions_dirty">Local changes prevent pulling incoming commits. Commit or stash them first.</string>
+    <string name="repository_actions_diverged">Local and remote history diverged. Choose an explicit merge or rebase in Git controls.</string>
+    <string name="repository_actions_behind">Pull incoming commits before pushing.</string>
+    <string name="repository_actions_remote_missing">The configured upstream branch is missing on the server. Review Git controls.</string>
+    <string name="repository_actions_unsettled">Files kept changing while staging. Review the index and files before retrying.</string>
+</resources>

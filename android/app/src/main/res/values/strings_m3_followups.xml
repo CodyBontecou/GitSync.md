@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Files top bar sync: fetch, then fast-forward only when nothing local is in the way. -->
+    <plurals name="files_m3_sync_local_changes">
+        <item quantity="one">%1$d new commit on %2$s. Commit or discard your local changes on the Changes tab, then sync again.</item>
+        <item quantity="other">%1$d new commits on %2$s. Commit or discard your local changes on the Changes tab, then sync again.</item>
+    </plurals>
+    <plurals name="files_m3_sync_diverged">
+        <item quantity="one">%1$d new commit on %2$s, and this phone has commits it hasn\'t pushed. Open the Changes tab to pull them in.</item>
+        <item quantity="other">%1$d new commits on %2$s, and this phone has commits it hasn\'t pushed. Open the Changes tab to pull them in.</item>
+    </plurals>
+</resources>

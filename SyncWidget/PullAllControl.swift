@@ -13,7 +13,7 @@ struct PullAllControl: ControlWidget {
     var body: some ControlWidgetConfiguration {
         StaticControlConfiguration(kind: Self.kind) {
             ControlWidgetButton(action: PullAllControlIntent()) {
-                Label("Pull All", systemImage: "arrow.down.circle.fill")
+                Label("Pull all", systemImage: "arrow.down")
             }
         }
     }

@@ -8,3 +8,8 @@
 .comparison-table th { font-weight: 600; }
 
 .comparison-table th:first-child { width: 160px; }
+
+/* Tide */
+.comparison-scroll { background: var(--surface); border-radius: var(--radius-card); }
+.comparison-table th, .comparison-table td { border-color: var(--line); }
+.comparison-table thead { background: var(--well); }

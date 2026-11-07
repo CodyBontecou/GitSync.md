@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ssh_show_private_key">Show private key</string>
+    <string name="ssh_hide_private_key">Hide private key</string>
+    <string name="clone_location_title">Clone location</string>
+    <string name="clone_location_reconnect">Folder needs reconnection</string>
+    <string name="folder_picker_unavailable">No folder picker is available on this device</string>
+    <string name="folder_access_not_enabled">Folder access was not enabled. You can continue using app storage.</string>
+    <string name="folder_settings_unavailable">Android storage settings are unavailable. App storage remains available.</string>
+    <string name="folder_unusable">Could not use this folder</string>
+</resources>

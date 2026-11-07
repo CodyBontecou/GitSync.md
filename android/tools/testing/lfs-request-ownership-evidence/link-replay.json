@@ -1,0 +1,80 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "Running e2e test \"pixel-lfs-owner-update-link-20261102\" on 2C061FDH200CJN (15 steps)"
+    },
+    {
+      "type": "text",
+      "text": "[1] ✓ launch (2.0s)"
+    },
+    {
+      "type": "text",
+      "text": "[2] ✓ await visible \"GITSYNC.MD\" role=StaticText (0.2s)"
+    },
+    {
+      "type": "text",
+      "text": "[3] ✓ idle (1.4s)"
+    },
+    {
+      "type": "text",
+      "text": "[4] ✓ await visible \"NO REPOSITORIES\" role=StaticText (0.2s)"
+    },
+    {
+      "type": "text",
+      "text": "[5] ✓ tap \"⚙\" (0.7s)"
+    },
+    {
+      "type": "text",
+      "text": "[6] ✓ stop-all-simulator-servers (0.1s)"
+    },
+    {
+      "type": "text",
+      "text": "{\n  \"stopped\": [\n    \"AndroidDevtools:2C061FDH200CJN\",\n    \"SimulatorServer:2C061FDH200CJN\"\n  ]\n}"
+    },
+    {
+      "type": "text",
+      "text": "[7] ✓ await visible \"SETTINGS\" role=StaticText (1.1s)"
+    },
+    {
+      "type": "text",
+      "text": "[8] ✓ idle (2.8s)"
+    },
+    {
+      "type": "text",
+      "text": "[9] ✓ tap \"PUSH SYNC\" (0.7s)"
+    },
+    {
+      "type": "text",
+      "text": "[10] ✓ stop-all-simulator-servers (0.1s)"
+    },
+    {
+      "type": "text",
+      "text": "{\n  \"stopped\": [\n    \"AndroidDevtools:2C061FDH200CJN\",\n    \"SimulatorServer:2C061FDH200CJN\"\n  ]\n}"
+    },
+    {
+      "type": "text",
+      "text": "[11] ✓ await visible \"Push Sync\" role=StaticText (1.0s)"
+    },
+    {
+      "type": "text",
+      "text": "[12] ✓ idle (1.6s) ⚠ the screen settled, but a small part of it was still changing while it did — a spinner, a caret, a progress dot. If it is a loading spinner then the screen had not finished loading, and stillness cannot tell those apart: look at what is moving, and gate the next action on the element the loading produces rather than on this settle."
+    },
+    {
+      "type": "text",
+      "text": "[13] ✓ await visible \"Notification device registered.\" role=StaticText (0.2s)"
+    },
+    {
+      "type": "text",
+      "text": "[14] ✓ await visible \"@CodyBontecou\" role=StaticText (0.1s)"
+    },
+    {
+      "type": "text",
+      "text": "[15] ✓ await visible \"All repositories, including future repositories\" role=StaticText (0.2s)"
+    },
+    {
+      "type": "text",
+      "text": "PASS — 15 passed, 0 failed, 0 errored, 0 skipped (12.8s)"
+    }
+  ]
+}
