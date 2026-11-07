@@ -66,7 +66,9 @@ class HomeViewModel(
     )
 
     /** One vault's Sync all result. [skipped] = Pull All left it alone (edits, no upstream, a merge in progress). */
-    data class Outcome(val pulled: Boolean = false, val pushed: Boolean = false, val failed: Boolean = false, val skipped: Boolean = false)
+    data class Outcome(val pulled: Boolean = false, val pushed: Boolean = false, val failed: Boolean = false, val skipped: Boolean = false,
+        /** Skipped because the branch tracks no remote (a local-only vault): nothing to sync with. */
+        val localOnly: Boolean = false)
 
     data class SyncAll(
         val busy: Boolean = false,
@@ -79,7 +81,10 @@ class HomeViewModel(
         val failedToStart: Boolean = false,
         val alreadyRunning: Boolean = false,
     )
-    data class Summary(val pulled: Int, val pushed: Int, val failed: List<String>)
+    data class Summary(val pulled: Int, val pushed: Int, val failed: List<String>, val localOnly: Int = 0, val total: Int = 0) {
+        /** Every vault was local-only, so the run had nothing to pull or push. */
+        val nothingToSync get() = total > 0 && localOnly == total
+    }
 
     private val _syncAll = MutableStateFlow(SyncAll())
     val syncAll: StateFlow<SyncAll> = _syncAll.asStateFlow()
@@ -121,6 +126,8 @@ class HomeViewModel(
                         false -> outcome = outcome.copy(failed = true)
                         null -> Unit
                     }
+                    if (outcome.skipped && withContext(Dispatchers.IO) { runCatching { read(path) }.getOrNull() }?.let { it.upstream == null } == true)
+                        outcome = outcome.copy(localOnly = true)
                     results[path] = outcome
                     _syncAll.value = _syncAll.value.copy(done = results.size, current = null, results = results.toMap())
                 })
@@ -156,6 +163,8 @@ class HomeViewModel(
         pulled = results.values.count { it.pulled },
         pushed = results.values.count { it.pushed },
         failed = results.filterValues { it.failed }.keys.map { names[it] ?: it },
+        localOnly = results.values.count { it.localOnly },
+        total = results.size,
     )
 
     override fun onCleared() { job?.cancel() }

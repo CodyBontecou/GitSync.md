@@ -94,6 +94,7 @@ import com.bontecou.syncmd.ui.viewmodels.GitHubViewModel
 import com.bontecou.syncmd.ui.viewmodels.HomeViewModel
 import com.bontecou.syncmd.ui.viewmodels.SavedRepository
 import com.bontecou.syncmd.ui.viewmodels.SettingsViewModel
+import kotlinx.coroutines.launch
 
 /**
  * Home: M3 boards 01 (home + Pinned card and chip), 23 (offline), 24 (sign-in expired), 26 (dark) and
@@ -151,8 +152,12 @@ fun ReposScreen(
         else -> HomeMode.Home
     }
     val snackbar = remember { SnackbarHostState() }
+    val snackbarScope = androidx.compose.runtime.rememberCoroutineScope()
     val finished = syncAll.finished
-    val doneText = finished?.let { stringResource(R.string.m3home_sync_done, it.pulled, it.pushed) }
+    val doneText = finished?.let {
+        if (it.nothingToSync) pluralStringResource(R.plurals.m3home_sync_nothing_local, it.localOnly, it.localOnly)
+        else stringResource(R.string.m3home_sync_done, it.pulled, it.pushed)
+    }
     val failedText = finished?.failed?.takeIf { it.isNotEmpty() }?.let { stringResource(R.string.m3home_sync_failed, it.joinToString(", ")) }
     val busyText = stringResource(R.string.m3home_sync_busy)
     val startText = stringResource(R.string.m3home_sync_start_failed)
@@ -164,8 +169,10 @@ fun ReposScreen(
             doneText != null -> doneText
             else -> null
         } ?: return@LaunchedEffect
+        // Consuming changes this effect's keys, which cancels it: show the snackbar outside it, or it
+        // is dismissed the moment it appears and Sync all ends without any feedback.
+        snackbarScope.launch { snackbar.showSnackbar(message) }
         home.consumeFinished()
-        snackbar.showSnackbar(message)
     }
     val pinFailed = stringResource(R.string.m3home_pin_failed)
     var pinError by remember { mutableStateOf(false) }

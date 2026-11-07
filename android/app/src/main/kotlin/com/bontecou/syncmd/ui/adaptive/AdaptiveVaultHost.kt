@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableIntStateOf
@@ -72,11 +73,23 @@ fun AdaptiveVault(
     onOpenEditorScreen: (String) -> Unit,
 ) {
     val syncViewModel = rememberVaultSyncViewModel()
+    // The open detail lives above the layout switch: rotating or folding into tabletop/split and
+    // back must not drop an open editor (those layouts have no inline editor, so it opens full screen).
+    val kind = rememberSaveable(repositoryPath) { mutableStateOf<DetailKind?>(null) }
+    val file = rememberSaveable(repositoryPath) { mutableStateOf<String?>(null) }
+    val inlineEditor = info.layout != AdaptiveLayout.Split && info.layout != AdaptiveLayout.Tabletop
+    LaunchedEffect(inlineEditor) {
+        val open = file.value
+        if (!inlineEditor && kind.value == DetailKind.EDITOR && open != null) {
+            kind.value = DetailKind.DIFF
+            onOpenEditorScreen(open)
+        }
+    }
     when (info.layout) {
         AdaptiveLayout.Split -> SplitVaultPanel(repositoryPath, vaultName, onOpenDiffScreen, syncViewModel)
         AdaptiveLayout.Tabletop -> TabletopVault(info, repositoryPath, onOpenEditorScreen, syncViewModel)
         else -> VaultRailRow(VaultTab.CHANGES, onSelectTab, chrome(), wide = info.isExpanded) {
-            VaultPanes(info, repositoryPath, vaultName, owner, repositories, onSelectVault, onOpenRemoteMerge, syncViewModel)
+            VaultPanes(info, repositoryPath, vaultName, owner, repositories, onSelectVault, onOpenRemoteMerge, syncViewModel, kind, file)
         }
     }
 }
@@ -91,9 +104,11 @@ private fun VaultPanes(
     onSelectVault: (String) -> Unit,
     onOpenRemoteMerge: () -> Unit,
     syncViewModel: VaultSyncViewModel?,
+    kindState: MutableState<DetailKind?>,
+    fileState: MutableState<String?>,
 ) {
-    var kind by rememberSaveable(repositoryPath) { mutableStateOf<DetailKind?>(null) }
-    var file by rememberSaveable(repositoryPath) { mutableStateOf<String?>(null) }
+    var kind by kindState
+    var file by fileState
     var autoPicked by rememberSaveable(repositoryPath) { mutableStateOf(false) }
     var handEdited by rememberSaveable(repositoryPath) { mutableStateOf(setOf<String>()) }
     // Bumped when the commit sheet closes: the diff re-reads what is left.

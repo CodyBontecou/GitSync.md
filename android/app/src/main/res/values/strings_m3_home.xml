@@ -74,6 +74,10 @@
     <string name="m3home_syncing">Syncing</string>
     <string name="m3home_syncing_meta">%1$d of %2$d</string>
     <string name="m3home_sync_done">Synced · pulled %1$d · pushed %2$d</string>
+    <plurals name="m3home_sync_nothing_local">
+        <item quantity="one">Nothing to sync. This vault is local-only (no remote).</item>
+        <item quantity="other">Nothing to sync. These %1$d vaults are local-only (no remote).</item>
+    </plurals>
     <string name="m3home_sync_failed">Couldn’t sync %1$s</string>
     <string name="m3home_sync_busy">Pull all is already running. Try again when it finishes.</string>
     <string name="m3home_sync_start_failed">Sync all couldn’t start. Check your vault list in Settings.</string>

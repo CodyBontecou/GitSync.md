@@ -246,8 +246,11 @@ fun FilesScreen(
             exists = viewModel::exists,
             onDismiss = { creating = false },
             onCreate = { file, folder, content ->
-                creating = false
-                viewModel.create(file, folder, content) { path -> if (folder) onOpenDirectory(path) else onOpenFile(path) }
+                // Close only once the entry exists, so a failed create keeps the typed name.
+                viewModel.create(file, folder, content) { path ->
+                    creating = false
+                    if (folder) onOpenDirectory(path) else onOpenFile(path)
+                }
             },
         )
     }
@@ -376,6 +379,21 @@ internal fun fillTemplate(template: String, title: String, now: java.util.Date =
     .replace("{{date}}", java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.ROOT).format(now))
     .replace("{{time}}", java.text.SimpleDateFormat("HH:mm", java.util.Locale.ROOT).format(now))
 
+/** Why a new note or folder name can't be used. */
+internal enum class NewEntryNameIssue { SEPARATOR, DOTS, TOO_LONG }
+
+/** Most filesystems cap one path segment at 255 bytes. */
+internal const val MAX_ENTRY_NAME_BYTES = 255
+
+/** Checks the base name the user typed and the final on-disk [fileName] (with ".md" for notes). */
+internal fun newEntryNameIssue(base: String, fileName: String): NewEntryNameIssue? = when {
+    base.isEmpty() -> null
+    base.any { it == '/' || it == '\\' } -> NewEntryNameIssue.SEPARATOR
+    base == "." || base == ".." -> NewEntryNameIssue.DOTS
+    fileName.toByteArray(Charsets.UTF_8).size > MAX_ENTRY_NAME_BYTES -> NewEntryNameIssue.TOO_LONG
+    else -> null
+}
+
 /** The base name the user typed, without a trailing ".md". */
 internal fun noteBaseName(input: String): String = input.trim().let { if (it.endsWith(".md", ignoreCase = true)) it.dropLast(3) else it }
 
@@ -398,10 +416,12 @@ private fun NewNoteDialog(
     val choices = templates.ifEmpty { listOf(NoteTemplate(builtInName, BUILT_IN_IDEA, builtIn = true)) }
     val base = if (folder) input.trim() else noteBaseName(input)
     val fileName = if (folder) base else "$base.md"
-    val invalid = base.isNotEmpty() && (base.any { it == '/' || it == '\\' } || base == "." || base == "..")
-    val taken = base.isNotEmpty() && !invalid && exists(fileName)
+    val issue = newEntryNameIssue(base, fileName)
+    val taken = base.isNotEmpty() && issue == null && exists(fileName)
     val error = when {
-        invalid -> stringResource(R.string.newfile_m3_invalid)
+        issue == NewEntryNameIssue.SEPARATOR -> stringResource(R.string.newfile_m3_invalid)
+        issue == NewEntryNameIssue.DOTS -> stringResource(R.string.newfile_m3_invalid_dots)
+        issue == NewEntryNameIssue.TOO_LONG -> stringResource(R.string.newfile_m3_too_long)
         taken -> stringResource(R.string.newfile_m3_exists, fileName, folderLabel)
         else -> null
     }

@@ -48,6 +48,8 @@
     <string name="newfile_m3_folder_name">Folder name</string>
     <string name="newfile_m3_exists">%1$s already exists in %2$s. Try another name.</string>
     <string name="newfile_m3_invalid">Use a name without / or \\.</string>
+    <string name="newfile_m3_invalid_dots">“.” and “..” are reserved. Try another name.</string>
+    <string name="newfile_m3_too_long">That name is too long. Use a shorter one.</string>
     <string name="newfile_m3_blank">Blank</string>
     <string name="newfile_m3_template">Template · %1$s</string>
     <string name="newfile_m3_today">Today’s date</string>

@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -1377,11 +1378,13 @@ fun M3Segmented(
     val c = M3.colors
     val shape = RoundedCornerShape(20.dp)
     Row(
-        modifier.fillMaxWidth().heightIn(min = 40.dp).clip(shape).border(1.dp, c.outline, shape).alpha(if (enabled) 1f else 0.38f),
+        // IntrinsicSize.Min bounds the row to its tallest segment, so the fillMaxHeight dividers cannot
+        // grow to the parent's max height (in a non-scrolling Column that starved weighted siblings).
+        modifier.fillMaxWidth().height(IntrinsicSize.Min).heightIn(min = 40.dp).clip(shape).border(1.dp, c.outline, shape).alpha(if (enabled) 1f else 0.38f),
     ) {
         options.forEachIndexed { index, option ->
             val selected = index == selectedIndex
-            if (index > 0) Box(Modifier.width(1.dp).heightIn(min = 40.dp).fillMaxHeight().background(c.outline))
+            if (index > 0) Box(Modifier.width(1.dp).fillMaxHeight().background(c.outline))
             Row(
                 Modifier
                     .weight(1f)
@@ -2153,6 +2156,8 @@ fun RowScope.M3NavigationBarItem(
     }
 }
 
+private const val RAIL_LABEL_MAX_SCALE = 1.3f
+
 /** Navigation rail item (tablets, unfolded): the bar item's indicator and label in a 72dp column. */
 @Composable
 fun M3NavigationRailItem(
@@ -2173,9 +2178,14 @@ fun M3NavigationRailItem(
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         M3NavIndicator(icon, selected, badge)
+        // The rail is a fixed 72–88dp column: past 1.3× font scale the label stops growing (the icon
+        // already identifies the place) and may wrap to two lines, instead of ellipsizing to "Cha…".
+        val fontScale = LocalDensity.current.fontScale
+        val shrink = if (fontScale > RAIL_LABEL_MAX_SCALE) RAIL_LABEL_MAX_SCALE / fontScale else 1f
         Text(
-            label, style = M3Type.navLabel.copy(fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium),
-            color = if (selected) c.on else c.onVar, maxLines = 1, overflow = TextOverflow.Ellipsis, textAlign = TextAlign.Center,
+            label, style = M3Type.navLabel.copy(fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium,
+                fontSize = M3Type.navLabel.fontSize * shrink, lineHeight = M3Type.navLabel.lineHeight * shrink),
+            color = if (selected) c.on else c.onVar, maxLines = 2, overflow = TextOverflow.Ellipsis, textAlign = TextAlign.Center,
         )
     }
 }

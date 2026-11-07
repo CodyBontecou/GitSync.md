@@ -88,28 +88,40 @@ private enum class RemoteAuth { SSH, TOKEN, NONE, GITHUB, SAVED }
 fun RemoteCloneScreen(settings: SettingsViewModel, onBack: () -> Unit, onSuccess: () -> Unit,
     viewModel: RemoteCloneViewModel = hiltViewModel(), historyEntry: com.bontecou.syncmd.ui.viewmodels.RepositoryHistoryEntry? = null,
     onReviewLfs: ((String) -> Unit)? = null, initialUrl: String? = null) {
-    var url by remember { mutableStateOf(initialUrl.orEmpty()) }
-    var name by remember { mutableStateOf("") }
-    var nameEdited by remember { mutableStateOf(false) }
-    var branch by remember { mutableStateOf("") }
-    var auth by remember { mutableStateOf<RemoteAuth?>(null) }
-    var otherKey by remember { mutableStateOf(false) }
-    var privateKey by remember { mutableStateOf("") }
-    var passphrase by remember { mutableStateOf("") }
-    var publicKey by remember { mutableStateOf("") }
-    var username by remember { mutableStateOf("") }
-    var secret by remember { mutableStateOf("") }
+    // Saveable so rotation, folding and process death keep the form; secrets live in the ViewModel
+    // (config changes only) so they never reach the saved-state Bundle.
+    var url by rememberSaveable { mutableStateOf(initialUrl.orEmpty()) }
+    var name by rememberSaveable { mutableStateOf("") }
+    var nameEdited by rememberSaveable { mutableStateOf(false) }
+    var branch by rememberSaveable { mutableStateOf("") }
+    var auth by rememberSaveable { mutableStateOf<RemoteAuth?>(null) }
+    var otherKey by rememberSaveable { mutableStateOf(false) }
+    val drafts = viewModel.secretDrafts
+    var privateKey by drafts::privateKey
+    var passphrase by drafts::passphrase
+    var publicKey by rememberSaveable { mutableStateOf("") }
+    var username by rememberSaveable { mutableStateOf("") }
+    var secret by drafts::secret
     var options by rememberSaveable { mutableStateOf(false) }
     var testError by remember { mutableStateOf<String?>(null) }
     var notice by remember { mutableStateOf<String?>(null) }
     var copied by remember { mutableStateOf(false) }
+    // Seed from the history entry and its defaults once; a recreated composition keeps the user's edits.
+    var historySeeded by rememberSaveable { mutableStateOf(false) }
+    var defaultsApplied by rememberSaveable { mutableStateOf(false) }
     val historyState by viewModel.history.collectAsState()
+    var accountId by rememberSaveable { mutableStateOf(viewModel.activeAccountId()) }
     LaunchedEffect(historyEntry) { historyEntry?.let {
-        url = it.repository.remoteUrl.orEmpty(); name = it.repository.name; nameEdited = true; branch = it.repository.branch.orEmpty()
-        auth = null
+        if (!historySeeded) {
+            url = it.repository.remoteUrl.orEmpty(); name = it.repository.name; nameEdited = true; branch = it.repository.branch.orEmpty()
+            auth = null
+            historySeeded = true
+        }
         viewModel.loadHistory(it)
     } }
     LaunchedEffect(historyState.defaults) { historyState.defaults?.let {
+        if (defaultsApplied) return@let
+        defaultsApplied = true
         url = it.url; name = it.name; nameEdited = true; branch = it.branch
         auth = when (it.auth) {
             RemoteCloneViewModel.HistoryAuth.SAVED -> RemoteAuth.SAVED
@@ -117,10 +129,9 @@ fun RemoteCloneScreen(settings: SettingsViewModel, onBack: () -> Unit, onSuccess
             RemoteCloneViewModel.HistoryAuth.PUBLIC -> RemoteAuth.NONE
             RemoteCloneViewModel.HistoryAuth.REVIEW -> null
         }
+        accountId = it.accountId
     } }
     val accounts by viewModel.accounts.collectAsState()
-    var accountId by remember { mutableStateOf(viewModel.activeAccountId()) }
-    LaunchedEffect(historyState.defaults) { historyState.defaults?.let { accountId = it.accountId } }
     var location by rememberSaveable { mutableStateOf<String?>(null) }
     val state by viewModel.state.collectAsState()
     val testing by viewModel.testing.collectAsState()
@@ -144,6 +155,17 @@ fun RemoteCloneScreen(settings: SettingsViewModel, onBack: () -> Unit, onSuccess
             else -> auth
         }
     }
+    // Explain an address that doesn't parse (otherwise "Test & clone" just stays disabled); wait for typing to pause.
+    var urlError by remember { mutableStateOf<String?>(null) }
+    val invalidUrl = stringResource(R.string.account_invalid_repository_url)
+    LaunchedEffect(url) {
+        urlError = null
+        if (url.isNotBlank() && remote == null) {
+            delay(700)
+            urlError = runCatching { GitRemote.parseInput(url) }.exceptionOrNull()?.message ?: invalidUrl
+        }
+    }
+    val nameIssue = remoteCloneNameIssue(name)?.takeIf { remote != null || name.isNotEmpty() }?.let { stringResource(it) }
     LaunchedEffect(auth, otherKey) { if (auth == RemoteAuth.SSH && !otherKey) viewModel.ensureDeviceKey() }
     LaunchedEffect(copied) { if (copied) { delay(2000); copied = false } }
     val locked = state.busy || state.path != null || historyState.busy || testing
@@ -161,11 +183,12 @@ fun RemoteCloneScreen(settings: SettingsViewModel, onBack: () -> Unit, onSuccess
     }
     val cloneNow = { viewModel.clone(url, name, branch, auth == RemoteAuth.TOKEN, username, secret, if (auth == RemoteAuth.GITHUB) accountId else null,
         location, auth == RemoteAuth.SAVED, ssh()) }
+    val newFolder = stringResource(R.string.add_clone_new_folder)
     checkTarget?.let { target ->
         VaultCheckScreen(target, locked = !unlocked, price = price,
             onClone = { detail -> gate.require(target.name, detail) { checkTarget = null; cloneNow() } }, onDismiss = { checkTarget = null },
             clonesTo = runCatching { com.bontecou.syncmd.ui.components.addVaultFriendlyPath(context,
-                com.bontecou.syncmd.storage.RepositoryLocations(context).summary(location).path + "/" + target.name, " › ") }.getOrNull())
+                com.bontecou.syncmd.storage.RepositoryLocations(context).summary(location).path + "/" + remoteCloneFolderPreview(newFolder), " › ") }.getOrNull())
     }
     val testAndClone: () -> Unit = {
         testError = null; notice = null
@@ -186,6 +209,7 @@ fun RemoteCloneScreen(settings: SettingsViewModel, onBack: () -> Unit, onSuccess
     BackHandler(state.busy) { /* Keep the operation's ViewModel alive until safe clone publication finishes. */ }
     LaunchedEffect(state.path) { if (state.path != null) { secret = ""; privateKey = ""; passphrase = ""; publicKey = "" } }
     val c = M3.colors
+    val cloneFolderPreview = remoteCloneFolderPreview(stringResource(R.string.add_clone_new_folder))
     val options3 = listOfNotNull(RemoteAuth.SSH, RemoteAuth.TOKEN, RemoteAuth.NONE,
         RemoteAuth.GITHUB.takeIf { github && (hasGithubAccount || auth == RemoteAuth.GITHUB) }, RemoteAuth.SAVED.takeIf { savedAvailable })
     Column(Modifier.fillMaxSize().background(c.surface).testTag("remote-clone-screen")) {
@@ -198,6 +222,7 @@ fun RemoteCloneScreen(settings: SettingsViewModel, onBack: () -> Unit, onSuccess
             historyState.notice?.let { M3Note(it, Modifier.padding(start = 16.dp, end = 16.dp, top = 12.dp), tone = M3NoteTone.Muted) }
             M3TextField(url, { url = it }, stringResource(R.string.add_remote_label), Modifier.padding(start = 16.dp, end = 16.dp, top = 24.dp).testTag("remote-url"),
                 placeholder = stringResource(R.string.add_remote_placeholder), mono = true, enabled = !locked,
+                isError = urlError != null, supportingText = urlError,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri, autoCorrect = false))
             remote?.let { r ->
                 Text(remoteSummary(r), style = M3Type.meta, color = c.onVar, modifier = Modifier.padding(start = 32.dp, end = 32.dp, top = 4.dp).testTag("remote-normalized-url"))
@@ -267,7 +292,8 @@ fun RemoteCloneScreen(settings: SettingsViewModel, onBack: () -> Unit, onSuccess
                 }
                 RemoteAuth.SAVED -> Text(stringResource(R.string.add_saved_hint), style = M3Type.bodyMedium, color = c.onVar, modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 12.dp))
                 RemoteAuth.NONE -> Text(stringResource(R.string.add_none_hint), style = M3Type.bodyMedium, color = c.onVar, modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 12.dp))
-                null -> if (!historyState.busy) M3Note(stringResource(R.string.ui_choose_an_authentication_method_before_clo_c89124ba),
+                // A hint once there is an address to sign in to, not a complaint about an untouched form.
+                null -> if (!historyState.busy && url.isNotBlank()) M3Note(stringResource(R.string.ui_choose_an_authentication_method_before_clo_c89124ba),
                     Modifier.padding(start = 16.dp, end = 16.dp, top = 12.dp), tone = M3NoteTone.Ahead)
             }
 
@@ -278,11 +304,13 @@ fun RemoteCloneScreen(settings: SettingsViewModel, onBack: () -> Unit, onSuccess
                     onClick = { options = !options }, chevron = true)
             }
             if (options) Column(Modifier.padding(start = 16.dp, end = 16.dp, top = 12.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                M3TextField(name, { name = it; nameEdited = true }, stringResource(R.string.ui_name_in_gitsync_md_893ad211), Modifier.testTag("remote-name"), enabled = !locked)
+                M3TextField(name, { name = it; nameEdited = true }, stringResource(R.string.ui_name_in_gitsync_md_893ad211), Modifier.testTag("remote-name"), enabled = !locked,
+                    isError = nameIssue != null, supportingText = nameIssue)
                 M3TextField(branch, { branch = it }, stringResource(R.string.ui_branch_optional_e9dedf99), Modifier.testTag("remote-branch"), mono = true, enabled = !locked,
                     supportingText = stringResource(R.string.ui_leave_blank_to_use_the_server_s_default_br_077388af))
-                AddVaultLocationCard(location, { location = it }, name.ifBlank { "repo" }, enabled = !locked)
+                AddVaultLocationCard(location, { location = it }, cloneFolderPreview, enabled = !locked)
             }
+            if (!options && nameIssue != null) M3Note(nameIssue, Modifier.padding(start = 16.dp, end = 16.dp, top = 12.dp).testTag("remote-name-error"), tone = M3NoteTone.Warn)
             (testError ?: state.error)?.let { M3Note(it, Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp).testTag("remote-error"), tone = M3NoteTone.Warn) }
             notice?.let { M3Note(it, Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp), tone = M3NoteTone.Muted) }
             if (state.busy || state.path != null) AddVaultCloneHero(remote?.let { repoPathOf(it) } ?: name, remote?.host, cloned = state.path != null,
@@ -295,7 +323,7 @@ fun RemoteCloneScreen(settings: SettingsViewModel, onBack: () -> Unit, onSuccess
         if (state.path == null) M3BottomActionBar {
             M3Button(stringResource(if (testing) R.string.add_testing else R.string.add_test_clone), testAndClone, Modifier.fillMaxWidth().testTag("remote-clone"),
                 size = M3ButtonSize.XLarge, loading = testing || state.busy,
-                enabled = !locked && auth != null && remote != null && name.isNotBlank() &&
+                enabled = !locked && auth != null && remote != null && name.isNotBlank() && nameIssue == null &&
                     (auth != RemoteAuth.SSH || (if (otherKey) privateKey.isNotBlank() else deviceKey != null)) &&
                     (auth != RemoteAuth.TOKEN || username.isNotBlank() && secret.isNotEmpty()) &&
                     (auth != RemoteAuth.GITHUB || accounts.any { it.connected && it.id == accountId }))
@@ -362,3 +390,20 @@ private fun remoteSummary(remote: GitRemote): String {
     })
     return listOf(transport, remote.host, repoPathOf(remote)).filter { it.isNotBlank() }.joinToString(" · ")
 }
+
+/**
+ * Why a "Name in GitSync.md" can't be used, or null. The name is only a display name (the clone gets
+ * its own `custom/<id>` folder), but path-like names are refused so nothing suggests otherwise.
+ * A leading dot stays allowed: repositories such as ".github" or ".dotfiles" default to that name.
+ */
+internal fun remoteCloneNameIssue(name: String): Int? {
+    val trimmed = name.trim()
+    return when {
+        trimmed.isEmpty() || trimmed.length > 120 -> R.string.account_repository_name_length
+        trimmed == "." || trimmed == ".." || trimmed.any { it == '/' || it == '\\' } -> R.string.add_remote_name_invalid
+        else -> null
+    }
+}
+
+/** Where a URL clone lands below the chosen folder: [RemoteCloneViewModel] creates `custom/<random id>`. */
+internal fun remoteCloneFolderPreview(newFolder: String): String = "custom/$newFolder"

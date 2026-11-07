@@ -7,6 +7,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.KeyboardType
@@ -51,24 +52,33 @@ fun ConnectionScreen(path: String, settings: SettingsViewModel, onBack: () -> Un
     // Callbacks own the state rendered by this composition, not a later delegate value.
     val state = viewModel.state.collectAsState().value
     val accounts by viewModel.accounts.collectAsState()
-    var selectedAccount by remember { mutableStateOf<String?>(null) }
+    var selectedAccount by rememberSaveable { mutableStateOf<String?>(null) }
     val catalogBusy by settings.isLoading.collectAsState()
     val lifecycleOwner = LocalLifecycleOwner.current
     val latestOnBack by rememberUpdatedState(onBack)
     var metadataRetry by remember(path, state.requestId) { mutableIntStateOf(0) }
-    var url by remember { mutableStateOf("") }
-    var username by remember { mutableStateOf("") }
-    var secret by remember { mutableStateOf("") }
-    var privateKey by remember { mutableStateOf("") }
-    var passphrase by remember { mutableStateOf("") }
-    var publicKey by remember { mutableStateOf("") }
-    var choice by remember { mutableStateOf(Choice.PUBLIC) }
+    // Saveable so rotation, folding and process death keep edits; secrets live in the ViewModel
+    // (config changes only) so they never reach the saved-state Bundle.
+    var url by rememberSaveable { mutableStateOf("") }
+    var username by rememberSaveable { mutableStateOf("") }
+    val drafts = viewModel.secretDrafts
+    var secret by drafts::secret
+    var privateKey by drafts::privateKey
+    var passphrase by drafts::passphrase
+    var publicKey by rememberSaveable { mutableStateOf("") }
+    var choice by rememberSaveable { mutableStateOf(Choice.PUBLIC) }
+    // The load this form was last filled from; a recreated composition must not refill it over the user's edits.
+    var filledFrom by rememberSaveable { mutableStateOf<String?>(null) }
     var forget by remember { mutableStateOf<ConnectionViewModel.State?>(null) }
     LaunchedEffect(state) { if (viewModel.state.value === state && forget != null && forget !== state) forget = null }
     val normalizedUrl = runCatching { GitRemote.parseInput(url).url }.getOrNull()?.takeIf { it != url.trim() }
-    LaunchedEffect(path) { viewModel.load(path) }
+    // The ViewModel outlives rotation: reload only when it has nothing for this path yet.
+    LaunchedEffect(path) { if (!viewModel.hasLoaded(path)) viewModel.load(path) }
     LaunchedEffect(state.requestId, state.plan?.revision) {
         if (viewModel.state.value.requestId != state.requestId) return@LaunchedEffect
+        val fill = "${state.requestId}:${state.plan?.revision}"
+        if (state.plan != null && filledFrom == fill) return@LaunchedEffect
+        if (state.plan != null) filledFrom = fill
         secret = ""; privateKey = ""; passphrase = ""; publicKey = ""
         state.plan?.let { plan ->
             url = plan.fetchUrl.orEmpty()

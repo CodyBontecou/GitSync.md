@@ -72,6 +72,7 @@
         <item quantity="other">Commit %1$d changes</item>
     </plurals>
     <string name="adaptive_branch_to_remote">%1$s → %2$s</string>
+    <string name="adaptive_branch_local_only">%1$s · no remote</string>
     <string name="adaptive_commit_message">Commit message</string>
     <string name="adaptive_include">Include</string>
     <string name="adaptive_commit_only">Commit only</string>

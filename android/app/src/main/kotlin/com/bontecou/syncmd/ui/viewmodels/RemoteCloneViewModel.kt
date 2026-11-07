@@ -162,6 +162,8 @@ class RemoteCloneViewModel @Inject constructor(private val git: GitRepository,
         }
     }
     fun activeAccountId() = github.activeAccountId()
+    /** The form's typed secrets: kept across configuration changes, never in saved state. */
+    val secretDrafts = com.bontecou.syncmd.ui.util.SecretDrafts()
 
     /** A validated clone request; the vault check and the clone both start from it. */
     private class Request(val remote: GitRemote, val saved: HistoryDefaults?, val account: com.bontecou.syncmd.security.GitHubAccountSnapshot?)
@@ -178,7 +180,7 @@ class RemoteCloneViewModel @Inject constructor(private val git: GitRepository,
                 saved.credentialVersion != credentials.recordVersion(saved.source))) {
             _state.value = State(error = context.getString(R.string.account_saved_connection_changed)); return null
         }
-        if (name.isBlank() || name.length > 120) { _state.value = State(error = context.getString(R.string.account_repository_name_length)); return null }
+        com.bontecou.syncmd.ui.screens.remoteCloneNameIssue(name)?.let { _state.value = State(error = context.getString(it)); return null }
         if (branch.isNotBlank() && !com.bontecou.syncmd.services.git.RemoteAuthentication.isValidBranch(branch.trim())) {
             _state.value = State(error = context.getString(R.string.account_valid_branch)); return null
         }
