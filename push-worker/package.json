@@ -8,10 +8,13 @@
     "dry-run": "wrangler deploy --dry-run",
     "typecheck": "tsc --noEmit",
     "types": "wrangler types",
-    "test": "vitest run"
+    "test": "vitest run && node tools/check-existing-lookup-runtime.mjs",
+    "test:runtime": "node tools/check-existing-lookup-runtime.mjs"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^5.20260908.1",
+    "esbuild": "0.28.2",
+    "miniflare": "5.20261023.3-beta",
     "typescript": "^5.0.0",
     "vitest": "^5.0.0",
     "wrangler": "^4.130.0"
