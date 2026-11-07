@@ -18,7 +18,7 @@ final class AppUnlock {
     /// `AppTransaction.originalAppVersion` (the BUILD number on iOS, not the
     /// marketing version) is lower bought the paid app and is unlocked.
     /// Set this to the build that ships alongside the price change.
-    static let firstFreeBuild: Int64 = 202611030000
+    nonisolated static let firstFreeBuild: Int64 = 202611030000
 
     enum Reason: String, Codable, Sendable {
         case purchased

@@ -160,7 +160,7 @@ struct AddRepoView: View {
                 }
             }
             .fullScreenCover(item: $vaultCheck) { check in
-                VaultCheckView(preflight: check, destination: cloneDestination) {
+                VaultCheckView(preflight: check, destination: cloneDestination, clonesWhenReadyIfUnlocked: true) {
                     performAddAndClone(identifier: selectedRepoURL.trimmingCharacters(in: .whitespacesAndNewlines).lowercased())
                 }
             }
@@ -1015,7 +1015,7 @@ struct AddRepoView: View {
 
     private var addButton: some View {
         BPrimaryButton(
-            title: String(localized: "Check vault"),
+            title: unlock.isUnlocked ? String(localized: "Check & clone") : String(localized: "Check your vault"),
             isDisabled: !canSubmitRemoteRepo
         ) {
             addAndClone()

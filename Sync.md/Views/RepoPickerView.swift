@@ -177,7 +177,13 @@ struct RepoPickerView: View {
                             repo.name,
                             in: state.resolvedDefaultSaveURL ?? AppState.appDocumentsDirectory
                         ))
-                    } ?? ""
+                    } ?? "",
+                    onCustomize: vaultCheckRepo.map { repo in
+                        {
+                            vaultCheck = nil
+                            customize(repo)
+                        }
+                    }
                 ) {
                     if let repo = vaultCheckRepo { cloneDirectly(repo) }
                 }

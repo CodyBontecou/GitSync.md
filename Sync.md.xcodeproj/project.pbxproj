@@ -24,6 +24,7 @@
 		AA3001002FAA000100AA0001 /* Notelet in Frameworks */ = {isa = PBXBuildFile; productRef = AA3001002FAA000100AA0002 /* Notelet */; };
 		F01D00000000000000000001 /* FolderGitServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F01D00000000000000000004 /* FolderGitServiceTests.swift */; };
 		F01D00000000000000000002 /* GitHubRepositoryPublisherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F01D00000000000000000005 /* GitHubRepositoryPublisherTests.swift */; };
+		A9B1C0DE0000000000000001 /* AppUnlockStoreKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B1C0DE0000000000000002 /* AppUnlockStoreKitTests.swift */; };
 		F01D00000000000000000003 /* FolderPublicationCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F01D00000000000000000006 /* FolderPublicationCoordinatorTests.swift */; };
 		D37A00000000000000000001 /* GitTrackingRemovalServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D37A00000000000000000002 /* GitTrackingRemovalServiceTests.swift */; };
 		9CD1AECAC93040D2B54FBBA0 /* ScrawlKit in Frameworks */ = {isa = PBXBuildFile; productRef = 46264ADB53B34F9387065A9C /* ScrawlKit */; };
@@ -81,6 +82,7 @@
 		E70D88DABEB05A34746D5412 /* SyncMDUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SyncMDUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F01D00000000000000000004 /* FolderGitServiceTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FolderGitServiceTests.swift; sourceTree = "<group>"; };
 		F01D00000000000000000005 /* GitHubRepositoryPublisherTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GitHubRepositoryPublisherTests.swift; sourceTree = "<group>"; };
+		A9B1C0DE0000000000000002 /* AppUnlockStoreKitTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppUnlockStoreKitTests.swift; sourceTree = "<group>"; };
 		F01D00000000000000000006 /* FolderPublicationCoordinatorTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FolderPublicationCoordinatorTests.swift; sourceTree = "<group>"; };
 		D37A00000000000000000002 /* GitTrackingRemovalServiceTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GitTrackingRemovalServiceTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -168,6 +170,7 @@
 				B6C100000000000000000002 /* BackgroundProcessingSchedulerTests.swift */,
 				F01D00000000000000000006 /* FolderPublicationCoordinatorTests.swift */,
 				F01D00000000000000000005 /* GitHubRepositoryPublisherTests.swift */,
+				A9B1C0DE0000000000000002 /* AppUnlockStoreKitTests.swift */,
 				F01D00000000000000000004 /* FolderGitServiceTests.swift */,
 				D37A00000000000000000002 /* GitTrackingRemovalServiceTests.swift */,
 			);
@@ -448,6 +451,7 @@
 				B6C100000000000000000001 /* BackgroundProcessingSchedulerTests.swift in Sources */,
 				F01D00000000000000000003 /* FolderPublicationCoordinatorTests.swift in Sources */,
 				F01D00000000000000000002 /* GitHubRepositoryPublisherTests.swift in Sources */,
+				A9B1C0DE0000000000000001 /* AppUnlockStoreKitTests.swift in Sources */,
 				F01D00000000000000000001 /* FolderGitServiceTests.swift in Sources */,
 				D37A00000000000000000001 /* GitTrackingRemovalServiceTests.swift in Sources */,
 			);
@@ -503,7 +507,7 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_ENTITLEMENTS = SyncWidget/SyncWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 202611020923;
+				CURRENT_PROJECT_VERSION = 202611061200;
 				DEVELOPMENT_TEAM = 67KC823C9A;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = SyncWidget/Info.plist;
@@ -532,7 +536,7 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_ENTITLEMENTS = SyncWidget/SyncWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 202611020923;
+				CURRENT_PROJECT_VERSION = 202611061200;
 					DEVELOPMENT_TEAM = 67KC823C9A;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = SyncWidget/Info.plist;
@@ -721,7 +725,7 @@
 		"ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME" = AccentColor;
 		"CODE_SIGN_ENTITLEMENTS" = "Sync.md/Sync_md.entitlements";
 		"CODE_SIGN_STYLE" = Automatic;
-		"CURRENT_PROJECT_VERSION" = 202611020923;
+		"CURRENT_PROJECT_VERSION" = 202611061200;
 		"DEVELOPMENT_TEAM" = 67KC823C9A;
 		"ENABLE_PREVIEWS" = YES;
 		"GENERATE_INFOPLIST_FILE" = YES;
@@ -755,7 +759,7 @@
 		"ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME" = AccentColor;
 		"CODE_SIGN_ENTITLEMENTS" = "Sync.md/Sync_md.entitlements";
 		"CODE_SIGN_STYLE" = Automatic;
-		"CURRENT_PROJECT_VERSION" = 202611020923;
+		"CURRENT_PROJECT_VERSION" = 202611061200;
 		"DEVELOPMENT_TEAM" = 67KC823C9A;
 		"ENABLE_PREVIEWS" = YES;
 		"GENERATE_INFOPLIST_FILE" = YES;

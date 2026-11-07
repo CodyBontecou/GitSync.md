@@ -11392,4 +11392,81 @@ final class AppUnlockTests: XCTestCase {
         defaults.set(AppUnlock.Reason.paidAppPurchase.rawValue, forKey: "appUnlock.reason")
         XCTAssertTrue(AppUnlock(defaults: defaults).isUnlocked)
     }
+    /// A free build numbered below the cutoff would read as a paid-app
+    /// purchase in every new download's receipt and unlock everyone.
+    func testShippingBuildIsAtOrAboveTheFreeCutoff() throws {
+        guard FeatureFlags.hardPaywallEnabled else { return }
+        let raw = try XCTUnwrap(Bundle(for: AppUnlock.self).object(forInfoDictionaryKey: "CFBundleVersion") as? String)
+        let build = try XCTUnwrap(Int64(raw))
+        XCTAssertGreaterThanOrEqual(build, AppUnlock.firstFreeBuild)
+        XCTAssertFalse(AppUnlock.isPaidAppVersion(raw))
+    }
+}
+
+// MARK: - Vault check
+
+@MainActor
+final class VaultPreflightTests: XCTestCase {
+    private func makePreflight(branch: String? = nil) -> VaultPreflight {
+        VaultPreflight(target: .init(
+            name: "notes",
+            repoURL: "https://github.com/cody/notes",
+            branch: branch,
+            transportPayload: "",
+            gitHubToken: "token"
+        ))
+    }
+
+    private func check(_ preflight: VaultPreflight, _ kind: VaultPreflight.Kind) -> VaultPreflight.Check? {
+        preflight.checks.first { $0.kind == kind }
+    }
+
+    func testWritableVaultIsReadyWithEveryFact() {
+        let preflight = makePreflight()
+        var facts = GitHubRepoPreflight(canPush: true, defaultBranch: "main", sizeInBytes: 2_048_000)
+        facts.fileCount = 1204
+        facts.fileCountIsPartial = true
+        facts.lfsFileCount = 3
+        facts.hasObsidianFolder = true
+        facts.hasObsidianGitPlugin = true
+        preflight.apply(facts)
+
+        XCTAssertEqual(preflight.phase, .ready)
+        XCTAssertEqual(check(preflight, .access)?.status, .passed)
+        XCTAssertEqual(check(preflight, .branch)?.detail, "main")
+        XCTAssertEqual(check(preflight, .size)?.status, .passed)
+        XCTAssertTrue(check(preflight, .size)?.detail?.hasSuffix("1,204+") == true)
+        XCTAssertEqual(check(preflight, .lfs)?.detail, "3 files")
+        XCTAssertEqual(check(preflight, .obsidian)?.status, .passed)
+        XCTAssertTrue(preflight.hasObsidianGitPlugin)
+        XCTAssertEqual(preflight.remoteLine, "cody/notes · main")
+    }
+
+    func testReadOnlyBlocksUntilAccepted() {
+        let preflight = makePreflight()
+        var facts = GitHubRepoPreflight(canPush: false, defaultBranch: "main")
+        facts.fileCount = 1
+        preflight.apply(facts)
+
+        XCTAssertEqual(preflight.phase, .blocked(.readOnly))
+        XCTAssertEqual(check(preflight, .access)?.status, .failed)
+        XCTAssertEqual(check(preflight, .obsidian)?.status, .warning)
+
+        preflight.continueReadOnly()
+        XCTAssertEqual(preflight.phase, .ready)
+        XCTAssertTrue(preflight.acceptedReadOnly)
+    }
+
+    func testUnknownPermissionAndEmptyRepoStillReady() {
+        let preflight = makePreflight(branch: "drafts")
+        var facts = GitHubRepoPreflight(canPush: nil, defaultBranch: "main")
+        facts.isEmpty = true
+        facts.fileCount = 0
+        preflight.apply(facts)
+
+        XCTAssertEqual(preflight.phase, .ready)
+        XCTAssertEqual(check(preflight, .branch)?.detail, "drafts")
+        XCTAssertEqual(check(preflight, .obsidian)?.detail, "empty repo")
+        XCTAssertEqual(preflight.gitHubWebURL?.absoluteString, "https://github.com/cody/notes")
+    }
 }

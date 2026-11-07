@@ -1,12 +1,14 @@
 import Foundation
 import Observation
 
-/// The free vault check that runs before the paywall.
+/// The free vault check that runs before cloning (and, in a locked app,
+/// before the one-time unlock).
 ///
 /// Confirms GitSync.md can clone and push a repository without writing
-/// anything to disk: an `ls-remote`-style connection with the chosen
-/// credentials, then (for GitHub) permission, size, file count, Git LFS and
-/// Obsidian facts read from the API. Only metadata is fetched.
+/// anything to disk: an `ls-remote`-style connection with the credentials
+/// the clone will use (any host), then, for GitHub, `GitHubService.preflight`
+/// reads permission, size, file count, Git LFS, `.obsidian` and the Obsidian
+/// Git plugin from repository metadata. No note contents are downloaded.
 @MainActor
 @Observable
 final class VaultPreflight: Identifiable {
@@ -66,10 +68,11 @@ final class VaultPreflight: Identifiable {
     let target: Target
     private(set) var checks: [Check] = Kind.allCases.map { Check(kind: $0) }
     private(set) var phase: Phase = .checking
+    /// HEAD reported by the remote during the connection test.
     private(set) var defaultBranch: String?
-    private(set) var sizeBytes: Int64?
-    private(set) var fileCount: Int?
-    private(set) var hasObsidianGitPlugin = false
+    /// GitHub metadata, once read. `nil` for other hosts or when GitHub's
+    /// API could not be reached (the clone then confirms the rest).
+    private(set) var facts: GitHubRepoPreflight?
     /// Set when the user chooses to clone a read-only repository anyway.
     private(set) var acceptedReadOnly = false
 
@@ -84,6 +87,11 @@ final class VaultPreflight: Identifiable {
         GitHubService.parseRepoURL(target.repoURL)
     }
 
+    /// `https://github.com/owner/repo` when the remote is on GitHub.
+    var gitHubWebURL: URL? {
+        gitHubFullName.flatMap { URL(string: "https://github.com/\($0.owner)/\($0.repo)") }
+    }
+
     /// Owner/repo or host/path plus branch: "cody/notes · main".
     var remoteLine: String {
         let remote = gitHubFullName.map { "\($0.owner)/\($0.repo)" }
@@ -96,8 +104,11 @@ final class VaultPreflight: Identifiable {
     var resolvedBranch: String? {
         let chosen = target.branch?.trimmingCharacters(in: .whitespacesAndNewlines)
         if let chosen, !chosen.isEmpty { return chosen }
-        return defaultBranch
+        return defaultBranch ?? facts?.defaultBranch
     }
+
+    var sizeBytes: Int64? { facts?.sizeInBytes }
+    var hasObsidianGitPlugin: Bool { facts?.hasObsidianGitPlugin ?? false }
 
     func continueReadOnly() {
         guard phase == .blocked(.readOnly) else { return }
@@ -108,6 +119,7 @@ final class VaultPreflight: Identifiable {
     func run() async {
         checks = Kind.allCases.map { Check(kind: $0) }
         phase = .checking
+        facts = nil
         acceptedReadOnly = false
 
         // 1. Connection with the credentials the clone will use.
@@ -132,83 +144,95 @@ final class VaultPreflight: Identifiable {
             return
         }
 
-        guard let token = target.gitHubToken, !token.isEmpty, let repo = gitHubFullName else {
+        guard let token = target.gitHubToken?.trimmingCharacters(in: .whitespacesAndNewlines),
+              !token.isEmpty, let repo = gitHubFullName else {
             await finishWithoutContents()
             return
         }
 
-        // 2. GitHub: permission and size.
-        let meta = try? await Self.fetchRepositoryMeta(owner: repo.owner, repo: repo.repo, token: token)
-        var readOnly = false
-        switch meta?.permissions?.push {
-        case true?:
-            set(.access, .passed, String(localized: "read · write"))
-        case false?:
-            readOnly = true
-            set(.access, .failed, String(localized: "read only"))
-        case nil:
-            break
+        // 2. GitHub metadata: permission, size, tree, LFS rules, `.obsidian`.
+        await pause()
+        set(.branch, .running)
+        let chosenBranch = target.branch?.trimmingCharacters(in: .whitespacesAndNewlines)
+        do {
+            let result = try await GitHubService.preflight(
+                owner: repo.owner,
+                name: repo.repo,
+                token: token,
+                branch: chosenBranch?.isEmpty == false ? chosenBranch : nil
+            ) { [weak self] first in
+                self?.applyRepository(first)
+            }
+            guard !Task.isCancelled else { return }
+            await pause()
+            apply(result)
+        } catch is CancellationError {
+            return
+        } catch {
+            guard !Task.isCancelled else { return }
+            // The remote answered, so the clone can proceed; it confirms the
+            // contents itself.
+            await finishWithoutContents()
         }
-        if defaultBranch == nil { defaultBranch = meta?.defaultBranch }
-        await pause()
-        set(.branch, .passed, resolvedBranch ?? "HEAD")
+    }
 
-        // 3. Tree: file count, LFS, Obsidian.
-        await pause()
+    // MARK: - Applying GitHub facts
+
+    /// First answer from GitHub: access and branch.
+    func applyRepository(_ first: GitHubRepoPreflight) {
+        switch first.canPush {
+        case true?: set(.access, .passed, String(localized: "read · write"))
+        case false?: set(.access, .failed, String(localized: "read only"))
+        case nil: break
+        }
+        if defaultBranch == nil { defaultBranch = first.defaultBranch }
+        set(.branch, .passed, resolvedBranch ?? first.defaultBranch)
         set(.size, .running)
-        let service = GitHubService(pat: token, owner: repo.owner, repo: repo.repo)
-        var tree: [GitTreeEntry] = []
-        if let branch = resolvedBranch,
-           let sha = try? await service.getRef(branch: branch),
-           let response = try? await service.getTree(sha: sha, recursive: true) {
-            tree = response.tree
-        }
-        if let kb = meta?.size, kb > 0 { sizeBytes = Int64(kb) * 1024 }
-        let files = tree.filter { $0.type == "blob" }
-        fileCount = files.isEmpty ? nil : files.count
-        set(.size, sizeBytes == nil && fileCount == nil ? .skipped : .passed, sizeDetail)
+    }
 
-        await pause()
-        set(.lfs, .running)
-        if tree.isEmpty {
-            set(.lfs, .skipped, String(localized: "checked on clone"))
-        } else if let attributes = files.first(where: { $0.path == ".gitattributes" }),
-                  let data = try? await service.getBlob(sha: attributes.sha),
-                  String(decoding: data, as: UTF8.self).contains("filter=lfs") {
-            set(.lfs, .passed, String(localized: "used · supported"))
-        } else {
+    /// Full answer: fills every row and settles the phase.
+    func apply(_ result: GitHubRepoPreflight) {
+        facts = result
+        applyRepository(result)
+
+        set(.size, result.sizeInBytes == nil && result.fileCount == nil ? .skipped : .passed,
+            Self.sizeDetail(result))
+
+        if result.isEmpty {
             set(.lfs, .passed, String(localized: "none"))
-        }
-
-        await pause()
-        set(.obsidian, .running)
-        if tree.isEmpty {
-            set(.obsidian, .skipped, String(localized: "checked on clone"))
-        } else if tree.contains(where: { $0.path == ".obsidian" || $0.path.hasPrefix(".obsidian/") }) {
-            hasObsidianGitPlugin = tree.contains { $0.path.hasPrefix(".obsidian/plugins/obsidian-git/") }
-            set(.obsidian, .passed, ".obsidian/")
+            set(.obsidian, .warning, String(localized: "empty repo"))
         } else {
-            set(.obsidian, .warning, String(localized: "no .obsidian yet"))
+            set(.lfs, .passed, result.lfsFileCount == 0
+                ? String(localized: "none")
+                : String(localized: "\(result.lfsFileCount) files"))
+            if result.hasObsidianFolder {
+                set(.obsidian, .passed, ".obsidian/")
+            } else {
+                set(.obsidian, .warning, String(localized: "no .obsidian yet"))
+            }
         }
 
-        phase = readOnly ? .blocked(.readOnly) : .ready
+        phase = result.isReady ? .ready : .blocked(.readOnly)
     }
 
     // MARK: - Helpers
 
-    private var sizeDetail: String? {
+    /// "238 MB · 1,204" (a "+" when GitHub truncated the listing).
+    static func sizeDetail(_ facts: GitHubRepoPreflight) -> String {
         var parts: [String] = []
-        if let sizeBytes {
-            parts.append(ByteCountFormatter.string(fromByteCount: sizeBytes, countStyle: .file))
+        if let size = facts.sizeInBytes {
+            parts.append(ByteCountFormatter.string(fromByteCount: size, countStyle: .file))
         }
-        if let fileCount {
-            parts.append(fileCount.formatted())
+        if let count = facts.fileCount {
+            let formatted = count.formatted()
+            parts.append(facts.fileCountIsPartial ? "\(formatted)+" : formatted)
         }
         return parts.isEmpty ? String(localized: "checked on clone") : parts.joined(separator: " · ")
     }
 
-    /// Non-GitHub remotes: the connection is all that can be checked
-    /// without downloading, so the rest is confirmed during the clone.
+    /// Non-GitHub remotes (or GitHub's API unreachable): the connection is
+    /// all that can be checked without downloading, so the rest is confirmed
+    /// during the clone.
     private func finishWithoutContents() async {
         await pause()
         set(.branch, .passed, resolvedBranch ?? "HEAD")
@@ -235,36 +259,5 @@ final class VaultPreflight: Identifiable {
 
     private func pause() async {
         try? await Task.sleep(for: stepDelay)
-    }
-
-    private struct RepositoryMeta: Decodable {
-        struct Permissions: Decodable { let push: Bool? }
-        let size: Int?
-        let permissions: Permissions?
-        let defaultBranch: String?
-
-        enum CodingKeys: String, CodingKey {
-            case size, permissions
-            case defaultBranch = "default_branch"
-        }
-    }
-
-    private static func fetchRepositoryMeta(owner: String, repo: String, token: String) async throws -> RepositoryMeta {
-        var components = URLComponents()
-        components.scheme = "https"
-        components.host = "api.github.com"
-        let allowed = CharacterSet.urlPathAllowed.subtracting(CharacterSet(charactersIn: "/"))
-        components.percentEncodedPath = "/repos/"
-            + [owner, repo].map { $0.addingPercentEncoding(withAllowedCharacters: allowed) ?? $0 }.joined(separator: "/")
-        guard let url = components.url else { throw GitHubError.invalidURL }
-        var request = URLRequest(url: url)
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        request.setValue("application/vnd.github+json", forHTTPHeaderField: "Accept")
-        request.setValue("2022-11-28", forHTTPHeaderField: "X-GitHub-Api-Version")
-        let (data, response) = try await URLSession.shared.data(for: request)
-        guard let http = response as? HTTPURLResponse, (200...299).contains(http.statusCode) else {
-            throw GitHubError.apiError((response as? HTTPURLResponse)?.statusCode ?? 0, "")
-        }
-        return try JSONDecoder().decode(RepositoryMeta.self, from: data)
     }
 }
