@@ -826,11 +826,13 @@ extension GitHubService {
     }
 
     /// Runs the pre-clone check for `owner/name`. `onRepository` reports the
-    /// first answer (access, branch, size) before the tree is listed.
+    /// first answer (access, branch, size) before the tree is listed. The
+    /// tree is read from `branch` when given, else the default branch.
     static func preflight(
         owner: String,
         name: String,
         token: String,
+        branch chosenBranch: String? = nil,
         onRepository: (@MainActor @Sendable (GitHubRepoPreflight) -> Void)? = nil
     ) async throws -> GitHubRepoPreflight {
         let (repoData, repoStatus) = try await preflightGET(["repos", owner, name], token: token)
@@ -846,7 +848,7 @@ extension GitHubService {
         if let onRepository { await onRepository(result) }
 
         let (treeData, treeStatus) = try await preflightGET(
-            ["repos", owner, name, "git", "trees", branch],
+            ["repos", owner, name, "git", "trees", chosenBranch ?? branch],
             query: [URLQueryItem(name: "recursive", value: "1")],
             token: token
         )

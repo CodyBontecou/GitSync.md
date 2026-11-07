@@ -50,10 +50,10 @@ import com.bontecou.syncmd.ui.theme.SyncMdTheme
 @Composable
 fun OnboardingScreen(busy: Boolean, error: Boolean, onFinish: (GuideTarget) -> Unit) {
     val c = M3.colors
-    BoxWithConstraints(Modifier.fillMaxSize().background(c.surface).testTag("onboarding")) {
+    BoxWithConstraints(Modifier.fillMaxSize().background(c.surface).safeDrawingPadding().testTag("onboarding")) {
         val minHeight = maxHeight
         Column(
-            Modifier.fillMaxSize().verticalScroll(rememberScrollState()).safeDrawingPadding(),
+            Modifier.fillMaxSize().verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Column(

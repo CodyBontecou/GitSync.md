@@ -2,10 +2,10 @@ import SwiftUI
 
 /// "Pick a repo" — the GitHub step of the add-a-vault flow (Tide).
 ///
-/// Tapping Clone first runs a metadata-only check (RepoPreflightView:
-/// access, branch, size, LFS, `.obsidian`), then clones straight from the
-/// picker into the default save location with the signed-in GitHub account,
-/// showing a progress card. A
+/// Tapping Clone clones straight from the picker into the default save
+/// location with the signed-in GitHub account, showing a progress card. While
+/// the app is locked, the free vault check (`VaultCheckView`: access, branch,
+/// size, LFS, `.obsidian`) and the one-time unlock come first. A
 /// long press offers "Customize before cloning", which hands the repo back
 /// to the remote form (branch, sign-in method, location).
 struct RepoPickerView: View {
@@ -16,6 +16,7 @@ struct RepoPickerView: View {
     var onCloned: (() -> Void)? = nil
 
     @Environment(AppState.self) private var state
+    @Environment(AppUnlock.self) private var unlock
     @Environment(\.dismiss) private var dismiss
 
     @State private var searchText = ""
@@ -33,15 +34,9 @@ struct RepoPickerView: View {
     @State private var cloning: InlineClone? = nil
     @State private var cloneTask: Task<Void, Never>? = nil
     @State private var isVisible = false
-
-    /// Repo being checked before an inline clone (check-first step).
-    @State private var preflightTarget: PreflightTarget? = nil
-
-    private struct PreflightTarget: Hashable {
-        let repo: GitHubRepo
-        static func == (lhs: Self, rhs: Self) -> Bool { lhs.repo.id == rhs.repo.id }
-        func hash(into hasher: inout Hasher) { hasher.combine(repo.id) }
-    }
+    /// Free vault check shown before a locked app clones.
+    @State private var vaultCheck: VaultPreflight? = nil
+    @State private var vaultCheckRepo: GitHubRepo? = nil
 
     private enum Tab: Hashable { case yours, orgs, starred }
     private enum LoadState: Equatable { case idle, loading, loaded, failed(String) }
@@ -174,27 +169,26 @@ struct RepoPickerView: View {
                 await probeObsidianFolders()
             }
             .onAppear { isVisible = true }
-            .onDisappear { isVisible = false }
-            .navigationDestination(item: $preflightTarget) { target in
-                let repo = target.repo
-                RepoPreflightView(
-                    repo: repo,
-                    destination: destinationLabel(folderName: Self.availableFolderName(
-                        repo.name,
-                        in: state.resolvedDefaultSaveURL ?? AppState.appDocumentsDirectory
-                    )),
-                    onClone: {
-                        preflightTarget = nil
-                        cloneDirectly(repo)
-                    },
-                    onCustomize: {
-                        preflightTarget = nil
-                        customize(repo)
-                    },
-                    onPickAnother: { preflightTarget = nil }
-                )
-                .toolbar(.hidden, for: .navigationBar)
+            .fullScreenCover(item: $vaultCheck) { check in
+                VaultCheckView(
+                    preflight: check,
+                    destination: vaultCheckRepo.map { repo in
+                        destinationLabel(folderName: Self.availableFolderName(
+                            repo.name,
+                            in: state.resolvedDefaultSaveURL ?? AppState.appDocumentsDirectory
+                        ))
+                    } ?? "",
+                    onCustomize: vaultCheckRepo.map { repo in
+                        {
+                            vaultCheck = nil
+                            customize(repo)
+                        }
+                    }
+                ) {
+                    if let repo = vaultCheckRepo { cloneDirectly(repo) }
+                }
             }
+            .onDisappear { isVisible = false }
         }
     }
 
@@ -365,7 +359,13 @@ struct RepoPickerView: View {
         return Button {
             // A second copy of an added repo needs a deliberate location:
             // send it through the form instead of cloning inline.
-            if isAdded { customize(repo) } else { checkThenClone(repo) }
+            if isAdded {
+                customize(repo)
+            } else if unlock.isUnlocked {
+                cloneDirectly(repo)
+            } else {
+                checkThenClone(repo)
+            }
         } label: {
             HStack(spacing: 12) {
                 VStack(alignment: .leading, spacing: 3) {
@@ -534,16 +534,23 @@ struct RepoPickerView: View {
         dismiss()
     }
 
-    /// Inline clones run the metadata-only pre-clone check first. Without the
-    /// defaults an inline clone needs, `cloneDirectly` sends the repo to the
-    /// remote form instead, so skip the check there.
+    /// Locked app: run the free vault check (`VaultCheckView`); its unlock
+    /// sheet leads into `cloneDirectly`. Without the defaults an inline clone
+    /// needs, the repo goes to the remote form, which runs the same check.
     private func checkThenClone(_ repo: GitHubRepo) {
         guard !isCloneBlocked else { return }
-        if canCloneInline {
-            preflightTarget = PreflightTarget(repo: repo)
-        } else {
-            cloneDirectly(repo)
+        guard canCloneInline else {
+            customize(repo)
+            return
         }
+        vaultCheckRepo = repo
+        vaultCheck = VaultPreflight(target: .init(
+            name: repo.name,
+            repoURL: repo.htmlURL,
+            branch: repo.defaultBranch,
+            transportPayload: GitRemoteCredentials.gitHubPAT(state.pat).transportPayload,
+            gitHubToken: state.pat
+        ))
     }
 
     private var canCloneInline: Bool {

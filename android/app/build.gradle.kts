@@ -32,7 +32,7 @@ android {
         applicationId = "com.bontecou.syncmd"
         minSdk = 28
         targetSdk = 36
-        versionCode = 10
+        versionCode = 11
         versionName = "1.1.0"
         
         // Free download, one-time unlock before the first vault (mirrors iOS

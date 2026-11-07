@@ -9,6 +9,7 @@ struct AddRepoView: View {
     }
 
     @Environment(AppState.self) private var state
+    @Environment(AppUnlock.self) private var unlock
     @Environment(\.dismiss) private var dismiss
 
     // Repo selection
@@ -36,14 +37,10 @@ struct AddRepoView: View {
     @State private var deviceKeyError: String? = nil
     @State private var didCopyPublicKey = false
 
-    // Connection pre-flight before cloning.
-    private enum Preflight: Equatable {
-        case idle
-        case testing
-        case passed(String)
-        case failed(String)
-    }
-    @State private var preflight: Preflight = .idle
+    // Free vault check (and paywall) before cloning.
+    @State private var vaultCheck: VaultPreflight? = nil
+    /// Action waiting on the one-time unlock.
+    @State private var pendingUnlock: (() -> Void)? = nil
 
     // Local repo selection
     @State private var localRepoURL: URL? = nil
@@ -162,9 +159,12 @@ struct AddRepoView: View {
                     Task { await state.refreshRepos() }
                 }
             }
-            .onChange(of: selectedRepoURL) { _, _ in preflight = .idle }
-            .onChange(of: authMethod) { _, _ in preflight = .idle }
-            .onChange(of: sshKeySource) { _, _ in preflight = .idle }
+            .fullScreenCover(item: $vaultCheck) { check in
+                VaultCheckView(preflight: check, destination: cloneDestination, clonesWhenReadyIfUnlocked: true) {
+                    performAddAndClone(identifier: selectedRepoURL.trimmingCharacters(in: .whitespacesAndNewlines).lowercased())
+                }
+            }
+            .unlockGate($pendingUnlock)
             .onChange(of: state.defaultAuthorName) { _, newValue in
                 if authorName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty { authorName = newValue }
             }
@@ -201,7 +201,7 @@ struct AddRepoView: View {
 
     private func resumePublicationCard(_ record: FolderPublicationRecord) -> some View {
         Button {
-            showFolderPublication = true
+            requireUnlock { showFolderPublication = true }
         } label: {
             HStack(spacing: 10) {
                 Circle().fill(Tide.behind).frame(width: 8, height: 8)
@@ -260,7 +260,7 @@ struct AddRepoView: View {
 
             AddVaultCard {
                 Button {
-                    showDiscovery = true
+                    requireUnlock { showDiscovery = true }
                 } label: {
                     AddVaultChoiceRow(
                         systemImage: "magnifyingglass",
@@ -297,7 +297,7 @@ struct AddRepoView: View {
                 AddVaultHairline()
 
                 Button {
-                    showFolderPublication = true
+                    requireUnlock { showFolderPublication = true }
                 } label: {
                     AddVaultChoiceRow(
                         systemImage: "arrow.up.to.line",
@@ -1013,33 +1013,26 @@ struct AddRepoView: View {
         .accessibilityIdentifier("addRepository.addLocal")
     }
 
-    @ViewBuilder
     private var addButton: some View {
-        switch preflight {
-        case .idle:
-            EmptyView()
-        case .testing:
-            AddVaultStatusLine(text: String(localized: "connecting to \(preflightHost)…"), tint: Tide.behind, systemImage: "network")
-                .padding(.horizontal, -20)
-        case .passed(let summary):
-            AddVaultStatusLine(text: summary)
-                .padding(.horizontal, -20)
-        case .failed(let message):
-            AddVaultStatusLine(text: message, tint: Tide.danger, systemImage: "exclamationmark.triangle")
-                .padding(.horizontal, -20)
-        }
         BPrimaryButton(
-            title: String(localized: "Test & clone"),
-            isLoading: preflight == .testing,
-            isDisabled: !canSubmitRemoteRepo || preflight == .testing
+            title: unlock.isUnlocked ? String(localized: "Check & clone") : String(localized: "Check your vault"),
+            isDisabled: !canSubmitRemoteRepo
         ) {
             addAndClone()
         }
         .accessibilityIdentifier("addRepository.addAndClone")
     }
 
-    private var preflightHost: String {
-        GitRemoteURL.parse(selectedRepoURL)?.host ?? String(localized: "remote")
+    /// "Files › On My iPhone › GitSync.md › notes".
+    private var cloneDestination: String {
+        let parent = customVaultURL.map { "Files › \(RepoDiscoveryView.friendlyLocation(for: $0))" }
+            ?? String(localized: "Files › On My iPhone › GitSync.md").forThisDevice
+        let folder = vaultName.trimmingCharacters(in: .whitespacesAndNewlines)
+        return "\(parent) › \(folder.isEmpty ? "vault" : folder)"
+    }
+
+    private func requireUnlock(_ action: @escaping () -> Void) {
+        if unlock.isUnlocked { action() } else { pendingUnlock = action }
     }
 
     // MARK: - Validation
@@ -1168,7 +1161,9 @@ struct AddRepoView: View {
         guard missing.isEmpty else { showMissingFieldsError(missing); return }
 
         let identifier = url.standardizedFileURL.path.lowercased()
-        performAddLocalRepo(url: url, bookmarkData: bookmarkData, identifier: identifier)
+        requireUnlock {
+            performAddLocalRepo(url: url, bookmarkData: bookmarkData, identifier: identifier)
+        }
     }
 
     private func performAddLocalRepo(url: URL, bookmarkData: Data, identifier: String) {
@@ -1188,45 +1183,16 @@ struct AddRepoView: View {
             return
         }
 
-        let identifier = selectedRepoURL.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
-        testConnectionThenClone(identifier: identifier)
-    }
-
-    /// `ls-remote`-style pre-flight: connect with the chosen credentials and
-    /// list refs before any folder or configuration is created. An SSH host
-    /// key that still needs the user's trust is not a failure — the clone
-    /// itself shows the trust prompt.
-    private func testConnectionThenClone(identifier: String) {
-        guard preflight != .testing else { return }
         let trimmedURL = selectedRepoURL.trimmingCharacters(in: .whitespacesAndNewlines)
-        let remoteURL = GitRemoteURL.cloneURLString(from: trimmedURL) ?? trimmedURL
-        let payload = remoteCredentials().transportPayload
-        preflight = .testing
-        Task {
-            do {
-                let check = try await LocalGitService.checkRemoteConnection(remoteURL: remoteURL, pat: payload)
-                var summary = String(localized: "Connected · \(check.refCount) refs")
-                if let branch = check.defaultBranch, !branch.isEmpty {
-                    summary += " · HEAD → \(branch)"
-                }
-                preflight = .passed(summary)
-            } catch LocalGitError.sshHostKeyTrustRequired(_) {
-                preflight = .passed(String(localized: "Reachable · confirm the host key when cloning"))
-            } catch is CancellationError {
-                preflight = .idle
-                return
-            } catch LocalGitError.cloneFailed(let message) {
-                // Nothing was cloned yet: report the connection, not a clone.
-                let reason = message.replacingOccurrences(of: "Connect to remote: ", with: "")
-                preflight = .failed(String(localized: "Couldn't connect: \(reason)"))
-                return
-            } catch {
-                preflight = .failed(error.localizedDescription)
-                return
-            }
-            try? await Task.sleep(for: .milliseconds(400))
-            performAddAndClone(identifier: identifier)
-        }
+        let isGitHubHTTPS = GitRemoteURL.parse(trimmedURL).map { $0.isGitHub && !$0.isSSH } ?? false
+        let name = vaultName.trimmingCharacters(in: .whitespacesAndNewlines)
+        vaultCheck = VaultPreflight(target: .init(
+            name: name.isEmpty ? (GitRemoteURL.parse(trimmedURL)?.repoName ?? "vault") : name,
+            repoURL: trimmedURL,
+            branch: selectedBranch,
+            transportPayload: remoteCredentials().transportPayload,
+            gitHubToken: authMethod == .gitHubPAT && isGitHubHTTPS ? state.pat : nil
+        ))
     }
 
     private func performAddAndClone(identifier: String) {

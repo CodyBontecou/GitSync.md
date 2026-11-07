@@ -66,7 +66,7 @@ fun TideDialog(
     val parentDensity = androidx.compose.ui.platform.LocalDensity.current
     // Dialog windows report no system-bar insets on recent Android (edge-to-edge), so also pad with the
     // activity's bars; otherwise the lowest action can sit under the navigation bar.
-    val bars = com.bontecou.syncmd.ui.screens.activitySystemBarPadding()
+    val activityView = androidx.compose.ui.platform.LocalView.current
     Dialog(
         onDismissRequest = onDismissRequest,
         properties = DialogProperties(
@@ -84,6 +84,8 @@ fun TideDialog(
         androidx.compose.ui.platform.LocalDensity provides parentDensity,
       ) {
         val c = Tide.colors
+        val dialogBars = com.bontecou.syncmd.ui.screens.rememberDialogBars(activityView)
+        val bars = dialogBars.padding
         val compactHeight = parentConfiguration.screenHeightDp < 480
         Box(
             Modifier
@@ -99,6 +101,7 @@ fun TideDialog(
             val shape = if (sheet) RoundedCornerShape(topStart = Tide.radiusSheet, topEnd = Tide.radiusSheet) else RoundedCornerShape(Tide.radiusSheet)
             Column(
                 modifier
+                    .then(dialogBars.tracker)
                     .statusBarsPadding()
                     .padding(top = bars.calculateTopPadding())
                     // Short windows (landscape phones) keep every action on screen by trimming the outer margin.
