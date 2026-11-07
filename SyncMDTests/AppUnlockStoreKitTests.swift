@@ -49,8 +49,12 @@ final class AppUnlockStoreKitTests: XCTestCase {
         await unlock.refresh()
         XCTAssertFalse(unlock.isUnlocked, "A new free download must start locked")
 
-        let outcome = await unlock.purchase()
-        XCTAssertEqual(outcome, .unlocked)
+        // Buy through the test session, not `unlock.purchase()`: on the iOS 26
+        // simulator `Product.purchase()` falls through to an Apple Account
+        // sign-in sheet even with `disableDialogs`, and CI hangs on it until
+        // the job times out.
+        _ = try await session.buyProduct(identifier: AppUnlock.productID)
+        await unlock.refresh()
         XCTAssertTrue(unlock.isUnlocked)
         XCTAssertEqual(unlock.reason, .purchased)
 
