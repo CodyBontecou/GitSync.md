@@ -13,7 +13,9 @@ jobs:
   unit-tests:
     name: SyncMDTests
     runs-on: macos-26
-    timeout-minutes: 30
+    # The unit suite plus the Release resource audit already ran ~28 min;
+    # leave headroom for runner queue and catalog growth.
+    timeout-minutes: 45
     env:
       XCODE_PROJECT: Sync.md.xcodeproj
       XCODE_SCHEME: Sync.md

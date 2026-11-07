@@ -1,0 +1,6 @@
+<resources>
+    <plurals name="repository_picker_count">
+        <item quantity="one">· %1$d repository</item>
+        <item quantity="other">· %1$d repositories</item>
+    </plurals>
+</resources>

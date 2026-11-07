@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.domain.repository.PullRepositoryTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-11-02T19:20:51" hostname="MacBook-Pro.local" time="0.883">
+  <properties/>
+  <testcase name="planPull detects when behind remote" classname="com.bontecou.syncmd.domain.repository.PullRepositoryTest" time="0.088"/>
+  <testcase name="executePull succeeds for clean repository" classname="com.bontecou.syncmd.domain.repository.PullRepositoryTest" time="0.083"/>
+  <testcase name="planPull detects when ahead of remote" classname="com.bontecou.syncmd.domain.repository.PullRepositoryTest" time="0.079"/>
+  <testcase name="getCommitsAhead returns correct count" classname="com.bontecou.syncmd.domain.repository.PullRepositoryTest" time="0.079"/>
+  <testcase name="getStatus detects modified files" classname="com.bontecou.syncmd.domain.repository.PullRepositoryTest" time="0.082"/>
+  <testcase name="getCommitsBehind returns correct count" classname="com.bontecou.syncmd.domain.repository.PullRepositoryTest" time="0.073"/>
+  <testcase name="fetch works even with dirty working tree" classname="com.bontecou.syncmd.domain.repository.PullRepositoryTest" time="0.077"/>
+  <testcase name="planPull returns UP_TO_DATE for clean synchronized repo" classname="com.bontecou.syncmd.domain.repository.PullRepositoryTest" time="0.081"/>
+  <testcase name="executePull fails when working tree is dirty" classname="com.bontecou.syncmd.domain.repository.PullRepositoryTest" time="0.085"/>
+  <testcase name="planPull blocks when repository is dirty" classname="com.bontecou.syncmd.domain.repository.PullRepositoryTest" time="0.082"/>
+  <testcase name="getStatus returns clean repository" classname="com.bontecou.syncmd.domain.repository.PullRepositoryTest" time="0.074"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

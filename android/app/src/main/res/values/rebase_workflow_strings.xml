@@ -1,0 +1,7 @@
+<resources>
+    <string name="rebase_use_upstream">Use upstream</string>
+    <string name="rebase_accept_upstream_deletion">Accept upstream deletion</string>
+    <string name="rebase_use_local">Use local commit</string>
+    <string name="rebase_accept_local_deletion">Accept local deletion</string>
+    <string name="rebase_skip_body">Drops the current commit from the replay. Review its changes before skipping; this can remove local work from the resulting history.</string>
+</resources>

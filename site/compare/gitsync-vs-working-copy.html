@@ -52,6 +52,9 @@
   "mainEntityOfPage": "https://gitsync.md/compare/gitsync-vs-working-copy"
 }
 </script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="../site.css">
 <link rel="stylesheet" href="../content.css">
 <link rel="stylesheet" href="../comparison.css">
@@ -92,22 +95,32 @@
 
 <header class="site-header">
   <nav class="shell navigation" aria-label="Main navigation">
-    <a class="brand" href="/" aria-label="GitSync.md home"><span class="brand-mark" aria-hidden="true"><img src="../assets/gitsync-app-icon.png" width="192" height="192" alt="" decoding="async"></span>GITSYNC<span class="brand-extension">.MD</span></a>
-    <div class="nav-links"><a href="/#features">The app</a><a href="/#workflow">How it works</a><a href="/blog/">Guides <span aria-hidden="true">↗</span></a></div>
-    <a class="button button-small" href="/#download">Get the app <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-external"/></svg></a>
+    <a class="brand" href="/" aria-label="GitSync.md home">gitsync<span class="brand-extension">.md</span></a>
+    <div class="nav-links"><a href="/#app">The app</a><a href="/#workflow">How it works</a><a href="/blog/" class="is-active">Guides</a><a href="/compare/obsidian-sync-vs-git">Compare</a><a href="/#faq">FAQ</a></div>
+    <a class="button button-small" href="/#download">Get the app</a>
   </nav>
 </header>
 
 <main id="main">
-  <header class="article-hero"><div class="container hero-grid">
-    <div class="article-title"><nav class="eyebrow article-breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li><a href="/blog/">Guides</a></li><li aria-current="page">GitSync.md vs Working Copy</li></ol></nav>
+  <div class="container guide-layout">
+      <header class="article-hero">
+        <div class="article-title"><nav class="eyebrow article-breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li><a href="/blog/">Guides</a></li><li aria-current="page">GitSync.md vs Working Copy</li></ol></nav>
       <h1>GitSync.md vs Working Copy<span class="accent">.</span></h1>
       <p class="subtitle">Both are Git clients for iPhone and iPad. Compare the Obsidian setup, folder access, automation, and purchase terms that matter to your workflow.</p>
       <div class="meta-line"><time datetime="2026-10-26">October 26, 2026</time><span>By <a href="/about" rel="author">Cody Bontecou</a></span><span>iPhone + iPad</span></div>
     </div>
-    <aside class="toc-card" aria-label="Article outline"><div class="toc-title">In this guide</div><ol><li><a href="#comparison">Capabilities</a></li><li><a href="#obsidian">Obsidian workflows</a></li><li><a href="#purchase">Purchase terms</a></li><li><a href="#advanced">Advanced workflows</a></li><li><a href="#switch">Switching clients</a></li><li><a href="#questions">Common questions</a></li></ol></aside>
-  </div></header>
-  <div class="container"><div class="article-shell article-shell-single"><article class="article-body">
+      </header>
+      <aside class="guide-aside" aria-label="Guide sidebar">
+        <div class="guide-aside-sticky">
+        <nav class="toc-card" aria-label="Article outline"><div class="toc-title">In this guide</div><ol><li><a href="#comparison">Capabilities</a></li><li><a href="#obsidian">Obsidian workflows</a></li><li><a href="#purchase">Purchase terms</a></li><li><a href="#advanced">Advanced workflows</a></li><li><a href="#switch">Switching clients</a></li><li><a href="#questions">Common questions</a></li></ol></nav>
+        <div class="aside-cta aside-cta-wide">
+          <p class="aside-cta-title">Real Git on your iPhone.</p>
+          <p class="aside-cta-price">iPhone + iPad: $9.99 once · No subscription</p>
+          <a class="aside-cta-button" href="/v/web-homepage-111" target="_blank" rel="noopener">Download on the App Store</a>
+        </div>
+        </div>
+      </aside>
+      <article class="article-body">
         <div class="tldr"><div class="tldr-title">Which should you choose?</div><ul>
           <li><strong>Choose GitSync.md</strong> if you want the documented Obsidian vault workflow, the Connect credential handoff, and a paid iPhone/iPad app with manual Git and optional Background Sync included.</li>
           <li><strong>Consider Working Copy</strong> if you need its documented signed commits, repository search, WebDAV access, or remote SSH commands, or already have a folder workflow that works for you.</li>
@@ -172,7 +185,8 @@
           <li><a href="/blog/self-hosted-git-ssh-ios">Connect a self-hosted Git server</a></li>
         </ul></div>
 
-  </article></div></div>
+  </article>
+    </div>
   <section class="content-download" aria-labelledby="download-heading">
     <div class="shell content-download-layout">
       <div>
@@ -193,9 +207,9 @@
 
 <footer class="site-footer">
   <div class="shell footer-layout">
-    <a class="brand" href="/" aria-label="GitSync.md home"><span class="brand-mark" aria-hidden="true"><img src="../assets/gitsync-app-icon.png" width="192" height="192" alt="" decoding="async"></span>GITSYNC<span class="brand-extension">.MD</span></a>
+    <a class="brand" href="/" aria-label="GitSync.md home">gitsync<span class="brand-extension">.md</span></a>
     <p>Independently built by <a href="https://codybontecou.com" target="_blank" rel="noopener">Cody Bontecou</a>.<br>© 2026 GitSync.md</p>
-    <div class="footer-links"><a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener">Source</a><a href="/blog/">Guides</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
+    <div class="footer-links"><a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener">Source</a><a href="/blog/">Guides</a><a href="/compare/obsidian-sync-vs-git">Compare</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
     <a class="back-top" href="#top" aria-label="Back to top">↑</a>
   </div>
 </footer>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.git.RemoteParityIntegrationTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-11-02T19:08:44" hostname="MacBook-Pro.local" time="0.326">
+  <properties/>
+  <testcase name="safe pull fast forwards after fresh fetch" classname="com.bontecou.syncmd.services.git.RemoteParityIntegrationTest" time="0.067"/>
+  <testcase name="all tag push propagates rejection" classname="com.bontecou.syncmd.services.git.RemoteParityIntegrationTest" time="0.058"/>
+  <testcase name="selected tag push publishes only that tag and detects rejection" classname="com.bontecou.syncmd.services.git.RemoteParityIntegrationTest" time="0.058"/>
+  <testcase name="safe pull refuses divergence without changing head or creating a merge" classname="com.bontecou.syncmd.services.git.RemoteParityIntegrationTest" time="0.085"/>
+  <testcase name="push supports new branches with no cached upstream" classname="com.bontecou.syncmd.services.git.RemoteParityIntegrationTest" time="0.058"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

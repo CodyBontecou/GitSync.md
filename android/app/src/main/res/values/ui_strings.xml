@@ -1,0 +1,187 @@
+<resources>
+    <string name="ui_1_s_2_s_all_working_files_and_local_git_hi_872b2983">"%1$s\n%2$s\n\nAll working files and local Git history will stay on this device. You can reconnect the folder later."</string>
+    <string name="ui_1_s_2_s_this_permanently_deletes_this_app_fffd860e">"%1$s\n%2$s\n\nThis permanently deletes this app-managed clone, including unpushed commits, stashes and unsaved files. The remote repository is unchanged."</string>
+    <string name="ui_1_s_bytes_81cdb385">"%1$s bytes"</string>
+    <string name="ui_1_s_characters_bde60398">"%1$s characters"</string>
+    <string name="ui_1_s_lines_2_s_bytes_c30a0cd1">"%1$s lines, %2$s bytes"</string>
+    <string name="ui_1_s_local_commits_2_s_upstream_commits_77dc6fa8">"%1$s local commits · %2$s upstream commits"</string>
+    <string name="ui_abort_rebase_fd5cfc32" formatted="false">"Abort rebase…"</string>
+    <string name="ui_about_4efca0d1" formatted="false">"About"</string>
+    <string name="ui_all_conflicts_are_staged_continue_replayin_b86b2a5a" formatted="false">"All conflicts are staged. Continue replaying commits. If Git reports NOTHING_TO_COMMIT, review whether to skip the empty commit."</string>
+    <string name="ui_all_local_changes_to_this_file_will_be_per_0919f539" formatted="false">"All local changes to this file will be permanently discarded."</string>
+    <string name="ui_allow_local_folder_access_0b2888fb" formatted="false">"Allow local folder access"</string>
+    <string name="ui_app_0d04bfeb" formatted="false">"App"</string>
+    <string name="ui_app_settings_da645334" formatted="false">"App Settings"</string>
+    <string name="ui_apply_tracking_choice_47a2e187" formatted="false">"Apply tracking choice"</string>
+    <string name="ui_authentication_66880d2d" formatted="false">"Authentication"</string>
+    <string name="ui_back_639807a2" formatted="false">"Back"</string>
+    <string name="ui_back_aceb696a" formatted="false">"← Back"</string>
+    <string name="ui_back_f645ed02" formatted="false">"←  Back"</string>
+    <string name="ui_backup_1_s_6ad01ca6">"Backup: %1$s"</string>
+    <string name="ui_base_7b47361a" formatted="false">"Base"</string>
+    <string name="ui_binary_large_or_lfs_file_choose_an_entire_52c3278a" formatted="false">"Binary, large or LFS file: choose an entire side."</string>
+    <string name="ui_branch_52656e81" formatted="false">"Branch"</string>
+    <string name="ui_branch_optional_e9dedf99" formatted="false">"Branch (optional)"</string>
+    <string name="ui_browsing_with_this_account_28a8b330" formatted="false">"Browsing with this account"</string>
+    <string name="ui_cancel_pending_move_0858583b" formatted="false">"Cancel pending move"</string>
+    <string name="ui_changes_bbd4b6a8" formatted="false">"Changes"</string>
+    <string name="ui_choose_a_connected_account_for_this_reposi_c4817ea9" formatted="false">"Choose a connected account for this repository."</string>
+    <string name="ui_choose_a_device_folder_d00b7daf" formatted="false">"Choose a device folder"</string>
+    <string name="ui_choose_an_authentication_method_before_clo_c89124ba" formatted="false">"Choose an authentication method before cloning."</string>
+    <string name="ui_choose_another_folder_b50df380" formatted="false">"Choose another folder"</string>
+    <string name="ui_choose_local_device_or_attached_storage_cl_69bc112f" formatted="false">"Choose local device or attached storage. Cloud document providers do not expose a filesystem that this Git engine can use."</string>
+    <string name="ui_choose_the_account_used_to_browse_github_e_93e8a27f" formatted="false">"Choose the account used to browse GitHub. Each repository keeps its assigned account; change it in Repository connection."</string>
+    <string name="ui_choose_the_default_folder_for_new_clones_e_9782dc64" formatted="false">"Choose the default folder for new clones. Existing repositories keep their current location."</string>
+    <string name="ui_clear_all_diagnostics_e2d6a185" formatted="false">"Clear all diagnostics?"</string>
+    <string name="ui_clear_log_a8858ac7" formatted="false">"Clear log"</string>
+    <string name="ui_clone_again_e05eb495" formatted="false">"Clone again"</string>
+    <string name="ui_clone_again_review_the_previous_branch_and_33cba147" formatted="false">"Clone again · review the previous branch and connection before starting."</string>
+    <string name="ui_clone_storage_47cafc8a" formatted="false">"Clone storage"</string>
+    <string name="ui_commit_author_e9376b3a" formatted="false">"Commit author"</string>
+    <string name="ui_commit_message_a4b361b7" formatted="false">"Commit message…"</string>
+    <string name="ui_commit_sha_d0bc6028" formatted="false">"Commit SHA"</string>
+    <string name="ui_confirm_eebdd24a" formatted="false">"Confirm"</string>
+    <string name="ui_continue_rebase_7a14e965" formatted="false">"Continue rebase"</string>
+    <string name="ui_create_a_file_or_folder_using_new_655c5596" formatted="false">"Create a file or folder using New."</string>
+    <string name="ui_current_default_d914f86e" formatted="false">"Current default"</string>
+    <string name="ui_current_separate_push_address_1_s_2a6ef8f9">"Current separate push address: %1$s"</string>
+    <string name="ui_debug_info_697b4941" formatted="false">"Debug Info"</string>
+    <string name="ui_delete_1_s_6474596f">"Delete %1$s?"</string>
+    <string name="ui_delete_e2d0a549" formatted="false">"Delete"</string>
+    <string name="ui_delete_file_28e18dc9" formatted="false">"Delete file"</string>
+    <string name="ui_delete_local_files_09697434" formatted="false">"Delete local files?"</string>
+    <string name="ui_delete_local_files_20424441" formatted="false">"Delete local files"</string>
+    <string name="ui_destination_1_s_0df94639">"Destination: %1$s"</string>
+    <string name="ui_destination_parent_folder_c6c4f97e" formatted="false">"Destination parent folder"</string>
+    <string name="ui_discard_draft_cb30147e" formatted="false">"Discard draft"</string>
+    <string name="ui_discard_eb1a70e3" formatted="false">"Discard"</string>
+    <string name="ui_discard_resolution_draft_47c16148" formatted="false">"Discard resolution draft?"</string>
+    <string name="ui_dismiss_48845bff" formatted="false">"Dismiss"</string>
+    <string name="ui_edit_commit_author_443f376d" formatted="false">"Edit commit author"</string>
+    <string name="ui_edit_connection_047f9f95" formatted="false">"Edit connection"</string>
+    <string name="ui_edit_resolution_9a6cda88" formatted="false">"Edit resolution"</string>
+    <string name="ui_edit_the_content_here_to_manually_resolve_1985871d" formatted="false">"Edit the content here to manually resolve the conflict"</string>
+    <string name="ui_email_969ccbd3" formatted="false">"Email"</string>
+    <string name="ui_empty_folder_ca1fd454" formatted="false">"Empty folder"</string>
+    <string name="ui_enable_access_9d7caf64" formatted="false">"Enable access"</string>
+    <string name="ui_enter_credentials_again_or_choose_public_a_40a9f45f" formatted="false">"Enter credentials again or choose public access for the new address."</string>
+    <string name="ui_error_54a0e8c1" formatted="false">"Error"</string>
+    <string name="ui_fetch_and_review_rebase_c81979af" formatted="false">"Fetch and review rebase"</string>
+    <string name="ui_file_operation_failed_f78a328b" formatted="false">"File operation failed"</string>
+    <string name="ui_finish_move_recovery_44113cea" formatted="false">"Finish move recovery"</string>
+    <string name="ui_github_sign_in_a2e50311" formatted="false">"GitHub sign-in"</string>
+    <string name="ui_gitsync_md_needs_shared_storage_access_to_f1b339ea" formatted="false">"GitSync.md needs shared storage access to manage real Git working copies in device folders. Choose the folders you want to use after enabling access in Android Settings."</string>
+    <string name="ui_go_back_and_select_a_repository_c3eedd39" formatted="false">"Go back and select a repository."</string>
+    <string name="ui_hash_a9106914" formatted="false">"Hash"</string>
+    <string name="ui_i_understand_that_another_owner_may_still_b4a12b2d" formatted="false">"I understand that another owner may still be editing this file."</string>
+    <string name="ui_include_the_ssh_username_in_the_address_gi_beb09b5a" formatted="false">"Include the SSH username in the address: git@host:team/repo.git or ssh://git@host:2222/team/repo.git."</string>
+    <string name="ui_keep_editing_e76fd2ad" formatted="false">"Keep editing"</string>
+    <string name="ui_key_passphrase_optional_eb84a9d2" formatted="false">"Key passphrase (optional)"</string>
+    <string name="ui_keys_are_encrypted_on_this_device_and_used_cb039887" formatted="false">"Keys are encrypted on this device and used only for the saved repository address. Verify the server fingerprint when connecting for the first time."</string>
+    <string name="ui_last_sync_a0d540dd" formatted="false">"Last Sync"</string>
+    <string name="ui_leave_blank_to_use_the_server_s_default_br_077388af" formatted="false">"Leave blank to use the server\'s default branch."</string>
+    <string name="ui_lfs_endpoint_username_4a49e1f5" formatted="false">"LFS endpoint username"</string>
+    <string name="ui_loading_dc380888" formatted="false">"Loading"</string>
+    <string name="ui_loading_repos_2f4f4a93" formatted="false">"Loading repos"</string>
+    <string name="ui_local_repositories_ddcf4270" formatted="false">"Local repositories"</string>
+    <string name="ui_manage_github_accounts_e8277e8b" formatted="false">"Manage GitHub accounts"</string>
+    <string name="ui_matching_public_key_optional_2ca984f0" formatted="false">"Matching public key (optional)"</string>
+    <string name="ui_merge_8851aaa7" formatted="false">"Merge"</string>
+    <string name="ui_more_d47d7cb0" formatted="false">"More"</string>
+    <string name="ui_move_recoveries_90731b9e" formatted="false">"Move recoveries"</string>
+    <string name="ui_move_repository_1c4a6083" formatted="false">"Move repository"</string>
+    <string name="ui_name_in_gitsync_md_893ad211" formatted="false">"Name in GitSync.md"</string>
+    <string name="ui_new_commits_in_this_repository_will_use_th_ac4a98e2" formatted="false">"New commits in this repository will use this name and email. Existing commits keep their original author."</string>
+    <string name="ui_new_file_44dedd0f" formatted="false">"New file"</string>
+    <string name="ui_new_token_or_password_fc54aafe" formatted="false">"New token or password"</string>
+    <string name="ui_no_changes_to_display_11be6ffc" formatted="false">"No changes to display"</string>
+    <string name="ui_no_commits_found_64ccb533" formatted="false">"No commits found"</string>
+    <string name="ui_no_connected_accounts_local_repositories_r_cf41e629" formatted="false">"No connected accounts. Local repositories remain available."</string>
+    <string name="ui_no_local_changes_56319dc5" formatted="false">"No local changes"</string>
+    <string name="ui_no_repository_555da78f" formatted="false">"No Repository"</string>
+    <string name="ui_no_stashes_found_ace2fa6f" formatted="false">"No stashes found"</string>
+    <string name="ui_no_tags_in_this_repository_3b060f73" formatted="false">"No tags in this repository"</string>
+    <string name="ui_ok_565339bc" formatted="false">"OK"</string>
+    <string name="ui_open_ed077f3d" formatted="false">"Open"</string>
+    <string name="ui_open_git_lfs_f7aff155" formatted="false">"Open Git LFS"</string>
+    <string name="ui_open_in_files_e1d250d0" formatted="false">"Open in Files"</string>
+    <string name="ui_opening_file_de0df916" formatted="false">"Opening file…"</string>
+    <string name="ui_owner_1_s_599ca9ce">"Owner: %1$s"</string>
+    <string name="ui_parents_1_s_914efbd0">"Parents (%1$s)"</string>
+    <string name="ui_path_62fa5a5b" formatted="false">"Path"</string>
+    <string name="ui_platform_c78ffe19" formatted="false">"Platform"</string>
+    <string name="ui_pull_with_rebase_6d25f1e0" formatted="false">"Pull with rebase"</string>
+    <string name="ui_rebase_in_progress_3ecd9c42" formatted="false">"Rebase in progress"</string>
+    <string name="ui_rebase_onto_reviewed_upstream_c3b8fb93" formatted="false">"Rebase onto reviewed upstream"</string>
+    <string name="ui_reconnect_bf8a9eab" formatted="false">"Reconnect"</string>
+    <string name="ui_recovery_needs_attention_recognized_workin_89ce1116" formatted="false">"Recovery needs attention. Recognized working copies are kept."</string>
+    <string name="ui_refresh_0e916101" formatted="false">"Refresh"</string>
+    <string name="ui_refresh_rebase_state_39c06a2c" formatted="false">"Refresh rebase state"</string>
+    <string name="ui_reload_author_18a711d8" formatted="false">"Reload author"</string>
+    <string name="ui_reload_connection_ceed2dae" formatted="false">"Reload connection"</string>
+    <string name="ui_reload_from_disk_d4288839" formatted="false">"Reload from disk"</string>
+    <string name="ui_remove_1_s_e4dd7c24">"Remove %1$s?"</string>
+    <string name="ui_remove_1_s_this_removes_it_from_gitsync_md_0a6b198d">"Remove \"%1$s\"?\n\nThis removes it from GitSync.md. All local files and Git history stay on this device, and you can reconnect it later. Your remote repository is not affected."</string>
+    <string name="ui_remove_all_custom_endpoint_approvals_and_t_ffc30a9e" formatted="false">"Remove all custom endpoint approvals and their saved credentials on this device. Each endpoint and transfer direction will need a new review."</string>
+    <string name="ui_remove_c3812fc4" formatted="false">"Remove"</string>
+    <string name="ui_remove_credentials_1b0700a3" formatted="false">"Remove credentials"</string>
+    <string name="ui_remove_from_app_0d20b3a2" formatted="false">"Remove from app"</string>
+    <string name="ui_remove_from_gitsync_md_ead6e2d6" formatted="false">"Remove from GitSync.md?"</string>
+    <string name="ui_remove_git_tracking_1f8255d9" formatted="false">"Remove Git tracking?"</string>
+    <string name="ui_remove_git_tracking_d3e1065f" formatted="false">"Remove Git tracking"</string>
+    <string name="ui_remove_recovery_copy_b24c79b1" formatted="false">"Remove recovery copy"</string>
+    <string name="ui_remove_repository_fc68168b" formatted="false">"Remove Repository"</string>
+    <string name="ui_remove_saved_credentials_31ce2de8" formatted="false">"Remove saved credentials"</string>
+    <string name="ui_remove_saved_credentials_efb15b59" formatted="false">"Remove saved credentials?"</string>
+    <string name="ui_remove_the_retained_original_a09b39c8" formatted="false">"Remove the retained original?"</string>
+    <string name="ui_remove_tracking_4b40d72c" formatted="false">"Remove tracking"</string>
+    <string name="ui_rename_3064d79a" formatted="false">"Rename"</string>
+    <string name="ui_rename_file_e3526ab6" formatted="false">"Rename file"</string>
+    <string name="ui_replayed_local_commit_cb0e9ca0" formatted="false">"Replayed local commit"</string>
+    <string name="ui_replays_local_commits_on_the_configured_up_709bdce6" formatted="false">"Replays local commits on the configured upstream. Local commit IDs can change. Existing merge structure is preserved. Nothing is pushed."</string>
+    <string name="ui_repo_path_a3f06032" formatted="false">"Repo Path"</string>
+    <string name="ui_repositories_assigned_to_this_account_will_ecd1d245" formatted="false">"Repositories assigned to this account will need you to sign in again or choose another account in Repository connection. Your local files and commits stay in place."</string>
+    <string name="ui_repository_connection_1188001b" formatted="false">"Repository connection"</string>
+    <string name="ui_repository_operation_failed_f1152917" formatted="false">"Repository operation failed"</string>
+    <string name="ui_repository_url_c83db013" formatted="false">"Repository URL"</string>
+    <string name="ui_resolve_1_s_94accfee">"Resolve %1$s"</string>
+    <string name="ui_resolve_and_stage_ebded3a7" formatted="false">"Resolve and stage"</string>
+    <string name="ui_resolved_content_69213720" formatted="false">"Resolved content"</string>
+    <string name="ui_resolved_contents_55ceff37" formatted="false">"Resolved contents"</string>
+    <string name="ui_resolving_1_s_5e8ada92">"Resolving: %1$s"</string>
+    <string name="ui_restore_as_a_separate_repository_6253e37c" formatted="false">"Restore as a separate repository"</string>
+    <string name="ui_retained_original_1_s_61bc9b73">"Retained original: %1$s"</string>
+    <string name="ui_retry_942087cc" formatted="false">"Retry"</string>
+    <string name="ui_return_to_repositories_c97a4463" formatted="false">"Return to repositories"</string>
+    <string name="ui_revert_commit_a2d355f7" formatted="false">"Revert commit"</string>
+    <string name="ui_review_destination_59808b00" formatted="false">"Review destination"</string>
+    <string name="ui_review_restored_folder_66729a70" formatted="false">"Review restored folder"</string>
+    <string name="ui_save_1509f561" formatted="false">"Save"</string>
+    <string name="ui_save_author_1c24b32a" formatted="false">"Save author"</string>
+    <string name="ui_save_connection_df24ef12" formatted="false">"Save connection"</string>
+    <string name="ui_saving_uses_this_address_for_both_fetch_an_48c82edc" formatted="false">"Saving uses this address for both fetch and push. Fetch afterward to refresh remote status."</string>
+    <string name="ui_selected_folder_0cf59bef" formatted="false">"Selected folder"</string>
+    <string name="ui_share_backup_archive_ee4ba873" formatted="false">"Share backup archive"</string>
+    <string name="ui_some_diagnostics_could_not_be_read_or_save_19e3372d" formatted="false">"Some diagnostics could not be read or saved. Existing data was kept. Clear the log to restart recording."</string>
+    <string name="ui_ssh_private_key_0e92a613" formatted="false">"SSH private key"</string>
+    <string name="ui_stage_de838855" formatted="false">"Stage"</string>
+    <string name="ui_the_active_destination_stays_in_place_gits_a4f1f68a" formatted="false">"The active destination stays in place. GitSync.md checks that the retained original has no later edits before permanently removing its files and Git history."</string>
+    <string name="ui_the_folder_can_move_directly_on_this_stora_7b29fabb" formatted="false">"The folder can move directly on this storage volume."</string>
+    <string name="ui_the_previous_github_account_is_disconnecte_628a1f8c" formatted="false">"The previous GitHub account is disconnected. Select a connected account or choose another authentication method."</string>
+    <string name="ui_the_replayed_local_commit_deletes_this_fil_ab00656d" formatted="false">"The replayed local commit deletes this file."</string>
+    <string name="ui_the_review_changed_cancel_and_refresh_serv_c7ee804c" formatted="false">"The review changed. Cancel and refresh server locks."</string>
+    <string name="ui_this_history_entry_is_unavailable_c2c9f4e0" formatted="false">"This history entry is unavailable."</string>
+    <string name="ui_this_removes_another_connection_s_lock_coo_880defbf" formatted="false">"This removes another connection\'s lock. Coordinate with its owner before continuing."</string>
+    <string name="ui_this_repository_will_use_public_access_unt_c94fad61" formatted="false">"This repository will use public access until you choose authentication again. Your signed-in GitHub account will not be used for it. Fetch and push addresses stay in place."</string>
+    <string name="ui_unable_to_open_file_2787a028" formatted="false">"Unable to open file"</string>
+    <string name="ui_unstage_033f86f9" formatted="false">"Unstage"</string>
+    <string name="ui_update_the_address_or_authentication_for_t_f11e4ba2" formatted="false">"Update the address or authentication for this working copy. Local files, commits and staged changes stay in place."</string>
+    <string name="ui_upstream_94adc696" formatted="false">"Upstream"</string>
+    <string name="ui_upstream_deleted_this_file_40765116" formatted="false">"Upstream deleted this file."</string>
+    <string name="ui_use_app_storage_d199e8e0" formatted="false">"Use app storage"</string>
+    <string name="ui_use_for_new_clones_be174c95" formatted="false">"Use for new clones"</string>
+    <string name="ui_use_saved_default_3bb7260d" formatted="false">"Use saved default"</string>
+    <string name="ui_username_e3b89e9d" formatted="false">"Username"</string>
+    <string name="ui_your_edits_have_not_been_saved_625899a4" formatted="false">"Your edits have not been saved."</string>
+    <string name="ui_your_unsubmitted_text_will_be_discarded_th_15717285" formatted="false">"Your unsubmitted text will be discarded. The working file stays unchanged."</string>
+</resources>

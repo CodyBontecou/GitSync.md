@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.git.RepositoryUpdatesTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-11-02T19:21:39" hostname="MacBook-Pro.local" time="0.123">
+  <properties/>
+  <testcase name="cancelled subscriptions release all retained paths and later subscribers start fresh" classname="com.bontecou.syncmd.services.git.RepositoryUpdatesTest" time="0.019"/>
+  <testcase name="diagnosed writes notify on success and returned failure while reads never loop" classname="com.bontecou.syncmd.services.git.RepositoryUpdatesTest" time="0.05"/>
+  <testcase name="initial read registration queues a write that happens during that read" classname="com.bontecou.syncmd.services.git.RepositoryUpdatesTest" time="0.002"/>
+  <testcase name="canonical aliases share updates while unrelated working copies do not" classname="com.bontecou.syncmd.services.git.RepositoryUpdatesTest" time="0.003"/>
+  <testcase name="slow subscribers conflate bursts without losing the final refresh" classname="com.bontecou.syncmd.services.git.RepositoryUpdatesTest" time="0.015"/>
+  <testcase name="throwing and cancelled writes still invalidate without inventing completion" classname="com.bontecou.syncmd.services.git.RepositoryUpdatesTest" time="0.033"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

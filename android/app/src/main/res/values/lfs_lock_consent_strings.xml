@@ -1,0 +1,8 @@
+<resources>
+    <string name="lfs_lock_release_title">Release this lock?</string>
+    <string name="lfs_lock_create_title">Lock this file?</string>
+    <string name="lfs_lock_force_action">Force release</string>
+    <string name="lfs_lock_release_action">Release</string>
+    <string name="lfs_lock_create_action">Lock file</string>
+    <string name="lfs_lock_owner_missing">Not provided by server</string>
+</resources>

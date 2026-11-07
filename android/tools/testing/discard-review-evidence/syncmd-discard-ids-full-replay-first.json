@@ -1,0 +1,132 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "Prerequisite: GitSync Git screen on registered generated discard-review-check-20261102 fixture; prepared ten changed paths, one staged note and retained ignored file."
+    },
+    {
+      "type": "text",
+      "text": "Running e2e test \"pixel-discard-dialog-ids-20261102\" on 2C061FDH200CJN (25 steps)"
+    },
+    {
+      "type": "text",
+      "text": "[1] ✓ run discard-open-all-review.yaml (0.0s)"
+    },
+    {
+      "type": "text",
+      "text": "[2] ✓   await visible \"GIT\" role=StaticText (1.1s)"
+    },
+    {
+      "type": "text",
+      "text": "[3] ✓   idle (1.4s)"
+    },
+    {
+      "type": "text",
+      "text": "[4] ✓   scroll-to \"↩  REVERT ALL CHANGES\" (2.1s)"
+    },
+    {
+      "type": "text",
+      "text": "[5] ✓   tap \"↩  REVERT ALL CHANGES\" (0.8s)"
+    },
+    {
+      "type": "text",
+      "text": "[6] ✓   stop-all-simulator-servers (0.1s)"
+    },
+    {
+      "type": "text",
+      "text": "{\n  \"stopped\": [\n    \"AndroidDevtools:2C061FDH200CJN\",\n    \"SimulatorServer:2C061FDH200CJN\"\n  ]\n}"
+    },
+    {
+      "type": "text",
+      "text": "[7] ✓   await visible id=discard-review (1.1s)"
+    },
+    {
+      "type": "text",
+      "text": "[8] ✓   idle (1.5s) ⚠ the screen settled, but a small part of it was still changing while it did — a spinner, a caret, a progress dot. If it is a loading spinner then the screen had not finished loading, and stillness cannot tell those apart: look at what is moving, and gate the next action on the element the loading produces rather than on this settle."
+    },
+    {
+      "type": "text",
+      "text": "[9] ✓ await visible \"10 files\" id=discard-review-count (0.2s)"
+    },
+    {
+      "type": "text",
+      "text": "[10] ✓ await visible id=discard-review-path:long-reviewed-folder-name/another-reviewed-folder-name/notes_日本語.md (0.2s)"
+    },
+    {
+      "type": "text",
+      "text": "[11] ✓ tap id=discard-review-close (0.6s)"
+    },
+    {
+      "type": "text",
+      "text": "[12] ✓ stop-all-simulator-servers (0.1s)"
+    },
+    {
+      "type": "text",
+      "text": "{\n  \"stopped\": [\n    \"AndroidDevtools:2C061FDH200CJN\",\n    \"SimulatorServer:2C061FDH200CJN\"\n  ]\n}"
+    },
+    {
+      "type": "text",
+      "text": "[13] ✓ run discard-note-selector-probe.yaml (0.0s)"
+    },
+    {
+      "type": "text",
+      "text": "[14] ✓   assert visible \"DIFF\" next (/^note\\.md$/ role=StaticText after (\"long-reviewed-folder-name/another-reviewed-folder-name/notes_日本語.md\" role=StaticText)) (1.2s)"
+    },
+    {
+      "type": "text",
+      "text": "[15] ✓   tap \"DIFF\" next (/^note\\.md$/ role=StaticText after (\"long-reviewed-folder-name/another-reviewed-folder-name/notes_日本語.md\" role=StaticText)) (1.4s)"
+    },
+    {
+      "type": "text",
+      "text": "[16] ✓   stop-all-simulator-servers (0.1s)"
+    },
+    {
+      "type": "text",
+      "text": "{\n  \"stopped\": [\n    \"AndroidDevtools:2C061FDH200CJN\",\n    \"SimulatorServer:2C061FDH200CJN\"\n  ]\n}"
+    },
+    {
+      "type": "text",
+      "text": "[17] ✗   await visible \"NOTE.MD · UNSTAGED\" role=StaticText (8.1s) — no element matched selector text=\"NOTE.MD · UNSTAGED\" role=\"StaticText\""
+    },
+    {
+      "type": "text",
+      "text": "    screen: /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/simserver-DHuSxj/media/694688000-1793643305754.png"
+    },
+    {
+      "type": "text",
+      "text": "[18] ·   idle"
+    },
+    {
+      "type": "text",
+      "text": "[19] · tap \"↩  REVERT\""
+    },
+    {
+      "type": "text",
+      "text": "[20] · tool"
+    },
+    {
+      "type": "text",
+      "text": "[21] · await visible \"1 file\" id=discard-review-count"
+    },
+    {
+      "type": "text",
+      "text": "[22] · await visible id=discard-review-confirm"
+    },
+    {
+      "type": "text",
+      "text": "[23] · run discard-confirm-by-id.yaml"
+    },
+    {
+      "type": "text",
+      "text": "[24] · run discard-open-all-review.yaml"
+    },
+    {
+      "type": "text",
+      "text": "[25] · run discard-confirm-by-id.yaml"
+    },
+    {
+      "type": "text",
+      "text": "FAIL — 16 passed, 1 failed, 0 errored, 8 skipped (21.4s)"
+    }
+  ]
+}

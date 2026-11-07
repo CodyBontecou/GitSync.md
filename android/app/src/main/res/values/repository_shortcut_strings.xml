@@ -1,0 +1,16 @@
+<resources>
+    <string name="repository_shortcut_add">Add launcher shortcut</string>
+    <string name="repository_shortcut_request">Request shortcut</string>
+    <string name="repository_shortcut_consent">Each tap opens GitSync.md and runs this action once without asking again. It stays bound to this repository, branch and saved connection/account. New local commits are allowed. Changed bindings stop the shortcut; review and create a new shortcut to approve them. You can revoke authorization here at any time.</string>
+    <string name="repository_shortcut_requested">Shortcut requested. Approve it in your launcher, then refresh shortcuts to check its state.</string>
+    <string name="repository_shortcut_manage">Launcher shortcuts</string>
+    <string name="repository_shortcut_refresh">Refresh shortcuts</string>
+    <string name="repository_shortcut_active">Authorized and pinned</string>
+    <string name="repository_shortcut_inactive">Not active. Launcher approval may be pending, or authorization was revoked.</string>
+    <string name="repository_shortcut_revoke">Revoke authorization</string>
+    <string name="repository_shortcut_revoke_scope">This shortcut will stop running Git actions. Its launcher icon may remain disabled until you remove it. Creating a new shortcut requires approval again.</string>
+    <string name="repository_shortcut_revoked">Shortcut authorization revoked</string>
+    <string name="repository_shortcut_forget">Forget disabled shortcut</string>
+    <string name="repository_shortcut_busy">An action is already running. This shortcut was not queued. Wait, then tap it again.</string>
+    <string name="repository_shortcut_unsupported">Your launcher could not accept this shortcut request. Use the actions on this screen instead.</string>
+</resources>

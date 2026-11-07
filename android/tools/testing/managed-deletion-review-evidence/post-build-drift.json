@@ -1,0 +1,19 @@
+{
+  "changed_inputs": {
+    "app/src/main/kotlin/com/bontecou/syncmd/ui/theme/BrutalDesignSystem.kt": {
+      "built_sha256": "863adea03cf9406b5faee69e8a24d3d26244c15b05df86688224695e6bbbc71a",
+      "current_sha256": "ed39c1342b8d018a8095e84cd863cf481a550cd0218297ecdf92a25bd2e93039"
+    },
+    "app/src/main/kotlin/com/bontecou/syncmd/ui/theme/Theme.kt": {
+      "built_sha256": "2134c004efa698248fc6e764c7e57d94b9cba97391843373def056ebcb71d03e",
+      "current_sha256": "8cf9556c8c9b4feebc75fa274f46a96f218757685ced5440dc14e4865681cd52"
+    },
+    "app/src/main/kotlin/com/bontecou/syncmd/ui/theme/Type.kt": {
+      "built_sha256": "69de52b5360d87035d2ca614e125d8d393c35b8c12e49818cba12e1cf5326f76",
+      "current_sha256": "0c519863dc523c408060841ba3bca9d30f7183f1abbb47f97d6fe1611b6fa709"
+    }
+  },
+  "core_inputs_unchanged": true,
+  "archived_results_and_apks_unchanged": true,
+  "current_workspace_build_qualified": false
+}

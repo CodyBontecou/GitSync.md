@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="obsidian_title">Obsidian connections</string>
+    <string name="obsidian_interrupted">Connection stopped. No request will replay automatically. Prepare a new connection before retrying in Obsidian.</string>
+    <string name="obsidian_return">Return to Obsidian</string>
+    <string name="obsidian_forgotten">Future handoffs are disabled. Prepare a new connection to reconnect this folder.</string>
+</resources>

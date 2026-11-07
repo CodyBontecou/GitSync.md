@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="remote_merge_title">Merge with remote</string>
+    <string name="remote_merge_destination">Into local branch: %1$s</string>
+    <string name="remote_merge_upstream">From upstream: %1$s</string>
+    <string name="remote_merge_counts">Local commits: %1$d · Incoming commits: %2$d</string>
+    <string name="remote_merge_local_oid">Local commit: %1$s</string>
+    <string name="remote_merge_incoming_oid">Incoming commit: %1$s</string>
+    <string name="remote_merge_in_flight">Completing the Git action…</string>
+</resources>

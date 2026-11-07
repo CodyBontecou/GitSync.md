@@ -27,6 +27,11 @@ struct RepoConfig: Codable, Identifiable, Equatable, Sendable {
     var gitState: GitState
     /// Optional Premium automation policy. Defaults disabled for legacy records.
     var assist: RepoAssistSettings
+    /// Pinned vaults sort first on Home and appear under the Pinned filter.
+    var isPinned: Bool
+    /// User-chosen name shown instead of the repository name. `nil` or empty
+    /// falls back to the repository (or folder) name.
+    var customDisplayName: String?
 
     init(
         id: UUID = UUID(),
@@ -42,7 +47,9 @@ struct RepoConfig: Codable, Identifiable, Equatable, Sendable {
         authUsername: String = "",
         gitHubAccountLogin: String? = nil,
         gitState: GitState = .empty,
-        assist: RepoAssistSettings = .disabled
+        assist: RepoAssistSettings = .disabled,
+        isPinned: Bool = false,
+        customDisplayName: String? = nil
     ) {
         self.id = id
         self.repoURL = repoURL
@@ -64,6 +71,8 @@ struct RepoConfig: Codable, Identifiable, Equatable, Sendable {
         self.gitHubAccountLogin = gitHubAccountLogin
         self.gitState = gitState
         self.assist = assist
+        self.isPinned = isPinned
+        self.customDisplayName = customDisplayName
     }
 
     // MARK: - Codable (backward-compatible)
@@ -72,6 +81,7 @@ struct RepoConfig: Codable, Identifiable, Equatable, Sendable {
         case id, repoURL, branch, authorName, authorEmail
         case vaultFolderName, customVaultBookmarkData
         case customLocationIsParent, customVaultRelativePath, authMethod, authUsername, gitHubAccountLogin, gitState, assist
+        case isPinned, customDisplayName
     }
 
     init(from decoder: Decoder) throws {
@@ -96,12 +106,38 @@ struct RepoConfig: Codable, Identifiable, Equatable, Sendable {
         gitHubAccountLogin      = try c.decodeIfPresent(String.self, forKey: .gitHubAccountLogin)
         gitState                = try c.decode(GitState.self, forKey: .gitState)
         assist                  = try c.decodeIfPresent(RepoAssistSettings.self, forKey: .assist) ?? .disabled
+        isPinned                = try c.decodeIfPresent(Bool.self, forKey: .isPinned) ?? false
+        customDisplayName       = try c.decodeIfPresent(String.self, forKey: .customDisplayName)
     }
 
     // MARK: - Computed
 
     var displayName: String {
+        if let custom = customDisplayName?.trimmingCharacters(in: .whitespacesAndNewlines), !custom.isEmpty {
+            return custom
+        }
+        return repoName
+    }
+
+    /// The repository's own name (remote name, else folder), ignoring any
+    /// custom display name. Use for `owner/repo` identifiers.
+    var repoName: String {
         GitRemoteURL.parse(repoURL)?.repoName ?? vaultFolderName
+    }
+
+    /// Short label for the remote side of the sync rail: "GitHub" for
+    /// github.com, a friendly name for other known hosts, else the host.
+    var remoteHostLabel: String {
+        guard let remote = GitRemoteURL.parse(repoURL) else { return String(localized: "Remote") }
+        if remote.isGitHub { return "GitHub" }
+        guard var host = remote.host?.lowercased(), !host.isEmpty else { return String(localized: "Remote") }
+        if host.hasPrefix("www.") { host.removeFirst(4) }
+        switch host {
+        case "gitlab.com": return "GitLab"
+        case "bitbucket.org": return "Bitbucket"
+        case "codeberg.org": return "Codeberg"
+        default: return host
+        }
     }
 
     var ownerName: String? {

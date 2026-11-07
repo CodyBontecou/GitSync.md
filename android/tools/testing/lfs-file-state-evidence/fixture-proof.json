@@ -1,0 +1,19 @@
+{
+  "host": "/tmp/syncmd-lfs-language-8snbtfy9/lfs-language-check-20261102",
+  "phone": "/storage/emulated/0/Android/media/md.gitsync.md/repos/custom/lfs-language-check-20261102",
+  "head": "d2b764d7c4d88fa930598715dba7742f1f0b8514",
+  "expected_files": {
+    "available.bin": "1d3c08c1f404cba8baed72acea70d1a02d46d46afc1a3c8faf5a3a51c3fead04",
+    "pointer.bin": "c3f03c4ee902c74cd9d04c20f7879fb7db9b1359bc3d055af620413e545778a9",
+    "note.md": "4c5416a8694068df138cf523e8391ad08315d6c97343d5d74cd0aef2dab95d0c",
+    "README.md": "3d103d7ccdecdfa9e1907e9994e2e05aee0f74beef6af1ae1a5ffe276b8e4213",
+    ".gitattributes": "35c9aa1fa6293646d4e217fdf8c2285fe66cc22285f0e69d59c96247e9929710",
+    "modified.bin": "7f76b60327f1116652189f5b2a1c955754886c3603e7ed3adeb8c63888ca7054"
+  },
+  "index_sha256": "3b508857b60229dafe357f3bb733050979f99e4bc704658a7b74e62fd5960a91",
+  "config_sha256": "2cea1cadfd3edb1ab5995a4b885132a9700927521eecae5af396eee924777fc7",
+  "remote_absent": true,
+  "published": false,
+  "cleanup_pending": false,
+  "pushed_to_pixel": true
+}

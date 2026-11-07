@@ -1,0 +1,6 @@
+{
+  "exit_code": 1,
+  "construction": "Remove LRM only, retaining the outer LRI/PDI and identifier payloads",
+  "first_rejected_case": "Arabic locale with Arabic remote and branch strings",
+  "scope": "JDK-only synthetic negative control; not a production native regression"
+}

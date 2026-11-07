@@ -52,6 +52,9 @@
   "mainEntityOfPage": "https://gitsync.md/blog/git-on-ipad"
 }
 </script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="../site.css">
 <link rel="stylesheet" href="../content.css">
 <link rel="stylesheet" href="../comparison.css">
@@ -92,20 +95,32 @@
 
 <header class="site-header">
   <nav class="shell navigation" aria-label="Main navigation">
-    <a class="brand" href="/" aria-label="GitSync.md home"><span class="brand-mark" aria-hidden="true"><img src="../assets/gitsync-app-icon.png" width="192" height="192" alt="" decoding="async"></span>GITSYNC<span class="brand-extension">.MD</span></a>
-    <div class="nav-links"><a href="/#features">The app</a><a href="/#workflow">How it works</a><a href="/blog/">Guides <span aria-hidden="true">↗</span></a></div>
-    <a class="button button-small" href="/#download">Get the app <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-external"/></svg></a>
+    <a class="brand" href="/" aria-label="GitSync.md home">gitsync<span class="brand-extension">.md</span></a>
+    <div class="nav-links"><a href="/#app">The app</a><a href="/#workflow">How it works</a><a href="/blog/" class="is-active">Guides</a><a href="/compare/obsidian-sync-vs-git">Compare</a><a href="/#faq">FAQ</a></div>
+    <a class="button button-small" href="/#download">Get the app</a>
   </nav>
 </header>
 
 <main id="main">
-<header class="article-hero"><div class="container"><div class="hero-grid"><div class="article-title">
+<div class="container guide-layout">
+      <header class="article-hero">
+        <div class="article-title">
 <nav class="eyebrow article-breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li><a href="/blog/">Guides</a></li><li aria-current="page">Git on iPad</li></ol></nav>
 <h1>Use Git on iPad<span class="accent">.</span></h1>
 <p class="subtitle">Choose between a local working copy, GitHub collaboration and browser editing before moving a project onto your tablet.</p>
 <div class="meta-line"><span>October 30, 2026</span><span>By <a href="/about" rel="author">Cody Bontecou</a></span><span>iPad workflow guide</span></div></div>
-<aside class="toc-card" aria-label="Article outline"><div class="toc-title">In this guide</div><ol><li><a href="#choose">Choose a workflow</a></li><li><a href="#local">Work with local files</a></li><li><a href="#verify">Verify one edit</a></li><li><a href="#runtime">Keep execution separate</a></li><li><a href="#recover">Handle rejected pushes</a></li></ol></aside></div></div></header>
-<div class="container"><div class="article-shell article-shell-single"><article class="article-body">
+      </header>
+      <aside class="guide-aside" aria-label="Guide sidebar">
+        <div class="guide-aside-sticky">
+        <nav class="toc-card" aria-label="Article outline"><div class="toc-title">In this guide</div><ol><li><a href="#choose">Choose a workflow</a></li><li><a href="#local">Work with local files</a></li><li><a href="#verify">Verify one edit</a></li><li><a href="#runtime">Keep execution separate</a></li><li><a href="#recover">Handle rejected pushes</a></li></ol></nav>
+        <div class="aside-cta">
+          <p class="aside-cta-title">Real Git on your iPhone.</p>
+          <p class="aside-cta-price">iPhone + iPad: $9.99 once · No subscription</p>
+          <a class="aside-cta-button" href="/v/web-homepage-118" target="_blank" rel="noopener">Download on the App Store</a>
+        </div>
+        </div>
+      </aside>
+      <article class="article-body">
 <div class="tldr"><div class="tldr-title">Quick answer</div><p>Yes, you can use Git on iPad. Choose a native Git client when you need a local repository that other Files-compatible apps can edit. Use GitHub Mobile for collaboration or a browser editor for a small online change. Cloning a project does not give the iPad its desktop build tools.</p></div>
 <h2 id="choose">Choose the workflow before the app</h2>
 <div class="comparison-scroll" role="region" aria-label="Compare iPad Git workflows" tabindex="0"><table class="comparison-table"><thead><tr><th>You need</th><th>Starting point</th><th>What to check</th></tr></thead><tbody>
@@ -133,13 +148,14 @@
 <h2 id="recover">When a push or sync needs attention</h2>
 <ul><li><strong>Authentication fails:</strong> confirm the selected account, remote and write permission. SSH remotes also need the right key and trusted host; use the <a href="/blog/self-hosted-git-ssh-ios">SSH guide</a>.</li><li><strong>Incoming commits or divergence:</strong> inspect the error and preserve local work. Use the <a href="/blog/obsidian-git-merge-conflicts-iphone">conflict guide</a>; do not force-push simply to clear a rejection.</li><li><strong>A file is missing:</strong> check the exact working-copy path and editor behavior before making another clone or deleting a folder.</li><li><strong>Background work did not run:</strong> iPadOS controls background opportunities. Verify the manual workflow first; <a href="/blog/obsidian-git-background-sync-iphone">background attempts are best effort</a>.</li></ul>
 <p>This guide is based on documented product behavior and source review. It is not a new device test or a claim that every editor, repository or runtime combination has been qualified.</p>
-</article></div></div></main>
+</article>
+    </div></main>
 
 <footer class="site-footer">
   <div class="shell footer-layout">
-    <a class="brand" href="/" aria-label="GitSync.md home"><span class="brand-mark" aria-hidden="true"><img src="../assets/gitsync-app-icon.png" width="192" height="192" alt="" decoding="async"></span>GITSYNC<span class="brand-extension">.MD</span></a>
+    <a class="brand" href="/" aria-label="GitSync.md home">gitsync<span class="brand-extension">.md</span></a>
     <p>Independently built by <a href="https://codybontecou.com" target="_blank" rel="noopener">Cody Bontecou</a>.<br>© 2026 GitSync.md</p>
-    <div class="footer-links"><a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener">Source</a><a href="/blog/">Guides</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
+    <div class="footer-links"><a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener">Source</a><a href="/blog/">Guides</a><a href="/compare/obsidian-sync-vs-git">Compare</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
     <a class="back-top" href="#top" aria-label="Back to top">↑</a>
   </div>
 </footer>

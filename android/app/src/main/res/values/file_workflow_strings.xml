@@ -1,0 +1,24 @@
+<resources>
+    <string name="file_save_title">Save changes?</string>
+    <string name="file_reload_title">Reload file?</string>
+    <string name="file_delete_title">Delete file?</string>
+    <string name="files_show_hidden">Show hidden files</string>
+    <string name="files_hide_hidden">Hide hidden files</string>
+    <string name="files_folder">Folder</string>
+    <string name="file_reload_body">This replaces your unsaved edits with the file on disk.</string>
+    <string name="file_delete_body">The file will be removed from this device. Git will show it as a deletion if it was tracked.</string>
+    <string name="file_saved">Saved</string>
+    <string name="file_renamed">Renamed</string>
+    <string name="file_issue_external_change">This file changed outside the editor. Reload the latest version before saving. Your edits are still here.</string>
+    <string name="file_issue_folder_unavailable">Folder is no longer available. Check storage access.</string>
+    <string name="file_issue_file_unavailable">File is no longer available. Check storage access.</string>
+    <string name="file_issue_read_failed">Cannot read this file or folder. Check storage access.</string>
+    <string name="file_issue_operation_failed">File operation failed. Check storage access and try again.</string>
+    <string name="file_issue_invalid_name">Enter a filename without path separators.</string>
+    <string name="file_issue_protected_path">Choose a file inside this repository, outside Git metadata and symbolic links.</string>
+    <string name="file_issue_already_exists">A file or folder with this name already exists. Choose another name.</string>
+    <string name="file_issue_access_denied">Storage access was denied. Check this folder\'s permissions.</string>
+    <string name="file_issue_too_large">This file is larger than 2 MB. Open it in an external editor.</string>
+    <string name="file_issue_binary">This binary file cannot be edited as text.</string>
+    <string name="file_issue_not_utf8">This file is not UTF-8 text. Open it in an external editor.</string>
+</resources>

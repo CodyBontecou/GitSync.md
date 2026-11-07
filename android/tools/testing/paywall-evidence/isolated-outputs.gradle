@@ -1,0 +1,4 @@
+gradle.beforeProject { project ->
+    def segment = project.path == ':' ? 'root' : project.path.substring(1).replace(':', '/')
+    project.layout.buildDirectory.set(new File('/tmp/syncmd-paywall-build', segment))
+}

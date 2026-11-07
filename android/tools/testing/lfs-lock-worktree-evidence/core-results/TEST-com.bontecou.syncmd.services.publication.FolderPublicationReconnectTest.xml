@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.publication.FolderPublicationReconnectTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-11-02T19:22:21" hostname="MacBook-Pro.local" time="0.6">
+  <properties/>
+  <testcase name="permission loss symbolic links missing marker and another journal ownership preserve old binding" classname="com.bontecou.syncmd.services.publication.FolderPublicationReconnectTest" time="0.099"/>
+  <testcase name="wrong workflow identical commit and changed head cannot replace private binding" classname="com.bontecou.syncmd.services.publication.FolderPublicationReconnectTest" time="0.123"/>
+  <testcase name="copied owned publication can bind new inode without unlocking or modifying retained original" classname="com.bontecou.syncmd.services.publication.FolderPublicationReconnectTest" time="0.088"/>
+  <testcase name="unprepared review cannot follow moved or copied files" classname="com.bontecou.syncmd.services.publication.FolderPublicationReconnectTest" time="0.015"/>
+  <testcase name="explicitly reselected restored copy at original path requires owned commit before accepting new inode" classname="com.bontecou.syncmd.services.publication.FolderPublicationReconnectTest" time="0.083"/>
+  <testcase name="moved publication resumes exact saved commit and retains newer working files and index" classname="com.bontecou.syncmd.services.publication.FolderPublicationReconnectTest" time="0.192"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

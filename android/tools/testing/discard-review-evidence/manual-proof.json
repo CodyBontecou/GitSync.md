@@ -1,0 +1,21 @@
+{
+  "release_sha256": "91d239803bb67b4e82396200d462ad54d9dcb0b1461825ed7ed4e2613b227ac5",
+  "manual_checks": [
+    "10 distinct full paths including Japanese filename",
+    "Cancel preserves exact files/index",
+    "single note discard restores both layers, retaining unrelated files",
+    "all discard removes eight new files, retains ignored file and HEAD"
+  ],
+  "manual_readbacks": [
+    "/tmp/syncmd-discard-892-evidence/cancel.json",
+    "/tmp/syncmd-discard-892-evidence/single.json",
+    "/tmp/syncmd-discard-892-evidence/all.json"
+  ],
+  "full_replay_passed": false,
+  "replay_failure": "Cancel semantic text did not reliably activate; destination Git gate failed; existing test IDs were not exposed as Android resource IDs",
+  "pending_rebuild_exposes_existing_ids": true,
+  "fixture_restored_for_replay": true,
+  "fixture_cleanup_pending": true,
+  "historical_receipt": true,
+  "superseded_by": "syncmd-discard-resource-id-proof.json and fixture-final-state.json"
+}

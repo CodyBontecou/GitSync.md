@@ -1,5 +1,7 @@
 import SwiftUI
 
+/// Dismissible dark Tide banner at the top of Home inviting people to the
+/// Discord community.
 struct DiscordPromoBanner: View {
     @AppStorage("discordPromoDismissed") private var dismissed: Bool = false
 
@@ -7,64 +9,62 @@ struct DiscordPromoBanner: View {
 
     var body: some View {
         if !dismissed {
-            BCard(padding: 12, bg: .brutalSurface) {
-                HStack(spacing: 12) {
-                    HStack(spacing: 12) {
-                        Image(systemName: "bubble.left.and.bubble.right.fill")
-                            .font(.system(size: 18, weight: .semibold))
-                            .foregroundStyle(Color.brutalText)
-                            .frame(width: 28)
-
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text("Join the community")
-                                .font(.system(size: 14, weight: .semibold))
-                                .foregroundStyle(Color.brutalText)
-                            Text("Chat with us on Discord")
-                                .font(.system(size: 13, design: .monospaced))
-                                .foregroundStyle(Color.brutalTextMid)
-                        }
-                    }
-                    .accessibilityElement(children: .combine)
-                    .accessibilityLabel("Join the Discord community.")
-
-                    Spacer(minLength: 8)
-
-                    Button {
-                        UIApplication.shared.open(Self.inviteURL)
-                    } label: {
-                        Text("JOIN")
-                            .font(.system(size: 12, weight: .bold, design: .monospaced))
-                            .foregroundStyle(Color.brutalAccent)
-                            .tracking(1)
-                            .padding(.horizontal, 10)
-                            .padding(.vertical, 6)
-                            .background(Color.brutalAccent.opacity(0.10))
-                            .overlay(Rectangle().strokeBorder(Color.brutalAccent.opacity(0.30), lineWidth: 1))
-                            // Compact chip, 44pt hit target.
-                            .frame(minHeight: 44)
-                            .contentShape(Rectangle())
-                    }
-                    .buttonStyle(.plain)
-
-                    Button {
-                        withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
-                            dismissed = true
-                        }
-                    } label: {
-                        Image(systemName: "xmark")
-                            .font(.system(size: 12, weight: .semibold))
-                            .foregroundStyle(Color.brutalTextMid)
-                            .frame(width: 28, height: 28)
-                            // Icon-only dismiss: 44x44pt hit target around the
-                            // 28pt glyph, 12pt clear of the JOIN target.
-                            .frame(minWidth: 44, minHeight: 44)
-                            .contentShape(Rectangle())
-                    }
-                    .buttonStyle(.plain)
-                    .accessibilityLabel("Dismiss Discord banner")
+            HStack(spacing: 8) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(String(localized: "Join the GitSync.md Discord"))
+                        .font(TideFont.sans(15, .semibold, relativeTo: .subheadline))
+                        .foregroundStyle(Tide.heroText)
+                    Text(String(localized: "Tips, beta builds, feature votes."))
+                        .font(TideFont.sans(13.5, relativeTo: .footnote))
+                        .foregroundStyle(Tide.heroMeta)
                 }
+                .fixedSize(horizontal: false, vertical: true)
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel(String(localized: "Join the Discord community."))
+
+                Spacer(minLength: 8)
+
+                Button {
+                    UIApplication.shared.open(Self.inviteURL)
+                } label: {
+                    Text(String(localized: "Join"))
+                        .font(TideFont.sans(13, .semibold, relativeTo: .footnote))
+                        .foregroundStyle(Tide.heroBg)
+                        .padding(.horizontal, 14)
+                        .frame(height: 36)
+                        .background(Capsule().fill(Tide.heroText))
+                        // 36pt pill, 44pt hit target.
+                        .frame(minHeight: 44)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+
+                Button {
+                    withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                        dismissed = true
+                    }
+                } label: {
+                    Image(systemName: "xmark")
+                        .font(.system(size: 13, weight: .semibold))
+                        .foregroundStyle(Tide.heroMeta)
+                        .frame(width: 44, height: 44)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel(String(localized: "Dismiss Discord banner"))
             }
-            .padding(.horizontal, 20)
+            .padding(.leading, 16)
+            .padding(.trailing, 4)
+            .padding(.vertical, 8)
+            .background(
+                RoundedRectangle(cornerRadius: 20, style: .continuous)
+                    .fill(Tide.heroBg)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 20, style: .continuous)
+                    .strokeBorder(Tide.heroBorder, lineWidth: 1)
+            )
+            .padding(.horizontal, Tide.gutter)
             .padding(.top, 8)
             .padding(.bottom, 4)
             .transition(.move(edge: .top).combined(with: .opacity))
@@ -77,5 +77,5 @@ struct DiscordPromoBanner: View {
         DiscordPromoBanner()
         Spacer()
     }
-    .background(Color.brutalBg)
+    .background(Tide.paper)
 }

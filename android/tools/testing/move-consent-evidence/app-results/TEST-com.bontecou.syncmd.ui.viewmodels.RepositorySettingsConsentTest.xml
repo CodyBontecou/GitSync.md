@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.ui.viewmodels.RepositorySettingsConsentTest" tests="16" skipped="0" failures="0" errors="0" timestamp="2026-11-03T01:32:08" hostname="MacBook-Pro.local" time="1.443">
+  <properties/>
+  <testcase name="sameFolderReloadRevokesOldSaveCallback[author]" classname="com.bontecou.syncmd.ui.viewmodels.RepositorySettingsConsentTest" time="0.134"/>
+  <testcase name="unchangedReloadPublishesDistinctReviewForUiCollectors[author]" classname="com.bontecou.syncmd.ui.viewmodels.RepositorySettingsConsentTest" time="0.077"/>
+  <testcase name="invalidDraftLeavesRepositoryUnchanged[author]" classname="com.bontecou.syncmd.ui.viewmodels.RepositorySettingsConsentTest" time="0.088"/>
+  <testcase name="oldSaveCallbackCannotChangeAnotherRepository[author]" classname="com.bontecou.syncmd.ui.viewmodels.RepositorySettingsConsentTest" time="0.088"/>
+  <testcase name="queuedSaveRejectsSameFolderReload[author]" classname="com.bontecou.syncmd.ui.viewmodels.RepositorySettingsConsentTest" time="0.067"/>
+  <testcase name="queuedSaveRejectsRepositorySwitch[author]" classname="com.bontecou.syncmd.ui.viewmodels.RepositorySettingsConsentTest" time="0.091"/>
+  <testcase name="changedConfigRejectsReviewedSaveWithoutOverwritingIt[author]" classname="com.bontecou.syncmd.ui.viewmodels.RepositorySettingsConsentTest" time="0.067"/>
+  <testcase name="currentReviewPublishesOnlyItsConfigOnce[author]" classname="com.bontecou.syncmd.ui.viewmodels.RepositorySettingsConsentTest" time="0.086"/>
+  <testcase name="sameFolderReloadRevokesOldSaveCallback[upstream]" classname="com.bontecou.syncmd.ui.viewmodels.RepositorySettingsConsentTest" time="0.074"/>
+  <testcase name="unchangedReloadPublishesDistinctReviewForUiCollectors[upstream]" classname="com.bontecou.syncmd.ui.viewmodels.RepositorySettingsConsentTest" time="0.054"/>
+  <testcase name="invalidDraftLeavesRepositoryUnchanged[upstream]" classname="com.bontecou.syncmd.ui.viewmodels.RepositorySettingsConsentTest" time="0.115"/>
+  <testcase name="oldSaveCallbackCannotChangeAnotherRepository[upstream]" classname="com.bontecou.syncmd.ui.viewmodels.RepositorySettingsConsentTest" time="0.182"/>
+  <testcase name="queuedSaveRejectsSameFolderReload[upstream]" classname="com.bontecou.syncmd.ui.viewmodels.RepositorySettingsConsentTest" time="0.098"/>
+  <testcase name="queuedSaveRejectsRepositorySwitch[upstream]" classname="com.bontecou.syncmd.ui.viewmodels.RepositorySettingsConsentTest" time="0.053"/>
+  <testcase name="changedConfigRejectsReviewedSaveWithoutOverwritingIt[upstream]" classname="com.bontecou.syncmd.ui.viewmodels.RepositorySettingsConsentTest" time="0.062"/>
+  <testcase name="currentReviewPublishesOnlyItsConfigOnce[upstream]" classname="com.bontecou.syncmd.ui.viewmodels.RepositorySettingsConsentTest" time="0.106"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

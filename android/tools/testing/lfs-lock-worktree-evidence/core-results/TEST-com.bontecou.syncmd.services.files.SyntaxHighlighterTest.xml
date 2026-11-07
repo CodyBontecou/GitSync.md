@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.files.SyntaxHighlighterTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-11-02T19:21:11" hostname="MacBook-Pro.local" time="0.006">
+  <properties/>
+  <testcase name="all supported families tokenize without changing the input" classname="com.bontecou.syncmd.services.files.SyntaxHighlighterTest" time="0.005"/>
+  <testcase name="comment syntax inside a string stays part of the string and offsets preserve Unicode" classname="com.bontecou.syncmd.services.files.SyntaxHighlighterTest" time="0.0"/>
+  <testcase name="detects the same source language families as the iOS editor" classname="com.bontecou.syncmd.services.files.SyntaxHighlighterTest" time="0.0"/>
+  <testcase name="large and unknown files bypass expensive highlighting" classname="com.bontecou.syncmd.services.files.SyntaxHighlighterTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
