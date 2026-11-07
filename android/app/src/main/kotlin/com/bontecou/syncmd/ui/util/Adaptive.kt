@@ -19,6 +19,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -135,10 +136,16 @@ fun rememberAdaptiveInfo(): AdaptiveInfo {
             value = info.toFold()
         }
     }
-    val foldable = remember(context) {
+    val hingeFeature = remember(context) {
         android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R &&
             context.packageManager.hasSystemFeature(android.content.pm.PackageManager.FEATURE_SENSOR_HINGE_ANGLE)
     }
+    // Not every foldable declares the hinge-angle feature (some emulator images don't), but any
+    // device whose WindowManager has reported a FoldingFeature folds; remember that once seen so a
+    // folded (cover) window, which reports no fold, still counts.
+    var sawFold by rememberSaveable { mutableStateOf(false) }
+    androidx.compose.runtime.LaunchedEffect(fold != null) { if (fold != null) sawFold = true }
+    val foldable = hingeFeature || sawFold || fold != null
     // Entering or leaving split screen is a configuration change, so these re-read with it.
     val multiWindow = activity?.isInMultiWindowMode == true
     val displaySmallest = remember(activity, configuration) {

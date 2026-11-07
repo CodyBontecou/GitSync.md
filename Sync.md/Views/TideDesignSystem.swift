@@ -220,10 +220,15 @@ struct TidePrimaryButton: View {
     var body: some View {
         Button(action: action) {
             HStack {
+                // Fixed 60pt pill: shrink rather than truncate at large sizes.
                 Text(title).font(TideFont.button)
-                Spacer()
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.6)
+                Spacer(minLength: 8)
                 if let badge {
                     Text(badge).font(TideFont.metaStrong)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.7)
                         .padding(.horizontal, 14).frame(height: 44)
                         .background(Capsule().fill(Tide.behind))
                         .foregroundStyle(.white)

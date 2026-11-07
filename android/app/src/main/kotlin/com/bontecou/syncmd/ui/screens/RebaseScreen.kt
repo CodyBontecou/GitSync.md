@@ -315,7 +315,7 @@ private fun RebaseHero(
         val meta = when (phase) {
             RebasePhase.REVIEW -> plan?.let { stringResource(R.string.ui_1_s_local_commits_2_s_upstream_commits_77dc6fa8, it.ahead.toString(), it.behind.toString()) }
             RebasePhase.CONFLICTS, RebasePhase.BLOCKED, RebasePhase.READY -> listOfNotNull(branch,
-                progress?.let { p -> if (p.step != null && p.total != null) stringResource(R.string.git_m3_commit_of, p.step!!, p.total!!) else null },
+                progress?.let { p -> val step = p.step; val total = p.total; if (step != null && total != null) stringResource(R.string.git_m3_commit_of, step, total) else null },
                 progress?.stopped?.let { "${it.shortId} ${it.title}" }).joinToString(" · ")
             RebasePhase.DONE -> lastPlan?.let { pluralStringResource(R.plurals.git_m3_rebase_done_meta, ahead ?: it.ahead, ahead ?: it.ahead, it.upstreamHead.take(7)) }
             RebasePhase.ABORTED -> headShort?.let { stringResource(R.string.git_m3_rebase_restored, branch, it, ahead ?: 0, behind ?: 0) }

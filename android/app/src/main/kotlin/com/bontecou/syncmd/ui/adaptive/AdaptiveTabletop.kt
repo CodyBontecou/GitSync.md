@@ -152,7 +152,9 @@ fun InlineCommitForm(
         files = files,
         counts = counts,
         branch = branch ?: overview?.branch,
-        remote = overview?.remote ?: "origin",
+        // Unknown until the overview loads; a loaded overview without a push remote is local-only.
+        remote = overview?.remote,
+        localOnly = overview != null && overview.remote == null,
         message = message,
         onMessage = diffVM::setCommitMessage,
         onToggle = { file, on -> if (on) diffVM.stageFile(file.path) else diffVM.unstageFile(file.path) },
@@ -182,7 +184,7 @@ internal fun InlineCommitFormContent(
     files: List<CommitFile>,
     counts: Map<String, FileLineCount>,
     branch: String?,
-    remote: String,
+    remote: String?,
     message: String,
     onMessage: (String) -> Unit,
     onToggle: (CommitFile, Boolean) -> Unit,
@@ -195,6 +197,8 @@ internal fun InlineCommitFormContent(
     onCommitOnly: () -> Unit,
     onCommitAndPush: () -> Unit,
     modifier: Modifier = Modifier,
+    /** True once the vault is known to have no push remote (shown instead of "→ remote"). */
+    localOnly: Boolean = false,
     error: String? = null,
     onDismissError: () -> Unit = {},
 ) {
@@ -207,7 +211,11 @@ internal fun InlineCommitFormContent(
         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
             Text(pluralStringResource(R.plurals.adaptive_commit_changes, staged, staged), Modifier.weight(1f),
                 style = M3Type.title.copy(fontSize = 20.sp), color = c.on)
-            if (branch != null) Text(stringResource(R.string.adaptive_branch_to_remote, branch, remote),
+            if (branch != null) Text(when {
+                    remote != null -> stringResource(R.string.adaptive_branch_to_remote, branch, remote)
+                    localOnly -> stringResource(R.string.adaptive_branch_local_only, branch)
+                    else -> branch
+                },
                 Modifier.background(c.sc, RoundedCornerShape(8.dp)).padding(horizontal = 10.dp, vertical = 4.dp),
                 style = M3Type.metaStrong.copy(textDirection = TextDirection.Ltr), color = c.onSc, maxLines = 1)
         }

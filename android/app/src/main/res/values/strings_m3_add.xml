@@ -118,6 +118,8 @@
     <string name="add_clone_busy">Cloning repository</string>
     <string name="add_clone_to">→ %1$s</string>
     <string name="add_clone_location">Clone location</string>
+    <string name="add_clone_new_folder">new folder</string>
+    <string name="add_remote_name_invalid">Use a name without / or \\, and not “.” or “..”.</string>
     <string name="add_clone_choose_folder">Choose another folder</string>
     <string name="add_clone_app_storage">Use app storage</string>
     <string name="add_clone_saved_default">Use saved default</string>

@@ -1063,6 +1063,10 @@ struct SettingsView: View {
             return showValidation(String(localized: "Please enter a valid Git remote URL."))
         }
 
+        if let identityIssue = GitIdentityValidation.nameIssue(trimmedName) ?? GitIdentityValidation.emailIssue(trimmedEmail) {
+            return showValidation(identityIssue)
+        }
+
         if authMethod == .gitHubPAT && (!canUseGitHubPAT || !state.isSignedIn) {
             return showValidation(String(localized: "GitHub Account authentication is only available for GitHub HTTPS repositories while signed in."))
         }

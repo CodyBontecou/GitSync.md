@@ -168,7 +168,8 @@ fun GitScreen(
         } else workspace.rebase?.let { rebase ->
             GitToneHero(M3.colors.tc, M3.colors.onTc) {
                 GitKicker(stringResource(R.string.git_m3_rebase_in_progress))
-                GitHeroTitle(if (rebase.step != null && rebase.total != null) stringResource(R.string.git_m3_rebase_step, rebase.step!!, rebase.total!!)
+                val step = rebase.step; val total = rebase.total
+                GitHeroTitle(if (step != null && total != null) stringResource(R.string.git_m3_rebase_step, step, total)
                     else stringResource(R.string.git_m3_rebase_stopped))
                 M3Button(stringResource(R.string.git_m3_open_rebase), { navigate(GitDestination.Rebase) },
                     Modifier.padding(top = 16.dp).testTag("open-rebase"), style = M3ButtonStyle.Filled, size = M3ButtonSize.Medium)

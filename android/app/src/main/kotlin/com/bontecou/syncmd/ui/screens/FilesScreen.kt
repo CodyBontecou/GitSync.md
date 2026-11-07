@@ -185,7 +185,7 @@ fun FilesScreen(
         },
         bottomBar = { if (showNavigation) M3VaultNavigationBar(VaultTab.FILES, onSelectTab, changes = state.changes) },
         floatingActionButton = {
-            M3Fab(R.drawable.ic_m3_edit, stringResource(R.string.files_m3_new_file_cd), { if (!state.isMutating) creating = true },
+            M3Fab(R.drawable.ic_m3_edit, stringResource(R.string.files_m3_new_file_cd), { if (!state.isMutating) { viewModel.clearError(); creating = true } },
                 Modifier.testTag("files-new"))
         },
     ) { padding ->
@@ -244,10 +244,15 @@ fun FilesScreen(
             folderLabel = (directory.substringAfterLast('/').ifEmpty { name }) + "/",
             templates = state.templates,
             exists = viewModel::exists,
-            onDismiss = { creating = false },
+            // A failed create keeps the dialog open; show why inside it, not behind it.
+            failure = state.error?.let { stringResource(it.resourceId) },
+            onDismiss = { creating = false; viewModel.clearError() },
             onCreate = { file, folder, content ->
-                creating = false
-                viewModel.create(file, folder, content) { path -> if (folder) onOpenDirectory(path) else onOpenFile(path) }
+                // Close only once the entry exists, so a failed create keeps the typed name.
+                viewModel.create(file, folder, content) { path ->
+                    creating = false
+                    if (folder) onOpenDirectory(path) else onOpenFile(path)
+                }
             },
         )
     }
@@ -376,6 +381,21 @@ internal fun fillTemplate(template: String, title: String, now: java.util.Date =
     .replace("{{date}}", java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.ROOT).format(now))
     .replace("{{time}}", java.text.SimpleDateFormat("HH:mm", java.util.Locale.ROOT).format(now))
 
+/** Why a new note or folder name can't be used. */
+internal enum class NewEntryNameIssue { SEPARATOR, DOTS, TOO_LONG }
+
+/** Most filesystems cap one path segment at 255 bytes. */
+internal const val MAX_ENTRY_NAME_BYTES = 255
+
+/** Checks the base name the user typed and the final on-disk [fileName] (with ".md" for notes). */
+internal fun newEntryNameIssue(base: String, fileName: String): NewEntryNameIssue? = when {
+    base.isEmpty() -> null
+    base.any { it == '/' || it == '\\' } -> NewEntryNameIssue.SEPARATOR
+    base == "." || base == ".." -> NewEntryNameIssue.DOTS
+    fileName.toByteArray(Charsets.UTF_8).size > MAX_ENTRY_NAME_BYTES -> NewEntryNameIssue.TOO_LONG
+    else -> null
+}
+
 /** The base name the user typed, without a trailing ".md". */
 internal fun noteBaseName(input: String): String = input.trim().let { if (it.endsWith(".md", ignoreCase = true)) it.dropLast(3) else it }
 
@@ -385,6 +405,7 @@ private fun NewNoteDialog(
     folderLabel: String,
     templates: List<NoteTemplate>,
     exists: (String) -> Boolean,
+    failure: String? = null,
     onDismiss: () -> Unit,
     onCreate: (name: String, folder: Boolean, content: String) -> Unit,
 ) {
@@ -398,12 +419,14 @@ private fun NewNoteDialog(
     val choices = templates.ifEmpty { listOf(NoteTemplate(builtInName, BUILT_IN_IDEA, builtIn = true)) }
     val base = if (folder) input.trim() else noteBaseName(input)
     val fileName = if (folder) base else "$base.md"
-    val invalid = base.isNotEmpty() && (base.any { it == '/' || it == '\\' } || base == "." || base == "..")
-    val taken = base.isNotEmpty() && !invalid && exists(fileName)
+    val issue = newEntryNameIssue(base, fileName)
+    val taken = base.isNotEmpty() && issue == null && exists(fileName)
     val error = when {
-        invalid -> stringResource(R.string.newfile_m3_invalid)
+        issue == NewEntryNameIssue.SEPARATOR -> stringResource(R.string.newfile_m3_invalid)
+        issue == NewEntryNameIssue.DOTS -> stringResource(R.string.newfile_m3_invalid_dots)
+        issue == NewEntryNameIssue.TOO_LONG -> stringResource(R.string.newfile_m3_too_long)
         taken -> stringResource(R.string.newfile_m3_exists, fileName, folderLabel)
-        else -> null
+        else -> failure
     }
     val title = stringResource(if (folder) R.string.newfile_m3_title_folder else R.string.newfile_m3_title_note)
     M3Dialog(

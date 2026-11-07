@@ -425,7 +425,7 @@ private fun ReviewCard(plan: RepositoryActionPlan, enabled: Boolean, onReview: (
             Column(Modifier.padding(start = 20.dp, end = 20.dp, top = 16.dp, bottom = 12.dp)) {
                 Text(plan.target.name, style = M3Type.bodyStrong.copy(fontWeight = FontWeight.SemiBold), color = c.on)
                 Text(stringResource(R.string.settings_m3_sc_branch_reviewed, plan.branch ?: "HEAD", plan.head?.take(7).orEmpty()), style = M3Type.meta, color = c.on)
-                Text(stringResource(R.string.settings_m3_sc_upstream, plan.remote.orEmpty(), plan.remoteBranch.orEmpty()), style = M3Type.meta, color = c.primary)
+                Text(upstreamLabel(R.string.settings_m3_sc_upstream, plan.remote, plan.remoteBranch), style = M3Type.meta, color = c.primary)
                 listOfNotNull(plan.fetchUrl, plan.pushUrl).distinct().forEach { url ->
                     com.bontecou.syncmd.services.repositories.RepositoryDiscovery.redactRemoteUrl(url)?.let {
                         Text(it, style = M3Type.meta.copy(textDirection = TextDirection.Ltr), color = c.onVar)
@@ -466,7 +466,7 @@ private fun DangerRow(label: String, enabled: Boolean, onClick: () -> Unit) {
     val c = M3.colors
     Text(plan.target.path, Modifier.padding(top = 8.dp), style = M3Type.meta.copy(textDirection = TextDirection.Ltr), color = c.onVar)
     Text(stringResource(R.string.repository_actions_branch, plan.branch ?: "HEAD", plan.head.orEmpty()), style = M3Type.meta, color = c.on)
-    Text(stringResource(R.string.repository_actions_destination, plan.remote.orEmpty(), plan.remoteBranch.orEmpty()), style = M3Type.meta, color = c.primary)
+    Text(upstreamLabel(R.string.repository_actions_destination, plan.remote, plan.remoteBranch), style = M3Type.meta, color = c.primary)
     if (request.action in setOf(RepositoryAction.PUSH, RepositoryAction.SYNC)) {
         Text(stringResource(R.string.repository_actions_message), Modifier.padding(top = 8.dp), style = M3Type.section, color = c.onVar)
         Text(request.message, color = c.on)
@@ -534,3 +534,9 @@ private fun problemLabel(problem: RepositoryActionProblem) = when (problem) {
     RepositoryActionProblem.UNSETTLED -> R.string.repository_actions_unsettled
     RepositoryActionProblem.CONNECTION -> R.string.repository_actions_failed
 }
+
+/** "Upstream: origin / main" in [format], or "Upstream: none" when the branch tracks no remote. */
+@Composable
+internal fun upstreamLabel(format: Int, remote: String?, remoteBranch: String?): String =
+    if (remote.isNullOrEmpty()) stringResource(R.string.repository_actions_destination_none)
+    else stringResource(format, remote, remoteBranch?.ifEmpty { null } ?: "—")

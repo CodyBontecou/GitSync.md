@@ -110,7 +110,9 @@ fun ConflictScreen(
             runCatching { withContext(Dispatchers.IO) { GitWorkspaceDetails.workTreeText(path, c.filePath) } }.getOrNull()
         }
     }
-    val editedClean = conflict != null && conflict.filePath in handEdited && disk != null && disk!!.lineSequence().none { it.startsWith("<<<<<<<") || it.startsWith(">>>>>>>") }
+    // One read of the delegated state, so the check and the accept use the same text.
+    val diskText = disk
+    val editedClean = conflict != null && conflict.filePath in handEdited && diskText != null && diskText.lineSequence().none { it.startsWith("<<<<<<<") || it.startsWith(">>>>>>>") }
 
     // After the last file: make the merge commit, then leave.
     LaunchedEffect(conflicts.isEmpty(), ready, mergeState?.isMergeInProgress, total) {
@@ -145,7 +147,7 @@ fun ConflictScreen(
                     M3Button(label, {
                         val expected = context ?: return@M3Button
                         when {
-                            editedClean -> conflictVM.acceptContent(expected, current, disk!!) { handEdited = handEdited - current.filePath }
+                            editedClean && diskText != null -> conflictVM.acceptContent(expected, current, diskText) { handEdited = handEdited - current.filePath }
                             side == 0 -> conflictVM.acceptOurs(expected, current)
                             else -> conflictVM.acceptTheirs(expected, current)
                         }

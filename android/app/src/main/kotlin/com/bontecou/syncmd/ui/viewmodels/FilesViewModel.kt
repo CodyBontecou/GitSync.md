@@ -110,7 +110,17 @@ class FilesViewModel @Inject constructor(private val lfs: LfsRepository) : ViewM
     /** Creates a note (optionally with [content]) or a folder, then hands its path to [onCreated]. */
     fun create(name: String, isDirectory: Boolean, content: String, onCreated: (String) -> Unit) = mutate {
         val path = files.create(root, directory, name, isDirectory)
-        if (!isDirectory && content.isNotEmpty()) files.save(root, files.read(root, path), content)
+        if (!isDirectory && content.isNotEmpty()) {
+            try {
+                files.save(root, files.read(root, path), content)
+            } catch (e: CancellationException) { throw e
+            } catch (e: Exception) {
+                // Don't leave an empty note behind: the dialog would then report
+                // "already exists" for the name and the real error would be lost.
+                runCatching { files.delete(root, files.read(root, path)) }
+                throw e
+            }
+        }
         withContext(Dispatchers.Main.immediate) { onCreated(path) }
     }
 

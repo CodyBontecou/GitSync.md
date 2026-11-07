@@ -87,9 +87,8 @@ struct CommitAuthorSettingsView: View {
 
     private enum Field { case name, email }
 
-    private var emailLooksInvalid: Bool {
-        let trimmed = email.trimmingCharacters(in: .whitespacesAndNewlines)
-        return !trimmed.isEmpty && !(trimmed.contains("@") && !trimmed.hasPrefix("@") && !trimmed.hasSuffix("@"))
+    private var identityIssue: String? {
+        GitIdentityValidation.nameIssue(name) ?? GitIdentityValidation.emailIssue(email)
     }
 
     var body: some View {
@@ -102,8 +101,8 @@ struct CommitAuthorSettingsView: View {
                          contentType: .emailAddress, keyboard: .emailAddress)
             }
 
-            if emailLooksInvalid {
-                Text(String(localized: "That doesn't look like an email address."))
+            if let identityIssue {
+                Text(identityIssue + " " + String(localized: "Changes won't be saved until this is fixed."))
                     .font(TideFont.sans(13, .medium, relativeTo: .footnote))
                     .foregroundStyle(Tide.ahead)
                     .padding(.horizontal, 20)
@@ -146,6 +145,7 @@ struct CommitAuthorSettingsView: View {
     private func save() {
         let trimmedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
         let trimmedEmail = email.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard identityIssue == nil else { return }
         guard trimmedName != state.defaultAuthorName || trimmedEmail != state.defaultAuthorEmail else { return }
         state.defaultAuthorName = trimmedName
         state.defaultAuthorEmail = trimmedEmail

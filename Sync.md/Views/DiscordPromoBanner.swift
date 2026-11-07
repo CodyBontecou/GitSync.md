@@ -4,6 +4,7 @@ import SwiftUI
 /// Discord community.
 struct DiscordPromoBanner: View {
     @AppStorage("discordPromoDismissed") private var dismissed: Bool = false
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     private static let inviteURL = URL(string: "https://discord.gg/RaQYS4t6gn")!
 
@@ -14,9 +15,13 @@ struct DiscordPromoBanner: View {
                     Text(String(localized: "Join the GitSync.md Discord"))
                         .font(TideFont.sans(15, .semibold, relativeTo: .subheadline))
                         .foregroundStyle(Tide.heroText)
-                    Text(String(localized: "Tips, beta builds, feature votes."))
-                        .font(TideFont.sans(13.5, relativeTo: .footnote))
-                        .foregroundStyle(Tide.heroMeta)
+                    // A promo must not crowd out the vaults at accessibility
+                    // sizes: keep the headline only (still capped below).
+                    if !dynamicTypeSize.isAccessibilitySize {
+                        Text(String(localized: "Tips, beta builds, feature votes."))
+                            .font(TideFont.sans(13.5, relativeTo: .footnote))
+                            .foregroundStyle(Tide.heroMeta)
+                    }
                 }
                 .fixedSize(horizontal: false, vertical: true)
                 .accessibilityElement(children: .combine)
@@ -64,6 +69,7 @@ struct DiscordPromoBanner: View {
                 RoundedRectangle(cornerRadius: 20, style: .continuous)
                     .strokeBorder(Tide.heroBorder, lineWidth: 1)
             )
+            .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
             .padding(.horizontal, Tide.gutter)
             .padding(.top, 8)
             .padding(.bottom, 4)

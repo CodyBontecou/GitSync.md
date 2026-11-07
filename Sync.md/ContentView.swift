@@ -77,6 +77,11 @@ struct ContentView: View {
                 state.shouldRequestReview = false
                 // Small delay so the clone-complete UI settles before the review prompt appears
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    // Re-check: a callback banner, alert, or sync may have
+                    // started meanwhile, or the app may have left the foreground.
+                    guard state.canPresentReviewPrompt,
+                          UIApplication.shared.applicationState == .active else { return }
+                    state.markReviewRequested()
                     requestReview()
                 }
             }

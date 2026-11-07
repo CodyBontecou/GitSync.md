@@ -38,6 +38,8 @@ class ConnectionViewModel @Inject constructor(private val credentials: Repositor
     val state = _state.asStateFlow()
     val accounts = auth.accounts
     fun activeAccountId() = auth.activeAccountId()
+    /** The form's typed secrets: kept across configuration changes, never in saved state. */
+    val secretDrafts = com.bontecou.syncmd.ui.util.SecretDrafts()
     fun canonicalAccountId(id: String?) = id?.let { auth.accountSummary(it)?.id ?: it }
     fun defaultAccountId() = auth.defaultAccountId()
     private val connection = RepositoryConnection()
@@ -46,6 +48,9 @@ class ConnectionViewModel @Inject constructor(private val credentials: Repositor
     private var requestedPath: String? = null
     private var completingSave: State? = null
     private var deliveredSave: State? = null
+    /** Whether [load] already ran for [path] in this ViewModel (a recreated screen reuses it). */
+    fun hasLoaded(path: String) = requestedPath == path
+
     fun load(path: String) {
         requestedPath = path
         val request = ++generation

@@ -11470,3 +11470,175 @@ final class VaultPreflightTests: XCTestCase {
         XCTAssertEqual(preflight.gitHubWebURL?.absoluteString, "https://github.com/cody/notes")
     }
 }
+
+// MARK: - QA fixes 2026-11-07: names, paths, push bytes
+
+@MainActor
+final class NameValidationTests: XCTestCase {
+    func testVaultFolderNameRejectsTraversalSeparatorsAndReservedNames() {
+        XCTAssertEqual(VaultFolderName.issue(for: ""), .empty)
+        XCTAssertEqual(VaultFolderName.issue(for: "   "), .empty)
+        XCTAssertEqual(VaultFolderName.issue(for: "."), .reserved)
+        XCTAssertEqual(VaultFolderName.issue(for: ".."), .reserved)
+        XCTAssertEqual(VaultFolderName.issue(for: "../Library/qa-traversal"), .separator)
+        XCTAssertEqual(VaultFolderName.issue(for: "a/b"), .separator)
+        XCTAssertEqual(VaultFolderName.issue(for: "a:b"), .separator)
+        XCTAssertEqual(VaultFolderName.issue(for: ".hidden"), .leadingDot)
+        XCTAssertEqual(VaultFolderName.issue(for: "tab\there"), .controlCharacter)
+        XCTAssertEqual(VaultFolderName.issue(for: String(repeating: "a", count: 256)), .tooLong)
+        XCTAssertNil(VaultFolderName.issue(for: String(repeating: "a", count: 255)))
+        XCTAssertNil(VaultFolderName.issue(for: "git-tools-fixture"))
+        XCTAssertNil(VaultFolderName.issue(for: "My Notes 2026.11"))
+    }
+
+    func testVaultFolderNameUniqueAppendsNumericSuffix() {
+        let taken: Set<String> = ["notes", "notes-2"]
+        XCTAssertEqual(VaultFolderName.unique("notes") { taken.contains($0) }, "notes-3")
+        XCTAssertEqual(VaultFolderName.unique("fresh") { taken.contains($0) }, "fresh")
+    }
+
+    func testVaultFolderContainmentRejectsEscapesAndParentItself() {
+        let parent = URL(fileURLWithPath: "/tmp/container/Documents", isDirectory: true)
+        XCTAssertTrue(VaultFolderName.isContained(parent.appendingPathComponent("notes"), in: parent))
+        XCTAssertFalse(VaultFolderName.isContained(parent.appendingPathComponent("../Library/x"), in: parent))
+        XCTAssertFalse(VaultFolderName.isContained(parent.appendingPathComponent(".."), in: parent))
+        XCTAssertFalse(VaultFolderName.isContained(parent, in: parent))
+        XCTAssertFalse(VaultFolderName.isContained(URL(fileURLWithPath: "/tmp/container/DocumentsX/a"), in: parent))
+    }
+
+    func testGitHubShorthandRejectsDotSegments() {
+        XCTAssertNil(GitRemoteURL.parse("../.."))
+        XCTAssertNil(GitRemoteURL.parse("owner/.."))
+        XCTAssertNil(GitRemoteURL.parse("./repo"))
+        XCTAssertEqual(GitRemoteURL.parse("owner/repo")?.repoName, "repo")
+    }
+
+    func testNoteFileNameAppendsMarkdownUnlessTextExtension() {
+        XCTAssertEqual(NoteFileName.finalName(for: "standup 2026.11.07"), "standup 2026.11.07.md")
+        XCTAssertEqual(NoteFileName.finalName(for: "v1.2"), "v1.2.md")
+        XCTAssertEqual(NoteFileName.finalName(for: "ideas"), "ideas.md")
+        XCTAssertEqual(NoteFileName.finalName(for: "ideas.md"), "ideas.md")
+        XCTAssertEqual(NoteFileName.finalName(for: "README.MARKDOWN"), "README.MARKDOWN")
+        XCTAssertEqual(NoteFileName.finalName(for: "todo.txt"), "todo.txt")
+        XCTAssertEqual(NoteFileName.finalName(for: ""), "")
+        XCTAssertFalse(NoteFileName.isTooLong(String(repeating: "a", count: 252) + ".md"))
+        XCTAssertTrue(NoteFileName.isTooLong(String(repeating: "a", count: 300) + ".md"))
+        // Multi-byte characters count by UTF-8 bytes, not characters.
+        XCTAssertTrue(NoteFileName.isTooLong(String(repeating: "é", count: 128)))
+    }
+
+    func testCommitSuggestionKeepsDottedDateWithoutExtension() {
+        XCTAssertEqual(
+            CommitMessageSuggester.subject(for: .init(path: "standup 2026.11.07", change: .added)),
+            CommitMessageSuggester.subject(for: .init(path: "standup 2026.11.07.md", change: .added))
+        )
+        XCTAssertFalse(CommitMessageSuggester.message(for: [.init(path: "standup 2026.11.07", change: .added)])
+            .hasSuffix("2026.11"))
+    }
+
+    func testGitIdentityValidation() {
+        XCTAssertNil(GitIdentityValidation.emailIssue("you@example.com"))
+        XCTAssertNil(GitIdentityValidation.emailIssue("1234+cody@users.noreply.github.com"))
+        XCTAssertNil(GitIdentityValidation.emailIssue(""))
+        XCTAssertNotNil(GitIdentityValidation.emailIssue("notanemail"))
+        // Git accepts dotless hosts; only malformed domains are rejected.
+        XCTAssertNil(GitIdentityValidation.emailIssue("a@b"))
+        XCTAssertNil(GitIdentityValidation.emailIssue("cody@devbox"))
+        XCTAssertNil(GitIdentityValidation.emailIssue("you@localhost"))
+        XCTAssertNotNil(GitIdentityValidation.emailIssue("a@"))
+        XCTAssertNotNil(GitIdentityValidation.emailIssue("a@.b"))
+        XCTAssertNotNil(GitIdentityValidation.emailIssue("a@b."))
+        XCTAssertNotNil(GitIdentityValidation.emailIssue("a@b..c"))
+        XCTAssertNotNil(GitIdentityValidation.emailIssue("a b@example.com"))
+        XCTAssertNotNil(GitIdentityValidation.emailIssue("<a@example.com>"))
+        XCTAssertNotNil(GitIdentityValidation.emailIssue("a@example."))
+        XCTAssertNil(GitIdentityValidation.nameIssue("Cody Bontecou"))
+        XCTAssertNotNil(GitIdentityValidation.nameIssue("QA <bad>"))
+        XCTAssertNotNil(GitIdentityValidation.nameIssue("two\nlines"))
+    }
+
+    func testPushBytesSanitizerDropsUnreliableAndImplausibleValues() {
+        XCTAssertEqual(sanitizedPushBytes(17, reliable: true), 17)
+        XCTAssertEqual(sanitizedPushBytes(4_770_000_000, reliable: false), 0)
+        XCTAssertEqual(sanitizedPushBytes(-1, reliable: true), 0)
+        XCTAssertEqual(sanitizedPushBytes(Int.max, reliable: true), 0)
+    }
+
+    func testCloneTargetConflictProtectsOtherVaultsAndForeignRepositories() throws {
+        let state = AppState(loadPersistedState: false)
+        let docs = AppState.appDocumentsDirectory
+        let name = "qa-conflict-\(UUID().uuidString.prefix(8))"
+        let existing = RepoConfig(repoURL: "file:///tmp/a.git", branch: "main", authorName: "A", authorEmail: "a@example.com",
+                                  vaultFolderName: name)
+        let duplicate = RepoConfig(repoURL: "file:///tmp/a.git", branch: "main", authorName: "A", authorEmail: "a@example.com",
+                                   vaultFolderName: name)
+        let traversal = RepoConfig(repoURL: "file:///tmp/a.git", branch: "main", authorName: "A", authorEmail: "a@example.com",
+                                   vaultFolderName: "../Library/\(name)")
+        state.repos = [existing, duplicate, traversal]
+
+        XCTAssertTrue(state.isVaultFolderInUse(name))
+        XCTAssertEqual(state.availableVaultFolderName(name), "\(name)-2")
+        XCTAssertNotNil(state.cloneTargetConflict(state.vaultURL(for: duplicate.id), repoID: duplicate.id))
+        XCTAssertNotNil(state.cloneTargetConflict(state.vaultURL(for: traversal.id), repoID: traversal.id))
+
+        // A lone vault may re-clone over its own partial clone of the same
+        // remote, but not over a working copy of a different remote.
+        state.repos = [existing]
+        let dir = docs.appendingPathComponent(name, isDirectory: true)
+        try FileManager.default.createDirectory(at: dir.appendingPathComponent(".git"), withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: dir) }
+        let config = dir.appendingPathComponent(".git/config")
+        try "[remote \"origin\"]\n\turl = file:///tmp/a.git\n".write(to: config, atomically: true, encoding: .utf8)
+        XCTAssertNil(state.cloneTargetConflict(dir, repoID: existing.id))
+        try "[remote \"origin\"]\n\turl = https://example.com/other.git\n".write(to: config, atomically: true, encoding: .utf8)
+        XCTAssertNotNil(state.cloneTargetConflict(dir, repoID: existing.id))
+    }
+
+    func testCloneTargetKeepsAnyFolderThatIsNotThisVaultsRepository() throws {
+        let state = AppState(loadPersistedState: false)
+        let fm = FileManager.default
+        let name = "qa-keep-\(UUID().uuidString.prefix(8))"
+        let vault = RepoConfig(repoURL: "https://github.com/Owner/Notes.git", branch: "main", authorName: "A",
+                               authorEmail: "a@example.com", vaultFolderName: name)
+        state.repos = [vault]
+        let dir = AppState.appDocumentsDirectory.appendingPathComponent(name, isDirectory: true)
+        let git = dir.appendingPathComponent(".git", isDirectory: true)
+        let config = git.appendingPathComponent("config")
+        defer { try? fm.removeItem(at: dir) }
+        func reset() throws { try? fm.removeItem(at: dir); try fm.createDirectory(at: dir, withIntermediateDirectories: true) }
+
+        // Missing or empty: safe to clone into.
+        XCTAssertNil(state.cloneTargetConflict(dir, repoID: vault.id))
+        try reset()
+        XCTAssertNil(state.cloneTargetConflict(dir, repoID: vault.id))
+
+        // A plain folder of notes is kept.
+        try "hello".write(to: dir.appendingPathComponent("note.md"), atomically: true, encoding: .utf8)
+        XCTAssertNotNil(state.cloneTargetConflict(dir, repoID: vault.id))
+
+        // A local repository with no remote but with files is kept.
+        try fm.createDirectory(at: git, withIntermediateDirectories: true)
+        try "[core]\n\tbare = false\n".write(to: config, atomically: true, encoding: .utf8)
+        XCTAssertNotNil(state.cloneTargetConflict(dir, repoID: vault.id))
+
+        // An interrupted clone (only an empty .git) may be replaced, unless it has commits.
+        try reset()
+        try fm.createDirectory(at: git.appendingPathComponent("refs/heads"), withIntermediateDirectories: true)
+        try "[core]\n\tbare = false\n".write(to: config, atomically: true, encoding: .utf8)
+        XCTAssertNil(state.cloneTargetConflict(dir, repoID: vault.id))
+        try "0123456789012345678901234567890123456789\n".write(to: git.appendingPathComponent("refs/heads/main"), atomically: true, encoding: .utf8)
+        XCTAssertNotNil(state.cloneTargetConflict(dir, repoID: vault.id))
+
+        // The same repository in another URL form is still this vault's.
+        try reset()
+        try fm.createDirectory(at: git, withIntermediateDirectories: true)
+        try "note".write(to: dir.appendingPathComponent("a.md"), atomically: true, encoding: .utf8)
+        for form in ["git@github.com:owner/notes.git", "ssh://git@github.com/owner/notes",
+                     "https://cody@github.com/owner/notes/", "https://github.com/OWNER/notes"] {
+            try "[remote \"origin\"]\n\turl = \(form)\n".write(to: config, atomically: true, encoding: .utf8)
+            XCTAssertNil(state.cloneTargetConflict(dir, repoID: vault.id), form)
+        }
+        try "[remote \"origin\"]\n\turl = git@github.com:owner/other.git\n".write(to: config, atomically: true, encoding: .utf8)
+        XCTAssertNotNil(state.cloneTargetConflict(dir, repoID: vault.id))
+    }
+}

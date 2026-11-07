@@ -147,7 +147,7 @@ fun RepositoryCallbackScreen(model: RepositoryCallbackViewModel, onBack: () -> U
                             Text(review.plan.target.name, style = TideType.title, color = c.ink)
                             Text(review.plan.target.path, style = TideType.mono(11.5.sp).copy(textDirection = TextDirection.Ltr), color = c.inkFaint)
                             Text(stringResource(R.string.repository_actions_branch, review.plan.branch ?: "HEAD", review.plan.head.orEmpty()), style = TideType.mono(12.5.sp), color = c.ink)
-                            Text(stringResource(R.string.repository_actions_destination, review.plan.remote.orEmpty(), review.plan.remoteBranch.orEmpty()), style = TideType.mono(12.5.sp), color = c.behind)
+                            Text(upstreamLabel(R.string.repository_actions_destination, review.plan.remote, review.plan.remoteBranch), style = TideType.mono(12.5.sp), color = c.behind)
                             listOfNotNull(review.plan.fetchUrl, review.plan.pushUrl).distinct().forEach { url ->
                                 RepositoryDiscovery.redactRemoteUrl(url)?.let { Text(it, style = TideType.mono(11.5.sp).copy(textDirection = TextDirection.Ltr), color = c.inkFaint) }
                             }

@@ -88,4 +88,21 @@ class HomeSyncAllTest {
         assertThat(pushes).isEmpty()
         assertThat(second.finished!!.pulled).isEqualTo(0)
     }
+
+    @Test fun `local-only vaults report nothing to sync`() = runBlocking {
+        val local = temporary.newFolder("local").canonicalFile.also { Git.init().setDirectory(it).setInitialBranch("main").call().close() }
+        commit(local, "a.md", "one")
+        val vm = HomeViewModel(
+            preferences = VaultPreferences(Memory, NoBackgroundInclusion), connectivity = null, credentials = { null }, signInStatus = null,
+            snapshot = { listOf(PullAllTarget(local.path, local.name)) },
+            runner = PullAllRunner(LocalPullRepository()),
+            push = { _, _, _, _ -> error("nothing to push") },
+            tokenFor = { null }, activeAccountId = { null },
+        )
+        vm.syncAll()
+        val done = withTimeout(30_000) { vm.syncAll.first { !it.busy && it.finished != null } }
+        assertThat(done.results.getValue(local.path).localOnly).isTrue()
+        assertThat(done.finished!!.nothingToSync).isTrue()
+        assertThat(done.finished!!.localOnly).isEqualTo(1)
+    }
 }

@@ -166,6 +166,9 @@ struct FileBrowserListing: View {
             }
         }
         .task(id: currentURL.standardizedFileURL.path) { loadItems() }
+        // Returning from the editor: sizes and dates may have changed even
+        // when git status (e.g. an already-untracked file) did not.
+        .onAppear { loadItems() }
         .onChange(of: statusEntries) { loadItems() }
         .sheet(isPresented: Binding(get: { renameItem != nil }, set: { if !$0 { renameItem = nil } })) {
             if let item = renameItem {
@@ -475,7 +478,9 @@ struct FileBrowserListing: View {
                 )
                 result[item.id] = FileItemMeta(childCount: children?.count)
             } else {
-                let values = try? item.url.resourceValues(forKeys: [.contentModificationDateKey, .fileSizeKey])
+                var url = item.url
+                url.removeAllCachedResourceValues()
+                let values = try? url.resourceValues(forKeys: [.contentModificationDateKey, .fileSizeKey])
                 var info = FileItemMeta(modified: values?.contentModificationDate, size: values?.fileSize)
                 info.isLFSTracked = attributes.isLFSTracked(path: item.relativePath)
                 if let size = values?.fileSize, size <= 2048,
@@ -578,6 +583,9 @@ struct FileBrowserListing: View {
     private func renameConflict(for item: FileItem, name: String) -> String? {
         let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty, trimmed != item.name else { return nil }
+        if NoteFileName.isTooLong(trimmed) {
+            return String(localized: "That name is too long. Names can be at most 255 bytes, including the extension.")
+        }
         let dest = item.url.deletingLastPathComponent().appendingPathComponent(trimmed)
         guard FileManager.default.fileExists(atPath: dest.path) else { return nil }
         return String(localized: "\(trimmed) already exists here. Try another name.")
