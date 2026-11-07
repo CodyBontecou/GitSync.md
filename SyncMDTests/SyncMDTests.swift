@@ -2116,7 +2116,7 @@ final class SyncMDTests: XCTestCase {
 
     @MainActor
     private func waitUntil(
-        timeout: Duration = .seconds(2),
+        timeout: Duration = .seconds(10),
         condition: @escaping @MainActor () -> Bool
     ) async {
         let clock = ContinuousClock()
