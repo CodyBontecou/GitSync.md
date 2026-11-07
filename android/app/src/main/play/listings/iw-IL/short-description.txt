@@ -1,0 +1,1 @@
+שכפול, commit,‏ pull ו-push למאגרי GitHub ב-Android.

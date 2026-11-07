@@ -1,0 +1,1 @@
+GitHub depolarını Android'de klonlayın, commit, pull ve push yapın.
