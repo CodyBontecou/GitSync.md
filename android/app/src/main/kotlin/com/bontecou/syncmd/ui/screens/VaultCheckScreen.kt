@@ -43,6 +43,8 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.bontecou.syncmd.R
@@ -110,12 +112,12 @@ fun VaultCheckScreen(target: VaultTarget, locked: Boolean, price: String?, onClo
     val parentConfiguration = LocalConfiguration.current
     val parentDirection = LocalLayoutDirection.current
     val parentDensity = LocalDensity.current
-    val bars = activitySystemBarPadding()
+    val activityView = androidx.compose.ui.platform.LocalView.current
     Dialog(onDismissRequest = onDismiss, properties = DialogProperties(usePlatformDefaultWidth = false, decorFitsSystemWindows = false)) {
       androidx.compose.runtime.CompositionLocalProvider(LocalContext provides parentContext, LocalConfiguration provides parentConfiguration,
           LocalLayoutDirection provides parentDirection, LocalDensity provides parentDensity) {
         VaultCheckContent(target, state, repo?.let { "${it.first}/${it.second}" }, locked, price, clonesTo, installation,
-            modifier = Modifier.padding(bars),
+            modifier = Modifier.background(M3.colors.surface).dialogSystemBarPadding(activityView),
             onBack = onDismiss, onClone = onClone, onAgain = { attempt++ },
             onAddOnGitHub = {
                 val url = installation?.htmlURL?.takeIf { it.startsWith("https://github.com/") } ?: INSTALLATIONS_URL
@@ -312,6 +314,65 @@ private fun VaultCheckLine(text: String, code: String?, ok: Boolean = true) {
  * The activity window's system-bar insets. Dialog windows here report none (edge-to-edge is
  * enforced on API 35+), so full-screen dialogs pad with the activity's instead.
  */
+/**
+ * Pads a full-screen dialog's content by the part of the activity's system bars the dialog window
+ * actually overlaps. Some Android versions lay dialog windows out edge to edge, others (API 37 on a
+ * Pixel) already place them between the status and navigation bars; padding by the full bar
+ * insets there doubles the top and pushes the bottom past the window. Call inside the Dialog with
+ * the activity's view captured outside it.
+ */
+/** Measured bar padding for a dialog: [padding] is valid once [tracker] (applied to the dialog's content) has been laid out. */
+internal class DialogBars(val padding: PaddingValues, val tracker: Modifier)
+
+@Composable
+internal fun rememberDialogBars(fallbackView: android.view.View): DialogBars {
+    val dialogView = androidx.compose.ui.platform.LocalView.current
+    // The caller's view can itself be inside another dialog (the unlock sheet opens from the vault
+    // check), whose window reports no bar insets; always measure against the activity's window.
+    val context = androidx.compose.ui.platform.LocalContext.current
+    val activityView = remember(context, fallbackView) {
+        var ctx: android.content.Context? = context
+        while (ctx is android.content.ContextWrapper && ctx !is android.app.Activity) ctx = ctx.baseContext
+        (ctx as? android.app.Activity)?.window?.decorView ?: fallbackView
+    }
+    val density = LocalDensity.current
+    var padding by remember { mutableStateOf(PaddingValues()) }
+    // Measures the content's real on-screen bounds (taken before the padding is applied) against the
+    // activity's system bars. On some Android versions the dialog window is inset by the system
+    // while Compose still lays the content out at full-screen height, so neither the window's
+    // insets nor its size can be trusted.
+    fun measure(coords: androidx.compose.ui.layout.LayoutCoordinates) {
+        val insets = activityView.rootWindowInsets?.let { androidx.core.view.WindowInsetsCompat.toWindowInsetsCompat(it, activityView) }
+            ?.getInsets(androidx.core.view.WindowInsetsCompat.Type.systemBars()) ?: return
+        val screen = activityView.rootView
+        if (screen.height == 0 || coords.size.height == 0) return
+        val screenAt = IntArray(2).also(screen::getLocationOnScreen)
+        val windowAt = IntArray(2).also(dialogView.rootView::getLocationOnScreen)
+        val contentTop = windowAt[1] + coords.positionInWindow().y.toInt()
+        val contentBottom = contentTop + coords.size.height
+        val safeTop = screenAt[1] + insets.top
+        val safeBottom = screenAt[1] + screen.height - insets.bottom
+        val next = with(density) {
+            PaddingValues(top = (safeTop - contentTop).coerceAtLeast(0).toDp(), bottom = (contentBottom - safeBottom).coerceAtLeast(0).toDp())
+        }
+        if (next != padding) padding = next
+    }
+    return DialogBars(padding, Modifier.onGloballyPositioned { measure(it) })
+}
+
+/**
+ * Pads a full-screen dialog's content by the part of the activity's system bars the dialog window
+ * actually overlaps. Some Android versions lay dialog windows out edge to edge, others (API 37 on a
+ * Pixel) already place them between the status and navigation bars; padding by the full bar
+ * insets there doubles the top and pushes the bottom past the window. Call inside the Dialog with
+ * the activity's view captured outside it.
+ */
+@Composable
+internal fun Modifier.dialogSystemBarPadding(activityView: android.view.View, top: Boolean = true): Modifier {
+    val bars = rememberDialogBars(activityView)
+    return this.then(bars.tracker).padding(top = if (top) bars.padding.calculateTopPadding() else 0.dp, bottom = bars.padding.calculateBottomPadding())
+}
+
 @Composable
 internal fun activitySystemBarPadding(): PaddingValues {
     val view = androidx.compose.ui.platform.LocalView.current

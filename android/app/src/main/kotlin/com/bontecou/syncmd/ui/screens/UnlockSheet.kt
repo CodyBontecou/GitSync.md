@@ -78,7 +78,7 @@ fun UnlockSheet(unlock: AppUnlock, vaultName: String?, onDismiss: () -> Unit, de
     val parentConfiguration = LocalConfiguration.current
     val parentDirection = LocalLayoutDirection.current
     val parentDensity = LocalDensity.current
-    val bars = activitySystemBarPadding()
+    val activityView = androidx.compose.ui.platform.LocalView.current
     androidx.compose.runtime.LaunchedEffect(unlock) { unlock.clearFailure(); unlock.loadOffer() }
     val dismiss = { if (!busy) { unlock.clearFailure(); onDismiss() } }
     Dialog(onDismissRequest = dismiss, properties = DialogProperties(dismissOnBackPress = !busy, dismissOnClickOutside = false,
@@ -90,7 +90,7 @@ fun UnlockSheet(unlock: AppUnlock, vaultName: String?, onDismiss: () -> Unit, de
             Column(
                 Modifier.widthIn(max = 640.dp).fillMaxWidth()
                     .background(c.cLow, RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp))
-                    .padding(bottom = bars.calculateBottomPadding()).verticalScroll(rememberScrollState())
+                    .dialogSystemBarPadding(activityView, top = false).verticalScroll(rememberScrollState())
                     .padding(start = 20.dp, end = 20.dp, bottom = 20.dp).testTag("unlock-sheet"),
             ) {
                 Box(Modifier.fillMaxWidth().padding(top = 16.dp, bottom = 8.dp), contentAlignment = Alignment.Center) {
