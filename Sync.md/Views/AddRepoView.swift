@@ -63,6 +63,7 @@ struct AddRepoView: View {
     @State private var showFolderPublication = false
     @State private var validationMessage: String? = nil
     @State private var showValidationAlert = false
+    @State private var keyboardVisible = false
 
     @ObservedObject private var repositoryHistory = RepositoryHistoryStore.shared
 
@@ -84,13 +85,27 @@ struct AddRepoView: View {
                     case .remote: remoteStep
                     case .local: localStep
                     }
+                    // With the keyboard up, a floating bar would cover the
+                    // field being edited; move it to the end of the form so
+                    // every field can scroll clear and it stays reachable.
+                    if keyboardVisible {
+                        bottomBar.padding(.top, 16)
+                    }
                 }
                 .padding(.bottom, 24)
             }
             .scrollIndicators(.hidden)
             .scrollDismissesKeyboard(.interactively)
             .background(Tide.paper.ignoresSafeArea())
-            .safeAreaInset(edge: .bottom) { bottomBar }
+            .safeAreaInset(edge: .bottom) {
+                if !keyboardVisible { bottomBar }
+            }
+            .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { _ in
+                keyboardVisible = true
+            }
+            .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in
+                keyboardVisible = false
+            }
             .toolbar(.hidden, for: .navigationBar)
             .animation(.easeInOut(duration: 0.2), value: step)
             .sheet(isPresented: $showRepoPicker) {
@@ -99,7 +114,7 @@ struct AddRepoView: View {
                     onSelect: { repo in
                         selectedRepoURL = repo.htmlURL
                         selectedBranch = repo.defaultBranch
-                        vaultName = repo.name
+                        vaultName = defaultFolderName(repo.name)
                         showManualEntry = false
                         localRepoURL = nil
                         localRepoBookmarkData = nil
@@ -146,7 +161,7 @@ struct AddRepoView: View {
                     localRepoURL = nil
                     localRepoBookmarkData = nil
                     if let parsed = GitRemoteURL.parse(initialURL) {
-                        vaultName = parsed.repoName
+                        vaultName = defaultFolderName(parsed.repoName)
                     }
                     configureAuthDefaults(for: initialURL)
                 }
@@ -430,7 +445,7 @@ struct AddRepoView: View {
             showManualEntry = true
             selectedRepoURL = trimmed
             if let parsed = GitRemoteURL.parse(trimmed) {
-                vaultName = parsed.repoName
+                vaultName = defaultFolderName(parsed.repoName)
             }
             configureAuthDefaults(for: trimmed)
         }
@@ -541,7 +556,7 @@ struct AddRepoView: View {
                 .accessibilityLabel(String(localized: "Repository URL"))
                 .onChange(of: selectedRepoURL) { _, newValue in
                     if let parsed = GitRemoteURL.parse(newValue) {
-                        vaultName = parsed.repoName
+                        vaultName = defaultFolderName(parsed.repoName)
                     }
                     configureAuthDefaults(for: newValue)
                 }
@@ -850,6 +865,10 @@ struct AddRepoView: View {
                     textContentType: .emailAddress,
                     autocapitalization: .never
                 )
+
+                if let authorIdentityIssue {
+                    TideInlineWarning(text: authorIdentityIssue)
+                }
             }
             .padding(.horizontal, Tide.gutter)
         }
@@ -936,6 +955,20 @@ struct AddRepoView: View {
                 }
                 .buttonStyle(.plain)
             }
+
+            if let issue = folderNameIssue {
+                VStack(alignment: .leading, spacing: 8) {
+                    TideInlineWarning(text: issue.message)
+                    if let suggestion = issue.suggestion {
+                        AddVaultPill(title: String(localized: "Use “\(suggestion)”")) {
+                            vaultName = suggestion
+                        }
+                        .accessibilityIdentifier("addRepository.useSuggestedFolder")
+                    }
+                }
+                .padding(.horizontal, Tide.gutter)
+                .padding(.top, 4)
+            }
         }
     }
 
@@ -997,6 +1030,10 @@ struct AddRepoView: View {
                         textContentType: .emailAddress,
                         autocapitalization: .never
                     )
+
+                    if let authorIdentityIssue {
+                        TideInlineWarning(text: authorIdentityIssue)
+                    }
                 }
                 .padding(.horizontal, Tide.gutter)
             }
@@ -1041,11 +1078,56 @@ struct AddRepoView: View {
     private var trimmedAuthorEmail: String { authorEmail.trimmingCharacters(in: .whitespacesAndNewlines) }
 
     private var canSubmitLocalRepo: Bool {
-        localRepoURL != nil && localRepoBookmarkData != nil && !state.isSyncing
+        localRepoURL != nil && localRepoBookmarkData != nil && authorIdentityIssue == nil && !state.isSyncing
     }
 
     private var canSubmitRemoteRepo: Bool {
-        GitRemoteURL.parse(selectedRepoURL) != nil && isAuthConfigValid && !state.isSyncing
+        GitRemoteURL.parse(selectedRepoURL) != nil && isAuthConfigValid
+            && folderNameIssue == nil && authorIdentityIssue == nil && !state.isSyncing
+    }
+
+    private var authorIdentityIssue: String? {
+        GitIdentityValidation.nameIssue(authorName) ?? GitIdentityValidation.emailIssue(authorEmail)
+    }
+
+    /// The folder the clone lands in; an empty field keeps the historical "vault".
+    private var effectiveFolderName: String {
+        let trimmed = vaultName.trimmingCharacters(in: .whitespacesAndNewlines)
+        return trimmed.isEmpty ? "vault" : trimmed
+    }
+
+    private var cloneParentURL: URL { customVaultURL ?? AppState.appDocumentsDirectory }
+
+    /// Invalid names, and names that would clone over another vault or an
+    /// existing folder (cloning replaces the target directory).
+    private var folderNameIssue: (message: String, suggestion: String?)? {
+        let name = effectiveFolderName
+        if let issue = VaultFolderName.issue(for: name) { return (issue.message, nil) }
+        guard isFolderNameTaken(name) else { return nil }
+        let suggestion = VaultFolderName.unique(name, isTaken: isFolderNameTaken)
+        let message = state.repos.contains(where: { vaultPath(for: $0.id) == candidatePath(name) })
+            ? String(localized: "Another vault already uses the folder “\(name)”.")
+            : String(localized: "A folder named “\(name)” already exists here.")
+        return (message, suggestion)
+    }
+
+    private func candidatePath(_ name: String) -> String {
+        AppState.canonicalFilePath(for: cloneParentURL.appendingPathComponent(name, isDirectory: true)).lowercased()
+    }
+
+    private func vaultPath(for repoID: UUID) -> String {
+        AppState.canonicalFilePath(for: state.vaultURL(for: repoID)).lowercased()
+    }
+
+    private func isFolderNameTaken(_ name: String) -> Bool {
+        state.isVaultFolderInUse(name, in: cloneParentURL)
+    }
+
+    /// A usable, unused default for a repository name ("notes", "notes-2", …).
+    private func defaultFolderName(_ base: String) -> String {
+        let trimmed = base.trimmingCharacters(in: .whitespacesAndNewlines)
+        let valid = VaultFolderName.isValid(trimmed) ? trimmed : "vault"
+        return VaultFolderName.unique(valid, isTaken: isFolderNameTaken)
     }
 
     private var isAuthConfigValid: Bool {
@@ -1090,6 +1172,11 @@ struct AddRepoView: View {
                 ? [sshKeySource == .device ? String(localized: "iPhone SSH key").forThisDevice : String(localized: "SSH Private Key")]
                 : []
         }
+    }
+
+    private func showValidation(_ message: String) {
+        validationMessage = message
+        showValidationAlert = true
     }
 
     private func showMissingFieldsError(_ fields: [String]) {
@@ -1159,6 +1246,7 @@ struct AddRepoView: View {
         guard let url = localRepoURL, let bookmarkData = localRepoBookmarkData else { return }
         let missing = missingAuthorFields
         guard missing.isEmpty else { showMissingFieldsError(missing); return }
+        if let authorIdentityIssue { showValidation(authorIdentityIssue); return }
 
         let identifier = url.standardizedFileURL.path.lowercased()
         requireUnlock {
@@ -1182,6 +1270,8 @@ struct AddRepoView: View {
             showValidationAlert = true
             return
         }
+        if let authorIdentityIssue { showValidation(authorIdentityIssue); return }
+        if let folderNameIssue { showValidation(folderNameIssue.message); return }
 
         let trimmedURL = selectedRepoURL.trimmingCharacters(in: .whitespacesAndNewlines)
         let isGitHubHTTPS = GitRemoteURL.parse(trimmedURL).map { $0.isGitHub && !$0.isSSH } ?? false
@@ -1196,16 +1286,17 @@ struct AddRepoView: View {
     }
 
     private func performAddAndClone(identifier: String) {
+        // Re-check: the vault check runs in between and state may have changed.
+        if let folderNameIssue { showValidation(folderNameIssue.message); return }
         repositoryHistory.recordRepoAdded(identifier: identifier)
         let trimmedBranch = selectedBranch.trimmingCharacters(in: .whitespacesAndNewlines)
-        let trimmedVaultName = vaultName.trimmingCharacters(in: .whitespacesAndNewlines)
         let credentials = remoteCredentials()
         let config = RepoConfig(
             repoURL: selectedRepoURL.trimmingCharacters(in: .whitespacesAndNewlines),
             branch: trimmedBranch.isEmpty ? "main" : trimmedBranch,
             authorName: trimmedAuthorName,
             authorEmail: trimmedAuthorEmail,
-            vaultFolderName: trimmedVaultName.isEmpty ? "vault" : trimmedVaultName,
+            vaultFolderName: effectiveFolderName,
             customVaultBookmarkData: customVaultBookmarkData,
             customLocationIsParent: customVaultBookmarkData != nil,
             authMethod: authMethod,

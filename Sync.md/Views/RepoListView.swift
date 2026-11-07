@@ -65,6 +65,7 @@ struct RepoListView: View {
                             repoList
                         }
                         homeBottomBar
+                            .dynamicTypeSize(...DynamicTypeSize.accessibility1)
                             .padding(.horizontal, Tide.gutter)
                             .padding(.vertical, 12)
                     }
@@ -447,7 +448,7 @@ struct RepoListView: View {
             detailPath = NavigationPath()
         } label: {
             HStack(spacing: 8) {
-                Text(repo.displayName)
+                Text(homeName(repo))
                     .font(TideFont.sans(15, selected ? .semibold : .medium, relativeTo: .subheadline))
                     .foregroundStyle(selected ? Tide.heroText : Tide.ink)
                     .lineLimit(1)
@@ -474,7 +475,7 @@ struct RepoListView: View {
         }
         .buttonStyle(.plain)
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("\(repo.displayName), \(glyph.spoken)")
+        .accessibilityLabel("\(homeName(repo)), \(glyph.spoken)")
         .accessibilityAddTraits(selected ? [.isButton, .isSelected] : .isButton)
     }
 
@@ -1158,7 +1159,7 @@ struct RepoListView: View {
                 HStack(alignment: .top, spacing: 12) {
                     VStack(alignment: .leading, spacing: 3) {
                         HStack(spacing: 6) {
-                            Text(repo.displayName)
+                            Text(homeName(repo))
                                 .font(TideFont.title)
                                 .tracking(-0.4)
                                 .foregroundStyle(Tide.ink)
@@ -1228,12 +1229,23 @@ struct RepoListView: View {
         return parts.joined(separator: " · ")
     }
 
+    /// The vault's name, plus its folder when another vault shows the same
+    /// name (two clones of one remote would otherwise look identical).
+    private func homeName(_ repo: RepoConfig) -> String {
+        let name = repo.displayName
+        let collides = state.visibleRepos.contains {
+            $0.id != repo.id && $0.displayName.caseInsensitiveCompare(name) == .orderedSame
+        }
+        guard collides, repo.vaultFolderName.caseInsensitiveCompare(name) != .orderedSame else { return name }
+        return "\(name) · \(repo.vaultFolderName)"
+    }
+
     /// Quiet in-sync row inside the grouped list.
     private func quietRow(_ repo: RepoConfig) -> some View {
         HStack(spacing: 12) {
             VStack(alignment: .leading, spacing: 2) {
                 HStack(spacing: 5) {
-                    Text(repo.displayName)
+                    Text(homeName(repo))
                         .font(TideFont.sans(16, .semibold, relativeTo: .headline))
                         .tracking(-0.25)
                         .foregroundStyle(Tide.ink)
@@ -1432,7 +1444,8 @@ struct RepoListView: View {
 
     private func performGhostClone(_ identifier: String) {
         let parsed      = GitRemoteURL.parse(identifier)
-        let folderName  = parsed?.repoName ?? URL(string: identifier)?.lastPathComponent ?? "vault"
+        let baseName    = parsed?.repoName ?? URL(string: identifier)?.lastPathComponent ?? "vault"
+        let folderName  = state.availableVaultFolderName(VaultFolderName.isValid(baseName) ? baseName : "vault")
 
         let config = RepoConfig(
             repoURL: identifier,

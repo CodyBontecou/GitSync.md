@@ -111,7 +111,9 @@ enum CommitMessageSuggester {
     /// "Nov 1 daily note" for date-named notes, otherwise the humanised stem.
     static func subject(for file: File, locale: Locale = .current) -> String {
         let name = (file.path as NSString).lastPathComponent
-        let stem = (name as NSString).deletingPathExtension
+        // Only strip a real extension: "standup 2026.11.07" keeps its date.
+        let ext = (name as NSString).pathExtension
+        let stem = ext.contains(where: \.isLetter) ? (name as NSString).deletingPathExtension : name
         if let date = dateInName(stem) {
             let dir = folder(of: file.path).lowercased()
             let kind: String

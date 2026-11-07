@@ -894,6 +894,22 @@ private final class PushContext: CredentialContext {
     var expectedRemoteOID: git_oid?
     var expectedLocalOID: git_oid?
     var negotiationValidated = false
+
+    /// libgit2's local (file://) transport reports `bytes` from a
+    /// `git_indexer_progress` whose `received_bytes` starts uninitialised
+    /// (packbuilder write), so a 17-byte push could read as "4.77 GB".
+    /// Only smart (network) transports report a trustworthy byte count.
+    var reportsReliablePushBytes: Bool {
+        guard let url = remoteURL?.trimmingCharacters(in: .whitespaces).lowercased(), !url.isEmpty else { return true }
+        return !(url.hasPrefix("file:") || url.hasPrefix("/") || url.hasPrefix(".") || url.hasPrefix("~"))
+    }
+}
+
+/// Byte count safe to show for a push sample: zero (hidden) when the
+/// transport's value is untrustworthy or implausible.
+nonisolated func sanitizedPushBytes(_ bytes: Int, reliable: Bool) -> Int {
+    guard reliable, bytes > 0, bytes < (1 << 40) else { return 0 }
+    return bytes
 }
 
 nonisolated private func pushCredentialCallback(
@@ -925,7 +941,8 @@ nonisolated private func pushTransferProgressCallback(
     if ctx.progressPath != nil {
         GitTransferProgressCenter.shared.report(
             path: ctx.progressPath,
-            .pushProgress(current: Int(current), total: Int(total), bytes: bytes)
+            .pushProgress(current: Int(current), total: Int(total),
+                          bytes: sanitizedPushBytes(bytes, reliable: ctx.reportsReliablePushBytes))
         )
     }
     return ctx.cancellationSignal?.isCancelled == true ? GIT_EUSER.rawValue : 0

@@ -40,20 +40,24 @@ struct NewFileSheet: View {
 
     private var trimmed: String { name.trimmingCharacters(in: .whitespacesAndNewlines) }
 
-    /// Final on-disk name: notes get ".md" unless they already carry an extension.
+    /// Final on-disk name: notes get ".md" unless they already carry a text
+    /// extension ("standup 2026.11.07" still becomes "standup 2026.11.07.md").
     private var finalName: String {
-        guard kind == .note, !trimmed.isEmpty else { return trimmed }
-        return (trimmed as NSString).pathExtension.isEmpty ? trimmed + ".md" : trimmed
+        guard kind == .note else { return trimmed }
+        return NoteFileName.finalName(for: trimmed)
     }
 
     private var showsMDSuffix: Bool {
-        kind == .note && (trimmed.isEmpty || (trimmed as NSString).pathExtension.isEmpty)
+        kind == .note && !NoteFileName.hasTextExtension(trimmed)
     }
 
     private var conflict: String? {
         guard !finalName.isEmpty else { return nil }
         if finalName.contains("/") { return String(localized: "Names can't contain “/”.") }
         if finalName.hasPrefix(".") { return String(localized: "Names can't start with a dot.") }
+        if NoteFileName.isTooLong(finalName) {
+            return String(localized: "That name is too long. Names can be at most 255 bytes, including the extension.")
+        }
         guard FileManager.default.fileExists(atPath: directoryURL.appendingPathComponent(finalName).path) else { return nil }
         return String(localized: "\(finalName) already exists in \(folderLabel). Try another name.")
     }

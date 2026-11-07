@@ -2511,7 +2511,8 @@ final class AppState {
                     clearCustomLocation(for: repoID)
                     throw FolderPublicationError.unavailable(String(localized: "The chosen clone location could not be saved. Existing files have been preserved."))
                 }
-                if fm.fileExists(atPath: staleVaultDir.path) {
+                if fm.fileExists(atPath: staleVaultDir.path),
+                   cloneTargetConflict(staleVaultDir, repoID: repoID, anchor: Self.appDocumentsDirectory) == nil {
                     try folderPublication.validateImportAvailability(at: staleVaultDir)
                     try? fm.removeItem(at: staleVaultDir)
                 }
@@ -2524,7 +2525,12 @@ final class AppState {
 
             obsidianCredentialHandoff.invalidate(repoID: repoID)
 
-            // Remove existing vault directory — git clone needs a clean target
+            // Remove existing vault directory — git clone needs a clean target.
+            // Never delete outside the vault's parent, another vault's working
+            // copy, or a different repository that happens to share the name.
+            if let conflict = cloneTargetConflict(vaultDir, repoID: repoID) {
+                throw FolderPublicationError.unavailable(conflict)
+            }
             if fm.fileExists(atPath: vaultDir.path) {
                 try fm.removeItem(at: vaultDir)
             }
@@ -3310,15 +3316,90 @@ final class AppState {
 
     // MARK: - Review Prompt
 
+    private static let reviewRequestedKey = "hasRequestedReview"
+
     private func requestReviewIfNeeded() {
-        let reviewKey = "hasRequestedReview"
-        if !UserDefaults.standard.bool(forKey: reviewKey) {
-            UserDefaults.standard.set(true, forKey: reviewKey)
+        // The one-time key is spent only when the prompt is actually shown
+        // (`markReviewRequested`), so a skipped moment can retry later.
+        if !UserDefaults.standard.bool(forKey: Self.reviewRequestedKey),
+           callbackNavigateToRepoID == nil, callbackResult == nil {
             shouldRequestReview = true
         }
     }
 
+    /// The rating prompt must not cover an x-callback run, its result
+    /// banner, an error alert, or work still in progress.
+    var canPresentReviewPrompt: Bool {
+        callbackNavigateToRepoID == nil && callbackResult == nil && !showError && !isSyncing
+    }
+
+    func markReviewRequested() {
+        UserDefaults.standard.set(true, forKey: Self.reviewRequestedKey)
+    }
+
     // MARK: - Repo Management
+
+    /// `true` when cloning `name` into `parent` would land on another vault's
+    /// folder or on anything already on disk.
+    func isVaultFolderInUse(_ name: String, in parent: URL = AppState.appDocumentsDirectory) -> Bool {
+        let candidate = parent.appendingPathComponent(name, isDirectory: true)
+        let path = Self.canonicalFilePath(for: candidate).lowercased()
+        if repos.contains(where: { Self.canonicalFilePath(for: vaultURL(for: $0.id)).lowercased() == path }) {
+            return true
+        }
+        let scoped = parent.startAccessingSecurityScopedResource()
+        defer { if scoped { parent.stopAccessingSecurityScopedResource() } }
+        return FileManager.default.fileExists(atPath: candidate.path)
+    }
+
+    /// "notes", or "notes-2", "notes-3", … when the folder is already in use.
+    func availableVaultFolderName(_ base: String, in parent: URL = AppState.appDocumentsDirectory) -> String {
+        VaultFolderName.unique(base) { isVaultFolderInUse($0, in: parent) }
+    }
+
+    /// Why `vaultDir` must not be deleted and re-cloned for `repoID`, or nil
+    /// when it is safe. Re-cloning the same repository (a retry after a failed
+    /// or partial clone) stays allowed.
+    func cloneTargetConflict(_ vaultDir: URL, repoID: UUID, anchor: URL? = nil) -> String? {
+        let name = vaultDir.lastPathComponent
+        let unsafe = String(localized: "The folder “\(name)” is outside this vault's location. Choose a different folder name.")
+        guard !vaultDir.pathComponents.contains(where: { $0 == "." || $0 == ".." }) else { return unsafe }
+        let anchor = anchor ?? resolvedCustomURLs[repoID] ?? Self.appDocumentsDirectory
+        if Self.canonicalFilePath(for: vaultDir) == Self.canonicalFilePath(for: anchor) {
+            // Only a bookmark that is itself the working copy may equal its anchor.
+            guard resolvedCustomURLs[repoID] != nil, repo(id: repoID)?.customLocationIsParent == false else { return unsafe }
+        } else if !VaultFolderName.isContained(vaultDir, in: anchor) {
+            return unsafe
+        }
+
+        let path = Self.canonicalFilePath(for: vaultDir).lowercased()
+        if repos.contains(where: { $0.id != repoID && Self.canonicalFilePath(for: vaultURL(for: $0.id)).lowercased() == path }) {
+            return String(localized: "Another vault already uses the folder “\(name)”. Its files have been preserved. Remove this vault and add it again with a different folder name.")
+        }
+
+        // A working copy of a different remote: someone else's data.
+        let gitConfig = vaultDir.appendingPathComponent(".git/config")
+        if let text = try? String(contentsOf: gitConfig, encoding: .utf8), let repo = repo(id: repoID) {
+            let remotes = text.split(whereSeparator: \.isNewline).compactMap { line -> String? in
+                let trimmed = line.trimmingCharacters(in: .whitespaces)
+                guard trimmed.hasPrefix("url"), let eq = trimmed.firstIndex(of: "=") else { return nil }
+                return Self.normalizedRemoteForComparison(String(trimmed[trimmed.index(after: eq)...]))
+            }
+            let expected = Set([repo.repoURL, GitRemoteURL.cloneURLString(from: repo.repoURL) ?? repo.repoURL]
+                .map(Self.normalizedRemoteForComparison))
+            if !remotes.isEmpty, expected.isDisjoint(with: remotes) {
+                return String(localized: "“\(name)” already holds a different Git repository. Its files have been preserved. Remove this vault and add it again with a different folder name.")
+            }
+        }
+        return nil
+    }
+
+    nonisolated private static func normalizedRemoteForComparison(_ remote: String) -> String {
+        var value = remote.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        while value.hasSuffix("/") { value.removeLast() }
+        if value.hasSuffix(".git") { value.removeLast(4) }
+        return value
+    }
 
     func addRepo(_ config: RepoConfig) {
         var config = config
