@@ -69,6 +69,11 @@ jobs:
 
       - name: Run unit XCTest suite
         shell: bash
+        env:
+          # xcodebuild forwards TEST_RUNNER_* to the tests without the prefix.
+          # StoreKit test sessions are not entitled on hosted runners, so the
+          # purchase/restore tests would hang on an Apple Account prompt.
+          TEST_RUNNER_SKIP_STOREKIT_PURCHASE_TESTS: "1"
         run: |
           set -euo pipefail
           xcodebuild test \
