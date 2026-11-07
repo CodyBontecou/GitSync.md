@@ -1,0 +1,1 @@
+Klon, commit, pull og push GitHub-repoer på Android.
