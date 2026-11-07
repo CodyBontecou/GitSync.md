@@ -13,7 +13,7 @@ GitSync.md costs $9.99 once on the US App Store. The purchase includes unlimited
 
 GitSync.md costs $9.99 once on Google Play, with all features included and no subscription. Local store prices may vary. iPhone guide coverage does not imply identical Android features.
 
-[Open Google Play](https://play.google.com/store/apps/details?id=md.gitsync.md).
+[Open Google Play](https://play.google.com/store/apps/details?id=com.bontecou.syncmd).
 
 ## Optional services and operating-system limits
 
