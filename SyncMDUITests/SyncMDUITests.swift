@@ -1,4 +1,5 @@
 import XCTest
+import UIKit
 
 final class SyncMDUITests: XCTestCase {
     func testLaunch() {
@@ -30,6 +31,261 @@ final class SyncMDUITests: XCTestCase {
     }
 
     // MARK: - Git Tools Discoverability
+
+    func testBrowserFolderRenameRejectsSeparatorsAndAllowsCorrection() throws {
+        let app = launchGitToolsFixture("dirty")
+        openFilesTab(in: app)
+        let folder = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "notes, ")).firstMatch
+        XCTAssertTrue(folder.waitForExistence(timeout: 5))
+        folder.press(forDuration: 1)
+        app.buttons["Rename"].firstMatch.tap()
+        let field = app.textFields["File name"]
+        XCTAssertTrue(field.waitForExistence(timeout: 5))
+        field.tap(withNumberOfTaps: 3, numberOfTouches: 1)
+        field.typeText("bad/name")
+        let rename = app.buttons["Rename"].firstMatch
+        XCTAssertFalse(rename.isEnabled, "Invalid path must be explained before dismissing the rename form")
+        guard !rename.isEnabled else { return }
+        field.tap(withNumberOfTaps: 3, numberOfTouches: 1)
+        field.typeText("README.md")
+        XCTAssertFalse(rename.isEnabled, "Existing file must not be replaced by a folder")
+        field.tap(withNumberOfTaps: 3, numberOfTouches: 1)
+        field.typeText("renamed-notes")
+        XCTAssertTrue(rename.isEnabled)
+        rename.tap()
+        let worktree = try gitToolsWorktreeURL()
+        XCTAssertTrue(waitUntil(timeout: 5) { FileManager.default.fileExists(atPath: worktree.appendingPathComponent("renamed-notes/hello.md").path) })
+        XCTAssertFalse(FileManager.default.fileExists(atPath: worktree.appendingPathComponent("notes").path))
+        XCTAssertEqual(try String(contentsOf: worktree.appendingPathComponent("renamed-notes/hello.md"), encoding: .utf8), "# Hello\n\nBase remote note.\n")
+    }
+
+    func testNewNoteRejectsPastedTabThenCreatesCorrectedName() throws {
+        let app = launchGitToolsFixture("dirty")
+        openFilesTab(in: app)
+        app.buttons["Create New File"].tap()
+        let field = app.textFields["File name"]
+        XCTAssertTrue(field.waitForExistence(timeout: 5))
+        UIPasteboard.general.string = "bad\tname"
+        field.press(forDuration: 1.2)
+        let paste = app.menuItems["Paste"].exists ? app.menuItems["Paste"] : app.buttons["Paste"].firstMatch
+        XCTAssertTrue(paste.waitForExistence(timeout: 5), "Paste menu must be available to exercise literal tab input")
+        guard paste.exists else { return }
+        paste.tap()
+        XCTAssertEqual(field.value as? String, "bad\tname", "The literal tab must reach the form")
+        let create = app.buttons["Create & open"]
+        XCTAssertFalse(create.isEnabled, "Invisible control characters must not become file names")
+        guard !create.isEnabled else { return }
+        app.buttons["Folder"].tap()
+        XCTAssertFalse(app.buttons["Create folder"].isEnabled, "Folder creation uses the same validation")
+        app.buttons["Note"].tap()
+        field.tap(withNumberOfTaps: 3, numberOfTouches: 1)
+        field.typeText("corrected-note")
+        XCTAssertTrue(create.isEnabled)
+        create.tap()
+        let file = try gitToolsWorktreeURL().appendingPathComponent("corrected-note.md")
+        XCTAssertTrue(waitUntil(timeout: 5) { FileManager.default.fileExists(atPath: file.path) })
+        XCTAssertFalse(FileManager.default.fileExists(atPath: file.deletingLastPathComponent().appendingPathComponent("bad\tname.md").path))
+    }
+
+    func testBrowserRenameFailureKeepsFormAndAllowsRetry() throws {
+        let app = launchGitToolsFixture("dirty")
+        openFilesTab(in: app)
+        let folder = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "notes, ")).firstMatch
+        XCTAssertTrue(folder.waitForExistence(timeout: 5))
+        folder.press(forDuration: 1)
+        app.buttons["Rename"].firstMatch.tap()
+        let field = app.textFields["File name"]
+        XCTAssertTrue(field.waitForExistence(timeout: 5))
+        field.tap(withNumberOfTaps: 3, numberOfTouches: 1)
+        field.typeText("retry-notes")
+        let worktree = try gitToolsWorktreeURL()
+        let source = worktree.appendingPathComponent("notes")
+        let held = worktree.appendingPathComponent("held-notes")
+        let fm = FileManager.default
+        // Simulate another file provider moving the source while its form is open.
+        try fm.moveItem(at: source, to: held)
+        defer { if fm.fileExists(atPath: held.path) { try? fm.moveItem(at: held, to: source) } }
+        let rename = app.buttons["Rename"].firstMatch
+        rename.tap()
+        XCTAssertTrue(waitUntil(timeout: 5) { app.staticTexts.matching(NSPredicate(format: "label CONTAINS[c] %@ OR label CONTAINS[c] %@", "exist", "no such file")).firstMatch.exists })
+        XCTAssertTrue(app.buttons["Cancel"].exists, "A failed move must keep the rename form")
+        guard app.buttons["Cancel"].exists else { return }
+        XCTAssertEqual(field.value as? String, "retry-notes")
+        XCTAssertTrue(rename.isEnabled, "A transient failure must allow retry without losing the name")
+        try fm.moveItem(at: held, to: source)
+        rename.tap()
+        XCTAssertTrue(waitUntil(timeout: 5) { fm.fileExists(atPath: worktree.appendingPathComponent("retry-notes/hello.md").path) })
+    }
+
+    func testCloneFormRejectsInvalidBranchThenClonesSelectedBranch() throws {
+        let app = XCUIApplication()
+        app.launchArguments = signedOutLaunchArguments(extra: ["-UITestCloneFixture"])
+        app.launch()
+        XCTAssertTrue(app.staticTexts["No vaults yet."].waitForExistence(timeout: 10))
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent("clone-ui-\(UUID())")
+        try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: root) }
+        let remote = root.appendingPathComponent("qa-selected.git")
+        try FileManager.default.copyItem(at: URL(fileURLWithPath: "/tmp/syncmd-uitest-fixtures/bare-remote.git"), to: remote)
+        let branchDir = remote.appendingPathComponent("refs/heads/qa")
+        try FileManager.default.createDirectory(at: branchDir, withIntermediateDirectories: true)
+        let sha = try String(contentsOf: remote.appendingPathComponent("refs/heads/main"), encoding: .utf8)
+        try sha.write(to: branchDir.appendingPathComponent("selected"), atomically: true, encoding: .utf8)
+        app.buttons["home.addRepository"].tap()
+        app.buttons["addRepository.enterURL"].tap()
+        let url = app.textFields["Repository URL"].firstMatch
+        XCTAssertTrue(url.waitForExistence(timeout: 5))
+        url.tap()
+        url.typeText(remote.absoluteString)
+        let branch = app.textFields.matching(NSPredicate(format: "placeholderValue IN %@", ["main", "Default branch"])).firstMatch
+        for _ in 0..<6 where !branch.isHittable { app.swipeUp() }
+        XCTAssertTrue(branch.isHittable)
+        branch.tap(withNumberOfTaps: 3, numberOfTouches: 1)
+        branch.typeText("bad..clone")
+        let clone = app.buttons["addRepository.addAndClone"]
+        XCTAssertFalse(clone.isEnabled, "Malformed branch must be rejected before preflight or clone")
+        guard !clone.isEnabled else { return }
+        branch.tap(withNumberOfTaps: 3, numberOfTouches: 1)
+        branch.typeText("qa/selected")
+        XCTAssertTrue(clone.isEnabled)
+        for _ in 0..<6 where !clone.isHittable { app.swipeUp() }
+        clone.tap()
+        let row = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "qa-selected, ")).firstMatch
+        XCTAssertTrue(row.waitForExistence(timeout: 20))
+        XCTAssertTrue(waitUntil(timeout: 10) { row.label.contains("qa/selected") }, row.label)
+        row.tap()
+        XCTAssertTrue(app.staticTexts["Branch qa/selected"].waitForExistence(timeout: 5))
+    }
+
+    func testGitToolsFailureKeepsSheetDraftAndRejectedBranch() {
+        let app = launchGitToolsFixture("dirty")
+        app.buttons["More vault options"].tap()
+        app.buttons["Git Tools"].tap()
+        XCTAssertTrue(app.buttons["Close"].waitForExistence(timeout: 5))
+        let draft = app.descendants(matching: .any)["gitTools.commitMessage"].firstMatch
+        for _ in 0..<6 where !draft.isHittable { app.swipeDown() }
+        XCTAssertTrue(draft.isHittable)
+        draft.tap()
+        draft.typeText("Draft must survive")
+        let branch = app.textFields["new-branch-name"]
+        XCTAssertTrue(reveal(branch, in: app))
+        branch.tap()
+        branch.typeText("bad..draft")
+        let create = app.buttons["Create"].firstMatch
+        tapWhenHittable(create, in: app, message: "Create branch must be reachable")
+        let alert = app.alerts["Error"]
+        XCTAssertTrue(alert.waitForExistence(timeout: 5))
+        guard alert.exists else { return }
+        alert.buttons["OK"].firstMatch.tap()
+        XCTAssertTrue(app.buttons["Close"].exists, "Error must retain the Git Tools sheet")
+        guard app.buttons["Close"].exists else { return }
+        XCTAssertEqual(branch.value as? String, "bad..draft")
+        for _ in 0..<6 where !draft.isHittable { app.swipeDown() }
+        XCTAssertTrue(draft.isHittable)
+        XCTAssertEqual(draft.value as? String, "Draft must survive")
+        tapFirstHittableButton(labeled: "Close", in: app)
+        XCTAssertFalse(alert.exists, "Handled sheet error must not replay on the vault")
+    }
+
+    func testSettingsRejectsInvalidBranchAndAllowsCorrection() {
+        let app = launchGitToolsFixture("clean")
+        app.buttons["More vault options"].tap()
+        app.buttons["Settings"].tap()
+        let branch = app.textFields["repositorySettings.branch"]
+        XCTAssertTrue(reveal(branch, in: app))
+        branch.tap(withNumberOfTaps: 3, numberOfTouches: 1)
+        branch.typeText("bad..settings")
+        app.buttons["Save"].firstMatch.tap()
+        let alert = app.alerts.firstMatch
+        XCTAssertTrue(alert.waitForExistence(timeout: 5))
+        guard alert.exists else { return }
+        XCTAssertTrue(alert.staticTexts["Please enter a valid Git branch name."].exists)
+        alert.buttons["OK"].firstMatch.tap()
+        XCTAssertTrue(app.buttons["Cancel"].exists, "Validation must keep Settings open")
+        XCTAssertEqual(branch.value as? String, "bad..settings")
+        branch.tap(withNumberOfTaps: 3, numberOfTouches: 1)
+        branch.typeText("main")
+        app.buttons["Save"].firstMatch.tap()
+        XCTAssertTrue(waitUntil(timeout: 5) { !app.buttons["Cancel"].exists })
+        app.buttons["More vault options"].tap()
+        app.buttons["Settings"].tap()
+        XCTAssertTrue(reveal(branch, in: app))
+        XCTAssertEqual(branch.value as? String, "main")
+    }
+
+    func testGitCreationErrorsAppearOnChildScreenAndPreserveInput() throws {
+        let app = launchGitToolsFixture("clean")
+        openGitTab(in: app)
+        tap("Branches", in: app)
+        let field = app.textFields.firstMatch
+        XCTAssertTrue(field.waitForExistence(timeout: 5))
+        field.tap()
+        field.typeText("../bad.lock")
+        app.buttons["Create"].tap()
+        let alert = app.alerts["Error"]
+        XCTAssertTrue(alert.waitForExistence(timeout: 5), "Rejection must appear before navigating Back")
+        guard alert.exists else { return }
+        alert.buttons["OK"].tap()
+        XCTAssertEqual(field.value as? String, "../bad.lock")
+        field.tap()
+        field.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: "../bad.lock".count) + "qa-valid-branch")
+        app.buttons["Create"].tap()
+        XCTAssertTrue(app.staticTexts["qa-valid-branch"].waitForExistence(timeout: 5), "Correcting the rejected name must allow creation")
+        app.navigationBars.buttons["Back"].firstMatch.tap()
+        XCTAssertFalse(alert.exists, "Dismissed errors must not reappear on Back")
+        tap("Tags", in: app)
+        let tagField = app.textFields.firstMatch
+        XCTAssertTrue(tagField.waitForExistence(timeout: 5))
+        tagField.tap()
+        tagField.typeText("bad..tag")
+        app.buttons["Tag HEAD"].tap()
+        XCTAssertTrue(alert.waitForExistence(timeout: 5))
+        guard alert.exists else { return }
+        alert.buttons["OK"].tap()
+        XCTAssertEqual(tagField.value as? String, "bad..tag")
+        XCTAssertTrue(app.staticTexts["No tags"].exists)
+    }
+
+    func testCallbackErrorAppearsOverEditorPreviewWithoutGoingBack() throws {
+        let app = launchGitToolsFixture("clean")
+        let file = try gitToolsWorktreeURL().appendingPathComponent("README.md")
+        try "# Callback test\n\n[odd link](syncmd://x-callback-url/unknown)\n".write(to: file, atomically: true, encoding: .utf8)
+        openFilesTab(in: app)
+        tap("README.md", in: app)
+        app.buttons["Preview"].tap()
+        let link = app.links["odd link"]
+        XCTAssertTrue(link.waitForExistence(timeout: 5))
+        link.tap()
+        let alert = app.alerts["Error"]
+        XCTAssertTrue(alert.waitForExistence(timeout: 5), "Callback errors must appear over the active preview")
+        guard alert.exists else { return }
+        XCTAssertTrue(alert.staticTexts["Unknown action: unknown"].exists)
+        alert.buttons["OK"].tap()
+        XCTAssertTrue(app.buttons["Edit"].exists, "Dismissing the error must preserve preview navigation")
+    }
+
+    func testEditorRenameRejectsTraversalAndAllowsCorrection() throws {
+        let app = launchGitToolsFixture("clean")
+        openFilesTab(in: app)
+        tap("README.md", in: app)
+        app.buttons["More file options"].tap()
+        app.buttons["Rename File"].tap()
+        let field = app.textFields.firstMatch
+        XCTAssertTrue(field.waitForExistence(timeout: 5))
+        field.tap()
+        let existing = field.value as? String ?? ""
+        field.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: existing.count) + "../escape.md")
+        let rename = app.buttons["Rename"].firstMatch
+        XCTAssertFalse(rename.isEnabled, "Traversal must be blocked in the rename modal")
+        guard !rename.isEnabled else { return }
+        field.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: "../escape.md".count) + "مرحبا 🌱.md")
+        XCTAssertTrue(rename.isEnabled, "A corrected Unicode filename must permit retry")
+        rename.tap()
+        let worktree = try gitToolsWorktreeURL()
+        XCTAssertTrue(waitUntil(timeout: 5) { FileManager.default.fileExists(atPath: worktree.appendingPathComponent("مرحبا 🌱.md").path) })
+        XCTAssertFalse(FileManager.default.fileExists(atPath: worktree.appendingPathComponent("README.md").path))
+        XCTAssertEqual(try String(contentsOf: worktree.appendingPathComponent("مرحبا 🌱.md"), encoding: .utf8), "# Git Tools Fixture\n\nBase note.\n")
+    }
 
     /// The fixture has a real clean index, a second branch, and a saved stash.
     /// Opening and closing the sheet must not change any repository bytes.
@@ -1049,6 +1305,55 @@ final class SyncMDUITests: XCTestCase {
             app.buttons["Abort merge"].exists,
             "Conflict Center should keep the Abort Merge escape hatch discoverable by label"
         )
+    }
+
+    func testConflictManualDraftSurvivesRepeatedEntryAndCancelledResolution() {
+        let app = XCUIApplication()
+        app.launchArguments = signedOutLaunchArguments(extra: ["-UITestConflictFixture"])
+        app.launch()
+        tap("conflict-fixture", in: app)
+        let merge = app.buttons["Bring theirs in"]
+        tapWhenHittable(merge, in: app, message: "Fixture should offer a local merge")
+        let row = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "notes/shared.md,")).firstMatch
+        XCTAssertTrue(reveal(row, in: app))
+        row.tap()
+
+        let manual = app.buttons["Edit by hand"]
+        XCTAssertTrue(reveal(manual, in: app))
+        manual.tap()
+        let result = app.textViews.firstMatch
+        XCTAssertTrue(reveal(result, in: app))
+        result.tap()
+        result.typeText("\nQA manual draft 20261107\n")
+        let draft = result.value as? String
+        XCTAssertTrue(draft?.contains("QA manual draft 20261107") == true)
+
+        // This used to remain visible and silently regenerate the result.
+        if manual.exists {
+            XCTAssertTrue(reveal(manual, in: app))
+            manual.tap()
+        }
+        XCTAssertEqual(result.value as? String, draft, "Entering manual mode again must not erase typed resolution text")
+        XCTAssertFalse(manual.exists, "The mode-entry action should disappear once editing")
+        XCTAssertFalse(app.buttons["Keep both"].isEnabled, "Section choices must not overwrite the manual draft")
+        XCTAssertFalse(app.buttons["Keep the remote version"].isEnabled)
+        XCTAssertFalse(app.buttons["Keep this iPhone's version"].isEnabled)
+
+        // Opening and cancelling confirmation must also retain the exact draft.
+        tapLowermostButton(labeled: "Resolve", in: app)
+        XCTAssertTrue(app.staticTexts["Mark as resolved?"].waitForExistence(timeout: 5))
+        app.buttons["Cancel"].firstMatch.tap()
+        XCTAssertEqual(result.value as? String, draft)
+        XCTAssertFalse(app.staticTexts["Mark as resolved?"].exists)
+
+        app.buttons["Abort"].firstMatch.tap()
+        let abort = app.buttons["Abort merge"]
+        XCTAssertTrue(abort.waitForExistence(timeout: 5))
+        abort.tap()
+        XCTAssertTrue(app.staticTexts["vault.title"].waitForExistence(timeout: 10))
+        XCTAssertTrue(app.buttons["Bring theirs in"].exists, "Aborting restores the original diverged state")
+        XCTAssertFalse(app.staticTexts["Merge has conflicts — tap a conflicted file to resolve"].exists,
+                       "A completed abort must not tell the user to resolve nonexistent conflicts")
     }
 
     // MARK: - Rebase Conflict Session (Issue #19)

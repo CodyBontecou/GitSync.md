@@ -120,6 +120,8 @@ struct FileBrowserListing: View {
     @State private var loadErrorMessage: String?
     @State private var renameItem: FileItem?
     @State private var newName = ""
+    @State private var renameError: String?
+    @State private var isRenaming = false
     @State private var showNewFile = false
     @State private var deleteItem: FileItem?
     @State private var historyItem: FileItem?
@@ -170,7 +172,8 @@ struct FileBrowserListing: View {
         // when git status (e.g. an already-untracked file) did not.
         .onAppear { loadItems() }
         .onChange(of: statusEntries) { loadItems() }
-        .sheet(isPresented: Binding(get: { renameItem != nil }, set: { if !$0 { renameItem = nil } })) {
+        .onChange(of: newName) { renameError = nil }
+        .sheet(isPresented: Binding(get: { renameItem != nil }, set: { if !$0 && !isRenaming { renameItem = nil } })) {
             if let item = renameItem {
                 TideFileNameSheet(
                     title: String(localized: "Rename"),
@@ -178,11 +181,12 @@ struct FileBrowserListing: View {
                     placeholder: item.name,
                     confirmLabel: String(localized: "Rename"),
                     text: $newName,
+                    isWorking: isRenaming,
+                    isDisabled: newName.trimmingCharacters(in: .whitespacesAndNewlines) == item.name,
+                    errorMessage: renameError,
                     conflictMessage: { renameConflict(for: item, name: $0) },
                     onConfirm: {
-                        let target = newName
-                        renameItem = nil
-                        performRename(item, to: target)
+                        performRename(item, to: newName)
                     },
                     onCancel: { renameItem = nil }
                 )
@@ -576,40 +580,46 @@ struct FileBrowserListing: View {
     }
 
     private func beginRename(_ item: FileItem) {
+        renameError = nil
         newName = item.name
         renameItem = item
     }
 
     private func renameConflict(for item: FileItem, name: String) -> String? {
         let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmed.isEmpty, trimmed != item.name else { return nil }
-        if NoteFileName.isTooLong(trimmed) {
-            return String(localized: "That name is too long. Names can be at most 255 bytes, including the extension.")
+        guard !trimmed.isEmpty else { return nil }
+        if let issue = RepositoryItemName.validationMessage(name) { return issue }
+        guard trimmed != item.name else { return nil }
+        do {
+            _ = try RepositoryFileRename.destination(for: item.url, name: name, in: vaultURL)
+            return nil
+        } catch let error as CocoaError where error.code == .fileWriteFileExists {
+            return String(localized: "\(trimmed) already exists here. Try another name.")
+        } catch {
+            return error.localizedDescription
         }
-        let dest = item.url.deletingLastPathComponent().appendingPathComponent(trimmed)
-        guard FileManager.default.fileExists(atPath: dest.path) else { return nil }
-        return String(localized: "\(trimmed) already exists here. Try another name.")
     }
 
     // MARK: File Operations
 
     private func performRename(_ item: FileItem, to name: String) {
         let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
-        newName = ""
-        guard !trimmed.isEmpty, trimmed != item.name, !trimmed.contains("/") else { return }
+        guard !isRenaming, !trimmed.isEmpty, trimmed != item.name,
+              renameConflict(for: item, name: name) == nil else { return }
         let source = item.url
-        let dest = source.deletingLastPathComponent().appendingPathComponent(trimmed)
         let repositoryURL = vaultURL
+        isRenaming = true
+        renameError = nil
         Task {
+            defer { isRenaming = false }
             do {
-                try await RepositoryOperationCoordinator.shared.withRepository(at: repositoryURL) {
-                    guard !FileManager.default.fileExists(atPath: dest.path) else {
-                        throw CocoaError(.fileWriteFileExists)
-                    }
-                    try FileManager.default.moveItem(at: source, to: dest)
+                _ = try await RepositoryOperationCoordinator.shared.withRepository(at: repositoryURL) {
+                    try RepositoryFileRename.rename(source, to: name, in: repositoryURL)
                 }
+                renameItem = nil
+                newName = ""
             } catch {
-                operationError = error.localizedDescription
+                renameError = error.localizedDescription
             }
             loadItems()
             // Refresh git status so the rename appears in VaultView
@@ -670,6 +680,9 @@ struct TideFileNameSheet: View {
     let placeholder: String
     let confirmLabel: String
     @Binding var text: String
+    var isWorking = false
+    var isDisabled = false
+    var errorMessage: String? = nil
     let conflictMessage: (String) -> String?
     let onConfirm: () -> Void
     let onCancel: () -> Void
@@ -678,7 +691,8 @@ struct TideFileNameSheet: View {
 
     private var trimmed: String { text.trimmingCharacters(in: .whitespacesAndNewlines) }
     private var conflict: String? { conflictMessage(text) }
-    private var canConfirm: Bool { !trimmed.isEmpty && conflict == nil }
+    private var warning: String? { conflict ?? errorMessage }
+    private var canConfirm: Bool { !trimmed.isEmpty && conflict == nil && !isWorking && !isDisabled }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -688,6 +702,7 @@ struct TideFileNameSheet: View {
                     .foregroundStyle(Tide.inkMid)
                     .frame(minHeight: 44)
                     .buttonStyle(.plain)
+                    .disabled(isWorking)
                 Spacer()
             }
 
@@ -703,6 +718,7 @@ struct TideFileNameSheet: View {
                 .accessibilityAddTraits(.isHeader)
 
             TextField(placeholder, text: $text)
+                .disabled(isWorking)
                 .focused($isFocused)
                 .autocorrectionDisabled()
                 .textInputAutocapitalization(.never)
@@ -715,19 +731,19 @@ struct TideFileNameSheet: View {
                 .background(RoundedRectangle(cornerRadius: 18, style: .continuous).fill(Tide.card))
                 .overlay(
                     RoundedRectangle(cornerRadius: 18, style: .continuous)
-                        .strokeBorder(conflict != nil ? Tide.danger : (isFocused ? Tide.ink : Tide.line),
-                                      lineWidth: conflict != nil || isFocused ? 1.5 : 1)
+                        .strokeBorder(warning != nil ? Tide.danger : (isFocused ? Tide.ink : Tide.line),
+                                      lineWidth: warning != nil || isFocused ? 1.5 : 1)
                 )
                 .accessibilityLabel(String(localized: "File name"))
                 .padding(.top, 16)
 
-            if let conflict {
-                TideInlineWarning(text: conflict).padding(.top, 14)
+            if let warning {
+                TideInlineWarning(text: warning).padding(.top, 14)
             }
 
             Spacer(minLength: 20)
 
-            BPrimaryButton(title: confirmLabel, isDisabled: !canConfirm, action: onConfirm)
+            BPrimaryButton(title: confirmLabel, isLoading: isWorking, isDisabled: !canConfirm, action: onConfirm)
         }
         .padding(.horizontal, 20)
         .padding(.top, 12)
@@ -736,6 +752,7 @@ struct TideFileNameSheet: View {
         .presentationDragIndicator(.visible)
         .presentationCornerRadius(30)
         .presentationBackground(Tide.paper)
+        .interactiveDismissDisabled(isWorking)
         .onAppear { isFocused = true }
     }
 }

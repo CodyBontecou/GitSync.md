@@ -34997,6 +34997,166 @@
         }
       }
     },
+    "Author identity cannot contain control characters.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لا يمكن أن تحتوي هوية المؤلف على محارف تحكم."
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forfatteridentiteten må ikke indeholde kontroltegn."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Autorenidentität darf keine Steuerzeichen enthalten."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Author identity cannot contain control characters."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La identidad del autor no puede contener caracteres de control."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tekijän henkilötiedot eivät saa sisältää ohjausmerkkejä."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L’identité de l’auteur ne peut pas contenir de caractères de contrôle."
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "זהות המחבר אינה יכולה להכיל תווי בקרה."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "लेखक की पहचान में नियंत्रण वर्ण नहीं हो सकते।"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A szerző adatai nem tartalmazhatnak vezérlőkaraktereket."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Identitas penulis tidak boleh berisi karakter kontrol."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L’identità dell’autore non può contenere caratteri di controllo."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "作成者の識別情報に制御文字を含めることはできません。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "작성자 정보에는 제어 문자를 포함할 수 없습니다."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forfatteridentiteten kan ikke inneholde kontrolltegn."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De auteursidentiteit mag geen besturingstekens bevatten."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dane autora nie mogą zawierać znaków sterujących."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A identidade do autor não pode conter caracteres de controle."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Данные автора не могут содержать управляющие символы."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Författaridentiteten får inte innehålla kontrolltecken."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ข้อมูลผู้เขียนต้องไม่มีอักขระควบคุม"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yazar kimliği kontrol karakterleri içeremez."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Дані автора не можуть містити керувальних символів."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thông tin tác giả không được chứa ký tự điều khiển."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "作者身份信息不能包含控制字符。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "作者身分資訊不能包含控制字元。"
+          }
+        }
+      }
+    },
     "Author Name cannot contain line breaks or angle brackets.": {
       "localizations": {
         "ar": {

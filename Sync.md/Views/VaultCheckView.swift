@@ -79,6 +79,7 @@ struct VaultCheckView: View {
         case .ready: return String(localized: "Your vault\nis ready.")
         case .blocked(.readOnly): return String(localized: "One thing\nto fix first.")
         case .blocked(.connection): return String(localized: "Can’t reach\nthis repo.")
+        case .blocked(.branch): return String(localized: "Choose another\nbranch.")
         }
     }
 
@@ -95,6 +96,8 @@ struct VaultCheckView: View {
         case .blocked(.readOnly):
             return String(localized: "GitSync.md can read this repo but can’t push to it. Ask the owner for write access, then check again.")
         case .blocked(.connection(let reason)):
+            return reason
+        case .blocked(.branch(let reason)):
             return reason
         }
     }
@@ -189,6 +192,8 @@ struct VaultCheckView: View {
             VaultCheckPill(text: String(localized: "needs access"), fg: Tide.danger, bg: Tide.danger.opacity(0.1))
         case .blocked(.connection):
             VaultCheckPill(text: String(localized: "unreachable"), fg: Tide.danger, bg: Tide.danger.opacity(0.1))
+        case .blocked(.branch):
+            VaultCheckPill(text: String(localized: "branch unavailable"), fg: Tide.danger, bg: Tide.danger.opacity(0.1))
         }
     }
 

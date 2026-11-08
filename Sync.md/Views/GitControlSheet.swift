@@ -9,6 +9,8 @@ struct GitControlSheet: View {
     @State private var commitMessage = ""
     @State private var diffDestination: DiffDestination? = nil
     @State private var conflictEditorDestination: ConflictEditorDestination? = nil
+    @State private var isCreatingBranch = false
+    @State private var isCreatingTag = false
     @State private var newBranchName = ""
     @State private var mergeCommitMessage = ""
     @State private var stashMessage = ""
@@ -83,14 +85,6 @@ struct GitControlSheet: View {
                     }
                 }
             }
-            .alert("Error", isPresented: Binding(
-                get: { state.showError },
-                set: { state.showError = $0 }
-            )) {
-                Button("OK", role: .cancel) {}
-            } message: {
-                Text(state.lastError ?? String(localized: "Unknown error"))
-            }
             .alert("Use Git LFS?", isPresented: Binding(
                 get: { state.pendingLFSAutoTrackingConfirmation != nil },
                 set: { _ in
@@ -130,6 +124,7 @@ struct GitControlSheet: View {
             }
             #endif
         }
+        .appErrorAlert()
     }
 
     // MARK: - Header
@@ -177,6 +172,7 @@ struct GitControlSheet: View {
                     text: $commitMessage,
                     axis: .vertical
                 )
+                .accessibilityIdentifier("gitTools.commitMessage")
                 .font(TideFont.sans(17, .medium, relativeTo: .body))
                 .foregroundStyle(Tide.ink)
                 .lineLimit(3...5)
@@ -492,14 +488,18 @@ struct GitControlSheet: View {
             HStack(spacing: 8) {
                 ToolField(placeholder: String(localized: "new-branch-name"), text: $newBranchName, mono: true)
                 ToolPill(title: String(localized: "Create"), style: .filled(Tide.ink)) {
-                    let name = newBranchName.trimmingCharacters(in: .whitespacesAndNewlines)
-                    guard !name.isEmpty else { return }
+                    let submitted = newBranchName
+                    let name = submitted.trimmingCharacters(in: .whitespacesAndNewlines)
+                    guard !name.isEmpty, !isCreatingBranch else { return }
+                    isCreatingBranch = true
                     Task {
-                        await state.createBranch(repoID: repoID, name: name)
-                        newBranchName = ""
+                        defer { isCreatingBranch = false }
+                        if await state.createBranch(repoID: repoID, name: name), newBranchName == submitted {
+                            newBranchName = ""
+                        }
                     }
                 }
-                .disabled(newBranchName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || state.isSyncing)
+                .disabled(newBranchName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || state.isSyncing || isCreatingBranch)
             }
             .padding(.vertical, 12)
 
@@ -704,14 +704,14 @@ struct GitControlSheet: View {
 
             HStack(spacing: 6) {
                 ToolPill(title: String(localized: "Apply")) {
-                    Task { await state.applyStash(repoID: repoID, index: entry.index) }
+                    Task { await state.applyStash(repoID: repoID, index: entry.index, expectedOID: entry.oid) }
                 }
                 ToolPill(title: String(localized: "Pop")) {
-                    Task { await state.popStash(repoID: repoID, index: entry.index) }
+                    Task { await state.popStash(repoID: repoID, index: entry.index, expectedOID: entry.oid) }
                 }
                 Spacer()
                 ToolIconButton(systemImage: "trash", label: String(localized: "Drop stash@{\(entry.index)}")) {
-                    Task { await state.dropStash(repoID: repoID, index: entry.index) }
+                    Task { await state.dropStash(repoID: repoID, index: entry.index, expectedOID: entry.oid) }
                 }
             }
         }
@@ -728,16 +728,21 @@ struct GitControlSheet: View {
                 HStack(spacing: 8) {
                     ToolField(placeholder: String(localized: "Annotation message (optional)"), text: $newTagMessage)
                     ToolPill(title: String(localized: "Create"), style: .filled(Tide.ink)) {
-                        let name = newTagName.trimmingCharacters(in: .whitespacesAndNewlines)
-                        guard !name.isEmpty else { return }
-                        let msg = newTagMessage.trimmingCharacters(in: .whitespacesAndNewlines)
+                        let submittedName = newTagName
+                        let submittedMessage = newTagMessage
+                        let name = submittedName
+                        guard !name.isEmpty, !isCreatingTag else { return }
+                        let msg = submittedMessage.trimmingCharacters(in: .whitespacesAndNewlines)
+                        isCreatingTag = true
                         Task {
-                            await state.createTag(repoID: repoID, name: name, message: msg.isEmpty ? nil : msg)
-                            newTagName = ""
-                            newTagMessage = ""
+                            defer { isCreatingTag = false }
+                            if await state.createTag(repoID: repoID, name: name, message: msg.isEmpty ? nil : msg) {
+                                if newTagName == submittedName { newTagName = "" }
+                                if newTagMessage == submittedMessage { newTagMessage = "" }
+                            }
                         }
                     }
-                    .disabled(newTagName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || state.isSyncing)
+                    .disabled(newTagName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || state.isSyncing || isCreatingTag)
                 }
             }
             .padding(.vertical, 12)

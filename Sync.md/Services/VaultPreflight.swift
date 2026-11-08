@@ -55,6 +55,8 @@ final class VaultPreflight: Identifiable {
     enum Blocker: Equatable {
         /// The remote could not be reached with these credentials.
         case connection(String)
+        /// The selected branch is invalid or absent from the advertisement.
+        case branch(String)
         /// GitHub reports read access only.
         case readOnly
     }
@@ -75,6 +77,7 @@ final class VaultPreflight: Identifiable {
     private(set) var facts: GitHubRepoPreflight?
     /// Set when the user chooses to clone a read-only repository anyway.
     private(set) var acceptedReadOnly = false
+    private var branchVerified = false
 
     /// Pause between rows so the checklist reads as a sequence, not a flash.
     var stepDelay: Duration = .milliseconds(220)
@@ -121,6 +124,16 @@ final class VaultPreflight: Identifiable {
         phase = .checking
         facts = nil
         acceptedReadOnly = false
+        defaultBranch = nil
+        branchVerified = false
+
+        let chosenBranch = target.branch?.trimmingCharacters(in: .whitespacesAndNewlines)
+        if let chosenBranch, !chosenBranch.isEmpty,
+           let issue = GitBranchName.validationMessage(chosenBranch) {
+            set(.access, .skipped)
+            failBranch(issue)
+            return
+        }
 
         // 1. Connection with the credentials the clone will use.
         set(.access, .running)
@@ -132,6 +145,11 @@ final class VaultPreflight: Identifiable {
             defaultBranch = check.defaultBranch
             // Only reading is proven here; GitHub's permissions refine it below.
             set(.access, .passed, String(localized: "connected"))
+            if let chosenBranch, !chosenBranch.isEmpty, !check.branchNames.contains(chosenBranch) {
+                failBranch(String(localized: "The branch “\(chosenBranch)” wasn't found on this remote. Choose an existing branch or leave it blank to use the default."))
+                return
+            }
+            branchVerified = resolvedBranch.map { check.branchNames.contains($0) } ?? false
         } catch LocalGitError.sshHostKeyTrustRequired(_) {
             set(.access, .passed, String(localized: "confirm key on clone"))
         } catch is CancellationError {
@@ -153,7 +171,6 @@ final class VaultPreflight: Identifiable {
         // 2. GitHub metadata: permission, size, tree, LFS rules, `.obsidian`.
         await pause()
         set(.branch, .running)
-        let chosenBranch = target.branch?.trimmingCharacters(in: .whitespacesAndNewlines)
         do {
             let result = try await GitHubService.preflight(
                 owner: repo.owner,
@@ -235,7 +252,8 @@ final class VaultPreflight: Identifiable {
     /// during the clone.
     private func finishWithoutContents() async {
         await pause()
-        set(.branch, .passed, resolvedBranch ?? "HEAD")
+        set(.branch, branchVerified ? .passed : .skipped,
+            branchVerified ? resolvedBranch : String(localized: "checked on clone"))
         for kind in [Kind.size, .lfs, .obsidian] {
             set(kind, .skipped, String(localized: "checked on clone"))
         }
@@ -249,6 +267,12 @@ final class VaultPreflight: Identifiable {
             checks[index].detail = nil
         }
         phase = .blocked(.connection(message))
+    }
+
+    private func failBranch(_ message: String) {
+        set(.branch, .failed, message)
+        for kind in [Kind.size, .lfs, .obsidian] { set(kind, .skipped) }
+        phase = .blocked(.branch(message))
     }
 
     private func set(_ kind: Kind, _ status: Status, _ detail: String? = nil) {

@@ -31,6 +31,27 @@ enum VaultWatchSettings {
     }
 }
 
+/// Files imported from a machine with a clock ahead must still become idle.
+/// Preserve raw dates to distinguish a new write from the same future date
+/// seen on every polling tick.
+struct VaultWatchFileActivity {
+    private var sourceDates: [String: Date] = [:]
+    private(set) var dates: [String: Date] = [:]
+
+    mutating func update(_ modifiedDates: [String: Date], observedAt now: Date) {
+        var next: [String: Date] = [:]
+        for (path, date) in modifiedDates {
+            if sourceDates[path] == date, let previous = dates[path] {
+                next[path] = min(previous, now)
+            } else {
+                next[path] = min(date, now)
+            }
+        }
+        sourceDates = modifiedDates
+        dates = next
+    }
+}
+
 enum VaultAutoCommitResult: Equatable {
     case committed
     case skipped(String)

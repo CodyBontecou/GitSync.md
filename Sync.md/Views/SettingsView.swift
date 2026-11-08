@@ -138,6 +138,7 @@ struct SettingsView: View {
 
                             settingsInputRow(label: String(localized: "Branch")) {
                                 TextField("main", text: $branch)
+                                    .accessibilityIdentifier("repositorySettings.branch")
                                     .font(TideFont.mono(14, relativeTo: .subheadline))
                                     .multilineTextAlignment(.trailing)
                                     .autocorrectionDisabled()
@@ -1061,6 +1062,10 @@ struct SettingsView: View {
             }
         } else if GitRemoteURL.parse(trimmedRepoURL) == nil {
             return showValidation(String(localized: "Please enter a valid Git remote URL."))
+        }
+
+        if let issue = GitBranchName.validationMessage(trimmedBranch.isEmpty ? "main" : trimmedBranch) {
+            return showValidation(issue)
         }
 
         if let identityIssue = GitIdentityValidation.nameIssue(trimmedName) ?? GitIdentityValidation.emailIssue(trimmedEmail) {

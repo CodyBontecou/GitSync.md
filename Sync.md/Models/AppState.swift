@@ -219,6 +219,8 @@ final class AppState {
 
     var lastError: String? = nil
     var showError: Bool = false
+    /// Visible modal hosts, ordered from the vault to the topmost sheet.
+    var errorAlertPresenters: [UUID] = []
     var pendingLFSAutoTrackingConfirmation: LFSAutoTrackingConfirmationRequest? = nil
     var pendingSSHHostKeyTrustRequest: SSHHostKeyTrustRequest? = nil
 
@@ -1572,7 +1574,19 @@ final class AppState {
         }
     }
 
-    func applyStash(repoID: UUID, index: Int, reinstateIndex: Bool = false) async {
+    /// A displayed stash number is only a position in a mutable reflog.
+    /// Resolve the captured identity while holding the same lease as mutation.
+    nonisolated private static func resolveStashIndex(
+        repository: any GitRepositoryProtocol, index: Int, oid: String?
+    ) async throws -> Int {
+        guard let oid else { return index }
+        guard let entry = try await repository.listStashes().first(where: { $0.oid == oid }) else {
+            throw LocalGitError.stashNotFound(index)
+        }
+        return entry.index
+    }
+
+    func applyStash(repoID: UUID, index: Int, expectedOID: String? = nil, reinstateIndex: Bool = false) async {
         guard let repo = repo(id: repoID), repo.isCloned else { return }
         if isDemoMode { return }
 
@@ -1584,18 +1598,24 @@ final class AppState {
             return
         }
 
+        let selectedOID = expectedOID ?? stashesByRepo[repoID]?.first(where: { $0.index == index })?.oid
         do {
-            _ = try await gitService.applyStash(index: index, reinstateIndex: reinstateIndex)
+            let serialized = try serializedRepository(repoID: repoID)
+            _ = try await serialized.withLease { repository in
+                let currentIndex = try await Self.resolveStashIndex(repository: repository, index: index, oid: selectedOID)
+                return try await repository.applyStash(index: currentIndex, reinstateIndex: reinstateIndex)
+            }
             detectChanges(repoID: repoID)
             await loadConflictSession(repoID: repoID)
             await loadStashes(repoID: repoID)
         } catch {
+            await loadStashes(repoID: repoID)
             await loadConflictSession(repoID: repoID)
             showError(message: error.localizedDescription)
         }
     }
 
-    func popStash(repoID: UUID, index: Int, reinstateIndex: Bool = false) async {
+    func popStash(repoID: UUID, index: Int, expectedOID: String? = nil, reinstateIndex: Bool = false) async {
         guard let repo = repo(id: repoID), repo.isCloned else { return }
         if isDemoMode { return }
 
@@ -1607,18 +1627,24 @@ final class AppState {
             return
         }
 
+        let selectedOID = expectedOID ?? stashesByRepo[repoID]?.first(where: { $0.index == index })?.oid
         do {
-            _ = try await gitService.popStash(index: index, reinstateIndex: reinstateIndex)
+            let serialized = try serializedRepository(repoID: repoID)
+            _ = try await serialized.withLease { repository in
+                let currentIndex = try await Self.resolveStashIndex(repository: repository, index: index, oid: selectedOID)
+                return try await repository.popStash(index: currentIndex, reinstateIndex: reinstateIndex)
+            }
             detectChanges(repoID: repoID)
             await loadConflictSession(repoID: repoID)
             await loadStashes(repoID: repoID)
         } catch {
+            await loadStashes(repoID: repoID)
             await loadConflictSession(repoID: repoID)
             showError(message: error.localizedDescription)
         }
     }
 
-    func dropStash(repoID: UUID, index: Int) async {
+    func dropStash(repoID: UUID, index: Int, expectedOID: String? = nil) async {
         guard let repo = repo(id: repoID), repo.isCloned else { return }
         if isDemoMode { return }
 
@@ -1630,10 +1656,16 @@ final class AppState {
             return
         }
 
+        let selectedOID = expectedOID ?? stashesByRepo[repoID]?.first(where: { $0.index == index })?.oid
         do {
-            try await gitService.dropStash(index: index)
+            let serialized = try serializedRepository(repoID: repoID)
+            try await serialized.withLease { repository in
+                let currentIndex = try await Self.resolveStashIndex(repository: repository, index: index, oid: selectedOID)
+                try await repository.dropStash(index: currentIndex)
+            }
             await loadStashes(repoID: repoID)
         } catch {
+            await loadStashes(repoID: repoID)
             showError(message: error.localizedDescription)
         }
     }
@@ -1664,16 +1696,23 @@ final class AppState {
         }
     }
 
-    func createTag(repoID: UUID, name: String, targetOID: String? = nil, message: String? = nil) async {
-        guard let repo = repo(id: repoID), repo.isCloned else { return }
-        if isDemoMode { return }
+    @discardableResult
+    func createTag(repoID: UUID, name: String, targetOID: String? = nil, message: String? = nil) async -> Bool {
+        guard let repo = repo(id: repoID), repo.isCloned else { return false }
+        if isDemoMode { return false }
+
+        if let issue = GitTagName.validationMessage(name) {
+            showError(message: issue)
+            return false
+        }
+        let name = name.trimmingCharacters(in: .whitespacesAndNewlines)
 
         let vaultDir = vaultURL(for: repoID)
         let gitService = gitRepositoryFactory(vaultDir)
 
         guard gitService.hasGitDirectory else {
             showError(message: LocalGitError.notCloned.localizedDescription)
-            return
+            return false
         }
 
         do {
@@ -1685,8 +1724,10 @@ final class AppState {
                 authorEmail: repo.authorEmail
             )
             await loadTags(repoID: repoID)
+            return true
         } catch {
             showError(message: error.localizedDescription)
+            return false
         }
     }
 
@@ -1793,23 +1834,26 @@ final class AppState {
         }
     }
 
-    func createBranch(repoID: UUID, name: String) async {
-        guard let repo = repo(id: repoID), repo.isCloned else { return }
-        if isDemoMode { return }
+    @discardableResult
+    func createBranch(repoID: UUID, name: String) async -> Bool {
+        guard let repo = repo(id: repoID), repo.isCloned else { return false }
+        if isDemoMode { return false }
 
         let vaultDir = vaultURL(for: repoID)
         let gitService = gitRepositoryFactory(vaultDir)
 
         guard gitService.hasGitDirectory else {
             showError(message: LocalGitError.notCloned.localizedDescription)
-            return
+            return false
         }
 
         do {
             try await gitService.createBranch(name: name)
             await loadBranches(repoID: repoID)
+            return true
         } catch {
             showError(message: error.localizedDescription)
+            return false
         }
     }
 
@@ -2074,6 +2118,9 @@ final class AppState {
 
         do {
             try await gitService.abortMerge()
+            // The previous merge's conflict instruction no longer describes
+            // the worktree. The vault status still shows any divergence.
+            pullOutcomeByRepo.removeValue(forKey: repoID)
             clearCommitHistoryCache(for: repoID)
             detectChanges(repoID: repoID)
             await loadConflictSession(repoID: repoID)
@@ -2432,6 +2479,12 @@ final class AppState {
             return
         }
 
+        let requestedBranch = repos[idx].branch.trimmingCharacters(in: .whitespacesAndNewlines)
+        if !requestedBranch.isEmpty, let issue = GitBranchName.validationMessage(requestedBranch) {
+            showError(message: issue)
+            return
+        }
+
         let possibleCloneURLs = [vaultURL(for: repoID)] + (
             repos[idx].customVaultBookmarkData == nil
                 ? resolvedDefaultSaveURL.map { [$0.appendingPathComponent(repos[idx].vaultFolderName, isDirectory: true)] } ?? []
@@ -2550,7 +2603,7 @@ final class AppState {
             beginSyncActivity(repoID: repoID, kind: .clone)
             let clonePayload = authPayload(for: repo)
             let result = try await runCancellableThrowing {
-                try await gitService.clone(remoteURL: cloneURL, pat: clonePayload)
+                try await gitService.clone(remoteURL: cloneURL, pat: clonePayload, branch: requestedBranch.isEmpty ? nil : requestedBranch)
             }
             finishSyncActivity(repoID: repoID, success: true)
             didSyncSuccessfully(repoID: repoID)
@@ -3751,6 +3804,9 @@ final class AppState {
 
     /// Read the `origin` remote URL from a git repository's config.
     nonisolated static func readGitRemoteURL(at repoURL: URL) -> String? {
+        if let origin = LocalGitService.readOriginURL(at: repoURL) { return origin }
+        // Keep recovery of partial clones whose config exists before the
+        // repository is fully initialized.
         let configURL = repoURL.appendingPathComponent(".git/config")
         guard let contents = try? String(contentsOf: configURL, encoding: .utf8) else { return nil }
 
@@ -4042,6 +4098,12 @@ final class AppState {
             return false
         }
 
+        let normalizedBranch = branch.trimmingCharacters(in: .whitespacesAndNewlines)
+        let configuredBranch = normalizedBranch.isEmpty ? "main" : normalizedBranch
+        if let issue = GitBranchName.validationMessage(configuredBranch) {
+            showError(message: issue)
+            return false
+        }
         let trimmedRepoURL = repoURL.trimmingCharacters(in: .whitespacesAndNewlines)
         let oldRepo = repos[idx]
 
@@ -4068,7 +4130,7 @@ final class AppState {
             return false
         }
         repos[currentIndex].repoURL = trimmedRepoURL
-        repos[currentIndex].branch = branch.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? "main" : branch.trimmingCharacters(in: .whitespacesAndNewlines)
+        repos[currentIndex].branch = configuredBranch
         repos[currentIndex].authorName = authorName.trimmingCharacters(in: .whitespacesAndNewlines)
         repos[currentIndex].authorEmail = authorEmail.trimmingCharacters(in: .whitespacesAndNewlines)
         repos[currentIndex].authMethod = authMethod

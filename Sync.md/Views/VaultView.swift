@@ -215,11 +215,7 @@ struct VaultView: View {
         }
         .animation(.easeOut(duration: 0.18), value: showRevertAllConfirm)
         .animation(.easeOut(duration: 0.18), value: showRevertFileModal)
-        .alert("Error", isPresented: $state.showError) {
-            Button("OK", role: .cancel) {}
-        } message: {
-            Text(state.lastError ?? String(localized: "Unknown error"))
-        }
+
         #if DEBUG
         .onReceive(NotificationCenter.default.publisher(for: MarketingCapture.showGitSheetNotification)) { _ in
             showGitTools = true

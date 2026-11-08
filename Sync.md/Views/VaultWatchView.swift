@@ -9,7 +9,8 @@ struct VaultWatchView: View {
     let repoID: UUID
 
     @State private var watcher = VaultFolderWatcher()
-    @State private var modifiedAt: [String: Date] = [:]
+    @State private var fileActivity = VaultWatchFileActivity()
+    private var modifiedAt: [String: Date] { fileActivity.dates }
     @State private var lastEventAt: Date?
     @State private var lastAutoCommittedActivity: Date?
     @State private var autoCommitEnabled: Bool
@@ -300,7 +301,7 @@ struct VaultWatchView: View {
                 dates[entry.path] = date
             }
         }
-        if dates != modifiedAt { modifiedAt = dates }
+        fileActivity.update(dates, observedAt: Date())
     }
 
     private func autoCommitIfPaused() async {

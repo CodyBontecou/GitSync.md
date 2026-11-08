@@ -281,6 +281,10 @@ private struct GitSignatureIdentity {
 }
 
 private func validatedGitSignatureIdentity(authorName: String, authorEmail: String) throws -> GitSignatureIdentity {
+    if let issue = GitIdentityValidation.controlCharacterIssue(authorName)
+        ?? GitIdentityValidation.controlCharacterIssue(authorEmail) {
+        throw LocalGitError.invalidAuthorIdentity(issue)
+    }
     let name = authorName.trimmingCharacters(in: .whitespacesAndNewlines)
     let email = authorEmail.trimmingCharacters(in: .whitespacesAndNewlines)
 
@@ -1021,7 +1025,10 @@ nonisolated private func diffPrintCallback(
     // emitted text is a well-formed unified diff that parsers can classify.
     let origin = UInt8(bitPattern: line.pointee.origin)
     switch origin {
-    case UInt8(ascii: "F"), UInt8(ascii: "H"), UInt8(ascii: "B"):
+    case UInt8(ascii: "F"), UInt8(ascii: "H"), UInt8(ascii: "B"),
+         UInt8(ascii: "="), UInt8(ascii: ">"), UInt8(ascii: "<"):
+        // EOF origins are metadata. Their content already contains the
+        // newline and "\\ No newline" annotation, not a file-line prefix.
         break
     default:
         collector.output.append(Character(Unicode.Scalar(origin)))
@@ -1077,6 +1084,20 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
 
     /// One-time libgit2 global init.
     private static let initOnce: Void = { git_libgit2_init() }()
+
+    /// Read the configured origin without network access or parent-directory
+    /// discovery. libgit2 resolves .git pointer files and shared worktree config.
+    static func readOriginURL(at url: URL) -> String? {
+        _ = initOnce
+        var repo: OpaquePointer?
+        defer { if let repo { git_repository_free(repo) } }
+        guard git_repository_open_ext(&repo, url.path, UInt32(GIT_REPOSITORY_OPEN_NO_SEARCH.rawValue), nil) == 0 else { return nil }
+        var remote: OpaquePointer?
+        defer { if let remote { git_remote_free(remote) } }
+        guard git_remote_lookup(&remote, repo, "origin") == 0,
+              let value = git_remote_url(remote) else { return nil }
+        return String(cString: value)
+    }
 
     /// Set `core.precomposeunicode = true` on a repo so libgit2 transparently
     /// normalises filenames between NFC (git objects) and NFD (APFS/HFS+).
@@ -1178,7 +1199,12 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
         }.value
     }
 
-    func clone(remoteURL: String, pat: String) async throws -> LocalCloneResult {
+    func clone(remoteURL: String, pat: String, branch: String? = nil) async throws -> LocalCloneResult {
+        let trimmedBranch = branch?.trimmingCharacters(in: .whitespacesAndNewlines)
+        let selectedBranch = trimmedBranch?.isEmpty == false ? trimmedBranch : nil
+        if let selectedBranch, let issue = GitBranchName.validationMessage(selectedBranch) {
+            throw LocalGitError.cloneFailed(issue)
+        }
         let dest = self.localURL.path
         let localURL = self.localURL
         let cancellationSignal = LocalGitCancellationSignal()
@@ -1206,7 +1232,16 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             opts.fetch_opts.callbacks.payload = ctxPtr
 
             try cancellationSignal.checkCancellation()
-            let code = git_clone(&repo, remoteURL, dest, &opts)
+            let code: Int32
+            if let selectedBranch {
+                // libgit2 borrows this C string for the synchronous clone.
+                code = selectedBranch.withCString { branchName in
+                    opts.checkout_branch = branchName
+                    return git_clone(&repo, remoteURL, dest, &opts)
+                }
+            } else {
+                code = git_clone(&repo, remoteURL, dest, &opts)
+            }
             guard code == 0, let repo else {
                 if cancellationSignal.isCancelled { throw CancellationError() }
                 if let sshHostKeyTrustError = ctx.sshHostKeyTrustError {
@@ -3752,6 +3787,9 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
     }
 
     func createTag(name: String, targetOID: String?, message: String?, authorName: String, authorEmail: String) async throws -> GitTag {
+        if let issue = GitTagName.validationMessage(name) { throw LocalGitError.libgit2(issue) }
+        let name = name.trimmingCharacters(in: .whitespacesAndNewlines)
+
         let repoPath = self.localURL.path
 
         return try await Task.detached {
@@ -3803,6 +3841,9 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
     }
 
     func deleteTag(name: String) async throws {
+        if let issue = GitTagName.validationMessage(name) { throw LocalGitError.libgit2(issue) }
+        let name = name.trimmingCharacters(in: .whitespacesAndNewlines)
+
         let repoPath = self.localURL.path
 
         try await Task.detached {
@@ -3819,6 +3860,9 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
     }
 
     func pushTag(name: String, pat: String) async throws {
+        if let issue = GitTagName.validationMessage(name) { throw LocalGitError.libgit2(issue) }
+        let name = name.trimmingCharacters(in: .whitespacesAndNewlines)
+
         let repoPath = self.localURL.path
 
         try await Task.detached {
@@ -5350,6 +5394,8 @@ struct RemoteConnectionCheck: Sendable, Equatable {
     let refCount: Int
     /// Branch the remote's HEAD points to, when advertised.
     let defaultBranch: String?
+    /// Advertised branch names, excluding tags and HEAD aliases.
+    let branchNames: [String]
 }
 
 extension LocalGitService {
@@ -5394,7 +5440,13 @@ extension LocalGitService {
             }
             git_buf_dispose(&buf)
 
-            return RemoteConnectionCheck(refCount: headCount, defaultBranch: defaultBranch)
+            let branchNames = (0..<headCount).compactMap { index -> String? in
+                guard let head = heads?[index], let name = head.pointee.name else { return nil }
+                let ref = String(cString: name)
+                guard ref.hasPrefix("refs/heads/") else { return nil }
+                return String(ref.dropFirst("refs/heads/".count))
+            }
+            return RemoteConnectionCheck(refCount: headCount, defaultBranch: defaultBranch, branchNames: branchNames)
         }.value
     }
 }
@@ -5803,10 +5855,11 @@ extension LocalGitService {
 
 extension LocalGitService {
     /// Commits that changed `path`, newest first. A commit counts when the
-    /// blob at `path` differs from its first parent's (adds and deletes too).
+    /// tree entry at `path` differs from its first parent's (content, mode, adds, deletes).
     func fileHistory(path: String, limit: Int = 50) async throws -> [GitCommitSummary] {
         let repoPath = self.localURL.path
-        let target = path.precomposedStringWithCanonicalMapping
+        // Git tree paths are byte-exact; normalizing Unicode can select a different entry.
+        let target = path
         let safeLimit = max(0, limit)
 
         return try await Task.detached {
@@ -5827,8 +5880,8 @@ extension LocalGitService {
             }
             try git2Check(pushHeadCode, context: "Push HEAD to revwalk")
 
-            /// Blob OID of `target` in `commit`'s tree, nil when absent.
-            func blobOID(in commit: OpaquePointer?) -> git_oid? {
+            /// Identity and mode of the exact tree entry, nil when absent.
+            func entryState(in commit: OpaquePointer?) -> (oid: git_oid, mode: UInt32)? {
                 guard let commit else { return nil }
                 var tree: OpaquePointer?
                 defer { if let tree { git_tree_free(tree) } }
@@ -5837,7 +5890,7 @@ extension LocalGitService {
                 defer { if let entry { git_tree_entry_free(entry) } }
                 guard git_tree_entry_bypath(&entry, tree, target) == 0,
                       let oid = git_tree_entry_id(entry) else { return nil }
-                return oid.pointee
+                return (oid.pointee, git_tree_entry_filemode(entry).rawValue)
             }
 
             var summaries: [GitCommitSummary] = []
@@ -5859,9 +5912,9 @@ extension LocalGitService {
                 if git_commit_parentcount(commit) > 0 { _ = git_commit_parent(&parent, commit, 0) }
 
                 let changed: Bool
-                switch (blobOID(in: commit), blobOID(in: parent)) {
+                switch (entryState(in: commit), entryState(in: parent)) {
                 case (nil, nil): changed = false
-                case (var a?, var b?): changed = git_oid_equal(&a, &b) == 0
+                case (var a?, var b?): changed = a.mode != b.mode || git_oid_equal(&a.oid, &b.oid) == 0
                 default: changed = true
                 }
                 guard changed else { continue }

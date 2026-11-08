@@ -7,6 +7,8 @@ struct ContentView: View {
     @State private var showContent = true
 
     var body: some View {
+        @Bindable var state = state
+
         Group {
             if state.hasCompletedOnboarding || !state.repos.isEmpty {
                 RepoListView()
@@ -72,6 +74,7 @@ struct ContentView: View {
         } message: {
             Text(state.pendingSSHHostKeyTrustRequest?.message ?? "")
         }
+        .appErrorAlert(isRoot: true)
         .onChange(of: state.shouldRequestReview) { _, shouldRequest in
             if shouldRequest {
                 state.shouldRequestReview = false

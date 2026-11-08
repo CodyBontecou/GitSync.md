@@ -466,6 +466,7 @@ struct VaultBranchesScreen: View {
     @Environment(AppState.self) private var state
     let repoID: UUID
     @State private var newBranchName = ""
+    @State private var isCreating = false
     @State private var pendingDelete: GitBranchInfo?
     @State private var pendingMerge: GitBranchInfo?
 
@@ -477,11 +478,17 @@ struct VaultBranchesScreen: View {
                 placeholder: String(localized: "new-branch-name"),
                 text: $newBranchName,
                 buttonTitle: String(localized: "Create"),
-                disabled: state.isSyncing
+                disabled: state.isSyncing || isCreating
             ) {
-                let name = newBranchName.trimmingCharacters(in: .whitespacesAndNewlines)
-                newBranchName = ""
-                Task { await state.createBranch(repoID: repoID, name: name) }
+                let submitted = newBranchName
+                let name = submitted
+                isCreating = true
+                Task {
+                    defer { isCreating = false }
+                    if await state.createBranch(repoID: repoID, name: name), newBranchName == submitted {
+                        newBranchName = ""
+                    }
+                }
             }
 
             TideSectionLabel(title: String(localized: "On this iPhone").forThisDevice)
@@ -643,7 +650,7 @@ struct VaultStashesScreen: View {
             presenting: pendingDrop
         ) { entry in
             Button(String(localized: "Drop"), role: .destructive) {
-                Task { await state.dropStash(repoID: repoID, index: entry.index) }
+                Task { await state.dropStash(repoID: repoID, index: entry.index, expectedOID: entry.oid) }
             }
         } message: { _ in
             Text(String(localized: "The stashed changes are deleted."))
@@ -663,10 +670,10 @@ struct VaultStashesScreen: View {
             }
             Spacer(minLength: 8)
             Menu {
-                Button { Task { await state.popStash(repoID: repoID, index: entry.index) } } label: {
+                Button { Task { await state.popStash(repoID: repoID, index: entry.index, expectedOID: entry.oid) } } label: {
                     Label(String(localized: "Pop"), systemImage: "arrow.up.bin")
                 }
-                Button { Task { await state.applyStash(repoID: repoID, index: entry.index) } } label: {
+                Button { Task { await state.applyStash(repoID: repoID, index: entry.index, expectedOID: entry.oid) } } label: {
                     Label(String(localized: "Apply (keep stash)"), systemImage: "doc.on.doc")
                 }
                 Button(role: .destructive) { pendingDrop = entry } label: {
@@ -692,6 +699,7 @@ struct VaultTagsScreen: View {
     @Environment(AppState.self) private var state
     let repoID: UUID
     @State private var newTagName = ""
+    @State private var isCreating = false
     @State private var pendingDelete: GitTag?
 
     private var tags: [GitTag] { state.tagsByRepo[repoID] ?? [] }
@@ -702,11 +710,17 @@ struct VaultTagsScreen: View {
                 placeholder: String(localized: "v1.0"),
                 text: $newTagName,
                 buttonTitle: String(localized: "Tag HEAD"),
-                disabled: state.isSyncing
+                disabled: state.isSyncing || isCreating
             ) {
-                let name = newTagName.trimmingCharacters(in: .whitespacesAndNewlines)
-                newTagName = ""
-                Task { await state.createTag(repoID: repoID, name: name) }
+                let submitted = newTagName
+                let name = submitted
+                isCreating = true
+                Task {
+                    defer { isCreating = false }
+                    if await state.createTag(repoID: repoID, name: name), newTagName == submitted {
+                        newTagName = ""
+                    }
+                }
             }
 
             TideSectionLabel(title: String(localized: "\(tags.count) tags"))

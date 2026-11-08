@@ -53,10 +53,10 @@ struct NewFileSheet: View {
 
     private var conflict: String? {
         guard !finalName.isEmpty else { return nil }
-        if finalName.contains("/") { return String(localized: "Names can't contain “/”.") }
-        if finalName.hasPrefix(".") { return String(localized: "Names can't start with a dot.") }
-        if NoteFileName.isTooLong(finalName) {
-            return String(localized: "That name is too long. Names can be at most 255 bytes, including the extension.")
+        // Check the raw input as well, before trimming can hide controls.
+        if let issue = RepositoryItemName.validationMessage(name, allowsLeadingDot: false)
+            ?? RepositoryItemName.validationMessage(finalName, allowsLeadingDot: false) {
+            return issue
         }
         guard FileManager.default.fileExists(atPath: directoryURL.appendingPathComponent(finalName).path) else { return nil }
         return String(localized: "\(finalName) already exists in \(folderLabel). Try another name.")
@@ -146,6 +146,8 @@ struct NewFileSheet: View {
         .presentationCornerRadius(30)
         .presentationBackground(Tide.paper)
         .onAppear { focused = true }
+        .onChange(of: name) { error = nil }
+        .onChange(of: kind) { error = nil }
         .onChange(of: template) {
             if template == .today, trimmed.isEmpty { name = Self.isoDay(Date()) }
         }

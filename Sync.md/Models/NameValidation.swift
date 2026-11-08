@@ -86,11 +86,47 @@ enum NoteFileName {
     static func isTooLong(_ name: String) -> Bool { name.utf8.count > maximumBytes }
 }
 
+/// A single, visible path component for note/folder creation and renaming.
+enum RepositoryItemName {
+    static func validationMessage(_ rawName: String, allowsLeadingDot: Bool = true) -> String? {
+        let name = rawName.trimmingCharacters(in: .whitespacesAndNewlines)
+        if rawName.unicodeScalars.contains(where: CharacterSet.controlCharacters.contains) {
+            return String(localized: "Names can't contain control characters.")
+        }
+        if name.isEmpty { return String(localized: "Enter a name.") }
+        if name == "." || name == ".." {
+            return String(localized: "“.” and “..” can't be used as a name.")
+        }
+        if name.contains("/") || name.contains("\\") || name.contains(":") {
+            return String(localized: "Names can't contain “/”, “\\” or “:”.")
+        }
+        if !allowsLeadingDot && name.hasPrefix(".") {
+            return String(localized: "Names can't start with a dot.")
+        }
+        if NoteFileName.isTooLong(name) {
+            return String(localized: "That name is too long. Names can be at most 255 bytes, including the extension.")
+        }
+        return nil
+    }
+}
+
 /// Light checks for the author identity written into commit signatures
 /// ("Name <email>"), where angle brackets and newlines would corrupt it.
 enum GitIdentityValidation {
+    /// C0 controls and DEL are invisible in identity fields; NUL also terminates libgit2 strings.
+    /// Check raw input before trimming, while allowing Unicode format characters used by emoji.
+    static func controlCharacterIssue(_ value: String) -> String? {
+        guard containsControlCharacters(value) else { return nil }
+        return String(localized: "Author identity cannot contain control characters.")
+    }
+
+    private static func containsControlCharacters(_ value: String) -> Bool {
+        value.unicodeScalars.contains { $0.value < 0x20 || $0.value == 0x7F }
+    }
+
     /// Empty is not an error here; required-field checks happen elsewhere.
     static func nameIssue(_ rawName: String) -> String? {
+        if let issue = controlCharacterIssue(rawName) { return issue }
         let name = rawName.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !name.isEmpty else { return nil }
         if name.contains(where: { $0 == "<" || $0 == ">" || $0.isNewline }) {
@@ -100,12 +136,14 @@ enum GitIdentityValidation {
     }
 
     static func emailIssue(_ rawEmail: String) -> String? {
+        if let issue = controlCharacterIssue(rawEmail) { return issue }
         let email = rawEmail.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !email.isEmpty else { return nil }
         return isPlausibleEmail(email) ? nil : String(localized: "That doesn't look like an email address.")
     }
 
     static func isPlausibleEmail(_ email: String) -> Bool {
+        guard !containsControlCharacters(email) else { return false }
         guard !email.contains(where: { $0.isWhitespace || $0 == "<" || $0 == ">" }) else { return false }
         let parts = email.split(separator: "@", omittingEmptySubsequences: false)
         guard parts.count == 2, !parts[0].isEmpty else { return false }

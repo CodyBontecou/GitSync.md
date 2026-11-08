@@ -806,13 +806,16 @@ struct BConfirmModal: View {
 struct BRenameModal: View {
     let title: String
     @Binding var text: String
+    var validationMessage: String? = nil
+    var isDisabled = false
+    var isLoading = false
     let onConfirm: () -> Void
     let onCancel: () -> Void
 
     @FocusState private var isFocused: Bool
 
     var body: some View {
-        TideModalSheet(onDismiss: onCancel) {
+        TideModalSheet(onDismiss: { if !isLoading { onCancel() } }) {
             Text(title)
                 .tideDisplay(26)
                 .accessibilityAddTraits(.isHeader)
@@ -822,6 +825,7 @@ struct BRenameModal: View {
                 .padding(.top, 6)
 
             TextField("filename.ext", text: $text)
+                .disabled(isLoading)
                 .focused($isFocused)
                 .autocorrectionDisabled()
                 .textInputAutocapitalization(.never)
@@ -834,10 +838,19 @@ struct BRenameModal: View {
                     .strokeBorder(Tide.ink, lineWidth: 1.5))
                 .padding(.top, 16)
 
+            if let validationMessage {
+                Text(validationMessage)
+                    .font(TideFont.meta)
+                    .foregroundStyle(Tide.danger)
+                    .accessibilityIdentifier("editor.renameError")
+                    .padding(.top, 8)
+            }
+
             VStack(spacing: 8) {
-                BPrimaryButton(title: String(localized: "Rename"), action: onConfirm)
+                BPrimaryButton(title: String(localized: "Rename"), isLoading: isLoading, isDisabled: isDisabled, action: onConfirm)
                 BGhostButton(title: String(localized: "Cancel"), role: .cancel, action: onCancel)
                     .frame(maxWidth: .infinity)
+                    .disabled(isLoading)
             }
             .padding(.top, 18)
         }

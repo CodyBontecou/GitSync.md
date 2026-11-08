@@ -94,15 +94,7 @@ struct CommitSheetView: View {
         } message: {
             Text(String(localized: "\(pendingLFS.count) large or binary files should be stored with Git LFS before committing."))
         }
-        // Embedded, the hosting screen already presents errors.
-        .alert("Error", isPresented: Binding(
-            get: { !embedded && state.showError },
-            set: { state.showError = $0 }
-        )) {
-            Button("OK", role: .cancel) {}
-        } message: {
-            Text(state.lastError ?? String(localized: "Unknown error"))
-        }
+        .appErrorAlert(isEnabled: !embedded)
     }
 
     // MARK: - Header

@@ -40,7 +40,7 @@ final class CallbackURLHandler {
 
     /// Returns `true` if the URL is an x-callback-url that this handler should process.
     func canHandle(_ url: URL) -> Bool {
-        url.scheme == "syncmd" && url.host == "x-callback-url"
+        url.scheme?.lowercased() == "syncmd" && url.host?.lowercased() == "x-callback-url"
     }
 
     /// Parse the incoming URL, navigate to the repo, and execute the action.
@@ -63,7 +63,12 @@ final class CallbackURLHandler {
             return
         }
 
-        guard let repo = appState.repos.first(where: { $0.vaultFolderName == repoName }) else {
+        let matches = appState.repos.filter { $0.vaultFolderName == repoName }
+        guard matches.count <= 1 else {
+            redirectError(from: components, message: String(localized: "More than one vault is named '\(repoName)'. Open the intended vault in GitSync.md to run this action."))
+            return
+        }
+        guard let repo = matches.first else {
             redirectError(from: components, message: String(localized: "Repository '\(repoName)' not found in GitSync.md"))
             return
         }
@@ -232,6 +237,7 @@ final class CallbackURLHandler {
         case .status:
             let branch = params["branch"] ?? "?"
             let changes = params["changes"] ?? "0"
+            if changes == "1" { return String(localized: "\(branch) · 1 change") }
             return String(localized: "\(branch) · \(changes) changes")
         }
     }

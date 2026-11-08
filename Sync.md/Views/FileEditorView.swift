@@ -27,6 +27,8 @@ struct FileEditorView: View {
     @State private var showDeleteConfirm = false
     @State private var showRenameModal = false
     @State private var renameText: String = ""
+    @State private var renameError: String?
+    @State private var isRenaming = false
     @State private var showSaveToast = false
     @State private var showCommitSheet = false
     @State private var showPreview = false
@@ -49,6 +51,15 @@ struct FileEditorView: View {
     private var fileName: String { liveURL.lastPathComponent }
     private var isDirty: Bool { content != originalContent }
     private var language: SyntaxLanguage { SyntaxLanguage.detect(fileExtension: liveURL.pathExtension) }
+
+    private var renameIssue: String? {
+        do {
+            _ = try RepositoryFileRename.destination(
+                for: liveURL, name: renameText, in: state.vaultURL(for: repoID)
+            )
+            return nil
+        } catch { return error.localizedDescription }
+    }
 
     /// Path of the open file relative to the vault root, symlinks resolved on
     /// both sides (the vault URL comes back through /var -> /private/var).
@@ -113,6 +124,7 @@ struct FileEditorView: View {
         .onAppear { loadContent() }
         .task { await refreshChangeSummary() }
         .onChange(of: content) { scheduleAutosave() }
+        .onChange(of: renameText) { renameError = nil }
         .onChange(of: state.statusEntriesByRepo[repoID] ?? []) {
             Task { await refreshChangeSummary() }
         }
@@ -170,6 +182,10 @@ struct FileEditorView: View {
                 BRenameModal(
                     title: String(localized: "Rename File"),
                     text: $renameText,
+                    validationMessage: renameIssue ?? renameError,
+                    isDisabled: renameIssue != nil || isSaving || isRenaming
+                        || renameText.trimmingCharacters(in: .whitespacesAndNewlines) == fileName,
+                    isLoading: isRenaming,
                     onConfirm: performRename,
                     onCancel: { showRenameModal = false; renameText = "" }
                 )
@@ -219,6 +235,8 @@ struct FileEditorView: View {
                     } label: {
                         Text(showPreview ? String(localized: "Edit") : String(localized: "Preview"))
                             .font(TideFont.sans(13, .medium, relativeTo: .subheadline))
+                            .lineLimit(1)
+                            .fixedSize(horizontal: true, vertical: false)
                             .foregroundStyle(Tide.ink)
                             .padding(.horizontal, 14)
                             .frame(height: 34)
@@ -235,6 +253,8 @@ struct FileEditorView: View {
                     } label: {
                         Text("Save")
                             .font(TideFont.sans(13, .semibold, relativeTo: .subheadline))
+                            .lineLimit(1)
+                            .fixedSize(horizontal: true, vertical: false)
                             .foregroundStyle(isDirty ? Tide.paper : Tide.inkFaint)
                             .padding(.horizontal, 14)
                             .frame(height: 34)
@@ -252,6 +272,7 @@ struct FileEditorView: View {
                 Menu {
                     Button {
                         renameText = fileName
+                        renameError = nil
                         showRenameModal = true
                     } label: {
                         Label(String(localized: "Rename File"), systemImage: "pencil")
@@ -272,6 +293,7 @@ struct FileEditorView: View {
                 }
                 .accessibilityLabel(String(localized: "More file options"))
             }
+            .fixedSize(horizontal: true, vertical: false)
         }
     }
 
@@ -365,7 +387,7 @@ struct FileEditorView: View {
     /// Debounced autosave: writes once typing pauses.
     private func scheduleAutosave() {
         autosaveTask?.cancel()
-        guard isDirty, !isBinary else { return }
+        guard isDirty, !isBinary, !isRenaming else { return }
         autosaveTask = Task {
             try? await Task.sleep(for: Self.autosaveDelay)
             guard !Task.isCancelled, isDirty else { return }
@@ -385,7 +407,7 @@ struct FileEditorView: View {
             UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
         }
         autosaveTask?.cancel()
-        guard !isSaving, let replacement = content.data(using: .utf8) else { return }
+        guard !isSaving, !isRenaming, let replacement = content.data(using: .utf8) else { return }
         let expected = loadedBytes
         let savedContent = content
         let destination = liveURL
@@ -442,15 +464,28 @@ struct FileEditorView: View {
 
     private func performRename() {
         let trimmed = renameText.trimmingCharacters(in: .whitespacesAndNewlines)
-        showRenameModal = false
-        renameText = ""
-        guard !trimmed.isEmpty, trimmed != liveURL.lastPathComponent else { return }
-        let dest = liveURL.deletingLastPathComponent().appendingPathComponent(trimmed)
-        guard !FileManager.default.fileExists(atPath: dest.path) else { return }
-        do {
-            try FileManager.default.moveItem(at: liveURL, to: dest)
-            liveURL = dest
-            state.detectChanges(repoID: repoID)
-        } catch {}
+        guard !isSaving, !isRenaming, trimmed != fileName, renameIssue == nil else { return }
+        autosaveTask?.cancel()
+        isRenaming = true
+        let source = liveURL
+        let expected = loadedBytes
+        let repository = state.vaultURL(for: repoID)
+        Task {
+            defer {
+                isRenaming = false
+                scheduleAutosave()
+            }
+            do {
+                let destination = try await RepositoryOperationCoordinator.shared.withRepository(at: repository) {
+                    try RepositoryFileRename.rename(source, to: trimmed, in: repository, expected: expected)
+                }
+                liveURL = destination
+                showRenameModal = false
+                renameText = ""
+                state.detectChanges(repoID: repoID)
+            } catch {
+                renameError = error.localizedDescription
+            }
+        }
     }
 }

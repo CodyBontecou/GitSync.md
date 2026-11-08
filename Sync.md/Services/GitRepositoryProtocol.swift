@@ -35,7 +35,7 @@ struct PushSafetyExpectation: Sendable, Equatable {
 protocol GitRepositoryProtocol: Sendable {
     var hasGitDirectory: Bool { get }
 
-    func clone(remoteURL: String, pat: String) async throws -> LocalCloneResult
+    func clone(remoteURL: String, pat: String, branch: String?) async throws -> LocalCloneResult
     /// Re-runs Git LFS hydration for the whole worktree (retry after an SSH
     /// host-key trust prompt unblocked hydration).
     func hydrateLFSObjects(pat: String) async throws -> GitLFSHydrateResult
@@ -105,6 +105,10 @@ protocol GitRepositoryProtocol: Sendable {
 }
 
 extension GitRepositoryProtocol {
+    func clone(remoteURL: String, pat: String) async throws -> LocalCloneResult {
+        try await clone(remoteURL: remoteURL, pat: pat, branch: nil)
+    }
+
     func pushCurrentBranch(pat: String) async throws {
         try await pushCurrentBranch(pat: pat, expectedBranch: nil, safetyExpectation: nil)
     }

@@ -14,7 +14,7 @@ struct AddRepoView: View {
 
     // Repo selection
     @State private var selectedRepoURL: String = ""
-    @State private var selectedBranch: String = "main"
+    @State private var selectedBranch: String = ""
     @State private var showRepoPicker = false
     @State private var showManualEntry = false
     @State private var pastedURL: String = ""
@@ -180,7 +180,7 @@ struct AddRepoView: View {
             }
             .fullScreenCover(item: $vaultCheck) { check in
                 VaultCheckView(preflight: check, destination: cloneDestination, clonesWhenReadyIfUnlocked: true) {
-                    performAddAndClone(identifier: selectedRepoURL.trimmingCharacters(in: .whitespacesAndNewlines).lowercased())
+                    performAddAndClone(identifier: selectedRepoURL.trimmingCharacters(in: .whitespacesAndNewlines).lowercased(), checkedBranch: check.resolvedBranch)
                 }
             }
             .unlockGate($pendingUnlock)
@@ -851,9 +851,11 @@ struct AddRepoView: View {
                 BTextField(
                     label: String(localized: "Branch"),
                     text: $selectedBranch,
-                    placeholder: "main",
+                    placeholder: String(localized: "Default branch"),
                     autocapitalization: .never
                 )
+
+                if let branchIssue { TideInlineWarning(text: branchIssue) }
 
                 BTextField(
                     label: String(localized: "Author Name"),
@@ -1087,7 +1089,12 @@ struct AddRepoView: View {
 
     private var canSubmitRemoteRepo: Bool {
         GitRemoteURL.parse(selectedRepoURL) != nil && isAuthConfigValid
-            && folderNameIssue == nil && authorIdentityIssue == nil && !state.isSyncing
+            && folderNameIssue == nil && authorIdentityIssue == nil && branchIssue == nil && !state.isSyncing
+    }
+
+    private var branchIssue: String? {
+        let branch = selectedBranch.trimmingCharacters(in: .whitespacesAndNewlines)
+        return branch.isEmpty ? nil : GitBranchName.validationMessage(branch)
     }
 
     private var authorIdentityIssue: String? {
@@ -1290,6 +1297,7 @@ struct AddRepoView: View {
         }
         if let authorIdentityIssue { showValidation(authorIdentityIssue); return }
         if let folderNameIssue { showValidation(folderNameIssue.message); return }
+        if let branchIssue { showValidation(branchIssue); return }
 
         let trimmedURL = selectedRepoURL.trimmingCharacters(in: .whitespacesAndNewlines)
         let isGitHubHTTPS = GitRemoteURL.parse(trimmedURL).map { $0.isGitHub && !$0.isSSH } ?? false
@@ -1303,15 +1311,16 @@ struct AddRepoView: View {
         ))
     }
 
-    private func performAddAndClone(identifier: String) {
+    private func performAddAndClone(identifier: String, checkedBranch: String?) {
         // Re-check: the vault check runs in between and state may have changed.
         if let folderNameIssue { showValidation(folderNameIssue.message); return }
+        if let branchIssue { showValidation(branchIssue); return }
         repositoryHistory.recordRepoAdded(identifier: identifier)
         let trimmedBranch = selectedBranch.trimmingCharacters(in: .whitespacesAndNewlines)
         let credentials = remoteCredentials()
         let config = RepoConfig(
             repoURL: selectedRepoURL.trimmingCharacters(in: .whitespacesAndNewlines),
-            branch: trimmedBranch.isEmpty ? "main" : trimmedBranch,
+            branch: trimmedBranch.isEmpty ? (checkedBranch ?? "") : trimmedBranch,
             authorName: trimmedAuthorName,
             authorEmail: trimmedAuthorEmail,
             vaultFolderName: effectiveFolderName,

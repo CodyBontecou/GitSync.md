@@ -277,11 +277,14 @@ struct ConflictEditorView: View {
                         ForEach(hunks) { hunk in
                             hunkSection(hunk, detail: detail)
                         }
-                        outlinePill(String(localized: "Edit by hand")) {
-                            resultText = assembledText
-                            showManualEditor = true
+                        if !showManualEditor {
+                            outlinePill(String(localized: "Edit by hand")) {
+                                guard !showManualEditor else { return }
+                                resultText = assembledText
+                                showManualEditor = true
+                            }
+                            .padding(.top, 4)
                         }
-                        .padding(.top, 4)
                         if showManualEditor {
                             resultEditor
                                 .padding(.top, 4)
@@ -296,8 +299,10 @@ struct ConflictEditorView: View {
                             versionCard(.ours, detail: detail)
                             versionCard(.theirs, detail: detail)
                         }
-                        secondaryActions(detail: detail)
-                            .padding(.top, 4)
+                        if !showManualEditor {
+                            secondaryActions(detail: detail)
+                                .padding(.top, 4)
+                        }
                         if showManualEditor {
                             resultEditor
                                 .padding(.top, 4)
@@ -431,7 +436,7 @@ struct ConflictEditorView: View {
                 .contentShape(Capsule())
             }
             .buttonStyle(.plain)
-            .disabled(state.isSyncing)
+            .disabled(state.isSyncing || showManualEditor)
             .accessibilityLabel(isOurs
                 ? String(localized: "Keep this iPhone's version").forThisDevice
                 : String(localized: "Keep the remote version"))
@@ -516,6 +521,7 @@ struct ConflictEditorView: View {
             outlinePill(choice == .both ? String(localized: "✓ Keeping both") : String(localized: "Keep both")) {
                 choose(.both, for: hunk)
             }
+            .disabled(showManualEditor || state.isSyncing)
         }
     }
 
@@ -581,7 +587,7 @@ struct ConflictEditorView: View {
                 .contentShape(Capsule())
             }
             .buttonStyle(.plain)
-            .disabled(state.isSyncing)
+            .disabled(state.isSyncing || showManualEditor)
             .accessibilityLabel(isOurs
                 ? String(localized: "Keep this iPhone's version").forThisDevice
                 : String(localized: "Keep the remote version"))
@@ -614,6 +620,9 @@ struct ConflictEditorView: View {
     }
 
     private func choose(_ choice: TideTextDiff.Choice, for hunk: TideTextDiff.ConflictHunk) {
+        // Once editing starts, only the explicit "Start from…" actions may
+        // replace the draft. Section choices regenerate the entire result.
+        guard !showManualEditor else { return }
         choices[hunk.id] = choice
         resultText = assembledText
         if allHunksChosen && !showManualEditor && canResolve {

@@ -14,6 +14,307 @@ final class SyncMDTests: XCTestCase {
         _ = git_libgit2_init()
     }
 
+    func testTagNamesRejectControlsBeforeNativeMutation() async throws {
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent("TagControls-\(UUID())")
+        try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: url) }
+        var repo: OpaquePointer?
+        XCTAssertEqual(git_repository_init(&repo, url.path, 0), 0)
+        git_repository_free(repo)
+        let service = LocalGitService(localURL: url)
+        try "base".write(to: url.appendingPathComponent("README.md"), atomically: true, encoding: .utf8)
+        try await service.stage(path: "README.md")
+        _ = try await service.commitLocal(message: "base", authorName: "QA", authorEmail: "qa@example.invalid")
+        for message in [String?.none, "Annotation"] {
+            do {
+                _ = try await service.createTag(name: "release\u{0}hidden", targetOID: nil, message: message, authorName: "QA", authorEmail: "qa@example.invalid")
+                XCTFail("NUL must not create a truncated tag")
+            } catch {}
+            let tags = try await service.listTags()
+            XCTAssertTrue(tags.isEmpty)
+            for tag in tags { try await service.deleteTag(name: tag.shortName) }
+        }
+    }
+
+    func testTagNameValidationSupportsUnicodeAndRejectsMalformedRefs() {
+        for raw in ["v1.0", "إصدار/🌱", "release/2026", " v1.0 "] {
+            XCTAssertNil(GitTagName.validationMessage(raw), raw)
+        }
+        for raw in ["", " ", "bad..tag", "a b", "a.lock", "a@{b", "a\\b", "a/", "\tvalid", "valid\n"] {
+            XCTAssertNotNil(GitTagName.validationMessage(raw), raw)
+        }
+        for value in Array(0..<32) + [127] {
+            XCTAssertNotNil(GitTagName.validationMessage("v" + String(UnicodeScalar(value)!) + "1"))
+        }
+    }
+
+    @MainActor
+    func testAppStateRejectsTagControlsBeforeDelegation() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        let state = AppState(gitRepositoryFactory: { _ in fixture.repository }, loadPersistedState: false)
+        state.repos = [fixture.repoConfig]
+        for scalar in [0, 9, 10, 13, 127] {
+            let raw = "release" + String(UnicodeScalar(scalar)!) + "hidden"
+            let result = await state.createTag(repoID: fixture.repoConfig.id, name: raw)
+            XCTAssertFalse(result)
+        }
+        XCTAssertTrue(fixture.repository.createdTags.isEmpty)
+    }
+
+    @MainActor
+    func testStashActionsFollowDisplayedIdentityAfterExternalInsertion() async throws {
+        for action in ["apply", "pop", "drop"] {
+            let fixture = try GitFixtureFactory.make(state: .clean)
+            defer { fixture.cleanup() }
+            let state = AppState(gitRepositoryFactory: { _ in fixture.repository }, loadPersistedState: false)
+            state.repos = [fixture.repoConfig]
+            state.stashesByRepo[fixture.repoConfig.id] = [GitStashEntry(index: 0, oid: "selected", message: "Selected")]
+            fixture.repository.stashEntriesResult = [
+                GitStashEntry(index: 0, oid: "new", message: "New"),
+                GitStashEntry(index: 1, oid: "selected", message: "Selected")]
+            switch action {
+            case "apply": await state.applyStash(repoID: fixture.repoConfig.id, index: 0)
+            case "pop": await state.popStash(repoID: fixture.repoConfig.id, index: 0)
+            default: await state.dropStash(repoID: fixture.repoConfig.id, index: 0)
+            }
+            let indices = fixture.repository.appliedStashIndices + fixture.repository.poppedStashIndices + fixture.repository.droppedStashIndices
+            XCTAssertEqual(indices, [1], action)
+        }
+    }
+
+    @MainActor
+    func testMissingDisplayedStashCannotMutateReplacement() async throws {
+        for action in ["apply", "pop", "drop"] {
+            let fixture = try GitFixtureFactory.make(state: .clean)
+            defer { fixture.cleanup() }
+            let state = AppState(gitRepositoryFactory: { _ in fixture.repository }, loadPersistedState: false)
+            state.repos = [fixture.repoConfig]
+            state.stashesByRepo[fixture.repoConfig.id] = [GitStashEntry(index: 0, oid: "removed", message: "Removed")]
+            fixture.repository.stashEntriesResult = [GitStashEntry(index: 0, oid: "replacement", message: "Replacement")]
+            switch action {
+            case "apply": await state.applyStash(repoID: fixture.repoConfig.id, index: 0)
+            case "pop": await state.popStash(repoID: fixture.repoConfig.id, index: 0)
+            default: await state.dropStash(repoID: fixture.repoConfig.id, index: 0)
+            }
+            XCTAssertTrue(state.showError, action)
+            XCTAssertTrue(fixture.repository.appliedStashIndices.isEmpty, action)
+            XCTAssertTrue(fixture.repository.poppedStashIndices.isEmpty, action)
+            XCTAssertTrue(fixture.repository.droppedStashIndices.isEmpty, action)
+        }
+    }
+
+    @MainActor
+    func testCallbackRoutingAcceptsCaseInsensitiveSchemeAndHost() throws {
+        let state = AppState(loadPersistedState: false)
+        let handler = CallbackURLHandler(appState: state)
+        for value in ["syncmd://x-callback-url/status", "SYNCMD://X-CALLBACK-URL/status", "SyncMd://X-Callback-Url/status"] {
+            XCTAssertTrue(handler.canHandle(try XCTUnwrap(URL(string: value))), value)
+        }
+        for value in ["https://x-callback-url/status", "syncmd://x-callback-url.evil/status", "syncmd://other/status"] {
+            XCTAssertFalse(handler.canHandle(try XCTUnwrap(URL(string: value))), value)
+        }
+    }
+
+    @MainActor
+    func testCallbackRejectsAmbiguousVaultNameBeforeNavigationOrWork() throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        let state = AppState(gitRepositoryFactory: { _ in fixture.repository }, loadPersistedState: false)
+        let original = fixture.repoConfig
+        let other = RepoConfig(repoURL: "other/repo", branch: original.branch,
+                               authorName: original.authorName, authorEmail: original.authorEmail,
+                               vaultFolderName: original.vaultFolderName, gitState: original.gitState)
+        state.repos = [fixture.repoConfig, other]
+        let handler = CallbackURLHandler(appState: state)
+        var url = URLComponents(string: "syncmd://x-callback-url/status")!
+        url.queryItems = [URLQueryItem(name: "repo", value: fixture.repoConfig.vaultFolderName)]
+        handler.handle(try XCTUnwrap(url.url))
+        XCTAssertTrue(state.showError)
+        XCTAssertNil(state.callbackNavigateToRepoID)
+        XCTAssertFalse(state.isSyncing)
+    }
+
+    @MainActor
+    func testConfigurationRejectsInvalidBranchBeforeChangingRemoteOrCredentials() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        let state = AppState(gitRepositoryFactory: { _ in fixture.repository }, loadPersistedState: false)
+        state.repos = [fixture.repoConfig]
+        for branch in ["bad..settings", "feature/.hidden", "topic.lock", "-option", "bad@{ref", "a b", "a\\b", "a\nb"] {
+            let saved = await state.saveRepoConfiguration(
+                id: fixture.repoConfig.id, repoURL: "changed/repo", branch: branch,
+                authorName: "Changed", authorEmail: "changed@example.com", authMethod: .none, credentials: .none
+            )
+            XCTAssertFalse(saved, branch)
+            XCTAssertEqual(state.repos.first, fixture.repoConfig, branch)
+            XCTAssertTrue(fixture.repository.setRemoteURLCalls.isEmpty, "Invalid branch must not change origin")
+        }
+    }
+
+    func testBranchNameValidationAcceptsGitBranchSyntax() {
+        for name in ["main", "feature/notes", "release/v1.0", "مرحبا", "a@b", "topic.locked", "@"] {
+            XCTAssertNil(GitBranchName.validationMessage(name), name)
+        }
+        for name in ["HEAD", "", "/topic", "topic/", "a//b", "a\0b", "a\tb", ".hidden", "a.", "a~b", "a^b", "a:b", "a?b", "a*b", "a[b", "a\u{7f}b"] {
+            XCTAssertNotNil(GitBranchName.validationMessage(name), name)
+        }
+    }
+
+    func testUnifiedDiffPreservesLinesForEveryFinalNewlineCombination() async throws {
+        let fm = FileManager.default
+        for oldLF in [false, true] {
+            for newLF in [false, true] {
+                let root = fm.temporaryDirectory.appendingPathComponent("eof-diff-\(UUID())")
+                try fm.createDirectory(at: root, withIntermediateDirectories: true)
+                defer { try? fm.removeItem(at: root) }
+                var repo: OpaquePointer?
+                XCTAssertEqual(git_repository_init(&repo, root.path, 0), 0)
+                if let repo { git_repository_free(repo) }
+                let service = LocalGitService(localURL: root)
+                let file = root.appendingPathComponent("note.md")
+                try ("old 🌱" + (oldLF ? "\n" : "")).write(to: file, atomically: true, encoding: .utf8)
+                try await service.stage(path: "note.md")
+                do {
+                    _ = try await service.commitAndPush(message: "Base", authorName: "Tests", authorEmail: "tests@example.com", pat: "")
+                } catch { /* Local commit succeeds; no remote is configured. */ }
+                try ("new 🌱" + (newLF ? "\n" : "")).write(to: file, atomically: true, encoding: .utf8)
+                let diff = try await service.unifiedDiff(path: "note.md")
+                let lines = diff.rawPatch.components(separatedBy: "\n")
+                XCTAssertTrue(lines.contains("-old 🌱"), diff.rawPatch)
+                XCTAssertTrue(lines.contains("+new 🌱"), diff.rawPatch)
+                XCTAssertFalse(diff.rawPatch.contains("🌱<") || diff.rawPatch.contains("🌱>") || diff.rawPatch.contains("🌱="), diff.rawPatch)
+                XCTAssertEqual(lines.filter { $0 == "\\ No newline at end of file" }.count, (oldLF ? 0 : 1) + (newLF ? 0 : 1))
+            }
+        }
+    }
+
+    func testRepositoryItemNamesRejectControlsSeparatorsAndOverlongUTF8() {
+        for name in ["bad/name", "bad\\name", "bad:name", "bad\tname", "bad\nname", "bad\0name", "\tname", "name\r", "bad\u{7f}name", ".", "..", String(repeating: "é", count: 128)] {
+            XCTAssertNotNil(RepositoryItemName.validationMessage(name), name)
+        }
+        for name in ["normal", "مرحبا 🌱", "a.b", " name with spaces ", String(repeating: "a", count: 255)] {
+            XCTAssertNil(RepositoryItemName.validationMessage(name), name)
+        }
+        XCTAssertNil(RepositoryItemName.validationMessage(".gitignore"))
+        XCTAssertNotNil(RepositoryItemName.validationMessage(".hidden", allowsLeadingDot: false))
+        XCTAssertNotNil(RepositoryItemName.validationMessage(NoteFileName.finalName(for: String(repeating: "a", count: 253))))
+    }
+
+    func testBrowserDirectoryRenamePreservesContentsAndRejectsCollision() throws {
+        let fm = FileManager.default
+        let root = fm.temporaryDirectory.appendingPathComponent("directory-rename-\(UUID())", isDirectory: true)
+        let source = root.appendingPathComponent("notes", isDirectory: true)
+        try fm.createDirectory(at: source, withIntermediateDirectories: true)
+        defer { try? fm.removeItem(at: root) }
+        let bytes = Data("nested content".utf8)
+        try bytes.write(to: source.appendingPathComponent("note.md"))
+        try Data("keep".utf8).write(to: root.appendingPathComponent("existing.md"))
+        XCTAssertThrowsError(try RepositoryFileRename.rename(source, to: "existing.md", in: root))
+        XCTAssertThrowsError(try RepositoryFileRename.rename(source, to: "bad/name", in: root))
+        XCTAssertEqual(try Data(contentsOf: source.appendingPathComponent("note.md")), bytes)
+        let moved = try RepositoryFileRename.rename(source, to: "مرحبا 🌱", in: root)
+        XCTAssertEqual(try Data(contentsOf: moved.appendingPathComponent("note.md")), bytes)
+        XCTAssertEqual(try String(contentsOf: root.appendingPathComponent("existing.md"), encoding: .utf8), "keep")
+        XCTAssertFalse(fm.fileExists(atPath: source.path))
+    }
+
+    @MainActor
+    func testAppStateCloneHonorsConfiguredNonDefaultBranchAndContents() async throws {
+        let fm = FileManager.default
+        let source = try makeTemporaryGitRepository(prefix: "clone-branch-source")
+        defer { try? fm.removeItem(at: source) }
+        let service = LocalGitService(localURL: source)
+        let file = source.appendingPathComponent("README.md")
+        try "default branch".write(to: file, atomically: true, encoding: .utf8)
+        try await service.stage(path: "README.md")
+        _ = try await service.commitLocal(message: "Default", authorName: "Tests", authorEmail: "tests@example.com")
+        let original = try await service.repoInfo().branch
+        try await service.createBranch(name: "qa/selected")
+        try await service.switchBranch(name: "qa/selected")
+        try "selected branch".write(to: file, atomically: true, encoding: .utf8)
+        try await service.stage(path: "README.md")
+        let selectedSHA = try await service.commitLocal(message: "Selected", authorName: "Tests", authorEmail: "tests@example.com")
+        try await service.switchBranch(name: original)
+        let state = AppState(loadPersistedState: false)
+        let config = RepoConfig(repoURL: source.absoluteString, branch: "qa/selected", authorName: "Tests", authorEmail: "tests@example.com", vaultFolderName: "clone-branch-\(UUID())")
+        state.repos = [config]
+        let destination = state.vaultURL(for: config.id)
+        defer { try? fm.removeItem(at: destination) }
+        await state.clone(repoID: config.id)
+        XCTAssertFalse(state.showError, state.lastError ?? "")
+        XCTAssertEqual(state.repo(id: config.id)?.gitState.branch, "qa/selected")
+        XCTAssertEqual(state.repo(id: config.id)?.gitState.commitSHA, selectedSHA)
+        XCTAssertEqual(try String(contentsOf: destination.appendingPathComponent("README.md"), encoding: .utf8), "selected branch")
+    }
+
+    @MainActor
+    func testVaultPreflightRejectsMissingBranchInsteadOfPassingIt() async throws {
+        let source = try makeTemporaryGitRepository(prefix: "missing-branch-source")
+        defer { try? FileManager.default.removeItem(at: source) }
+        let service = LocalGitService(localURL: source)
+        try "base".write(to: source.appendingPathComponent("README.md"), atomically: true, encoding: .utf8)
+        try await service.stage(path: "README.md")
+        _ = try await service.commitLocal(message: "Base", authorName: "Tests", authorEmail: "tests@example.com")
+        let preflight = VaultPreflight(target: .init(name: "test", repoURL: source.absoluteString, branch: "missing-valid-name", transportPayload: "", gitHubToken: nil))
+        preflight.stepDelay = .zero
+        await preflight.run()
+        XCTAssertNotEqual(preflight.phase, .ready, "A nonexistent branch must not pass preflight")
+        XCTAssertEqual(preflight.checks.first { $0.kind == .branch }?.status, .failed)
+        XCTAssertEqual(preflight.checks.first { $0.kind == .access }?.status, .passed)
+    }
+
+    @MainActor
+    func testCloneUsesRemoteDefaultAndMissingBranchNeverFallsBack() async throws {
+        let fm = FileManager.default
+        let source = try makeTemporaryGitRepository(prefix: "clone-default-source")
+        let parent = fm.temporaryDirectory.appendingPathComponent("clone-default-dest-\(UUID())")
+        try fm.createDirectory(at: parent, withIntermediateDirectories: true)
+        defer { try? fm.removeItem(at: source); try? fm.removeItem(at: parent) }
+        let service = LocalGitService(localURL: source)
+        try "default".write(to: source.appendingPathComponent("README.md"), atomically: true, encoding: .utf8)
+        try await service.stage(path: "README.md")
+        _ = try await service.commitLocal(message: "Base", authorName: "Tests", authorEmail: "tests@example.com")
+        try await service.createBranch(name: "qa/default")
+        try await service.switchBranch(name: "qa/default")
+        let implicit = try await LocalGitService(localURL: parent.appendingPathComponent("implicit")).clone(remoteURL: source.absoluteString, pat: "")
+        XCTAssertEqual(implicit.branch, "qa/default")
+        let missing = parent.appendingPathComponent("missing")
+        do {
+            _ = try await LocalGitService(localURL: missing).clone(remoteURL: source.absoluteString, pat: "", branch: "missing-valid")
+            XCTFail("Explicit missing branch must fail instead of cloning the default")
+        } catch { XCTAssertFalse(error.localizedDescription.isEmpty) }
+        XCTAssertFalse(fm.fileExists(atPath: missing.appendingPathComponent("README.md").path))
+        let check = try await LocalGitService.checkRemoteConnection(remoteURL: source.absoluteString, pat: "")
+        XCTAssertTrue(check.branchNames.contains("qa/default"))
+        let preflight = VaultPreflight(target: .init(name: "default", repoURL: source.absoluteString, branch: nil, transportPayload: "", gitHubToken: nil))
+        preflight.stepDelay = .zero
+        await preflight.run()
+        XCTAssertEqual(preflight.phase, .ready)
+        XCTAssertEqual(preflight.resolvedBranch, "qa/default")
+        XCTAssertEqual(preflight.checks.first { $0.kind == .branch }?.status, .passed)
+    }
+
+    @MainActor
+    func testInvalidCloneBranchIsRejectedBeforeAccessOrDestinationMutation() async throws {
+        let state = AppState(loadPersistedState: false)
+        let config = RepoConfig(repoURL: "file:///missing.git", branch: "bad..clone", authorName: "Tests", authorEmail: "tests@example.com", vaultFolderName: "invalid-clone-\(UUID())")
+        state.repos = [config]
+        let directory = state.vaultURL(for: config.id)
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let file = directory.appendingPathComponent("preserved.md")
+        try "keep".write(to: file, atomically: true, encoding: .utf8)
+        await state.clone(repoID: config.id)
+        XCTAssertEqual(state.lastError, "Please enter a valid Git branch name.")
+        XCTAssertEqual(try String(contentsOf: file, encoding: .utf8), "keep")
+        let preflight = VaultPreflight(target: .init(name: "invalid", repoURL: "file:///missing.git", branch: "bad..clone", transportPayload: "", gitHubToken: nil))
+        preflight.stepDelay = .zero
+        await preflight.run()
+        XCTAssertEqual(preflight.checks.first { $0.kind == .branch }?.status, .failed)
+        XCTAssertEqual(preflight.checks.first { $0.kind == .access }?.status, .skipped)
+    }
+
     func testSmoke() {
         XCTAssertTrue(true)
     }
@@ -716,6 +1017,56 @@ final class SyncMDTests: XCTestCase {
         XCTAssertEqual(completed, ["second-start", "second-end", "child"])
     }
 
+    func testEditorRenameMutationRejectsTraversalAndInvalidNamesWithoutChangingBytes() throws {
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
+        try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: root) }
+        let source = root.appendingPathComponent("note.md")
+        let bytes = Data("original".utf8)
+        try bytes.write(to: source)
+        for name in ["../escape.md", "sub/note.md", "/absolute.md", ".", "..", "", "a\\b.md", "a:b.md", "a\nb.md", "a\u{0}b.md", String(repeating: "é", count: 128)] {
+            XCTAssertThrowsError(try RepositoryFileRename.rename(source, to: name, in: root, expected: bytes), name)
+            XCTAssertEqual(try Data(contentsOf: source), bytes)
+            XCTAssertEqual(try FileManager.default.contentsOfDirectory(atPath: root.path), ["note.md"])
+        }
+    }
+
+    func testEditorRenameMutationRejectsCollisionAndStaleBytesThenAcceptsUnicode() throws {
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
+        try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: root) }
+        let source = root.appendingPathComponent("note.md")
+        let other = root.appendingPathComponent("other.md")
+        let bytes = Data("original".utf8)
+        try bytes.write(to: source)
+        try Data("other".utf8).write(to: other)
+        XCTAssertThrowsError(try RepositoryFileRename.rename(source, to: "other.md", in: root, expected: bytes))
+        XCTAssertEqual(try Data(contentsOf: other), Data("other".utf8))
+        XCTAssertThrowsError(try RepositoryFileRename.rename(source, to: "valid.md", in: root, expected: Data("stale".utf8)))
+        XCTAssertEqual(try Data(contentsOf: source), bytes)
+        let renamed = try RepositoryFileRename.rename(source, to: "مرحبا 🌱.md", in: root, expected: bytes)
+        XCTAssertEqual(renamed.lastPathComponent, "مرحبا 🌱.md")
+        XCTAssertEqual(try Data(contentsOf: renamed), bytes)
+        XCTAssertFalse(FileManager.default.fileExists(atPath: source.path))
+    }
+
+    func testEditorRenameMutationRejectsSourceReachedThroughEscapingSymlink() throws {
+        let container = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
+        let root = container.appendingPathComponent("vault", isDirectory: true)
+        let outside = container.appendingPathComponent("outside", isDirectory: true)
+        try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+        try FileManager.default.createDirectory(at: outside, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: container) }
+        let link = root.appendingPathComponent("link")
+        try FileManager.default.createSymbolicLink(at: link, withDestinationURL: outside)
+        let bytes = Data("outside".utf8)
+        let source = outside.appendingPathComponent("note.md")
+        try bytes.write(to: source)
+        XCTAssertThrowsError(try RepositoryFileRename.rename(link.appendingPathComponent("note.md"), to: "moved.md", in: root, expected: bytes))
+        XCTAssertEqual(try Data(contentsOf: source), bytes)
+        XCTAssertFalse(FileManager.default.fileExists(atPath: outside.appendingPathComponent("moved.md").path))
+    }
+
     func testCoordinatedFileMutationRejectsStaleSnapshotAndCleansTemporaryFile() throws {
         let directory = FileManager.default.temporaryDirectory
             .appendingPathComponent("SyncMD-CoordinatedSave-\(UUID().uuidString)", isDirectory: true)
@@ -1202,6 +1553,46 @@ final class SyncMDTests: XCTestCase {
         try mkdir("not-a-repo")
 
         return root
+    }
+
+    func testDiscoveryReadsOriginFromLinkedWorktreeCommonConfig() async throws {
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent("DiscoveryWorktree-\(UUID())")
+        let source = root.appendingPathComponent("source")
+        let linked = root.appendingPathComponent("linked")
+        try FileManager.default.createDirectory(at: source, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: root) }
+        var repo: OpaquePointer?
+        XCTAssertEqual(git_repository_init(&repo, source.path, 0), 0)
+        defer { git_repository_free(repo) }
+        let remoteURL = "https://example.invalid/qa/worktree.git"
+        var remote: OpaquePointer?
+        XCTAssertEqual(git_remote_create(&remote, repo, "origin", remoteURL), 0)
+        git_remote_free(remote)
+        try "base\n".write(to: source.appendingPathComponent("README.md"), atomically: true, encoding: .utf8)
+        let service = LocalGitService(localURL: source)
+        try await service.stage(path: "README.md")
+        // Create a real local commit without attempting a network push.
+        var index: OpaquePointer?
+        XCTAssertEqual(git_repository_index(&index, repo), 0)
+        defer { git_index_free(index) }
+        var treeOID = git_oid()
+        XCTAssertEqual(git_index_write_tree(&treeOID, index), 0)
+        var tree: OpaquePointer?
+        XCTAssertEqual(git_tree_lookup(&tree, repo, &treeOID), 0)
+        defer { git_tree_free(tree) }
+        var signature: UnsafeMutablePointer<git_signature>?
+        XCTAssertEqual(git_signature_now(&signature, "QA", "qa@example.invalid"), 0)
+        defer { git_signature_free(signature) }
+        var commitOID = git_oid()
+        XCTAssertEqual(git_commit_create(&commitOID, repo, "HEAD", signature, signature, nil, "Base", tree, 0, nil), 0)
+        var worktree: OpaquePointer?
+        XCTAssertEqual(git_worktree_add(&worktree, repo, "qa-linked", linked.path, nil), 0)
+        defer { git_worktree_free(worktree) }
+        XCTAssertEqual(AppState.readGitRemoteURL(at: linked), remoteURL)
+        let found = GitRepoScanner.discoverRepositories(root: root)
+        XCTAssertEqual(found.first { $0.name == "linked" }?.remoteURL, remoteURL)
+        XCTAssertEqual(AppState.readGitRemoteURL(at: source), remoteURL)
+        XCTAssertNil(AppState.readGitRemoteURL(at: root))
     }
 
     func testGitRepoScannerFindsWorkingCopiesWithRelativePathsAndRemotes() throws {
@@ -4490,10 +4881,15 @@ final class SyncMDTests: XCTestCase {
             loadPersistedState: false
         )
         appState.repos = [fixture.repoConfig]
+        appState.setPullOutcome(repoID: fixture.repoConfig.id, kind: .diverged, message: "Merge has conflicts — tap a conflicted file to resolve")
+        let otherRepoID = UUID()
+        appState.setPullOutcome(repoID: otherRepoID, kind: .failed, message: "Other vault error")
 
         await appState.abortMerge(repoID: fixture.repoConfig.id)
 
         XCTAssertTrue(fixture.repository.didAbortMerge)
+        XCTAssertNil(appState.pullOutcomeByRepo[fixture.repoConfig.id], "A successful abort must remove the stale conflict instruction")
+        XCTAssertEqual(appState.pullOutcomeByRepo[otherRepoID]?.message, "Other vault error")
     }
 
     @MainActor
@@ -4868,6 +5264,32 @@ final class SyncMDTests: XCTestCase {
         XCTAssertTrue(inventory.local.contains(where: { $0.shortName == repoInfo.branch && $0.isCurrent }))
     }
 
+    func testLocalGitServiceRejectsHiddenIdentityControlsWithoutCreatingCommit() async throws {
+        for (name, email) in [("QA\0Hidden", "qa@example.invalid"), ("QA", "qa@example.invalid\0hidden"), ("QA\u{7F}Hidden", "qa@example.invalid")] {
+            let repoURL = try makeTemporaryGitRepository(prefix: "SyncMD-IdentityControl")
+            defer { try? FileManager.default.removeItem(at: repoURL) }
+            let service = LocalGitService(localURL: repoURL)
+            let readme = repoURL.appendingPathComponent("README.md")
+            try "Owned identity regression\n".write(to: readme, atomically: true, encoding: .utf8)
+            try await service.stage(path: "README.md")
+            do {
+                _ = try await service.commitAndPush(message: "Must reject identity", authorName: name, authorEmail: email, pat: "")
+                XCTFail("Expected hidden control rejection")
+            } catch LocalGitError.invalidAuthorIdentity {
+                // Rejection must happen before an author signature or commit can be created.
+            } catch {
+                XCTFail("Expected invalidAuthorIdentity, got \(error)")
+            }
+            var repository: OpaquePointer?
+            XCTAssertEqual(git_repository_open(&repository, repoURL.path), 0)
+            if let repository {
+                XCTAssertEqual(git_repository_head_unborn(repository), 1, "An invalid identity must not create a commit")
+                git_repository_free(repository)
+            }
+            XCTAssertEqual(try String(contentsOf: readme, encoding: .utf8), "Owned identity regression\n")
+        }
+    }
+
     func testLocalGitServiceCommitAndPushReportsMissingAuthorEmail() async throws {
         let fm = FileManager.default
         let repoURL = try makeTemporaryGitRepository(prefix: "SyncMD-MissingAuthorEmail")
@@ -4891,6 +5313,47 @@ final class SyncMDTests: XCTestCase {
         } catch {
             XCTFail("Expected invalidAuthorIdentity, got \(error)")
         }
+    }
+
+    func testFileHistoryIncludesModeOnlyChanges() async throws {
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent("HistoryMode-\(UUID())")
+        try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: url) }
+        var repo: OpaquePointer?
+        XCTAssertEqual(git_repository_init(&repo, url.path, 0), 0)
+        defer { git_repository_free(repo) }
+        let service = LocalGitService(localURL: url)
+        try "same bytes\n".write(to: url.appendingPathComponent("script.md"), atomically: true, encoding: .utf8)
+        try await service.stage(path: "script.md")
+        do { _ = try await service.commitAndPush(message: "Add file", authorName: "QA", authorEmail: "qa@example.invalid", pat: "") } catch {}
+        var index: OpaquePointer?
+        XCTAssertEqual(git_repository_index(&index, repo), 0)
+        defer { git_index_free(index) }
+        var entry = try XCTUnwrap(git_index_get_bypath(index, "script.md", 0)).pointee
+        entry.mode = 0o100755
+        XCTAssertEqual(git_index_add(index, &entry), 0)
+        XCTAssertEqual(git_index_write(index), 0)
+        do { _ = try await service.commitAndPush(message: "Make executable", authorName: "QA", authorEmail: "qa@example.invalid", pat: "") } catch {}
+        let history = try await service.fileHistory(path: "script.md")
+        XCTAssertEqual(history.map(\.message), ["Make executable", "Add file"])
+        let empty = try await service.fileHistory(path: "script.md", limit: 0)
+        XCTAssertTrue(empty.isEmpty)
+    }
+
+    func testFileHistoryPreservesDecomposedUnicodePath() async throws {
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent("HistoryUnicode-\(UUID())")
+        try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: url) }
+        var repo: OpaquePointer?
+        XCTAssertEqual(git_repository_init(&repo, url.path, 0), 0)
+        if let repo { git_repository_free(repo) }
+        let service = LocalGitService(localURL: url)
+        let path = "cafe\u{301}.md"
+        try "accent\n".write(to: url.appendingPathComponent(path), atomically: true, encoding: .utf8)
+        try await service.stage(path: path)
+        do { _ = try await service.commitAndPush(message: "Decomposed filename", authorName: "QA", authorEmail: "qa@example.invalid", pat: "") } catch {}
+        let history = try await service.fileHistory(path: path)
+        XCTAssertEqual(history.map(\.message), ["Decomposed filename"])
     }
 
     func testLocalGitServiceCommitHistoryReturnsDeterministicPages() async throws {
@@ -9808,7 +10271,7 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
         hasGitDirectoryValue
     }
 
-    func clone(remoteURL: String, pat: String) async throws -> LocalCloneResult {
+    func clone(remoteURL: String, pat: String, branch: String?) async throws -> LocalCloneResult {
         cloneRemoteURLs.append(remoteURL)
         if !cloneResults.isEmpty {
             switch cloneResults.removeFirst() {
@@ -10449,7 +10912,7 @@ private final class SerializationProbeRepository: GitRepositoryProtocol, @unchec
         lock.unlock()
     }
 
-    func clone(remoteURL: String, pat: String) async throws -> LocalCloneResult { fatalError() }
+    func clone(remoteURL: String, pat: String, branch: String?) async throws -> LocalCloneResult { fatalError() }
     func hydrateLFSObjects(pat: String) async throws -> GitLFSHydrateResult { fatalError() }
     func setRemoteURL(name: String, url: String) async throws { fatalError() }
     func pullPlan(pat: String) async throws -> PullPlan { fatalError() }
@@ -11316,6 +11779,32 @@ final class TideGitWorkTests: XCTestCase {
 // MARK: - Vault watch (Split View "watching" panel)
 
 final class VaultWatchTests: XCTestCase {
+    func testFutureFileDateBecomesIdleAndEligibleAfterObservedPause() {
+        let start = Date(timeIntervalSince1970: 1_000)
+        let future = start.addingTimeInterval(1_000_000)
+        var activity = VaultWatchFileActivity()
+        activity.update(["future.md": future], observedAt: start)
+        XCTAssertEqual(activity.dates["future.md"], start)
+        activity.update(["future.md": future], observedAt: start.addingTimeInterval(121))
+        XCTAssertEqual(activity.dates["future.md"], start)
+        XCTAssertTrue(VaultWatchSettings.shouldAutoCommit(
+            changeCount: 1, lastActivity: activity.dates.values.max(),
+            lastAutoCommittedActivity: nil, now: start.addingTimeInterval(121)))
+        activity.update(["future.md": future.addingTimeInterval(1)], observedAt: start.addingTimeInterval(122))
+        XCTAssertFalse(VaultWatchSettings.shouldAutoCommit(
+            changeCount: 1, lastActivity: activity.dates.values.max(),
+            lastAutoCommittedActivity: nil, now: start.addingTimeInterval(123)))
+        activity.update([:], observedAt: start.addingTimeInterval(124))
+        XCTAssertTrue(activity.dates.isEmpty)
+    }
+
+    func testHistoricalFileDatesKeepTheirExistingAge() {
+        let now = Date(timeIntervalSince1970: 1_000)
+        var activity = VaultWatchFileActivity()
+        activity.update(["old.md": now.addingTimeInterval(-300)], observedAt: now)
+        XCTAssertEqual(activity.dates["old.md"], now.addingTimeInterval(-300))
+    }
+
     func testAutoCommitWaitsForTwoMinutePause() {
         let edit = Date(timeIntervalSince1970: 1_000)
         XCTAssertFalse(VaultWatchSettings.shouldAutoCommit(
@@ -11534,6 +12023,21 @@ final class NameValidationTests: XCTestCase {
         )
         XCTAssertFalse(CommitMessageSuggester.message(for: [.init(path: "standup 2026.11.07", change: .added)])
             .hasSuffix("2026.11"))
+    }
+
+    func testGitIdentityRejectsControlScalarsBeforeTrimming() {
+        for value in Array(UInt32(0)...31) + [127] {
+            let control = String(UnicodeScalar(value)!)
+            for name in [control + "QA", "QA" + control + "Hidden", "QA" + control] {
+                XCTAssertNotNil(GitIdentityValidation.nameIssue(name), "Name control U+\(String(value, radix: 16)) must be rejected")
+            }
+            for email in [control + "qa@localhost", "qa" + control + "@localhost", "qa@localhost" + control] {
+                XCTAssertNotNil(GitIdentityValidation.emailIssue(email), "Email control U+\(String(value, radix: 16)) must be rejected")
+                XCTAssertFalse(GitIdentityValidation.isPlausibleEmail(email))
+            }
+        }
+        XCTAssertNil(GitIdentityValidation.nameIssue("  مرحبا 👩‍💻 e\u{301}  "))
+        XCTAssertNil(GitIdentityValidation.emailIssue("  qa@localhost  "))
     }
 
     func testGitIdentityValidation() {
