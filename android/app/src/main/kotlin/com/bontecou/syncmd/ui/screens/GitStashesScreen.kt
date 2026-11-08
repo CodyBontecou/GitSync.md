@@ -1,6 +1,7 @@
 package com.bontecou.syncmd.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
@@ -83,6 +84,14 @@ fun GitStashesScreen(
     val scope = rememberCoroutineScope()
     fun toast(message: String) { scope.launch { snackbar.currentSnackbarData?.dismiss(); snackbar.showSnackbar(message, actionLabel = androidContext.getString(R.string.git_m3_ok)) } }
     var message by rememberSaveable(path) { mutableStateOf("") }
+    // Keep the reviewed ref and object together: stash indices can change while a review is open.
+    var dropRef by rememberSaveable(path) { mutableStateOf<String?>(null) }
+    var dropCommit by rememberSaveable(path) { mutableStateOf<String?>(null) }
+    val dropTarget = state.stashes.firstOrNull { context != null && it.id == dropRef && it.commitHash == dropCommit }
+    val dismissDrop = { dropRef = null; dropCommit = null }
+    LaunchedEffect(context, state.actionsReady, state.stashes, dropRef) {
+        if (context != null && state.actionsReady && dropTarget == null) dismissDrop()
+    }
     val summary = workspace.summary?.takeIf { workspace.path == path }
     val branch = summary?.branch ?: "—"
 
@@ -146,12 +155,30 @@ fun GitStashesScreen(
                     divider = index > 0, enabled = canAct,
                     onApply = { context?.let { historyVM.stashApply(it, stash) { toast(androidContext.getString(R.string.git_m3_applied_toast, stash.id)) } } },
                     onPop = { context?.let { historyVM.stashPop(it, stash) { toast(androidContext.getString(R.string.git_m3_popped_toast, stash.id)) } } },
-                    onDrop = { context?.let { historyVM.stashDrop(it, stash) { toast(androidContext.getString(R.string.git_m3_dropped_toast, stash.id)) } } })
+                    onDrop = { dropRef = stash.id; dropCommit = stash.commitHash })
             }
         }
         M3SectionLabel(stringResource(R.string.git_m3_what_each_does), contentPadding = androidx.compose.foundation.layout.PaddingValues(start = 20.dp, end = 20.dp, top = 24.dp, bottom = 4.dp))
         StashLegend(Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp))
         GitPlainNote(stringResource(R.string.git_m3_stash_local_note))
+    }
+
+    dropTarget?.let { stash ->
+        M3Dialog(onDismissRequest = dismissDrop, title = stringResource(R.string.git_m3_drop_cd, stash.id),
+            modifier = Modifier.testTag("git-stash-drop-review"), content = {
+                Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                    Text(stash.message?.takeIf { it.isNotBlank() } ?: stash.name,
+                        style = M3Type.code, modifier = Modifier.testTag("git-stash-drop-subject"))
+                    Text(stringResource(R.string.git_m3_drop_help), style = M3Type.bodyMedium)
+                }
+            }) {
+            M3DialogAction(stringResource(R.string.git_m3_cancel), dismissDrop, Modifier.testTag("git-stash-drop-cancel"))
+            M3DialogAction(stringResource(R.string.git_m3_drop), {
+                val expected = context ?: return@M3DialogAction
+                dismissDrop()
+                historyVM.stashDrop(expected, stash) { toast(androidContext.getString(R.string.git_m3_dropped_toast, stash.id)) }
+            }, Modifier.testTag("git-stash-drop-confirm"), destructive = true, enabled = canAct)
+        }
     }
 
     state.errorMessage?.takeIf { context != null }?.asString()?.let { error ->

@@ -297,6 +297,7 @@
     <string name="folder_settings_unavailable" formatted="false">"De opslaginstellingen van Android zijn niet beschikbaar. App-opslag blijft beschikbaar."</string>
     <string name="folder_unusable" formatted="false">"Deze map kon niet worden gebruikt"</string>
     <string name="git_fetch" formatted="false">"Fetch"</string>
+    <string name="git_m3_tag_name_invalid" formatted="false">"Voer een geldige Git-tagnaam in."</string>
     <string name="git_native_public_only" formatted="false">"Het eigen Git-protocol ondersteunt alleen openbare toegang. Gebruik HTTPS of SSH voor authenticatie."</string>
     <string name="gitops_action_failed" formatted="false">"Git kon deze actie niet voltooien"</string>
     <string name="gitops_branch_action_failed" formatted="false">"Branchactie kon niet worden voltooid"</string>

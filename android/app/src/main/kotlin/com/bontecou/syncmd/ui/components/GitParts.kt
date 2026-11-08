@@ -75,6 +75,7 @@ sealed interface GitDestination {
     data object Upstream : GitDestination
     data object Author : GitDestination
     data object Conflicts : GitDestination
+    data class FileConflict(val filePath: String) : GitDestination
     data object ManageVault : GitDestination
     /** The vault top bar's More: Vault settings (vaultSettings/{repo}). */
     data object VaultSettings : GitDestination

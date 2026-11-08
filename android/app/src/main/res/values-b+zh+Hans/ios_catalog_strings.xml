@@ -297,6 +297,7 @@
     <string name="folder_settings_unavailable" formatted="false">"无法使用 Android 存储设置。应用存储空间仍然可用。"</string>
     <string name="folder_unusable" formatted="false">"无法使用此文件夹"</string>
     <string name="git_fetch" formatted="false">"获取"</string>
+    <string name="git_m3_tag_name_invalid" formatted="false">"请输入有效的 Git 标签名称。"</string>
     <string name="git_native_public_only" formatted="false">"Git 原生协议仅支持公开访问。请使用 HTTPS 或 SSH 进行身份验证。"</string>
     <string name="gitops_action_failed" formatted="false">"Git 无法完成此操作"</string>
     <string name="gitops_branch_action_failed" formatted="false">"无法完成分支操作"</string>

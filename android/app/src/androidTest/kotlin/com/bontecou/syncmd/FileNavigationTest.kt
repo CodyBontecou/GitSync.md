@@ -570,6 +570,132 @@ class FileNavigationTest {
     }
     private fun parents()=Git.open(root).use { listOf(it.repository.resolve("HEAD"),it.repository.readMergeHeads().single()) }
 
+    @Test fun newNoteFormSurvivesActivityRecreationWithItsTemplate() {
+        openVault()
+        compose.onNodeWithTag("vault-tab-files").performClick()
+        awaitTag("file-row-notes.md")
+        compose.onNodeWithContentDescription("New file").performClick()
+        compose.onNodeWithTag("filename-input").performTextReplacement("recreated idea")
+        compose.onNodeWithTag("newfile-template-0").performClick()
+        scenario!!.recreate()
+        awaitTag("filename-dialog")
+        compose.onNodeWithTag("filename-input").assertTextContains("recreated idea", substring = false)
+        compose.onNodeWithTag("newfile-template-0").assertIsSelected()
+        // A real rotation also swaps bottom tabs for a rail; plain recreation does not.
+        try {
+            scenario!!.onActivity { it.requestedOrientation = android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE }
+            compose.waitUntil(10_000) { context.resources.configuration.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE }
+            awaitTag("filename-dialog")
+            compose.onNodeWithTag("filename-input").assertTextContains("recreated idea", substring = false)
+            compose.onNodeWithTag("newfile-template-0").assertIsSelected()
+        } finally {
+            scenario!!.onActivity { it.requestedOrientation = android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT }
+            compose.waitUntil(10_000) { context.resources.configuration.orientation == android.content.res.Configuration.ORIENTATION_PORTRAIT }
+        }
+        awaitTag("filename-dialog")
+        tapWhenReady("filename-confirm", scroll = false)
+        awaitTag("file-editor-input")
+        val created = File(root, "recreated idea.md")
+        assertTrue(created.isFile)
+        assertTrue(created.readText().contains("recreated idea"))
+        assertTrue(created.readText().isNotBlank())
+    }
+
+    @Test fun stashDropRequiresConfirmationAndCancelPreservesItsExactObject() {
+        val stash = Git.open(root).use { it.stashCreate().setWorkingDirectoryMessage("Owned stash to review").call().name }
+        val head = Git.open(root).use { it.repository.resolve("HEAD").name }
+        openGit(); openGitScreen("git-open-stashes", "git-stashes-screen")
+        tapWhenReady("git-stash-drop")
+        awaitTag("git-stash-drop-review")
+        assertEquals(listOf(stash), Git.open(root).use { it.stashList().call().map { ref -> ref.name } })
+        scenario!!.recreate()
+        awaitTag("git-stash-drop-review")
+        compose.onNodeWithTag("git-stash-drop-subject").assertTextContains("Owned stash to review", substring = true)
+        tapWhenReady("git-stash-drop-cancel", scroll = false)
+        awaitTagGone("git-stash-drop-review")
+        assertEquals(listOf(stash), Git.open(root).use { it.stashList().call().map { ref -> ref.name } })
+        tapWhenReady("git-stash-drop")
+        tapWhenReady("git-stash-drop-confirm", scroll = false)
+        compose.waitUntil(10_000) { Git.open(root).use { it.stashList().call().isEmpty() } }
+        assertEquals(head, Git.open(root).use { it.repository.resolve("HEAD").name })
+        assertTrue(Git.open(root).use { it.status().call().isClean })
+    }
+
+    private data class StashConflictFixture(val head: String, val stash: String, val notes: ByteArray)
+    private fun stashConflict(extraPath: String? = null): StashConflictFixture = Git.open(root).use { git ->
+        if (extraPath != null) {
+            git.reset().setMode(ResetCommand.ResetType.HARD).call()
+            File(root, extraPath).writeText("Before stash\n")
+            git.add().addFilepattern(extraPath).call()
+            git.commit().setMessage("Own a second stash path").call()
+            File(root, "notes.md").appendText("Original stash edit\n")
+            File(root, extraPath).writeText("Stashed special filename\n")
+        }
+        val notes = File(root, "notes.md").readBytes()
+        val stash = git.stashCreate().setWorkingDirectoryMessage("Owned standalone stash conflict").call().name
+        git.checkout().setName("sample-branch").call()
+        val head = git.repository.resolve("HEAD").name
+        assertTrue(runCatching { git.stashApply().setStashRef(stash).call() }.isFailure)
+        assertTrue(git.status().call().conflicting.contains("notes.md"))
+        assertFalse(File(root, ".git/MERGE_HEAD").exists())
+        StashConflictFixture(head, stash, notes)
+    }
+    private fun assertStandaloneResolution(fixture: StashConflictFixture) {
+        Git.open(root).use { git ->
+            assertEquals(fixture.head, git.repository.resolve("HEAD").name)
+            assertEquals("sample-branch", git.repository.branch)
+            assertTrue(git.status().call().conflicting.isEmpty())
+            assertEquals(listOf(fixture.stash), git.stashList().call().map { it.name })
+        }
+        assertFalse(File(root, ".git/MERGE_HEAD").exists())
+    }
+
+    @Test fun stashConflictHeroResolvesWithoutCreatingAMergeCommit() {
+        val fixture = stashConflict()
+        openVault()
+        tapWhenReady("vault-resolve")
+        awaitTag("conflict-screen")
+        awaitTag("git-conflict-notes.md")
+        compose.onNodeWithTag("conflict-abort").assertIsNotEnabled()
+        compose.onNode(hasAnyAncestor(hasTestTag("conflict-side-theirs")) and hasText(string(R.string.tide_merge_theirs), substring = false),
+            useUnmergedTree = true).assertExists()
+        saveEvidence("stash-conflict-review.png")
+        useConflictSide("notes.md", theirs = true)
+        awaitTagGone("conflict-screen")
+        assertArrayEquals(fixture.notes, File(root, "notes.md").readBytes())
+        assertStandaloneResolution(fixture)
+    }
+
+    @Test fun gitTabResolvesStandaloneStashConflictByKeepingDeletion() {
+        val fixture = stashConflict()
+        openGit()
+        tapWhenReady("git-open-conflicts")
+        awaitTag("conflict-screen")
+        useConflictSide("notes.md", theirs = false)
+        awaitTagGone("conflict-screen")
+        assertFalse(File(root, "notes.md").exists())
+        assertStandaloneResolution(fixture)
+        assertTrue(Git.open(root).use { it.status().call().isClean })
+    }
+
+    @Test fun conflictedRowKeepsItsRequestedPathAcrossRecreation() {
+        val special = "z notes #%.md"
+        val fixture = stashConflict(special)
+        openVault()
+        tapWhenReady("vault-change:$special")
+        awaitTag("conflict-screen")
+        awaitTag("git-conflict-$special")
+        scenario!!.recreate()
+        awaitTag("git-conflict-$special")
+        useConflictSide(special, theirs = true)
+        awaitTag("git-conflict-notes.md")
+        useConflictSide("notes.md", theirs = false)
+        awaitTagGone("conflict-screen")
+        assertEquals("Stashed special filename\n", File(root, special).readText())
+        assertFalse(File(root, "notes.md").exists())
+        assertStandaloneResolution(fixture)
+    }
+
     @Test fun renamedConflictEditorChoosesIncomingFilenameAndCompletesTheMerge() {
         RenameConflictFixture.createWithAppMerge(root)
         val parents=parents()
@@ -1396,6 +1522,20 @@ class FileNavigationTest {
         Git.open(remote).use { assertEquals(remoteBefore, it.repository.resolve("refs/heads/main").name); assertEquals(null, it.repository.exactRef("refs/heads/ui-owned-branch")) }
     }
 
+    @Test fun pastedTagControlsAreVisibleAndInvalidNamesCannotSubmit() {
+        openGit(); openGitScreen("git-open-tags", "git-tags-screen")
+        compose.waitUntil(10_000) { compose.onAllNodes(hasTestTag("git-tag-name") and isEnabled()).fetchSemanticsNodes().isNotEmpty() }
+        val before = Git.open(root).use { it.tagList().call().map { ref -> ref.name } }
+        compose.onNodeWithTag("git-tag-name").performScrollTo().performTextReplacement("qa\ninvalid\ttag")
+        compose.onNodeWithTag("git-tag-name").assertTextContains("qa invalid tag", substring = false)
+        compose.onNodeWithTag("git-tag-create").assertIsNotEnabled()
+        compose.onNodeWithTag("git-tag-name").performTextReplacement("qa..invalid")
+        compose.onNodeWithTag("git-tag-create").assertIsNotEnabled()
+        compose.onNodeWithTag("git-tag-name").performTextReplacement("qa-valid")
+        compose.onNodeWithTag("git-tag-create").assertIsEnabled()
+        assertEquals(before, Git.open(root).use { it.tagList().call().map { ref -> ref.name } })
+    }
+
     @Test fun historyControlsEnableAfterAComposedLoadingSnapshotCompletes() = kotlinx.coroutines.runBlocking {
         Git.open(root).use { it.tag().setName("owned-loading-tag").setAnnotated(false).call() }
         val entered = kotlinx.coroutines.CompletableDeferred<Unit>(); val release = kotlinx.coroutines.CompletableDeferred<Unit>()
@@ -1668,7 +1808,7 @@ class FileNavigationTest {
         tapWhenReady("open-remote-merge")
         // The sheet fetches and reviews on open; then Merge & push, confirmed.
         awaitTag("remote-merge-plan", 20_000)
-        tapWhenReady("remote-merge-publish")
+        tapWhenReady("remote-merge-publish", scroll = false)
         tapWhenReady("remote-merge-confirm", scroll = false)
         // Conflicts hand off to the production conflict screen.
         awaitTag("conflict-screen", 20_000)

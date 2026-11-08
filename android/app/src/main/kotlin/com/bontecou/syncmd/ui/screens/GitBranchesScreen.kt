@@ -57,6 +57,7 @@ import com.bontecou.syncmd.ui.theme.M3SectionLabel
 import com.bontecou.syncmd.ui.theme.M3TextField
 import com.bontecou.syncmd.ui.theme.M3Type
 import com.bontecou.syncmd.ui.util.asString
+import com.bontecou.syncmd.ui.util.singleLineNameInput
 import com.bontecou.syncmd.ui.viewmodels.BranchViewModel
 import com.bontecou.syncmd.ui.viewmodels.ConflictViewModel
 import com.bontecou.syncmd.ui.viewmodels.DiffViewModel
@@ -152,7 +153,7 @@ fun GitBranchesScreen(
                         context?.let { expected -> val submitted = newName; branchVM.createBranch(expected, submitted.trim()) { if (newName == submitted) newName = "" } }
                         Unit
                     }
-                    M3TextField(newName, { newName = it }, stringResource(R.string.git_m3_branch_name), Modifier.weight(1f).testTag("git-branch-name"),
+                    M3TextField(newName, { newName = singleLineNameInput(it) }, stringResource(R.string.git_m3_branch_name), Modifier.weight(1f).testTag("git-branch-name"),
                         placeholder = stringResource(R.string.git_m3_branch_placeholder), mono = true, enabled = canAct,
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done), keyboardActions = KeyboardActions(onDone = { if (canCreate) create() }))
                     M3Button(stringResource(R.string.git_m3_create), create, Modifier.padding(top = 8.dp).testTag("git-branch-create"),

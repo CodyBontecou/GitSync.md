@@ -5091,6 +5091,11 @@
       "name": "m3_editor_preview",
       "source": "Preview",
       "arguments": 0
+    },
+    {
+      "name": "git_m3_tag_name_invalid",
+      "source": "Enter a valid Git tag name.",
+      "arguments": 0
     }
   ],
   "locales": {
@@ -9294,6 +9299,10 @@
       {
         "name": "vault_url_copied",
         "source": "تم النسخ!"
+      },
+      {
+        "name": "git_m3_tag_name_invalid",
+        "source": "أدخل اسمًا صالحًا لوسم Git."
       }
     ],
     "da": [
@@ -13496,6 +13505,10 @@
       {
         "name": "vault_url_copied",
         "source": "Kopieret!"
+      },
+      {
+        "name": "git_m3_tag_name_invalid",
+        "source": "Indtast et gyldigt Git-tagnavn."
       }
     ],
     "de": [
@@ -17698,6 +17711,10 @@
       {
         "name": "vault_url_copied",
         "source": "Kopiert!"
+      },
+      {
+        "name": "git_m3_tag_name_invalid",
+        "source": "Gib einen gültigen Git-Tag-Namen ein."
       }
     ],
     "es": [
@@ -21900,6 +21917,10 @@
       {
         "name": "vault_url_copied",
         "source": "¡Copiado!"
+      },
+      {
+        "name": "git_m3_tag_name_invalid",
+        "source": "Introduce un nombre de etiqueta de Git válido."
       }
     ],
     "fi": [
@@ -26102,6 +26123,10 @@
       {
         "name": "vault_url_copied",
         "source": "Kopioitu!"
+      },
+      {
+        "name": "git_m3_tag_name_invalid",
+        "source": "Anna kelvollinen Git-tunnisteen nimi."
       }
     ],
     "fr": [
@@ -30304,6 +30329,10 @@
       {
         "name": "vault_url_copied",
         "source": "Copié !"
+      },
+      {
+        "name": "git_m3_tag_name_invalid",
+        "source": "Saisissez un nom de tag Git valide."
       }
     ],
     "he": [
@@ -34506,6 +34535,10 @@
       {
         "name": "vault_url_copied",
         "source": "הועתק!"
+      },
+      {
+        "name": "git_m3_tag_name_invalid",
+        "source": "יש להזין שם תקין לתג Git."
       }
     ],
     "hi": [
@@ -38708,6 +38741,10 @@
       {
         "name": "vault_url_copied",
         "source": "कॉपी हो गया!"
+      },
+      {
+        "name": "git_m3_tag_name_invalid",
+        "source": "मान्य Git टैग नाम दर्ज करें।"
       }
     ],
     "hu": [
@@ -42910,6 +42947,10 @@
       {
         "name": "vault_url_copied",
         "source": "Másolva!"
+      },
+      {
+        "name": "git_m3_tag_name_invalid",
+        "source": "Adj meg egy érvényes Git-címkenevet."
       }
     ],
     "id": [
@@ -47112,6 +47153,10 @@
       {
         "name": "vault_url_copied",
         "source": "Disalin!"
+      },
+      {
+        "name": "git_m3_tag_name_invalid",
+        "source": "Masukkan nama tag Git yang valid."
       }
     ],
     "it": [
@@ -51314,6 +51359,10 @@
       {
         "name": "vault_url_copied",
         "source": "Copiato!"
+      },
+      {
+        "name": "git_m3_tag_name_invalid",
+        "source": "Inserisci un nome valido per il tag Git."
       }
     ],
     "ja": [
@@ -55516,6 +55565,10 @@
       {
         "name": "vault_url_copied",
         "source": "コピーしました！"
+      },
+      {
+        "name": "git_m3_tag_name_invalid",
+        "source": "有効な Git タグ名を入力してください。"
       }
     ],
     "ko": [
@@ -59718,6 +59771,10 @@
       {
         "name": "vault_url_copied",
         "source": "복사됨!"
+      },
+      {
+        "name": "git_m3_tag_name_invalid",
+        "source": "유효한 Git 태그 이름을 입력하세요."
       }
     ],
     "nb": [
@@ -63920,6 +63977,10 @@
       {
         "name": "vault_url_copied",
         "source": "Kopiert!"
+      },
+      {
+        "name": "git_m3_tag_name_invalid",
+        "source": "Skriv inn et gyldig Git-taggnavn."
       }
     ],
     "nl": [
@@ -68122,6 +68183,10 @@
       {
         "name": "vault_url_copied",
         "source": "Gekopieerd!"
+      },
+      {
+        "name": "git_m3_tag_name_invalid",
+        "source": "Voer een geldige Git-tagnaam in."
       }
     ],
     "pl": [
@@ -72324,6 +72389,10 @@
       {
         "name": "vault_url_copied",
         "source": "Skopiowano!"
+      },
+      {
+        "name": "git_m3_tag_name_invalid",
+        "source": "Wpisz prawidłową nazwę tagu Git."
       }
     ],
     "pt-BR": [
@@ -76526,6 +76595,10 @@
       {
         "name": "vault_url_copied",
         "source": "Copiado!"
+      },
+      {
+        "name": "git_m3_tag_name_invalid",
+        "source": "Digite um nome de tag Git válido."
       }
     ],
     "ru": [
@@ -80728,6 +80801,10 @@
       {
         "name": "vault_url_copied",
         "source": "Скопировано!"
+      },
+      {
+        "name": "git_m3_tag_name_invalid",
+        "source": "Введите допустимое имя тега Git."
       }
     ],
     "sv": [
@@ -84930,6 +85007,10 @@
       {
         "name": "vault_url_copied",
         "source": "Kopierat!"
+      },
+      {
+        "name": "git_m3_tag_name_invalid",
+        "source": "Ange ett giltigt Git-taggnamn."
       }
     ],
     "th": [
@@ -89132,6 +89213,10 @@
       {
         "name": "vault_url_copied",
         "source": "คัดลอกแล้ว!"
+      },
+      {
+        "name": "git_m3_tag_name_invalid",
+        "source": "ป้อนชื่อแท็ก Git ที่ถูกต้อง"
       }
     ],
     "tr": [
@@ -93334,6 +93419,10 @@
       {
         "name": "vault_url_copied",
         "source": "Kopyalandı!"
+      },
+      {
+        "name": "git_m3_tag_name_invalid",
+        "source": "Geçerli bir Git etiketi adı girin."
       }
     ],
     "uk": [
@@ -97536,6 +97625,10 @@
       {
         "name": "vault_url_copied",
         "source": "Скопійовано!"
+      },
+      {
+        "name": "git_m3_tag_name_invalid",
+        "source": "Введіть коректну назву тегу Git."
       }
     ],
     "vi": [
@@ -101738,6 +101831,10 @@
       {
         "name": "vault_url_copied",
         "source": "Đã sao chép!"
+      },
+      {
+        "name": "git_m3_tag_name_invalid",
+        "source": "Nhập tên thẻ Git hợp lệ."
       }
     ],
     "zh-Hans": [
@@ -105940,6 +106037,10 @@
       {
         "name": "vault_url_copied",
         "source": "已复制！"
+      },
+      {
+        "name": "git_m3_tag_name_invalid",
+        "source": "请输入有效的 Git 标签名称。"
       }
     ],
     "zh-Hant": [
@@ -110142,6 +110243,10 @@
       {
         "name": "vault_url_copied",
         "source": "已複製！"
+      },
+      {
+        "name": "git_m3_tag_name_invalid",
+        "source": "請輸入有效的 Git 標籤名稱。"
       }
     ]
   },

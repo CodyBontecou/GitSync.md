@@ -131,6 +131,7 @@ fun GitScreen(
     val conflictReady by conflictVM.actionsReady.collectAsState()
     val conflictContext = conflictSelection?.takeIf { it.path == repositoryPath }
     val mergeActive = conflictContext != null && mergeState?.isMergeInProgress == true
+    val standaloneConflicts = conflictContext != null && conflicts.isNotEmpty() && workspace.rebase == null
     val discardReview by diffVM.discardReview.collectAsState()
     val reviewingDiscard by diffVM.isReviewingDiscard.collectAsState()
     val discarding by diffVM.isDiscarding.collectAsState()
@@ -157,9 +158,9 @@ fun GitScreen(
         bottomSpace = 96.dp,
     ) {
         Box(Modifier.fillMaxWidth().height(0.dp).testTag(if (mergeActive && conflictReady) "git-merge-active" else "git-merge-inactive"))
-        if (mergeActive) {
+        if (mergeActive || standaloneConflicts) {
             GitToneHero(M3.colors.ec, M3.colors.onEc) {
-                GitKicker(stringResource(R.string.git_m3_merge_in_progress))
+                GitKicker(stringResource(if (mergeActive) R.string.git_m3_merge_in_progress else R.string.tide_vault_eyebrow_conflict))
                 GitHeroTitle(if (conflicts.isEmpty()) stringResource(R.string.git_m3_merge_ready)
                     else pluralStringResource(R.plurals.git_m3_conflicts_left, conflicts.size, conflicts.size))
                 M3Button(stringResource(R.string.git_m3_resolve), { navigate(GitDestination.Conflicts) },

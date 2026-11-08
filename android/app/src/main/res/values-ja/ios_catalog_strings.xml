@@ -297,6 +297,7 @@
     <string name="folder_settings_unavailable" formatted="false">"Androidのストレージ設定を利用できません。アプリのストレージは引き続き使えます。"</string>
     <string name="folder_unusable" formatted="false">"このフォルダを使用できませんでした"</string>
     <string name="git_fetch" formatted="false">"フェッチ"</string>
+    <string name="git_m3_tag_name_invalid" formatted="false">"有効な Git タグ名を入力してください。"</string>
     <string name="git_native_public_only" formatted="false">"Git ネイティブプロトコルは公開アクセスのみ対応しています。認証には HTTPS または SSH を使用してください。"</string>
     <string name="gitops_action_failed" formatted="false">"Gitはこの操作を完了できませんでした"</string>
     <string name="gitops_branch_action_failed" formatted="false">"ブランチ操作を完了できませんでした"</string>

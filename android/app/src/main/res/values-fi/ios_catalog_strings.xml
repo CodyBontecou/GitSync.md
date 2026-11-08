@@ -297,6 +297,7 @@
     <string name="folder_settings_unavailable" formatted="false">"Androidin tallennustilan asetukset eivät ole käytettävissä. Sovelluksen tallennustila on yhä käytettävissä."</string>
     <string name="folder_unusable" formatted="false">"Tätä kansiota ei voitu käyttää"</string>
     <string name="git_fetch" formatted="false">"Hae"</string>
+    <string name="git_m3_tag_name_invalid" formatted="false">"Anna kelvollinen Git-tunnisteen nimi."</string>
     <string name="git_native_public_only" formatted="false">"Gitin oma protokolla tukee vain julkista käyttöä. Käytä tunnistautumiseen HTTPS:ää tai SSH:ta."</string>
     <string name="gitops_action_failed" formatted="false">"Git ei voinut suorittaa tätä toimintoa loppuun"</string>
     <string name="gitops_branch_action_failed" formatted="false">"Haaratoimintoa ei voitu suorittaa loppuun"</string>

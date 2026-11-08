@@ -60,7 +60,8 @@ import kotlinx.coroutines.withContext
  * top bar, a step progress bar, "Conflict i of n · path", a headline naming the edited section, and
  * a radio card per side ("This phone · edited X ago" / "GitHub · from <committer> · Y ago"). Keep both
  * joins the versions between clear markers; Edit by hand opens the editor on the marked-up file. The
- * footer uses the selected side. After the last file, the merge commit is made and the screen closes.
+ * footer uses the selected side. After the last file, an active merge is committed; standalone
+ * index conflicts return with the resolution staged and HEAD unchanged.
  */
 @Composable
 fun ConflictScreen(
@@ -70,6 +71,7 @@ fun ConflictScreen(
     onNavigate: (GitDestination) -> Unit,
     conflictVM: ConflictViewModel = hiltViewModel(),
     workspaceVM: GitWorkspaceViewModel = hiltViewModel(),
+    initialFilePath: String? = null,
 ) {
     LaunchedEffect(path) { conflictVM.setRepositoryPath(path); workspaceVM.load(path) }
     com.bontecou.syncmd.ui.util.RepositoryResumeEffect(path) { conflictVM.loadConflicts() }
@@ -84,7 +86,7 @@ fun ConflictScreen(
     val workspace by workspaceVM.state.collectAsState()
     val androidContext = LocalContext.current
 
-    val conflict: Conflict? = conflicts.firstOrNull()
+    val conflict: Conflict? = conflicts.firstOrNull { initialFilePath != null && initialFilePath in it.allPaths } ?: conflicts.firstOrNull()
     var total by rememberSaveable(path) { mutableIntStateOf(0) }
     LaunchedEffect(conflicts.size, resolved.size) { total = maxOf(total, conflicts.size + resolved.size) }
     var side by rememberSaveable(conflict?.filePath) { mutableIntStateOf(0) }
@@ -99,7 +101,9 @@ fun ConflictScreen(
 
     val source = provenance?.source ?: mergeState?.sourceBranch?.takeIf { it.isNotBlank() }
     val remoteSide = provenance?.sourceIsRemote != false
-    val theirsName = if (remoteSide) (if (gitIsGitHub(workspace.summary?.remoteUrl) || workspace.summary == null) stringResource(R.string.git_m3_github)
+    val unnamedIncoming = mergeState?.isMergeInProgress == false && source == null && provenance?.sourceIsRemote != true
+    val theirsName = if (unnamedIncoming) stringResource(R.string.tide_merge_theirs)
+        else if (remoteSide) (if (gitIsGitHub(workspace.summary?.remoteUrl) || workspace.summary == null) stringResource(R.string.git_m3_github)
         else workspace.summary?.remoteUrl?.let { com.bontecou.syncmd.ui.components.gitRemoteDisplay(it)?.substringBefore('/') } ?: stringResource(R.string.git_m3_github))
         else source ?: stringResource(R.string.git_m3_github)
     val oursName = stringResource(R.string.git_m3_this_phone)
@@ -114,7 +118,7 @@ fun ConflictScreen(
     val diskText = disk
     val editedClean = conflict != null && conflict.filePath in handEdited && diskText != null && diskText.lineSequence().none { it.startsWith("<<<<<<<") || it.startsWith(">>>>>>>") }
 
-    // After the last file: make the merge commit, then leave.
+    // Complete only an actual merge. A stash conflict resolves without creating a commit.
     LaunchedEffect(conflicts.isEmpty(), ready, mergeState?.isMergeInProgress, total) {
         if (context == null || !ready || conflicts.isNotEmpty()) return@LaunchedEffect
         if (mergeState?.isMergeInProgress == true && !finishing && !aborting) {
@@ -141,6 +145,7 @@ fun ConflictScreen(
                     val label = when {
                         editedClean -> stringResource(R.string.git_m3_use_edited)
                         side == 0 -> stringResource(R.string.git_m3_use_phone)
+                        unnamedIncoming -> stringResource(R.string.adaptive_keep_this_version)
                         remoteSide -> stringResource(R.string.git_m3_use_remote, theirsName)
                         else -> stringResource(R.string.git_m3_use_branch, theirsName)
                     }

@@ -297,6 +297,7 @@
     <string name="folder_settings_unavailable" formatted="false">"Android 저장 공간 설정을 사용할 수 없습니다. 앱 저장 공간은 계속 사용할 수 있습니다."</string>
     <string name="folder_unusable" formatted="false">"이 폴더를 사용할 수 없습니다"</string>
     <string name="git_fetch" formatted="false">"가져오기"</string>
+    <string name="git_m3_tag_name_invalid" formatted="false">"유효한 Git 태그 이름을 입력하세요."</string>
     <string name="git_native_public_only" formatted="false">"Git 기본 프로토콜은 공개 접근만 지원합니다. 인증하려면 HTTPS 또는 SSH를 사용하세요."</string>
     <string name="gitops_action_failed" formatted="false">"Git이 이 작업을 완료하지 못했습니다"</string>
     <string name="gitops_branch_action_failed" formatted="false">"브랜치 작업을 완료할 수 없습니다"</string>

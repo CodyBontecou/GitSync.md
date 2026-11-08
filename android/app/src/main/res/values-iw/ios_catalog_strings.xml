@@ -297,6 +297,7 @@
     <string name="folder_settings_unavailable" formatted="false">"הגדרות האחסון של Android אינן זמינות. אחסון האפליקציה עדיין זמין."</string>
     <string name="folder_unusable" formatted="false">"לא ניתן להשתמש בתיקייה הזאת"</string>
     <string name="git_fetch" formatted="false">"–抓 קבצים"</string>
+    <string name="git_m3_tag_name_invalid" formatted="false">"יש להזין שם תקין לתג Git."</string>
     <string name="git_native_public_only" formatted="false">"פרוטוקול Git המקורי תומך בגישה ציבורית בלבד. יש להשתמש ב־HTTPS או ב־SSH לאימות."</string>
     <string name="gitops_action_failed" formatted="false">"Git לא הצליח להשלים את הפעולה הזו"</string>
     <string name="gitops_branch_action_failed" formatted="false">"לא ניתן להשלים את פעולת הענף"</string>

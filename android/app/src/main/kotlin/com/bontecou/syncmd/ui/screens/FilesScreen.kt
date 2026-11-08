@@ -61,6 +61,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bontecou.syncmd.R
+import com.bontecou.syncmd.ui.util.singleLineNameInput
 import com.bontecou.syncmd.localization.resourceId
 import com.bontecou.syncmd.services.files.FileEntryInsight
 import com.bontecou.syncmd.services.files.RepositoryFile
@@ -139,7 +140,7 @@ fun FilesScreen(
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val name = vaultName?.takeIf { it.isNotBlank() } ?: repositoryPath.substringAfterLast('/')
-    var creating by remember { mutableStateOf(false) }
+    var creating by rememberSaveable(repositoryPath, directory) { mutableStateOf(false) }
     var renameItem by remember { mutableStateOf<RepositoryFile?>(null) }
     var deleteItem by remember { mutableStateOf<RepositoryFile?>(null) }
     var actionsFor by remember { mutableStateOf<String?>(null) }
@@ -246,6 +247,7 @@ fun FilesScreen(
             exists = viewModel::exists,
             // A failed create keeps the dialog open; show why inside it, not behind it.
             failure = state.error?.let { stringResource(it.resourceId) },
+            onInputChanged = viewModel::clearError,
             onDismiss = { creating = false; viewModel.clearError() },
             onCreate = { file, folder, content ->
                 // Close only once the entry exists, so a failed create keeps the typed name.
@@ -406,6 +408,7 @@ private fun NewNoteDialog(
     templates: List<NoteTemplate>,
     exists: (String) -> Boolean,
     failure: String? = null,
+    onInputChanged: () -> Unit,
     onDismiss: () -> Unit,
     onCreate: (name: String, folder: Boolean, content: String) -> Unit,
 ) {
@@ -446,13 +449,13 @@ private fun NewNoteDialog(
             M3Segmented(
                 listOf(stringResource(R.string.newfile_m3_note), stringResource(R.string.newfile_m3_folder)),
                 selectedIndex = if (folder) 1 else 0,
-                onSelect = { folder = it == 1 },
+                onSelect = { folder = it == 1; onInputChanged() },
                 role = Role.RadioButton,
                 modifier = Modifier.testTag("filename-kind"),
             )
             M3TextField(
                 value = input,
-                onValueChange = { input = it },
+                onValueChange = { input = singleLineNameInput(it); onInputChanged() },
                 label = stringResource(if (folder) R.string.newfile_m3_folder_name else R.string.newfile_m3_file_name),
                 suffix = if (folder) null else ".md",
                 isError = error != null,
@@ -461,16 +464,17 @@ private fun NewNoteDialog(
             )
             if (!folder) {
                 Row(Modifier.padding(top = 8.dp).horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    M3FilterChip(stringResource(R.string.newfile_m3_blank), start == NoteStart.BLANK, { start = NoteStart.BLANK }, compact = true,
+                    M3FilterChip(stringResource(R.string.newfile_m3_blank), start == NoteStart.BLANK, { start = NoteStart.BLANK; onInputChanged() }, compact = true,
                         role = Role.RadioButton, modifier = Modifier.testTag("newfile-blank"))
                     choices.forEachIndexed { i, template ->
                         M3FilterChip(stringResource(R.string.newfile_m3_template, template.name), start == NoteStart.TEMPLATE && templateIndex == i,
-                            { start = NoteStart.TEMPLATE; templateIndex = i }, compact = true, role = Role.RadioButton,
+                            { start = NoteStart.TEMPLATE; templateIndex = i; onInputChanged() }, compact = true, role = Role.RadioButton,
                             modifier = Modifier.testTag("newfile-template-$i"))
                     }
                     M3FilterChip(stringResource(R.string.newfile_m3_today), start == NoteStart.TODAY, {
                         start = NoteStart.TODAY
                         input = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.ROOT).format(java.util.Date())
+                        onInputChanged()
                     }, compact = true, role = Role.RadioButton, modifier = Modifier.testTag("newfile-today"))
                 }
             }
@@ -995,7 +999,7 @@ internal fun FilenameDialog(title: String, initialValue: String, onDismiss: () -
         title = title,
         modifier = Modifier.testTag("filename-title"),
         content = {
-            M3TextField(name, { name = it }, stringResource(R.string.files_m3_rename_field), mono = true, modifier = Modifier.testTag("filename-input"))
+            M3TextField(name, { name = singleLineNameInput(it) }, stringResource(R.string.files_m3_rename_field), mono = true, modifier = Modifier.testTag("filename-input"))
             subject?.let { original ->
                 SelectionContainer {
                     Text(original, style = M3Type.meta.copy(textDirection = TextDirection.ContentOrLtr), color = c.onVar,

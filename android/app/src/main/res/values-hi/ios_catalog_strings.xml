@@ -297,6 +297,7 @@
     <string name="folder_settings_unavailable" formatted="false">"Android की स्टोरेज सेटिंग्स उपलब्ध नहीं हैं। ऐप का स्टोरेज अभी भी उपलब्ध है।"</string>
     <string name="folder_unusable" formatted="false">"इस फ़ोल्डर का इस्तेमाल नहीं हो सका"</string>
     <string name="git_fetch" formatted="false">"फ़ीच"</string>
+    <string name="git_m3_tag_name_invalid" formatted="false">"मान्य Git टैग नाम दर्ज करें।"</string>
     <string name="git_native_public_only" formatted="false">"Git का मूल प्रोटोकॉल केवल सार्वजनिक एक्सेस का समर्थन करता है। प्रमाणीकरण के लिए HTTPS या SSH का उपयोग करें।"</string>
     <string name="gitops_action_failed" formatted="false">"Git यह कार्रवाई पूरी नहीं कर सका"</string>
     <string name="gitops_branch_action_failed" formatted="false">"ब्रांच कार्रवाई पूरी नहीं हो सकी"</string>

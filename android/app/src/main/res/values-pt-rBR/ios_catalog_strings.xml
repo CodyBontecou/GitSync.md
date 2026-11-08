@@ -297,6 +297,7 @@
     <string name="folder_settings_unavailable" formatted="false">"As configurações de armazenamento do Android estão indisponíveis. O armazenamento do aplicativo continua disponível."</string>
     <string name="folder_unusable" formatted="false">"Não foi possível usar esta pasta"</string>
     <string name="git_fetch" formatted="false">"Recuperar"</string>
+    <string name="git_m3_tag_name_invalid" formatted="false">"Digite um nome de tag Git válido."</string>
     <string name="git_native_public_only" formatted="false">"O protocolo nativo do Git permite apenas acesso público. Use HTTPS ou SSH para autenticação."</string>
     <string name="gitops_action_failed" formatted="false">"O Git não conseguiu concluir esta ação"</string>
     <string name="gitops_branch_action_failed" formatted="false">"Não foi possível concluir a ação no branch"</string>

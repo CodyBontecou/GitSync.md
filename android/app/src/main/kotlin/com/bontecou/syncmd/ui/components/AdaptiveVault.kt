@@ -51,35 +51,36 @@ fun VaultRailFrame(
     chrome: @Composable () -> RailChrome,
     content: @Composable () -> Unit,
 ) {
-    if (!adaptive.isMedium) {
-        content()
-        return
-    }
-    VaultRailRow(selected, onSelect, chrome(), wide = adaptive.isExpanded, content = content)
+    // The content must keep the same composition path when rotation adds or removes the rail.
+    // Otherwise its saved dialogs and fields restore under different keys on the new layout.
+    VaultRailRow(selected, onSelect, if (adaptive.isMedium) chrome() else null,
+        wide = adaptive.isExpanded, content = content)
 }
 
-/** The rail beside [content], without the width decision (previews, adaptive hosts). */
+/** The rail beside [content], without the width decision; null [chrome] hides only the rail. */
 @Composable
 fun VaultRailRow(
     selected: VaultTab?,
     onSelect: (VaultTab) -> Unit,
-    chrome: RailChrome,
+    chrome: RailChrome?,
     wide: Boolean,
     changes: Int? = null,
     content: @Composable () -> Unit,
 ) {
     val c = M3.colors
     Row(Modifier.fillMaxSize().background(c.surface)) {
-        val syncLabel = if (chrome.toPush > 0) stringResource(R.string.adaptive_sync_all_to_push, chrome.toPush)
-            else stringResource(R.string.adaptive_sync_all)
-        VaultNavigationRail(
-            selected = selected,
-            onSelect = onSelect,
-            wide = wide,
-            changes = changes,
-            topAction = { RailFab(syncLabel, R.drawable.ic_m3_sync, chrome.onSyncAll, Modifier.testTag("rail-sync-all"), busy = chrome.syncing) },
-            bottomAction = { RailAccount(chrome.avatarInitials, chrome.onAccount) },
-        )
+        if (chrome != null) {
+            val syncLabel = if (chrome.toPush > 0) stringResource(R.string.adaptive_sync_all_to_push, chrome.toPush)
+                else stringResource(R.string.adaptive_sync_all)
+            VaultNavigationRail(
+                selected = selected,
+                onSelect = onSelect,
+                wide = wide,
+                changes = changes,
+                topAction = { RailFab(syncLabel, R.drawable.ic_m3_sync, chrome.onSyncAll, Modifier.testTag("rail-sync-all"), busy = chrome.syncing) },
+                bottomAction = { RailAccount(chrome.avatarInitials, chrome.onAccount) },
+            )
+        }
         Box(Modifier.weight(1f).fillMaxHeight()) { content() }
     }
 }

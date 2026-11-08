@@ -297,6 +297,7 @@
     <string name="folder_settings_unavailable" formatted="false">"การตั้งค่าพื้นที่จัดเก็บ Android ไม่พร้อมใช้งาน พื้นที่จัดเก็บของแอปยังคงใช้งานได้"</string>
     <string name="folder_unusable" formatted="false">"ไม่สามารถใช้โฟลเดอร์นี้ได้"</string>
     <string name="git_fetch" formatted="false">"Fetch"</string>
+    <string name="git_m3_tag_name_invalid" formatted="false">"ป้อนชื่อแท็ก Git ที่ถูกต้อง"</string>
     <string name="git_native_public_only" formatted="false">"โปรโตคอลดั้งเดิมของ Git รองรับเฉพาะการเข้าถึงแบบสาธารณะ ใช้ HTTPS หรือ SSH สำหรับการยืนยันตัวตน"</string>
     <string name="gitops_action_failed" formatted="false">"Git ไม่สามารถดำเนินการนี้ให้เสร็จสิ้นได้"</string>
     <string name="gitops_branch_action_failed" formatted="false">"ไม่สามารถดำเนินการกับบรานช์ให้เสร็จสิ้นได้"</string>

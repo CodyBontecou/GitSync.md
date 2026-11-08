@@ -297,6 +297,7 @@
     <string name="folder_settings_unavailable" formatted="false">"Les réglages de stockage Android ne sont pas disponibles. Le stockage de l’application reste disponible."</string>
     <string name="folder_unusable" formatted="false">"Impossible d’utiliser ce dossier"</string>
     <string name="git_fetch" formatted="false">"chercher"</string>
+    <string name="git_m3_tag_name_invalid" formatted="false">"Saisissez un nom de tag Git valide."</string>
     <string name="git_native_public_only" formatted="false">"Le protocole natif Git prend uniquement en charge l’accès public. Utilisez HTTPS ou SSH pour vous authentifier."</string>
     <string name="gitops_action_failed" formatted="false">"Git n’a pas pu terminer cette action"</string>
     <string name="gitops_branch_action_failed" formatted="false">"L’action sur la branche n’a pas pu aboutir"</string>

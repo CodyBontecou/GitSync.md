@@ -35,6 +35,7 @@ fun NavController.openGit(destination: GitDestination, path: String) {
         GitDestination.Tags -> navigateSafe("${GitRoutes.TAGS}/$encoded")
         GitDestination.Remote -> navigateSafe("${GitRoutes.REMOTE}/$encoded")
         GitDestination.Conflicts -> navigateSafe("${GitRoutes.CONFLICT}/$encoded") { launchSingleTop = true }
+        is GitDestination.FileConflict -> navigateSafe("${GitRoutes.CONFLICT}/$encoded?file=${Uri.encode(destination.filePath)}") { launchSingleTop = true }
         GitDestination.ManageVault -> navigateSafe("${GitRoutes.MANAGE}/$encoded")
         GitDestination.VaultSettings -> navigateSafe("${Routes.VAULT_SETTINGS}/$encoded")
         GitDestination.LargeFiles -> navigateSafe("${GitRoutes.LARGE_FILES}/$encoded")
@@ -67,8 +68,13 @@ fun NavGraphBuilder.gitRoutes(navController: NavController, settings: SettingsVi
     pathRoute(GitRoutes.REMOTE) { path ->
         com.bontecou.syncmd.ui.screens.GitRemoteScreen(path, vaultName(path), onBack = { back() }, onNavigate = { navController.openGit(it, path) })
     }
-    pathRoute(GitRoutes.CONFLICT) { path ->
-        com.bontecou.syncmd.ui.screens.ConflictScreen(path, vaultName(path), onBack = { back() }, onNavigate = { navController.openGit(it, path) })
+    composable("${GitRoutes.CONFLICT}/{path}?file={file}", arguments = listOf(
+        navArgument("path") { type = NavType.StringType },
+        navArgument("file") { type = NavType.StringType; nullable = true; defaultValue = null },
+    )) { entry ->
+        val path = entry.arguments?.getString("path").orEmpty()
+        com.bontecou.syncmd.ui.screens.ConflictScreen(path, vaultName(path), onBack = { back() }, onNavigate = { navController.openGit(it, path) },
+            initialFilePath = entry.arguments?.getString("file"))
     }
     pathRoute(GitRoutes.MANAGE) { path ->
         com.bontecou.syncmd.ui.screens.GitManageVaultScreen(path, settings, onBack = { back() },

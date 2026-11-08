@@ -102,6 +102,7 @@ object RemoteAuthentication {
         require(safe) { "Review the remote connection. Use a complete HTTP, HTTPS, SSH, git:// or local file:/// address with credentials stored separately." }
     }
     fun isValidBranch(branch: String) = Repository.isValidRefName("refs/heads/$branch")
+    fun isValidTag(tag: String) = Repository.isValidRefName("refs/tags/$tag")
     fun provider(repository: Repository, remote: String, push: Boolean = false,
         token: (() -> String?)? = null, resolver: ((String, String) -> Credentials?)? = null): ScopedCredentialsProvider {
         val config = repository.config

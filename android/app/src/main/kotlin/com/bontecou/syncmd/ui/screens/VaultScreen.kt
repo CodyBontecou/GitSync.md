@@ -138,6 +138,8 @@ fun VaultScreen(
     onReviewIncoming: () -> Unit = onOpenRemoteMerge,
     /** App-wide syncs with progress; null in hosts without Hilt, which fall back to [viewModel]'s pull. */
     syncViewModel: VaultSyncViewModel? = rememberVaultSyncViewModel(),
+    onOpenConflicts: () -> Unit = onOpenGit,
+    onOpenFileConflict: (String) -> Unit = { onOpenConflicts() },
 ) {
     var committing by rememberSaveable(repositoryPath) { mutableStateOf(false) }
     com.bontecou.syncmd.ui.util.RepositoryUpdatesEffect(repositoryPath) {
@@ -213,6 +215,8 @@ fun VaultScreen(
         ),
         onNavigateBack = onNavigateBack,
         onOpenGit = onOpenGit,
+        onOpenConflicts = onOpenConflicts,
+        onOpenFileConflict = onOpenFileConflict,
         onOpenDiff = onOpenDiff,
         onPull = pull,
         onDismissError = { viewModel.clearError(requestContext) },
@@ -375,6 +379,8 @@ private fun VaultContent(
     onPullThenPush: () -> Unit = {},
     onReviewFirst: () -> Unit = {},
     onPushToBranch: () -> Unit = {},
+    onOpenConflicts: () -> Unit = onOpenGit,
+    onOpenFileConflict: (String) -> Unit = { onOpenConflicts() },
 ) {
     val c = M3.colors
     val status = ui.status
@@ -404,10 +410,10 @@ private fun VaultContent(
                     rejected != null -> VaultPushRejectedSection(rejected.divergence, rejected.gitLine,
                         onPullThenPush = onPullThenPush, onReviewFirst = onReviewFirst, onPushToBranch = onPushToBranch)
                     else -> {
-                        VaultStateHero(ui, onOpenGit, onPull, onCommit ?: onOpenGit, onPush, onPullThenPush)
+                        VaultStateHero(ui, onOpenGit, onPull, onCommit ?: onOpenGit, onPush, onPullThenPush, onOpenConflicts)
                         VaultNotices(ui, onDismissError, onDismissAttention, onResolveLocalChanges, onDismissLocalChanges, onDismissSync)
                         if (status != null) {
-                            VaultChanges(status.allChanges, ui.overview?.lineCounts.orEmpty(), onOpenDiff, selectedFile)
+                            VaultChanges(status.allChanges, ui.overview?.lineCounts.orEmpty(), onOpenDiff, selectedFile, onOpenFileConflict)
                             VaultLatestCommit(status, ui.overview, onOpen = { onSelectTab(VaultTab.HISTORY) })
                             if (ui.showDebugInfo) VaultDebugInfo(ui.repositoryPath, status)
                         }
@@ -486,7 +492,8 @@ private fun VaultIdentity(name: String, owner: String) {
 // ─── State hero ─────────────────────────────────────────────────────────────
 
 @Composable
-private fun VaultStateHero(ui: VaultUi, onOpenGit: () -> Unit, onPull: () -> Unit, onCommit: () -> Unit, onPush: () -> Unit, onPullThenPush: () -> Unit) {
+private fun VaultStateHero(ui: VaultUi, onOpenGit: () -> Unit, onPull: () -> Unit, onCommit: () -> Unit, onPush: () -> Unit, onPullThenPush: () -> Unit,
+    onOpenConflicts: () -> Unit = onOpenGit) {
     val c = M3.colors
     val kind = ui.heroKind()
     val status = ui.status
@@ -510,7 +517,7 @@ private fun VaultStateHero(ui: VaultUi, onOpenGit: () -> Unit, onPull: () -> Uni
                 M3HeroCount("$count", pluralStringResource(R.plurals.tide_vault_conflicts_to_resolve, count))
                 M3HeroMeta(stringResource(R.string.tide_vault_conflict_detail), topPadding = 2.dp)
                 HeroActions {
-                    M3Button(stringResource(R.string.tide_vault_resolve), onOpenGit, Modifier.weight(1f).testTag("vault-resolve"),
+                    M3Button(stringResource(R.string.tide_vault_resolve), onOpenConflicts, Modifier.weight(1f).testTag("vault-resolve"),
                         M3ButtonStyle.OnHero, M3ButtonSize.Large, icon = R.drawable.ic_m3_merge, enabled = !busy)
                 }
             }
@@ -659,7 +666,8 @@ private fun VaultNoRepository() {
 // ─── Changes ────────────────────────────────────────────────────────────────
 
 @Composable
-private fun VaultChanges(changes: List<GitStatusEntry>, counts: Map<String, FileLineCount>, onOpenDiff: (String) -> Unit, selectedFile: String? = null) {
+private fun VaultChanges(changes: List<GitStatusEntry>, counts: Map<String, FileLineCount>, onOpenDiff: (String) -> Unit, selectedFile: String? = null,
+    onOpenConflict: (String) -> Unit = onOpenDiff) {
     val c = M3.colors
     Column(Modifier.fillMaxWidth().testTag("vault-changes")) {
         M3SectionLabel(stringResource(R.string.ui_changes_bbd4b6a8), count = changes.size.takeIf { it > 0 }?.toString(),
@@ -672,7 +680,7 @@ private fun VaultChanges(changes: List<GitStatusEntry>, counts: Map<String, File
                 }
             } else changes.sortedBy { it.filePath }.forEachIndexed { index, entry ->
                 ChangedFileRow(entry, counts[entry.filePath], divider = index > 0, selected = entry.filePath == selectedFile,
-                    onClick = { onOpenDiff(entry.filePath) })
+                    onClick = { if (entry.isConflicted) onOpenConflict(entry.filePath) else onOpenDiff(entry.filePath) })
             }
         }
     }

@@ -297,6 +297,7 @@
     <string name="folder_settings_unavailable" formatted="false">"Androids lagringsinnstillinger er utilgjengelige. Appens lagring er fortsatt tilgjengelig."</string>
     <string name="folder_unusable" formatted="false">"Denne mappen kunne ikke brukes"</string>
     <string name="git_fetch" formatted="false">"Hent"</string>
+    <string name="git_m3_tag_name_invalid" formatted="false">"Skriv inn et gyldig Git-taggnavn."</string>
     <string name="git_native_public_only" formatted="false">"Gits egen protokoll støtter bare offentlig tilgang. Bruk HTTPS eller SSH for autentisering."</string>
     <string name="gitops_action_failed" formatted="false">"Git kunne ikke fullføre denne handlingen"</string>
     <string name="gitops_branch_action_failed" formatted="false">"Branchhandlingen kunne ikke fullføres"</string>

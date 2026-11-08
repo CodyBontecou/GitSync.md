@@ -27,8 +27,8 @@
     "zh-Hans",
     "zh-Hant"
   ],
-  "base_strings": 1050,
-  "translated_per_language": 1050,
+  "base_strings": 1051,
+  "translated_per_language": 1051,
   "mapped": {
     "account_alternative_exists": "android_overrides",
     "account_api_error": "android_overrides",
@@ -1079,7 +1079,8 @@
     "vault_l10n_volume_unavailable_reconnect": "android_overrides",
     "vault_open_in_files_failed": "android_overrides",
     "vault_repository_fallback": "Repository",
-    "vault_url_copied": "Copied!"
+    "vault_url_copied": "Copied!",
+    "git_m3_tag_name_invalid": "android_overrides"
   },
   "missing": [],
   "rejected": {},

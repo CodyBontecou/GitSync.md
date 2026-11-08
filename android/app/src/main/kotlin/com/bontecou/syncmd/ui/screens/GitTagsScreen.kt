@@ -46,6 +46,7 @@ import com.bontecou.syncmd.ui.theme.M3TextField
 import com.bontecou.syncmd.ui.theme.M3Type
 import com.bontecou.syncmd.ui.theme.m3TopDivider
 import com.bontecou.syncmd.ui.util.asString
+import com.bontecou.syncmd.ui.util.singleLineNameInput
 import com.bontecou.syncmd.ui.viewmodels.GitWorkspaceViewModel
 import com.bontecou.syncmd.ui.viewmodels.HistoryViewModel
 import kotlinx.coroutines.launch
@@ -75,6 +76,8 @@ fun GitTagsScreen(
     val scope = rememberCoroutineScope()
     var name by rememberSaveable(path) { mutableStateOf("") }
     var message by rememberSaveable(path) { mutableStateOf("") }
+    val validName = com.bontecou.syncmd.services.git.RemoteAuthentication.isValidTag(name.trim())
+    val nameError = if (name.isNotBlank() && !validName) stringResource(R.string.git_m3_tag_name_invalid) else null
     var deleting by remember { mutableStateOf<Tag?>(null) }
     var expanded by rememberSaveable(path) { mutableStateOf(false) }
     val branch = summary?.branch ?: "—"
@@ -91,7 +94,8 @@ fun GitTagsScreen(
         M3SectionLabel(stringResource(R.string.git_m3_new_tag), contentPadding = PaddingValues(start = 20.dp, end = 20.dp, top = 8.dp, bottom = 4.dp))
         M3ListCard(Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp)) {
             Column(Modifier.padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 16.dp)) {
-                M3TextField(name, { name = it }, stringResource(R.string.git_m3_tag_name), Modifier.testTag("git-tag-name"), mono = true, enabled = canAct)
+                M3TextField(name, { name = singleLineNameInput(it) }, stringResource(R.string.git_m3_tag_name), Modifier.testTag("git-tag-name"),
+                    mono = true, enabled = canAct, isError = nameError != null, supportingText = nameError)
                 M3TextField(message, { message = it }, stringResource(R.string.git_m3_message_optional), Modifier.padding(top = 12.dp).testTag("git-tag-message"), enabled = canAct)
                 Text(stringResource(R.string.git_m3_tag_kind_help), Modifier.padding(start = 16.dp, end = 16.dp, top = 4.dp), style = M3Type.caption, color = c.onVar)
                 Row(Modifier.fillMaxWidth().padding(top = 16.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -105,7 +109,7 @@ fun GitTagsScreen(
                             if (name == submittedName) name = ""
                             if (message == submittedMessage) message = ""
                         }
-                    }, Modifier.testTag("git-tag-create"), icon = R.drawable.ic_m3_tag, enabled = canAct && name.isNotBlank())
+                    }, Modifier.testTag("git-tag-create"), icon = R.drawable.ic_m3_tag, enabled = canAct && validName)
                 }
             }
         }

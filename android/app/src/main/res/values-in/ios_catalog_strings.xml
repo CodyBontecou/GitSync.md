@@ -297,6 +297,7 @@
     <string name="folder_settings_unavailable" formatted="false">"Setelan penyimpanan Android tidak tersedia. Penyimpanan aplikasi tetap tersedia."</string>
     <string name="folder_unusable" formatted="false">"Folder ini tidak dapat digunakan"</string>
     <string name="git_fetch" formatted="false">"Fetch"</string>
+    <string name="git_m3_tag_name_invalid" formatted="false">"Masukkan nama tag Git yang valid."</string>
     <string name="git_native_public_only" formatted="false">"Protokol asli Git hanya mendukung akses publik. Gunakan HTTPS atau SSH untuk autentikasi."</string>
     <string name="gitops_action_failed" formatted="false">"Git tidak dapat menyelesaikan tindakan ini"</string>
     <string name="gitops_branch_action_failed" formatted="false">"Tindakan branch tidak dapat diselesaikan"</string>

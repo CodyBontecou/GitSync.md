@@ -297,6 +297,7 @@
     <string name="folder_settings_unavailable" formatted="false">"Android depolama ayarları kullanılamıyor. Uygulama depolaması kullanılabilir durumda."</string>
     <string name="folder_unusable" formatted="false">"Bu klasör kullanılamadı"</string>
     <string name="git_fetch" formatted="false">"Al"</string>
+    <string name="git_m3_tag_name_invalid" formatted="false">"Geçerli bir Git etiketi adı girin."</string>
     <string name="git_native_public_only" formatted="false">"Git’in yerel protokolü yalnızca herkese açık erişimi destekler. Kimlik doğrulama için HTTPS veya SSH kullanın."</string>
     <string name="gitops_action_failed" formatted="false">"Git bu işlemi tamamlayamadı"</string>
     <string name="gitops_branch_action_failed" formatted="false">"Dal işlemi tamamlanamadı"</string>

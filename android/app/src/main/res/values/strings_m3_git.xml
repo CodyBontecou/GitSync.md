@@ -147,6 +147,7 @@
     <!-- Tags -->
     <string name="git_m3_new_tag">New tag</string>
     <string name="git_m3_tag_name">Tag name</string>
+    <string name="git_m3_tag_name_invalid">Enter a valid Git tag name.</string>
     <string name="git_m3_tag_kind_help">With a message it’s annotated. Leave it empty for a light tag.</string>
     <string name="git_m3_tag_target">on %1$s · latest on %2$s</string>
     <string name="git_m3_create_tag">Create tag</string>

@@ -95,6 +95,44 @@ class FilesScreenTest {
         capture("files-light")
     }
 
+    @Test fun failedCreationCanRetryAfterEditingTheName() {
+        val opened = AtomicReference<String>()
+        val viewModel = FilesViewModel()
+        compose.setContent { SyncMdTheme { FilesScreen(root.path, "", {}, { opened.set(it) }, {}, viewModel) } }
+        waitFor("file-row-notes.md")
+        compose.onNodeWithContentDescription("New file").performClick()
+        compose.onNodeWithTag("filename-input").performTextReplacement("recovered")
+        compose.onNodeWithTag("filename-confirm").assertIsEnabled()
+        // Exercise an actual backend rejection without a filesystem change whose
+        // observer refresh could independently clear the error under test.
+        compose.runOnIdle { viewModel.create("invalid\nname.md", false) {} }
+        compose.waitUntil(10_000) { viewModel.state.value.error != null && !viewModel.state.value.isMutating }
+        compose.onNodeWithTag("filename-dialog").assertExists()
+        // Date shortcuts and manual edits must both clear the operation failure.
+        compose.onNodeWithTag("newfile-today").performClick()
+        compose.onNodeWithTag("filename-confirm").assertIsEnabled()
+        compose.runOnIdle { viewModel.create("invalid\nname.md", false) {} }
+        compose.waitUntil(10_000) { viewModel.state.value.error != null && !viewModel.state.value.isMutating }
+        compose.onNodeWithTag("filename-input").performTextReplacement("recovered")
+        compose.onNodeWithTag("filename-confirm").assertIsEnabled().performClick()
+        compose.waitUntil(10_000) { opened.get() == "recovered.md" }
+        assertTrue(File(root, "recovered.md").isFile)
+    }
+
+    @Test fun pastedFilenameControlsAreVisibleSpacesBeforeCreation() {
+        val opened = AtomicReference<String>()
+        val viewModel = FilesViewModel()
+        compose.setContent { SyncMdTheme { FilesScreen(root.path, "", {}, { opened.set(it) }, {}, viewModel) } }
+        waitFor("file-row-notes.md")
+        compose.onNodeWithContentDescription("New file").performClick()
+        compose.onNodeWithTag("filename-input").performTextReplacement("qa\r\nedge\ttest")
+        compose.onNodeWithTag("filename-input").assertTextContains("qa edge test", substring = false)
+        compose.onNodeWithTag("filename-confirm").assertIsEnabled().performClick()
+        compose.waitUntil(10_000) { opened.get() == "qa edge test.md" }
+        assertTrue(File(root, "qa edge test.md").isFile)
+        assertFalse(root.listFiles()!!.any { it.name.any(Char::isISOControl) })
+    }
+
     @Test fun editorAutosavesAndBackSavesExactContent() {
         val closed = AtomicInteger()
         val viewModel = FileEditorViewModel(SavedStateHandle())

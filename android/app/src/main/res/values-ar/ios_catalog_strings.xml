@@ -297,6 +297,7 @@
     <string name="folder_settings_unavailable" formatted="false">"إعدادات التخزين في Android غير متاحة. لا تزال مساحة تخزين التطبيق متاحة."</string>
     <string name="folder_unusable" formatted="false">"تعذر استخدام هذا المجلد"</string>
     <string name="git_fetch" formatted="false">"جلب\nفلتر"</string>
+    <string name="git_m3_tag_name_invalid" formatted="false">"أدخل اسمًا صالحًا لوسم Git."</string>
     <string name="git_native_public_only" formatted="false">"يدعم بروتوكول Git الأصلي الوصول العام فقط. استخدم HTTPS أو SSH للمصادقة."</string>
     <string name="gitops_action_failed" formatted="false">"تعذّر على Git إكمال هذا الإجراء"</string>
     <string name="gitops_branch_action_failed" formatted="false">"تعذّر إكمال إجراء الفرع"</string>

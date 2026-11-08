@@ -297,6 +297,7 @@
     <string name="folder_settings_unavailable" formatted="false">"無法使用 Android 儲存空間設定。應用程式儲存空間仍然可用。"</string>
     <string name="folder_unusable" formatted="false">"無法使用此資料夾"</string>
     <string name="git_fetch" formatted="false">"穫取"</string>
+    <string name="git_m3_tag_name_invalid" formatted="false">"請輸入有效的 Git 標籤名稱。"</string>
     <string name="git_native_public_only" formatted="false">"Git 原生通訊協定僅支援公開存取。請使用 HTTPS 或 SSH 進行驗證。"</string>
     <string name="gitops_action_failed" formatted="false">"Git 無法完成此動作"</string>
     <string name="gitops_branch_action_failed" formatted="false">"無法完成分支動作"</string>

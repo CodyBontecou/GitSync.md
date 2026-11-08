@@ -297,6 +297,7 @@
     <string name="folder_settings_unavailable" formatted="false">"Không thể mở cài đặt bộ nhớ Android. Bộ nhớ ứng dụng vẫn dùng được."</string>
     <string name="folder_unusable" formatted="false">"Không thể sử dụng thư mục này"</string>
     <string name="git_fetch" formatted="false">"Fetch"</string>
+    <string name="git_m3_tag_name_invalid" formatted="false">"Nhập tên thẻ Git hợp lệ."</string>
     <string name="git_native_public_only" formatted="false">"Giao thức Git gốc chỉ hỗ trợ truy cập công khai. Hãy dùng HTTPS hoặc SSH để xác thực."</string>
     <string name="gitops_action_failed" formatted="false">"Git không thể hoàn tất thao tác này"</string>
     <string name="gitops_branch_action_failed" formatted="false">"Không thể hoàn tất thao tác với nhánh"</string>

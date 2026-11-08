@@ -29193,6 +29193,36 @@
         "zh-Hans": "预览",
         "zh-Hant": "預覽"
       }
+    },
+    "git_m3_tag_name_invalid": {
+      "source": "Enter a valid Git tag name.",
+      "localizations": {
+        "ar": "أدخل اسمًا صالحًا لوسم Git.",
+        "da": "Indtast et gyldigt Git-tagnavn.",
+        "de": "Gib einen gültigen Git-Tag-Namen ein.",
+        "es": "Introduce un nombre de etiqueta de Git válido.",
+        "fi": "Anna kelvollinen Git-tunnisteen nimi.",
+        "fr": "Saisissez un nom de tag Git valide.",
+        "he": "יש להזין שם תקין לתג Git.",
+        "hi": "मान्य Git टैग नाम दर्ज करें।",
+        "hu": "Adj meg egy érvényes Git-címkenevet.",
+        "id": "Masukkan nama tag Git yang valid.",
+        "it": "Inserisci un nome valido per il tag Git.",
+        "ja": "有効な Git タグ名を入力してください。",
+        "ko": "유효한 Git 태그 이름을 입력하세요.",
+        "nb": "Skriv inn et gyldig Git-taggnavn.",
+        "nl": "Voer een geldige Git-tagnaam in.",
+        "pl": "Wpisz prawidłową nazwę tagu Git.",
+        "pt-BR": "Digite um nome de tag Git válido.",
+        "ru": "Введите допустимое имя тега Git.",
+        "sv": "Ange ett giltigt Git-taggnamn.",
+        "th": "ป้อนชื่อแท็ก Git ที่ถูกต้อง",
+        "tr": "Geçerli bir Git etiketi adı girin.",
+        "uk": "Введіть коректну назву тегу Git.",
+        "vi": "Nhập tên thẻ Git hợp lệ.",
+        "zh-Hans": "请输入有效的 Git 标签名称。",
+        "zh-Hant": "請輸入有效的 Git 標籤名稱。"
+      }
     }
   },
   "plurals": {

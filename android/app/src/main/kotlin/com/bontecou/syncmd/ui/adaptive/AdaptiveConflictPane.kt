@@ -114,7 +114,8 @@ fun ConflictPane(
     val provenance = conflict?.filePath?.let { workspace.provenance[it] } ?: workspace.provenance.values.firstOrNull()
     val source = provenance?.source ?: mergeState?.sourceBranch?.takeIf { it.isNotBlank() }
     val remoteSide = provenance?.sourceIsRemote != false
-    val theirsName = if (remoteSide) (if (gitIsGitHub(workspace.summary?.remoteUrl) || workspace.summary == null) stringResource(R.string.git_m3_github)
+    val theirsName = if (mergeState?.isMergeInProgress == false && source == null && provenance?.sourceIsRemote != true) stringResource(R.string.tide_merge_theirs)
+        else if (remoteSide) (if (gitIsGitHub(workspace.summary?.remoteUrl) || workspace.summary == null) stringResource(R.string.git_m3_github)
         else workspace.summary?.remoteUrl?.let { com.bontecou.syncmd.ui.components.gitRemoteDisplay(it)?.substringBefore('/') } ?: stringResource(R.string.git_m3_github))
         else source ?: stringResource(R.string.git_m3_github)
     val oursName = stringResource(if (tablet) R.string.adaptive_this_tablet else R.string.git_m3_this_phone)

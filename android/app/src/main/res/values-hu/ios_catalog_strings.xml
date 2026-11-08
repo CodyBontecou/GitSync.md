@@ -297,6 +297,7 @@
     <string name="folder_settings_unavailable" formatted="false">"Az Android tárhelybeállításai nem érhetők el. Az alkalmazás tárhelye továbbra is használható."</string>
     <string name="folder_unusable" formatted="false">"Ez a mappa nem használható"</string>
     <string name="git_fetch" formatted="false">"– Felhívás"</string>
+    <string name="git_m3_tag_name_invalid" formatted="false">"Adj meg egy érvényes Git-címkenevet."</string>
     <string name="git_native_public_only" formatted="false">"A Git natív protokollja csak nyilvános hozzáférést támogat. Hitelesítéshez használj HTTPS-t vagy SSH-t."</string>
     <string name="gitops_action_failed" formatted="false">"A Git nem tudta befejezni ezt a műveletet"</string>
     <string name="gitops_branch_action_failed" formatted="false">"Az ágművelet nem fejeződött be"</string>

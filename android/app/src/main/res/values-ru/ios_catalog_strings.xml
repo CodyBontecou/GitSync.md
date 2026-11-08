@@ -297,6 +297,7 @@
     <string name="folder_settings_unavailable" formatted="false">"Настройки хранилища Android недоступны. Хранилище приложения по-прежнему доступно."</string>
     <string name="folder_unusable" formatted="false">"Не удалось использовать эту папку"</string>
     <string name="git_fetch" formatted="false">"— Получение"</string>
+    <string name="git_m3_tag_name_invalid" formatted="false">"Введите допустимое имя тега Git."</string>
     <string name="git_native_public_only" formatted="false">"Собственный протокол Git поддерживает только публичный доступ. Для аутентификации используйте HTTPS или SSH."</string>
     <string name="gitops_action_failed" formatted="false">"Git не удалось выполнить это действие"</string>
     <string name="gitops_branch_action_failed" formatted="false">"Не удалось завершить действие с веткой"</string>

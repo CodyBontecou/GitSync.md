@@ -550,6 +550,8 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
                         onMoveRepository = { navController.navigateSafe("${Routes.MOVE}?path=${Uri.encode(selectedRepository)}") },
                         onOpenRemoteMerge = { navController.navigateSafe("${Routes.REMOTE_MERGE}/${Uri.encode(selectedRepository)}") },
                         onOpenGit       = { navController.navigateSafe(Routes.GIT) },
+                        onOpenConflicts = { navController.openGit(com.bontecou.syncmd.ui.components.GitDestination.Conflicts, selectedRepository) },
+                        onOpenFileConflict = { navController.openGit(com.bontecou.syncmd.ui.components.GitDestination.FileConflict(it), selectedRepository) },
                         onOpenFiles     = { navController.navigateSafe(Routes.FILES) },
                         onOpenDiff      = { filePath -> navController.navigateSafe("${Routes.DIFF}/${Uri.encode(filePath)}") },
                         onNavigateBack  = { navController.popBackStackSafe() },

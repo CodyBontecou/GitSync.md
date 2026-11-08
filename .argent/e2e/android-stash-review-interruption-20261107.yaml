@@ -1,0 +1,64 @@
+steps:
+  - tap:
+      role: TextField
+      after: { text: Set aside }
+  - tool: keyboard
+    args:
+      text: QA interruption review
+  - tap:
+      text: Stash 1 change
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Drop stash@{0}
+        role: Button
+  - tap:
+      text: Drop stash@{0}
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Drop stash@{0}
+        role: StaticText
+  - await: { idle: true }
+  - tool: button
+    args:
+      button: home
+  - tool: launch-app
+    args:
+      bundleId: com.bontecou.syncmd.debug
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Drop stash@{0}
+        role: StaticText
+  - await: { idle: true }
+  - tap:
+      text: Cancel
+  - tool: await-ui-element
+    args:
+      condition: hidden
+      selector:
+        text: Drop stash@{0}
+        role: StaticText
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Drop stash@{0}
+        role: Button
+  - tap:
+      text: Pop
+      next: { text: QA interruption review }
+  - await: { idle: true }
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: No stashes saved.
+executionPrerequisite: English Android phone in portrait. Sample repository open
+  on Stashes, main branch, original modified notes.md, no stashes, no keyboard.
+  Creates one stash, reviews and cancels its deletion after backgrounding, then
+  pops it to restore the original edit. No remote operation.

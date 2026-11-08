@@ -297,6 +297,7 @@
     <string name="folder_settings_unavailable" formatted="false">"Ustawienia pamięci Androida są niedostępne. Pamięć aplikacji nadal jest dostępna."</string>
     <string name="folder_unusable" formatted="false">"Nie można użyć tego folderu"</string>
     <string name="git_fetch" formatted="false">"Fetch"</string>
+    <string name="git_m3_tag_name_invalid" formatted="false">"Wpisz prawidłową nazwę tagu Git."</string>
     <string name="git_native_public_only" formatted="false">"Natywny protokół Git obsługuje tylko dostęp publiczny. Do uwierzytelniania użyj HTTPS lub SSH."</string>
     <string name="gitops_action_failed" formatted="false">"Git nie mógł ukończyć tej czynności"</string>
     <string name="gitops_branch_action_failed" formatted="false">"Nie udało się ukończyć działania na gałęzi"</string>

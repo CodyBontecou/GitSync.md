@@ -297,6 +297,7 @@
     <string name="folder_settings_unavailable" formatted="false">"Налаштування сховища Android недоступні. Сховище застосунку залишається доступним."</string>
     <string name="folder_unusable" formatted="false">"Не вдалося використати цю папку"</string>
     <string name="git_fetch" formatted="false">"– Загрузка"</string>
+    <string name="git_m3_tag_name_invalid" formatted="false">"Введіть коректну назву тегу Git."</string>
     <string name="git_native_public_only" formatted="false">"Власний протокол Git підтримує лише публічний доступ. Для автентифікації використовуйте HTTPS або SSH."</string>
     <string name="gitops_action_failed" formatted="false">"Git не вдалося виконати цю дію"</string>
     <string name="gitops_branch_action_failed" formatted="false">"Не вдалося завершити дію з гілкою"</string>
