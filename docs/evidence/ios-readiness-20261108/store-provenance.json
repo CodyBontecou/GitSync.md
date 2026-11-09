@@ -1,0 +1,3261 @@
+{
+  "observedAtUTC": "2026-11-09T00:20:52.298787+00:00",
+  "sourceRevision": "ef9bcb23c980024f6eabc6967cbf792f1515a95d",
+  "readOnlyProtection": "ASC_READ_ONLY=1 on every asc request",
+  "versions": [
+    {
+      "id": "0defe9f6-bdfb-4ff9-8ce8-d79373704c73",
+      "versionString": "3.0",
+      "appVersionState": "WAITING_FOR_REVIEW",
+      "appStoreState": "WAITING_FOR_REVIEW",
+      "releaseType": "MANUAL",
+      "createdDate": "2026-11-06T18:11:02-08:00",
+      "build": {
+        "id": "91d401cf-8094-4512-92b4-bf5d79bbcb89",
+        "version": "202611071310",
+        "uploadedDate": "2026-11-07T05:16:29-08:00",
+        "processingState": "VALID"
+      }
+    },
+    {
+      "id": "c07696f7-eb7c-45f1-b01e-71af42342030",
+      "versionString": "2.8.2",
+      "appVersionState": "READY_FOR_DISTRIBUTION",
+      "appStoreState": "READY_FOR_SALE",
+      "releaseType": "MANUAL",
+      "createdDate": "2026-10-26T14:30:13-07:00",
+      "build": {
+        "id": "26e1a7ef-8113-4959-a363-2e8f14878cbf",
+        "version": "202610261800",
+        "uploadedDate": "2026-10-26T15:04:41-07:00",
+        "processingState": "VALID"
+      }
+    }
+  ],
+  "buildsForMarketingVersion3": [
+    {
+      "version": "202611071310",
+      "uploadedDate": "2026-11-07T05:16:29-08:00",
+      "processingState": "VALID"
+    },
+    {
+      "version": "202611061200",
+      "uploadedDate": "2026-11-07T04:30:51-08:00",
+      "processingState": "VALID"
+    },
+    {
+      "version": "202611031010",
+      "uploadedDate": "2026-11-03T06:13:31-08:00",
+      "processingState": "VALID"
+    }
+  ],
+  "screenshots": [
+    {
+      "locale": "ar-SA",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "screenshots": [
+        {
+          "fileName": "01-Workspace.png",
+          "fileSize": 334225,
+          "sourceFileChecksum": "13957a3a0e6120a6ff7ef98dbc79219a",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "02-Diff.png",
+          "fileSize": 335307,
+          "sourceFileChecksum": "896587ccc883ebab3fee655e5dd2226c",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "03-Conflict.png",
+          "fileSize": 436124,
+          "sourceFileChecksum": "23725a65df3c182d9f1297f3ffabfa04",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "04-History.png",
+          "fileSize": 401540,
+          "sourceFileChecksum": "df655bf7078f56e0d5a43fb25f4362d7",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "05-WhileYouSleep.png",
+          "fileSize": 310889,
+          "sourceFileChecksum": "9fc87e4039e0c3126f763b8a0261696a",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        }
+      ]
+    },
+    {
+      "locale": "ar-SA",
+      "displayType": "APP_IPHONE_67",
+      "screenshots": [
+        {
+          "fileName": "01-Hook.png",
+          "fileSize": 199484,
+          "sourceFileChecksum": "fc39c301266442b713765d31aebc5bfc",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "02-OneButton.png",
+          "fileSize": 177956,
+          "sourceFileChecksum": "4585288e5b6d2dc1360c601784cb583e",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "03-Conflict.png",
+          "fileSize": 370760,
+          "sourceFileChecksum": "be300759c18fd9a6a16f27f2f7f7df98",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "04-Diff.png",
+          "fileSize": 305791,
+          "sourceFileChecksum": "98e874ddea904bcf87c6e5ef6b7ca166",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "05-History.png",
+          "fileSize": 200061,
+          "sourceFileChecksum": "8318d8e77cbe22e7276de2a86d169c4b",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "06-WhileYouSleep.png",
+          "fileSize": 158755,
+          "sourceFileChecksum": "32241a7cc25c51dcf3223dd793ea230f",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "07-AnyHost.png",
+          "fileSize": 326483,
+          "sourceFileChecksum": "fb82aaf15bd0b56d376fcb3642a55d7b",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "08-Nocturnal.png",
+          "fileSize": 313205,
+          "sourceFileChecksum": "8be4ce509e836b683e2b880479324dd7",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        }
+      ]
+    },
+    {
+      "locale": "da",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "screenshots": [
+        {
+          "fileName": "01-Workspace.png",
+          "fileSize": 329544,
+          "sourceFileChecksum": "ab173b8e2d38212c12e3a5753926e581",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "02-Diff.png",
+          "fileSize": 340588,
+          "sourceFileChecksum": "f4427abd93972a4b79cb7683f39a3fb9",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "03-Conflict.png",
+          "fileSize": 440492,
+          "sourceFileChecksum": "74433f5ed40d5bb5ebfe7b6a6a043f98",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "04-History.png",
+          "fileSize": 401980,
+          "sourceFileChecksum": "d9e194069d3cf976e82ff6d482d26be6",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "05-WhileYouSleep.png",
+          "fileSize": 317069,
+          "sourceFileChecksum": "dee756946a736f2b76d112f7087cc281",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        }
+      ]
+    },
+    {
+      "locale": "da",
+      "displayType": "APP_IPHONE_67",
+      "screenshots": [
+        {
+          "fileName": "01-Hook.png",
+          "fileSize": 203535,
+          "sourceFileChecksum": "c7b266e92c5465275cafd52d0ab35dcf",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "02-OneButton.png",
+          "fileSize": 193076,
+          "sourceFileChecksum": "f57adfed41f794bd1ea7a6e8a563f014",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "03-Conflict.png",
+          "fileSize": 379253,
+          "sourceFileChecksum": "00b434b771e7773be6d25f48021e7e6f",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "04-Diff.png",
+          "fileSize": 310157,
+          "sourceFileChecksum": "2198a9a810d56c45b2baff15a2226f9b",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "05-History.png",
+          "fileSize": 208204,
+          "sourceFileChecksum": "3d30f7b32ba5957e069a5592b18ee915",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "06-WhileYouSleep.png",
+          "fileSize": 170883,
+          "sourceFileChecksum": "001271f2455ba35e37ebdb27824efc9f",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "07-AnyHost.png",
+          "fileSize": 326971,
+          "sourceFileChecksum": "4377110e70e964eb9645f4618e1d22d8",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "08-Nocturnal.png",
+          "fileSize": 318710,
+          "sourceFileChecksum": "c9b7011b1c49061fd7083f2a72209213",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        }
+      ]
+    },
+    {
+      "locale": "de-DE",
+      "displayType": "APP_IPHONE_67",
+      "screenshots": [
+        {
+          "fileName": "01-Hook.png",
+          "fileSize": 199720,
+          "sourceFileChecksum": "3597a3590cfcc1da9629f1e76ff3bffa",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "02-OneButton.png",
+          "fileSize": 189983,
+          "sourceFileChecksum": "5bca1497fa3ff418ac4e64c662ff653e",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "03-Conflict.png",
+          "fileSize": 377365,
+          "sourceFileChecksum": "442c495721d1d962b8a1ffd55222dfc0",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "04-Diff.png",
+          "fileSize": 313736,
+          "sourceFileChecksum": "12a4969fdb6a45a20426631326a50bed",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "05-History.png",
+          "fileSize": 210691,
+          "sourceFileChecksum": "e2ed844eb3b175a702d3e098fb1854b4",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "06-WhileYouSleep.png",
+          "fileSize": 175361,
+          "sourceFileChecksum": "9ef7c4cf089a8a5dc7f1cee02b240a49",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "07-AnyHost.png",
+          "fileSize": 333938,
+          "sourceFileChecksum": "a9740eece913e6e4f47ff2a5b04cb263",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "08-Nocturnal.png",
+          "fileSize": 316871,
+          "sourceFileChecksum": "0135a263b604347e0e62f37bc74ef211",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        }
+      ]
+    },
+    {
+      "locale": "de-DE",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "screenshots": [
+        {
+          "fileName": "01-Workspace.png",
+          "fileSize": 334817,
+          "sourceFileChecksum": "6f39c4870a5a5c3b2c5bb13bd8b23e97",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "02-Diff.png",
+          "fileSize": 342952,
+          "sourceFileChecksum": "adbddf96a230f252ed1914747615b42e",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "03-Conflict.png",
+          "fileSize": 446367,
+          "sourceFileChecksum": "963f0b34bb48f9020cd1bb95df3b78be",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "04-History.png",
+          "fileSize": 403348,
+          "sourceFileChecksum": "4d07005430ed0ab7754c7f5aaea14b41",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "05-WhileYouSleep.png",
+          "fileSize": 324702,
+          "sourceFileChecksum": "7dea889086b7fbcd9fff9d0a1815241e",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        }
+      ]
+    },
+    {
+      "locale": "en-US",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "screenshots": [
+        {
+          "fileName": "01-Workspace.png",
+          "fileSize": 332859,
+          "sourceFileChecksum": "c6acf36e6d57a94eff81a70992db6f11",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "02-Diff.png",
+          "fileSize": 344763,
+          "sourceFileChecksum": "79349aef7d0163f9649e7b1584449c14",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "03-Conflict.png",
+          "fileSize": 443327,
+          "sourceFileChecksum": "32a4cd5c5cb6a538e65bba08cafcc006",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "04-History.png",
+          "fileSize": 396188,
+          "sourceFileChecksum": "eea080f9ced922e91a2d7b8638ceb261",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "05-WhileYouSleep.png",
+          "fileSize": 318991,
+          "sourceFileChecksum": "3f5ad5513afc52befefcd80394766c01",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        }
+      ]
+    },
+    {
+      "locale": "en-US",
+      "displayType": "APP_IPHONE_67",
+      "screenshots": [
+        {
+          "fileName": "01-Hook.png",
+          "fileSize": 207762,
+          "sourceFileChecksum": "9bfe9f7d633f280564cfd3d48cf7e1a3",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "02-OneButton.png",
+          "fileSize": 192678,
+          "sourceFileChecksum": "0f79f797fdbe97e2c6c275cf3d009737",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "03-Conflict.png",
+          "fileSize": 382164,
+          "sourceFileChecksum": "5dbe29fcf7e746ff228f4799376e17d0",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "04-Diff.png",
+          "fileSize": 318263,
+          "sourceFileChecksum": "2c829994dd1fab40caba9b519a5333c2",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "05-History.png",
+          "fileSize": 202262,
+          "sourceFileChecksum": "72b152512f843412161ba0378e22e943",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "06-WhileYouSleep.png",
+          "fileSize": 172073,
+          "sourceFileChecksum": "0b9ac1940cf8f1d05a9affda2768b69b",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "07-AnyHost.png",
+          "fileSize": 328672,
+          "sourceFileChecksum": "09840b57d4c1de89875aabe72af79d4a",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "08-Nocturnal.png",
+          "fileSize": 311639,
+          "sourceFileChecksum": "51b4afd8ebe61b246319f5237bff546f",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        }
+      ]
+    },
+    {
+      "locale": "es-ES",
+      "displayType": "APP_IPHONE_67",
+      "screenshots": [
+        {
+          "fileName": "01-Hook.png",
+          "fileSize": 212557,
+          "sourceFileChecksum": "998d9030f0d7affdf054a8a924a8ffc9",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "02-OneButton.png",
+          "fileSize": 189124,
+          "sourceFileChecksum": "f31bc9d41864bde90774b4c737295213",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "03-Conflict.png",
+          "fileSize": 378746,
+          "sourceFileChecksum": "fc8521c991202b916b74e8fc8a7a2df2",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "04-Diff.png",
+          "fileSize": 324516,
+          "sourceFileChecksum": "b3b554be6c5d6f32783c722f7c3ff131",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "05-History.png",
+          "fileSize": 217111,
+          "sourceFileChecksum": "5ce41f8dba41e5127222f1086273dc09",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "06-WhileYouSleep.png",
+          "fileSize": 176581,
+          "sourceFileChecksum": "89971cc1f0d1505c8e82b0adf8059c3d",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "07-AnyHost.png",
+          "fileSize": 332180,
+          "sourceFileChecksum": "aa39ef94544f11946bf4d9845f7f8f5c",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "08-Nocturnal.png",
+          "fileSize": 321245,
+          "sourceFileChecksum": "9827c0541e1f643a5a60b7ab83bfab13",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        }
+      ]
+    },
+    {
+      "locale": "es-ES",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "screenshots": [
+        {
+          "fileName": "01-Workspace.png",
+          "fileSize": 333020,
+          "sourceFileChecksum": "93bb3d8b2afe6222d607e2c47b14e870",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "02-Diff.png",
+          "fileSize": 351492,
+          "sourceFileChecksum": "122a926efcbed711e713a9b46dfa2e50",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "03-Conflict.png",
+          "fileSize": 438507,
+          "sourceFileChecksum": "940dc3a46bdd00b5d63b49a9cdad04c7",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "04-History.png",
+          "fileSize": 409578,
+          "sourceFileChecksum": "6391ba94668a69b8cd21bf84570bb00a",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "05-WhileYouSleep.png",
+          "fileSize": 323848,
+          "sourceFileChecksum": "7b37cd506969621ab6f64bc521b55da5",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        }
+      ]
+    },
+    {
+      "locale": "fi",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "screenshots": [
+        {
+          "fileName": "01-Workspace.png",
+          "fileSize": 334783,
+          "sourceFileChecksum": "c3bedbe00d61cd512872da76b0636811",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "02-Diff.png",
+          "fileSize": 341478,
+          "sourceFileChecksum": "91e2906a9ba1e1ca428c62c9a3850a65",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "03-Conflict.png",
+          "fileSize": 444944,
+          "sourceFileChecksum": "45f398f66505b978dd6cb6883029acb1",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "04-History.png",
+          "fileSize": 395143,
+          "sourceFileChecksum": "8fa0f8a6ab6dc8ac094f59000813e036",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "05-WhileYouSleep.png",
+          "fileSize": 311051,
+          "sourceFileChecksum": "c7433b5054b5267a510e33e4baea5283",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        }
+      ]
+    },
+    {
+      "locale": "fi",
+      "displayType": "APP_IPHONE_67",
+      "screenshots": [
+        {
+          "fileName": "01-Hook.png",
+          "fileSize": 197556,
+          "sourceFileChecksum": "ea8a0d65dc5912723fd68ce98d00caf5",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "02-OneButton.png",
+          "fileSize": 189971,
+          "sourceFileChecksum": "e492c2d91764aefbb34a6f5fd73bfe12",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "03-Conflict.png",
+          "fileSize": 381140,
+          "sourceFileChecksum": "736439cf85013f19b3d1e3fa74696703",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "04-Diff.png",
+          "fileSize": 316760,
+          "sourceFileChecksum": "5c5ac79034334fdc0a03ce8a2573b6e0",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "05-History.png",
+          "fileSize": 208921,
+          "sourceFileChecksum": "e2b84b9c15097b24fd9beb8617da25b7",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "06-WhileYouSleep.png",
+          "fileSize": 163128,
+          "sourceFileChecksum": "432d7aca9a474e453391913fc84c06b2",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "07-AnyHost.png",
+          "fileSize": 334689,
+          "sourceFileChecksum": "730b488bfa7f148f8ded82a142ab66cd",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "08-Nocturnal.png",
+          "fileSize": 314193,
+          "sourceFileChecksum": "11f15ba9a3b6e6338d5cd4f4a72952d8",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        }
+      ]
+    },
+    {
+      "locale": "fr-FR",
+      "displayType": "APP_IPHONE_67",
+      "screenshots": [
+        {
+          "fileName": "01-Hook.png",
+          "fileSize": 202849,
+          "sourceFileChecksum": "16561df1fb3fa23e4549654fc1d32d26",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "02-OneButton.png",
+          "fileSize": 186871,
+          "sourceFileChecksum": "e3d005d6cd6ce3438861f06f21da7cd7",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "03-Conflict.png",
+          "fileSize": 383688,
+          "sourceFileChecksum": "b19366abc6ae49d1cb1afade7dd1e292",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "04-Diff.png",
+          "fileSize": 313533,
+          "sourceFileChecksum": "c88219e920fd45b63d736ca2ef933733",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "05-History.png",
+          "fileSize": 205879,
+          "sourceFileChecksum": "8a53e24db05644be2dac9944b5551fae",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "06-WhileYouSleep.png",
+          "fileSize": 180206,
+          "sourceFileChecksum": "0da006a50ebda10613a342ceb6d86d2f",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "07-AnyHost.png",
+          "fileSize": 328215,
+          "sourceFileChecksum": "30144d510319d07c0f4eb85196a3f14c",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "08-Nocturnal.png",
+          "fileSize": 323519,
+          "sourceFileChecksum": "719b188b689b0a5883963a805f8d614e",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        }
+      ]
+    },
+    {
+      "locale": "fr-FR",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "screenshots": [
+        {
+          "fileName": "01-Workspace.png",
+          "fileSize": 332614,
+          "sourceFileChecksum": "f64c5f52807c86b94a17a3c0695a14aa",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "02-Diff.png",
+          "fileSize": 341157,
+          "sourceFileChecksum": "257db5c5fb4dd7da6706a85c356257de",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "03-Conflict.png",
+          "fileSize": 445003,
+          "sourceFileChecksum": "2c502c1e307f5cd00f4a084390712d6d",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "04-History.png",
+          "fileSize": 397490,
+          "sourceFileChecksum": "256c8c9f64315664dd98442cdc034088",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "05-WhileYouSleep.png",
+          "fileSize": 327070,
+          "sourceFileChecksum": "6dceaab8f4e4d4ba6168b3a067584fee",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        }
+      ]
+    },
+    {
+      "locale": "he",
+      "displayType": "APP_IPHONE_67",
+      "screenshots": [
+        {
+          "fileName": "01-Hook.png",
+          "fileSize": 191743,
+          "sourceFileChecksum": "de7ba93c2dd5adb929d654941e58ea3e",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "02-OneButton.png",
+          "fileSize": 175811,
+          "sourceFileChecksum": "2f13ddf5d40bb5e073e31780428b38e0",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "03-Conflict.png",
+          "fileSize": 366541,
+          "sourceFileChecksum": "a3e77eb30c45557a980460c481fb47fa",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "04-Diff.png",
+          "fileSize": 299018,
+          "sourceFileChecksum": "5d8bd06aa80e14ed08f2b415084b26e6",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "05-History.png",
+          "fileSize": 187877,
+          "sourceFileChecksum": "537432d49ad71fea0815f41554e46b60",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "06-WhileYouSleep.png",
+          "fileSize": 156480,
+          "sourceFileChecksum": "3beb887879815f5f16b12b62539ff5cc",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "07-AnyHost.png",
+          "fileSize": 319864,
+          "sourceFileChecksum": "538f612db39bbfa972081192b9067a10",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "08-Nocturnal.png",
+          "fileSize": 299052,
+          "sourceFileChecksum": "3cdd10e8a970edf46f2235fd2778d304",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        }
+      ]
+    },
+    {
+      "locale": "he",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "screenshots": [
+        {
+          "fileName": "01-Workspace.png",
+          "fileSize": 327006,
+          "sourceFileChecksum": "dd3af61f61a6935b11ef907901567fd5",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "02-Diff.png",
+          "fileSize": 334254,
+          "sourceFileChecksum": "1914b28b5e154f9c7de7750da6e51984",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "03-Conflict.png",
+          "fileSize": 431806,
+          "sourceFileChecksum": "7e0305375b16862b04b5431a520c27ac",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "04-History.png",
+          "fileSize": 392188,
+          "sourceFileChecksum": "d37574a7218b2e969318de380937c0e0",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "05-WhileYouSleep.png",
+          "fileSize": 312437,
+          "sourceFileChecksum": "3a330f50c6f3c5f31cd7aa140a5a8f0a",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        }
+      ]
+    },
+    {
+      "locale": "hi",
+      "displayType": "APP_IPHONE_67",
+      "screenshots": [
+        {
+          "fileName": "01-Hook.png",
+          "fileSize": 205443,
+          "sourceFileChecksum": "099baac970f1cb5962b94c9905fb65a0",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "02-OneButton.png",
+          "fileSize": 178459,
+          "sourceFileChecksum": "8aded95cba9dd7dbcf16d78bdfedc4c8",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "03-Conflict.png",
+          "fileSize": 371268,
+          "sourceFileChecksum": "49895cb77944751f14926c1efd1f5b29",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "04-Diff.png",
+          "fileSize": 307110,
+          "sourceFileChecksum": "f0675790cbe4af2b372919075f237f1c",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "05-History.png",
+          "fileSize": 193788,
+          "sourceFileChecksum": "4f5a01d894d7e6cf1a25c5042f890528",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "06-WhileYouSleep.png",
+          "fileSize": 163185,
+          "sourceFileChecksum": "a1aaf48faf22027ab5116db9b7f44880",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "07-AnyHost.png",
+          "fileSize": 326330,
+          "sourceFileChecksum": "911c5ce275c9e1621b3a719ada05f4db",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "08-Nocturnal.png",
+          "fileSize": 305083,
+          "sourceFileChecksum": "5cbbd734cbbca865d04172649fb75260",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        }
+      ]
+    },
+    {
+      "locale": "hi",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "screenshots": [
+        {
+          "fileName": "01-Workspace.png",
+          "fileSize": 318900,
+          "sourceFileChecksum": "0ee590e55a94cac4425bf610c244245d",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "02-Diff.png",
+          "fileSize": 336832,
+          "sourceFileChecksum": "9202b3c55a8e33e40b6312c230485019",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "03-Conflict.png",
+          "fileSize": 433559,
+          "sourceFileChecksum": "52e7c67047c4d58339b1d11e7e01423a",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "04-History.png",
+          "fileSize": 394814,
+          "sourceFileChecksum": "ed108b844e78fd526fefa1760a532d27",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "05-WhileYouSleep.png",
+          "fileSize": 313534,
+          "sourceFileChecksum": "b7435986eaee2cee1d7c2e54f12bd639",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        }
+      ]
+    },
+    {
+      "locale": "hu",
+      "displayType": "APP_IPHONE_67",
+      "screenshots": [
+        {
+          "fileName": "01-Hook.png",
+          "fileSize": 211646,
+          "sourceFileChecksum": "e772f9ff0c0b45368f0f46bd3d98dd16",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "02-OneButton.png",
+          "fileSize": 189375,
+          "sourceFileChecksum": "926f5c5fe475ea7bdd17a8b8ceb0334b",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "03-Conflict.png",
+          "fileSize": 380303,
+          "sourceFileChecksum": "c80ad58a168cf4a98b5fa99c9f1c9cc0",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "04-Diff.png",
+          "fileSize": 318309,
+          "sourceFileChecksum": "0d7e902265bee536d74a2c2fdd2e97cb",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "05-History.png",
+          "fileSize": 212712,
+          "sourceFileChecksum": "566cc1cf7d71626fa6466ac7faf94443",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "06-WhileYouSleep.png",
+          "fileSize": 172586,
+          "sourceFileChecksum": "3abfbff515795be5209d68454fdab72d",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "07-AnyHost.png",
+          "fileSize": 343638,
+          "sourceFileChecksum": "6bfed70ad1d36504414bd1353ee8f8f0",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "08-Nocturnal.png",
+          "fileSize": 319530,
+          "sourceFileChecksum": "fba20760c38d7053eb9bbddd90628160",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        }
+      ]
+    },
+    {
+      "locale": "hu",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "screenshots": [
+        {
+          "fileName": "01-Workspace.png",
+          "fileSize": 332174,
+          "sourceFileChecksum": "1d102de0eacbc5ccc435a7b078fbd997",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "02-Diff.png",
+          "fileSize": 339595,
+          "sourceFileChecksum": "19e1bf663204aee5a74596257a41ffc8",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "03-Conflict.png",
+          "fileSize": 445260,
+          "sourceFileChecksum": "28a22d15589d1f72edfec67fe7b5c191",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "04-History.png",
+          "fileSize": 403041,
+          "sourceFileChecksum": "6002fe61eb285b759b9f2985c9527e15",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "05-WhileYouSleep.png",
+          "fileSize": 319634,
+          "sourceFileChecksum": "7646be6140bd66916b6265854997ce82",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        }
+      ]
+    },
+    {
+      "locale": "id",
+      "displayType": "APP_IPHONE_67",
+      "screenshots": [
+        {
+          "fileName": "01-Hook.png",
+          "fileSize": 200823,
+          "sourceFileChecksum": "f4bc0c7261000ec3f9c30771b0458e90",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "02-OneButton.png",
+          "fileSize": 192980,
+          "sourceFileChecksum": "804415978e60849f144c3c99760d1633",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "03-Conflict.png",
+          "fileSize": 372588,
+          "sourceFileChecksum": "ed54080afa2cad7a2b85bc8c93fe89ea",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "04-Diff.png",
+          "fileSize": 318011,
+          "sourceFileChecksum": "5c49e2a6dfad785eabc92add6d2c2bc0",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "05-History.png",
+          "fileSize": 205638,
+          "sourceFileChecksum": "9542aa98761138f7c5ff6beb45345f07",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "06-WhileYouSleep.png",
+          "fileSize": 169037,
+          "sourceFileChecksum": "f628dee8021ca3e6fc7ceef0ed724d96",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "07-AnyHost.png",
+          "fileSize": 333781,
+          "sourceFileChecksum": "4c815a39883be322a16210a05c0b5032",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "08-Nocturnal.png",
+          "fileSize": 317778,
+          "sourceFileChecksum": "d8d54b1e161777577a7e0d935f2804d4",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        }
+      ]
+    },
+    {
+      "locale": "id",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "screenshots": [
+        {
+          "fileName": "01-Workspace.png",
+          "fileSize": 330954,
+          "sourceFileChecksum": "501453ef7b95c64070412ad5476715c1",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "02-Diff.png",
+          "fileSize": 342120,
+          "sourceFileChecksum": "5dae8092fb4aeb0c2029adede75d2223",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "03-Conflict.png",
+          "fileSize": 432823,
+          "sourceFileChecksum": "2d91df5a381696ade06ca94b08253acc",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "04-History.png",
+          "fileSize": 395330,
+          "sourceFileChecksum": "032a387a88ecfb5d5eb5ed36021a1d86",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "05-WhileYouSleep.png",
+          "fileSize": 315824,
+          "sourceFileChecksum": "cb5a622108b08be936dc458173e55c58",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        }
+      ]
+    },
+    {
+      "locale": "it",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "screenshots": [
+        {
+          "fileName": "01-Workspace.png",
+          "fileSize": 325445,
+          "sourceFileChecksum": "23d934d5ac5b346975e7ed55f91b1ded",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "02-Diff.png",
+          "fileSize": 346413,
+          "sourceFileChecksum": "6730fd7b0b5120a6cc7c86568886eaf7",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "03-Conflict.png",
+          "fileSize": 450512,
+          "sourceFileChecksum": "60e2cb2ca69a8333a7b707e8f015c82c",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "04-History.png",
+          "fileSize": 402562,
+          "sourceFileChecksum": "a5f30df1e5fb94f2cf7ba29661400674",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "05-WhileYouSleep.png",
+          "fileSize": 319491,
+          "sourceFileChecksum": "d84276dbaf4ff8418372f37d1040ac13",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        }
+      ]
+    },
+    {
+      "locale": "it",
+      "displayType": "APP_IPHONE_67",
+      "screenshots": [
+        {
+          "fileName": "01-Hook.png",
+          "fileSize": 210207,
+          "sourceFileChecksum": "1f8005ceba3ccb14fb724d736a9d65c9",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "02-OneButton.png",
+          "fileSize": 187256,
+          "sourceFileChecksum": "303c4eca01205acf0709a1225d630950",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "03-Conflict.png",
+          "fileSize": 384380,
+          "sourceFileChecksum": "040e66e9be9cbffaa77ca47e3af6def0",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "04-Diff.png",
+          "fileSize": 321561,
+          "sourceFileChecksum": "10f9052bd02990302a3a881b46c6fb12",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "05-History.png",
+          "fileSize": 210549,
+          "sourceFileChecksum": "04f5867051d13bfaf0d1b4e1977131b3",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "06-WhileYouSleep.png",
+          "fileSize": 169584,
+          "sourceFileChecksum": "87a2003ac455cede73189793d84184e6",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "07-AnyHost.png",
+          "fileSize": 331315,
+          "sourceFileChecksum": "d78bf376afaeb03137ba361cf3989ec0",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "08-Nocturnal.png",
+          "fileSize": 316494,
+          "sourceFileChecksum": "5fde8acce8cb2d1272a4a58d791fd510",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        }
+      ]
+    },
+    {
+      "locale": "ja",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "screenshots": [
+        {
+          "fileName": "01-Workspace.png",
+          "fileSize": 337321,
+          "sourceFileChecksum": "3ae9e6431231d8ccf355a93d6a4d41af",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "02-Diff.png",
+          "fileSize": 354119,
+          "sourceFileChecksum": "80f6969184a77f88ccbf5d59e441a40a",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "03-Conflict.png",
+          "fileSize": 454163,
+          "sourceFileChecksum": "d5808a69c2a9ba6bba30e01fd42d1f72",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "04-History.png",
+          "fileSize": 415648,
+          "sourceFileChecksum": "5a7b61f3b44158d2dae6c6eb84f66141",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "05-WhileYouSleep.png",
+          "fileSize": 327060,
+          "sourceFileChecksum": "5405161c0f8781304c7546993b47ec8c",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        }
+      ]
+    },
+    {
+      "locale": "ja",
+      "displayType": "APP_IPHONE_67",
+      "screenshots": [
+        {
+          "fileName": "01-Hook.png",
+          "fileSize": 210101,
+          "sourceFileChecksum": "af291a04bd396c7abba2128e409be8e1",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "02-OneButton.png",
+          "fileSize": 215703,
+          "sourceFileChecksum": "de5cedb4ed30f80ed681dc7bef24f4e4",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "03-Conflict.png",
+          "fileSize": 393308,
+          "sourceFileChecksum": "5b147e69b063d36dde9e76cf73a4602b",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "04-Diff.png",
+          "fileSize": 328992,
+          "sourceFileChecksum": "fcc6877a487646655b577bf5b28ae84d",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "05-History.png",
+          "fileSize": 220048,
+          "sourceFileChecksum": "a06b23c317e72a128c3403caaa5c400b",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "06-WhileYouSleep.png",
+          "fileSize": 175743,
+          "sourceFileChecksum": "f222d317594b130cbc5a46fb03934c7a",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "07-AnyHost.png",
+          "fileSize": 346105,
+          "sourceFileChecksum": "cf267ec43b6fb5958c885ef42dc9376f",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "08-Nocturnal.png",
+          "fileSize": 323147,
+          "sourceFileChecksum": "dcefbdc758590b8727a936de0dfca8ad",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        }
+      ]
+    },
+    {
+      "locale": "ko",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "screenshots": [
+        {
+          "fileName": "01-Workspace.png",
+          "fileSize": 316600,
+          "sourceFileChecksum": "461effbcebfa77f25ccb699530e2f8cc",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "02-Diff.png",
+          "fileSize": 330285,
+          "sourceFileChecksum": "46f733e27e717802fb3aac33f1418977",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "03-Conflict.png",
+          "fileSize": 430729,
+          "sourceFileChecksum": "f2be3c00002aae6eabc984518122f83e",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "04-History.png",
+          "fileSize": 383961,
+          "sourceFileChecksum": "4743862256535cbae715db4271eca516",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "05-WhileYouSleep.png",
+          "fileSize": 307503,
+          "sourceFileChecksum": "5a27233e97351bd4f0985d8b9d552248",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        }
+      ]
+    },
+    {
+      "locale": "ko",
+      "displayType": "APP_IPHONE_67",
+      "screenshots": [
+        {
+          "fileName": "01-Hook.png",
+          "fileSize": 199584,
+          "sourceFileChecksum": "ecb280dea21ed0e91245a60c065eea10",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "02-OneButton.png",
+          "fileSize": 170669,
+          "sourceFileChecksum": "df4b63cb7fd477cf7604a7a25e43931f",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "03-Conflict.png",
+          "fileSize": 365453,
+          "sourceFileChecksum": "52cd8b60fa2c554fd2ef51697dcc4548",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "04-Diff.png",
+          "fileSize": 299232,
+          "sourceFileChecksum": "24790df6551aef570f79fec456df5d54",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "05-History.png",
+          "fileSize": 187044,
+          "sourceFileChecksum": "06dee0a78331b06c0ef143da4691563f",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "06-WhileYouSleep.png",
+          "fileSize": 155711,
+          "sourceFileChecksum": "09972eab0371cff056d93b0105a34494",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "07-AnyHost.png",
+          "fileSize": 318410,
+          "sourceFileChecksum": "a481b680876f1b0bed72ef0823308e73",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "08-Nocturnal.png",
+          "fileSize": 306948,
+          "sourceFileChecksum": "29a011f36e17d7673629c6174dec82e5",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        }
+      ]
+    },
+    {
+      "locale": "nl-NL",
+      "displayType": "APP_IPHONE_67",
+      "screenshots": [
+        {
+          "fileName": "01-Hook.png",
+          "fileSize": 209278,
+          "sourceFileChecksum": "eb7dbf10cd48b5bf6db7fc8cf6a36668",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "02-OneButton.png",
+          "fileSize": 190618,
+          "sourceFileChecksum": "bdb7ec87d38a4cbdc92babcbf82f6473",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "03-Conflict.png",
+          "fileSize": 380521,
+          "sourceFileChecksum": "e6eee16687297ac6befd49212b24968b",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "04-Diff.png",
+          "fileSize": 310514,
+          "sourceFileChecksum": "3553cac1e3e4c729c2455ea9b7bd5cb9",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "05-History.png",
+          "fileSize": 213899,
+          "sourceFileChecksum": "80ad2d768b07d63c121e6a35e3fcd74f",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "06-WhileYouSleep.png",
+          "fileSize": 172377,
+          "sourceFileChecksum": "86e2da5878e7ed1c19f88efec559c2dd",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "07-AnyHost.png",
+          "fileSize": 326291,
+          "sourceFileChecksum": "e7a92b34cf7e312253dc1320edecc310",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "08-Nocturnal.png",
+          "fileSize": 319720,
+          "sourceFileChecksum": "1fb6ecf6ea7e5b7d0279de71bf3b7a86",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        }
+      ]
+    },
+    {
+      "locale": "nl-NL",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "screenshots": [
+        {
+          "fileName": "01-Workspace.png",
+          "fileSize": 331695,
+          "sourceFileChecksum": "5ddc68c11b8291703b6a305b6c60ec5a",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "02-Diff.png",
+          "fileSize": 337759,
+          "sourceFileChecksum": "75a90b8abb42d22549e7876cf85737a9",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "03-Conflict.png",
+          "fileSize": 441429,
+          "sourceFileChecksum": "b459148b03de1b17785b0318ee7aa52c",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "04-History.png",
+          "fileSize": 409946,
+          "sourceFileChecksum": "28ef209b048e8f1fb21845e3e1e98ff7",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "05-WhileYouSleep.png",
+          "fileSize": 316058,
+          "sourceFileChecksum": "1b4748105599b03c7d6bf8ce8aea498e",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        }
+      ]
+    },
+    {
+      "locale": "no",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "screenshots": [
+        {
+          "fileName": "01-Workspace.png",
+          "fileSize": 330065,
+          "sourceFileChecksum": "13836e3c802c67a0ad2b6cb2e75dd5c0",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "02-Diff.png",
+          "fileSize": 339495,
+          "sourceFileChecksum": "fe19a2801cb8e804aaf09b920df71598",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "03-Conflict.png",
+          "fileSize": 437880,
+          "sourceFileChecksum": "9ac75fce3775b3219a2f0b1ab202cc14",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "04-History.png",
+          "fileSize": 402846,
+          "sourceFileChecksum": "a9d41b3e7fdf8fc57c53c5e1814e991f",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "05-WhileYouSleep.png",
+          "fileSize": 316109,
+          "sourceFileChecksum": "70ccbee17f96dbb372ff8aff73f6f5e3",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        }
+      ]
+    },
+    {
+      "locale": "no",
+      "displayType": "APP_IPHONE_67",
+      "screenshots": [
+        {
+          "fileName": "01-Hook.png",
+          "fileSize": 198353,
+          "sourceFileChecksum": "0e0f87e5bddc79f3d38b9c05b6d77a89",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "02-OneButton.png",
+          "fileSize": 195330,
+          "sourceFileChecksum": "a0cd89057df26225b365fac26ad3d0ce",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "03-Conflict.png",
+          "fileSize": 376481,
+          "sourceFileChecksum": "b1c00f501d61b25939269e9b47df8e12",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "04-Diff.png",
+          "fileSize": 308989,
+          "sourceFileChecksum": "3fbad79f8066681c146ce3d79ad69fb0",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "05-History.png",
+          "fileSize": 208522,
+          "sourceFileChecksum": "aa129e9ae9fe293a3801840a62b34618",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "06-WhileYouSleep.png",
+          "fileSize": 169857,
+          "sourceFileChecksum": "8c1e1e62bd591075d3277039a5f7f706",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "07-AnyHost.png",
+          "fileSize": 331433,
+          "sourceFileChecksum": "a393b1d8c8df76d94b03be13a6cc99eb",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "08-Nocturnal.png",
+          "fileSize": 317067,
+          "sourceFileChecksum": "31e02f63fcf23596c9501b26a92de3cc",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        }
+      ]
+    },
+    {
+      "locale": "pl",
+      "displayType": "APP_IPHONE_67",
+      "screenshots": [
+        {
+          "fileName": "01-Hook.png",
+          "fileSize": 200953,
+          "sourceFileChecksum": "f4f6de3c7a7bc10d8ac8a52c3aaf1249",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "02-OneButton.png",
+          "fileSize": 194244,
+          "sourceFileChecksum": "fa2ced9bca4b391a97b0f76fe72fdc6e",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "03-Conflict.png",
+          "fileSize": 379341,
+          "sourceFileChecksum": "ca9373618e6fd2222cf6cd3f133dc3c0",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "04-Diff.png",
+          "fileSize": 318300,
+          "sourceFileChecksum": "39415c98305af2f7ce1001197e212ad3",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "05-History.png",
+          "fileSize": 212288,
+          "sourceFileChecksum": "2d624ea6b5b6125d18d15d4c8ed3a477",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "06-WhileYouSleep.png",
+          "fileSize": 173096,
+          "sourceFileChecksum": "c9ce81acd10026fabad0b4e0f7e0a746",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "07-AnyHost.png",
+          "fileSize": 336399,
+          "sourceFileChecksum": "f658bface1ec26bf42a1d84e740bf4f4",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "08-Nocturnal.png",
+          "fileSize": 318899,
+          "sourceFileChecksum": "9539ba7ea520099755f3bb4227083e4a",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        }
+      ]
+    },
+    {
+      "locale": "pl",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "screenshots": [
+        {
+          "fileName": "01-Workspace.png",
+          "fileSize": 331183,
+          "sourceFileChecksum": "a35101434e36eed624f2bd4fa068edb2",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "02-Diff.png",
+          "fileSize": 345998,
+          "sourceFileChecksum": "a35324dc4899c0cfb4f3fd4df8573763",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "03-Conflict.png",
+          "fileSize": 447868,
+          "sourceFileChecksum": "b311b19d30ad9cc4fdc985cf51eafb1a",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "04-History.png",
+          "fileSize": 404703,
+          "sourceFileChecksum": "5909574418701fcd5af85f15612c80ae",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "05-WhileYouSleep.png",
+          "fileSize": 316458,
+          "sourceFileChecksum": "81407e516996d828f57fd09e1862d04f",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        }
+      ]
+    },
+    {
+      "locale": "pt-BR",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "screenshots": [
+        {
+          "fileName": "01-Workspace.png",
+          "fileSize": 333424,
+          "sourceFileChecksum": "761a1aa0edc27905ecaa45dbbcd2dc7b",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "02-Diff.png",
+          "fileSize": 350751,
+          "sourceFileChecksum": "f8d190d327e62083036fb21d23d819cf",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "03-Conflict.png",
+          "fileSize": 447003,
+          "sourceFileChecksum": "9475773c5615c7db0bd595b18f321870",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "04-History.png",
+          "fileSize": 406322,
+          "sourceFileChecksum": "e9c1642d02c862446b4e260ad6626ced",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "05-WhileYouSleep.png",
+          "fileSize": 328781,
+          "sourceFileChecksum": "09af9815242cc5332e9ce8177f1e22db",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        }
+      ]
+    },
+    {
+      "locale": "pt-BR",
+      "displayType": "APP_IPHONE_67",
+      "screenshots": [
+        {
+          "fileName": "01-Hook.png",
+          "fileSize": 203772,
+          "sourceFileChecksum": "dbf2e2df13b3a60a759dc0a45a0c0bba",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "02-OneButton.png",
+          "fileSize": 194622,
+          "sourceFileChecksum": "c5cf4a57edbae84a9f0b28a6f1929aa4",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "03-Conflict.png",
+          "fileSize": 383382,
+          "sourceFileChecksum": "5ab3af153cab93ca7df92ab91714cb61",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "04-Diff.png",
+          "fileSize": 323136,
+          "sourceFileChecksum": "42517273a5bc1aeddff02dd75e81eeb2",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "05-History.png",
+          "fileSize": 214694,
+          "sourceFileChecksum": "2d2c3bc8a3d6d05060060f7e64fba6de",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "06-WhileYouSleep.png",
+          "fileSize": 183366,
+          "sourceFileChecksum": "508d87461af461e13fa29feb1f2ee1fa",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "07-AnyHost.png",
+          "fileSize": 330954,
+          "sourceFileChecksum": "99893b718730a0679fc934ef0e40e4a6",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "08-Nocturnal.png",
+          "fileSize": 315710,
+          "sourceFileChecksum": "325b46fa57a331fbd445158ee4c8a979",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        }
+      ]
+    },
+    {
+      "locale": "ru",
+      "displayType": "APP_IPHONE_67",
+      "screenshots": [
+        {
+          "fileName": "01-Hook.png",
+          "fileSize": 198965,
+          "sourceFileChecksum": "4c5cf7fc97c7eeebc0c678cae36dedca",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "02-OneButton.png",
+          "fileSize": 189879,
+          "sourceFileChecksum": "63bee235ba2a41304e0305b3771e1c59",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "03-Conflict.png",
+          "fileSize": 378819,
+          "sourceFileChecksum": "5257890a543510fe3a88c1ca1638d842",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "04-Diff.png",
+          "fileSize": 315935,
+          "sourceFileChecksum": "f20209ae9bf869fd34729b81b76ad589",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "05-History.png",
+          "fileSize": 204714,
+          "sourceFileChecksum": "62a702eb131d02353b32146141ed870d",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "06-WhileYouSleep.png",
+          "fileSize": 170001,
+          "sourceFileChecksum": "32fa4bf46ec56e49373aa72e8919d156",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "07-AnyHost.png",
+          "fileSize": 339094,
+          "sourceFileChecksum": "e3cbdcdabcdc0532d693455605e26dd7",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "08-Nocturnal.png",
+          "fileSize": 306765,
+          "sourceFileChecksum": "436e13799fd1bc65402b9a600fc12f79",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        }
+      ]
+    },
+    {
+      "locale": "ru",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "screenshots": [
+        {
+          "fileName": "01-Workspace.png",
+          "fileSize": 327809,
+          "sourceFileChecksum": "9a55537be8b723cc3c00da4484aa2069",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "02-Diff.png",
+          "fileSize": 346885,
+          "sourceFileChecksum": "5a5e41dd6907002ebad7836156979606",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "03-Conflict.png",
+          "fileSize": 446528,
+          "sourceFileChecksum": "6a93cea1755e0e30e5a0057375b83ed3",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "04-History.png",
+          "fileSize": 397496,
+          "sourceFileChecksum": "cbd69370bb441289ec6ec4a2394f6946",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "05-WhileYouSleep.png",
+          "fileSize": 315115,
+          "sourceFileChecksum": "5553c91fea4e6a42cfeaf602c2b16f3f",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        }
+      ]
+    },
+    {
+      "locale": "sv",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "screenshots": [
+        {
+          "fileName": "01-Workspace.png",
+          "fileSize": 325513,
+          "sourceFileChecksum": "a9891d144dd0df7867b33cf3ff16eac7",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "02-Diff.png",
+          "fileSize": 334111,
+          "sourceFileChecksum": "a72aa1d02eb7cb3a87d7b4caa9484795",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "03-Conflict.png",
+          "fileSize": 440967,
+          "sourceFileChecksum": "33b52d6b3ada585e844f3d7a3de03f62",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "04-History.png",
+          "fileSize": 396161,
+          "sourceFileChecksum": "02da9a5d1b4e697fab47d65d51d513d8",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "05-WhileYouSleep.png",
+          "fileSize": 320893,
+          "sourceFileChecksum": "a2a96d47ec990675210802dfbebb2b5c",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        }
+      ]
+    },
+    {
+      "locale": "sv",
+      "displayType": "APP_IPHONE_67",
+      "screenshots": [
+        {
+          "fileName": "01-Hook.png",
+          "fileSize": 201270,
+          "sourceFileChecksum": "4da85643fe75a235ae098ad2ee26f685",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "02-OneButton.png",
+          "fileSize": 196618,
+          "sourceFileChecksum": "a70e74797ecfa1955edf6d1d70d03e2a",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "03-Conflict.png",
+          "fileSize": 377314,
+          "sourceFileChecksum": "e8c34a90a5b8d64db81aa27ddf73c255",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "04-Diff.png",
+          "fileSize": 306545,
+          "sourceFileChecksum": "f05ba189deca479e28a879e8f9412f2c",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "05-History.png",
+          "fileSize": 204164,
+          "sourceFileChecksum": "d175c62ffa65e1d279a5d79277226b3c",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "06-WhileYouSleep.png",
+          "fileSize": 171324,
+          "sourceFileChecksum": "f3a3a4dc895c9b4d08472a9c39527387",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "07-AnyHost.png",
+          "fileSize": 327270,
+          "sourceFileChecksum": "c22b3aafdaa673baa383ba04f1a3e52f",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "08-Nocturnal.png",
+          "fileSize": 316734,
+          "sourceFileChecksum": "0aafc07818b0abc99fd925b697e3a1ff",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        }
+      ]
+    },
+    {
+      "locale": "th",
+      "displayType": "APP_IPHONE_67",
+      "screenshots": [
+        {
+          "fileName": "01-Hook.png",
+          "fileSize": 215842,
+          "sourceFileChecksum": "ad41904572357cf0359908c9ddc8a014",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "02-OneButton.png",
+          "fileSize": 187687,
+          "sourceFileChecksum": "f237907f0d6299cb0c2ad97ef636abf5",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "03-Conflict.png",
+          "fileSize": 387996,
+          "sourceFileChecksum": "e10c0e815704e0d9e7e0a52da3eedd69",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "04-Diff.png",
+          "fileSize": 306770,
+          "sourceFileChecksum": "3394ef2c797317a695ae8f018336ea95",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "05-History.png",
+          "fileSize": 211923,
+          "sourceFileChecksum": "fdb92c1e2716408950318cf3f2a5d1fe",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "06-WhileYouSleep.png",
+          "fileSize": 174911,
+          "sourceFileChecksum": "dd3736dcc483f06a47eba20c68e00c72",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "07-AnyHost.png",
+          "fileSize": 339541,
+          "sourceFileChecksum": "703a7c5fdebb34fa1f1550e53aa8c9e1",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "08-Nocturnal.png",
+          "fileSize": 313639,
+          "sourceFileChecksum": "da418830ed6c754419f9e05455e61c7e",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        }
+      ]
+    },
+    {
+      "locale": "th",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "screenshots": [
+        {
+          "fileName": "01-Workspace.png",
+          "fileSize": 340292,
+          "sourceFileChecksum": "5cd67537b95376c9253a0deee0c35461",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "02-Diff.png",
+          "fileSize": 335681,
+          "sourceFileChecksum": "3aa75af73a18183ff63f955ddef22698",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "03-Conflict.png",
+          "fileSize": 449838,
+          "sourceFileChecksum": "6f22089dd4d3f879a04beb2a74f23348",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "04-History.png",
+          "fileSize": 411569,
+          "sourceFileChecksum": "e675d816809ae33eb710a7cb7eaaa69b",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "05-WhileYouSleep.png",
+          "fileSize": 325608,
+          "sourceFileChecksum": "ba0deab3712d721ae4419da222640ad4",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        }
+      ]
+    },
+    {
+      "locale": "tr",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "screenshots": [
+        {
+          "fileName": "01-Workspace.png",
+          "fileSize": 325156,
+          "sourceFileChecksum": "16a9e11130ab2d1da5d42c8d056b767a",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "02-Diff.png",
+          "fileSize": 341923,
+          "sourceFileChecksum": "53dd5ae61927e781e99b94513597e765",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "03-Conflict.png",
+          "fileSize": 436405,
+          "sourceFileChecksum": "4710a7afeeffa177f2b68688cf7b8073",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "04-History.png",
+          "fileSize": 400101,
+          "sourceFileChecksum": "3f5adf1fbf057193f852a5d7b97382d4",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "05-WhileYouSleep.png",
+          "fileSize": 322734,
+          "sourceFileChecksum": "db65aba4f09877bfff83251b771aaa11",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        }
+      ]
+    },
+    {
+      "locale": "tr",
+      "displayType": "APP_IPHONE_67",
+      "screenshots": [
+        {
+          "fileName": "01-Hook.png",
+          "fileSize": 204988,
+          "sourceFileChecksum": "5772b96a61f0cfcef948a460d25f6ba9",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "02-OneButton.png",
+          "fileSize": 189999,
+          "sourceFileChecksum": "e3cddf188313cf8d658b9a568ec3d8ad",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "03-Conflict.png",
+          "fileSize": 375007,
+          "sourceFileChecksum": "8ded6d56ac0a3f1b40d6e61240efb533",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "04-Diff.png",
+          "fileSize": 316405,
+          "sourceFileChecksum": "ee4188edef9375f4015e66eb1613ba5a",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "05-History.png",
+          "fileSize": 205187,
+          "sourceFileChecksum": "fbb3a1daa48077a076c3717b41d1500d",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "06-WhileYouSleep.png",
+          "fileSize": 174968,
+          "sourceFileChecksum": "96d0a4d7dd71c21529244b44092332e4",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "07-AnyHost.png",
+          "fileSize": 328657,
+          "sourceFileChecksum": "90b5b4b3d40275af372bc563670eeea4",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "08-Nocturnal.png",
+          "fileSize": 313012,
+          "sourceFileChecksum": "ec2d07a85a4f307f8069d437f18d6e91",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        }
+      ]
+    },
+    {
+      "locale": "uk",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "screenshots": [
+        {
+          "fileName": "01-Workspace.png",
+          "fileSize": 325853,
+          "sourceFileChecksum": "0500b3c83b75051cd6394fd3b9fdae2f",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "02-Diff.png",
+          "fileSize": 340272,
+          "sourceFileChecksum": "8e19f1f926653d806dcae768176ffc1d",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "03-Conflict.png",
+          "fileSize": 443067,
+          "sourceFileChecksum": "cb1c296bae9a233666b638216e5d6510",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "04-History.png",
+          "fileSize": 397938,
+          "sourceFileChecksum": "c7c8cde3cb339727bc68891052aafec3",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "05-WhileYouSleep.png",
+          "fileSize": 316696,
+          "sourceFileChecksum": "c19f908202f45d9147350ae758c328ce",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        }
+      ]
+    },
+    {
+      "locale": "uk",
+      "displayType": "APP_IPHONE_67",
+      "screenshots": [
+        {
+          "fileName": "01-Hook.png",
+          "fileSize": 195409,
+          "sourceFileChecksum": "735a0e0732d4bb8401b73a92ab51925a",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "02-OneButton.png",
+          "fileSize": 189666,
+          "sourceFileChecksum": "f8f17026109ec3bbcf4a9704cbf691a1",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "03-Conflict.png",
+          "fileSize": 377170,
+          "sourceFileChecksum": "ed61f4a06cfef88c79364c2ab2d8d354",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "04-Diff.png",
+          "fileSize": 309899,
+          "sourceFileChecksum": "824de26923cc30cd954519da36837525",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "05-History.png",
+          "fileSize": 203784,
+          "sourceFileChecksum": "69737b28b7f662bcc8bb9ccda6c8e94a",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "06-WhileYouSleep.png",
+          "fileSize": 170091,
+          "sourceFileChecksum": "fc53cda44b31198f6ae0f9b4823b6950",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "07-AnyHost.png",
+          "fileSize": 335683,
+          "sourceFileChecksum": "631ebb27516cc760b484d1fe10a01835",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "08-Nocturnal.png",
+          "fileSize": 305626,
+          "sourceFileChecksum": "de1671a0d0bb6e8ba3c84e9f62feb0d0",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        }
+      ]
+    },
+    {
+      "locale": "vi",
+      "displayType": "APP_IPHONE_67",
+      "screenshots": [
+        {
+          "fileName": "01-Hook.png",
+          "fileSize": 214856,
+          "sourceFileChecksum": "70676fa75ee031088292d0a8a5fb919c",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "02-OneButton.png",
+          "fileSize": 184291,
+          "sourceFileChecksum": "c1466e040e062499628198d122623f9a",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "03-Conflict.png",
+          "fileSize": 384762,
+          "sourceFileChecksum": "60ba5563423c5c1ed6be47dd28be4a56",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "04-Diff.png",
+          "fileSize": 311235,
+          "sourceFileChecksum": "051dc2b05226270e41c587fe16ef58c3",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "05-History.png",
+          "fileSize": 207095,
+          "sourceFileChecksum": "7597c2b72c0cd9273894620264cf3494",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "06-WhileYouSleep.png",
+          "fileSize": 172040,
+          "sourceFileChecksum": "784572ebc342c85d4030f2daa5717e15",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "07-AnyHost.png",
+          "fileSize": 330326,
+          "sourceFileChecksum": "7e3ca9b22330bde0b8e17fb64c1abe2c",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "08-Nocturnal.png",
+          "fileSize": 313104,
+          "sourceFileChecksum": "e63e3134c7fa8c54d63a011040a92b2d",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        }
+      ]
+    },
+    {
+      "locale": "vi",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "screenshots": [
+        {
+          "fileName": "01-Workspace.png",
+          "fileSize": 331484,
+          "sourceFileChecksum": "7a9393976b27db7b41476a2980417c04",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "02-Diff.png",
+          "fileSize": 341622,
+          "sourceFileChecksum": "2e4226381a931f243e1a9ef06501715f",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "03-Conflict.png",
+          "fileSize": 443745,
+          "sourceFileChecksum": "d9905385f9a1caf83bffd3143da57755",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "04-History.png",
+          "fileSize": 402546,
+          "sourceFileChecksum": "ed61af349baa934153a1b286fb3762e6",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "05-WhileYouSleep.png",
+          "fileSize": 320560,
+          "sourceFileChecksum": "f0423659bf79c20bd0e3b88cc9450610",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        }
+      ]
+    },
+    {
+      "locale": "zh-Hans",
+      "displayType": "APP_IPHONE_67",
+      "screenshots": [
+        {
+          "fileName": "01-Hook.png",
+          "fileSize": 212778,
+          "sourceFileChecksum": "00deb49e7e1999ecad08a63440922c13",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "02-OneButton.png",
+          "fileSize": 190789,
+          "sourceFileChecksum": "8752b75519cccfc1e64f75dd705b1e58",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "03-Conflict.png",
+          "fileSize": 373346,
+          "sourceFileChecksum": "d93718902d53b447ee0df4e69616fbf4",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "04-Diff.png",
+          "fileSize": 312784,
+          "sourceFileChecksum": "fe203ac0dec01ef0dbfab92a99ee3181",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "05-History.png",
+          "fileSize": 194460,
+          "sourceFileChecksum": "a8ff26d2f6247c08190c357071dac124",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "06-WhileYouSleep.png",
+          "fileSize": 160627,
+          "sourceFileChecksum": "1a3341581af60df1b1429acb3f062472",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "07-AnyHost.png",
+          "fileSize": 334073,
+          "sourceFileChecksum": "c67167fe5c9b44cc1f967f6f76d690aa",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "08-Nocturnal.png",
+          "fileSize": 320121,
+          "sourceFileChecksum": "5a9d6a7926bdae6f1c8c03f94ac99b39",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        }
+      ]
+    },
+    {
+      "locale": "zh-Hans",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "screenshots": [
+        {
+          "fileName": "01-Workspace.png",
+          "fileSize": 321016,
+          "sourceFileChecksum": "f73ceaf7a35644fc0e0086bd6ad7df6c",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "02-Diff.png",
+          "fileSize": 340583,
+          "sourceFileChecksum": "9bc194b8a1f0124adf4a923af94c3a87",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "03-Conflict.png",
+          "fileSize": 440743,
+          "sourceFileChecksum": "d63b52aab28deba71714a0b51792e3e8",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "04-History.png",
+          "fileSize": 394070,
+          "sourceFileChecksum": "5332271cac086a31c6da1df40f4947f0",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "05-WhileYouSleep.png",
+          "fileSize": 313838,
+          "sourceFileChecksum": "e994256267e0b72f8b713bc929623981",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        }
+      ]
+    },
+    {
+      "locale": "zh-Hant",
+      "displayType": "APP_IPAD_PRO_3GEN_129",
+      "screenshots": [
+        {
+          "fileName": "01-Workspace.png",
+          "fileSize": 320515,
+          "sourceFileChecksum": "b3aebcd9f95073feba0ee17a3af4c5d8",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "02-Diff.png",
+          "fileSize": 341466,
+          "sourceFileChecksum": "575429c91e87ab10f48f814e587e471d",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "03-Conflict.png",
+          "fileSize": 442505,
+          "sourceFileChecksum": "d2c03f85575467d91f6cb05be75f9aa9",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "04-History.png",
+          "fileSize": 395918,
+          "sourceFileChecksum": "0da3011fd8777fa5959ac8d61e54d4b3",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "05-WhileYouSleep.png",
+          "fileSize": 314519,
+          "sourceFileChecksum": "0c0a2c8e8f72dee4cca83bdea6ac8857",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        }
+      ]
+    },
+    {
+      "locale": "zh-Hant",
+      "displayType": "APP_IPHONE_67",
+      "screenshots": [
+        {
+          "fileName": "01-Hook.png",
+          "fileSize": 208926,
+          "sourceFileChecksum": "50bbba0e54d6f015083ac6baf17d58f8",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "02-OneButton.png",
+          "fileSize": 193292,
+          "sourceFileChecksum": "d94cc9c69b88607dbd446ba52a0aed28",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "03-Conflict.png",
+          "fileSize": 375378,
+          "sourceFileChecksum": "ba088408f1f70ca1830148bb1d68949e",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "04-Diff.png",
+          "fileSize": 312675,
+          "sourceFileChecksum": "5892da2f6a998dc5aa044061efcf8ad9",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "05-History.png",
+          "fileSize": 194992,
+          "sourceFileChecksum": "26fd4cf7f0873f3afdb8eb4b52cb61c4",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "06-WhileYouSleep.png",
+          "fileSize": 160599,
+          "sourceFileChecksum": "1e0225c70876cb5d16b71cb10c1d7d32",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "07-AnyHost.png",
+          "fileSize": 331508,
+          "sourceFileChecksum": "cc698e3ae167e3291f62a30a47af4390",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        },
+        {
+          "fileName": "08-Nocturnal.png",
+          "fileSize": 319382,
+          "sourceFileChecksum": "06b7ba4d9900dafab2477a73f74fdcdf",
+          "assetDeliveryState": {
+            "state": "COMPLETE"
+          }
+        }
+      ]
+    }
+  ],
+  "releaseNotes": [
+    {
+      "locale": "ar-SA",
+      "storeWhatsNewSHA256": "948b20f9225c70f68e4ee0ed2ec63dfe04e52cc48cefa4b8e6f0168c1a9600e9",
+      "localWhatsNewSHA256": "d565a47df5ff29d5b1a0cbd8bdb9298961c53b11dbfad2fcc7655012acf3a174",
+      "localNotesTracked": false,
+      "matchesLocalNotes": false
+    },
+    {
+      "locale": "da",
+      "storeWhatsNewSHA256": "b6080a9e18f8bebad44b30dcef0476293c6f840c862df830ec78b8516dcb1770",
+      "localWhatsNewSHA256": "496eee1755025f96b0744d76d498a622ec28a6689a766f0df018422cc53247c0",
+      "localNotesTracked": false,
+      "matchesLocalNotes": false
+    },
+    {
+      "locale": "de-DE",
+      "storeWhatsNewSHA256": "d8a12db239b77bb78de5bc7e9d7881cb4eeb92fa657f390fd9e8c829b0c95c88",
+      "localWhatsNewSHA256": "7251be845fc5faddf514e75fffb39d4e5f8f6732c23b045b08397a2f611c734d",
+      "localNotesTracked": false,
+      "matchesLocalNotes": false
+    },
+    {
+      "locale": "en-US",
+      "storeWhatsNewSHA256": "0ae6a007e1d61c7b41d8b4f236b4134f0813781badbfa8d208820bfc05c0aeed",
+      "localWhatsNewSHA256": "aae8eca1c5230f30c7b388de2cfd693f8937dcb01018b5c8ec9151bf2b2f9df1",
+      "localNotesTracked": true,
+      "matchesLocalNotes": false
+    },
+    {
+      "locale": "es-ES",
+      "storeWhatsNewSHA256": "64c10c841c3b9ad5d93b2cf5db5ec25e0baa2ef1c3f454c751cdb9183d673f53",
+      "localWhatsNewSHA256": "0a0f29dbc5a9b487cc2e1da1d48cdcf609abbebfc9ddcb3177d0d2a940914ae6",
+      "localNotesTracked": false,
+      "matchesLocalNotes": false
+    },
+    {
+      "locale": "fi",
+      "storeWhatsNewSHA256": "0fabe456b8184b4708838d5c53e992e9792230b8a80bd29df48858afb74b0d6a",
+      "localWhatsNewSHA256": "78f3c479e22627207e0362d8710a08a6888965fe8a2b3eded9c1aa9821edf869",
+      "localNotesTracked": false,
+      "matchesLocalNotes": false
+    },
+    {
+      "locale": "fr-FR",
+      "storeWhatsNewSHA256": "dfed1c2074d264e7938cbff0a490852a6cc7c27fe5916c61ccd6d4a82983fa89",
+      "localWhatsNewSHA256": "361210bc812f32077080cf7f6fe947978cc679748a27b80938d2e83721e5ca9c",
+      "localNotesTracked": false,
+      "matchesLocalNotes": false
+    },
+    {
+      "locale": "he",
+      "storeWhatsNewSHA256": "eb5616ee03aec6563ed12ef16759d4956c656a3162ec66ee41cdbb3f16f423c1",
+      "localWhatsNewSHA256": "d9f0e09bd561f8e2255bb1f4edff8317af56375b4dba248abe79f36dbb1b36be",
+      "localNotesTracked": false,
+      "matchesLocalNotes": false
+    },
+    {
+      "locale": "hi",
+      "storeWhatsNewSHA256": "ead17268094c092b920010b3a0daf6c26fce6b6b8c8001121cee2ef413623611",
+      "localWhatsNewSHA256": "59a47a258f18cd95d352a30acc8b92ea0afb651710a365d1cb5af8ea1e902dc6",
+      "localNotesTracked": false,
+      "matchesLocalNotes": false
+    },
+    {
+      "locale": "hu",
+      "storeWhatsNewSHA256": "c86fdf56773809612b4c2ecd6a9875df30f06b1108e333e015feaf2aa084b4a5",
+      "localWhatsNewSHA256": "5e43d263c82060669162ad95605d76054875a4c721b33e93e813afeed4d343d9",
+      "localNotesTracked": false,
+      "matchesLocalNotes": false
+    },
+    {
+      "locale": "id",
+      "storeWhatsNewSHA256": "404ba5b94be3f0a999a7d41ad7341bad139c3c4dee537291ab94ff704573b2ff",
+      "localWhatsNewSHA256": "b222c91be98bcd5e4e1953fc614f207eabcb76f9856c550f4a64fdf3ee975ff8",
+      "localNotesTracked": false,
+      "matchesLocalNotes": false
+    },
+    {
+      "locale": "it",
+      "storeWhatsNewSHA256": "873c4da303365683aad4b9e2b7eb229ea337eb1d7f1402ecc5a10c089e4d5a0b",
+      "localWhatsNewSHA256": "efdc1c2e774b5c9d40ea792c06076df2ed1e53b0025d0aa03e1bc4ba848bcbd8",
+      "localNotesTracked": false,
+      "matchesLocalNotes": false
+    },
+    {
+      "locale": "ja",
+      "storeWhatsNewSHA256": "5b9dc3d99df626f48a68cc169e5e43d99bd7dde6a99ddd3c685faebe7440c5d8",
+      "localWhatsNewSHA256": "81ab3b9e0d437d28a9966827aa402aa85a47581e2ab6c9d4cfa1752b15f4cdb6",
+      "localNotesTracked": false,
+      "matchesLocalNotes": false
+    },
+    {
+      "locale": "ko",
+      "storeWhatsNewSHA256": "0c133b1dde9cbdbc21d1fd3592f6e6ad9f2ce3cbd68d5c95154bea6e22a41f49",
+      "localWhatsNewSHA256": "581ff9a3a09e0d83d8cd2e9283d68811464628940775aa62e7898d29eff80e20",
+      "localNotesTracked": false,
+      "matchesLocalNotes": false
+    },
+    {
+      "locale": "nl-NL",
+      "storeWhatsNewSHA256": "fd42c5439fd0d068fc2fafb1c7e23e75072103d4cebcfdfd0f267b86c4224574",
+      "localWhatsNewSHA256": "a9fcbe9dab4433ea498a7260dab8fad69e11af39e9dc85e5b57abdab6c9fefcb",
+      "localNotesTracked": false,
+      "matchesLocalNotes": false
+    },
+    {
+      "locale": "no",
+      "storeWhatsNewSHA256": "cad47a5c8945ea1ef3ad9a48a5bb5db29783c94836fda5f5a26f09f20266fd98",
+      "localWhatsNewSHA256": "fa99bf5e98ed41d327e93b2496105931e469f10799dc84aa158a0240816e26c4",
+      "localNotesTracked": false,
+      "matchesLocalNotes": false
+    },
+    {
+      "locale": "pl",
+      "storeWhatsNewSHA256": "ba62612e050bbaaad506db540a700fe446cc7f7e66b8764e6c5f543e8fdf0181",
+      "localWhatsNewSHA256": "7a5e90bedabcebc4e2b40ac9eabd157f7784c1f66bf83de38ba0c72ba17c87f8",
+      "localNotesTracked": false,
+      "matchesLocalNotes": false
+    },
+    {
+      "locale": "pt-BR",
+      "storeWhatsNewSHA256": "401001750c1d19232e10797b9cfd28d0a9cba1339335f570a1a4e64768ce92bb",
+      "localWhatsNewSHA256": "b22558d31477c13267312720862a184390df5c80f82f9357971fe28c66e4d7b3",
+      "localNotesTracked": false,
+      "matchesLocalNotes": false
+    },
+    {
+      "locale": "ru",
+      "storeWhatsNewSHA256": "fab26b8f3c28ec7bcb98bbb55e677143195694fe76923df3bf6908b704c2d329",
+      "localWhatsNewSHA256": "404fb3a421f784eabd9519a2453fa99e11f5431adff145c746ad4c5af36784db",
+      "localNotesTracked": false,
+      "matchesLocalNotes": false
+    },
+    {
+      "locale": "sv",
+      "storeWhatsNewSHA256": "890a670051c04a9fe48487b539664dc8faadbf1bf21f80a32a3ad444b6207e4c",
+      "localWhatsNewSHA256": "03590e40aa3a28c5ce491fdecccddf8d92abb18f13045cf02f12f41ad6ca1539",
+      "localNotesTracked": false,
+      "matchesLocalNotes": false
+    },
+    {
+      "locale": "th",
+      "storeWhatsNewSHA256": "0f5da337ece0f684cd97d88c3ae64bf1c94a8b50d6b7e817f6f389276f99e025",
+      "localWhatsNewSHA256": "f72d6c27909fb3b32d6cb355af35ed9507ec3c711e2b2ac1add802b166e321c3",
+      "localNotesTracked": false,
+      "matchesLocalNotes": false
+    },
+    {
+      "locale": "tr",
+      "storeWhatsNewSHA256": "aae3546001eb42527e915751ad656deb76da557ecdb3e261b7d2d4a13970ca71",
+      "localWhatsNewSHA256": "455f6b4bcb92fde3a63ace4793735cd45b12af584f01e8201ba5531282bd2334",
+      "localNotesTracked": false,
+      "matchesLocalNotes": false
+    },
+    {
+      "locale": "uk",
+      "storeWhatsNewSHA256": "57bbfe0fc097ad61bef468439732b429fbf525a00410fc03d2c4469a3b8f1938",
+      "localWhatsNewSHA256": "3fa268017053c17f06c29f1008cd83322bf971fc54f0e7e5111b2976d7d16d11",
+      "localNotesTracked": false,
+      "matchesLocalNotes": false
+    },
+    {
+      "locale": "vi",
+      "storeWhatsNewSHA256": "931d6a415ed3aa32f44010ee9b7ab6bd772e7506cb64858237e9e6d218e2cc25",
+      "localWhatsNewSHA256": "7d70d45bb889ee272166338ecb35a199aa76421414061e24dc9cb6c91f648b5c",
+      "localNotesTracked": false,
+      "matchesLocalNotes": false
+    },
+    {
+      "locale": "zh-Hans",
+      "storeWhatsNewSHA256": "60320a0be56ac37d6846a66315dbfbceebc427841ea10fbaa98b1627b7a6598a",
+      "localWhatsNewSHA256": "240fe409e47b2d70976cc757c5df24bcbb1ec48eb261a3b1db0f21f795dd572c",
+      "localNotesTracked": false,
+      "matchesLocalNotes": false
+    },
+    {
+      "locale": "zh-Hant",
+      "storeWhatsNewSHA256": "ab440444a16282fb80fecf665f5d5a35f6af810bdfea3cd98ba7b71053318d68",
+      "localWhatsNewSHA256": "7fef5a459ba206ebab610ffbdd847573130bc7fb2dae57874fb72f08d878eade",
+      "localNotesTracked": false,
+      "matchesLocalNotes": false
+    }
+  ],
+  "englishStoreWhatsNew": "GitSync.md 3.0 is a complete redesign.\n\n• Free to download. Check any vault for free before you pay for anything.\n• One-time Full Access unlock. No subscription. Bought GitSync.md before? You're already unlocked.\n• A calmer, clearer design on iPhone and iPad.\n• Guided conflict resolution, line-by-line diffs and commit history.\n• A faster vault check that reads repo size, Git LFS and Obsidian setup without downloading your notes.",
+  "rawResponseSHA256": {
+    "versions": "e9ae894afe18acb536e63afd7506de09221fdf489c8c095f1457b4cdfb1a345d",
+    "builds": "25dd30b6dc8d0fd3ae13743a19a22ea596e18f1aaea1f4f47441fe902d4f80e3",
+    "screenshots": "9093c688980229c705fa18dc4f6ede5c9d8e0b7e16f1b8c970f59ec2c9653f30",
+    "localizations": "7c40ad52a705bd0b2ba4a885d70d40bc3066f8f08dc95f693a05c29f4db779ba"
+  }
+}

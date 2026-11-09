@@ -1,0 +1,183 @@
+{
+  "appleFix": "097eb0d060d8dd01c44c2ef135a5149a17f1f080",
+  "ciRevision": "ef9bcb23c980024f6eabc6967cbf792f1515a95d",
+  "note": "Declarations added or relocated by the Apple patch; UI suite is outside unit-only CI.",
+  "coverage": {
+    "SyncMDTests/SyncMDTests.swift": [
+      {
+        "test": "testTagNamesRejectControlsBeforeNativeMutation",
+        "passedInCurrentMainCI": true
+      },
+      {
+        "test": "testTagNameValidationSupportsUnicodeAndRejectsMalformedRefs",
+        "passedInCurrentMainCI": true
+      },
+      {
+        "test": "testAppStateRejectsTagControlsBeforeDelegation",
+        "passedInCurrentMainCI": true
+      },
+      {
+        "test": "testStashActionsFollowDisplayedIdentityAfterExternalInsertion",
+        "passedInCurrentMainCI": true
+      },
+      {
+        "test": "testMissingDisplayedStashCannotMutateReplacement",
+        "passedInCurrentMainCI": true
+      },
+      {
+        "test": "testCallbackRoutingAcceptsCaseInsensitiveSchemeAndHost",
+        "passedInCurrentMainCI": true
+      },
+      {
+        "test": "testCallbackRejectsAmbiguousVaultNameBeforeNavigationOrWork",
+        "passedInCurrentMainCI": true
+      },
+      {
+        "test": "testConfigurationRejectsInvalidBranchBeforeChangingRemoteOrCredentials",
+        "passedInCurrentMainCI": true
+      },
+      {
+        "test": "testBranchNameValidationAcceptsGitBranchSyntax",
+        "passedInCurrentMainCI": true
+      },
+      {
+        "test": "testUnifiedDiffPreservesLinesForEveryFinalNewlineCombination",
+        "passedInCurrentMainCI": true
+      },
+      {
+        "test": "testRepositoryItemNamesRejectControlsSeparatorsAndOverlongUTF8",
+        "passedInCurrentMainCI": true
+      },
+      {
+        "test": "testBrowserDirectoryRenamePreservesContentsAndRejectsCollision",
+        "passedInCurrentMainCI": true
+      },
+      {
+        "test": "testAppStateCloneHonorsConfiguredNonDefaultBranchAndContents",
+        "passedInCurrentMainCI": true
+      },
+      {
+        "test": "testVaultPreflightRejectsMissingBranchInsteadOfPassingIt",
+        "passedInCurrentMainCI": true
+      },
+      {
+        "test": "testCloneUsesRemoteDefaultAndMissingBranchNeverFallsBack",
+        "passedInCurrentMainCI": true
+      },
+      {
+        "test": "testInvalidCloneBranchIsRejectedBeforeAccessOrDestinationMutation",
+        "passedInCurrentMainCI": true
+      },
+      {
+        "test": "testSmoke",
+        "passedInCurrentMainCI": true
+      },
+      {
+        "test": "testEditorRenameMutationRejectsTraversalAndInvalidNamesWithoutChangingBytes",
+        "passedInCurrentMainCI": true
+      },
+      {
+        "test": "testEditorRenameMutationRejectsCollisionAndStaleBytesThenAcceptsUnicode",
+        "passedInCurrentMainCI": true
+      },
+      {
+        "test": "testEditorRenameMutationRejectsSourceReachedThroughEscapingSymlink",
+        "passedInCurrentMainCI": true
+      },
+      {
+        "test": "testCoordinatedFileMutationRejectsStaleSnapshotAndCleansTemporaryFile",
+        "passedInCurrentMainCI": true
+      },
+      {
+        "test": "testDiscoveryReadsOriginFromLinkedWorktreeCommonConfig",
+        "passedInCurrentMainCI": true
+      },
+      {
+        "test": "testGitRepoScannerFindsWorkingCopiesWithRelativePathsAndRemotes",
+        "passedInCurrentMainCI": true
+      },
+      {
+        "test": "testLocalGitServiceRejectsHiddenIdentityControlsWithoutCreatingCommit",
+        "passedInCurrentMainCI": true
+      },
+      {
+        "test": "testLocalGitServiceCommitAndPushReportsMissingAuthorEmail",
+        "passedInCurrentMainCI": true
+      },
+      {
+        "test": "testFileHistoryIncludesModeOnlyChanges",
+        "passedInCurrentMainCI": true
+      },
+      {
+        "test": "testFileHistoryPreservesDecomposedUnicodePath",
+        "passedInCurrentMainCI": true
+      },
+      {
+        "test": "testLocalGitServiceCommitHistoryReturnsDeterministicPages",
+        "passedInCurrentMainCI": true
+      },
+      {
+        "test": "testFutureFileDateBecomesIdleAndEligibleAfterObservedPause",
+        "passedInCurrentMainCI": true
+      },
+      {
+        "test": "testHistoricalFileDatesKeepTheirExistingAge",
+        "passedInCurrentMainCI": true
+      },
+      {
+        "test": "testAutoCommitWaitsForTwoMinutePause",
+        "passedInCurrentMainCI": true
+      },
+      {
+        "test": "testGitIdentityRejectsControlScalarsBeforeTrimming",
+        "passedInCurrentMainCI": true
+      },
+      {
+        "test": "testGitIdentityValidation",
+        "passedInCurrentMainCI": true
+      }
+    ],
+    "SyncMDUITests/SyncMDUITests.swift": [
+      {
+        "test": "testBrowserFolderRenameRejectsSeparatorsAndAllowsCorrection",
+        "passedInCurrentMainCI": false
+      },
+      {
+        "test": "testNewNoteRejectsPastedTabThenCreatesCorrectedName",
+        "passedInCurrentMainCI": false
+      },
+      {
+        "test": "testBrowserRenameFailureKeepsFormAndAllowsRetry",
+        "passedInCurrentMainCI": false
+      },
+      {
+        "test": "testCloneFormRejectsInvalidBranchThenClonesSelectedBranch",
+        "passedInCurrentMainCI": false
+      },
+      {
+        "test": "testGitToolsFailureKeepsSheetDraftAndRejectedBranch",
+        "passedInCurrentMainCI": false
+      },
+      {
+        "test": "testSettingsRejectsInvalidBranchAndAllowsCorrection",
+        "passedInCurrentMainCI": false
+      },
+      {
+        "test": "testGitCreationErrorsAppearOnChildScreenAndPreserveInput",
+        "passedInCurrentMainCI": false
+      },
+      {
+        "test": "testCallbackErrorAppearsOverEditorPreviewWithoutGoingBack",
+        "passedInCurrentMainCI": false
+      },
+      {
+        "test": "testEditorRenameRejectsTraversalAndAllowsCorrection",
+        "passedInCurrentMainCI": false
+      },
+      {
+        "test": "testConflictManualDraftSurvivesRepeatedEntryAndCancelledResolution",
+        "passedInCurrentMainCI": false
+      }
+    ]
+  }
+}

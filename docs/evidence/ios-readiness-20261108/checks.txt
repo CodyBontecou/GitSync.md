@@ -1,0 +1,33 @@
+Source: ef9bcb23c980024f6eabc6967cbf792f1515a95d
+GitHub XCTest: https://github.com/CodyBontecou/GitSync.md/actions/runs/42535472978
+GitHub build guard: https://github.com/CodyBontecou/GitSync.md/actions/runs/42535472937
+Full CI log SHA256: e17f6b6087b3630a342b224cf380648bb432549147a12027c1672f59b27f38e6
+
+SyncMDTests	Run unit XCTest suite	2026-11-08T23:41:16.7295630Z Test Case '-[SyncMDTests.AppUnlockStoreKitTests testPurchaseUnlocksAndRestoreUnlocksAFreshInstall]' skipped (0.023 seconds).
+SyncMDTests	Run unit XCTest suite	2026-11-08T23:41:16.8069310Z Test Case '-[SyncMDTests.AppUnlockStoreKitTests testRestoreWithoutAPurchaseStaysLocked]' skipped (0.009 seconds).
+SyncMDTests	Run unit XCTest suite	2026-11-08T23:42:57.6840120Z 	 Executed 487 tests, with 2 tests skipped and 0 failures (0 unexpected) in 102.088 (103.461) seconds
+SyncMDTests	Run unit XCTest suite	2026-11-08T23:42:57.6841080Z 	 Executed 487 tests, with 2 tests skipped and 0 failures (0 unexpected) in 102.088 (103.462) seconds
+SyncMDTests	Run unit XCTest suite	2026-11-08T23:43:02.1398430Z ** TEST SUCCEEDED **
+SyncMDTests	Audit Release app resources	2026-11-08T23:59:02.2543950Z ** BUILD SUCCEEDED **
+SyncMDTests	Audit Release app resources	2026-11-08T23:59:02.4162480Z /Users/runner/work/_temp/ReleaseDerivedData/Build/Products/Release-iphonesimulator/Sync.md.app/PrivacyInfo.xcprivacy: OK
+
+Local portable source check:
+swiftc -module-cache-path /private/tmp/gitsync-ios-swift-cache Sync.md/Models/NameValidation.swift Sync.md/Services/TideTextDiff.swift /private/tmp/gitsync-ios-portable/main.swift -o /private/tmp/gitsync-ios-portable/checks
+/private/tmp/gitsync-ios-portable/checks
+PASS: 34 portable Apple source assertions (filename, identity, Tide text diff)
+Saved main: portable-main.swift (copy to a temporary main.swift to compile).
+
+plutil -lint Sync.md.xcodeproj/project.pbxproj Sync.md/Info.plist Sync.md/PrivacyInfo.xcprivacy SyncWidget/Info.plist
+PASS: all four files
+PASS: four CURRENT_PROJECT_VERSION values equal 202611071310 and match 12-digit guard
+PASS: Localizable.xcstrings parses as JSON
+
+Catalog audit (expected failure):
+python3 scripts/localization/audit_catalog.py --output /private/tmp/gitsync-ios-catalog-audit-20261108.json --stringsdata-root /private/tmp/gitsync-ios-finish-no-extraction
+FAIL: 1600 missing cells / 64 keys / 25 non-English locales; extraction not run
+
+Read-only store commands (output redirected to /private/tmp):
+ASC_READ_ONLY=1 asc versions list --app 6758960270 --platform IOS --paginate --include build --output json
+ASC_READ_ONLY=1 asc builds list --app 6758960270 --version 3.0 --paginate --output json
+ASC_READ_ONLY=1 asc screenshots list --app 6758960270 --version 3.0 --output json
+ASC_READ_ONLY=1 asc localizations list --app 6758960270 --version 3.0 --output json

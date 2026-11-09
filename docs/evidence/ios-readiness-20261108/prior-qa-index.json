@@ -1,0 +1,67 @@
+[
+  {
+    "path": "docs/ios-add-vault-qa-20261107.md",
+    "sha256": "f8a1dafaa6fdb69459c6416cce59d48927778741b6bb7596d68ee669de6f5e14",
+    "evidenceFiles": 14
+  },
+  {
+    "path": "docs/ios-callback-qa-20261108.md",
+    "sha256": "fe9f6434cea555bee569912a9aa14aa9a009e2528e77e2ba6b09c8a5ac902c90",
+    "evidenceFiles": 6
+  },
+  {
+    "path": "docs/ios-conflict-discovery-qa-20261107.md",
+    "sha256": "fbf12b348acf0c3b8c7f0fe3a48db76ad806bf7548674294de3e2ace8dd1a293",
+    "evidenceFiles": 14
+  },
+  {
+    "path": "docs/ios-deep-qa-20261107.md",
+    "sha256": "71c150541de43bd2b0e2bcab82eff058d12445f6dd80dec0cbad9a054bef4b65",
+    "evidenceFiles": 33
+  },
+  {
+    "path": "docs/ios-discovery-qa-20261108.md",
+    "sha256": "3eba3060846c1357b10b372c6a6884868a9b1facb5efb49ebd466d886f79f87c",
+    "evidenceFiles": 5
+  },
+  {
+    "path": "docs/ios-edge-qa-20261107.md",
+    "sha256": "f9f61852254ce6a7e9001794804ab6c6ce51c0f2f3158dab767c54c9c9563e09",
+    "evidenceFiles": 22
+  },
+  {
+    "path": "docs/ios-history-qa-20261108.md",
+    "sha256": "199433c6052e3b957cde79ba80d9f5dd6dcbbbb67d35000780e290134c492006",
+    "evidenceFiles": 6
+  },
+  {
+    "path": "docs/ios-navigation-qa-20261107.md",
+    "sha256": "2f6c7748858ce3ca166a4728b19a1ba1029845f27dc71a8750deb9931bab56d8",
+    "evidenceFiles": 15
+  },
+  {
+    "path": "docs/ios-other-areas-qa-20261107.md",
+    "sha256": "638d5698c5aad980f6932a9eeb0e67ae22dc0ce9586b2243aa326aeb38ff02be",
+    "evidenceFiles": 8
+  },
+  {
+    "path": "docs/ios-settings-qa-20261108.md",
+    "sha256": "d40467cd9b26476ef1c50f35317f109928dbbacb12bb2bc5d54be7403f9b3fad",
+    "evidenceFiles": 3
+  },
+  {
+    "path": "docs/ios-stash-qa-20261108.md",
+    "sha256": "bb7f370de756b009475785d243c716466ca4aea801bde2917d8225436bee8493",
+    "evidenceFiles": 8
+  },
+  {
+    "path": "docs/ios-sustained-qa-20261108.md",
+    "sha256": "98b58a8c8dd974c60f35a1756d9d947ad83cca5bd57852f468ea5beafb8aefec",
+    "evidenceFiles": 25
+  },
+  {
+    "path": "docs/ios-watch-qa-20261108.md",
+    "sha256": "b2afec8e803374bada9d012b6470399ca19e9707f4848327713ba06f7a00faf0",
+    "evidenceFiles": 7
+  }
+]
