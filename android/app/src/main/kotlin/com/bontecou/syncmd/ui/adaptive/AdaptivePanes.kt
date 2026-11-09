@@ -1,5 +1,6 @@
 package com.bontecou.syncmd.ui.adaptive
 
+import com.bontecou.syncmd.ui.util.CountedPhrase
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -302,7 +303,7 @@ fun ChangesPaneContent(
     eyebrow: String,
     name: String,
     count: Int,
-    countLabel: String,
+    countLabel: CountedPhrase,
     remote: String,
     rows: List<ChangeRowUi>,
     selected: String?,
@@ -319,9 +320,9 @@ fun ChangesPaneContent(
             Text(eyebrow, style = M3Type.metaSmall.copy(textDirection = TextDirection.Ltr), color = c.onVar, maxLines = 1, overflow = TextOverflow.Ellipsis)
             Text(name, Modifier.padding(top = 2.dp).semantics { heading() }, style = M3Type.title, color = c.on, maxLines = 1, overflow = TextOverflow.Ellipsis)
             Row(Modifier.padding(top = 10.dp), verticalAlignment = Alignment.Bottom, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text("$count", style = M3Type.displayMedium.copy(fontSize = 45.sp, lineHeight = 50.sp, letterSpacing = 0.sp),
+                Text(countLabel.value, style = M3Type.displayMedium.copy(fontSize = 45.sp, lineHeight = 50.sp, letterSpacing = 0.sp),
                     color = if (count > 0) c.ahead else c.onVar, modifier = Modifier.testTag("changes-count"))
-                Text(countLabel, Modifier.padding(bottom = 8.dp), style = M3Type.body.copy(fontSize = 15.sp, lineHeight = 20.sp), color = c.on)
+                Text(countLabel.label, Modifier.padding(bottom = 8.dp), style = M3Type.body.copy(fontSize = 15.sp, lineHeight = 20.sp), color = c.on)
             }
             Text(remote, Modifier.padding(top = 2.dp), style = M3Type.caption, color = c.onVar, maxLines = 2, overflow = TextOverflow.Ellipsis)
         }

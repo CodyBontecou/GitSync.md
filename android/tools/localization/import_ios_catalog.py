@@ -61,7 +61,7 @@ def qualifier(locale):
 
 def load_overrides():
     strings={};plurals={}
-    for name in ['android_overrides.json','android_workflow_overrides.json']:
+    for name in ['android_overrides.json','android_workflow_overrides.json','android_completion_overrides.json']:
         document=json.loads((ROOT/'tools/localization'/name).read_text())
         for kind,target in [('strings',strings),('plurals',plurals)]:
             rows=document.get(kind,{})
@@ -93,8 +93,9 @@ def alias_translations(item, source, catalog, languages):
         values[locale]=adapt(decoration('prefix',locale)+unit['value']+decoration('suffix',locale),english,source)
     return values
 
-# Categories Android ICU selects for each locale; every one needs a form (`other` alone would be used silently otherwise).
-REQUIRED_PLURAL_CATEGORIES={'ar':{'zero','one','two','few','many','other'},'he':{'one','two','other'},
+# Union of categories selected by supported Android ICU versions (Hebrew many exists in CLDR 32).
+# Every selected category needs a form (`other` alone would be used silently otherwise).
+REQUIRED_PLURAL_CATEGORIES={'ar':{'zero','one','two','few','many','other'},'he':{'one','two','many','other'},
     'pl':{'one','few','many','other'},'ru':{'one','few','many','other'},'uk':{'one','few','many','other'},
     'es':{'one','many','other'},'fr':{'one','many','other'},'it':{'one','many','other'},'pt-BR':{'one','many','other'},
     **{locale:{'other'} for locale in ('id','ja','ko','th','vi','zh-Hans','zh-Hant')}}
@@ -112,6 +113,7 @@ def checked_plurals(item, source, languages):
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--require-complete',action='store_true',help='Fail if any translatable string or plural resource lacks every locale.')
     parser.add_argument('--catalog',type=pathlib.Path,default=ROOT.parent/'Sync.md/Localizable.xcstrings')
     parser.add_argument('--allow-translation-loss',action='store_true',
         help='With --apply only: allow an intentional loss of translated labels, locales or plural forms after inspecting the preview.')
@@ -170,6 +172,8 @@ def main():
         'mapped':mapped,'missing':missing,'rejected':rejected,'reviewed_aliases':{name:item['ios_key'] for name,item in aliases.items()},
         'translated_plurals_per_language':len(plural_overrides),'unmatched_plurals':sorted(set(plural_base)-set(plural_overrides))}
     print('Languages:',len(languages),'mapped Android strings:',len(mapped),'of',len(base),'rejected candidates:',len(rejected))
+    if options.require_complete and (missing or report['unmatched_plurals']):
+        parser.error(f"Incomplete localization: {len(missing)} strings and {len(report['unmatched_plurals'])} plurals lack complete locale definitions.")
     previous=None;previous_forms={}
     coverage_path=ROOT/'tools/localization/coverage.json'
     if coverage_path.exists():
@@ -197,7 +201,7 @@ def main():
         else: path.parent.mkdir(exist_ok=True);path.write_text(text)
     for locale,entries in translations.items():
         path=ROOT/('app/src/main/res/values-'+qualifier(locale))/'ios_catalog_strings.xml'
-        emit(path,'<!-- Generated from the sibling iOS catalog by tools/localization/import_ios_catalog.py. -->\n<resources>\n'+
+        emit(path,'<!-- Generated from the canonical Apple catalog and Android overrides by tools/localization/import_ios_catalog.py. -->\n<resources>\n'+
             ''.join('    <string name="'+name+'"'+(' formatted="false"' if not signature(base[name]) else '')+'>'+xml_text(value)+'</string>\n' for name,value in sorted(entries.items()))+
             ''.join('    <plurals name="'+name+'">\n'+''.join('        <item quantity="'+quantity+'">'+xml_text(value)+'</item>\n' for quantity,value in forms.items())+'    </plurals>\n' for name,forms in sorted(plural_translations[locale].items()))+'</resources>\n')
     emit(ROOT/'tools/localization/coverage.json',json.dumps(report,indent=2,ensure_ascii=False)+'\n')

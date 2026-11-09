@@ -1,5 +1,7 @@
 package com.bontecou.syncmd.ui.adaptive
 
+import com.bontecou.syncmd.ui.util.quantityPhrase
+import com.bontecou.syncmd.ui.util.CountedPhrase
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
@@ -105,8 +107,8 @@ internal fun compactMeta(vault: HomeVault, now: Long): String {
 
 /** "changes on this tablet" / "changes on this phone" (the Fold boards are phones). */
 @Composable
-internal fun changesOnDevice(tablet: Boolean, count: Int): String =
-    pluralStringResource(if (tablet) R.plurals.adaptive_changes_on_tablet else R.plurals.adaptive_changes_on_phone, count)
+internal fun changesOnDevice(tablet: Boolean, count: Int): CountedPhrase =
+    quantityPhrase(if (tablet) R.plurals.adaptive_changes_on_tablet else R.plurals.adaptive_changes_on_phone, count)
 
 /** "Remote has no new commits · fetched 2m ago", from the last fetch (as on the phone Changes tab). */
 @Composable

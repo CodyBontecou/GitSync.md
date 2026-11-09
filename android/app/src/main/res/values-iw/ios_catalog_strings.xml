@@ -1,4 +1,4 @@
-<!-- Generated from the sibling iOS catalog by tools/localization/import_ios_catalog.py. -->
+<!-- Generated from the canonical Apple catalog and Android overrides by tools/localization/import_ios_catalog.py. -->
 <resources>
     <string name="account_alternative_exists" formatted="false">"חיבור חלופי אחר כבר שמור. יש לבדוק אותו לפני העברת פרטי הזדהות נוספים מכתובות URL."</string>
     <string name="account_api_error">"שגיאת GitHub API: HTTP %1$d"</string>
@@ -95,6 +95,342 @@
     <string name="account_token_invalid">"אסימון GitHub אינו תקף או שפג תוקפו (HTTP %1$d)"</string>
     <string name="account_updated_just_now" formatted="false">"זה עתה"</string>
     <string name="account_valid_branch" formatted="false">"יש להזין שם ענף תקין"</string>
+    <string name="adaptive_abort_merge" formatted="false">"ביטול merge"</string>
+    <string name="adaptive_account" formatted="false">"חשבון והגדרות"</string>
+    <string name="adaptive_badge_ahead">"↑%1$d"</string>
+    <string name="adaptive_badge_attention" formatted="false">"!"</string>
+    <string name="adaptive_badge_behind">"↓%1$d"</string>
+    <string name="adaptive_badge_both">"↓%1$d ↑%2$d"</string>
+    <string name="adaptive_badge_checking" formatted="false">"…"</string>
+    <string name="adaptive_badge_edited">"%1$d נערך"</string>
+    <string name="adaptive_badge_in_sync" formatted="false">"✓"</string>
+    <string name="adaptive_branch_local_only">"%1$s · ללא שלט"</string>
+    <string name="adaptive_branch_to_remote">"%1$s → %2$s"</string>
+    <string name="adaptive_cancel" formatted="false">"ביטול"</string>
+    <string name="adaptive_commit_message" formatted="false">"– מessaĝה של התחייבות"</string>
+    <string name="adaptive_commit_only" formatted="false">"התחייבות בלבד"</string>
+    <string name="adaptive_commit_this_file" formatted="false">"הגדר את הקובץ הזה"</string>
+    <string name="adaptive_conflict" formatted="false">"התנגשות"</string>
+    <string name="adaptive_conflict_position">"קונפליקט %1$d של %2$d · %3$s"</string>
+    <string name="adaptive_cover_unfold" formatted="false">"פתח כדי לקרוא את ההבדל לצד רשימת השינויים."</string>
+    <string name="adaptive_discard_all" formatted="false">"ביטול שינויים"</string>
+    <string name="adaptive_edited" formatted="false">"נערך"</string>
+    <string name="adaptive_include" formatted="false">"כלול"</string>
+    <string name="adaptive_keep_this_version" formatted="false">"שמירת הגרסה הזו"</string>
+    <string name="adaptive_new_file" formatted="false">"קובץ חדש"</string>
+    <string name="adaptive_no_changes" formatted="false">"אין שינויים במכשיר זה. ערוך הערה והיא תופיע כאן."</string>
+    <string name="adaptive_position">"%1$d מתוך %2$d"</string>
+    <string name="adaptive_pull" formatted="false">"משיכה"</string>
+    <string name="adaptive_pull_then_push" formatted="false">"משוך ואז לחץ"</string>
+    <string name="adaptive_push" formatted="false">"דחוף"</string>
+    <string name="adaptive_rejected" formatted="false">"השלט המשיך הלאה. משוך תחילה את ההתחייבויות שלו, ואז דחוף את שלך."</string>
+    <string name="adaptive_review_first" formatted="false">"סקירה קודם"</string>
+    <string name="adaptive_split_auto_commit" formatted="false">"התחייבות אוטומטית כאשר אני מפסיק ל-2 דקות"</string>
+    <string name="adaptive_split_committed">"↑%1$d מחויב"</string>
+    <string name="adaptive_split_typing" formatted="false">"מקליד…"</string>
+    <string name="adaptive_split_watching">"צופה ב-%1$s"</string>
+    <string name="adaptive_sync_all" formatted="false">"סנכרון הכול"</string>
+    <string name="adaptive_sync_all_to_push">"סנכרן הכל, %1$d לדחיפה"</string>
+    <string name="adaptive_this_tablet" formatted="false">"הטאבלט הזה"</string>
+    <string name="adaptive_vaults" formatted="false">"כספות"</string>
+    <string name="adaptive_view" formatted="false">"הצגה"</string>
+    <string name="adaptive_vs">"לעומת %1$s"</string>
+    <string name="add_access_body" formatted="false">"GitSync.md זקוק לגישה לאחסון משותף כדי לנהל עותקי עבודה אמיתיים של Git בתיקיות המכשיר. הפעל אותו בהגדרות Android ולאחר מכן בחר את התיקיות שבהן ברצונך להשתמש."</string>
+    <string name="add_access_cancel" formatted="false">"ביטול"</string>
+    <string name="add_access_enable" formatted="false">"הפעלת גישה"</string>
+    <string name="add_access_note" formatted="false">"לא עכשיו? אתה יכול להמשיך להשתמש באחסון אפליקציות."</string>
+    <string name="add_access_title" formatted="false">"מתן גישה לתיקיות מקומיות"</string>
+    <string name="add_accounts_add" formatted="false">"– הוספת GitHub חשבון"</string>
+    <string name="add_accounts_browsing" formatted="false">"גלישה עם החשבון הזה"</string>
+    <string name="add_accounts_cancel" formatted="false">"ביטול"</string>
+    <string name="add_accounts_empty_body" formatted="false">"מאגרים מקומיים נשארים זמינים."</string>
+    <string name="add_accounts_empty_title" formatted="false">"אין חשבונות מחוברים"</string>
+    <string name="add_accounts_intro" formatted="false">"בחר את החשבון המשמש לגלישה ב-GitHub. כל מאגר שומר על חשבון משלו; שנה אותו בחיבור למאגר."</string>
+    <string name="add_accounts_none_signed_in" formatted="false">"הגדרות · אף אחד לא מחובר"</string>
+    <string name="add_accounts_remove" formatted="false">"הסרת ההתחברות"</string>
+    <string name="add_accounts_remove_body" formatted="false">"מאגרים המשתמשים בחשבון זה יבקשו ממך להיכנס שוב או לבחור חשבון אחר בחיבור למאגר. הקבצים וההתחייבויות המקומיות שלך נשארים במקום."</string>
+    <string name="add_accounts_remove_title">"להסיר את %1$s?"</string>
+    <string name="add_accounts_title" formatted="false">"חשבונות GitHub"</string>
+    <string name="add_accounts_use" formatted="false">"שימוש לגלישה"</string>
+    <string name="add_added" formatted="false">"נוסף"</string>
+    <string name="add_ago_days">"לפני %1$d ימים"</string>
+    <string name="add_ago_hours">"%1$dלפני h שניות"</string>
+    <string name="add_ago_minutes">"%1$dלפני m ימים"</string>
+    <string name="add_ago_months">"לפני %1$dmo"</string>
+    <string name="add_ago_now" formatted="false">"– כרגע"</string>
+    <string name="add_ago_weeks">"לפני %1$dw"</string>
+    <string name="add_ago_years">"לפני %1$dy"</string>
+    <string name="add_auth_github" formatted="false">"GitHub"</string>
+    <string name="add_auth_none" formatted="false">"אין"</string>
+    <string name="add_auth_saved" formatted="false">"נשמר"</string>
+    <string name="add_auth_ssh" formatted="false">"SSH – מפתח"</string>
+    <string name="add_auth_token" formatted="false">"טוקן"</string>
+    <string name="add_check_access_ro" formatted="false">"קריאה בלבד"</string>
+    <string name="add_check_access_rw" formatted="false">"קריאה · כתיבה"</string>
+    <string name="add_check_add_on_github" formatted="false">"הוסף ריפו ב-GitHub"</string>
+    <string name="add_check_again" formatted="false">"בדיקה חוזרת"</string>
+    <string name="add_check_app_callout">"ה-GitHub App מותקן ב-%1$s אך המאגר הזה לא נבחר. הוסף אותו ב-GitHub, ואז חזור."</string>
+    <string name="add_check_app_missing">"ה-GitHub App של GitSync.md עדיין לא נמצא ב-%1$s. הוסף אותו ב-GitHub עם ריפו זה, ואז תחזור."</string>
+    <string name="add_check_checking" formatted="false">"בבדיקה…"</string>
+    <string name="add_check_clone" formatted="false">"שכפול הכספת"</string>
+    <string name="add_check_clone_obsidian" formatted="false">"שכפול לתוך Obsidian"</string>
+    <string name="add_check_clones_to" formatted="false">"שכפול אל"</string>
+    <string name="add_check_head_blocked" formatted="false">"יש דבר אחד לתקן תחילה."</string>
+    <string name="add_check_head_checking" formatted="false">"בודקים\nאת הכספת."</string>
+    <string name="add_check_head_ready" formatted="false">"הכספת שלכם מוכנה."</string>
+    <string name="add_check_lfs_none" formatted="false">"אין"</string>
+    <string name="add_check_lfs_used" formatted="false">"בשימוש"</string>
+    <string name="add_check_measuring" formatted="false">"במדידה"</string>
+    <string name="add_check_no_obsidian" formatted="false">"עדיין אין תיקיית .obsidian/"</string>
+    <string name="add_check_note_blocked" formatted="false">"עדיין לא שילמתם כלום. ביטול הנעילה מופיע רק אחרי שהכספת עוברת את הבדיקה."</string>
+    <string name="add_check_note_checking" formatted="false">"נקראים רק מטא־נתונים. אף פתק לא יורד עד לביטול הנעילה."</string>
+    <string name="add_check_note_ready" formatted="false">"Google Play מציג את המחיר הסופי במטבע שלך לפני שתאשר."</string>
+    <string name="add_check_note_ready_unlocked" formatted="false">"Full Access לא נעול. אין מה לשלם יותר."</string>
+    <string name="add_check_obsidian_found" formatted="false">"נמצאה כספת Obsidian"</string>
+    <string name="add_check_obsidian_git" formatted="false">"התוסף Obsidian Git מוגדר"</string>
+    <string name="add_check_ok" formatted="false">"תקין"</string>
+    <string name="add_check_pick_another" formatted="false">"בחירת מאגר אחר"</string>
+    <string name="add_check_play_note" formatted="false">"רכישה חד-פעמית דרך Google Play. ללא מינוי."</string>
+    <string name="add_check_price_once">"‏⁨%1$s⁩ חד־פעמי"</string>
+    <string name="add_check_size_files" formatted="false">"גודל וקבצים"</string>
+    <string name="add_check_stat_access" formatted="false">"גישה"</string>
+    <string name="add_check_stat_files" formatted="false">"קבצים"</string>
+    <string name="add_check_stat_lfs" formatted="false">"Git LFS"</string>
+    <string name="add_check_stat_size" formatted="false">"גודל"</string>
+    <string name="add_check_step">"שלב %1$d מתוך 3"</string>
+    <string name="add_check_sub_blocked" formatted="false">"GitSync.md יכול לקרוא את המאגר הזה אבל לא יכול לדחוף אליו. תקן את זה ב-GitHub, ולאחר מכן בדוק שוב."</string>
+    <string name="add_check_sub_checking" formatted="false">"מוודאים ש-GitSync.md יכול לסנכרן את המאגר הזה לפני שמשלמים משהו."</string>
+    <string name="add_check_sub_ready" formatted="false">"הכול תקין. שכפול אחד ו-Obsidian פותח אותה עם ההיסטוריה המלאה."</string>
+    <string name="add_check_title" formatted="false">"בדיקת כספת"</string>
+    <string name="add_check_unknown" formatted="false">"—"</string>
+    <string name="add_check_write_access" formatted="false">"הרשאת כתיבה"</string>
+    <string name="add_clone" formatted="false">"שכפול"</string>
+    <string name="add_clone_app_storage" formatted="false">"שימוש באחסון האפליקציה"</string>
+    <string name="add_clone_busy" formatted="false">"משכפל מאגר"</string>
+    <string name="add_clone_bytes">"%1$s · %2$s"</string>
+    <string name="add_clone_cancel" formatted="false">"ביטול"</string>
+    <string name="add_clone_checkout" formatted="false">"בדיקת קבצים"</string>
+    <string name="add_clone_choose_folder" formatted="false">"בחירת תיקייה אחרת"</string>
+    <string name="add_clone_cloned" formatted="false">"– מותקן"</string>
+    <string name="add_clone_continue" formatted="false">"המשך"</string>
+    <string name="add_clone_finishing" formatted="false">"מסיים"</string>
+    <string name="add_clone_finishing_body">"הוספת %1$s לכספות שלך ובדיקת קבצי ה-Git LFS שלו."</string>
+    <string name="add_clone_lfs" formatted="false">"השכפול הושלם. חלק מקובצי Git LFS עדיין דורשים בדיקה או הורדה. העותק המשוכפל והשינויים המקומיים שלך נשמרו."</string>
+    <string name="add_clone_lfs_review" formatted="false">"בדיקת Git LFS"</string>
+    <string name="add_clone_location" formatted="false">"מיקום השכפול"</string>
+    <string name="add_clone_new_folder" formatted="false">"תיקייה חדשה"</string>
+    <string name="add_clone_nothing_yet" formatted="false">"שום דבר לא יוריד עד שתקיש על שיבוט."</string>
+    <string name="add_clone_percent">"%1$d%%"</string>
+    <string name="add_clone_preparing" formatted="false">"מתחבר"</string>
+    <string name="add_clone_receiving" formatted="false">"קבלת אובייקטים"</string>
+    <string name="add_clone_register_failed" formatted="false">"לא ניתן להוסיף את המאגר המשוכפל. הקבצים שלו נשמרו. אפשר לנסות להוסיף אותו שוב או לחבר מחדש את התיקייה שלו דרך מאגרים מקומיים."</string>
+    <string name="add_clone_register_retry" formatted="false">"הוספת המאגר המשוכפל"</string>
+    <string name="add_clone_resolving" formatted="false">"פתרון דלתות"</string>
+    <string name="add_clone_retry" formatted="false">"ניסיון מחדש"</string>
+    <string name="add_clone_saved_default" formatted="false">"שימוש בברירת המחדל השמורה"</string>
+    <string name="add_clone_start" formatted="false">"שכפול מאגר"</string>
+    <string name="add_clone_title_cloning" formatted="false">"משכפל מאגר"</string>
+    <string name="add_clone_title_done" formatted="false">"– מותקן"</string>
+    <string name="add_clone_title_failed" formatted="false">"השכפול נכשל"</string>
+    <string name="add_clone_title_ready" formatted="false">"שכפול מאגר"</string>
+    <string name="add_clone_to">"→ %1$s"</string>
+    <string name="add_cloning_name">"משכפל את %1$s"</string>
+    <string name="add_close" formatted="false">"סגירה"</string>
+    <string name="add_connected_added" formatted="false">"נוסף לחשבונות שלך"</string>
+    <string name="add_connected_title" formatted="false">"חשבון GitHub מחובר"</string>
+    <string name="add_continue" formatted="false">"המשך"</string>
+    <string name="add_default_branch" formatted="false">"ענף ברירת המחדל"</string>
+    <string name="add_done" formatted="false">"סיום"</string>
+    <string name="add_github_hint" formatted="false">"משתמש בכניסה של חשבון GitHub עבור github.com."</string>
+    <string name="add_group_notes" formatted="false">"נראה כמו הערות"</string>
+    <string name="add_group_other" formatted="false">"כל השאר"</string>
+    <string name="add_group_other_matching" formatted="false">"כל השאר שתואם"</string>
+    <string name="add_intro" formatted="false">"הביאו מאגר שכבר יש לכם, או הפכו תיקייה למאגר."</string>
+    <string name="add_key_copied" formatted="false">"מפתח ציבורי הועתק"</string>
+    <string name="add_key_copy" formatted="false">"העתקת המפתח הציבורי"</string>
+    <string name="add_key_failed" formatted="false">"לא ניתן היה ליצור מפתח בטלפון הזה. השתמש במקש אחר במקום זאת."</string>
+    <string name="add_key_hint" formatted="false">"הוסף את המפתח הציבורי למארח שלך פעם אחת. המפתח הפרטי נשאר בטלפון הזה."</string>
+    <string name="add_key_meta">"ed25519 · %1$s"</string>
+    <string name="add_key_other" formatted="false">"שימוש באחר…"</string>
+    <string name="add_key_this_phone" formatted="false">"השתמש במפתח הטלפון הזה"</string>
+    <string name="add_key_title" formatted="false">"מפתח הטלפון הזה"</string>
+    <string name="add_local_add_selected" formatted="false">"הוספת המאגרים שנבחרו"</string>
+    <string name="add_local_added" formatted="false">"מאגרים שנוספו"</string>
+    <string name="add_local_already" formatted="false">"כבר נוסף"</string>
+    <string name="add_local_clean" formatted="false">"נקי"</string>
+    <string name="add_local_clone_instead" formatted="false">"שיבוט מ-GitHub במקום זאת"</string>
+    <string name="add_local_destination">"יעד: ⁨%1$s⁩"</string>
+    <string name="add_local_detached" formatted="false">"HEAD מנותק או ללא commit ראשון"</string>
+    <string name="add_local_dirty" formatted="false">"שינויים מקומיים"</string>
+    <string name="add_local_discovered" formatted="false">"מאגרים שנמצאו"</string>
+    <string name="add_local_files_deleted" formatted="false">"קבצים מקומיים נמחקו"</string>
+    <string name="add_local_files_kept" formatted="false">"קבצים מקומיים נשמרו"</string>
+    <string name="add_local_in">"ב-%1$s"</string>
+    <string name="add_local_interrupted" formatted="false">"שכפולים שנקטעו"</string>
+    <string name="add_local_interrupted_body" formatted="false">"יש לבדוק את התיקייה והחיבור ולנסות שוב להוסיף שכפול זה. הקבצים הקיימים נשמרים."</string>
+    <string name="add_local_intro" formatted="false">"מצא Git עותקים עובדים כבר בטלפון זה, כמו תיקיית כספת Obsidian, והוסף אותם מבלי לשכפל שוב. הסרת ערך מאוחר יותר שומרת את הקבצים שלו."</string>
+    <string name="add_local_none_added" formatted="false">"טרם נוספו מאגרים."</string>
+    <string name="add_local_none_body">"לשום דבר ב-%1$s לא הייתה תיקייה .git. נסה את התיקיה שבה משתמשת אפליקציית ההערות שלך, או שכפל מ-GitHub."</string>
+    <string name="add_local_none_title" formatted="false">"לא נמצאו עותקים עובדים"</string>
+    <string name="add_local_previous" formatted="false">"נוספו בעבר"</string>
+    <string name="add_local_scan_app" formatted="false">"סריקת תיקיות האפליקציה"</string>
+    <string name="add_local_scan_app_label" formatted="false">"תיקיות אפליקציות"</string>
+    <string name="add_local_scan_app_sub" formatted="false">"התיקיות GitSync.md כבר מאוחסנות"</string>
+    <string name="add_local_scan_device" formatted="false">"סריקת תיקייה במכשיר"</string>
+    <string name="add_local_scan_device_sub" formatted="false">"בחר תיקיה, כמו מסמכים או Obsidian"</string>
+    <string name="add_local_scanning">"סריקה %1$s"</string>
+    <string name="add_local_staged">"עותק ביניים: ⁦%1$s⁩"</string>
+    <string name="add_local_title" formatted="false">"מאגרים מקומיים"</string>
+    <string name="add_local_tracking_removed" formatted="false">"Git מעקב הוסר · קבצים נשמרו"</string>
+    <string name="add_local_truncated" formatted="false">"הסריקה הגיעה למגבלת העומק או התיקיות. חלק מהתיקיות לא נסרקו."</string>
+    <string name="add_location_body" formatted="false">"בחר תיקיה אחרת בעת שיבוט, או הגדר ברירת מחדל בהגדרות."</string>
+    <string name="add_location_head" formatted="false">"שמירת ברירת מחדל"</string>
+    <string name="add_location_head_muted" formatted="false">"מיקום."</string>
+    <string name="add_location_label" formatted="false">"מיקום ההורדה"</string>
+    <string name="add_meta_lfs">"%1$s LFS"</string>
+    <string name="add_meta_private" formatted="false">"פרטי"</string>
+    <string name="add_meta_public" formatted="false">"– ציבורי"</string>
+    <string name="add_more_options" formatted="false">"שם, סניף ותיקיה"</string>
+    <string name="add_more_options_meta">"%1$s · %2$s"</string>
+    <string name="add_none_hint" formatted="false">"למחזרים ציבוריים. GitSync.md לא שולח אישורים."</string>
+    <string name="add_not_signed_in" formatted="false">"לא מחובר"</string>
+    <string name="add_owner_orgs" formatted="false">"ארגונים"</string>
+    <string name="add_owner_starred" formatted="false">"מסומנים בכוכב"</string>
+    <string name="add_owner_yours" formatted="false">"שלי"</string>
+    <string name="add_picker_accounts" formatted="false">"חשבונות GitHub"</string>
+    <string name="add_picker_empty_owner" formatted="false">"אין כאן עדיין ריפודים."</string>
+    <string name="add_picker_refresh" formatted="false">"רענון"</string>
+    <string name="add_picker_search" formatted="false">"חיפוש מאגרים"</string>
+    <string name="add_picker_starred_failed" formatted="false">"לא ניתן היה לטעון את המאגר המסומן בכוכב."</string>
+    <string name="add_picker_title" formatted="false">"בחרו מאגר"</string>
+    <string name="add_publish_account" formatted="false">"GitHub חשבון"</string>
+    <string name="add_publish_author_email" formatted="false">"אימייל המחבר"</string>
+    <string name="add_publish_author_name" formatted="false">"שם המחבר"</string>
+    <string name="add_publish_cancel" formatted="false">"ביטול"</string>
+    <string name="add_publish_check" formatted="false">"בדיקת היעד המקורי"</string>
+    <string name="add_publish_choose" formatted="false">"בחירת תיקייה"</string>
+    <string name="add_publish_confirm" formatted="false">"פרסם"</string>
+    <string name="add_publish_confirm_body">"זה הופך את %1$s לריפו של %2$s ומעלה את ה-commit הראשון שנשמר. השאר את האפליקציה פתוחה. ניסיון חוזר בודק יעד זה ולעולם לא מבצע התחייבות שנייה."</string>
+    <string name="add_publish_confirm_dest">"%1$s · %2$s\n%3$s · %4$s · %5$s"</string>
+    <string name="add_publish_confirm_title" formatted="false">"לפרסם את הקומיט השמור הזה?"</string>
+    <string name="add_publish_continue" formatted="false">"המשך הפרסום השמור"</string>
+    <string name="add_publish_creating" formatted="false">"יצירת המאגר..."</string>
+    <string name="add_publish_discard" formatted="false">"ביטול הבדיקה השמורה"</string>
+    <string name="add_publish_file_ignored">"%1$s · התעלמו"</string>
+    <string name="add_publish_file_issue">"%1$s · %2$s"</string>
+    <string name="add_publish_file_large">"%1$s · מעל 10 MiB"</string>
+    <string name="add_publish_file_regular">"%1$s · קובץ רגיל"</string>
+    <string name="add_publish_file_sensitive">"%1$s · שם קובץ רגיש"</string>
+    <string name="add_publish_files" formatted="false">"קבצים"</string>
+    <string name="add_publish_intro" formatted="false">"בחר תיקיה בטלפון זה, סקור את הקבצים שלה ושמור התחייבות ראשונה. לאחר מכן הפרסום יוצר ריפו חדש ב-GitHub שלך ומעלה אותו."</string>
+    <string name="add_publish_keep_note" formatted="false">"ההתקדמות נשארת נשמרת כשאתה עוזב. אם Android מסיר את הגישה, חבר מחדש את אותה תיקיה."</string>
+    <string name="add_publish_limits" formatted="false">"הקבצים שלך נשארים היכן שהם נמצאים. עד 10 MiB לקובץ, 10,000 קבצים ו-256 MiB בסך הכל. Git מדלג על תיקיות ריקות."</string>
+    <string name="add_publish_manage_accounts" formatted="false">"ניהול חשבונות"</string>
+    <string name="add_publish_message" formatted="false">"הודעת הקומיט הראשון"</string>
+    <string name="add_publish_no_account" formatted="false">"היכנס ל-GitHub כדי לפרסם."</string>
+    <string name="add_publish_open" formatted="false">"פתיחת מאגר"</string>
+    <string name="add_publish_original" formatted="false">"התיקייה המקורית"</string>
+    <string name="add_publish_phase_created" formatted="false">"המאגר נוצר; ההעלאה ממתינה"</string>
+    <string name="add_publish_phase_done" formatted="false">"פורסם"</string>
+    <string name="add_publish_phase_prepared" formatted="false">"commit מקומי הוכן"</string>
+    <string name="add_publish_phase_published" formatted="false">"הקומיט פורסם; ההגדרה ממתינה"</string>
+    <string name="add_publish_phase_review" formatted="false">"בדיקת הקבצים והיעד"</string>
+    <string name="add_publish_phase_unknown" formatted="false">"יצירת המאגר דורשת בדיקה"</string>
+    <string name="add_publish_prepare" formatted="false">"הכנת קומיט מקומי"</string>
+    <string name="add_publish_preparing" formatted="false">"מכין את ההתחייבות המקומית..."</string>
+    <string name="add_publish_private" formatted="false">"מאגר פרטי"</string>
+    <string name="add_publish_private_off" formatted="false">"כל אחד יכול לקרוא את הקבצים שנבחרו ואת ההיסטוריה."</string>
+    <string name="add_publish_private_on" formatted="false">"רק אנשים שקיבלו ממך גישה יכולים לקרוא אותו."</string>
+    <string name="add_publish_progress_bytes">"%1$s / %2$s · השאר את האפליקציה פתוחה"</string>
+    <string name="add_publish_progress_keep">"%1$s · השאר את האפליקציה פתוחה"</string>
+    <string name="add_publish_public_body" formatted="false">"כל אחד יוכל לקרוא את הקבצים שאתה מפרסם. בדוק את הבחירה שלך עבור סודות, פרטים אישיים וקבצים שאתה לא יכול לשתף."</string>
+    <string name="add_publish_public_confirm" formatted="false">"בחירה בציבורי"</string>
+    <string name="add_publish_public_title" formatted="false">"להפוך מאגר זה לציבורי?"</string>
+    <string name="add_publish_publish" formatted="false">"פרסום ב־GitHub"</string>
+    <string name="add_publish_reconnect" formatted="false">"חיבור מחדש של התיקייה המקורית"</string>
+    <string name="add_publish_refresh" formatted="false">"רענון קבצים"</string>
+    <string name="add_publish_registering" formatted="false">"הוספת המאגר..."</string>
+    <string name="add_publish_reload" formatted="false">"טעינת ההתקדמות השמורה מחדש"</string>
+    <string name="add_publish_repo_name" formatted="false">"שם המאגר"</string>
+    <string name="add_publish_save_review" formatted="false">"שמירת הבדיקה"</string>
+    <string name="add_publish_saved_commit">"קומיט שמור: ⁦%1$s⁩"</string>
+    <string name="add_publish_saved_progress" formatted="false">"התקדמות שמורה"</string>
+    <string name="add_publish_selected">"נבחרו: %1$d · %2$s"</string>
+    <string name="add_publish_step">"שלב %1$d מתוך 3"</string>
+    <string name="add_publish_stop" formatted="false">"עצירה"</string>
+    <string name="add_publish_title" formatted="false">"פרסום תיקייה"</string>
+    <string name="add_publish_unknown_note" formatted="false">"GitHub עשוי כבר ליצור את המאגר. בדוק את היעד המקורי. אין ליצור מאגר שני אלא אם תבחר להשתמש באחד ריק תואם."</string>
+    <string name="add_publish_uploading" formatted="false">"העלאת הקומיט השמור…"</string>
+    <string name="add_rail_github" formatted="false">"GitHub"</string>
+    <string name="add_rail_phone" formatted="false">"הטלפון הזה"</string>
+    <string name="add_remote_file" formatted="false">"מקומי"</string>
+    <string name="add_remote_git" formatted="false">"git://"</string>
+    <string name="add_remote_http" formatted="false">"HTTP"</string>
+    <string name="add_remote_https" formatted="false">"HTTPS"</string>
+    <string name="add_remote_intro" formatted="false">"GitLab, Gitea, Codeberg, שרת משלכם."</string>
+    <string name="add_remote_label" formatted="false">"- URL מרוחק"</string>
+    <string name="add_remote_name_invalid" formatted="false">"השתמש בשם ללא / או \\, ולא \".\" או \"..\"."</string>
+    <string name="add_remote_placeholder" formatted="false">"ssh://git@host/owner/repo.git"</string>
+    <string name="add_remote_ssh" formatted="false">"SSH"</string>
+    <string name="add_remote_title" formatted="false">"כל מארח Git"</string>
+    <string name="add_resume_meta">"%1$s · שלב %2$d מתוך 3 · נשמר"</string>
+    <string name="add_resume_title" formatted="false">"המשך פרסום"</string>
+    <string name="add_saved_hint" formatted="false">"עושה שימוש חוזר בחיבור המוצפן שנשמר עבור מאגר זה."</string>
+    <string name="add_sign_in_with" formatted="false">"התחברות עם"</string>
+    <string name="add_signed_in_as">"מחובר בתור @%1$s"</string>
+    <string name="add_signin_back_accounts" formatted="false">"חזרה לחשבונות"</string>
+    <string name="add_signin_body" formatted="false">"אפשר לשכפל כל מאגר, לכתוב ב-Obsidian או בכל אפליקציה אחרת ולסנכרן בנגיעה אחת."</string>
+    <string name="add_signin_busy" formatted="false">"מתחבר…"</string>
+    <string name="add_signin_eyebrow" formatted="false">"כל מאגר. מסונכרן ל-Android."</string>
+    <string name="add_signin_github" formatted="false">"התחברות עם GitHub"</string>
+    <string name="add_signin_head_1" formatted="false">"הפתקים שלכם."</string>
+    <string name="add_signin_head_2" formatted="false">"Git אמיתי."</string>
+    <string name="add_signin_head_3" formatted="false">"תמיד מתואם."</string>
+    <string name="add_signin_rail" formatted="false">"מפגש הטלפון הזה וGitHub בנקודת סנכרון אחת"</string>
+    <string name="add_signin_sample" formatted="false">"ניסיון מאגר לדוגמה"</string>
+    <string name="add_signin_sample_busy" formatted="false">"פותח את הדוגמה…"</string>
+    <string name="add_signin_sample_hint" formatted="false">"אמיתי Git, לא מקוון. אין צורך בחשבון."</string>
+    <string name="add_signin_token" formatted="false">"אסימון גישה אישי"</string>
+    <string name="add_signin_waiting" formatted="false">"סיים ב-GitHub בכרטיסיית הדפדפן. אתה תחזור מיד."</string>
+    <string name="add_ssh_import_failed" formatted="false">"לא ניתן היה לקרוא את קובץ המפתח הזה."</string>
+    <string name="add_ssh_import_key" formatted="false">"ייבוא קובץ מפתח"</string>
+    <string name="add_test_clone" formatted="false">"בדיקה ושכפול"</string>
+    <string name="add_test_failed_auth" formatted="false">"המארח סירב לכניסה זו. בדוק את המפתח או האסימון ואת הגישה שלו לריפו."</string>
+    <string name="add_test_failed_branch">"למארח אין סניף בשם %1$s."</string>
+    <string name="add_test_failed_missing" formatted="false">"למארח אין ריפו בכתובת זו."</string>
+    <string name="add_test_failed_network" formatted="false">"לא ניתן היה להגיע למארח. בדוק את הכתובת והחיבור שלך."</string>
+    <string name="add_test_host_key" formatted="false">"אשר את מפתח SSH של המארח ולאחר מכן הקש על בדוק ושכפל שוב."</string>
+    <string name="add_testing" formatted="false">"בודק כניסה..."</string>
+    <string name="add_title" formatted="false">"הוספת כספת"</string>
+    <string name="add_token_body" formatted="false">"יש להדביק אסימון GitHub עם גישה למאגרים."</string>
+    <string name="add_token_create" formatted="false">"צור אסימון ב-GitHub"</string>
+    <string name="add_token_hide" formatted="false">"הסתרה"</string>
+    <string name="add_token_hint" formatted="false">"האסימון מוצפן בטלפון זה ונשלח רק למארח זה."</string>
+    <string name="add_token_label" formatted="false">"טוקן"</string>
+    <string name="add_token_scopes" formatted="false">"היקפים: ריפו ומשתמש:אימייל. האסימון מוצפן בטלפון זה."</string>
+    <string name="add_token_secret" formatted="false">"טוקן"</string>
+    <string name="add_token_show" formatted="false">"הצגה"</string>
+    <string name="add_token_sign_in" formatted="false">"התחברות"</string>
+    <string name="add_token_title" formatted="false">"אסימון גישה אישי"</string>
+    <string name="add_token_user" formatted="false">"שם משתמש"</string>
+    <string name="add_unlock_rail">"%1$s · %2$s · מסומן, מוכן לשכפול"</string>
+    <string name="add_unlock_rail_cd">"%1$s, מסומן ומוכן לשכפול מGitHub לתוך Obsidian"</string>
+    <string name="add_unlock_rail_from" formatted="false">"GitHub"</string>
+    <string name="add_unlock_rail_plain">"%1$s · מסומן, מוכן לשכפול"</string>
+    <string name="add_unlock_rail_to" formatted="false">"Obsidian"</string>
+    <string name="add_url_hint" formatted="false">"HTTPS, SSH, git:// או owner/repo. אירוח עצמי? הקישו על המפתח."</string>
+    <string name="add_url_key" formatted="false">"אפשרויות כניסה עבור מארחים אחרים"</string>
+    <string name="add_url_label" formatted="false">"כתובת URL של המאגר"</string>
+    <string name="add_url_placeholder" formatted="false">"https://github.com/owner/repo"</string>
+    <string name="add_url_section" formatted="false">"או הדביקו URL"</string>
+    <string name="add_way_github" formatted="false">"שכפול מ-GitHub"</string>
+    <string name="add_way_github_sign_in" formatted="false">"היכנס כדי לבחור מהמאגרים שלך"</string>
+    <string name="add_way_local" formatted="false">"מצא שיבוטים בטלפון זה"</string>
+    <string name="add_way_local_sub" formatted="false">"סרוק אחסון משותף לתיקיות .git קיימות"</string>
+    <string name="add_way_open" formatted="false">"פתיחת תיקיית מאגר"</string>
+    <string name="add_way_open_sub" formatted="false">"בחר מאגר Git עם בוחר תיקיות המערכת"</string>
+    <string name="add_way_publish" formatted="false">"פרסום תיקייה"</string>
+    <string name="add_way_publish_sub" formatted="false">"צרו מאגר GitHub חדש מהפתקים שלכם"</string>
     <string name="automation_shortcut_label">"%1$s: ⁨%2$s⁩"</string>
     <string name="background_allow_push" formatted="false">"אישור פרסום אוטומטי"</string>
     <string name="background_binding">"רק הענף ⁨%1$s⁩, העוקב אחר ⁨%2$s/%3$s⁩. שינוי ענף, תיקייה, חיבור או חשבון מחייב בדיקה חדשה."</string>
@@ -261,12 +597,43 @@
     <string name="dialogs_success_title" formatted="false">"הצלחה"</string>
     <string name="dialogs_timestamp_unknown" formatted="false">"לא ידוע"</string>
     <string name="dialogs_warning_title" formatted="false">"אזהרה"</string>
+    <string name="diff_m3_binary" formatted="false">"קובץ זה אינו טקסט, כך שאין שורות להשוואה."</string>
+    <string name="diff_m3_changes" formatted="false">"שינויים"</string>
+    <string name="diff_m3_deleted" formatted="false">"קובץ זה נמחק. Discard משחזר אותו מהביצוע האחרון."</string>
+    <string name="diff_m3_discard" formatted="false">"ביטול שינויים"</string>
+    <string name="diff_m3_hunk">"%1$s · שורה %2$d"</string>
+    <string name="diff_m3_hunk_line">"שורה %1$d"</string>
+    <string name="diff_m3_load_failed" formatted="false">"לא ניתן היה לקרוא את השינויים בקובץ זה."</string>
+    <string name="diff_m3_next" formatted="false">"הקובץ הבא"</string>
+    <string name="diff_m3_no_changes" formatted="false">"אין שינויים מאז ה-commit האחרון."</string>
+    <string name="diff_m3_position">"%1$s · %2$d מתוך %3$d"</string>
+    <string name="diff_m3_preview" formatted="false">"תצוגה מקדימה"</string>
+    <string name="diff_m3_previous" formatted="false">"קובץ קודם"</string>
+    <string name="diff_m3_stats_a11y">"נוספו %1$d שורות, הוסרו %2$d"</string>
+    <string name="diff_m3_vs_last_commit">"לעומת התחייבות אחרונה %1$s"</string>
+    <string name="diff_m3_vs_nothing" formatted="false">"קובץ חדש · אין עדיין התחייבויות"</string>
+    <string name="diff_m3_whole_file" formatted="false">"הקובץ כולו"</string>
     <string name="discard_clear_staging" formatted="false">"ניקוי אזור ההכנה"</string>
     <string name="discard_review_all" formatted="false">"השינויים בקבצים שבמעקב והקבצים החדשים המפורטים למטה יימחקו לצמיתות. קבצים ש-Git מתעלם מהם יישמרו."</string>
     <string name="discard_review_empty" formatted="false">"אין שינויים לביטול."</string>
     <string name="discard_review_operation" formatted="false">"פעולה זו גם מבטלת את פעולת Git הפעילה."</string>
     <string name="discard_review_unborn" formatted="false">"עדיין אין commit. פעולה זו מסירה את הקבצים המפורטים מאזור ההכנה ושומרת את תוכנם."</string>
     <string name="discovery_scanned">"בוצעה סריקה של ⁨%1$s⁩. בחר את עותקי העבודה להוספה."</string>
+    <string name="editor_m3_commit" formatted="false">"Commit"</string>
+    <string name="editor_m3_markdown" formatted="false">"Markdown"</string>
+    <string name="editor_m3_md_bold" formatted="false">"מודגש"</string>
+    <string name="editor_m3_md_code" formatted="false">"קוד"</string>
+    <string name="editor_m3_md_heading" formatted="false">"כותרת"</string>
+    <string name="editor_m3_md_indent" formatted="false">"הזחה"</string>
+    <string name="editor_m3_md_link" formatted="false">"קישור"</string>
+    <string name="editor_m3_md_task" formatted="false">"משימה"</string>
+    <string name="editor_m3_not_saved" formatted="false">"לא נשמר"</string>
+    <string name="editor_m3_save_now" formatted="false">"שמור עכשיו"</string>
+    <string name="editor_m3_saved" formatted="false">"נשמר"</string>
+    <string name="editor_m3_saved_changed">"נשמר · %1$s"</string>
+    <string name="editor_m3_saving" formatted="false">"– שמירת..."</string>
+    <string name="editor_m3_subtitle">"%1$s / %2$s"</string>
+    <string name="editor_m3_vault_ahead">"%1$s ↑%2$d"</string>
     <string name="file_clone_failure" formatted="false">"לא ניתן לשכפל את המאגר המקומי. יש לבדוק את תיקיית המקור, הרשאת הגישה לאחסון והענף. התיקיות הקיימות נשמרו."</string>
     <string name="file_clone_guidance" formatted="false">"שכפול מאגר במכשיר באמצעות גישה מקומית. לאחסון משותף, יש להעניק תחילה גישה לתיקייה בהגדרות."</string>
     <string name="file_delete_body" formatted="false">"הקובץ יוסר מהמכשיר הזה. Git יציג אותו כקובץ שנמחק אם הוא היה במעקב."</string>
@@ -289,15 +656,344 @@
     <string name="file_renamed" formatted="false">"השם שונה"</string>
     <string name="file_save_title" formatted="false">"לשמור שינויים?"</string>
     <string name="file_saved" formatted="false">"נשמר"</string>
+    <string name="filehistory_m3_commits" formatted="false">"מתחייב"</string>
+    <string name="filehistory_m3_empty" formatted="false">"אין התחייבויות לכלול את הקובץ הזה עדיין."</string>
+    <string name="filehistory_m3_load_failed" formatted="false">"לא ניתן היה לקרוא את ההיסטוריה של הקובץ הזה."</string>
+    <string name="filehistory_m3_meta">"%1$s · %2$s · %3$s"</string>
+    <string name="filehistory_m3_subtitle">"היסטוריה · %1$s"</string>
     <string name="files_folder" formatted="false">"תיקייה"</string>
     <string name="files_hide_hidden" formatted="false">"הסתרת קבצים מוסתרים"</string>
+    <string name="files_m3_actions_for">"פעולות עבור %1$s"</string>
+    <string name="files_m3_age_days">"לפני %1$d ימים"</string>
+    <string name="files_m3_age_hours">"%1$dלפני h שניות"</string>
+    <string name="files_m3_age_minutes">"%1$dלפני m ימים"</string>
+    <string name="files_m3_age_months">"לפני %1$dmo"</string>
+    <string name="files_m3_age_now" formatted="false">"– כרגע"</string>
+    <string name="files_m3_age_weeks">"לפני %1$dw"</string>
+    <string name="files_m3_age_years">"לפני %1$dy"</string>
+    <string name="files_m3_check_for_changes" formatted="false">"בדיקת שינויים"</string>
+    <string name="files_m3_delete" formatted="false">"– 삭제"</string>
+    <string name="files_m3_delete_folder_body" formatted="false">"ניתן למחוק כאן רק תיקיות ריקות."</string>
+    <string name="files_m3_delete_folder_title" formatted="false">"למחוק תיקייה?"</string>
+    <string name="files_m3_fetch" formatted="false">"–抓 קבצים"</string>
+    <string name="files_m3_fetch_cd">"אחזר %1$s מהשלט"</string>
+    <string name="files_m3_fetch_failed" formatted="false">"לא ניתן היה לאחזר את הקובץ הזה מהשלט. בדוק את החיבור והכניסה שלך, ולאחר מכן נסה שוב."</string>
+    <string name="files_m3_fetched">"הוחזר %1$s."</string>
+    <string name="files_m3_folder_path" formatted="false">"נתיב תיקיה"</string>
+    <string name="files_m3_footnote" formatted="false">"לחץ לחיצה ארוכה על כל קובץ לפעולות."</string>
+    <string name="files_m3_history" formatted="false">"היסטוריה"</string>
+    <string name="files_m3_lfs_pointer">"מצביע LFS · %1$s ב-remote"</string>
+    <string name="files_m3_meta">"%1$s · %2$s"</string>
+    <string name="files_m3_meta_edited">"נערך %1$s · %2$s"</string>
+    <string name="files_m3_new_file_cd" formatted="false">"קובץ חדש"</string>
+    <string name="files_m3_open_in" formatted="false">"פתיחה ב…"</string>
+    <string name="files_m3_open_in_chooser">"פתח את %1$s ב..."</string>
+    <string name="files_m3_open_in_failed" formatted="false">"אף אפליקציה בטלפון זה לא יכולה לפתוח את הקובץ הזה."</string>
+    <string name="files_m3_rename" formatted="false">"– שינוי שם"</string>
+    <string name="files_m3_rename_field" formatted="false">"שם"</string>
+    <string name="files_m3_tag_added" formatted="false">"A"</string>
+    <string name="files_m3_tag_conflict" formatted="false">"!"</string>
+    <string name="files_m3_tag_lfs" formatted="false">"LFS"</string>
+    <string name="files_m3_tag_modified" formatted="false">"M"</string>
     <string name="files_show_hidden" formatted="false">"הצגת קבצים מוסתרים"</string>
     <string name="folder_access_not_enabled" formatted="false">"הגישה לתיקיות לא הופעלה. אפשר להמשיך להשתמש באחסון האפליקציה."</string>
     <string name="folder_picker_unavailable" formatted="false">"אין בורר תיקיות זמין במכשיר זה"</string>
     <string name="folder_settings_unavailable" formatted="false">"הגדרות האחסון של Android אינן זמינות. אחסון האפליקציה עדיין זמין."</string>
     <string name="folder_unusable" formatted="false">"לא ניתן להשתמש בתיקייה הזאת"</string>
     <string name="git_fetch" formatted="false">"–抓 קבצים"</string>
+    <string name="git_m3_abort" formatted="false">"ביטול"</string>
+    <string name="git_m3_abort_merge" formatted="false">"ביטול merge"</string>
+    <string name="git_m3_abort_merge_body">"מחזיר את %1$s למקום שבו היה לפני המיזוג. בחירות שנעשו עד כה נזרקות לפח."</string>
+    <string name="git_m3_abort_merge_title" formatted="false">"לבטל את המיזוג הזה?"</string>
+    <string name="git_m3_abort_rebase_ask" formatted="false">"ביטול rebase…"</string>
+    <string name="git_m3_access_github" formatted="false">"GitHub – כניסה"</string>
+    <string name="git_m3_access_https" formatted="false">"HTTPS"</string>
+    <string name="git_m3_access_local" formatted="false">"תיקיה מקומית"</string>
+    <string name="git_m3_access_ssh" formatted="false">"SSH – מפתח"</string>
+    <string name="git_m3_age_days">"%1$dd"</string>
+    <string name="git_m3_age_hours">"%1$dh"</string>
+    <string name="git_m3_age_minutes">"%1$dm"</string>
+    <string name="git_m3_ago_days">"לפני %1$d ימים"</string>
+    <string name="git_m3_ago_hours">"%1$dלפני h שניות"</string>
+    <string name="git_m3_ago_minutes">"%1$dלפני m ימים"</string>
+    <string name="git_m3_ago_now" formatted="false">"– כרגע"</string>
+    <string name="git_m3_ahead">"%1$d לפני"</string>
+    <string name="git_m3_annotated" formatted="false">"מוער"</string>
+    <string name="git_m3_applied_toast">"הוחל %1$s. המחסן עדיין נשמר."</string>
+    <string name="git_m3_apply" formatted="false">"החל"</string>
+    <string name="git_m3_apply_help" formatted="false">"מחזיר את השינויים ושומר על המאגר."</string>
+    <string name="git_m3_back_to_remote" formatted="false">"חזרה לרחוק"</string>
+    <string name="git_m3_backup_at">"גיבוי: %1$s"</string>
+    <string name="git_m3_behind">"%1$d מאחור"</string>
+    <string name="git_m3_binary_side" formatted="false">"לא ניתן להציג קובץ זה כטקסט. בחר גרסה שלמה."</string>
+    <string name="git_m3_both_edited_file" formatted="false">"שני הצדדים ערכו את הקובץ הזה."</string>
+    <string name="git_m3_both_edited_section">"שני הצדדים ערכו את “%1$s”."</string>
+    <string name="git_m3_both_moved" formatted="false">"שני הצדדים התקדמו"</string>
+    <string name="git_m3_both_moved_body">"משוך רק קדימה מהר, כך שהוא לא יכול לשלב את אלה. מיזוג שומר על שתי ההיסטוריות. Rebase שם את ההתחייבויות %1$d שלך בראש."</string>
+    <string name="git_m3_both_moved_headline" formatted="false">"ה-remote התקדם בזמן שכתבתם."</string>
+    <string name="git_m3_both_sides_edited" formatted="false">"שני הצדדים ערכו את הקובץ הזה."</string>
+    <string name="git_m3_branch_name" formatted="false">"שם הענף"</string>
+    <string name="git_m3_branch_placeholder" formatted="false">"למשל. טיוטה/חורף"</string>
+    <string name="git_m3_branches" formatted="false">"ענפים"</string>
+    <string name="git_m3_branches_stashes_tags" formatted="false">"ענפים, מחסנים ותגים"</string>
+    <string name="git_m3_cancel" formatted="false">"ביטול"</string>
+    <string name="git_m3_cant_switch_note" formatted="false">"קבצים ללא מעקב שהענף השני ידרוס גם חוסמים את המתג. שום דבר לא השתנה עדיין."</string>
+    <string name="git_m3_cant_switch_title" formatted="false">"עדיין לא ניתן להחליף"</string>
+    <string name="git_m3_check_changes" formatted="false">"בדיקת שינויים"</string>
+    <string name="git_m3_commit_as" formatted="false">"Commit בתור"</string>
+    <string name="git_m3_commit_first" formatted="false">"התחייב קודם"</string>
+    <string name="git_m3_commit_history" formatted="false">"היסטוריית התחייבות"</string>
+    <string name="git_m3_commit_of">"התחייבות %1$d מתוך %2$d"</string>
+    <string name="git_m3_conflict_body" formatted="false">"בחרו את הגרסה לשמירה, או שמרו את שתיהן וסדרו אחר כך."</string>
+    <string name="git_m3_conflict_progress">"קונפליקט %1$d של %2$d · %3$s"</string>
+    <string name="git_m3_connection" formatted="false">"חיבור"</string>
+    <string name="git_m3_continue_retry_first" formatted="false">"המשך בסיס מחדש · תחילה נסה שוב"</string>
+    <string name="git_m3_create" formatted="false">"צור"</string>
+    <string name="git_m3_create_tag" formatted="false">"צור תג"</string>
+    <string name="git_m3_current" formatted="false">"נוכחי"</string>
+    <string name="git_m3_current_branch" formatted="false">"הענף הנוכחי"</string>
+    <string name="git_m3_delete" formatted="false">"– 삭제"</string>
+    <string name="git_m3_delete_branch_body">"מוחק %1$s בטלפון זה. GitHub לא נוגע."</string>
+    <string name="git_m3_delete_branch_cd">"מחיקת הענף %1$s"</string>
+    <string name="git_m3_delete_branch_title" formatted="false">"למחוק את הענף?"</string>
+    <string name="git_m3_delete_files_sub" formatted="false">"מסיר את התיקיה מהטלפון הזה"</string>
+    <string name="git_m3_delete_force" formatted="false">"כוח"</string>
+    <string name="git_m3_delete_force_help" formatted="false">"כוח מוחק את הענף גם אם ההתחייבויות שלו מעולם לא אוחדו. הם יכולים ללכת לאיבוד."</string>
+    <string name="git_m3_delete_normal" formatted="false">"רגיל"</string>
+    <string name="git_m3_delete_normal_help" formatted="false">"מוחק את הסניף רק אם ההתחייבויות שלו כבר מוזגו."</string>
+    <string name="git_m3_delete_tag" formatted="false">"מחיקת תג"</string>
+    <string name="git_m3_delete_tag_body">"התג נעלם בטלפון הזה. Commit %1$s נשאר, ועותק שכבר נדחף אל GitHub לא ניגע."</string>
+    <string name="git_m3_delete_tag_cd">"מחיקת התגית %1$s"</string>
+    <string name="git_m3_delete_tag_title">"למחוק את ״%1$s״?"</string>
+    <string name="git_m3_deleted_here_edited_there" formatted="false">"הטלפון הזה מחק אותו. הצד השני ערך את זה."</string>
+    <string name="git_m3_deleted_on_phone" formatted="false">"נמחק בטלפון זה."</string>
+    <string name="git_m3_deleted_on_remote">"נמחק בתאריך %1$s."</string>
+    <string name="git_m3_detached">"מנותק ב-%1$s"</string>
+    <string name="git_m3_discard" formatted="false">"ביטול שינויים"</string>
+    <string name="git_m3_disconnected" formatted="false">"מנותק"</string>
+    <string name="git_m3_drop" formatted="false">"מחיקה"</string>
+    <string name="git_m3_drop_cd">"זרוק %1$s"</string>
+    <string name="git_m3_drop_help" formatted="false">"מוחק את הסטש מבלי להחיל אותו."</string>
+    <string name="git_m3_dropped_toast">"הוסר %1$s."</string>
+    <string name="git_m3_edit_by_hand" formatted="false">"עריכה ידנית"</string>
+    <string name="git_m3_edit_connection" formatted="false">"עריכת החיבור"</string>
+    <string name="git_m3_edited_ago">"נערך %1$s"</string>
+    <string name="git_m3_edited_here_deleted_there" formatted="false">"הטלפון הזה ערך אותו. הצד השני מחק את זה."</string>
+    <string name="git_m3_fetch_again" formatted="false">"אחזר שוב"</string>
+    <string name="git_m3_fetch_and_push">"אחזר ודחיפה: %1$s"</string>
+    <string name="git_m3_fetch_hint" formatted="false">"כדי לראות סניפים חדשים שנדחפו מהמכשירים האחרים שלך."</string>
+    <string name="git_m3_fetch_review_again" formatted="false">"אחזר ובדוק שוב"</string>
+    <string name="git_m3_fetch_sub" formatted="false">"בדוק את GitHub עבור התחייבויות חדשות"</string>
+    <string name="git_m3_fetched">"fetch ‏%1$s"</string>
+    <string name="git_m3_finishing_merge" formatted="false">"מסיים את המיזוג..."</string>
+    <string name="git_m3_folder_location" formatted="false">"התיקיה ומיקומה"</string>
+    <string name="git_m3_from" formatted="false">"מ"</string>
+    <string name="git_m3_from_remote">"↓%1$d מה-remote"</string>
+    <string name="git_m3_from_who">" מ-%1$s"</string>
+    <string name="git_m3_github" formatted="false">"GitHub"</string>
+    <string name="git_m3_hand_edited_markers" formatted="false">"סמני עימות עדיין בקובץ. הסר אותם בעורך, ואז תחזור."</string>
+    <string name="git_m3_hand_edited_ready" formatted="false">"נערך ביד. השתמש בקובץ הערוך שלך, או בחר צד כדי להחליף אותו."</string>
+    <string name="git_m3_how" formatted="false">"איך"</string>
+    <string name="git_m3_in_sync" formatted="false">"מסונכרן"</string>
+    <string name="git_m3_in_sync_headline" formatted="false">"הטלפון הזה מתאים לשלט."</string>
+    <string name="git_m3_in_the_way" formatted="false">"בדרך"</string>
+    <string name="git_m3_in_this_vault" formatted="false">"בכספת הזו"</string>
+    <string name="git_m3_its_remotes" formatted="false">"השלטים שלו"</string>
+    <string name="git_m3_keep_backup" formatted="false">"שמור גיבוי מאומת"</string>
+    <string name="git_m3_keep_backup_sub" formatted="false">"העתק ומיקוד של התיקיה .git"</string>
+    <string name="git_m3_keep_both" formatted="false">"שמירת שתיהן"</string>
+    <string name="git_m3_kept_edit" formatted="false">"נפתר ביד."</string>
+    <string name="git_m3_kept_local" formatted="false">"שמר על המחויבות המקומית המשוחזרת."</string>
+    <string name="git_m3_kept_upstream" formatted="false">"שמר על הגרסה במעלה הזרם."</string>
+    <string name="git_m3_lfs" formatted="false">"קבצים גדולים (LFS)"</string>
+    <string name="git_m3_lfs_none" formatted="false">"לא בשימוש"</string>
+    <string name="git_m3_lfs_value">"%1$s · %2$d נעול"</string>
+    <string name="git_m3_light" formatted="false">"קל"</string>
+    <string name="git_m3_local_only" formatted="false">"מקומי בלבד"</string>
+    <string name="git_m3_manage_vault" formatted="false">"נהל כספת"</string>
+    <string name="git_m3_marker_end" formatted="false">"סוף שתי הגרסאות"</string>
+    <string name="git_m3_marker_ours" formatted="false">"הגרסה של הטלפון הזה"</string>
+    <string name="git_m3_marker_theirs">"הגרסה של %1$s"</string>
+    <string name="git_m3_merge" formatted="false">"מזג"</string>
+    <string name="git_m3_merge_and_push" formatted="false">"מיזוג ודחיפה"</string>
+    <string name="git_m3_merge_author">"מיזוג מחבר: %1$s"</string>
+    <string name="git_m3_merge_both_body" formatted="false">"ההתחייבויות שלך שומרים על המזהים שלהם. מכיוון ששני הצדדים זזו, זה גורם להתחייבות למיזוג. ייתכן שתצטרך לבחור קבצים שנערכו משני הצדדים."</string>
+    <string name="git_m3_merge_current_body" formatted="false">"שני הצדדים תואמים. אין מה למזג."</string>
+    <string name="git_m3_merge_ff_body" formatted="false">"רק השלט זז, אז זה מעביר את הסניף שלך מהר קדימה. שום דבר חדש לא מתחייב."</string>
+    <string name="git_m3_merge_in_progress" formatted="false">"מיזוג מתבצע"</string>
+    <string name="git_m3_merge_into">"מיזוג לתוך %1$s"</string>
+    <string name="git_m3_merge_locally" formatted="false">"מיזוג מקומי"</string>
+    <string name="git_m3_merge_message">"Merge של %1$s"</string>
+    <string name="git_m3_merge_named">"Merge של %1$s"</string>
+    <string name="git_m3_merge_pause_note" formatted="false">"אם שני הסניפים שינו את אותו קובץ, המיזוג מושהה כדי שתוכל לבחור מה לשמור ב-Git."</string>
+    <string name="git_m3_merge_push_body">"מעדכן את %1$s עם %2$s, ולאחר מכן דוחף אל %3$s. קונפליקטים עוצרים את הדחיפה. אם השלט לא מאשר זאת, המיזוג יישאר בטלפון זה ותוכל לנסות שוב."</string>
+    <string name="git_m3_merge_push_only_body" formatted="false">"שום דבר חדש בשלט. מיזוג ודחוף שולח את ההתחייבויות שלך."</string>
+    <string name="git_m3_merge_push_title" formatted="false">"למזג ולדחוף?"</string>
+    <string name="git_m3_merge_ready" formatted="false">"כל ההתנגשויות נפתרו. סיים את המיזוג."</string>
+    <string name="git_m3_merge_reviewing" formatted="false">"מאחזר וסוקר את מה שיש לשלט…"</string>
+    <string name="git_m3_merge_sub" formatted="false">"אחזר, בדוק ואז מיזוג"</string>
+    <string name="git_m3_merging">"%1$s · מיזוג %2$s"</string>
+    <string name="git_m3_message_optional" formatted="false">"הודעה (אופציונלי)"</string>
+    <string name="git_m3_more_files">"%1$d יותר"</string>
+    <string name="git_m3_move_repository" formatted="false">"העברת מאגר"</string>
+    <string name="git_m3_move_sub" formatted="false">"בחר תיקיה חדשה"</string>
+    <string name="git_m3_never_fetched" formatted="false">"עדיין לא הוחזר"</string>
+    <string name="git_m3_new_branch" formatted="false">"סניף חדש"</string>
+    <string name="git_m3_new_on_remote" formatted="false">"חדש בשלט"</string>
+    <string name="git_m3_new_on_remote_body">"משוך קדימה %1$s כדי להתאים. שום דבר בטלפון הזה לא אבוד."</string>
+    <string name="git_m3_new_on_remote_headline" formatted="false">"במאגר המרוחק יש קומיטים שאין לך."</string>
+    <string name="git_m3_new_tag" formatted="false">"תג חדש"</string>
+    <string name="git_m3_no_backup_warning" formatted="false">"ללא גיבוי, היסטוריית ה-Git של הטלפון הזה נמחקת סופית. התחייבויות שכבר על GitHub בטוחות."</string>
+    <string name="git_m3_no_conflicts" formatted="false">"לא נותרו התנגשויות."</string>
+    <string name="git_m3_no_stashes" formatted="false">"לא נשמרו מאגרים."</string>
+    <string name="git_m3_no_upstream" formatted="false">"מקומי בלבד · אין במעלה הזרם"</string>
+    <string name="git_m3_no_upstream_body" formatted="false">"בחר במעלה הזרם אז משוך ודחף יודע לאן ללכת."</string>
+    <string name="git_m3_no_upstream_headline" formatted="false">"סניף זה עדיין לא עוקב אחר סניף מרוחק."</string>
+    <string name="git_m3_no_upstream_kicker" formatted="false">"אין במעלה הזרם"</string>
+    <string name="git_m3_none" formatted="false">"אין"</string>
+    <string name="git_m3_not_set" formatted="false">"לא הוגדר"</string>
+    <string name="git_m3_not_tracked">"%1$s · לא במעקב"</string>
+    <string name="git_m3_notes_attachments_any" formatted="false">"ההערות והקבצים המצורפים שלך"</string>
+    <string name="git_m3_nothing_new">"שום דבר שאין ל-%1$s"</string>
+    <string name="git_m3_nothing_to_stash" formatted="false">"אין מה לאחסן."</string>
+    <string name="git_m3_nothing_to_stash_body" formatted="false">"אין שינויים מקומיים בטלפון זה. ערוך הערה וחזור כדי להניח אותה בצד."</string>
+    <string name="git_m3_ok" formatted="false">"אישור"</string>
+    <string name="git_m3_on_this_phone" formatted="false">"בטלפון זה"</string>
+    <string name="git_m3_only_on">"רק ב-%1$s"</string>
+    <string name="git_m3_open" formatted="false">"פתיחה"</string>
+    <string name="git_m3_open_rebase" formatted="false">"פתח בסיס מחדש"</string>
+    <string name="git_m3_open_sub" formatted="false">"חזרה לכספת"</string>
+    <string name="git_m3_plain_folder">"%1$s היא תיקייה רגילה כעת."</string>
+    <string name="git_m3_plain_folder_body" formatted="false">"ההערות שלך נמצאות במקום שבו היו. GitSync.md כבר לא מסנכרן את התיקיה הזו."</string>
+    <string name="git_m3_pop" formatted="false">"שלוף"</string>
+    <string name="git_m3_pop_help" formatted="false">"מחזיר את השינויים ומסיר את המאגר."</string>
+    <string name="git_m3_popped_toast">"הופץ %1$s. השינויים שלך חזרו."</string>
+    <string name="git_m3_previously_added" formatted="false">"נוספו בעבר"</string>
+    <string name="git_m3_pull_n">"משוך ↓%1$d"</string>
+    <string name="git_m3_pull_sub" formatted="false">"קידום מהיר בלבד"</string>
+    <string name="git_m3_pull_sub_blocked" formatted="false">"הרצה קדימה בלבד. לא יכול עכשיו: שני הצדדים זזו"</string>
+    <string name="git_m3_pulls_from">"%1$s מושך ודוחף אל"</string>
+    <string name="git_m3_push" formatted="false">"דחוף"</string>
+    <string name="git_m3_push_n">"דחף ↑%1$d"</string>
+    <string name="git_m3_push_tag_cd">"דחף את %1$s ל-GitHub"</string>
+    <string name="git_m3_push_to">"דחף ל-%1$s"</string>
+    <string name="git_m3_ready_to_push" formatted="false">"מוכן ל-push"</string>
+    <string name="git_m3_ready_to_push_body">"Push שולח את התחייבויות ה-%1$d שלך. שום דבר בשלט לא משתנה עד שהוא מקבל אותם."</string>
+    <string name="git_m3_ready_to_push_headline" formatted="false">"השלט עדיין לא ראה את ההתחייבויות שלך."</string>
+    <string name="git_m3_rebase" formatted="false">"– إعادة הבסיס"</string>
+    <string name="git_m3_rebase_abort_body">"מחזיר את %1$s ל%2$s. עריכות ובחירות התנגשות שנעשו במהלך בסיס מחדש זה נזרקות לפח."</string>
+    <string name="git_m3_rebase_abort_title" formatted="false">"לבטל את ה־rebase הזה?"</string>
+    <string name="git_m3_rebase_aborted" formatted="false">"ה־rebase בוטל"</string>
+    <string name="git_m3_rebase_aborted_headline" formatted="false">"בחזרה לנקודת ההתחלה."</string>
+    <string name="git_m3_rebase_begin_title" formatted="false">"לשכתב commits מקומיים?"</string>
+    <string name="git_m3_rebase_blocked_body" formatted="false">"קבצים שאינם ב-Git יוחלפו על ידי ה-commit הבא. העבר אותם למקום בטוח, רענן ואז נסה שוב. התחייבויות שכבר שוחזרו נשמרות."</string>
+    <string name="git_m3_rebase_blocked_headline" formatted="false">"הריבייס ממתין ל-checkout חסום."</string>
+    <string name="git_m3_rebase_conflicts">"קונפליקטים · %1$d מתוך %2$d נפתרו"</string>
+    <string name="git_m3_rebase_conflicts_headline" formatted="false">"הריבייס נעצר בקבצים ששני הצדדים ערכו."</string>
+    <string name="git_m3_rebase_done_headline" formatted="false">"הריבייס הסתיים."</string>
+    <string name="git_m3_rebase_in_progress" formatted="false">"rebase מתבצע"</string>
+    <string name="git_m3_rebase_initial" formatted="false">"אחזר תחילה כדי לראות מה יזוז בסיס מחדש."</string>
+    <string name="git_m3_rebase_restored">"%1$s שוחזר ל-%2$s · ↑%3$d ↓%4$d"</string>
+    <string name="git_m3_rebase_review_body">"משחזר את ההתחייבויות שלך על גבי %1$s. תעודות הזהות שלהם יכולות להשתנות. התחייבויות מיזוג שומרות על צורתן. שום דבר לא נדחף."</string>
+    <string name="git_m3_rebase_sides_note">"בבסיס מחדש, %1$s הוא \"שלנו\" של Git וה-%2$s שלך הוא \"שלהם\"."</string>
+    <string name="git_m3_rebase_skip_body">"מוריד %1$s מהשידור החוזר. בדוק תחילה את השינויים שלו. זה יכול להסיר את העבודה שלך מההיסטוריה החדשה."</string>
+    <string name="git_m3_rebase_skip_title" formatted="false">"לדלג על ה־commit המקומי הזה?"</string>
+    <string name="git_m3_rebase_step">"הופסק בהתחייבות %1$d של %2$d."</string>
+    <string name="git_m3_rebase_stopped" formatted="false">"הבסיס מחדש מחכה לך."</string>
+    <string name="git_m3_rebase_sub" formatted="false">"הפעל מחדש את ההתחייבויות שלך למעלה · המשך בסיס מחדש"</string>
+    <string name="git_m3_rebase_theirs">"חדש ב-%1$s · %2$d"</string>
+    <string name="git_m3_rebase_yours">"ההתחייבות שלך לשידור חוזר · %1$d"</string>
+    <string name="git_m3_refresh_branches" formatted="false">"רענון סניפים"</string>
+    <string name="git_m3_remote" formatted="false">"Remote"</string>
+    <string name="git_m3_remote_access">"אחזר ודחוף · %1$s"</string>
+    <string name="git_m3_remote_pill" formatted="false">"remote"</string>
+    <string name="git_m3_remote_reading" formatted="false">"קורא את השלט של הכספת הזו..."</string>
+    <string name="git_m3_remove" formatted="false">"הסרה"</string>
+    <string name="git_m3_remove_from_app" formatted="false">"הסרה מהאפליקציה"</string>
+    <string name="git_m3_remove_from_app_body" formatted="false">"התיקיה וההיסטוריה Git שלה נשארים בטלפון הזה. הוסף אותו בחזרה בכל עת."</string>
+    <string name="git_m3_remove_from_app_sub" formatted="false">"שומר קבצים וGit. הוסף אותו בחזרה בכל עת."</string>
+    <string name="git_m3_remove_from_app_title">"להסיר את %1$s מהאפליקציה?"</string>
+    <string name="git_m3_remove_tracking_sub" formatted="false">"שומר את הקבצים שלך. מסיר את Git מהתיקייה הזו."</string>
+    <string name="git_m3_replayed_commit" formatted="false">"התחייבות משוחזרת"</string>
+    <string name="git_m3_replayed_label">"מחויבות מקומית משוחזרת · %1$s"</string>
+    <string name="git_m3_resolve" formatted="false">"– פתרון"</string>
+    <string name="git_m3_resolve_conflict" formatted="false">"פתרון התנגשות"</string>
+    <string name="git_m3_result_current" formatted="false">"אין חדש למיזוג."</string>
+    <string name="git_m3_result_current_kicker" formatted="false">"מעודכן"</string>
+    <string name="git_m3_result_local_only" formatted="false">"התוצאה היא בטלפון זה בלבד. תלחץ כשאתה מוכן."</string>
+    <string name="git_m3_result_merged" formatted="false">"השינויים מהצד השני נכללים."</string>
+    <string name="git_m3_result_merged_kicker" formatted="false">"מוזג"</string>
+    <string name="git_m3_result_push_confirmed" formatted="false">"GitHub הכיר בהתחייבות זו."</string>
+    <string name="git_m3_result_push_unconfirmed" formatted="false">"השלט לא אישר את הדחיפה. ניסיון חוזר שולח את אותה commit מבלי להתמזג שוב."</string>
+    <string name="git_m3_result_saved_locally" formatted="false">"קומיט המיזוג נשמר מקומית."</string>
+    <string name="git_m3_result_unconfirmed" formatted="false">"נשמר כאן. הדחיפה לא הסתיימה."</string>
+    <string name="git_m3_result_unconfirmed_kicker" formatted="false">"מוזג · לא נדחף"</string>
+    <string name="git_m3_retry_blocked" formatted="false">"נסה שוב את ה־commit החסום"</string>
+    <string name="git_m3_retry_push" formatted="false">"ניסיון דחיפה חוזר של הקומיט השמור"</string>
+    <string name="git_m3_return_to_git" formatted="false">"חזרה אל Git"</string>
+    <string name="git_m3_review_folder" formatted="false">"בדיקת התיקייה ששוחזרה"</string>
+    <string name="git_m3_reviewed_plan" formatted="false">"תוכנית שנבדקה"</string>
+    <string name="git_m3_saved" formatted="false">"נשמר"</string>
+    <string name="git_m3_saved_in" formatted="false">"נשמר ב"</string>
+    <string name="git_m3_set_aside" formatted="false">"הנח בצד"</string>
+    <string name="git_m3_set_upstream" formatted="false">"הגדר במעלה הזרם"</string>
+    <string name="git_m3_show_more">"הצג עוד %1$d"</string>
+    <string name="git_m3_skip_commit" formatted="false">"דלג על התחייבות"</string>
+    <string name="git_m3_skip_commit_ask" formatted="false">"דלג על התחייבות..."</string>
+    <string name="git_m3_staged" formatted="false">"מוכן"</string>
+    <string name="git_m3_starts_from">"מתחיל מ-%1$s ב-%2$s · אתה נשאר ב-%2$s"</string>
+    <string name="git_m3_stash_changes" formatted="false">"שינויים במחסן"</string>
+    <string name="git_m3_stash_explain">"אחסון מרחיק אותם ומאפס את הקבצים שלך ל-%1$s. תחזיר אותם בכל עת."</string>
+    <string name="git_m3_stash_local_note" formatted="false">"מחסנים נשארים בטלפון הזה. הם אף פעם לא נדחפים ל-GitHub."</string>
+    <string name="git_m3_stash_on">"ב-%1$s"</string>
+    <string name="git_m3_stash_placeholder" formatted="false">"במה היית באמצע?"</string>
+    <string name="git_m3_stashed_older" formatted="false">"הישן יותר הוא כעת stash@{1}."</string>
+    <string name="git_m3_stashes" formatted="false">"Stashes"</string>
+    <string name="git_m3_stay_on">"הישאר ב-%1$s"</string>
+    <string name="git_m3_stays_on_disk" formatted="false">"נשאר בדיסק"</string>
+    <string name="git_m3_stop_tracking" formatted="false">"הפסקת מעקב…"</string>
+    <string name="git_m3_strategy_always" formatted="false">"שימוש תמיד בקומיט מיזוג"</string>
+    <string name="git_m3_strategy_always_help">"יוצר מיזוג commit גם כאשר %1$s יכול היה להתקדם."</string>
+    <string name="git_m3_strategy_ff" formatted="false">"קידום מהיר בלבד"</string>
+    <string name="git_m3_strategy_ff_help">"מתמזג רק כאשר %1$s נמצא ישירות לפני %2$s. שומר את ההיסטוריה בקו ישר."</string>
+    <string name="git_m3_strategy_prefer" formatted="false">"קידום מהיר אם אפשר"</string>
+    <string name="git_m3_strategy_prefer_help">"מעביר %1$s קדימה כשזה יכול. אחרת יוצר התחייבות למיזוג."</string>
+    <string name="git_m3_subtitle">"%1$s · %2$s"</string>
+    <string name="git_m3_switch" formatted="false">"החלף"</string>
+    <string name="git_m3_tag_kind_help" formatted="false">"עם הודעה זה מוער. השאר אותו ריק עבור תג קל."</string>
+    <string name="git_m3_tag_name" formatted="false">"שם תג"</string>
     <string name="git_m3_tag_name_invalid" formatted="false">"יש להזין שם תקין לתג Git."</string>
+    <string name="git_m3_tag_pushed">"דחף %1$s."</string>
+    <string name="git_m3_tag_target">"ב-%1$s · האחרון ב-%2$s"</string>
+    <string name="git_m3_tags" formatted="false">"תגיות"</string>
+    <string name="git_m3_tags_note" formatted="false">"Commit &amp; push לא שולחים תגים. דחוף כל אחד כשתרצה אותו ב-GitHub. מחיקה מסירה תג מהטלפון הזה בלבד."</string>
+    <string name="git_m3_the_named_remote">"השלט %1$s"</string>
+    <string name="git_m3_the_remote" formatted="false">"ה-remote"</string>
+    <string name="git_m3_this_phone" formatted="false">"הטלפון הזה"</string>
+    <string name="git_m3_tracking">"מעקב אחר %1$s"</string>
+    <string name="git_m3_tracking_backup_body" formatted="false">"GitSync.md בודק עותק ו-ZIP של נתוני Git, ואז מנתק את התיקיה הזו. קבצי העבודה שלך נשארים במקומם."</string>
+    <string name="git_m3_tracking_backup_title" formatted="false">"להסיר את המעקב ולשמור גיבוי?"</string>
+    <string name="git_m3_tracking_cap">"מעקב %1$s"</string>
+    <string name="git_m3_tracking_permanent_body" formatted="false">"רק נתוני .git שנבדקו נמחקים. קבצי העבודה שלך נשארים במקומם, אבל לא ניתן לשחזר את היסטוריית ה-Git של הטלפון הזה ללא עותק נוסף."</string>
+    <string name="git_m3_tracking_removed" formatted="false">"המעקב הוסר"</string>
+    <string name="git_m3_tracking_removed_backup_toast" formatted="false">"מעקב אחר Git הוסר. גיבוי מאומת נשמר."</string>
+    <string name="git_m3_tracking_removed_kept" formatted="false">"מעקב Git הוסר · קובצי העבודה נשמרו"</string>
+    <string name="git_m3_tracking_review_body" formatted="false">"הקבצים שלך נשארים היכן שהם נמצאים. העותק של Git של ההיסטוריה שלהם מוסר מהתיקייה הזו."</string>
+    <string name="git_m3_tracking_stale" formatted="false">"התיקיה השתנתה מאז שבדקת אותה. בטל ובדוק שוב."</string>
+    <string name="git_m3_uncommitted_plain_any" formatted="false">"עריכות לא מחויבות, כקבצים רגילים"</string>
+    <string name="git_m3_unresolved" formatted="false">"לא פתור"</string>
+    <string name="git_m3_update" formatted="false">"עדכון"</string>
+    <string name="git_m3_upstream_body">"בחר מהיכן %1$s מושך ודוחף אליו. קבצים, התחייבויות וחיבורים שמורים נשארים זהים."</string>
+    <string name="git_m3_upstream_help" formatted="false">"ללא במעלה הזרם, משיכה ודחיפה לא יידעו לאן ללכת."</string>
+    <string name="git_m3_use_branch">"השתמש בגרסת %1$s"</string>
+    <string name="git_m3_use_edited" formatted="false">"השתמש בגרסה הערוכה שלי"</string>
+    <string name="git_m3_use_phone" formatted="false">"השתמש בגרסה של הטלפון הזה"</string>
+    <string name="git_m3_use_remote">"השתמש בגרסה של %1$s"</string>
+    <string name="git_m3_vault_settings" formatted="false">"הגדרות הכספת"</string>
+    <string name="git_m3_vs">"לעומת %1$s"</string>
+    <string name="git_m3_what_each_does" formatted="false">"מה כל אחד עושה"</string>
+    <string name="git_m3_workspace" formatted="false">"סביבת עבודה"</string>
+    <string name="git_m3_yours">"↑%1$d שלי"</string>
     <string name="git_native_public_only" formatted="false">"פרוטוקול Git המקורי תומך בגישה ציבורית בלבד. יש להשתמש ב־HTTPS או ב־SSH לאימות."</string>
     <string name="gitops_action_failed" formatted="false">"Git לא הצליח להשלים את הפעולה הזו"</string>
     <string name="gitops_branch_action_failed" formatted="false">"לא ניתן להשלים את פעולת הענף"</string>
@@ -380,6 +1076,22 @@
     <string name="help_title" formatted="false">"עזרה"</string>
     <string name="history_screen" formatted="false">"היסטוריה"</string>
     <string name="http_transport_warning" formatted="false">"HTTP אינו מוצפן. ניתן לקרוא את נתוני המאגר ואת שם המשתמש או האסימון שהזנת בזמן ההעברה. יש להשתמש ב־HTTPS כאשר הוא זמין."</string>
+    <string name="l10n_a11y_pair">"%1$s, %2$s"</string>
+    <string name="l10n_added_count">"+%1$d"</string>
+    <string name="l10n_background_unavailable" formatted="false">"Background Sync אינו זמין"</string>
+    <string name="l10n_clone_preview_error" formatted="false">"האימות נכשל. היכנס שוב ונסה שוב."</string>
+    <string name="l10n_count">"%1$d"</string>
+    <string name="l10n_meta_pair">"%1$s · %2$s"</string>
+    <string name="l10n_not_vault_file" formatted="false">"אין קובץ בכספת הזו"</string>
+    <string name="l10n_push_local_branch" formatted="false">"עבור לסניף מקומי לפני הדחיפה"</string>
+    <string name="l10n_removed_count">"−%1$d"</string>
+    <string name="l10n_save_conditions" formatted="false">"לא ניתן לשמור תנאי Background Sync"</string>
+    <string name="l10n_save_default_author" formatted="false">"לא ניתן לשמור את מחבר ברירת המחדל"</string>
+    <string name="l10n_save_ssh_key" formatted="false">"לא ניתן לשמור את מפתח ה-SSH של הטלפון הזה"</string>
+    <string name="l10n_save_theme" formatted="false">"לא ניתן לשמור את ערכת הנושא"</string>
+    <string name="l10n_save_vault_preferences" formatted="false">"לא ניתן לשמור את העדפות הכספת"</string>
+    <string name="l10n_unsupported_vault_preference" formatted="false">"העדפת כספת לא נתמכת"</string>
+    <string name="l10n_vault_settings_failed" formatted="false">"לא ניתן היה לעדכן את הגדרות הכספת"</string>
     <string name="language_settings_legacy" formatted="false">"לפני Android 13, האפליקציה משתמשת בשפת המכשיר."</string>
     <string name="language_settings_title" formatted="false">"שפה"</string>
     <string name="language_settings_unavailable" formatted="false">"לא ניתן לפתוח את הגדרות השפה."</string>
@@ -421,12 +1133,213 @@
     <string name="lfs_locks_server">"שרת LFS: %1$s"</string>
     <string name="lfs_locks_title" formatted="false">"נעילות שרת"</string>
     <string name="lfs_locks_unsupported" formatted="false">"השרת הזה אינו תומך בנעילות Git LFS."</string>
+    <string name="lfs_m3_allow_downloads" formatted="false">"אפשר הורדות"</string>
+    <string name="lfs_m3_allow_uploads" formatted="false">"אפשר העלאות"</string>
+    <string name="lfs_m3_apply_rules" formatted="false">"החלת כללים"</string>
+    <string name="lfs_m3_apply_tracking" formatted="false">"החלת בחירת המעקב"</string>
+    <string name="lfs_m3_approval_scope" formatted="false">"בדוק כתובת זו עם בעל המאגר. האישור מכסה רק את המאגר הזה, השלט, נקודת הקצה והכיוון בטלפון זה."</string>
+    <string name="lfs_m3_approvals_title" formatted="false">"אישורי נקודות קצה של LFS"</string>
+    <string name="lfs_m3_attention" formatted="false">"Git LFS דורש תשומת לב"</string>
+    <string name="lfs_m3_auth_new" formatted="false">"שם משתמש ואסימון נפרדים"</string>
+    <string name="lfs_m3_auth_reuse" formatted="false">"שימוש בפרטי הזדהות שמורים של נקודת הקצה"</string>
+    <string name="lfs_m3_branch_remote">"%1$s · שלט %2$s"</string>
+    <string name="lfs_m3_cache_missing" formatted="false">"לא במטמון"</string>
+    <string name="lfs_m3_cache_verified" formatted="false">"מטמון מאומת"</string>
+    <string name="lfs_m3_cancel" formatted="false">"ביטול"</string>
+    <string name="lfs_m3_candidate_changed">"%1$s · השתנה, עדיין לא בוצע מעקב"</string>
+    <string name="lfs_m3_candidate_new">"%1$s · חדש, עדיין לא במעקב"</string>
+    <string name="lfs_m3_check_ownership" formatted="false">"בדוק בעלות"</string>
+    <string name="lfs_m3_create_body" formatted="false">"חיבורים אחרים רואים אותו כנעול עד שתשחרר אותו. שום דבר בטלפון הזה לא משתנה."</string>
+    <string name="lfs_m3_download_body" formatted="false">"מאגר זה רוצה להוריד תוכן קבצים משרת LFS נפרד."</string>
+    <string name="lfs_m3_download_missing" formatted="false">"הורד תוכן חסר"</string>
+    <string name="lfs_m3_download_progress" formatted="false">"התקדמות ההורדה"</string>
+    <string name="lfs_m3_download_title" formatted="false">"לאפשר הורדות LFS?"</string>
+    <string name="lfs_m3_downloading_prepare" formatted="false">"הורדת תוכן חסר"</string>
+    <string name="lfs_m3_downloads" formatted="false">"הורדות"</string>
+    <string name="lfs_m3_endpoint_auth" formatted="false">"אימות בנקודת הקצה"</string>
+    <string name="lfs_m3_endpoints_empty" formatted="false">"אין נקודות קצה LFS מותאמות שאושרו"</string>
+    <string name="lfs_m3_endpoints_intro" formatted="false">"שרתי LFS נפרדים שהמאגרים שלך עשויים להשתמש בהם. ביטול עוצר העברות עתידיות בכיוון זה; כל דבר שכבר פועל עשוי להסתיים."</string>
+    <string name="lfs_m3_endpoints_none" formatted="false">"הגדרות · אין אישור"</string>
+    <string name="lfs_m3_endpoints_title" formatted="false">"נקודות קצה של LFS"</string>
+    <string name="lfs_m3_error_changed" formatted="false">"האישורים השתנו במהלך הבדיקה. טען אותם מחדש ובדוק שוב את ההעברה."</string>
+    <string name="lfs_m3_ext_note_existing" formatted="false">"קבצים שכבר יש להם בחירת מעקב משלהם שומרים אותו."</string>
+    <string name="lfs_m3_ext_note_limits" formatted="false">"קבצים שהתעלמו נשארים מתעלמים מהם. מגבלות האחסון תלויות במארח Git שלך."</string>
+    <string name="lfs_m3_ext_note_stage" formatted="false">"רק .gitattributes שינויים. שלב את הקבצים כדי להפוך אותם למצביעים."</string>
+    <string name="lfs_m3_ext_scope" formatted="false">"מכסה קבצים תואמים נוכחיים ועתידיים בכל תיקיה. ההתאמה היא תלוית רישיות."</string>
+    <string name="lfs_m3_ext_title" formatted="false">"לעקוב אחר סיומות תואמות?"</string>
+    <string name="lfs_m3_extensions_updated" formatted="false">"כללי ההרחבה עודכנו. שלב .gitattributes והקבצים, ולאחר מכן בצע ביצוע."</string>
+    <string name="lfs_m3_fact_endpoint" formatted="false">"נקודת קצה LFS"</string>
+    <string name="lfs_m3_fact_remote" formatted="false">"מאגר Git מרוחק"</string>
+    <string name="lfs_m3_fact_repository" formatted="false">"מאגר"</string>
+    <string name="lfs_m3_force_ack" formatted="false">"אני מבין שמישהו עדיין עורך את הקובץ הזה."</string>
+    <string name="lfs_m3_force_title" formatted="false">"לשחרר בכוח נעילה של בעלים אחר?"</string>
+    <string name="lfs_m3_force_warning" formatted="false">"זה מסיר מנעול המוחזק על ידי חיבור אחר. בדוק קודם עם הבעלים שלו."</string>
+    <string name="lfs_m3_http_warning" formatted="false">"HTTP אינו מוצפן. ניתן לקרוא נתוני מאגר וכל שם משתמש או אסימון בזמן העברה. השתמש ב-HTTPS כאשר אתה יכול."</string>
+    <string name="lfs_m3_keep_body" formatted="false">"מוסיף כללים רגילים מפורשים-Git. התוכן נכנס להתחייבויות שלך. קבצים מעל 100 MiB עדיין צריכים LFS."</string>
+    <string name="lfs_m3_keep_git" formatted="false">"שמור על Git רגיל"</string>
+    <string name="lfs_m3_keep_title" formatted="false">"לשמור אותם ב-Git הרגיל?"</string>
+    <string name="lfs_m3_list_read_only" formatted="false">"רשימה לקריאה בלבד"</string>
+    <string name="lfs_m3_lock_a_file" formatted="false">"נעל קובץ"</string>
+    <string name="lfs_m3_lockable_caption" formatted="false">"רק קבצים המסומנים כניתנים לנעילה ב-.gitattributes מופיעים כאן."</string>
+    <string name="lfs_m3_locked" formatted="false">"נעול"</string>
+    <string name="lfs_m3_locked_on_server" formatted="false">"נעול בשרת"</string>
+    <string name="lfs_m3_locks_empty" formatted="false">"שום דבר לא נעול בסניף הזה."</string>
+    <string name="lfs_m3_locks_intro" formatted="false">"בדוק בעלות לפני שתחליף מנעול. מנעולים חיים בשרת; הקבצים וההתחייבויות שלך נשארים במקום."</string>
+    <string name="lfs_m3_match_extensions" formatted="false">"תוספים מתאימים..."</string>
+    <string name="lfs_m3_needs_choice" formatted="false">"זקוק לבחירת מעקב"</string>
+    <string name="lfs_m3_no_lockable" formatted="false">"אין קבצים ננעלים."</string>
+    <string name="lfs_m3_no_tracked" formatted="false">"עדיין לא מאוחסנים קבצים ב-LFS בסניף זה."</string>
+    <string name="lfs_m3_not_shared" formatted="false">"הכניסה שלך GitHub אינה משותפת עם שרת זה. אישורים נפרדים מוצפנים בטלפון זה. נהל אותם בהגדרות › נקודות קצה LFS."</string>
+    <string name="lfs_m3_ok" formatted="false">"אישור"</string>
+    <string name="lfs_m3_owned_here" formatted="false">"בבעלות החיבור הזה"</string>
+    <string name="lfs_m3_owner">"בעלים: %1$s"</string>
+    <string name="lfs_m3_public_access" formatted="false">"גישה ציבורית"</string>
+    <string name="lfs_m3_refresh_required" formatted="false">"זה עבד, אבל מצב ה-LFS החדש לא נטען. טען מחדש לפני שאתה עושה משהו אחר."</string>
+    <string name="lfs_m3_release_body" formatted="false">"אחרים יכולים לנעול ולערוך אותו שוב. הקובץ המקומי וההתחייבויות יישארו כפי שהם."</string>
+    <string name="lfs_m3_release_review" formatted="false">"שחרור..."</string>
+    <string name="lfs_m3_reload" formatted="false">"טעינה מחדש של מצב LFS"</string>
+    <string name="lfs_m3_reset_all" formatted="false">"איפוס כל אישורי נקודות קצה LFS"</string>
+    <string name="lfs_m3_reset_body" formatted="false">"מסיר כל אישור נקודת קצה מותאם אישית ואת האישורים השמורים שלו בטלפון זה. כל נקודת קצה וכיוון יזדקקו לבדיקה חדשה."</string>
+    <string name="lfs_m3_reset_confirm" formatted="false">"איפוס אישורים"</string>
+    <string name="lfs_m3_reset_title" formatted="false">"לאפס את כל אישורי נקודות קצה LFS?"</string>
+    <string name="lfs_m3_review_changed" formatted="false">"המנעולים השתנו מאז שפתחת את זה. בטל ובדוק שוב בעלות."</string>
+    <string name="lfs_m3_revoke" formatted="false">"ביטול אישור"</string>
+    <string name="lfs_m3_revoke_download_body">"הורדות עתידיות מ-%1$s יצטרכו סקירה חדשה. אישור ההעלאה והאישורים השמורים שלו נשארים."</string>
+    <string name="lfs_m3_revoke_download_title" formatted="false">"לבטל את אישור ההורדה?"</string>
+    <string name="lfs_m3_revoke_downloads" formatted="false">"ביטול הרשאת הורדות"</string>
+    <string name="lfs_m3_revoke_upload_body">"העלאות עתידיות ל-%1$s יצטרכו בדיקה חדשה. אישור ההורדה והאישורים השמורים שלו נשארים."</string>
+    <string name="lfs_m3_revoke_upload_title" formatted="false">"לבטל את אישור ההעלאה?"</string>
+    <string name="lfs_m3_revoke_uploads" formatted="false">"ביטול הרשאת העלאות"</string>
+    <string name="lfs_m3_scope_read_only" formatted="false">"רשימה לקריאה בלבד · הבעלות לא אומתה"</string>
+    <string name="lfs_m3_scope_verified" formatted="false">"בעלות מאומתת עם חיבור זה"</string>
+    <string name="lfs_m3_secret" formatted="false">"– טוקן או סיסמה"</string>
+    <string name="lfs_m3_separate_credentials" formatted="false">"הפרד אישורים מוצפנים"</string>
+    <string name="lfs_m3_server">"שרת LFS %1$s"</string>
+    <string name="lfs_m3_ssh_authorization" formatted="false">"הרשאה מ־SSH"</string>
+    <string name="lfs_m3_ssh_review" formatted="false">"נקודת קצה HTTP זו מקבלת הרשאה קצרת מועד מהשרת המאומת SSH. מפתח SSH שלך נשאר בטלפון הזה. ניתן לקרוא את ההרשאה בזמן העברה ולעולם לא נשמר."</string>
+    <string name="lfs_m3_stale" formatted="false">"הקבצים השתנו מאז שפתחת את זה. בטל ובדוק שוב."</string>
+    <string name="lfs_m3_state_pointer" formatted="false">"מצביע · הורד תוכן"</string>
+    <string name="lfs_m3_stored_body" formatted="false">"התחייבויות לשמור מצביעים קטנים. Pull מוריד את התוכן, לחץ מעלה אותם תחילה."</string>
+    <string name="lfs_m3_stored_kicker" formatted="false">"מאוחסן ב-LFS"</string>
+    <string name="lfs_m3_stored_locked">"%1$s · %2$d נעול"</string>
+    <string name="lfs_m3_subtitle">"%1$s · %2$s · Git LFS"</string>
+    <string name="lfs_m3_tab_files" formatted="false">"קבצים"</string>
+    <string name="lfs_m3_tab_locks" formatted="false">"מנעולים"</string>
+    <string name="lfs_m3_title" formatted="false">"קבצים גדולים"</string>
+    <string name="lfs_m3_track_body" formatted="false">"מוסיף כללי LFS בנתיב מדויק עבור הקבצים למטה. מגבלות האחסון ורוחב הפס תלויות במארח Git שלך. שלב את השינויים, ואז התחייב."</string>
+    <string name="lfs_m3_track_title" formatted="false">"להשתמש ב-LFS עבור קבצים אלה?"</string>
+    <string name="lfs_m3_tracked_files" formatted="false">"קבצים במעקב"</string>
+    <string name="lfs_m3_tracking_caption" formatted="false">"רק .gitattributes שינויים. הקבצים שלך נשארים במקום עד שאתה מביים אותם."</string>
+    <string name="lfs_m3_tracking_updated" formatted="false">"כללי המעקב עודכנו. שלב .gitattributes והקבצים, ולאחר מכן בצע ביצוע."</string>
+    <string name="lfs_m3_unsupported" formatted="false">"שרת זה אינו תומך במנעולי Git LFS."</string>
+    <string name="lfs_m3_upload_body" formatted="false">"מאגר זה רוצה לשלוח תוכן קובץ לשרת LFS נפרד."</string>
+    <string name="lfs_m3_upload_title" formatted="false">"לאפשר העלאות LFS?"</string>
+    <string name="lfs_m3_uploads" formatted="false">"העלאות"</string>
+    <string name="lfs_m3_username" formatted="false">"שם משתמש לנקודת קצה LFS"</string>
     <string name="lfs_tracking_updated" formatted="false">"כללי המעקב עודכנו. יש לבדוק את .gitattributes ואת הקבצים שנבחרו, להוסיף אותם לאינדקס ואז ליצור commit."</string>
     <string name="m3_editor_preview" formatted="false">"תצוגה מקדימה"</string>
     <string name="m3_editor_write" formatted="false">"כתיבה"</string>
     <string name="m3_open_in_editor" formatted="false">"פתיחה בעורך"</string>
     <string name="m3_paywall_paid_with_play" formatted="false">"התשלום דרך חשבון Google Play שלך"</string>
     <string name="m3_pick_a_file" formatted="false">"בחרו קובץ כדי לראות את השינויים בו."</string>
+    <string name="m3home_add_first" formatted="false">"הוסיפו את הכספת הראשונה שלכם"</string>
+    <string name="m3home_add_vault" formatted="false">"הוספת כספת"</string>
+    <string name="m3home_auth_body" formatted="false">"ההערות שלך בטוחות בטלפון הזה. שום דבר לא אבד."</string>
+    <string name="m3home_auth_headline" formatted="false">"הסנכרון מושהה."</string>
+    <string name="m3home_auth_held">"↑%1$d מוחזקים"</string>
+    <string name="m3home_auth_kicker">"פג תוקף ההתחברות ל-GitHub · %1$s"</string>
+    <string name="m3home_auth_paused" formatted="false">"מושהה"</string>
+    <string name="m3home_auth_row_meta">"%1$s · סנכרון אחרון %2$s"</string>
+    <string name="m3home_auth_sign_in" formatted="false">"התחברות עם GitHub"</string>
+    <string name="m3home_auth_unaffected_label" formatted="false">"לא מושפע"</string>
+    <string name="m3home_auth_waiting_label" formatted="false">"ממתין להתחברות"</string>
+    <string name="m3home_badge_both">"↓%1$d ↑%2$d"</string>
+    <string name="m3home_badge_checking" formatted="false">"בבדיקה"</string>
+    <string name="m3home_badge_in_sync" formatted="false">"מסונכרן"</string>
+    <string name="m3home_badge_local_only" formatted="false">"מקומי בלבד"</string>
+    <string name="m3home_badge_needs_you" formatted="false">"צריך אותך"</string>
+    <string name="m3home_badge_sync_failed" formatted="false">"לא הסתנכרן"</string>
+    <string name="m3home_badge_syncing" formatted="false">"מסנכרן"</string>
+    <string name="m3home_badge_to_pull">"↓%1$d ל-pull"</string>
+    <string name="m3home_badge_to_push">"↑%1$d ל-push"</string>
+    <string name="m3home_badge_unreadable" formatted="false">"לא יכול לקרוא"</string>
+    <string name="m3home_cred_github" formatted="false">"GitHub חשבון"</string>
+    <string name="m3home_cred_local" formatted="false">"בטלפון זה"</string>
+    <string name="m3home_cred_public" formatted="false">"– ציבורי"</string>
+    <string name="m3home_cred_ssh" formatted="false">"SSH – מפתח"</string>
+    <string name="m3home_cred_token" formatted="false">"אסימון"</string>
+    <string name="m3home_empty_rail_description" formatted="false">"טלפון וGitHub, אין עדיין מה לסנכרן"</string>
+    <string name="m3home_empty_rail_nothing" formatted="false">"אין מה לסנכרן"</string>
+    <string name="m3home_empty_signed_in">"מחובר בתור @%1$s"</string>
+    <string name="m3home_empty_title" formatted="false">"אין עדיין כספות."</string>
+    <string name="m3home_filter_all">"הכול %1$d"</string>
+    <string name="m3home_filter_attention">"דורש תשומת לב %1$d"</string>
+    <string name="m3home_filter_empty_attention" formatted="false">"שום דבר לא צריך אותך. כל כספת מסונכרנת."</string>
+    <string name="m3home_filter_empty_pinned" formatted="false">"עדיין אין כספות מוצמדות. לחץ לחיצה ארוכה על כספת ובחר הצמד למעלה."</string>
+    <string name="m3home_filter_pinned" formatted="false">"מוצמד"</string>
+    <string name="m3home_headline_ready_accent" formatted="false">"מסונכרן."</string>
+    <string name="m3home_how_title" formatted="false">"איך זה עובד"</string>
+    <string name="m3home_meta_checked">"נבדק %1$s"</string>
+    <string name="m3home_meta_checking">"בדיקת %1$d"</string>
+    <string name="m3home_meta_in_sync">"%1$d מסונכרנים"</string>
+    <string name="m3home_meta_lfs">"%1$s LFS"</string>
+    <string name="m3home_meta_loading" formatted="false">"בבדיקה…"</string>
+    <string name="m3home_meta_never_checked" formatted="false">"טרם נבדק"</string>
+    <string name="m3home_meta_not_synced" formatted="false">"עדיין לא סונכרן"</string>
+    <string name="m3home_meta_unreadable" formatted="false">"לא יכול לקרוא את התיקיה הזו"</string>
+    <string name="m3home_offline_accent" formatted="false">"נשלים את הפער."</string>
+    <string name="m3home_offline_fab" formatted="false">"יסונכרן כשיהיה חיבור"</string>
+    <string name="m3home_offline_headline" formatted="false">"המשיכו לכתוב."</string>
+    <string name="m3home_offline_last_known" formatted="false">"ידוע לאחרונה: מסונכרן"</string>
+    <string name="m3home_offline_last_known_behind">"ידוע לאחרונה: ↓%1$d"</string>
+    <string name="m3home_offline_meta">"אין חיבור · נבדק לאחרונה %1$s"</string>
+    <string name="m3home_offline_meta_never" formatted="false">"אין חיבור"</string>
+    <string name="m3home_offline_queued">"↑%1$d בתור"</string>
+    <string name="m3home_offline_row_meta">"%1$s · מסונכרן %2$s"</string>
+    <string name="m3home_onboarding_accent" formatted="false">"תמיד מתואם."</string>
+    <string name="m3home_onboarding_body" formatted="false">"אפשר לשכפל כל מאגר, לכתוב ב-Obsidian או בכל אפליקציה אחרת ולסנכרן בנגיעה אחת."</string>
+    <string name="m3home_onboarding_demo" formatted="false">"הסתכל מסביב עם כספת הדגמה"</string>
+    <string name="m3home_onboarding_github" formatted="false">"המשך עם GitHub"</string>
+    <string name="m3home_onboarding_headline" formatted="false">"ההערות שלך.\nReal git."</string>
+    <string name="m3home_onboarding_other" formatted="false">"SSH, אסימון או מארח אחר"</string>
+    <string name="m3home_onboarding_rail" formatted="false">"פתקים בטלפון ו-commits ב-GitHub נפגשים בנקודת סנכרון אחת"</string>
+    <string name="m3home_onboarding_save_error" formatted="false">"לא ניתן לשמור את הבחירה שלך. נסה שוב."</string>
+    <string name="m3home_onboarding_this_phone" formatted="false">"הטלפון הזה"</string>
+    <string name="m3home_pin" formatted="false">"הצמדה למעלה"</string>
+    <string name="m3home_pin_failed" formatted="false">"לא ניתן לשמור את הסיכה. נסה שוב."</string>
+    <string name="m3home_pinned" formatted="false">"מוצמד"</string>
+    <string name="m3home_rail_github" formatted="false">"GitHub"</string>
+    <string name="m3home_rail_phone" formatted="false">"טלפון"</string>
+    <string name="m3home_rail_remote" formatted="false">"Remote"</string>
+    <string name="m3home_remove" formatted="false">"– הסרת מה- GitSync.md"</string>
+    <string name="m3home_row_actions" formatted="false">"פעולות כספת"</string>
+    <string name="m3home_session_dismiss" formatted="false">"סגירה"</string>
+    <string name="m3home_settings" formatted="false">"הגדרות"</string>
+    <string name="m3home_settings_signed_in">"הגדרות, מחובר בתור %1$s"</string>
+    <string name="m3home_start_github" formatted="false">"שכפול מ-GitHub"</string>
+    <string name="m3home_start_github_detail" formatted="false">"בחר אחד מהמאגרים שלך"</string>
+    <string name="m3home_start_local" formatted="false">"מצא שיבוטים בטלפון זה"</string>
+    <string name="m3home_start_local_detail" formatted="false">"Obsidian, MGit, Termux..."</string>
+    <string name="m3home_start_publish" formatted="false">"פרסום תיקייה"</string>
+    <string name="m3home_start_publish_detail" formatted="false">"הופך תיקייה למאגר חדש"</string>
+    <string name="m3home_start_url" formatted="false">"הדבק כתובת URL"</string>
+    <string name="m3home_start_url_detail" formatted="false">"כל מאגר Git מרוחק, ציבורי או פרטי"</string>
+    <string name="m3home_start_with" formatted="false">"התחלה עם"</string>
+    <string name="m3home_sync_all" formatted="false">"סנכרון הכול"</string>
+    <string name="m3home_sync_all_meta">"↓%1$d ↑%2$d"</string>
+    <string name="m3home_sync_busy" formatted="false">"Pull all כבר פועל. נסה שוב כשזה יסתיים."</string>
+    <string name="m3home_sync_done">"מסונכרן · משך %1$d · דחף %2$d"</string>
+    <string name="m3home_sync_failed">"לא ניתן היה לסנכרן את %1$s"</string>
+    <string name="m3home_sync_start_failed" formatted="false">"הסנכרון לא הצליח להתחיל. בדוק את רשימת הכספות שלך בהגדרות."</string>
+    <string name="m3home_syncing" formatted="false">"מסנכרן"</string>
+    <string name="m3home_syncing_meta">"%1$d מתוך %2$d"</string>
+    <string name="m3home_time_days">"לפני %1$d ימים"</string>
+    <string name="m3home_time_hours">"%1$dלפני h שניות"</string>
+    <string name="m3home_time_minutes_long">"לפני %1$d דק׳"</string>
+    <string name="m3home_time_minutes_short">"%1$dלפני m ימים"</string>
+    <string name="m3home_time_now" formatted="false">"– כרגע"</string>
+    <string name="m3home_time_yesterday" formatted="false">"אתמול"</string>
+    <string name="m3home_unpin" formatted="false">"ביטול הצמדה"</string>
     <string name="modified" formatted="false">"שונה"</string>
     <string name="move_cancelled" formatted="false">"ההעברה בוטלה. עותק העבודה המקורי נשמר."</string>
     <string name="move_confirm_action" formatted="false">"העבר"</string>
@@ -450,6 +1363,22 @@
     <string name="move_recovery_done" formatted="false">"שחזור ההעברה הושלם"</string>
     <string name="move_recovery_removed" formatted="false">"עותק השחזור הוסר"</string>
     <string name="move_title_restore" formatted="false">"שחזור עותק השחזור"</string>
+    <string name="newfile_m3_blank" formatted="false">"ריק"</string>
+    <string name="newfile_m3_builtin_idea" formatted="false">"רעיון"</string>
+    <string name="newfile_m3_create_open" formatted="false">"יצירה ופתיחה"</string>
+    <string name="newfile_m3_exists">"%1$s כבר קיים ב-%2$s. נסו שם אחר."</string>
+    <string name="newfile_m3_file_name" formatted="false">"שם קובץ"</string>
+    <string name="newfile_m3_folder" formatted="false">"תיקייה"</string>
+    <string name="newfile_m3_folder_name" formatted="false">"שם תיקייה"</string>
+    <string name="newfile_m3_in">"ב-%1$s"</string>
+    <string name="newfile_m3_invalid" formatted="false">"השתמש בשם ללא / או \\."</string>
+    <string name="newfile_m3_invalid_dots" formatted="false">"\".\" ו-\"..\" שמורות. נסה שם אחר."</string>
+    <string name="newfile_m3_note" formatted="false">"פתק"</string>
+    <string name="newfile_m3_template">"תבנית · %1$s"</string>
+    <string name="newfile_m3_title_folder" formatted="false">"תיקייה חדשה"</string>
+    <string name="newfile_m3_title_note" formatted="false">"הערה חדשה"</string>
+    <string name="newfile_m3_today" formatted="false">"התאריך של היום"</string>
+    <string name="newfile_m3_too_long" formatted="false">"השם הזה ארוך מדי. השתמש באחד קצר יותר."</string>
     <string name="notes_acknowledge" formatted="false">"הבנתי"</string>
     <string name="notes_connections_body" formatted="false">"ניהול חשבונות GitHub וזהות מחבר המאגר. חיבור דרך HTTPS או SSH, בחירת אחסון לשכפול, חיבור מחדש של עותקים מקומיים ובדיקת העברה או הסרה של מאגרים."</string>
     <string name="notes_connections_title" formatted="false">"חיבורים ואחסון"</string>
@@ -458,6 +1387,10 @@
     <string name="notes_version">"Android ⁦%1$s⁩ · גרסת בנייה %2$d"</string>
     <string name="notes_workflow_body" formatted="false">"עיון ועריכה של קבצים, בדיקת הבדלים שהוכנו ושלא הוכנו, יצירת קומיטים מקומיים, דחיפת קומיטים קיימים ועבודה עם ענפים, היסטוריה, תגיות ו־rebase."</string>
     <string name="notes_workflow_title" formatted="false">"תהליך העבודה במאגר"</string>
+    <string name="notification_m3_open_obsidian" formatted="false">"פתוח בעוד Obsidian"</string>
+    <string name="notification_m3_pulled" formatted="false">"שינויים חדשים נמשכו ברקע."</string>
+    <string name="notification_m3_see_changes" formatted="false">"ראה שינויים"</string>
+    <string name="notification_m3_updated">"%1$s עודכן"</string>
     <string name="obsidian_forgotten" formatted="false">"מסירות עתידיות מושבתות. יש להכין חיבור חדש כדי לחבר תיקייה זו מחדש."</string>
     <string name="obsidian_interrupted" formatted="false">"החיבור נעצר. אף בקשה לא תופעל מחדש אוטומטית. יש להכין חיבור חדש לפני ניסיון נוסף ב־Obsidian."</string>
     <string name="obsidian_return" formatted="false">"חזרה אל Obsidian"</string>
@@ -560,6 +1493,47 @@
     <string name="pull_all_widget_description" formatted="false">"משיכת עדכונים וביצוע fast-forward בכל המאגרים המקומיים בלי לפתוח את GitSync.md."</string>
     <string name="pull_all_widget_subtitle" formatted="false">"משיכה ו-fast-forward בלבד"</string>
     <string name="pull_screen" formatted="false">"משיכה"</string>
+    <string name="pullall_m3_again" formatted="false">"משיכת הכל שוב"</string>
+    <string name="pullall_m3_attention_blocked" formatted="false">"נשמר ללא שינוי. תחילה עליך לבצע או לאחסן שינויים מקומיים."</string>
+    <string name="pullall_m3_attention_failed" formatted="false">"לא יכול היה למשוך בבטחה. בדוק את החיבור ואת הגישה לתיקיות."</string>
+    <string name="pullall_m3_attention_lfs" formatted="false">"משך. חלק מקבצי Git LFS עדיין זקוקים להורדה."</string>
+    <string name="pullall_m3_background" formatted="false">"משיכת הכל ברקע"</string>
+    <string name="pullall_m3_blocked" formatted="false">"נשמר ללא שינוי. בצע או שמור שינויים מקומיים, או סיים את פעולת Git הפתוחה ולאחר מכן נסה שוב."</string>
+    <string name="pullall_m3_clear" formatted="false">"ניקוי סיכום הרקע"</string>
+    <string name="pullall_m3_clear_body" formatted="false">"זה מוחק את סיכום הרקע האחרון. הכספות וההגדרות שלך נשארות כפי שהן. עבודה שהופסקה לא תתחיל מחדש מעצמה."</string>
+    <string name="pullall_m3_clear_confirm" formatted="false">"סיכום ברור"</string>
+    <string name="pullall_m3_clear_title" formatted="false">"סיכום רקע ברור?"</string>
+    <string name="pullall_m3_complete" formatted="false">"משיכת הכל הסתיימה. יש לבדוק את הסיכום השמור."</string>
+    <string name="pullall_m3_control_failed" formatted="false">"זה לא השתנה. פתח מחדש את המסך הזה ונסה שוב."</string>
+    <string name="pullall_m3_counts">"עודכן %1$d · נוכחי %2$d · LFS %3$d · חסום %4$d · נכשל %5$d"</string>
+    <string name="pullall_m3_current" formatted="false">"אין שינויים נכנסים"</string>
+    <string name="pullall_m3_empty" formatted="false">"עדיין אין כספות למשוך. שיכפל או הוסף אחד קודם."</string>
+    <string name="pullall_m3_failed" formatted="false">"משוך את כולם עצורים עם שגיאה. ייתכן שחלק מהמשיכות הסתיימו. בדוק את הסיכום וכל כספת לפני הפעלתה שוב."</string>
+    <string name="pullall_m3_help" formatted="false">"הוסף את הווידג\'ט Pull all למסך הבית שלך, או את האריח להגדרות מהירות. שניהם פועלים פעם אחת מבלי לפתוח את האפליקציה. תחזור לכאן כדי לראות מה קרה."</string>
+    <string name="pullall_m3_interrupted" formatted="false">"Pull all הופסק ולא יופעל מחדש מעצמו. יתכן משיכה תחילה. בדוק כל כספת לפני הפעלתה שוב."</string>
+    <string name="pullall_m3_item_failed" formatted="false">"לא ניתן היה למשוך בבטחה. בדוק את החיבור ואת הגישה לתיקייה, ולאחר מכן עיין ב-Git עבור סטייה."</string>
+    <string name="pullall_m3_lfs" formatted="false">"משך. חלק מקבצי Git LFS עדיין זקוקים להורדה. פתח את Git LFS כדי לנסות שוב."</string>
+    <string name="pullall_m3_not_run" formatted="false">"לא הופעל"</string>
+    <string name="pullall_m3_progress_cd" formatted="false">"משוך את כל ההתקדמות"</string>
+    <string name="pullall_m3_pulling" formatted="false">"מבצע pull…"</string>
+    <string name="pullall_m3_running" formatted="false">"Pull all פועל מבלי לפתוח את האפליקציה. השאר עוצרים כאשר אתה מקיש על עצור."</string>
+    <string name="pullall_m3_scope" formatted="false">"אחזר והריץ כל כספת בטלפון זה. משוך את כל השלבים, מתחייבים או דוחפים את השינויים שלך."</string>
+    <string name="pullall_m3_source_shortcut" formatted="false">"קיצור דרך"</string>
+    <string name="pullall_m3_source_tile" formatted="false">"אריח"</string>
+    <string name="pullall_m3_source_widget" formatted="false">"יישומון"</string>
+    <string name="pullall_m3_start" formatted="false">"–引っור כל 항ות"</string>
+    <string name="pullall_m3_start_failed" formatted="false">"לא ניתן היה להתחיל למשוך הכל. בדוק את הגדרות הכספת שלך ונסה שוב."</string>
+    <string name="pullall_m3_stop" formatted="false">"עצירת משיכת הכל"</string>
+    <string name="pullall_m3_stopped" formatted="false">"נעצר. ייתכן שכספת שכבר נמשכת הסתיימה, אז בדוק את הסטטוס שלה לפני שתנסה שוב. השאר לא התחילו."</string>
+    <string name="pullall_m3_stopping" formatted="false">"עצירה לאחר הכספת הזו..."</string>
+    <string name="pullall_m3_surfaces" formatted="false">"אריח יישומון והגדרות מהירות"</string>
+    <string name="pullall_m3_tile_preview" formatted="false">"GitSync.md\nמשוך הכל"</string>
+    <string name="pullall_m3_title" formatted="false">"–引っור כל 항ות"</string>
+    <string name="pullall_m3_unreadable" formatted="false">"לא ניתן לקרוא את סיכום הרקע השמור והוא נשמר. נקה אותו לפני שתתחיל ריצת רקע נוספת."</string>
+    <string name="pullall_m3_updated" formatted="false">"עודכן מהמאגר המרוחק"</string>
+    <string name="pullall_m3_when_source">"%1$s · מה-%2$s"</string>
+    <string name="pullall_m3_widget_name" formatted="false">"–引っור כל 항ות"</string>
+    <string name="pullall_m3_widget_sub" formatted="false">"משיכה ו-fast-forward בלבד"</string>
     <string name="push_all_repositories" formatted="false">"כל המאגרים, כולל מאגרים עתידיים"</string>
     <string name="push_cancelled" formatted="false">"החיבור ל-GitHub בוטל."</string>
     <string name="push_channel" formatted="false">"עדכוני מאגרים"</string>
@@ -617,6 +1591,7 @@
     <string name="repository_actions_changes">"נתיבים שהשתנו: %1$d"</string>
     <string name="repository_actions_confirm" formatted="false">"הפעלה פעם אחת"</string>
     <string name="repository_actions_destination">"ענף במעקב: ⁨%1$s / %2$s⁩"</string>
+    <string name="repository_actions_destination_none" formatted="false">"במעלה הזרם: אין"</string>
     <string name="repository_actions_dirty" formatted="false">"שינויים מקומיים מונעים משיכה של קומיטים נכנסים. בצעו קומיט או שמרו אותם בסטאש תחילה."</string>
     <string name="repository_actions_diverged" formatted="false">"ההיסטוריות המקומית והמרוחקת התפצלו. בחרו במפורש מיזוג או rebase בפקדי Git."</string>
     <string name="repository_actions_failed" formatted="false">"לא ניתן להשלים את הפעולה. בדקו את החיבור, החשבון, האמון והגישה לתיקייה, ולאחר מכן את המצב הנוכחי לפני ניסיון נוסף."</string>
@@ -681,6 +1656,325 @@
     <string name="resolve_local_superseded" formatted="false">"המאגר שנבחר השתנה. בדוק שוב את השינויים המקומיים."</string>
     <string name="resolve_local_title" formatted="false">": עריכות מקומיות מונעות את ה-\"pull\" הזה"</string>
     <string name="settings_folder_unavailable" formatted="false">"הגישה לתיקייה דורשת תשומת לב"</string>
+    <string name="settings_m3_account_meta">"@%1$s · GitHub"</string>
+    <string name="settings_m3_accounts" formatted="false">"חשבונות GitHub"</string>
+    <string name="settings_m3_app_storage" formatted="false">"אחסון האפליקציה"</string>
+    <string name="settings_m3_author_account_meta">"%1$s · שום דבר עדיין לא נשמר בכספת הזו"</string>
+    <string name="settings_m3_author_account_meta_global">"%1$s · עדיין לא נשמרה ברירת מחדל"</string>
+    <string name="settings_m3_author_changed" formatted="false">"מחבר זה השתנה מחוץ ל-GitSync.md, אולי על-ידי Git ב-Mac שלך. טען מחדש כדי לראות מה כתוב עכשיו."</string>
+    <string name="settings_m3_author_default" formatted="false">"Default"</string>
+    <string name="settings_m3_author_email" formatted="false">"אימייל המחבר"</string>
+    <string name="settings_m3_author_from_account" formatted="false">"מחשבון GitHub שלך"</string>
+    <string name="settings_m3_author_global_subtitle" formatted="false">"כל כספת ללא מחבר משלה"</string>
+    <string name="settings_m3_author_help_changed" formatted="false">"טען מחדש לפני השמירה, או שתחליף את המחבר החדש יותר."</string>
+    <string name="settings_m3_author_help_match" formatted="false">"התאם את הדוא\"ל שבו משתמש Git ב-Mac שלך כך ששניהם יופיעו כמוך."</string>
+    <string name="settings_m3_author_help_noreply" formatted="false">"הכתובת הפרטית של GitHub, כך שהאימייל האמיתי שלך יישאר מוסתר."</string>
+    <string name="settings_m3_author_intro" formatted="false">"התחייבויות חדשות בכספת זו משתמשות בשם ובאימייל זה. מתחייב שכבר ביצעת לשמור על המחבר שלהם."</string>
+    <string name="settings_m3_author_intro_global" formatted="false">"התחייבויות חדשות בכספות שלך משתמשות בשם ובאימייל הזה, אלא אם כספת שומרת את שלה. מתחייב שכבר ביצעת לשמור על המחבר שלהם."</string>
+    <string name="settings_m3_author_name" formatted="false">"שם המחבר"</string>
+    <string name="settings_m3_author_override" formatted="false">"ביטול"</string>
+    <string name="settings_m3_author_preview_message" formatted="false">"עדכון מ-GitSync.md"</string>
+    <string name="settings_m3_author_preview_meta">"%1$s &lt;%2$s&gt; · עכשיו"</string>
+    <string name="settings_m3_author_preview_title" formatted="false">"ההתחייבות הבאה שלך תקרא"</string>
+    <string name="settings_m3_author_reading" formatted="false">"קריאת תצורת הכספת הזו Git..."</string>
+    <string name="settings_m3_author_save" formatted="false">"שמירת המחבר"</string>
+    <string name="settings_m3_author_save_note" formatted="false">"שמירה סוגרת דף זה. שום דבר לא מחויב."</string>
+    <string name="settings_m3_author_saved_global" formatted="false">"נשמר עבור כל הכספות"</string>
+    <string name="settings_m3_author_saved_global_meta">"בטלפון זה · עוקף את %1$s"</string>
+    <string name="settings_m3_author_saved_vault" formatted="false">"נשמר בכספת זו"</string>
+    <string name="settings_m3_author_saved_vault_meta">".git/config · עוקף את %1$s"</string>
+    <string name="settings_m3_author_scope" formatted="false">"רק הכספת הזו משתנה. הכספות האחרות שלך שומרות על המחבר שלהן, או השתמשו בחשבון GitHub שהן מסתנכרנות איתו."</string>
+    <string name="settings_m3_author_scope_global" formatted="false">"כספות עם מחבר נשמר ב-.git/config משלהם. אתה עדיין יכול לשנות כספת בודדת בהגדרות הכספת שלה."</string>
+    <string name="settings_m3_author_use_account" formatted="false">"השתמש בחשבון GitHub שלי במקום זאת"</string>
+    <string name="settings_m3_author_your_account" formatted="false">"חשבון GitHub שלך"</string>
+    <string name="settings_m3_background_on">"פועל · %1$d כספות"</string>
+    <string name="settings_m3_background_sync" formatted="false">"Background Sync"</string>
+    <string name="settings_m3_bg_attention_short" formatted="false">"זקוק לבדיקה"</string>
+    <string name="settings_m3_bg_charging" formatted="false">"טעינה"</string>
+    <string name="settings_m3_bg_cond_any" formatted="false">"בכל חיבור"</string>
+    <string name="settings_m3_bg_cond_both" formatted="false">"רק ב-Wi-Fi בזמן טעינה"</string>
+    <string name="settings_m3_bg_cond_charging" formatted="false">"רק בזמן טעינה"</string>
+    <string name="settings_m3_bg_cond_wifi" formatted="false">"רק ב-Wi-Fi"</string>
+    <string name="settings_m3_bg_conditions_apply">"מריץ %1$s, כמו כל כספת כלולה."</string>
+    <string name="settings_m3_bg_connect" formatted="false">"התחברות"</string>
+    <string name="settings_m3_bg_failed_short" formatted="false">"לא ניתן היה לסנכרן"</string>
+    <string name="settings_m3_bg_include_cd">"כלול %1$s ב-Background Sync"</string>
+    <string name="settings_m3_bg_intro" formatted="false">"Android מתזמן בדיקות בערך כל 15 דקות או מאוחר יותר, בהתאם להגבלות הקישוריות, הסוללה והמערכת. המאמץ הטוב ביותר, אף פעם לא בזמן אמת."</string>
+    <string name="settings_m3_bg_modes" formatted="false">"מצבים"</string>
+    <string name="settings_m3_bg_never" formatted="false">"הוא לעולם לא"</string>
+    <string name="settings_m3_bg_no_runs" formatted="false">"עדיין אין ריצות. Android מתחיל את הבדיקה הראשונה תוך כ-15 דקות."</string>
+    <string name="settings_m3_bg_nudge" formatted="false">"קבל דחיפה כאשר GitHub משתנה"</string>
+    <string name="settings_m3_bg_nudge_sub" formatted="false">"הצטרפות. המשיכה יכולה להתחיל מיד."</string>
+    <string name="settings_m3_bg_only_when" formatted="false">"רק כאשר"</string>
+    <string name="settings_m3_bg_pull_sub" formatted="false">"קידום מהיר בלבד"</string>
+    <string name="settings_m3_bg_push_sub" formatted="false">"מפסיק אם השלט זז ראשון"</string>
+    <string name="settings_m3_bg_recent" formatted="false">"הרצות אחרונות"</string>
+    <string name="settings_m3_bg_run_failed">"%1$s לא הצליח לסנכרן"</string>
+    <string name="settings_m3_bg_run_local_edits">"%1$s דילג: עריכות מקומיות"</string>
+    <string name="settings_m3_bg_run_offline">"%1$s מחכה לחיבור"</string>
+    <string name="settings_m3_bg_run_power">"%1$s מחכה לטעינה"</string>
+    <string name="settings_m3_bg_run_pushed" formatted="false">"↑ דחף"</string>
+    <string name="settings_m3_bg_run_review">"%1$s זקוק לבדיקה"</string>
+    <string name="settings_m3_bg_run_skipped">"%1$s דולג: %2$s"</string>
+    <string name="settings_m3_bg_run_wifi">"%1$s מחכה ל-Wi-Fi"</string>
+    <string name="settings_m3_bg_vault_missing" formatted="false">"התיקיה לא נוספה עוד. תשכח מזה או הוסף שוב את הכספת."</string>
+    <string name="settings_m3_bg_vault_not_included" formatted="false">"לא כלול"</string>
+    <string name="settings_m3_bg_vaults" formatted="false">"כספות"</string>
+    <string name="settings_m3_bg_wifi" formatted="false">"ב-Wi-Fi"</string>
+    <string name="settings_m3_close" formatted="false">"סגירה"</string>
+    <string name="settings_m3_commit_as" formatted="false">"Commit בתור"</string>
+    <string name="settings_m3_debug_app" formatted="false">"יישום"</string>
+    <string name="settings_m3_debug_background" formatted="false">"BACKGROUND"</string>
+    <string name="settings_m3_debug_bg" formatted="false">"BG"</string>
+    <string name="settings_m3_debug_clear" formatted="false">"– נקי"</string>
+    <string name="settings_m3_debug_copy" formatted="false">"העתק ערכים גלויים"</string>
+    <string name="settings_m3_debug_day_time">"%1$s %2$s"</string>
+    <string name="settings_m3_debug_error" formatted="false">"שגיאה"</string>
+    <string name="settings_m3_debug_errors_count">"שגיאות %1$d"</string>
+    <string name="settings_m3_debug_info" formatted="false">"הצג מידע על ניפוי באגים"</string>
+    <string name="settings_m3_debug_info_tag" formatted="false">"מידע"</string>
+    <string name="settings_m3_debug_log" formatted="false">"יומן ניפוי באגים"</string>
+    <string name="settings_m3_debug_removed_vault" formatted="false">"הכספת הוסרה"</string>
+    <string name="settings_m3_debug_share" formatted="false">"שיתוף אבחון"</string>
+    <string name="settings_m3_debug_warn" formatted="false">"אזהרה"</string>
+    <string name="settings_m3_discord" formatted="false">"הצטרפות ל-Discord"</string>
+    <string name="settings_m3_done" formatted="false">"סיום"</string>
+    <string name="settings_m3_feedback_subtitle" formatted="false">"פותח את אפליקציית הדוא\"ל שלך"</string>
+    <string name="settings_m3_forget" formatted="false">"שכחה"</string>
+    <string name="settings_m3_full_access" formatted="false">"גישה מלאה ל-GitSync.md"</string>
+    <string name="settings_m3_group_app" formatted="false">"יישום"</string>
+    <string name="settings_m3_group_more" formatted="false">"חיבורים ועזרה"</string>
+    <string name="settings_m3_group_new_vaults" formatted="false">"כספות חדשות"</string>
+    <string name="settings_m3_group_purchase" formatted="false">"רכישה"</string>
+    <string name="settings_m3_group_sync" formatted="false">"סנכרון"</string>
+    <string name="settings_m3_help" formatted="false">"עזרה ואודות"</string>
+    <string name="settings_m3_how_clone_url" formatted="false">"שכפול מכתובת URL"</string>
+    <string name="settings_m3_how_count" formatted="false">"4 דברים שכדאי לדעת"</string>
+    <string name="settings_m3_how_github" formatted="false">"GitHub"</string>
+    <string name="settings_m3_how_it_works" formatted="false">"איך זה עובד"</string>
+    <string name="settings_m3_how_sample" formatted="false">"נסה את הדוגמה הלא מקוונת"</string>
+    <string name="settings_m3_how_start" formatted="false">"התחל מכאן"</string>
+    <string name="settings_m3_how_storage" formatted="false">"בחירת אחסון"</string>
+    <string name="settings_m3_how_subtitle" formatted="false">"מבט בן שתי דקות על היסודות"</string>
+    <string name="settings_m3_how_title" formatted="false">"כיצד פועל GitSync"</string>
+    <string name="settings_m3_language" formatted="false">"שפה"</string>
+    <string name="settings_m3_lfs_endpoints" formatted="false">"נקודות קצה של LFS"</string>
+    <string name="settings_m3_license" formatted="false">"רישיון"</string>
+    <string name="settings_m3_license_subtitle" formatted="false">"רכישה חד־פעמית דרך Google Play"</string>
+    <string name="settings_m3_move_action" formatted="false">"הזז כספת"</string>
+    <string name="settings_m3_move_cancel_meta" formatted="false">"משאיר את הכספת בתיקייה הישנה שלה"</string>
+    <string name="settings_m3_move_confirm_guidance" formatted="false">"השאר את Obsidian ויישומים אחרים מחוץ לשתי התיקיות עד לסיום המעבר."</string>
+    <string name="settings_m3_move_confirm_retained" formatted="false">"המקורי נשאר כעותק גיבוי."</string>
+    <string name="settings_m3_move_confirm_title" formatted="false">"להעביר את הכספת הזו?"</string>
+    <string name="settings_m3_move_copy_note" formatted="false">"זה חוצה לנפח אחסון אחר, כך ש-GitSync.md מעתיק ובודק כל קובץ, ואז שומר את המקורי תחת גיבויי העברה עד שתסיר אותו."</string>
+    <string name="settings_m3_move_finish_meta" formatted="false">"מתגבר היכן שהוא נעצר"</string>
+    <string name="settings_m3_move_from" formatted="false">"מ"</string>
+    <string name="settings_m3_move_interrupted" formatted="false">"מהלך הופסק. כל עותק שמצאנו נשמר עד שתסיים אותו."</string>
+    <string name="settings_m3_move_into" formatted="false">"לתוך"</string>
+    <string name="settings_m3_move_intro" formatted="false">"מעביר את כל הכספת: קבצים, היסטוריית Git ושינויים מבוימים. החשבון והמחויב שלו עוברים איתו."</string>
+    <string name="settings_m3_move_moving_button" formatted="false">"מעביר... השאר את GitSync.md פתוח"</string>
+    <string name="settings_m3_move_progress" formatted="false">"העברה ושמירה של הגדרות כספת..."</string>
+    <string name="settings_m3_move_title" formatted="false">"הזז כספת"</string>
+    <string name="settings_m3_move_will_move_to" formatted="false">"יעבור ל"</string>
+    <string name="settings_m3_never_force" formatted="false">"Force-push"</string>
+    <string name="settings_m3_never_overwrite" formatted="false">"דריסת העריכות"</string>
+    <string name="settings_m3_never_rebase" formatted="false">"Rebase או merge"</string>
+    <string name="settings_m3_never_resolve" formatted="false">"פתרון התנגשויות"</string>
+    <string name="settings_m3_never_send" formatted="false">"שלחו לנו את הקבצים שלכם"</string>
+    <string name="settings_m3_never_switch" formatted="false">"החלפת ענפים"</string>
+    <string name="settings_m3_not_now" formatted="false">"לא עכשיו"</string>
+    <string name="settings_m3_obsidian" formatted="false">"חיבורי Obsidian"</string>
+    <string name="settings_m3_obsidian_add_vault" formatted="false">"הוספת כספת"</string>
+    <string name="settings_m3_obsidian_before" formatted="false">"לפני שתתחיל"</string>
+    <string name="settings_m3_obsidian_command" formatted="false">"GitSync.md Connect: חבר את הכספת הזו"</string>
+    <string name="settings_m3_obsidian_connected" formatted="false">"מחובר"</string>
+    <string name="settings_m3_obsidian_empty" formatted="false">"הוסף או שיבוט כספת לתיקיית התקן תחילה. לא ניתן לפתוח כספות באחסון אפליקציות על ידי Obsidian."</string>
+    <string name="settings_m3_obsidian_error" formatted="false">"Obsidian לא הצליח להתחבר. בדוק את הגישה לתיקיות, את השלט GitHub HTTPS ואת חשבון הכספת, ולאחר מכן הכן חיבור חדש."</string>
+    <string name="settings_m3_obsidian_failed" formatted="false">"לא התחבר"</string>
+    <string name="settings_m3_obsidian_forget_action" formatted="false">"שכח חיבור"</string>
+    <string name="settings_m3_obsidian_forget_body">"GitSync.md מפסיק למסור אישורים ל-Obsidian עבור %1$s. האישורים Obsidian שכבר מיובאו נשארים שם; לבטל אותם בנפרד. הקבצים שלך נשארים במקום."</string>
+    <string name="settings_m3_obsidian_forget_title" formatted="false">"שכחת את החיבור הזה?"</string>
+    <string name="settings_m3_obsidian_intro" formatted="false">"תן לפלאגין Obsidian Git לדחוף ולמשוך עם חשבון GitHub של הכספת הזו. אישורים מוצפנים עבור הפלאגין הנלווה ולעולם לא הוכנסו לקישור."</string>
+    <string name="settings_m3_obsidian_prepare" formatted="false">"הכן חיבור"</string>
+    <string name="settings_m3_obsidian_prepared_lead" formatted="false">"החיבור הוכן."</string>
+    <string name="settings_m3_obsidian_prepared_open">"פתח את %1$s ב-Obsidian והפעל"</string>
+    <string name="settings_m3_obsidian_prepared_tail" formatted="false">". בקשה חדשה יותר מחליפה את הבקשה הזו."</string>
+    <string name="settings_m3_obsidian_ready">"אישורים מוצפנים מוכנים עבור Obsidian. Obsidian Git יכול כעת לסנכרן את %1$s."</string>
+    <string name="settings_m3_obsidian_req1_body" formatted="false">"Obsidian ו-GitSync.md חייבים לשתף תיקיית מכשיר אחת."</string>
+    <string name="settings_m3_obsidian_req1_title" formatted="false">"פתח את אותה תיקיה ב-Obsidian"</string>
+    <string name="settings_m3_obsidian_req2_body" formatted="false">"Git וGitSync.md Connect, ב-Obsidian › הגדרות."</string>
+    <string name="settings_m3_obsidian_req2_title" formatted="false">"הפעל שני תוספים קהילתיים"</string>
+    <string name="settings_m3_obsidian_req3_body" formatted="false">"עם חשבון GitHub שנבחר בחיבור של הכספת."</string>
+    <string name="settings_m3_obsidian_req3_title" formatted="false">"השתמש בשלט HTTPS GitHub"</string>
+    <string name="settings_m3_obsidian_req4_body" formatted="false">"הכנת מסירת אישורים בלבד, לא קבצים או היסטוריה."</string>
+    <string name="settings_m3_obsidian_req4_title" formatted="false">"שום דבר בכספת לא משתנה"</string>
+    <string name="settings_m3_obsidian_return_failed" formatted="false">"Obsidian לא נפתח. הפעל את GitSync.md Connect ב-Obsidian, ולאחר מכן נסה לחזור שוב."</string>
+    <string name="settings_m3_obsidian_subtitle" formatted="false">"Obsidian Git + GitSync.md Connect"</string>
+    <string name="settings_m3_obsidian_this_vault" formatted="false">"הכספת הזו"</string>
+    <string name="settings_m3_obsidian_vaults" formatted="false">"כספות בטלפון זה"</string>
+    <string name="settings_m3_obsidian_waiting" formatted="false">"מחכה לObsidian"</string>
+    <string name="settings_m3_off" formatted="false">"כבוי"</string>
+    <string name="settings_m3_on" formatted="false">"פועל"</string>
+    <string name="settings_m3_perk_nudge_body" formatted="false">"דחיפה של GitHub דוחפת את האפליקציה תוך שניות."</string>
+    <string name="settings_m3_perk_nudge_title" formatted="false">"משיכה מיידית עם Push Sync"</string>
+    <string name="settings_m3_perk_pull_body" formatted="false">"fast-forward בלבד. כל דבר חריג ממתין לכם."</string>
+    <string name="settings_m3_perk_pull_title" formatted="false">"pull ברקע"</string>
+    <string name="settings_m3_perk_push_body" formatted="false">"כבוי כברירת מחדל. אתם בוחרים אילו כספות מתפרסמות."</string>
+    <string name="settings_m3_perk_push_title" formatted="false">"Commit ו-push לעריכות"</string>
+    <string name="settings_m3_privacy" formatted="false">"פרטיות"</string>
+    <string name="settings_m3_privacy_policy" formatted="false">"מדיניות פרטיות"</string>
+    <string name="settings_m3_push_active" formatted="false">"פעיל"</string>
+    <string name="settings_m3_push_all_repos" formatted="false">"כל המאגרים, כולל חדשים"</string>
+    <string name="settings_m3_push_channel_sub" formatted="false">"משתמש בערוץ ההתראות של עדכוני מאגר"</string>
+    <string name="settings_m3_push_checked">"מסומן %1$d · מעודכן %2$d · צריך סקירה %3$d"</string>
+    <string name="settings_m3_push_connect_again" formatted="false">"חבר שוב את GitHub"</string>
+    <string name="settings_m3_push_connect_sub" formatted="false">"התקן את האפליקציה GitSync.md ובחר מאגרים"</string>
+    <string name="settings_m3_push_connected" formatted="false">"מחובר"</string>
+    <string name="settings_m3_push_connection" formatted="false">"חיבור GitHub"</string>
+    <string name="settings_m3_push_err_cancelled" formatted="false">"החיבור GitHub בוטל. שום דבר לא השתנה. התחבר שוב כשתהיה מוכן."</string>
+    <string name="settings_m3_push_err_cancelled_title" formatted="false">"חזרה מ-GitHub"</string>
+    <string name="settings_m3_push_err_not_selected" formatted="false">"אין כספת בטלפון זה שתואמת את המאגר והסניף של GitHub זה. הוסף את המאגר לגישה של האפליקציה ב-GitHub, או בדוק את החיבור והסניף של הכספת."</string>
+    <string name="settings_m3_push_err_not_selected_title" formatted="false">"ריפו זה אינו משותף עם האפליקציה"</string>
+    <string name="settings_m3_push_err_owner_title" formatted="false">"נדרשת כניסה לבעלים"</string>
+    <string name="settings_m3_push_example_cd" formatted="false">"הודעה לדוגמה"</string>
+    <string name="settings_m3_push_example_meta" formatted="false">"GitSync.md · עדכוני מאגר · עכשיו"</string>
+    <string name="settings_m3_push_example_note" formatted="false">"פרטי במסך הנעילה. אם הכספת הייתה נקייה, היא כבר נמשכה כשתראה את זה."</string>
+    <string name="settings_m3_push_example_repo" formatted="false">"בעלים/כספת"</string>
+    <string name="settings_m3_push_example_title" formatted="false">"דחיפה נראית כך"</string>
+    <string name="settings_m3_push_existing_scope" formatted="false">"היכנס כבעל החשבון, או כבעלים של הארגון. האפליקציה שומרת על גישה למאגר הנוכחי שלה."</string>
+    <string name="settings_m3_push_github_app" formatted="false">"GitHub App"</string>
+    <string name="settings_m3_push_handoff_body" formatted="false">"כרטיסיית דפדפן נפתחה. בחר את החשבון ואיזה מאגר האפליקציה יכולה לראות, ואז חזור. מסך זה בודק שוב כאשר אתה חוזר."</string>
+    <string name="settings_m3_push_handoff_title" formatted="false">"סיום ב-GitHub"</string>
+    <string name="settings_m3_push_intro" formatted="false">"חבר את GitSync.md GitHub App ודחיפה אל GitHub דוחפת את הטלפון הזה תוך שניות. כספות נקיות מאחזרות ומהירות קדימה בעצמן. הקש על ההודעה כדי לבדוק שוב."</string>
+    <string name="settings_m3_push_never" formatted="false">"Push Sync לעולם לא"</string>
+    <string name="settings_m3_push_never_commit" formatted="false">"מתחייב"</string>
+    <string name="settings_m3_push_never_hint" formatted="false">"שינויים מקומיים והיסטוריות מפוצלות מחכים לך בכספת."</string>
+    <string name="settings_m3_push_never_merge" formatted="false">"ממזג היסטוריות מפוצלות"</string>
+    <string name="settings_m3_push_never_switch" formatted="false">"מחליף ענפים"</string>
+    <string name="settings_m3_push_never_upload" formatted="false">"העלאת שינויים"</string>
+    <string name="settings_m3_push_no_connections" formatted="false">"חבר חשבון GitHub או ארגון כדי לבחור אילו מאגרים יכולים לשלוח עדכונים."</string>
+    <string name="settings_m3_push_open_vault" formatted="false">"כספת פתוחה"</string>
+    <string name="settings_m3_push_permission" formatted="false">"אפשר התראות עבור GitSync.md בהגדרות Android, ולאחר מכן הפעל את Push Sync."</string>
+    <string name="settings_m3_push_registered" formatted="false">"הטלפון הזה רשום להתראות"</string>
+    <string name="settings_m3_push_remove" formatted="false">"הסרה"</string>
+    <string name="settings_m3_push_remove_body">"Push Sync מפסיק לנתב עדכונים מ-@%1$s לטלפון זה. ה-GitHub App נשאר מותקן. השתמש ב-Manage ב-GitHub כדי לשנות את הגישה שלו או להסיר את התקנתו."</string>
+    <string name="settings_m3_push_remove_title" formatted="false">"להסיר את החיבור הזה?"</string>
+    <string name="settings_m3_push_result_updated" formatted="false">"עודכן מ-GitHub"</string>
+    <string name="settings_m3_push_stop" formatted="false">"עצירת פעולה"</string>
+    <string name="settings_m3_push_suspended" formatted="false">"מושעה"</string>
+    <string name="settings_m3_push_sync" formatted="false">"Push Sync מ-GitHub"</string>
+    <string name="settings_m3_push_this_phone" formatted="false">"הטלפון הזה"</string>
+    <string name="settings_m3_push_title" formatted="false">"Push Sync"</string>
+    <string name="settings_m3_push_waiting" formatted="false">"מחכה לGitHub"</string>
+    <string name="settings_m3_save_clones_in" formatted="false">"שמירת שכפולים חדשים ב"</string>
+    <string name="settings_m3_sc_action" formatted="false">"פעולה"</string>
+    <string name="settings_m3_sc_authorized" formatted="false">"מורשה"</string>
+    <string name="settings_m3_sc_background_sub" formatted="false">"התוצאות נוחתות כאן ובהודעה"</string>
+    <string name="settings_m3_sc_branch">"ענף %1$s"</string>
+    <string name="settings_m3_sc_branch_reviewed">"סניף %1$s · נבדק %2$s"</string>
+    <string name="settings_m3_sc_clear" formatted="false">"– נקי"</string>
+    <string name="settings_m3_sc_clear_results" formatted="false">"נקה תוצאות שמורות"</string>
+    <string name="settings_m3_sc_ff_only" formatted="false">"משיכה ו-fast-forward בלבד"</string>
+    <string name="settings_m3_sc_item_title">"%1$s: %2$s"</string>
+    <string name="settings_m3_sc_launcher" formatted="false">"קיצורים במסך הבית"</string>
+    <string name="settings_m3_sc_link_identity">"קישור %1$s · נוצר ב־%2$s"</string>
+    <string name="settings_m3_sc_link_private" formatted="false">"כל מי שיש לו קישור זה יכול להפעיל אותו. שמור את זה בפרטי."</string>
+    <string name="settings_m3_sc_links" formatted="false">"קישורים מורשים"</string>
+    <string name="settings_m3_sc_new_title" formatted="false">"קיצור דרך חדש לכספת אחת"</string>
+    <string name="settings_m3_sc_no_links" formatted="false">"אין קישורים מורשים. אפליקציות כמו Obsidian או קיצורי דרך יכולות לבקש אחד."</string>
+    <string name="settings_m3_sc_no_shortcuts" formatted="false">"עדיין אין קיצורי דרך למפעיל. בחר כספת ופעולה למעלה."</string>
+    <string name="settings_m3_sc_open_pull_all" formatted="false">"פתח למשוך הכל"</string>
+    <string name="settings_m3_sc_open_pull_all_sub" formatted="false">"משוך כל כספת עכשיו וראה כל תוצאה"</string>
+    <string name="settings_m3_sc_pin_consent">"כל הקשה פועלת פעם אחת, מבלי לשאול שוב. הוא נשאר קשור ל-%1$s, לסניף %2$s ולחשבון הזה. אם אחד מאלה משתנה, קיצור הדרך נעצר ואתה יוצר אחד חדש. בטל את זה כאן בכל עת."</string>
+    <string name="settings_m3_sc_pin_writes">"מתחייב עם \"%1$s\" ומעלה כל שינוי בכל הקשה."</string>
+    <string name="settings_m3_sc_pinned" formatted="false">"מוצמד"</string>
+    <string name="settings_m3_sc_pull" formatted="false">"משיכה"</string>
+    <string name="settings_m3_sc_pull_all" formatted="false">"–引っור כל 항ות"</string>
+    <string name="settings_m3_sc_pull_all_note" formatted="false">"כל ברז מושך כל כספת פעם אחת. שום דבר לא מחויב או נדחף. תוצאות ממתינים ב-Pull All."</string>
+    <string name="settings_m3_sc_pull_all_repos" formatted="false">": קבלת כל המאגרים"</string>
+    <string name="settings_m3_sc_pull_all_title" formatted="false">"משוך הכל, מבלי לפתוח את האפליקציה"</string>
+    <string name="settings_m3_sc_pull_sub" formatted="false">"משיכה ו-fast-forward בלבד"</string>
+    <string name="settings_m3_sc_push" formatted="false">"Commit ו-push"</string>
+    <string name="settings_m3_sc_push_sub" formatted="false">"מחייב כל שינוי, ואז מעלה"</string>
+    <string name="settings_m3_sc_refresh" formatted="false">"רענון"</string>
+    <string name="settings_m3_sc_requested" formatted="false">"מבוקש קיצור דרך. אשר את זה במפעיל שלך ולאחר מכן הקש על רענן למטה כדי לבדוק את זה."</string>
+    <string name="settings_m3_sc_returns_to">"חוזר ל-%1$s"</string>
+    <string name="settings_m3_sc_review_again" formatted="false">"בדוק שוב"</string>
+    <string name="settings_m3_sc_revoke" formatted="false">"ביטול אישור"</string>
+    <string name="settings_m3_sc_revoke_body" formatted="false">"זה מפסיק להפעיל פעולות Git. הסמל שלו עשוי להישאר במסך הבית שלך באפור עד שתסיר אותו. קיצור דרך חדש צריך שוב אישור."</string>
+    <string name="settings_m3_sc_revoke_link" formatted="false">"ביטול הרשאת הקישור"</string>
+    <string name="settings_m3_sc_revoke_title" formatted="false">"לבטל קיצור דרך זה?"</string>
+    <string name="settings_m3_sc_revoked" formatted="false">"ההרשאה בוטלה"</string>
+    <string name="settings_m3_sc_run_once" formatted="false">"הפעל פעם אחת עכשיו"</string>
+    <string name="settings_m3_sc_runs_closed" formatted="false">"פועל ללא פתיחת GitSync.md"</string>
+    <string name="settings_m3_sc_runs_open" formatted="false">"פותח את GitSync.md, ואז פועל פעם אחת"</string>
+    <string name="settings_m3_sc_status" formatted="false">"קריאת מצב"</string>
+    <string name="settings_m3_sc_status_sub" formatted="false">"אין רשת. מראה מה השתנה."</string>
+    <string name="settings_m3_sc_sync" formatted="false">"סנכרון"</string>
+    <string name="settings_m3_sc_sync_sub" formatted="false">"משוך תחילה, ואז התחייב ודחף"</string>
+    <string name="settings_m3_sc_tile_how" formatted="false">"משוך למטה הגדרות מהירות › עריכה › גרור פנימה Pull All."</string>
+    <string name="settings_m3_sc_tile_lead" formatted="false">"אריח:"</string>
+    <string name="settings_m3_sc_title" formatted="false">"ווידג\'ט וקיצורי דרך"</string>
+    <string name="settings_m3_sc_upstream">"במעלה הזרם %1$s / %2$s"</string>
+    <string name="settings_m3_sc_waiting" formatted="false">"ממתין למפעיל"</string>
+    <string name="settings_m3_sc_widget_how" formatted="false">"לחץ לחיצה ארוכה על מסך הבית שלך › ווידג\'טים › GitSync.md."</string>
+    <string name="settings_m3_sc_widget_lead" formatted="false">"יישומון:"</string>
+    <string name="settings_m3_sc_writes" formatted="false">"משלב כל שינוי, מתחייב במידת הצורך, ואז מעלה. קונפליקטים, פיצול היסטוריה או שלט שזז ראשון עוצרים אותו, והעלאה כושלת שומרת על המחויבות החדשה."</string>
+    <string name="settings_m3_shortcuts" formatted="false">"קיצורי יישומון וקיצורי משגר"</string>
+    <string name="settings_m3_sign_out" formatted="false">"התנתקות"</string>
+    <string name="settings_m3_ssh_hosts" formatted="false">"שרתי SSH"</string>
+    <string name="settings_m3_storage_hint" formatted="false">"אחסון טלפונים וכרטיסי SD עובדים. תיקיות ענן כגון Google Drive אינן יכולות להכיל מאגר Git."</string>
+    <string name="settings_m3_storage_intro" formatted="false">"בחר את התיקיה אליה נכנסים שיבוטים חדשים. כספות שכבר יש לך נשארות איפה שהן."</string>
+    <string name="settings_m3_storage_move_title" formatted="false">"העבר כספת שכבר יש לך"</string>
+    <string name="settings_m3_system_default" formatted="false">"ברירת המחדל של המערכת"</string>
+    <string name="settings_m3_terms" formatted="false">"תנאים"</string>
+    <string name="settings_m3_theme" formatted="false">"ערכת נושא"</string>
+    <string name="settings_m3_theme_dark" formatted="false">"כהה"</string>
+    <string name="settings_m3_theme_light" formatted="false">"בהיר"</string>
+    <string name="settings_m3_title" formatted="false">"הגדרות"</string>
+    <string name="settings_m3_unlocked" formatted="false">"פתוח"</string>
+    <string name="settings_m3_upgrade_body" formatted="false">"פתחו את Obsidian בבוקר והכול כבר שם."</string>
+    <string name="settings_m3_upgrade_illustration" formatted="false">"טלפון נעול מושך ודוחף עם GitHub למשך הלילה"</string>
+    <string name="settings_m3_upgrade_last_run">"%1$s · משך %2$d · דחף %3$d"</string>
+    <string name="settings_m3_upgrade_locked_phone" formatted="false">"טלפון נעול"</string>
+    <string name="settings_m3_upgrade_note" formatted="false">"כלול עם GitSync.md. Android מחליט מתי פועלת עבודת רקע; זה המאמץ הטוב ביותר. חיסכון בסוללה יכול לעכב את זה."</string>
+    <string name="settings_m3_upgrade_pull" formatted="false">"pull ברקע"</string>
+    <string name="settings_m3_upgrade_push" formatted="false">"בצע גם commit ו-push לעריכות שלי"</string>
+    <string name="settings_m3_upgrade_title" formatted="false">"סנכרון\nבזמן שאתם ישנים."</string>
+    <string name="settings_m3_upgrade_turn_on" formatted="false">"הפעלת Background Sync"</string>
+    <string name="settings_m3_vault_check_ok" formatted="false">"תקין"</string>
+    <string name="settings_m3_vault_delete_action" formatted="false">"– 삭제"</string>
+    <string name="settings_m3_vault_delete_body" formatted="false">"מוחק תיקייה זו, הקבצים שלה והיסטוריית Git שלה מהטלפון הזה. כל דבר שלא נדחף אל GitHub אבד."</string>
+    <string name="settings_m3_vault_delete_title" formatted="false">"להסיר כספת ולמחוק קבצים?"</string>
+    <string name="settings_m3_vault_display_name" formatted="false">"שם תצוגה"</string>
+    <string name="settings_m3_vault_display_name_hint" formatted="false">"השאר ריק כדי להשתמש בשם הכספת."</string>
+    <string name="settings_m3_vault_errors" formatted="false">"שגיאות · 7 ימים"</string>
+    <string name="settings_m3_vault_files" formatted="false">"קבצים"</string>
+    <string name="settings_m3_vault_folder" formatted="false">"תיקייה"</string>
+    <string name="settings_m3_vault_group" formatted="false">"הכספת הזו"</string>
+    <string name="settings_m3_vault_health" formatted="false">"תקינות"</string>
+    <string name="settings_m3_vault_health_attention" formatted="false">"נדרשת בדיקה"</string>
+    <string name="settings_m3_vault_health_good" formatted="false">"טוב"</string>
+    <string name="settings_m3_vault_include" formatted="false">"הכללה ב-Background Sync"</string>
+    <string name="settings_m3_vault_include_review" formatted="false">"סקור תחילה את הסניף והשלט"</string>
+    <string name="settings_m3_vault_include_sub">"רק סניף %1$s, מעקב %2$s/%3$s"</string>
+    <string name="settings_m3_vault_include_title" formatted="false">"לכלול ב-Background Sync?"</string>
+    <string name="settings_m3_vault_last_check">"בדיקת רקע אחרונה %1$s · %2$s"</string>
+    <string name="settings_m3_vault_lfs" formatted="false">"LFS"</string>
+    <string name="settings_m3_vault_no_check" formatted="false">"עדיין אין בדיקת רקע"</string>
+    <string name="settings_m3_vault_pin" formatted="false">"הצמדה לראש דף הבית"</string>
+    <string name="settings_m3_vault_remove" formatted="false">"הסר כספת..."</string>
+    <string name="settings_m3_vault_remove_action" formatted="false">"הסרה"</string>
+    <string name="settings_m3_vault_remove_delete" formatted="false">"הסר כספת ומחק קבצים..."</string>
+    <string name="settings_m3_vault_remove_kept" formatted="false">"GitSync.md מפסיק להציג אותו. התיקיה אינה מנוהלת על ידי GitSync.md, כך שהקבצים שלה והיסטוריית Git נשארים היכן שהם נמצאים."</string>
+    <string name="settings_m3_vault_remove_title" formatted="false">"להסיר את הכספת הזו?"</string>
+    <string name="settings_m3_vault_shortcut" formatted="false">"הוספת קיצור למסך הבית"</string>
+    <string name="settings_m3_vault_shortcut_sub" formatted="false">"משוך או התחייב ודחף בהקשה אחת"</string>
+    <string name="settings_m3_vault_stop_tracking" formatted="false">"הפסקת מעקב — שמירת הקבצים"</string>
+    <string name="settings_m3_vault_title" formatted="false">"הגדרות הכספת"</string>
+    <string name="settings_m3_whats_new" formatted="false">"מה חדש"</string>
+    <string name="settings_m3_whats_new_hint" formatted="false">"זה גם מופיע פעם אחת לאחר עדכון. אתה תמיד יכול למצוא אותו כאן."</string>
+    <string name="settings_m3_whats_new_subtitle">"הערות גרסה עבור %1$s"</string>
     <string name="shortcut_background_attention" formatted="false">"הקיצור דורש תשומת לב. פתחו את פעולות המאגר ובדקו את מצבו לפני ניסיון נוסף."</string>
     <string name="shortcut_background_channel" formatted="false">"פעולות קיצורים"</string>
     <string name="shortcut_background_complete" formatted="false">"פעולת הקיצור הסתיימה. פתחו את פעולות המאגר כדי לבדוק את התוצאה."</string>
@@ -688,9 +1982,37 @@
     <string name="shortcut_background_interrupted" formatted="false">"ההפעלה נקטעה. היא לא תופעל שוב אוטומטית. בדקו את המאגר לפני הקשה נוספת."</string>
     <string name="shortcut_background_option" formatted="false">"הפעלה בלי לפתוח את GitSync.md"</string>
     <string name="shortcut_background_running" formatted="false">"פעולת הקיצור מתבצעת"</string>
+    <string name="shortcut_m3_add_vault" formatted="false">"הוספת כספת"</string>
+    <string name="shortcut_m3_commit_push">"%1$s: התחייבות ודחיפה"</string>
+    <string name="shortcut_m3_commit_short" formatted="false">"Commit ו-push"</string>
+    <string name="shortcut_m3_pull">"%1$s: משוך"</string>
+    <string name="shortcut_m3_pull_short" formatted="false">"משיכה"</string>
     <string name="shortcut_results_clear_scope" formatted="false">"מוחק את תוצאות ההפעלה השמורות של קיצורים ושל callbacks. ההרשאות שלהם לא משתנות. פעולות שנקטעו לא יופעלו שוב אוטומטית."</string>
     <string name="shortcut_results_unavailable" formatted="false">"לא ניתן לקרוא תוצאות קיצורים שמורות. ההרשאה נשמרת בנפרד."</string>
     <string name="ssh_hide_private_key" formatted="false">"הסתרת מפתח פרטי"</string>
+    <string name="ssh_m3_changed_title" formatted="false">"מפתח שרת SSH השתנה"</string>
+    <string name="ssh_m3_changed_warning" formatted="false">"מפתח שונה יכול לומר שמישהו מתחזה לשרת. בדוק את טביעת האצבע החדשה עם בעליה לפני שתחליף אמון."</string>
+    <string name="ssh_m3_compare" formatted="false">"השווה אותו עם מפתח המארח SSH שבעל השרת מפרסם לפני שאתה סומך עליו."</string>
+    <string name="ssh_m3_empty" formatted="false">"אין שרתי SSH מהימנים"</string>
+    <string name="ssh_m3_error_save" formatted="false">"לא ניתן היה לשמור את אמון השרת SSH. אמת שוב את טביעת האצבע לפני שתנסה שוב."</string>
+    <string name="ssh_m3_forget" formatted="false">"שכחה"</string>
+    <string name="ssh_m3_forget_body">"%1$s יזדקק לאימות טביעת אצבע לפני שתתחבר שוב."</string>
+    <string name="ssh_m3_forget_cd">"שכח את %1$s"</string>
+    <string name="ssh_m3_forget_server" formatted="false">"שכחת שרת"</string>
+    <string name="ssh_m3_forget_title" formatted="false">"לשכוח שרת SSH?"</string>
+    <string name="ssh_m3_intro" formatted="false">"טביעות אצבע שאתה מהימן נשמרות בטלפון זה. שכח אחד ותאמת אותו שוב בפעם הבאה שתתחבר. מפתחות SSH שלך נשארים שמורים."</string>
+    <string name="ssh_m3_none" formatted="false">"הגדרות · אין מהימן"</string>
+    <string name="ssh_m3_previous">"טביעת אצבע מהימנה קודמת: ⁦%1$s⁩"</string>
+    <string name="ssh_m3_replace" formatted="false">"החלפת האמון והתחברות"</string>
+    <string name="ssh_m3_reset_all" formatted="false">"איפוס כל האמון בשרתי SSH"</string>
+    <string name="ssh_m3_reset_body" formatted="false">"כל שרת SSH יזדקק לאימות טביעת אצבע לפני שתתחבר שוב. זה גם מנקה ערכי אמון שניזוקו."</string>
+    <string name="ssh_m3_reset_confirm" formatted="false">"איפוס אמון"</string>
+    <string name="ssh_m3_reset_title" formatted="false">"לאפס את כל האמון בשרתי SSH?"</string>
+    <string name="ssh_m3_saved" formatted="false">"אמון נשמר בטלפון זה והחיבור הממתין ממשיך. ביטול משאיר את השרת לא מהימן."</string>
+    <string name="ssh_m3_title" formatted="false">"אמון בשרתי SSH"</string>
+    <string name="ssh_m3_trust" formatted="false">"מתן אמון והתחברות"</string>
+    <string name="ssh_m3_trusted" formatted="false">"שרתים מהימנים"</string>
+    <string name="ssh_m3_verify_title" formatted="false">"אימות שרת SSH"</string>
     <string name="ssh_show_private_key" formatted="false">"הצגת מפתח פרטי"</string>
     <string name="ssh_trust_error_changed" formatted="false">"האמון ב־SSH השתנה במהלך הבדיקה. יש לבדוק את רשומת השרת הנוכחית ולנסות להתחבר שוב."</string>
     <string name="ssh_trust_error_damaged" formatted="false">"יש לבדוק את האמון השמור ב־SSH. יש לאפס את האמון בשרתי SSH בהגדרות לפני ניסיון נוסף."</string>
@@ -755,7 +2077,7 @@
     <string name="tide_vault_eyebrow_unreadable" formatted="false">"הקריאה נכשלה"</string>
     <string name="tide_vault_files_section" formatted="false">"קבצים"</string>
     <string name="tide_vault_from_remote">"מהמאגר המרוחק: ⁦↓%1$d⁩"</string>
-    <string name="tide_vault_git" formatted="false">"GIT"</string>
+    <string name="tide_vault_git" formatted="false">"Git"</string>
     <string name="tide_vault_headline_behind">"חדשים במאגר המרוחק: %1$d"</string>
     <string name="tide_vault_headline_unreadable" formatted="false">"לא ניתן לקרוא את הכספת הזאת."</string>
     <string name="tide_vault_more" formatted="false">"אפשרויות נוספות לכספת"</string>
@@ -768,6 +2090,13 @@
     <string name="tide_vault_sub_empty" formatted="false">"הוסף הערה ואז צור עבורה commit מכאן."</string>
     <string name="tide_vault_sub_in_sync" formatted="false">"אין דבר ממתין בטלפון הזה"</string>
     <string name="tide_vault_yours">"מקומיים: ⁦↑%1$d⁩"</string>
+    <string name="tile_m3_background_sync" formatted="false">"Background Sync"</string>
+    <string name="tile_m3_modes">"%1$s · %2$s"</string>
+    <string name="tile_m3_pull_all" formatted="false">"–引っור כל 항ות"</string>
+    <string name="tile_m3_pull_off" formatted="false">"משוך"</string>
+    <string name="tile_m3_pull_on" formatted="false">"המשיכו"</string>
+    <string name="tile_m3_push_off" formatted="false">"דחוף"</string>
+    <string name="tile_m3_push_on" formatted="false">"לחץ על"</string>
     <string name="tracking_metadata_size">"מטא־נתונים של Git: %1$s"</string>
     <string name="tracking_remove_permanent_title" formatted="false">"להסיר את היסטוריית Git לצמיתות?"</string>
     <string name="tracking_removed_backup">"מעקב Git הוסר. גיבוי מאומת: ⁨%1$s⁩"</string>
@@ -778,14 +2107,23 @@
     <string name="ui_1_s_characters_bde60398">"תווים: ⁨%1$s⁩"</string>
     <string name="ui_1_s_lines_2_s_bytes_c30a0cd1">"שורות: ⁨%1$s⁩, בתים: ⁨%2$s⁩"</string>
     <string name="ui_1_s_local_commits_2_s_upstream_commits_77dc6fa8">"%1$s commits מקומיים · %2$s commits בענף המעקב"</string>
+    <string name="ui_1_vault_c39776f1" formatted="false">"כספת אחת"</string>
+    <string name="ui_2_of_3_commits_sent_5591e38a" formatted="false">"2 מתוך 3 התחייבויות נשלחו"</string>
+    <string name="ui_3_changes_aren_t_committed_yet_commit_or_s_d878e782" formatted="false">"3 שינויים עדיין לא מחויבים. התחייב או אחסן אותם לפני שאתה מחליף סניפים."</string>
+    <string name="ui_3_held_f454ab2b" formatted="false">"↑3 התקיים"</string>
+    <string name="ui_3_to_push_ac87b7cb" formatted="false">"↑3 כדי לדחוף"</string>
+    <string name="ui_4_in_sync_checked_2_min_ago_a1f1ab5e" formatted="false">"4 מסונכרנים · נבדק לפני 2 דקות"</string>
     <string name="ui_abort_rebase_fd5cfc32" formatted="false">"ביטול rebase…"</string>
     <string name="ui_about_4efca0d1" formatted="false">"אודות"</string>
+    <string name="ui_about_lfs_538b5b7e" formatted="false">"אודות LFS"</string>
+    <string name="ui_all_5_8907f196" formatted="false">"כל ה-5"</string>
     <string name="ui_all_conflicts_are_staged_continue_replayin_b86b2a5a" formatted="false">"כל פתרונות ההתנגשויות הוכנו. המשך להחיל מחדש commits. אם Git מציג NOTHING_TO_COMMIT, בדוק אם צריך לדלג על ה־commit הריק."</string>
     <string name="ui_all_local_changes_to_this_file_will_be_per_0919f539" formatted="false">": כל שינויים מקומיים בקובץ זה ייפוצלו באופן קבוע."</string>
     <string name="ui_allow_local_folder_access_0b2888fb" formatted="false">"מתן גישה לתיקיות מקומיות"</string>
     <string name="ui_app_0d04bfeb" formatted="false">"אפליקציה"</string>
     <string name="ui_app_settings_da645334" formatted="false">"הגדרות האפליקציה"</string>
     <string name="ui_apply_tracking_choice_47a2e187" formatted="false">"החלת בחירת המעקב"</string>
+    <string name="ui_attention_1_fa1ea5dc" formatted="false">"שימו לב 1"</string>
     <string name="ui_authentication_66880d2d" formatted="false">"אימות"</string>
     <string name="ui_back_639807a2" formatted="false">"חזרה"</string>
     <string name="ui_back_aceb696a" formatted="false">"→ חזרה"</string>
@@ -793,11 +2131,13 @@
     <string name="ui_backup_1_s_6ad01ca6">"גיבוי: %1$s"</string>
     <string name="ui_base_7b47361a" formatted="false">"בסיס"</string>
     <string name="ui_binary_large_or_lfs_file_choose_an_entire_52c3278a" formatted="false">"קובץ בינארי, גדול או LFS: בחר צד שלם."</string>
+    <string name="ui_both_sides_edited_step_3_077f9640" formatted="false">"שני הצדדים ערכו את \"שלב 3\"."</string>
     <string name="ui_branch_52656e81" formatted="false">"ענף"</string>
     <string name="ui_branch_optional_e9dedf99" formatted="false">"ענף (לא חובה)"</string>
     <string name="ui_browsing_with_this_account_28a8b330" formatted="false">"גלישה עם החשבון הזה"</string>
     <string name="ui_cancel_pending_move_0858583b" formatted="false">"ביטול העברה ממתינה"</string>
     <string name="ui_changes_bbd4b6a8" formatted="false">"שינויים"</string>
+    <string name="ui_changes_on_this_phone_6359d3d5" formatted="false">"שינויים בטלפון זה"</string>
     <string name="ui_choose_a_connected_account_for_this_reposi_c4817ea9" formatted="false">"בחר חשבון מחובר למאגר הזה."</string>
     <string name="ui_choose_a_device_folder_d00b7daf" formatted="false">"בחירת תיקייה במכשיר"</string>
     <string name="ui_choose_an_authentication_method_before_clo_c89124ba" formatted="false">"יש לבחור שיטת אימות לפני השכפול."</string>
@@ -810,14 +2150,18 @@
     <string name="ui_clone_again_e05eb495" formatted="false">"שכפול מחדש"</string>
     <string name="ui_clone_again_review_the_previous_branch_and_33cba147" formatted="false">"שכפול מחדש · יש לבדוק את הענף והחיבור הקודמים לפני שמתחילים."</string>
     <string name="ui_clone_storage_47cafc8a" formatted="false">"אחסון עותקים משוכפלים"</string>
+    <string name="ui_cloning_and_preparing_the_working_copy_6fe864ff" formatted="false">"שיבוט והכנת עותק העבודה"</string>
+    <string name="ui_commit_3_files_959a8528" formatted="false">"בצע 3 קבצים"</string>
     <string name="ui_commit_author_e9376b3a" formatted="false">"מחבר הקומיט"</string>
     <string name="ui_commit_message_a4b361b7" formatted="false">"הודעת commit…"</string>
     <string name="ui_commit_sha_d0bc6028" formatted="false">"SHA של Commit"</string>
     <string name="ui_confirm_eebdd24a" formatted="false">"אישור"</string>
+    <string name="ui_conflict_1_of_2_ideas_23283a20" formatted="false">"קונפליקט 1 מתוך 2 · רעיונות/"</string>
     <string name="ui_continue_rebase_7a14e965" formatted="false">"– המשך ה-\"Rebase\""</string>
     <string name="ui_create_a_file_or_folder_using_new_655c5596" formatted="false">"צרו קובץ או תיקייה באמצעות ״חדש״."</string>
     <string name="ui_current_default_d914f86e" formatted="false">"ברירת המחדל הנוכחית"</string>
     <string name="ui_current_separate_push_address_1_s_2a6ef8f9">"כתובת push נפרדת נוכחית: %1$s"</string>
+    <string name="ui_daily_new_file_42_31057cdf" formatted="false">"יומי · קובץ חדש · +42"</string>
     <string name="ui_debug_info_697b4941" formatted="false">"מידע ניפוי שגיאות"</string>
     <string name="ui_delete_1_s_6474596f">"למחוק את ״%1$s״?"</string>
     <string name="ui_delete_e2d0a549" formatted="false">"– 삭제"</string>
@@ -826,6 +2170,10 @@
     <string name="ui_delete_local_files_20424441" formatted="false">": מחיקת קבצי מקומיים"</string>
     <string name="ui_destination_1_s_0df94639">"יעד: ⁨%1$s⁩"</string>
     <string name="ui_destination_parent_folder_c6c4f97e" formatted="false">"תיקיית האב של היעד"</string>
+    <string name="ui_disabled_75081b59" formatted="false">"נכים"</string>
+    <string name="ui_discard_3_95e06aed" formatted="false">"מחק 3"</string>
+    <string name="ui_discard_3_changes_d2ad52aa" formatted="false">"למחוק 3 שינויים?"</string>
+    <string name="ui_discard_changes_85bcf416" formatted="false">"למחוק שינויים?"</string>
     <string name="ui_discard_draft_cb30147e" formatted="false">"מחק טיוטה"</string>
     <string name="ui_discard_eb1a70e3" formatted="false">"ביטול השינויים"</string>
     <string name="ui_discard_resolution_draft_47c16148" formatted="false">"למחוק את טיוטת הפתרון?"</string>
@@ -846,6 +2194,8 @@
     <string name="ui_gitsync_md_needs_shared_storage_access_to_f1b339ea" formatted="false">"GitSync.md זקוק לגישה לאחסון המשותף כדי לנהל עותקי עבודה אמיתיים של Git בתיקיות המכשיר. יש לבחור את התיקיות הרצויות לאחר הפעלת הגישה בהגדרות Android."</string>
     <string name="ui_go_back_and_select_a_repository_c3eedd39" formatted="false">"יש לחזור ולבחור מאגר."</string>
     <string name="ui_hash_a9106914" formatted="false">"גיבוב"</string>
+    <string name="ui_health_md_f72119f5" formatted="false">"health-md"</string>
+    <string name="ui_https_ssh_git_or_file_e79ef5ea" formatted="false">"HTTPS, SSH, git:// או file://."</string>
     <string name="ui_i_understand_that_another_owner_may_still_b4a12b2d" formatted="false">"ברור לי שבעלים אחר עדיין עשוי לערוך את הקובץ הזה."</string>
     <string name="ui_include_the_ssh_username_in_the_address_gi_beb09b5a" formatted="false">"יש לכלול את שם משתמש SSH בכתובת: git@host:team/repo.git או ssh://git@host:2222/team/repo.git."</string>
     <string name="ui_keep_editing_e76fd2ad" formatted="false">"המשך לערוך"</string>
@@ -882,8 +2232,12 @@
     <string name="ui_owner_1_s_599ca9ce">"בעלים: %1$s"</string>
     <string name="ui_parents_1_s_914efbd0">"הורים (⁨%1$s⁩)"</string>
     <string name="ui_path_62fa5a5b" formatted="false">"נתיב"</string>
+    <string name="ui_plain_http_sends_credentials_unencrypted_c99e5672" formatted="false">"HTTP רגיל שולח אישורים לא מוצפנים."</string>
     <string name="ui_platform_c78ffe19" formatted="false">"פלטפורמה"</string>
     <string name="ui_pull_with_rebase_6d25f1e0" formatted="false">"– pulling עם إعادة הבסיס"</string>
+    <string name="ui_push_was_rejected_fbc19d01" formatted="false">"הדחיפה נדחתה"</string>
+    <string name="ui_pushed_579e8c6a" formatted="false">"בוצע push"</string>
+    <string name="ui_rebase_completed_successfully_53314c91" formatted="false">": إعادة הבסיס הושלמה בהצלחה"</string>
     <string name="ui_rebase_in_progress_3ecd9c42" formatted="false">"rebase מתבצע"</string>
     <string name="ui_rebase_onto_reviewed_upstream_c3b8fb93" formatted="false">"בצע rebase על ענף המעקב שנבדק"</string>
     <string name="ui_reconnect_bf8a9eab" formatted="false">"התחברות מחדש"</string>
@@ -893,6 +2247,7 @@
     <string name="ui_reload_author_18a711d8" formatted="false">"טעינה מחדש של המחבר"</string>
     <string name="ui_reload_connection_ceed2dae" formatted="false">"טעינת החיבור מחדש"</string>
     <string name="ui_reload_from_disk_d4288839" formatted="false">"טעינה מחדש מהדיסק"</string>
+    <string name="ui_remote_has_no_new_commits_fetched_2m_ago_bdaa4b95" formatted="false">"בשלט אין התחייבויות חדשות · הובא לפני 2 מיליון"</string>
     <string name="ui_remove_1_s_e4dd7c24">"להסיר את %1$s?"</string>
     <string name="ui_remove_1_s_this_removes_it_from_gitsync_md_0a6b198d">"להסיר את ״%1$s״?\n\nפעולה זו מסירה אותו מ־GitSync.md. כל הקבצים המקומיים והיסטוריית Git יישארו במכשיר הזה, ואפשר לחבר אותו מחדש בהמשך. המאגר המרוחק לא יושפע."</string>
     <string name="ui_remove_all_custom_endpoint_approvals_and_t_ffc30a9e" formatted="false">"יש להסיר את כל אישורי נקודות הקצה המותאמות ואת פרטי ההזדהות השמורים שלהן במכשיר זה. כל נקודת קצה וכיוון העברה יחייבו בדיקה חדשה."</string>
@@ -932,17 +2287,20 @@
     <string name="ui_save_1509f561" formatted="false">"שמירה"</string>
     <string name="ui_save_author_1c24b32a" formatted="false">"שמירת המחבר"</string>
     <string name="ui_save_connection_df24ef12" formatted="false">"שמירת החיבור"</string>
+    <string name="ui_saved_credentials_are_encrypted_on_this_de_9320d5e0" formatted="false">"אישורים שמורים מוצפנים במכשיר זה."</string>
     <string name="ui_saving_uses_this_address_for_both_fetch_an_48c82edc" formatted="false">"בשמירה, הכתובת הזאת משמשת גם ל־fetch וגם ל־push. בצע fetch לאחר מכן כדי לרענן את מצב המאגר המרוחק."</string>
     <string name="ui_selected_folder_0cf59bef" formatted="false">"התיקייה שנבחרה"</string>
     <string name="ui_share_backup_archive_ee4ba873" formatted="false">"שיתוף ארכיון הגיבוי"</string>
     <string name="ui_some_diagnostics_could_not_be_read_or_save_19e3372d" formatted="false">"לא ניתן היה לקרוא או לשמור חלק מנתוני האבחון. הנתונים הקיימים נשמרו. יש לנקות את היומן כדי להתחיל לתעד מחדש."</string>
     <string name="ui_ssh_private_key_0e92a613" formatted="false">"SSH מפתח פרטי"</string>
     <string name="ui_stage_de838855" formatted="false">"הכן"</string>
+    <string name="ui_stay_on_main_915a176c" formatted="false">"הישאר על הראשי"</string>
     <string name="ui_the_active_destination_stays_in_place_gits_a4f1f68a" formatted="false">"תיקיית היעד הפעילה נשארת במקומה. GitSync.md בודק שאין במקור שנשמר עריכות מאוחרות יותר לפני מחיקה לצמיתות של הקבצים והיסטוריית Git שלו."</string>
     <string name="ui_the_folder_can_move_directly_on_this_stora_7b29fabb" formatted="false">"ניתן להעביר את התיקייה ישירות באמצעי האחסון הזה."</string>
     <string name="ui_the_previous_github_account_is_disconnecte_628a1f8c" formatted="false">"חשבון GitHub הקודם מנותק. יש לבחור חשבון מחובר או שיטת אימות אחרת."</string>
     <string name="ui_the_replayed_local_commit_deletes_this_fil_ab00656d" formatted="false">"ה־commit המקומי המוחל מחדש מוחק קובץ זה."</string>
     <string name="ui_the_review_changed_cancel_and_refresh_serv_c7ee804c" formatted="false">"פרטי הבדיקה השתנו. יש לבטל ולרענן את נעילות השרת."</string>
+    <string name="ui_these_files_go_back_to_how_they_were_in_a4_02e3cd66" formatted="false">"הקבצים האלה חוזרים לאיך שהיו ב-a41c9e2."</string>
     <string name="ui_this_history_entry_is_unavailable_c2c9f4e0" formatted="false">"רשומת היסטוריה זו אינה זמינה."</string>
     <string name="ui_this_removes_another_connection_s_lock_coo_880defbf" formatted="false">"פעולה זו מסירה נעילה של חיבור אחר. יש לתאם עם הבעלים לפני שממשיכים."</string>
     <string name="ui_this_repository_will_use_public_access_unt_c94fad61" formatted="false">"המאגר הזה ישתמש בגישה ציבורית עד לבחירה מחדש של אמצעי אימות. חשבון GitHub המחובר שלך לא ישמש עבורו. כתובות ה־fetch וה־push יישארו ללא שינוי."</string>
@@ -955,6 +2313,7 @@
     <string name="ui_use_for_new_clones_be174c95" formatted="false">"שימוש לשכפולים חדשים"</string>
     <string name="ui_use_saved_default_3bb7260d" formatted="false">"שימוש בברירת המחדל השמורה"</string>
     <string name="ui_username_e3b89e9d" formatted="false">"שם משתמש"</string>
+    <string name="ui_working_5474eef8" formatted="false">"עובד…"</string>
     <string name="ui_your_edits_have_not_been_saved_625899a4" formatted="false">"השינויים שלכם לא נשמרו."</string>
     <string name="ui_your_unsubmitted_text_will_be_discarded_th_15717285" formatted="false">"הטקסט שלא הוגש יימחק. קובץ העבודה יישאר ללא שינוי."</string>
     <string name="untracked" formatted="false">"לא מעוקב"</string>
@@ -1048,9 +2407,108 @@
     <string name="vault_l10n_tracking_review_changed" formatted="false">"בדיקת הסרת המעקב השתנתה. בדוק שוב את המאגר ואת בחירת הגיבוי."</string>
     <string name="vault_l10n_volume_unavailable" formatted="false">"כונן האחסון הזה אינו זמין"</string>
     <string name="vault_l10n_volume_unavailable_reconnect" formatted="false">"כונן האחסון הזה אינו זמין. חבר אותו מחדש ובחר שוב בתיקייה."</string>
+    <string name="vault_m3_as_author">"כ-%1$s · %2$s"</string>
+    <string name="vault_m3_branch_pushed">"דחפו את ההתחייבויות שלך לסניף החדש %1$s"</string>
+    <string name="vault_m3_cancel" formatted="false">"ביטול"</string>
+    <string name="vault_m3_check_for_changes" formatted="false">"בדיקת שינויים"</string>
+    <string name="vault_m3_checking" formatted="false">"בבדיקה…"</string>
+    <string name="vault_m3_checking_remote">"בדיקת %1$s עבור התחייבויות חדשות"</string>
+    <string name="vault_m3_chip_theirs">"↓%1$d מ-%2$s · %3$s"</string>
+    <string name="vault_m3_chip_theirs_plain">"↓%1$d מהשלט"</string>
+    <string name="vault_m3_chip_yours">"↑%1$d שלי"</string>
+    <string name="vault_m3_commit_locally" formatted="false">"יצירת קומיט מקומי"</string>
+    <string name="vault_m3_commit_push" formatted="false">"Commit ו-push"</string>
+    <string name="vault_m3_commits_sent">"נשלחו %1$d מתוך %2$d commits"</string>
+    <string name="vault_m3_committing" formatted="false">"מבצע commit…"</string>
+    <string name="vault_m3_days_ago">"לפני %1$d ימים"</string>
+    <string name="vault_m3_deleted_path">"%1$s (נמחק)"</string>
+    <string name="vault_m3_discard_body">"קבצים אלה חוזרים לאיך שהיו ב-%1$s. עריכות שנעשו בטלפון הזה מאז נעלמו לתמיד."</string>
+    <string name="vault_m3_dismiss" formatted="false">"סגירה"</string>
+    <string name="vault_m3_download_progress" formatted="false">"התקדמות ההורדה"</string>
+    <string name="vault_m3_effect_delete" formatted="false">"מחיקת קובץ חדש"</string>
+    <string name="vault_m3_effect_restore" formatted="false">"שחזור"</string>
+    <string name="vault_m3_effect_revert" formatted="false">"בטל"</string>
+    <string name="vault_m3_effect_unstage" formatted="false">"בטל הכנה"</string>
+    <string name="vault_m3_fetched_ago">"fetch ‏%1$s"</string>
+    <string name="vault_m3_hours_ago">"%1$dלפני h שניות"</string>
+    <string name="vault_m3_included" formatted="false">"כלול"</string>
+    <string name="vault_m3_just_now" formatted="false">"– כרגע"</string>
+    <string name="vault_m3_keep_them" formatted="false">"שמירה"</string>
+    <string name="vault_m3_latest_commit" formatted="false">"ה-commit האחרון"</string>
+    <string name="vault_m3_leave_note" formatted="false">"אתה יכול לעזוב את המסך הזה. הסנכרון ממשיך ומציג את ההתקדמות שלו בהתראה."</string>
+    <string name="vault_m3_merge" formatted="false">"merge"</string>
+    <string name="vault_m3_merge_conflicts" formatted="false">"משיכת התנגשויות נמצאו. פתרו אותם, ואז דחפו."</string>
+    <string name="vault_m3_message" formatted="false">"הודעה"</string>
+    <string name="vault_m3_minutes">"%1$dm"</string>
+    <string name="vault_m3_minutes_ago">"%1$dלפני m ימים"</string>
+    <string name="vault_m3_no_overlap_body" formatted="false">"העריכות שלכם ושלהם נוגעות בקבצים שונים, כך שה-merge אמור לעבור בצורה נקייה."</string>
+    <string name="vault_m3_no_overlap_title" formatted="false">"לא נמצאה חפיפה"</string>
+    <string name="vault_m3_no_upstream" formatted="false">"אין ענף upstream"</string>
+    <string name="vault_m3_notify_channel" formatted="false">"סנכרון כספת"</string>
+    <string name="vault_m3_notify_title">"%1$s · %2$s"</string>
+    <string name="vault_m3_objects_received">"התקבלו %1$d מתוך %2$d אובייקטים"</string>
+    <string name="vault_m3_objects_sent">"נשלחו %1$d מתוך %2$d אובייקטים"</string>
+    <string name="vault_m3_only_on_phone" formatted="false">"רק בטלפון זה"</string>
+    <string name="vault_m3_overlap_body" formatted="false">"שני הצדדים ערכו את אותם קבצים. משיכה עשויה לעצור בקונפליקט כדי שתוכל לפתור."</string>
+    <string name="vault_m3_preparing" formatted="false">"מכין…"</string>
+    <string name="vault_m3_pull" formatted="false">"משיכה"</string>
+    <string name="vault_m3_pull_then_push" formatted="false">"משוך את שלהם, ואז לחץ"</string>
+    <string name="vault_m3_pulled">"מעודכן עם %1$s"</string>
+    <string name="vault_m3_pulling" formatted="false">"מבצע pull…"</string>
+    <string name="vault_m3_push" formatted="false">"דחוף"</string>
+    <string name="vault_m3_push_branch" formatted="false">"push לענף"</string>
+    <string name="vault_m3_push_right_after" formatted="false">"push מיד אחרי"</string>
+    <string name="vault_m3_pushed_to">"בוצע push אל %1$s"</string>
+    <string name="vault_m3_pushing" formatted="false">"מבצע push…"</string>
+    <string name="vault_m3_rejected_kicker" formatted="false">"ה-push לא עבר"</string>
+    <string name="vault_m3_remote_generic" formatted="false">"ה-remote"</string>
+    <string name="vault_m3_remote_is_here">"%1$s כבר כאן"</string>
+    <string name="vault_m3_remote_no_new" formatted="false">"אין קומיטים חדשים במאגר המרוחק"</string>
+    <string name="vault_m3_remote_not_checked" formatted="false">"השלט עדיין לא מסומן"</string>
+    <string name="vault_m3_review_first" formatted="false">"סקירה קודם"</string>
+    <string name="vault_m3_seconds">"%1$ds"</string>
+    <string name="vault_m3_stash_first" formatted="false">"שמרו קודם עותק ב-stash, ליתר ביטחון"</string>
+    <string name="vault_m3_step_branch">"צור סניף %1$s"</string>
+    <string name="vault_m3_step_check">"בדיקת commits חדשים ב-%1$s"</string>
+    <string name="vault_m3_step_download">"הורדה מ-%1$s"</string>
+    <string name="vault_m3_step_merge">"Merge של %1$s"</string>
+    <string name="vault_m3_step_none" formatted="false">"אין"</string>
+    <string name="vault_m3_step_update" formatted="false">"עדכון קבצים"</string>
+    <string name="vault_m3_step_upload">"העלה אל %1$s"</string>
+    <string name="vault_m3_steps" formatted="false">"שלבים"</string>
+    <string name="vault_m3_suggest_add">"הוסף %1$s"</string>
+    <string name="vault_m3_suggest_backup">"גיבוי כספת: %1$s"</string>
+    <string name="vault_m3_suggest_delete">"מחיקת %1$s"</string>
+    <string name="vault_m3_suggest_update">"עדכון %1$s"</string>
+    <string name="vault_m3_suggested" formatted="false">"מוצע מההבדל"</string>
+    <string name="vault_m3_sync_cancelled" formatted="false">"הסנכרון בוטל. כל מה שכבר מחויב נשאר בטלפון הזה."</string>
+    <string name="vault_m3_sync_failed" formatted="false">"הסנכרון הופסק"</string>
+    <string name="vault_m3_tap_for_diff" formatted="false">"הקש על קובץ כדי לראות את ההבדל"</string>
+    <string name="vault_m3_time_left">"~%1$s נותרו"</string>
+    <string name="vault_m3_today" formatted="false">"היום"</string>
+    <string name="vault_m3_upload_progress" formatted="false">"התקדמות ההעלאה"</string>
+    <string name="vault_m3_vault_settings" formatted="false">"הגדרות הכספת"</string>
+    <string name="vault_m3_who_both" formatted="false">"שניהם"</string>
+    <string name="vault_m3_who_theirs" formatted="false">"שלהם"</string>
+    <string name="vault_m3_who_yours" formatted="false">"שלי"</string>
+    <string name="vault_m3_yesterday" formatted="false">"אתמול"</string>
     <string name="vault_open_in_files_failed" formatted="false">"לא ניתן לפתוח את התיקייה באפליקציית הקבצים."</string>
     <string name="vault_repository_fallback" formatted="false">"מאגר"</string>
     <string name="vault_url_copied" formatted="false">"הועתק!"</string>
+    <string name="widget_m3_choose_vault" formatted="false">"בחר כספת"</string>
+    <string name="widget_m3_days_ago">"לפני %1$d ימים"</string>
+    <string name="widget_m3_hours_ago">"%1$dלפני h שניות"</string>
+    <string name="widget_m3_in_sync" formatted="false">"מסונכרן"</string>
+    <string name="widget_m3_list_description" formatted="false">"הכספות שלך עם מה שכל אחד צריך ללחוץ, וכפתור Pull all."</string>
+    <string name="widget_m3_list_name" formatted="false">"כספות"</string>
+    <string name="widget_m3_minutes_ago">"%1$dלפני m ימים"</string>
+    <string name="widget_m3_no_vaults" formatted="false">"עדיין אין כספות. פתח את GitSync.md כדי להוסיף אחד."</string>
+    <string name="widget_m3_now" formatted="false">"עכשיו"</string>
+    <string name="widget_m3_pull_all_repositories" formatted="false">": קבלת כל המאגרים"</string>
+    <string name="widget_m3_vault_description" formatted="false">"כספת אחת וכמה שינויים היא צריכה לדחוף."</string>
+    <string name="widget_m3_vault_missing" formatted="false">"הכספת הזו לא נמצאת יותר בטלפון הזה."</string>
+    <string name="widget_m3_vault_name" formatted="false">"כספת"</string>
+    <string name="widget_m3_vault_widget" formatted="false">"ווידג\'ט של כספת"</string>
     <plurals name="account_updated_days">
         <item quantity="one">"לפני %1$d יום"</item>
         <item quantity="two">"לפני %1$d ימים"</item>
@@ -1087,6 +2545,90 @@
         <item quantity="many">"לפני %1$d שנים"</item>
         <item quantity="other">"לפני %1$d שנים"</item>
     </plurals>
+    <plurals name="adaptive_changes_on_phone">
+        <item quantity="many">"%1$s שינויים בטלפון זה"</item>
+        <item quantity="one">"%1$s שינוי בטלפון זה"</item>
+        <item quantity="other">"%1$s שינויים בטלפון זה"</item>
+        <item quantity="two">"%1$s שינויים בטלפון זה"</item>
+    </plurals>
+    <plurals name="adaptive_changes_on_tablet">
+        <item quantity="many">"%1$s שינויים בטאבלט זה"</item>
+        <item quantity="one">"%1$s שינוי בטאבלט זה"</item>
+        <item quantity="other">"%1$s שינויים בטאבלט זה"</item>
+        <item quantity="two">"%1$s שינויים בטאבלט זה"</item>
+    </plurals>
+    <plurals name="adaptive_commit_changes">
+        <item quantity="many">"בצע שינויים %1$d"</item>
+        <item quantity="one">"בצע שינוי %1$d"</item>
+        <item quantity="other">"בצע שינויים %1$d"</item>
+        <item quantity="two">"בצע שינויים %1$d"</item>
+    </plurals>
+    <plurals name="adaptive_merging_left">
+        <item quantity="many">"מיזוג %1$s · נותרו התנגשויות %2$d"</item>
+        <item quantity="one">"מיזוג %1$s · %2$d התנגשות נותרה"</item>
+        <item quantity="other">"מיזוג %1$s · נותרו התנגשויות %2$d"</item>
+        <item quantity="two">"מיזוג %1$s · נותרו התנגשויות %2$d"</item>
+    </plurals>
+    <plurals name="adaptive_merging_left_plain">
+        <item quantity="many">"מיזוג · נותרו התנגשויות %1$d"</item>
+        <item quantity="one">"מיזוג · נותר קונפליקט %1$d"</item>
+        <item quantity="other">"מיזוג · נותרו התנגשויות %1$d"</item>
+        <item quantity="two">"מיזוג · נותרו התנגשויות %1$d"</item>
+    </plurals>
+    <plurals name="adaptive_split_editing">
+        <item quantity="many">"%1$d עובר עריכה"</item>
+        <item quantity="one">"%1$d עובר עריכה"</item>
+        <item quantity="other">"%1$d עובר עריכה"</item>
+        <item quantity="two">"%1$d עובר עריכה"</item>
+    </plurals>
+    <plurals name="adaptive_split_live">
+        <item quantity="many">"%1$s שינויים · בזמן אמת"</item>
+        <item quantity="one">"%1$s שינוי · חי"</item>
+        <item quantity="other">"%1$s שינויים · בזמן אמת"</item>
+        <item quantity="two">"%1$s שינויים · בזמן אמת"</item>
+    </plurals>
+    <plurals name="adaptive_vaults_need_you">
+        <item quantity="many">"%1$d צריך אותך"</item>
+        <item quantity="one">"%1$d זקוק לך"</item>
+        <item quantity="other">"%1$d צריך אותך"</item>
+        <item quantity="two">"%1$d צריך אותך"</item>
+    </plurals>
+    <plurals name="add_accounts_signed_in">
+        <item quantity="many">"הגדרות · %1$d מחובר"</item>
+        <item quantity="one">"הגדרות · %1$d מחובר"</item>
+        <item quantity="other">"הגדרות · %1$d מחובר"</item>
+        <item quantity="two">"הגדרות · %1$d מחובר"</item>
+    </plurals>
+    <plurals name="add_clone_files">
+        <item quantity="many">"%1$d קבצים"</item>
+        <item quantity="one">"קובץ %1$d"</item>
+        <item quantity="other">"%1$d קבצים"</item>
+        <item quantity="two">"%1$d קבצים"</item>
+    </plurals>
+    <plurals name="add_clone_lfs_files">
+        <item quantity="many">"%1$d קבצים"</item>
+        <item quantity="one">"קובץ %1$d"</item>
+        <item quantity="other">"%1$d קבצים"</item>
+        <item quantity="two">"%1$d קבצים"</item>
+    </plurals>
+    <plurals name="add_local_folders">
+        <item quantity="many">"%1$d תיקיות"</item>
+        <item quantity="one">"תיקיה %1$d"</item>
+        <item quantity="other">"%1$d תיקיות"</item>
+        <item quantity="two">"%1$d תיקיות"</item>
+    </plurals>
+    <plurals name="add_way_github_repos">
+        <item quantity="many">"%1$d repos · פרטי כלול"</item>
+        <item quantity="one">"%1$d ריפו · פרטי כלול"</item>
+        <item quantity="other">"%1$d repos · פרטי כלול"</item>
+        <item quantity="two">"%1$d repos · פרטי כלול"</item>
+    </plurals>
+    <plurals name="add_way_github_repos_public">
+        <item quantity="many">"%1$d repos"</item>
+        <item quantity="one">"%1$d ריפו"</item>
+        <item quantity="other">"%1$d repos"</item>
+        <item quantity="two">"%1$d repos"</item>
+    </plurals>
     <plurals name="dialogs_error_merge_conflicts">
         <item quantity="one">"במיזוג יש %1$d התנגשות שלא נפתרה.\n\nפתרו אותה לפני השלמת המיזוג."</item>
         <item quantity="two">"במיזוג יש %1$d התנגשויות שלא נפתרו.\n\nפתרו אותן לפני השלמת המיזוג."</item>
@@ -1098,6 +2640,144 @@
         <item quantity="two">"⁦+%1$s -%2$s⁩ שורות"</item>
         <item quantity="many">"⁦+%1$s -%2$s⁩ שורות"</item>
         <item quantity="other">"⁦+%1$s -%2$s⁩ שורות"</item>
+    </plurals>
+    <plurals name="editor_m3_lines_changed">
+        <item quantity="many">"שורות %1$d השתנו"</item>
+        <item quantity="one">"שורת %1$d השתנתה"</item>
+        <item quantity="other">"שורות %1$d השתנו"</item>
+        <item quantity="two">"שורות %1$d השתנו"</item>
+    </plurals>
+    <plurals name="files_m3_items">
+        <item quantity="many">"%1$d פריטים"</item>
+        <item quantity="one">"פריט %1$d"</item>
+        <item quantity="other">"%1$d פריטים"</item>
+        <item quantity="two">"%1$d פריטים"</item>
+    </plurals>
+    <plurals name="files_m3_sync_diverged">
+        <item quantity="many">"%1$d התחייבויות חדשות ב-%2$s, ולטלפון הזה יש התחייבויות שהוא לא דחף. פתח את הכרטיסייה שינויים כדי למשוך אותם פנימה."</item>
+        <item quantity="one">"%1$d התחייבות חדשה ב-%2$s, ולטלפון הזה יש התחייבויות שהוא לא דחף. פתח את הכרטיסייה שינויים כדי למשוך אותם פנימה."</item>
+        <item quantity="other">"%1$d התחייבויות חדשות ב-%2$s, ולטלפון הזה יש התחייבויות שהוא לא דחף. פתח את הכרטיסייה שינויים כדי למשוך אותם פנימה."</item>
+        <item quantity="two">"%1$d התחייבויות חדשות ב-%2$s, ולטלפון הזה יש התחייבויות שהוא לא דחף. פתח את הכרטיסייה שינויים כדי למשוך אותם פנימה."</item>
+    </plurals>
+    <plurals name="files_m3_sync_local_changes">
+        <item quantity="many">"%1$d התחייבויות חדשות ב-%2$s. בצע או בטל את השינויים המקומיים שלך בכרטיסייה שינויים, ולאחר מכן סנכרן שוב."</item>
+        <item quantity="one">"%1$d התחייבות חדשה ב-%2$s. בצע או בטל את השינויים המקומיים שלך בכרטיסייה שינויים, ולאחר מכן סנכרן שוב."</item>
+        <item quantity="other">"%1$d התחייבויות חדשות ב-%2$s. בצע או בטל את השינויים המקומיים שלך בכרטיסייה שינויים, ולאחר מכן סנכרן שוב."</item>
+        <item quantity="two">"%1$d התחייבויות חדשות ב-%2$s. בצע או בטל את השינויים המקומיים שלך בכרטיסייה שינויים, ולאחר מכן סנכרן שוב."</item>
+    </plurals>
+    <plurals name="git_m3_cant_switch_body">
+        <item quantity="many">"מעבר ל-%1$s יחליף את הקבצים בטלפון זה. השינויים הלא מחויבים שלך %2$d צריכים קודם כל מקום בטוח."</item>
+        <item quantity="one">"מעבר ל-%1$s יחליף את הקבצים בטלפון זה. השינוי הלא מחויב %2$d שלך צריך קודם כל מקום בטוח."</item>
+        <item quantity="other">"מעבר ל-%1$s יחליף את הקבצים בטלפון זה. השינויים הלא מחויבים שלך %2$d צריכים קודם כל מקום בטוח."</item>
+        <item quantity="two">"מעבר ל-%1$s יחליף את הקבצים בטלפון זה. השינויים הלא מחויבים שלך %2$d צריכים קודם כל מקום בטוח."</item>
+    </plurals>
+    <plurals name="git_m3_commits_missing">
+        <item quantity="many">"%1$d מתחייב ל%2$s אין"</item>
+        <item quantity="one">"%1$d commit %2$s אין"</item>
+        <item quantity="other">"%1$d מתחייב ל%2$s אין"</item>
+        <item quantity="two">"%1$d מתחייב ל%2$s אין"</item>
+    </plurals>
+    <plurals name="git_m3_conflicts_left">
+        <item quantity="many">"%1$d התנגשויות לפתרון."</item>
+        <item quantity="one">"%1$d התנגשות שיש לפתור."</item>
+        <item quantity="other">"%1$d התנגשויות לפתרון."</item>
+        <item quantity="two">"%1$d מתנגשים לפתרון."</item>
+    </plurals>
+    <plurals name="git_m3_continue_resolve">
+        <item quantity="many">"המשך בסיס מחדש · פתרון %1$d עוד"</item>
+        <item quantity="one">"המשך בסיס מחדש · פתרון %1$d עוד"</item>
+        <item quantity="other">"המשך בסיס מחדש · פתרון %1$d עוד"</item>
+        <item quantity="two">"המשך בסיס מחדש · פתרון %1$d עוד"</item>
+    </plurals>
+    <plurals name="git_m3_dirty_note">
+        <item quantity="many">"שינויים %1$d עדיין לא מחויבים. התחייב או אחסן אותם לפני שאתה מחליף סניפים."</item>
+        <item quantity="one">"השינוי %1$d עדיין לא מחויב. התחייב או אחסן אותו לפני שאתה מחליף סניף."</item>
+        <item quantity="other">"שינויים %1$d עדיין לא מחויבים. התחייב או אחסן אותם לפני שאתה מחליף סניפים."</item>
+        <item quantity="two">"שינויים %1$d עדיין לא מחויבים. התחייב או אחסן אותם לפני שאתה מחליף סניפים."</item>
+    </plurals>
+    <plurals name="git_m3_files">
+        <item quantity="many">"%1$d קבצים"</item>
+        <item quantity="one">"קובץ %1$d"</item>
+        <item quantity="other">"%1$d קבצים"</item>
+        <item quantity="two">"%1$d קבצים"</item>
+    </plurals>
+    <plurals name="git_m3_n_branches">
+        <item quantity="many">"%1$d סניפים"</item>
+        <item quantity="one">"סניף %1$d"</item>
+        <item quantity="other">"%1$d סניפים"</item>
+        <item quantity="two">"%1$d סניפים"</item>
+    </plurals>
+    <plurals name="git_m3_n_commits_history">
+        <item quantity="many">"%1$d התחייבויות של היסטוריה"</item>
+        <item quantity="one">"%1$d מחויבות של היסטוריה"</item>
+        <item quantity="other">"%1$d התחייבויות של היסטוריה"</item>
+        <item quantity="two">"%1$d התחייבויות של היסטוריה"</item>
+    </plurals>
+    <plurals name="git_m3_n_stashes">
+        <item quantity="many">"%1$d מאגרים"</item>
+        <item quantity="one">"%1$d מחסן"</item>
+        <item quantity="other">"%1$d מאגרים"</item>
+        <item quantity="two">"%1$d מאגרים"</item>
+    </plurals>
+    <plurals name="git_m3_n_tags">
+        <item quantity="many">"תגיות %1$d"</item>
+        <item quantity="one">"תג %1$d"</item>
+        <item quantity="other">"תגיות %1$d"</item>
+        <item quantity="two">"תגיות %1$d"</item>
+    </plurals>
+    <plurals name="git_m3_notes_attachments">
+        <item quantity="many">"%1$d הערות וקבצים מצורפים"</item>
+        <item quantity="one">"הערה או קובץ מצורף %1$d"</item>
+        <item quantity="other">"%1$d הערות וקבצים מצורפים"</item>
+        <item quantity="two">"%1$d הערות וקבצים מצורפים"</item>
+    </plurals>
+    <plurals name="git_m3_push_commits">
+        <item quantity="many">"דחף %1$d התחייבויות"</item>
+        <item quantity="one">"דחף %1$d התחייבות"</item>
+        <item quantity="other">"דחף %1$d התחייבויות"</item>
+        <item quantity="two">"דחף %1$d התחייבויות"</item>
+    </plurals>
+    <plurals name="git_m3_rebase_begin_body">
+        <item quantity="many">"המחויבויות המקומיות של %1$d מושמעות מחדש במעלה הזרם הנבדק ויכולות לקבל מזהים חדשים. הבסיס מחדש נשאר בטלפון הזה. דחיפה היא שלב נפרד."</item>
+        <item quantity="one">"המחויבות המקומית שלך %1$d מושמעת מחדש במעלה הזרם הנבדק ויכולה לקבל מזהה חדש. הבסיס מחדש נשאר בטלפון הזה. דחיפה היא שלב נפרד."</item>
+        <item quantity="other">"המחויבויות המקומיות של %1$d מושמעות מחדש במעלה הזרם הנבדק ויכולות לקבל מזהים חדשים. הבסיס מחדש נשאר בטלפון הזה. דחיפה היא שלב נפרד."</item>
+        <item quantity="two">"המחויבויות המקומיות של %1$d מושמעות מחדש במעלה הזרימה הנבדקת ויכולות לקבל מזהים חדשים. הבסיס מחדש נשאר בטלפון הזה. דחיפה היא שלב נפרד."</item>
+    </plurals>
+    <plurals name="git_m3_rebase_done_meta">
+        <item quantity="many">"%1$d מתחייב כעת על גבי %2$s · מזהים חדשים · לא נדחף"</item>
+        <item quantity="one">"%1$d התחייב עכשיו על גבי %2$s · מזהים חדשים · לא נדחף"</item>
+        <item quantity="other">"%1$d מתחייב כעת על גבי %2$s · מזהים חדשים · לא נדחף"</item>
+        <item quantity="two">"%1$d מתחייב כעת על גבי %2$s · מזהים חדשים · לא נדחף"</item>
+    </plurals>
+    <plurals name="git_m3_rebase_put_on_top">
+        <item quantity="many">"שים את התחייבויות ה-%1$d שלך על גבי השלט."</item>
+        <item quantity="one">"שים את ההתחייבות %1$d שלך על גבי השלט."</item>
+        <item quantity="other">"שים את התחייבויות ה-%1$d שלך על גבי השלט."</item>
+        <item quantity="two">"שים את התחייבויות ה-%1$d שלך על גבי השלט."</item>
+    </plurals>
+    <plurals name="git_m3_stash_n">
+        <item quantity="many">"שינויים בסטש %1$d"</item>
+        <item quantity="one">"סטאש %1$d שינוי"</item>
+        <item quantity="other">"שינויים בסטש %1$d"</item>
+        <item quantity="two">"שינויים בסטש %1$d"</item>
+    </plurals>
+    <plurals name="git_m3_stashed_toast">
+        <item quantity="many">"שינויים %1$d מאוחסנים כ-stash@{0}."</item>
+        <item quantity="one">"%1$d נשמר כ-stash@{0}."</item>
+        <item quantity="other">"שינויים %1$d מאוחסנים כ-stash@{0}."</item>
+        <item quantity="two">"שינויים %1$d מאחסנים כ-stash@{0}."</item>
+    </plurals>
+    <plurals name="git_m3_uncommitted_changes">
+        <item quantity="many">"%1$s שינויים לא מחויבים"</item>
+        <item quantity="one">"%1$s שינוי לא מחויב"</item>
+        <item quantity="other">"%1$s שינויים לא מחויבים"</item>
+        <item quantity="two">"%1$s שינויים לא מחויבים"</item>
+    </plurals>
+    <plurals name="git_m3_uncommitted_plain">
+        <item quantity="many">"%1$d עריכות לא מחויבות, כקבצים רגילים"</item>
+        <item quantity="one">"%1$d עריכה לא מחויבת, כקובץ רגיל"</item>
+        <item quantity="other">"%1$d עריכות לא מחויבות, כקבצים רגילים"</item>
+        <item quantity="two">"%1$d עריכות לא מחויבות, כקבצים רגילים"</item>
     </plurals>
     <plurals name="gitops_merge_stopped_conflicts">
         <item quantity="one">"המיזוג נעצר: ⁨%1$s⁩ (התנגשות %2$d)"</item>
@@ -1123,6 +2803,42 @@
         <item quantity="many">"%1$d קבצים קיימים שומרים על בחירות המעקב המפורשות שלהם."</item>
         <item quantity="other">"%1$d קבצים קיימים שומרים על בחירות המעקב המפורשות שלהם."</item>
     </plurals>
+    <plurals name="lfs_m3_downloading">
+        <item quantity="many">"הורדת קבצי %1$d"</item>
+        <item quantity="one">"הורדת קובץ %1$d"</item>
+        <item quantity="other">"הורדת קבצי %1$d"</item>
+        <item quantity="two">"הורדת קבצי %1$d"</item>
+    </plurals>
+    <plurals name="lfs_m3_endpoints_subtitle">
+        <item quantity="many">"הגדרות · %1$d אושרו"</item>
+        <item quantity="one">"הגדרות · %1$d מאושרות"</item>
+        <item quantity="other">"הגדרות · %1$d אושרו"</item>
+        <item quantity="two">"הגדרות · %1$d אושרו"</item>
+    </plurals>
+    <plurals name="lfs_m3_ext_affected">
+        <item quantity="many">"קבצי %1$d עוברים ל-LFS"</item>
+        <item quantity="one">"קובץ %1$d עובר ל-LFS"</item>
+        <item quantity="other">"קבצי %1$d עוברים ל-LFS"</item>
+        <item quantity="two">"קבצי %1$d עוברים ל-LFS"</item>
+    </plurals>
+    <plurals name="lfs_m3_file_count">
+        <item quantity="many">"%1$d קבצים"</item>
+        <item quantity="one">"קובץ %1$d"</item>
+        <item quantity="other">"%1$d קבצים"</item>
+        <item quantity="two">"%1$d קבצים"</item>
+    </plurals>
+    <plurals name="lfs_m3_stored_files">
+        <item quantity="many">"בקבצי %1$d"</item>
+        <item quantity="one">"בקובץ %1$d"</item>
+        <item quantity="other">"בקבצי %1$d"</item>
+        <item quantity="two">"בקבצי %1$d"</item>
+    </plurals>
+    <plurals name="lfs_m3_track_files">
+        <item quantity="many">"עקוב אחר קבצי %1$d עם LFS"</item>
+        <item quantity="one">"עקוב אחר קובץ %1$d עם LFS"</item>
+        <item quantity="other">"עקוב אחר קבצי %1$d עם LFS"</item>
+        <item quantity="two">"עקוב אחר קבצי %1$d עם LFS"</item>
+    </plurals>
     <plurals name="lfs_restored_files">
         <item quantity="one">"שוחזר קובץ אחד (%1$d)."</item>
         <item quantity="two">"שוחזרו שני קבצים (%1$d)."</item>
@@ -1135,11 +2851,83 @@
         <item quantity="many">"%1$d קבצים"</item>
         <item quantity="other">"%1$d קבצים"</item>
     </plurals>
+    <plurals name="m3home_auth_waiting">
+        <item quantity="many">"כספות %1$d ממתינות."</item>
+        <item quantity="one">"כספת %1$d ממתינה."</item>
+        <item quantity="other">"כספות %1$d ממתינות."</item>
+        <item quantity="two">"כספות %1$d ממתינות."</item>
+    </plurals>
+    <plurals name="m3home_badge_edited">
+        <item quantity="many">"%1$d נערך"</item>
+        <item quantity="one">"%1$d נערך"</item>
+        <item quantity="other">"%1$d נערך"</item>
+        <item quantity="two">"%1$d נערך"</item>
+    </plurals>
+    <plurals name="m3home_headline_attention">
+        <item quantity="many">"%1$d כספות"</item>
+        <item quantity="one">"כספת %1$d"</item>
+        <item quantity="other">"%1$d כספות"</item>
+        <item quantity="two">"%1$d כספות"</item>
+    </plurals>
+    <plurals name="m3home_headline_attention_accent">
+        <item quantity="many">"%1$s צריך אותך."</item>
+        <item quantity="one">"%1$s צריך אותך."</item>
+        <item quantity="other">"%1$s צריך אותך."</item>
+        <item quantity="two">"%1$s צריך אותך."</item>
+    </plurals>
+    <plurals name="m3home_headline_ready">
+        <item quantity="many">"%1$d כספות"</item>
+        <item quantity="one">"כספת %1$d"</item>
+        <item quantity="other">"%1$d כספות"</item>
+        <item quantity="two">"%1$d כספות"</item>
+    </plurals>
+    <plurals name="m3home_sync_nothing_local">
+        <item quantity="many">"אין מה לסנכרן. כספות %1$d אלה הן מקומיות בלבד (ללא שלט)."</item>
+        <item quantity="other">"אין מה לסנכרן. כספות %1$d אלה הן מקומיות בלבד (ללא שלט)."</item>
+        <item quantity="two">"אין מה לסנכרן. כספות %1$d אלה הן מקומיות בלבד (ללא שלט)."</item>
+        <item quantity="one">"אין משהו לסנכרן. הכספת %1$d היא מקומית בלבד (ללא מרחוק)."</item>
+    </plurals>
     <plurals name="move_plan_summary">
         <item quantity="one">"קובץ אחד (%1$s) כולל מטא-נתונים של Git · %2$s"</item>
         <item quantity="two">"%1$s קבצים כולל מטא-נתונים של Git · %2$s"</item>
         <item quantity="many">"%1$s קבצים כולל מטא-נתונים של Git · %2$s"</item>
         <item quantity="other">"%1$s קבצים כולל מטא-נתונים של Git · %2$s"</item>
+    </plurals>
+    <plurals name="notification_m3_commits">
+        <item quantity="many">"%1$d מחויבות נמשכו ברקע."</item>
+        <item quantity="one">"%1$d commit נמשך ברקע."</item>
+        <item quantity="other">"%1$d מחויבות נמשכו ברקע."</item>
+        <item quantity="two">"%1$d מחויבות נמשכו ברקע."</item>
+    </plurals>
+    <plurals name="notification_m3_commits_from">
+        <item quantity="many">"%1$d התחייבויות מ-%2$s נמשכו ברקע."</item>
+        <item quantity="one">"%1$d התחייבות מ-%2$s נמשכה ברקע."</item>
+        <item quantity="other">"%1$d התחייבויות מ-%2$s נמשכו ברקע."</item>
+        <item quantity="two">"%1$d התחייבויות מ-%2$s נמשכו ברקע."</item>
+    </plurals>
+    <plurals name="pullall_m3_checked_repositories">
+        <item quantity="many">"%1$d מתוך מאגרי %2$d נבדקו"</item>
+        <item quantity="one">"%1$d של מאגר %2$d נבדק"</item>
+        <item quantity="other">"%1$d מתוך מאגרי %2$d נבדקו"</item>
+        <item quantity="two">"%1$d מתוך %2$d מאגרים נבדקו"</item>
+    </plurals>
+    <plurals name="pullall_m3_checked_vaults">
+        <item quantity="many">"%1$d מתוך %2$d כספות נבדקו"</item>
+        <item quantity="one">"%1$d מתוך %2$d כספת נבדקה"</item>
+        <item quantity="other">"%1$d מתוך %2$d כספות נבדקו"</item>
+        <item quantity="two">"%1$d מתוך %2$d כספות נבדקו"</item>
+    </plurals>
+    <plurals name="pullall_m3_updated_commits">
+        <item quantity="many">"עודכן מרחוק · ↓%1$d מתחייב"</item>
+        <item quantity="one">"עודכן מרחוק · ↓%1$d commit"</item>
+        <item quantity="other">"עודכן מרחוק · ↓%1$d מתחייב"</item>
+        <item quantity="two">"עודכן מרחוק · ↓%1$d מתחייב"</item>
+    </plurals>
+    <plurals name="pullall_m3_vaults">
+        <item quantity="many">"%1$d כספות"</item>
+        <item quantity="one">"כספת %1$d"</item>
+        <item quantity="other">"%1$d כספות"</item>
+        <item quantity="two">"%1$d כספות"</item>
     </plurals>
     <plurals name="rebase_additional_blocked_paths">
         <item quantity="one">"נתיב חסום נוסף אינו מוצג (%1$d)."</item>
@@ -1171,16 +2959,136 @@
         <item quantity="many">"· %1$d מאגרים"</item>
         <item quantity="other">"· %1$d מאגרים"</item>
     </plurals>
+    <plurals name="settings_m3_bg_included">
+        <item quantity="many">"%1$d כספות כלולות"</item>
+        <item quantity="one">"כספת %1$d כלול"</item>
+        <item quantity="other">"%1$d כספות כלולות"</item>
+        <item quantity="two">"%1$d כספות כלולות"</item>
+    </plurals>
+    <plurals name="settings_m3_bg_run_quiet">
+        <item quantity="many">"%1$d כספות, שום דבר חדש"</item>
+        <item quantity="one">"כספת %1$d, שום דבר חדש"</item>
+        <item quantity="other">"%1$d כספות, שום דבר חדש"</item>
+        <item quantity="two">"%1$d כספות, שום דבר חדש"</item>
+    </plurals>
+    <plurals name="settings_m3_debug_errors_day">
+        <item quantity="many">"שגיאות %1$d תוך 24 שעות"</item>
+        <item quantity="one">"שגיאה %1$d תוך 24 שעות"</item>
+        <item quantity="other">"שגיאות %1$d תוך 24 שעות"</item>
+        <item quantity="two">"שגיאות %1$d תוך 24 שעות"</item>
+    </plurals>
+    <plurals name="settings_m3_entries">
+        <item quantity="many">"%1$d ערכים"</item>
+        <item quantity="one">"ערך %1$d"</item>
+        <item quantity="other">"%1$d ערכים"</item>
+        <item quantity="two">"%1$d ערכים"</item>
+    </plurals>
+    <plurals name="settings_m3_push_connections">
+        <item quantity="many">"%1$d GitHub חיבורים · על"</item>
+        <item quantity="one">"%1$d GitHub חיבור · מופעל"</item>
+        <item quantity="other">"%1$d GitHub חיבורים · על"</item>
+        <item quantity="two">"%1$d GitHub חיבורים · על"</item>
+    </plurals>
+    <plurals name="settings_m3_push_local_changes">
+        <item quantity="many">"%1$d שינויים מקומיים בטלפון זה"</item>
+        <item quantity="one">"%1$d שינוי מקומי בטלפון זה"</item>
+        <item quantity="other">"%1$d שינויים מקומיים בטלפון זה"</item>
+        <item quantity="two">"%1$d שינויים מקומיים בטלפון זה"</item>
+    </plurals>
+    <plurals name="settings_m3_sc_subtitle">
+        <item quantity="many">"ווידג\'ט משוך הכל · %1$d קיצורי דרך"</item>
+        <item quantity="one">"ווידג\'ט משוך הכל · קיצור דרך %1$d"</item>
+        <item quantity="other">"ווידג\'ט משוך הכל · %1$d קיצורי דרך"</item>
+        <item quantity="two">"ווידג\'ט משוך הכל · %1$d קיצורי דרך"</item>
+    </plurals>
+    <plurals name="ssh_m3_subtitle">
+        <item quantity="many">"הגדרות · שרתי %1$d"</item>
+        <item quantity="one">"הגדרות · שרת %1$d"</item>
+        <item quantity="other">"הגדרות · שרתי %1$d"</item>
+        <item quantity="two">"הגדרות · שרתי %1$d"</item>
+    </plurals>
     <plurals name="tide_vault_changes_on_phone">
-        <item quantity="one">"שינוי בטלפון הזה"</item>
-        <item quantity="two">"שני שינויים בטלפון הזה"</item>
-        <item quantity="many">"שינויים בטלפון הזה"</item>
-        <item quantity="other">"שינויים בטלפון הזה"</item>
+        <item quantity="one">"%1$s שינוי בטלפון הזה"</item>
+        <item quantity="two">"%1$s שני שינויים בטלפון הזה"</item>
+        <item quantity="many">"%1$s שינויים בטלפון הזה"</item>
+        <item quantity="other">"%1$s שינויים בטלפון הזה"</item>
     </plurals>
     <plurals name="tide_vault_conflicts_to_resolve">
-        <item quantity="one">"התנגשות לפתרון"</item>
-        <item quantity="two">"שתי התנגשויות לפתרון"</item>
-        <item quantity="many">"התנגשויות לפתרון"</item>
-        <item quantity="other">"התנגשויות לפתרון"</item>
+        <item quantity="one">"%1$s התנגשות לפתרון"</item>
+        <item quantity="two">"%1$s שתי התנגשויות לפתרון"</item>
+        <item quantity="many">"%1$s התנגשויות לפתרון"</item>
+        <item quantity="other">"%1$s התנגשויות לפתרון"</item>
+    </plurals>
+    <plurals name="vault_m3_commit_title">
+        <item quantity="many">"בצע קבצי %1$d"</item>
+        <item quantity="one">"בצע קובץ %1$d"</item>
+        <item quantity="other">"בצע קבצי %1$d"</item>
+        <item quantity="two">"בצע קבצי %1$d"</item>
+    </plurals>
+    <plurals name="vault_m3_discard_n">
+        <item quantity="many">"בטל את %1$d"</item>
+        <item quantity="one">"בטל את %1$d"</item>
+        <item quantity="other">"בטל את %1$d"</item>
+        <item quantity="two">"בטל את %1$d"</item>
+    </plurals>
+    <plurals name="vault_m3_discard_title">
+        <item quantity="many">"למחוק %1$d שינויים?"</item>
+        <item quantity="one">"למחוק את השינוי %1$d?"</item>
+        <item quantity="other">"למחוק %1$d שינויים?"</item>
+        <item quantity="two">"למחוק %1$d שינויים?"</item>
+    </plurals>
+    <plurals name="vault_m3_effect_lines">
+        <item quantity="many">"−%1$d קווים"</item>
+        <item quantity="one">"קו −%1$d"</item>
+        <item quantity="other">"−%1$d קווים"</item>
+        <item quantity="two">"קווים −%1$d"</item>
+    </plurals>
+    <plurals name="vault_m3_file_count">
+        <item quantity="many">"%1$d קבצים"</item>
+        <item quantity="one">"קובץ %1$d"</item>
+        <item quantity="other">"%1$d קבצים"</item>
+        <item quantity="two">"%1$d קבצים"</item>
+    </plurals>
+    <plurals name="vault_m3_overlap_title">
+        <item quantity="many">"קבצי %1$d השתנו משני הצדדים"</item>
+        <item quantity="one">"קובץ %1$d השתנה משני הצדדים"</item>
+        <item quantity="other">"קבצי %1$d השתנו משני הצדדים"</item>
+        <item quantity="two">"קבצי %1$d השתנו משני הצדדים"</item>
+    </plurals>
+    <plurals name="vault_m3_remote_new">
+        <item quantity="many">"לשלט יש %1$d מחויבות חדשות"</item>
+        <item quantity="one">"לשלט יש %1$d מחויבות חדשה"</item>
+        <item quantity="other">"לשלט יש %1$d מחויבות חדשות"</item>
+        <item quantity="two">"לשלט יש %1$d התחייבויות חדשות"</item>
+    </plurals>
+    <plurals name="vault_m3_step_commit">
+        <item quantity="many">"בצע קבצי %1$d"</item>
+        <item quantity="one">"הגדר קובץ %1$d"</item>
+        <item quantity="other">"בצע קבצי %1$d"</item>
+        <item quantity="two">"בצע קבצי %1$d"</item>
+    </plurals>
+    <plurals name="vault_m3_step_lfs">
+        <item quantity="many">"העלה קבצי %1$d LFS · %2$s"</item>
+        <item quantity="one">"העלה קובץ %1$d LFS · %2$s"</item>
+        <item quantity="other">"העלה קבצי %1$d LFS · %2$s"</item>
+        <item quantity="two">"העלה קבצי %1$d LFS · %2$s"</item>
+    </plurals>
+    <plurals name="vault_m3_suggest_files">
+        <item quantity="many">"עדכן קבצי %1$d"</item>
+        <item quantity="one">"עדכון קובץ %1$d"</item>
+        <item quantity="other">"עדכן קבצי %1$d"</item>
+        <item quantity="two">"עדכן קבצי %1$d"</item>
+    </plurals>
+    <plurals name="vault_m3_uploading_lfs">
+        <item quantity="many">"העלאת קבצי %1$d LFS"</item>
+        <item quantity="one">"העלאת קובץ %1$d LFS"</item>
+        <item quantity="other">"העלאת קבצי %1$d LFS"</item>
+        <item quantity="two">"העלאת קבצי %1$d LFS"</item>
+    </plurals>
+    <plurals name="widget_m3_changes_to_push">
+        <item quantity="many">"%1$s שינויים לדחיפה"</item>
+        <item quantity="one">"%1$s שנה לדחיפה"</item>
+        <item quantity="other">"%1$s שינויים לדחיפה"</item>
+        <item quantity="two">"%1$s שינויים לדחיפה"</item>
     </plurals>
 </resources>

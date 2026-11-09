@@ -68,7 +68,7 @@ private fun HowItWorksVignette(index: Int, modifier: Modifier = Modifier) {
         when (index) {
             0 -> M3Hero(style = M3HeroStyle.Inverse) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text("notes", style = M3Type.title, color = c.onInv, modifier = Modifier.weight(1f))
+                    Text(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_notes_ab5aa970), style = M3Type.title, color = c.onInv, modifier = Modifier.weight(1f))
                     Text("main", style = M3Type.meta, color = c.invMeta)
                 }
                 M3SyncIllustration(stringResource(R.string.m3home_onboarding_this_phone), stringResource(R.string.m3home_rail_github),
@@ -87,7 +87,7 @@ private fun HowItWorksVignette(index: Int, modifier: Modifier = Modifier) {
             else -> M3ListCard {
                 Column(Modifier.padding(16.dp)) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text("notes", style = M3Type.title, color = c.on, modifier = Modifier.weight(1f))
+                        Text(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_notes_ab5aa970), style = M3Type.title, color = c.on, modifier = Modifier.weight(1f))
                         M3Badge("↑3", M3Tone.Ahead)
                     }
                     M3SyncIllustration(stringResource(R.string.m3home_onboarding_this_phone), stringResource(R.string.m3home_rail_github),

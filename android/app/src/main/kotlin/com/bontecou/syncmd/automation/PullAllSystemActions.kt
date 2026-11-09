@@ -119,11 +119,9 @@ class PullAllTileService : TileService() {
     override fun onClick() {
         super.onClick()
         unlockAndRun {
-            if (Build.VERSION.SDK_INT >= 34) startActivityAndCollapse(PullAllAction.pendingIntent(this, "tile"))
-            else {
-                @Suppress("DEPRECATION")
-                startActivityAndCollapse(PullAllAction.intent(this, "tile"))
-            }
+            androidx.core.service.quicksettings.TileServiceCompat.startActivityAndCollapse(this,
+                androidx.core.service.quicksettings.PendingIntentActivityWrapper(this, 411,
+                    PullAllAction.intent(this, "tile"), PendingIntent.FLAG_UPDATE_CURRENT, false))
         }
     }
 }

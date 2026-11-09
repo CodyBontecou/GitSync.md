@@ -286,7 +286,7 @@ fun AddVaultCloneHero(fullName: String, meta: String?, cloned: Boolean, cloning:
     M3Hero(modifier.semantics(mergeDescendants = true) { liveRegion = LiveRegionMode.Polite }.testTag("add-clone-hero")) {
         Row(verticalAlignment = Alignment.Top) {
             Column(Modifier.weight(1f)) {
-                if (owner.isNotEmpty()) Text("$owner/", style = M3Type.meta, color = c.invMeta)
+                if (owner.isNotEmpty()) Text(owner + "/", style = M3Type.meta, color = c.invMeta)
                 Text(name, style = M3Type.headline, color = c.onInv, maxLines = 2, overflow = TextOverflow.Ellipsis)
             }
             if (cloned) M3HeroPill(stringResource(R.string.add_clone_cloned), c.invOk)

@@ -1,5 +1,6 @@
 package com.bontecou.syncmd.ui.adaptive
 
+import com.bontecou.syncmd.ui.util.quantityPhrase
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -129,9 +130,10 @@ fun SplitVaultContent(
         }
         Column(Modifier.fillMaxWidth().background(c.tc, RoundedCornerShape(24.dp)).padding(horizontal = 18.dp, vertical = 16.dp)
             .semantics { liveRegion = LiveRegionMode.Polite }.testTag("split-live")) {
+            val changePhrase = quantityPhrase(R.plurals.adaptive_split_live, rows.size)
             Row(verticalAlignment = Alignment.Bottom, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                Text("${rows.size}", style = M3Type.displayMedium.copy(fontSize = 44.sp, lineHeight = 48.sp, letterSpacing = 0.sp), color = c.onTc)
-                Text(pluralStringResource(R.plurals.adaptive_split_live, rows.size), Modifier.padding(bottom = 8.dp),
+                Text(changePhrase.value, style = M3Type.displayMedium.copy(fontSize = 44.sp, lineHeight = 48.sp, letterSpacing = 0.sp), color = c.onTc)
+                Text(changePhrase.label, Modifier.padding(bottom = 8.dp),
                     style = M3Type.body.copy(fontSize = 15.sp, lineHeight = 20.sp, fontWeight = FontWeight.Medium), color = c.onTc)
             }
             val meta = buildList {

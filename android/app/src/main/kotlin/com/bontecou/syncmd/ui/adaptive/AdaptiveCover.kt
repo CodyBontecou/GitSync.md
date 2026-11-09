@@ -1,5 +1,6 @@
 package com.bontecou.syncmd.ui.adaptive
 
+import com.bontecou.syncmd.ui.util.quantityPhrase
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -179,8 +180,8 @@ fun CoverHomeContent(
         Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(horizontal = 16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
             Column(Modifier.padding(start = 4.dp, end = 4.dp, top = 4.dp)) {
                 val headline = if (attentionCount > 0)
-                    pluralStringResource(R.plurals.m3home_headline_attention, attentionCount, attentionCount) + " " +
-                        pluralStringResource(R.plurals.m3home_headline_attention_accent, attentionCount)
+                    quantityPhrase(R.plurals.m3home_headline_attention_accent, attentionCount,
+                        pluralStringResource(R.plurals.m3home_headline_attention, attentionCount, attentionCount)).text
                 else pluralStringResource(R.plurals.m3home_headline_ready, total, total) + " " + stringResource(R.string.m3home_headline_ready_accent)
                 Text(headline, style = M3Type.headline.copy(lineHeight = 36.sp, letterSpacing = (-0.3).sp), color = c.on, modifier = Modifier.testTag("cover-headline"))
                 Text(listOfNotNull(stringResource(R.string.m3home_meta_in_sync, inSyncCount),
@@ -245,9 +246,10 @@ private fun AttentionCard(card: CoverCardUi, onClick: () -> Unit) {
             if (card.badge != null) Text(card.badge, Modifier.background(c.surface, RoundedCornerShape(8.dp)).padding(horizontal = 10.dp, vertical = 4.dp),
                 style = M3Type.metaStrong, color = c.ahead, maxLines = 1)
         }
+        val changePhrase = changesOnDevice(false, card.changes)
         if (card.changes > 0) Row(verticalAlignment = Alignment.Bottom, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            Text("${card.changes}", style = M3Type.displaySmall.copy(fontSize = 40.sp, lineHeight = 44.sp, letterSpacing = 0.sp), color = c.onTc)
-            Text(changesOnDevice(false, card.changes), Modifier.padding(bottom = 6.dp), style = M3Type.bodyMedium, color = c.onTc)
+            Text(changePhrase.value, style = M3Type.displaySmall.copy(fontSize = 40.sp, lineHeight = 44.sp, letterSpacing = 0.sp), color = c.onTc)
+            Text(changePhrase.label, Modifier.padding(bottom = 6.dp), style = M3Type.bodyMedium, color = c.onTc)
         }
         if (card.files.isNotEmpty()) Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
             card.files.take(4).forEach { f ->

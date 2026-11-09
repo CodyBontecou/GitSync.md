@@ -27,7 +27,7 @@ sealed interface UiText {
         fun plural(@PluralsRes id: Int, quantity: Int, vararg args: Any): UiText = Plural(id, quantity, args.toList())
         /** An exception's own message, or [fallback] when it has none. */
         fun of(error: Throwable?, @StringRes fallback: Int): UiText =
-            error?.message?.takeIf { it.isNotBlank() }?.let(::Raw) ?: Resource(fallback)
+            (error as? UiTextFailure)?.text ?: error?.message?.takeIf { it.isNotBlank() }?.let(::Raw) ?: Resource(fallback)
     }
 }
 
@@ -36,3 +36,8 @@ private fun resolved(context: Context, args: List<Any>): Array<Any> =
 
 @Composable
 fun UiText.asString(): String = resolve(LocalContext.current)
+
+/** App-authored failure; retain resource ownership until the display locale is known. */
+class UiTextFailure(@StringRes id: Int) : IllegalStateException() {
+    val text: UiText = UiText.res(id)
+}

@@ -1,5 +1,6 @@
 package com.bontecou.syncmd.ui.theme
 
+import com.bontecou.syncmd.ui.util.CountedPhrase
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
@@ -349,12 +350,13 @@ fun M3IconButton(
 @Composable
 fun M3Wordmark(modifier: Modifier = Modifier, style: TextStyle = M3Type.wordmark) {
     val c = M3.colors
+    val brand = stringResource(R.string.app_name)
     Text(
         buildAnnotatedString {
             withStyle(SpanStyle(color = c.on)) { append("gitsync") }
             withStyle(SpanStyle(color = c.primary)) { append(".md") }
         },
-        modifier = modifier.semantics { contentDescription = "GitSync.md"; heading() },
+        modifier = modifier.semantics { contentDescription = brand; heading() },
         style = style,
     )
 }
@@ -765,7 +767,7 @@ fun M3Switch(
 ) {
     val c = M3.colors
     val thumb by animateDpAsState(if (checked) 24.dp else 16.dp, label = "thumb")
-    val start by animateDpAsState(if (checked) 24.dp else 6.dp, label = "thumbOffset")
+    val start by animateDpAsState(if (checked) 24.dp else 6.dp, label = "thumb_offset")
     val shape = RoundedCornerShape(16.dp)
     Box(
         modifier
@@ -1013,6 +1015,23 @@ fun M3HeroHeadline(
     )
 }
 
+/** Full translated quantity sentence, retaining subject and accent as separate styles. */
+@Composable
+fun M3HeroHeadline(phrase: CountedPhrase, modifier: Modifier = Modifier, style: TextStyle = M3Type.headline) {
+    val c = M3.colors
+    val base = LocalContentColor.current
+    val accent = when (LocalM3HeroStyle.current) {
+        M3HeroStyle.Inverse -> c.invAhead
+        M3HeroStyle.Highest -> c.onVar
+        else -> base.copy(alpha = 0.72f)
+    }
+    Text(buildAnnotatedString {
+        withStyle(SpanStyle(color = accent)) { append(phrase.before) }
+        append(phrase.value)
+        withStyle(SpanStyle(color = accent)) { append(phrase.after) }
+    }, modifier.semantics { heading() }, style = style, color = base)
+}
+
 /** Hero meta line: mono 12/16, 6dp above; invMeta on Inverse, onVar on Highest/PinnedSoft, content ink otherwise. */
 @Composable
 fun M3HeroMeta(text: String, modifier: Modifier = Modifier, topPadding: Dp = 6.dp) {
@@ -1031,6 +1050,19 @@ fun M3HeroCount(count: String, label: String, modifier: Modifier = Modifier) {
     Row(modifier.padding(top = 4.dp), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
         Text(count, style = M3Type.display, color = LocalContentColor.current, modifier = Modifier.alignByBaseline())
         Text(label, style = M3Type.lead, color = LocalContentColor.current, modifier = Modifier.alignByBaseline())
+    }
+}
+
+/** Keep the metric's actual value and inflected label from one translated template. */
+@Composable
+fun M3HeroCount(phrase: CountedPhrase, modifier: Modifier = Modifier) {
+    Row(modifier.padding(top = 4.dp),
+        horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+        if (phrase.before.isNotBlank()) Text(phrase.before.trimEnd(), style = M3Type.lead,
+            color = LocalContentColor.current, modifier = Modifier.alignByBaseline())
+        Text(phrase.value, style = M3Type.display, color = LocalContentColor.current, modifier = Modifier.alignByBaseline())
+        if (phrase.after.isNotBlank()) Text(phrase.after.trimStart(), style = M3Type.lead,
+            color = LocalContentColor.current, modifier = Modifier.alignByBaseline())
     }
 }
 
@@ -2244,31 +2276,31 @@ fun M3VaultNavigationBar(selected: VaultTab, onSelect: (VaultTab) -> Unit, modif
 private fun PreviewHome() {
     val c = M3.colors
     Column(Modifier.background(c.surface)) {
-        M3HomeTopBar(avatarInitials = "CB", statusBarPadding = false) { M3IconButton(R.drawable.ic_m3_add, "Add a vault", {}) }
+        M3HomeTopBar(avatarInitials = "CB", statusBarPadding = false) { M3IconButton(R.drawable.ic_m3_add, androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.add_title), {}) }
         M3Hero(Modifier.m3Gutter().padding(top = 8.dp)) {
-            M3HeroHeadline("1 vault", accent = "needs you.")
-            M3HeroMeta("4 in sync · checked 2 min ago")
+            M3HeroHeadline(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_1_vault_c39776f1), accent = "needs you.")
+            M3HeroMeta(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_4_in_sync_checked_2_min_ago_a1f1ab5e))
         }
         M3ChipRow {
-            M3FilterChip("All 5", true, {})
-            M3FilterChip("Attention 1", false, {})
-            M3FilterChip("Pinned", false, {})
+            M3FilterChip(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_all_5_8907f196), true, {})
+            M3FilterChip(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_attention_1_fa1ea5dc), false, {})
+            M3FilterChip(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.m3home_filter_pinned), false, {})
         }
         M3Hero(Modifier.m3Gutter().padding(top = 12.dp), style = M3HeroStyle.PinnedSoft, contentPadding = PaddingValues(start = 20.dp, end = 20.dp, top = 16.dp, bottom = 18.dp)) {
-            M3HeroKicker("Pinned", icon = R.drawable.ic_m3_pin)
+            M3HeroKicker(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.m3home_filter_pinned), icon = R.drawable.ic_m3_pin)
             Row(Modifier.fillMaxWidth().padding(top = 6.dp)) {
-                Text("VoxVault", style = M3Type.title, modifier = Modifier.weight(1f))
-                M3CountText("↑3 to push")
+                Text(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_voxvault_b8d22790), style = M3Type.title, modifier = Modifier.weight(1f))
+                M3CountText(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_3_to_push_ac87b7cb))
             }
-            Text("main · CodyBontecou/VoxVault", style = M3Type.meta, color = c.onVar)
+            Text(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_main_codybontecou_voxvault_c727a0dc), style = M3Type.meta, color = c.onVar)
             M3SyncIllustration("Phone", "GitHub", M3RailState.Pending, Modifier.padding(top = 16.dp), onHero = false, background = c.tcSoft)
         }
         M3ListCard(Modifier.m3Gutter().padding(top = 12.dp)) {
-            M3ListRow("notes", meta = "main · 12m ago", titleStyle = M3Type.bodyStrong, leading = { M3LeadingAvatar("n", M3Tone.Ok) }, trailing = { M3Badge("In sync", M3Tone.Ok) }, onClick = {})
-            M3ListRow("VoxVault", meta = "main · last synced 2h ago", titleStyle = M3Type.bodyStrong, divider = true, leading = { M3LeadingAvatar("V", M3Tone.Ahead) }, trailing = { M3Badge("↑3 held", M3Tone.Ahead) }, onClick = {}, onLongClick = {})
-            M3ListRow("health-md", meta = "main · last synced 2h ago", titleStyle = M3Type.bodyStrong, divider = true, leading = { M3LeadingAvatar("h", M3Tone.Warn) }, trailing = { M3Badge("Paused", M3Tone.Warn) })
+            M3ListRow(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_notes_ab5aa970), meta = "main · 12m ago", titleStyle = M3Type.bodyStrong, leading = { M3LeadingAvatar("n", M3Tone.Ok) }, trailing = { M3Badge(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.git_m3_in_sync), M3Tone.Ok) }, onClick = {})
+            M3ListRow(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_voxvault_b8d22790), meta = "main · last synced 2h ago", titleStyle = M3Type.bodyStrong, divider = true, leading = { M3LeadingAvatar("V", M3Tone.Ahead) }, trailing = { M3Badge(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_3_held_f454ab2b), M3Tone.Ahead) }, onClick = {}, onLongClick = {})
+            M3ListRow(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_health_md_f72119f5), meta = "main · last synced 2h ago", titleStyle = M3Type.bodyStrong, divider = true, leading = { M3LeadingAvatar("h", M3Tone.Warn) }, trailing = { M3Badge(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.m3home_auth_paused), M3Tone.Warn) })
         }
-        Box(Modifier.fillMaxWidth().padding(16.dp), contentAlignment = Alignment.CenterEnd) { M3ExtendedFab("Sync all", R.drawable.ic_m3_sync, {}, meta = "↓0 ↑3") }
+        Box(Modifier.fillMaxWidth().padding(16.dp), contentAlignment = Alignment.CenterEnd) { M3ExtendedFab(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.adaptive_sync_all), R.drawable.ic_m3_sync, {}, meta = "↓0 ↑3") }
     }
 }
 
@@ -2285,26 +2317,26 @@ private fun PreviewM3HomeDark() = SyncMdTheme(darkTheme = true) { PreviewHome() 
 private fun PreviewM3Vault() = SyncMdTheme(darkTheme = false) {
     val c = M3.colors
     Column(Modifier.background(c.surface)) {
-        M3TopBar("VoxVault", subtitle = "main · CodyBontecou/VoxVault", onBack = {}, statusBarPadding = false) {
-            M3IconButton(R.drawable.ic_m3_sync, "Check for changes", {})
-            M3IconButton(R.drawable.ic_m3_more_vert, "Vault settings", {})
+        M3TopBar(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_voxvault_b8d22790), subtitle = androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_main_codybontecou_voxvault_c727a0dc), onBack = {}, statusBarPadding = false) {
+            M3IconButton(R.drawable.ic_m3_sync, androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.files_m3_check_for_changes), {})
+            M3IconButton(R.drawable.ic_m3_more_vert, androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.git_m3_vault_settings), {})
         }
         M3Hero(Modifier.m3Gutter().padding(top = 8.dp)) {
-            M3HeroKicker("Ready to commit")
-            M3HeroCount("3", "changes on this phone")
-            M3HeroMeta("Remote has no new commits · fetched 2m ago", topPadding = 2.dp)
+            M3HeroKicker(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.tide_vault_eyebrow_ready_to_commit))
+            M3HeroCount("3", androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_changes_on_this_phone_6359d3d5))
+            M3HeroMeta(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_remote_has_no_new_commits_fetched_2m_ago_bdaa4b95), topPadding = 2.dp)
             M3HeroActions {
-                M3Button("Commit & push", {}, Modifier.weight(1f), M3ButtonStyle.OnHero, M3ButtonSize.Large, icon = R.drawable.ic_m3_arrow_upward)
-                M3Button("Pull", {}, style = M3ButtonStyle.OutlinedOnHero, size = M3ButtonSize.Large, icon = R.drawable.ic_m3_arrow_downward)
+                M3Button(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.shortcut_m3_commit_short), {}, Modifier.weight(1f), M3ButtonStyle.OnHero, M3ButtonSize.Large, icon = R.drawable.ic_m3_arrow_upward)
+                M3Button(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.pull_screen), {}, style = M3ButtonStyle.OutlinedOnHero, size = M3ButtonSize.Large, icon = R.drawable.ic_m3_arrow_downward)
             }
         }
-        M3SectionLabel("Changes", count = "3", trailing = "tap a file to see the diff")
+        M3SectionLabel(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.diff_m3_changes), count = "3", trailing = "tap a file to see the diff")
         M3ListCard(Modifier.m3Gutter().padding(top = 8.dp)) {
-            M3ListRow("2026-11-01.md", meta = "daily/", leading = { M3LeadingLetter("A", M3Tone.Ok) }, trailing = { M3DiffStat("+42", null) }, onClick = {})
-            M3ListRow("voice-memo-pipeline.md", meta = "ideas/", divider = true, leading = { M3LeadingLetter("M", M3Tone.Ahead) }, trailing = { M3DiffStat("+8", "−3") }, onClick = {})
+            M3ListRow(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_2026_11_01_md_4381fb10), meta = "daily/", leading = { M3LeadingLetter("A", M3Tone.Ok) }, trailing = { M3DiffStat("+42", null) }, onClick = {})
+            M3ListRow(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_voice_memo_pipeline_md_2a5a57d3), meta = "ideas/", divider = true, leading = { M3LeadingLetter("M", M3Tone.Ahead) }, trailing = { M3DiffStat("+8", "−3") }, onClick = {})
         }
-        M3Note("You can leave this screen. The sync keeps going and shows its progress in a notification.", Modifier.m3Gutter().padding(top = 12.dp), tone = M3NoteTone.Plain)
-        M3Note("3 changes aren't committed yet. Commit or stash them before you switch branches.", Modifier.m3Gutter().padding(top = 8.dp), tone = M3NoteTone.Ahead)
+        M3Note(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.vault_m3_leave_note), Modifier.m3Gutter().padding(top = 12.dp), tone = M3NoteTone.Plain)
+        M3Note(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_3_changes_aren_t_committed_yet_commit_or_s_d878e782), Modifier.m3Gutter().padding(top = 8.dp), tone = M3NoteTone.Ahead)
         Spacer(Modifier.weight(1f))
         M3VaultNavigationBar(VaultTab.CHANGES, {}, changes = 3)
     }
@@ -2317,33 +2349,33 @@ private fun PreviewM3Controls() = SyncMdTheme(darkTheme = true) {
     Column(Modifier.background(c.surface).padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
         M3Segmented(listOf("Write", "Preview"), 0, {})
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            M3FilledButton("Commit & push", {}, trailingMeta = "↑3")
-            M3TonalButton("Clone", {})
-            M3TextButton("Not now", {})
+            M3FilledButton(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.shortcut_m3_commit_short), {}, trailingMeta = "↑3")
+            M3TonalButton(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.diagnostics_operation_clone), {})
+            M3TextButton(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.settings_m3_not_now), {})
         }
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            M3OutlinedButton("Review first", {}, Modifier.weight(1f))
-            M3OutlinedButton("Discard changes", {}, Modifier.weight(1f), destructive = true)
+            M3OutlinedButton(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.adaptive_review_first), {}, Modifier.weight(1f))
+            M3OutlinedButton(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.git_m3_discard), {}, Modifier.weight(1f), destructive = true)
         }
         M3ListCard {
-            M3SettingsRow("Include in Background Sync", subtitle = "Only branch main, tracking origin/main", checked = true, onCheckedChange = {})
-            M3SettingsRow("Pin to top of Home", checked = false, onCheckedChange = {}, divider = true)
-            M3SettingsRow("Display name", value = "VoxVault", onClick = {}, divider = true)
+            M3SettingsRow(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.settings_m3_vault_include), subtitle = stringResource(R.string.settings_m3_vault_include_sub, "main", "origin", "main"), checked = true, onCheckedChange = {})
+            M3SettingsRow(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.settings_m3_vault_pin), checked = false, onCheckedChange = {}, divider = true)
+            M3SettingsRow(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.settings_m3_vault_display_name), value = "VoxVault", onClick = {}, divider = true)
         }
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
-            M3Tag("LFS"); M3Tag("M", tone = M3Tone.Ahead); M3Tag("ERROR", tone = M3Tone.Warn); M3Badge("needs access", M3Tone.Warn); M3Badge("↓1", M3Tone.Behind)
+            M3Tag("LFS"); M3Tag("M", tone = M3Tone.Ahead); M3Tag(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.settings_m3_debug_error), tone = M3Tone.Warn); M3Badge(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.paywall_pill_needs_access), M3Tone.Warn); M3Badge("↓1", M3Tone.Behind)
         }
         M3Hero(style = M3HeroStyle.PrimaryContainer) {
-            Text("Pushing…", style = M3Type.headline)
-            Text("2 of 3 commits sent", style = M3Type.bodyMedium, modifier = Modifier.padding(top = 2.dp))
+            Text(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.vault_m3_pushing), style = M3Type.headline)
+            Text(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_2_of_3_commits_sent_5591e38a), style = M3Type.bodyMedium, modifier = Modifier.padding(top = 2.dp))
             M3ProgressBar(0.66f, Modifier.padding(top = 16.dp), tone = M3ProgressTone.PrimaryContainer)
         }
         M3IndeterminateProgressBar()
         M3Hero(contentPadding = PaddingValues(horizontal = 20.dp, vertical = 28.dp)) {
             M3SyncIllustration("this phone", "GitHub", M3RailState.Onboarding)
         }
-        M3Snackbar("Support email copied", actionLabel = "OK", onAction = {})
-        M3ExtendedFab("Syncs when online", R.drawable.ic_m3_cloud_off, null, meta = "↑3", style = M3FabStyle.Flat)
+        M3Snackbar("Support email copied", actionLabel = stringResource(android.R.string.ok), onAction = {})
+        M3ExtendedFab(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.m3home_offline_fab), R.drawable.ic_m3_cloud_off, null, meta = "↑3", style = M3FabStyle.Flat)
     }
 }
 
@@ -2352,26 +2384,26 @@ private fun PreviewM3Controls() = SyncMdTheme(darkTheme = true) {
 private fun PreviewM3Overlays() = SyncMdTheme(darkTheme = false) {
     Column(Modifier.background(M3.colors.scrim).padding(top = 24.dp), verticalArrangement = Arrangement.spacedBy(24.dp)) {
         M3DialogSurface(
-            "Discard 3 changes?", Modifier.padding(horizontal = 24.dp), icon = R.drawable.ic_m3_delete, iconTint = M3.colors.error,
-            text = "These files go back to how they were in a41c9e2.",
+            androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_discard_3_changes_d2ad52aa), Modifier.padding(horizontal = 24.dp), icon = R.drawable.ic_m3_delete, iconTint = M3.colors.error,
+            text = androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_these_files_go_back_to_how_they_were_in_a4_02e3cd66),
             content = {
                 M3InsetList(radius = 12.dp) {
-                    M3InsetRow("daily/2026-11-01.md", trailing = "delete new file")
-                    M3InsetRow("old-inbox.md", trailing = "restore", divider = true)
+                    M3InsetRow(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_daily_2026_11_01_md_c8c1afcc), trailing = "delete new file")
+                    M3InsetRow(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_old_inbox_md_66b84b5b), trailing = "restore", divider = true)
                 }
             },
         ) {
-            M3DialogAction("Keep them", {})
-            M3DialogAction("Discard 3", {}, destructive = true, filled = true)
+            M3DialogAction(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.vault_m3_keep_them), {})
+            M3DialogAction(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_discard_3_95e06aed), {}, destructive = true, filled = true)
         }
-        M3SheetSurface(title = "Commit 3 files", titleMeta = "VoxVault → main", footer = {
-            M3FilledButton("Commit & push", {}, Modifier.fillMaxWidth(), size = M3ButtonSize.Hero, trailingMeta = "↑3")
-            M3TextButton("Commit locally", {}, Modifier.fillMaxWidth())
+        M3SheetSurface(title = androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_commit_3_files_959a8528), titleMeta = "VoxVault → main", footer = {
+            M3FilledButton(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.shortcut_m3_commit_short), {}, Modifier.fillMaxWidth(), size = M3ButtonSize.Hero, trailingMeta = "↑3")
+            M3TextButton(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.vault_m3_commit_locally), {}, Modifier.fillMaxWidth())
         }) {
-            M3TextField("Add Nov 1 daily note", {}, "Message", Modifier.padding(top = 20.dp), singleLine = false)
-            M3SectionLabel("Included", contentPadding = PaddingValues(start = 4.dp, end = 4.dp, top = 20.dp, bottom = 4.dp))
+            M3TextField("Add Nov 1 daily note", {}, androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.vault_m3_message), Modifier.padding(top = 20.dp), singleLine = false)
+            M3SectionLabel(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.vault_m3_included), contentPadding = PaddingValues(start = 4.dp, end = 4.dp, top = 20.dp, bottom = 4.dp))
             M3InsetList {
-                M3CheckboxRow("daily/2026-11-01.md", true, {}, trailing = { M3DiffStat("+42", null, style = M3Type.metaStrong) })
+                M3CheckboxRow(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_daily_2026_11_01_md_c8c1afcc), true, {}, trailing = { M3DiffStat("+42", null, style = M3Type.metaStrong) })
             }
         }
     }

@@ -1,4 +1,4 @@
-<!-- Generated from the sibling iOS catalog by tools/localization/import_ios_catalog.py. -->
+<!-- Generated from the canonical Apple catalog and Android overrides by tools/localization/import_ios_catalog.py. -->
 <resources>
     <string name="account_alternative_exists" formatted="false">"एक अन्य वैकल्पिक कनेक्शन पहले से सहेजा गया है। और URL क्रेडेंशियल माइग्रेट करने से पहले उसकी समीक्षा करें।"</string>
     <string name="account_api_error">"GitHub API त्रुटि: HTTP %1$d"</string>
@@ -95,6 +95,342 @@
     <string name="account_token_invalid">"GitHub टोकन अमान्य है या समाप्त हो गया है (HTTP %1$d)"</string>
     <string name="account_updated_just_now" formatted="false">"अभी-अभी"</string>
     <string name="account_valid_branch" formatted="false">"मान्य ब्रांच नाम दर्ज करें"</string>
+    <string name="adaptive_abort_merge" formatted="false">"merge रद्द करें"</string>
+    <string name="adaptive_account" formatted="false">"खाता और सेटिंग्स"</string>
+    <string name="adaptive_badge_ahead">"↑%1$d"</string>
+    <string name="adaptive_badge_attention" formatted="false">"!"</string>
+    <string name="adaptive_badge_behind">"↓%1$d"</string>
+    <string name="adaptive_badge_both">"↓%1$d ↑%2$d"</string>
+    <string name="adaptive_badge_checking" formatted="false">"…"</string>
+    <string name="adaptive_badge_edited">"%1$d संपादित"</string>
+    <string name="adaptive_badge_in_sync" formatted="false">"✓"</string>
+    <string name="adaptive_branch_local_only">"%1$s · कोई रिमोट नहीं"</string>
+    <string name="adaptive_branch_to_remote">"%1$s → %2$s"</string>
+    <string name="adaptive_cancel" formatted="false">"रद्द करें"</string>
+    <string name="adaptive_commit_message" formatted="false">"– कमिट संदेश"</string>
+    <string name="adaptive_commit_only" formatted="false">"केवल प्रतिबद्ध करें"</string>
+    <string name="adaptive_commit_this_file" formatted="false">"इस फ़ाइल को प्रतिबद्ध करें"</string>
+    <string name="adaptive_conflict" formatted="false">"कॉन्फ़्लिक्ट"</string>
+    <string name="adaptive_conflict_position">"%2$d · %3$s का संघर्ष %1$d"</string>
+    <string name="adaptive_cover_unfold" formatted="false">"परिवर्तन सूची के बगल में अंतर को पढ़ने के लिए अनफोल्ड करें।"</string>
+    <string name="adaptive_discard_all" formatted="false">"त्यागें"</string>
+    <string name="adaptive_edited" formatted="false">"संपादित"</string>
+    <string name="adaptive_include" formatted="false">"शामिल करें"</string>
+    <string name="adaptive_keep_this_version" formatted="false">"यह वर्शन रखें"</string>
+    <string name="adaptive_new_file" formatted="false">"नई फ़ाइल"</string>
+    <string name="adaptive_no_changes" formatted="false">"इस डिवाइस पर कोई बदलाव नहीं। एक नोट संपादित करें और यह यहां दिखाई देगा।"</string>
+    <string name="adaptive_position">"%1$d / %2$d"</string>
+    <string name="adaptive_pull" formatted="false">"Pull"</string>
+    <string name="adaptive_pull_then_push" formatted="false">"खींचो, फिर धक्का दो"</string>
+    <string name="adaptive_push" formatted="false">"पुश करें"</string>
+    <string name="adaptive_rejected" formatted="false">"रिमोट आगे बढ़ गया। पहले इसके कमिट खींचो, फिर अपना कमिट बढ़ाओ।"</string>
+    <string name="adaptive_review_first" formatted="false">"पहले समीक्षा करें"</string>
+    <string name="adaptive_split_auto_commit" formatted="false">"जब मैं 2 मिनट के लिए रुकता हूं तो स्वतः-प्रतिबद्ध हो जाता हूं"</string>
+    <string name="adaptive_split_committed">"↑%1$d प्रतिबद्ध"</string>
+    <string name="adaptive_split_typing" formatted="false">"टाइप हो रहा है…"</string>
+    <string name="adaptive_split_watching">"%1$s पर नज़र"</string>
+    <string name="adaptive_sync_all" formatted="false">"सभी सिंक करें"</string>
+    <string name="adaptive_sync_all_to_push">"सभी को सिंक करें, पुश करने के लिए %1$d"</string>
+    <string name="adaptive_this_tablet" formatted="false">"यह टैबलेट"</string>
+    <string name="adaptive_vaults" formatted="false">"वॉल्ट"</string>
+    <string name="adaptive_view" formatted="false">"देखें"</string>
+    <string name="adaptive_vs">"बनाम %1$s"</string>
+    <string name="add_access_body" formatted="false">"GitSync.md को डिवाइस फ़ोल्डरों में वास्तविक Git कार्यशील प्रतियों को प्रबंधित करने के लिए साझा भंडारण पहुंच की आवश्यकता है। इसे Android सेटिंग्स में चालू करें, फिर वे फ़ोल्डर चुनें जिनका आप उपयोग करना चाहते हैं।"</string>
+    <string name="add_access_cancel" formatted="false">"रद्द करें"</string>
+    <string name="add_access_enable" formatted="false">"ऐक्सेस चालू करें"</string>
+    <string name="add_access_note" formatted="false">"अभी नहीं? आप ऐप स्टोरेज का उपयोग जारी रख सकते हैं।"</string>
+    <string name="add_access_title" formatted="false">"स्थानीय फ़ोल्डर ऐक्सेस की अनुमति दें"</string>
+    <string name="add_accounts_add" formatted="false">"जोड़ें GitHub खाता"</string>
+    <string name="add_accounts_browsing" formatted="false">"इस खाते से ब्राउज़ कर रहे हैं"</string>
+    <string name="add_accounts_cancel" formatted="false">"रद्द करें"</string>
+    <string name="add_accounts_empty_body" formatted="false">"स्थानीय रिपॉजिटरी उपलब्ध रहती हैं।"</string>
+    <string name="add_accounts_empty_title" formatted="false">"कोई कनेक्टेड खाता नहीं"</string>
+    <string name="add_accounts_intro" formatted="false">"GitHub ब्राउज़ करने के लिए उपयोग किया जाने वाला खाता चुनें। प्रत्येक भंडार अपना खाता रखता है; इसे रिपोजिटरी कनेक्शन में बदलें।"</string>
+    <string name="add_accounts_none_signed_in" formatted="false">"सेटिंग्स · कोई भी साइन इन नहीं है"</string>
+    <string name="add_accounts_remove" formatted="false">"साइन-इन हटाएँ"</string>
+    <string name="add_accounts_remove_body" formatted="false">"इस खाते का उपयोग करने वाली रिपॉजिटरी आपको फिर से साइन इन करने या रिपॉजिटरी कनेक्शन में कोई अन्य खाता चुनने के लिए कहेगी। आपकी स्थानीय फ़ाइलें और प्रतिबद्धताएँ यथावत रहेंगी।"</string>
+    <string name="add_accounts_remove_title">"%1$s हटाएँ?"</string>
+    <string name="add_accounts_title" formatted="false">"GitHub खाते"</string>
+    <string name="add_accounts_use" formatted="false">"ब्राउज़ करने के लिए इस्तेमाल करें"</string>
+    <string name="add_added" formatted="false">"जोड़ा गया"</string>
+    <string name="add_ago_days">"%1$d दिन पहले"</string>
+    <string name="add_ago_hours">"%1$dहाल ही में"</string>
+    <string name="add_ago_minutes">"%1$dm पहले"</string>
+    <string name="add_ago_months">"%1$dmo पहले"</string>
+    <string name="add_ago_now" formatted="false">"– अभी।"</string>
+    <string name="add_ago_weeks">"%1$dw पहले"</string>
+    <string name="add_ago_years">"%1$dy पहले"</string>
+    <string name="add_auth_github" formatted="false">"GitHub"</string>
+    <string name="add_auth_none" formatted="false">"कोई नहीं"</string>
+    <string name="add_auth_saved" formatted="false">"सहेजा गया"</string>
+    <string name="add_auth_ssh" formatted="false">"SSH कुंजी"</string>
+    <string name="add_auth_token" formatted="false">"टोकन"</string>
+    <string name="add_check_access_ro" formatted="false">"केवल पढ़ने के लिए"</string>
+    <string name="add_check_access_rw" formatted="false">"पढ़ें · लिखें"</string>
+    <string name="add_check_add_on_github" formatted="false">"GitHub पर रेपो जोड़ें"</string>
+    <string name="add_check_again" formatted="false">"फिर जाँचें"</string>
+    <string name="add_check_app_callout">"GitHub App %1$s पर स्थापित है लेकिन यह रेपो चयनित नहीं है। इसे GitHub पर जोड़ें, फिर वापस आएं।"</string>
+    <string name="add_check_app_missing">"GitSync.md का GitHub App अभी तक %1$s पर नहीं है। इसे इस रेपो के साथ GitHub पर जोड़ें, फिर वापस आएं।"</string>
+    <string name="add_check_checking" formatted="false">"जाँच जारी है…"</string>
+    <string name="add_check_clone" formatted="false">"वॉल्ट क्लोन करें"</string>
+    <string name="add_check_clone_obsidian" formatted="false">"Obsidian में क्लोन करें"</string>
+    <string name="add_check_clones_to" formatted="false">"क्लोन स्थान"</string>
+    <string name="add_check_head_blocked" formatted="false">"पहले एक बात ठीक करनी है।"</string>
+    <string name="add_check_head_checking" formatted="false">"आपका वॉल्ट\nजाँचा जा रहा है।"</string>
+    <string name="add_check_head_ready" formatted="false">"आपका वॉल्ट तैयार है।"</string>
+    <string name="add_check_lfs_none" formatted="false">"कोई नहीं"</string>
+    <string name="add_check_lfs_used" formatted="false">"प्रयोग में है"</string>
+    <string name="add_check_measuring" formatted="false">"मापा जा रहा है"</string>
+    <string name="add_check_no_obsidian" formatted="false">"अभी तक कोई .obsidian/ फ़ोल्डर नहीं है"</string>
+    <string name="add_check_note_blocked" formatted="false">"आपने कुछ भी भुगतान नहीं किया है। अनलॉक तभी दिखता है जब आपका वॉल्ट जाँच में पास हो जाए।"</string>
+    <string name="add_check_note_checking" formatted="false">"सिर्फ़ मेटाडेटा पढ़ा जाता है। अनलॉक करने तक कोई नोट डाउनलोड नहीं होता।"</string>
+    <string name="add_check_note_ready" formatted="false">"Google Play आपके पुष्टि करने से पहले आपकी मुद्रा में अंतिम कीमत दिखाता है।"</string>
+    <string name="add_check_note_ready_unlocked" formatted="false">"Full Access अनलॉक है। भुगतान करने के लिए और कुछ नहीं."</string>
+    <string name="add_check_obsidian_found" formatted="false">"Obsidian वॉल्ट मिला"</string>
+    <string name="add_check_obsidian_git" formatted="false">"Obsidian Git प्लगइन कॉन्फ़िगर है"</string>
+    <string name="add_check_ok" formatted="false">"ठीक है"</string>
+    <string name="add_check_pick_another" formatted="false">"दूसरी रिपॉज़िटरी चुनें"</string>
+    <string name="add_check_play_note" formatted="false">"Google Play से एक बार की ख़रीदारी। कोई सदस्यता नहीं।"</string>
+    <string name="add_check_price_once">"एक बार %1$s"</string>
+    <string name="add_check_size_files" formatted="false">"आकार और फ़ाइलें"</string>
+    <string name="add_check_stat_access" formatted="false">"पहुँच"</string>
+    <string name="add_check_stat_files" formatted="false">"फ़ाइलें"</string>
+    <string name="add_check_stat_lfs" formatted="false">"Git LFS"</string>
+    <string name="add_check_stat_size" formatted="false">"आकार"</string>
+    <string name="add_check_step">"चरण %1$d / 3"</string>
+    <string name="add_check_sub_blocked" formatted="false">"GitSync.md इस रेपो को पढ़ सकता है लेकिन इस पर दबाव नहीं डाल सकता। इसे GitHub पर ठीक करें, फिर दोबारा जांचें।"</string>
+    <string name="add_check_sub_checking" formatted="false">"कुछ भी भुगतान करने से पहले यह पक्का किया जा रहा है कि GitSync.md इस रिपॉज़िटरी को सिंक कर सकता है।"</string>
+    <string name="add_check_sub_ready" formatted="false">"सब ठीक है। एक क्लोन और Obsidian इसे पूरे इतिहास के साथ खोल देगा।"</string>
+    <string name="add_check_title" formatted="false">"वॉल्ट जाँच"</string>
+    <string name="add_check_unknown" formatted="false">"—"</string>
+    <string name="add_check_write_access" formatted="false">"लिखने की पहुँच"</string>
+    <string name="add_clone" formatted="false">"क्लोन करें"</string>
+    <string name="add_clone_app_storage" formatted="false">"ऐप का स्टोरेज इस्तेमाल करें"</string>
+    <string name="add_clone_busy" formatted="false">"रिपॉज़िटरी क्लोन हो रही है"</string>
+    <string name="add_clone_bytes">"%1$s · %2$s"</string>
+    <string name="add_clone_cancel" formatted="false">"रद्द करें"</string>
+    <string name="add_clone_checkout" formatted="false">"फ़ाइलों की जाँच करना"</string>
+    <string name="add_clone_choose_folder" formatted="false">"दूसरा फ़ोल्डर चुनें"</string>
+    <string name="add_clone_cloned" formatted="false">"– क्लोन किया गया"</string>
+    <string name="add_clone_continue" formatted="false">"जारी रखें"</string>
+    <string name="add_clone_finishing" formatted="false">"पूरा किया जा रहा है"</string>
+    <string name="add_clone_finishing_body">"अपने वॉल्ट में %1$s जोड़ना और इसकी Git LFS फ़ाइलों की जाँच करना।"</string>
+    <string name="add_clone_lfs" formatted="false">"क्लोन पूरा हुआ। कुछ Git LFS फ़ाइलों की अभी समीक्षा या डाउनलोड की ज़रूरत है। आपका क्लोन और स्थानीय बदलाव सुरक्षित हैं।"</string>
+    <string name="add_clone_lfs_review" formatted="false">"Git LFS की समीक्षा करें"</string>
+    <string name="add_clone_location" formatted="false">"क्लोन का स्थान"</string>
+    <string name="add_clone_new_folder" formatted="false">"नया फ़ोल्डर"</string>
+    <string name="add_clone_nothing_yet" formatted="false">"जब तक आप क्लोन पर टैप नहीं करते, कुछ भी डाउनलोड नहीं होता।"</string>
+    <string name="add_clone_percent">"%1$d%%"</string>
+    <string name="add_clone_preparing" formatted="false">"कनेक्ट हो रहा है"</string>
+    <string name="add_clone_receiving" formatted="false">"ऑब्जेक्ट प्राप्त करना"</string>
+    <string name="add_clone_register_failed" formatted="false">"क्लोन की गई रिपॉज़िटरी जोड़ी नहीं जा सकी। उसकी फ़ाइलें रखी गई हैं। फिर से जोड़ने की कोशिश करें या स्थानीय रिपॉज़िटरी से उसका फ़ोल्डर फिर कनेक्ट करें।"</string>
+    <string name="add_clone_register_retry" formatted="false">"क्लोन की गई रिपॉज़िटरी जोड़ें"</string>
+    <string name="add_clone_resolving" formatted="false">"डेल्टा का समाधान"</string>
+    <string name="add_clone_retry" formatted="false">"पुनः प्रयास करें"</string>
+    <string name="add_clone_saved_default" formatted="false">"सहेजा हुआ डिफ़ॉल्ट इस्तेमाल करें"</string>
+    <string name="add_clone_start" formatted="false">"रिपॉज़िटरी क्लोन करें"</string>
+    <string name="add_clone_title_cloning" formatted="false">"रिपॉज़िटरी क्लोन हो रही है"</string>
+    <string name="add_clone_title_done" formatted="false">"– क्लोन किया गया"</string>
+    <string name="add_clone_title_failed" formatted="false">"क्लोन विफल"</string>
+    <string name="add_clone_title_ready" formatted="false">"रिपॉज़िटरी क्लोन करें"</string>
+    <string name="add_clone_to">"→ %1$s"</string>
+    <string name="add_cloning_name">"%1$s क्लोन हो रहा है"</string>
+    <string name="add_close" formatted="false">"बंद करें"</string>
+    <string name="add_connected_added" formatted="false">"आपके खातों में जोड़ा गया"</string>
+    <string name="add_connected_title" formatted="false">"GitHub खाता जुड़ गया"</string>
+    <string name="add_continue" formatted="false">"जारी रखें"</string>
+    <string name="add_default_branch" formatted="false">"डिफ़ॉल्ट ब्रांच"</string>
+    <string name="add_done" formatted="false">"हो गया"</string>
+    <string name="add_github_hint" formatted="false">"github.com के लिए GitHub खाते के साइन-इन का उपयोग करता है।"</string>
+    <string name="add_group_notes" formatted="false">"नोट्स जैसा दिखता है"</string>
+    <string name="add_group_other" formatted="false">"बाकी सब"</string>
+    <string name="add_group_other_matching" formatted="false">"बाकी सब जो मेल खाता है"</string>
+    <string name="add_intro" formatted="false">"पहले से मौजूद रिपो लाएँ, या किसी फ़ोल्डर को रिपो में बदलें।"</string>
+    <string name="add_key_copied" formatted="false">"सार्वजनिक कुंजी की प्रतिलिपि बनाई गई"</string>
+    <string name="add_key_copy" formatted="false">"पब्लिक की कॉपी करें"</string>
+    <string name="add_key_failed" formatted="false">"इस फ़ोन पर कुंजी नहीं बनाई जा सकी। इसके बजाय दूसरी कुंजी का उपयोग करें."</string>
+    <string name="add_key_hint" formatted="false">"सार्वजनिक कुंजी को एक बार अपने होस्ट में जोड़ें। निजी कुंजी इस फ़ोन पर रहती है."</string>
+    <string name="add_key_meta">"ed25519 · %1$s"</string>
+    <string name="add_key_other" formatted="false">"कोई दूसरा उपयोग करें…"</string>
+    <string name="add_key_this_phone" formatted="false">"इस फ़ोन की कुंजी का उपयोग करें"</string>
+    <string name="add_key_title" formatted="false">"इस फ़ोन की कुंजी"</string>
+    <string name="add_local_add_selected" formatted="false">"चुनी गई रिपॉज़िटरी जोड़ें"</string>
+    <string name="add_local_added" formatted="false">"जोड़ी गई रिपॉज़िटरी"</string>
+    <string name="add_local_already" formatted="false">"पहले से जोड़ा गया"</string>
+    <string name="add_local_clean" formatted="false">"साफ़"</string>
+    <string name="add_local_clone_instead" formatted="false">"इसके बजाय GitHub से क्लोन करें"</string>
+    <string name="add_local_destination">"गंतव्य: %1$s"</string>
+    <string name="add_local_detached" formatted="false">"अलग HEAD या अभी पहला कमिट नहीं"</string>
+    <string name="add_local_dirty" formatted="false">"स्थानीय बदलाव"</string>
+    <string name="add_local_discovered" formatted="false">"मिली हुई रिपॉज़िटरी"</string>
+    <string name="add_local_files_deleted" formatted="false">"स्थानीय फ़ाइलें मिटाई गईं"</string>
+    <string name="add_local_files_kept" formatted="false">"स्थानीय फ़ाइलें सुरक्षित रहीं"</string>
+    <string name="add_local_in">"%1$s में"</string>
+    <string name="add_local_interrupted" formatted="false">"बाधित क्लोन"</string>
+    <string name="add_local_interrupted_body" formatted="false">"इसके फ़ोल्डर और कनेक्शन की समीक्षा करने के बाद यह क्लोन फिर से जोड़ने का प्रयास करें। मौजूदा फ़ाइलें सुरक्षित रहती हैं।"</string>
+    <string name="add_local_intro" formatted="false">"खोजें Git इस फ़ोन पर पहले से ही कार्यशील प्रतिलिपियाँ, जैसे कि Obsidian वॉल्ट फ़ोल्डर, और उन्हें दोबारा क्लोन किए बिना जोड़ें। किसी प्रविष्टि को हटाने से बाद में उसकी फ़ाइलें सुरक्षित रहती हैं।"</string>
+    <string name="add_local_none_added" formatted="false">"अभी कोई रिपॉज़िटरी नहीं जोड़ी गई है।"</string>
+    <string name="add_local_none_body">"%1$s में किसी भी चीज़ में .git फ़ोल्डर नहीं था। उस फ़ोल्डर को आज़माएं जिसका उपयोग आपका नोट्स ऐप करता है, या GitHub से क्लोन करें।"</string>
+    <string name="add_local_none_title" formatted="false">"कोई कार्यशील प्रतियाँ नहीं मिलीं"</string>
+    <string name="add_local_previous" formatted="false">"पहले जोड़ी गई"</string>
+    <string name="add_local_scan_app" formatted="false">"ऐप के फ़ोल्डर स्कैन करें"</string>
+    <string name="add_local_scan_app_label" formatted="false">"ऐप फ़ोल्डर्स"</string>
+    <string name="add_local_scan_app_sub" formatted="false">"फ़ोल्डर्स GitSync.md पहले से ही स्टोर हैं"</string>
+    <string name="add_local_scan_device" formatted="false">"डिवाइस का फ़ोल्डर स्कैन करें"</string>
+    <string name="add_local_scan_device_sub" formatted="false">"कोई फ़ोल्डर चुनें, जैसे दस्तावेज़ या Obsidian"</string>
+    <string name="add_local_scanning">"स्कैनिंग %1$s"</string>
+    <string name="add_local_staged">"अस्थायी कॉपी: %1$s"</string>
+    <string name="add_local_title" formatted="false">"स्थानीय रिपॉज़िटरी"</string>
+    <string name="add_local_tracking_removed" formatted="false">"Git ट्रैकिंग हटा दी गई · फ़ाइलें रखी गईं"</string>
+    <string name="add_local_truncated" formatted="false">"स्कैन गहराई या फ़ोल्डर सीमा तक पहुँच गया। कुछ फ़ोल्डर स्कैन नहीं हुए।"</string>
+    <string name="add_location_body" formatted="false">"क्लोन करते समय एक अलग फ़ोल्डर चुनें, या सेटिंग्स में एक डिफ़ॉल्ट सेट करें।"</string>
+    <string name="add_location_head" formatted="false">"डिफ़ॉल्ट सहेजने का स्थान"</string>
+    <string name="add_location_head_muted" formatted="false">"स्थान।"</string>
+    <string name="add_location_label" formatted="false">"डाउनलोड स्थान"</string>
+    <string name="add_meta_lfs">"%1$s LFS"</string>
+    <string name="add_meta_private" formatted="false">"– निजी"</string>
+    <string name="add_meta_public" formatted="false">"– सार्वजनिक"</string>
+    <string name="add_more_options" formatted="false">"नाम, शाखा और फ़ोल्डर"</string>
+    <string name="add_more_options_meta">"%1$s · %2$s"</string>
+    <string name="add_none_hint" formatted="false">"सार्वजनिक रिपो के लिए। GitSync.md कोई क्रेडेंशियल नहीं भेजता।"</string>
+    <string name="add_not_signed_in" formatted="false">"साइन इन नहीं"</string>
+    <string name="add_owner_orgs" formatted="false">"संगठन"</string>
+    <string name="add_owner_starred" formatted="false">"स्टार की गई"</string>
+    <string name="add_owner_yours" formatted="false">"आपका"</string>
+    <string name="add_picker_accounts" formatted="false">"GitHub खाते"</string>
+    <string name="add_picker_empty_owner" formatted="false">"यहां अभी तक कोई रिपो नहीं है।"</string>
+    <string name="add_picker_refresh" formatted="false">"रीफ़्रेश करें"</string>
+    <string name="add_picker_search" formatted="false">"रिपॉज़िटरी खोजें"</string>
+    <string name="add_picker_starred_failed" formatted="false">"आपका तारांकित रेपो लोड नहीं किया जा सका।"</string>
+    <string name="add_picker_title" formatted="false">"रिपो चुनें"</string>
+    <string name="add_publish_account" formatted="false">"GitHub खाता"</string>
+    <string name="add_publish_author_email" formatted="false">"लेखक का ईमेल"</string>
+    <string name="add_publish_author_name" formatted="false">"लेखक का नाम"</string>
+    <string name="add_publish_cancel" formatted="false">"रद्द करें"</string>
+    <string name="add_publish_check" formatted="false">"मूल गंतव्य जाँचें"</string>
+    <string name="add_publish_choose" formatted="false">"फ़ोल्डर चुनें"</string>
+    <string name="add_publish_confirm" formatted="false">"प्रकाशित करें"</string>
+    <string name="add_publish_confirm_body">"यह %1$s को %2$s रेपो बनाता है और सहेजे गए पहले कमिट को अपलोड करता है। ऐप खुला रखें. पुनः प्रयास इस गंतव्य की जाँच करता है और कभी भी दूसरी प्रतिबद्धता नहीं बनाता है।"</string>
+    <string name="add_publish_confirm_dest">"%1$s · %2$s\n%3$s · %4$s · %5$s"</string>
+    <string name="add_publish_confirm_title" formatted="false">"यह सहेजा गया कमिट प्रकाशित करें?"</string>
+    <string name="add_publish_continue" formatted="false">"सहेजा गया प्रकाशन जारी रखें"</string>
+    <string name="add_publish_creating" formatted="false">"रिपोजिटरी बनाया जा रहा है..."</string>
+    <string name="add_publish_discard" formatted="false">"सहेजी गई समीक्षा छोड़ें"</string>
+    <string name="add_publish_file_ignored">"%1$s · अनदेखा किया गया"</string>
+    <string name="add_publish_file_issue">"%1$s · %2$s"</string>
+    <string name="add_publish_file_large">"%1$s · 10 MiB से अधिक"</string>
+    <string name="add_publish_file_regular">"%1$s · नियमित फ़ाइल"</string>
+    <string name="add_publish_file_sensitive">"%1$s · संवेदनशील फ़ाइल नाम"</string>
+    <string name="add_publish_files" formatted="false">"फ़ाइलें"</string>
+    <string name="add_publish_intro" formatted="false">"इस फ़ोन पर एक फ़ोल्डर चुनें, इसकी फ़ाइलों की समीक्षा करें और पहली प्रतिबद्धता सहेजें। फिर प्रकाशन आपके GitHub पर एक नया रेपो बनाता है और उसे अपलोड करता है।"</string>
+    <string name="add_publish_keep_note" formatted="false">"आपके चले जाने पर प्रगति सुरक्षित रहती है। यदि Android एक्सेस हटा देता है, तो उसी फ़ोल्डर को पुनः कनेक्ट करें।"</string>
+    <string name="add_publish_limits" formatted="false">"आपकी फ़ाइलें वहीं रहेंगी जहां वे हैं। 10 MiB तक एक फ़ाइल, 10,000 फ़ाइलें और कुल मिलाकर 256 MiB। Git खाली फ़ोल्डरों को छोड़ देता है।"</string>
+    <string name="add_publish_manage_accounts" formatted="false">"खाते प्रबंधित करें"</string>
+    <string name="add_publish_message" formatted="false">"प्रारंभिक कमिट संदेश"</string>
+    <string name="add_publish_no_account" formatted="false">"प्रकाशित करने के लिए GitHub में साइन इन करें।"</string>
+    <string name="add_publish_open" formatted="false">"रिपॉज़िटरी खोलें"</string>
+    <string name="add_publish_original" formatted="false">"मूल फ़ोल्डर"</string>
+    <string name="add_publish_phase_created" formatted="false">"रिपॉज़िटरी बन गई; अपलोड लंबित है"</string>
+    <string name="add_publish_phase_done" formatted="false">"प्रकाशित"</string>
+    <string name="add_publish_phase_prepared" formatted="false">"स्थानीय commit तैयार"</string>
+    <string name="add_publish_phase_published" formatted="false">"कमिट प्रकाशित; सेटअप लंबित है"</string>
+    <string name="add_publish_phase_review" formatted="false">"फ़ाइलें और गंतव्य की समीक्षा करें"</string>
+    <string name="add_publish_phase_unknown" formatted="false">"रिपॉज़िटरी बनने की स्थिति की समीक्षा आवश्यक है"</string>
+    <string name="add_publish_prepare" formatted="false">"स्थानीय कमिट तैयार करें"</string>
+    <string name="add_publish_preparing" formatted="false">"स्थानीय प्रतिबद्धता तैयार कर रहा है…"</string>
+    <string name="add_publish_private" formatted="false">"निजी रिपॉज़िटरी"</string>
+    <string name="add_publish_private_off" formatted="false">"चुनी गई फ़ाइलें और हिस्ट्री कोई भी पढ़ सकता है।"</string>
+    <string name="add_publish_private_on" formatted="false">"केवल वे लोग इसे पढ़ सकते हैं जिन्हें आप पहुँच देते हैं।"</string>
+    <string name="add_publish_progress_bytes">"%1$s / %2$s · ऐप को खुला रखें"</string>
+    <string name="add_publish_progress_keep">"%1$s · ऐप को खुला रखें"</string>
+    <string name="add_publish_public_body" formatted="false">"आपके द्वारा प्रकाशित फ़ाइलों को कोई भी पढ़ सकेगा। उन रहस्यों, व्यक्तिगत विवरणों और फ़ाइलों के लिए अपने चयन की जाँच करें जिन्हें आप साझा नहीं कर सकते।"</string>
+    <string name="add_publish_public_confirm" formatted="false">"सार्वजनिक चुनें"</string>
+    <string name="add_publish_public_title" formatted="false">"इस रिपॉज़िटरी को सार्वजनिक बनाएँ?"</string>
+    <string name="add_publish_publish" formatted="false">"GitHub पर प्रकाशित करें"</string>
+    <string name="add_publish_reconnect" formatted="false">"मूल फ़ोल्डर फिर कनेक्ट करें"</string>
+    <string name="add_publish_refresh" formatted="false">"फ़ाइलें रीफ़्रेश करें"</string>
+    <string name="add_publish_registering" formatted="false">"रिपॉजिटरी जोड़ा जा रहा है..."</string>
+    <string name="add_publish_reload" formatted="false">"सहेजी गई प्रगति फिर लोड करें"</string>
+    <string name="add_publish_repo_name" formatted="false">"रिपॉज़िटरी नाम"</string>
+    <string name="add_publish_save_review" formatted="false">"समीक्षा सहेजें"</string>
+    <string name="add_publish_saved_commit">"सहेजा गया कमिट: %1$s"</string>
+    <string name="add_publish_saved_progress" formatted="false">"सहेजी गई प्रगति"</string>
+    <string name="add_publish_selected">"चयनित: %1$d · %2$s"</string>
+    <string name="add_publish_step">"चरण %1$d / 3"</string>
+    <string name="add_publish_stop" formatted="false">"रोकें"</string>
+    <string name="add_publish_title" formatted="false">"फ़ोल्डर प्रकाशित करें"</string>
+    <string name="add_publish_unknown_note" formatted="false">"GitHub ने शायद पहले ही रिपॉ बनाए होंगे। मूल गंतव्य की जाँच करें। कोई दूसरा रिपॉ नहीं बनाया जाता जब तक आप मिलते-जुलते खाली का उपयोग करने का चयन न करें।"</string>
+    <string name="add_publish_uploading" formatted="false">"सहेजा गया कमिट अपलोड हो रहा है…"</string>
+    <string name="add_rail_github" formatted="false">"GitHub"</string>
+    <string name="add_rail_phone" formatted="false">"यह फ़ोन"</string>
+    <string name="add_remote_file" formatted="false">"स्थानीय"</string>
+    <string name="add_remote_git" formatted="false">"git://"</string>
+    <string name="add_remote_http" formatted="false">"HTTP"</string>
+    <string name="add_remote_https" formatted="false">"HTTPS"</string>
+    <string name="add_remote_intro" formatted="false">"GitLab, Gitea, Codeberg, आपका अपना सर्वर।"</string>
+    <string name="add_remote_label" formatted="false">"रिमोट URL"</string>
+    <string name="add_remote_name_invalid" formatted="false">"बिना / या \\ के नाम का उपयोग करें, न कि \"।\" या \"..\"।"</string>
+    <string name="add_remote_placeholder" formatted="false">"ssh://git@host/owner/repo.git"</string>
+    <string name="add_remote_ssh" formatted="false">"SSH"</string>
+    <string name="add_remote_title" formatted="false">"कोई भी Git होस्ट"</string>
+    <string name="add_resume_meta">"%1$s · चरण %2$d 3 में से · सहेजा गया"</string>
+    <string name="add_resume_title" formatted="false">"प्रकाशन फिर से शुरू करें"</string>
+    <string name="add_saved_hint" formatted="false">"इस रिपॉजिटरी के लिए सहेजे गए एन्क्रिप्टेड कनेक्शन का पुन: उपयोग करता है।"</string>
+    <string name="add_sign_in_with" formatted="false">"इसके साथ साइन इन करें"</string>
+    <string name="add_signed_in_as">"@%1$s के रूप में साइन इन"</string>
+    <string name="add_signin_back_accounts" formatted="false">"खातों पर वापस जाएं"</string>
+    <string name="add_signin_body" formatted="false">"कोई भी रिपॉज़िटरी क्लोन करें, Obsidian या किसी अन्य ऐप में लिखें और एक टैप में सिंक करें।"</string>
+    <string name="add_signin_busy" formatted="false">"साइन इन हो रहा है…"</string>
+    <string name="add_signin_eyebrow" formatted="false">"कोई भी रिपॉज़िटरी। Android पर सिंक।"</string>
+    <string name="add_signin_github" formatted="false">"GitHub से साइन इन करें"</string>
+    <string name="add_signin_head_1" formatted="false">"आपके नोट्स।"</string>
+    <string name="add_signin_head_2" formatted="false">"असली git।"</string>
+    <string name="add_signin_head_3" formatted="false">"हमेशा तालमेल में।"</string>
+    <string name="add_signin_rail" formatted="false">"यह फ़ोन और GitHub एक समन्वयन बिंदु पर मिल रहे हैं"</string>
+    <string name="add_signin_sample" formatted="false">"नमूना रिपॉज़िटरी आज़माएँ"</string>
+    <string name="add_signin_sample_busy" formatted="false">"नमूना खुल रहा है…"</string>
+    <string name="add_signin_sample_hint" formatted="false">"वास्तविक Git, ऑफ़लाइन। किसी खाते की आवश्यकता नहीं."</string>
+    <string name="add_signin_token" formatted="false">"पर्सनल एक्सेस टोकन"</string>
+    <string name="add_signin_waiting" formatted="false">"ब्राउज़र टैब में GitHub पर समाप्त करें। तुम तुरंत वापस आओगे."</string>
+    <string name="add_ssh_import_failed" formatted="false">"वह कुंजी फ़ाइल नहीं पढ़ सका।"</string>
+    <string name="add_ssh_import_key" formatted="false">"कुंजी फ़ाइल आयात करें"</string>
+    <string name="add_test_clone" formatted="false">"जाँचें और क्लोन करें"</string>
+    <string name="add_test_failed_auth" formatted="false">"होस्ट ने इस साइन-इन से इनकार कर दिया। कुंजी या टोकन और रेपो तक उसकी पहुंच की जाँच करें।"</string>
+    <string name="add_test_failed_branch">"होस्ट की %1$s नाम की कोई शाखा नहीं है।"</string>
+    <string name="add_test_failed_missing" formatted="false">"इस पते पर होस्ट का कोई रेपो नहीं है।"</string>
+    <string name="add_test_failed_network" formatted="false">"होस्ट तक नहीं पहुंच सका। पता और अपना कनेक्शन जांचें."</string>
+    <string name="add_test_host_key" formatted="false">"होस्ट की SSH कुंजी की पुष्टि करें, फिर टेस्ट और क्लोन पर फिर से टैप करें।"</string>
+    <string name="add_testing" formatted="false">"साइन-इन का परीक्षण किया जा रहा है..."</string>
+    <string name="add_title" formatted="false">"वॉल्ट जोड़ें"</string>
+    <string name="add_token_body" formatted="false">"रिपॉज़िटरी एक्सेस वाला GitHub टोकन पेस्ट करें।"</string>
+    <string name="add_token_create" formatted="false">"GitHub पर एक टोकन बनाएं"</string>
+    <string name="add_token_hide" formatted="false">"छिपाएँ"</string>
+    <string name="add_token_hint" formatted="false">"टोकन इस फोन पर एन्क्रिप्ट किया गया है और केवल इस होस्ट को भेजा गया है।"</string>
+    <string name="add_token_label" formatted="false">"टोकन"</string>
+    <string name="add_token_scopes" formatted="false">"कार्यक्षेत्र: रेपो और उपयोगकर्ता:ईमेल। इस फ़ोन पर टोकन एन्क्रिप्ट किया गया है."</string>
+    <string name="add_token_secret" formatted="false">"टोकन"</string>
+    <string name="add_token_show" formatted="false">"दिखाएँ"</string>
+    <string name="add_token_sign_in" formatted="false">"साइन इन"</string>
+    <string name="add_token_title" formatted="false">"पर्सनल एक्सेस टोकन"</string>
+    <string name="add_token_user" formatted="false">"यूज़रनेम"</string>
+    <string name="add_unlock_rail">"%1$s · %2$s · जाँच की गई, क्लोन करने के लिए तैयार"</string>
+    <string name="add_unlock_rail_cd">"%1$s, जांचा गया और GitHub से Obsidian में क्लोन करने के लिए तैयार है"</string>
+    <string name="add_unlock_rail_from" formatted="false">"GitHub"</string>
+    <string name="add_unlock_rail_plain">"%1$s · जाँच की गई, क्लोन करने के लिए तैयार है"</string>
+    <string name="add_unlock_rail_to" formatted="false">"Obsidian"</string>
+    <string name="add_url_hint" formatted="false">"HTTPS, SSH, git:// या owner/repo। सेल्फ़-होस्टेड? की पर टैप करें।"</string>
+    <string name="add_url_key" formatted="false">"अन्य होस्ट के लिए साइन-इन विकल्प"</string>
+    <string name="add_url_label" formatted="false">"रिपॉज़िटरी URL"</string>
+    <string name="add_url_placeholder" formatted="false">"https://github.com/owner/repo"</string>
+    <string name="add_url_section" formatted="false">"या URL पेस्ट करें"</string>
+    <string name="add_way_github" formatted="false">"GitHub से क्लोन करें"</string>
+    <string name="add_way_github_sign_in" formatted="false">"अपने रिपोज़ से चुनने के लिए साइन इन करें"</string>
+    <string name="add_way_local" formatted="false">"इस फ़ोन पर क्लोन ढूंढें"</string>
+    <string name="add_way_local_sub" formatted="false">"मौजूदा .git फ़ोल्डरों के लिए साझा संग्रहण को स्कैन करें"</string>
+    <string name="add_way_open" formatted="false">"रिपो फ़ोल्डर खोलें"</string>
+    <string name="add_way_open_sub" formatted="false">"सिस्टम फ़ोल्डर पिकर के साथ Git रेपो चुनें"</string>
+    <string name="add_way_publish" formatted="false">"फ़ोल्डर प्रकाशित करें"</string>
+    <string name="add_way_publish_sub" formatted="false">"अपने नोट्स से नई GitHub रिपो बनाएँ"</string>
     <string name="automation_shortcut_label">"%1$s: %2$s"</string>
     <string name="background_allow_push" formatted="false">"स्वचालित प्रकाशन की अनुमति दें"</string>
     <string name="background_binding">"केवल %1$s ब्रांच, जो %2$s/%3$s को ट्रैक करती है। ब्रांच, फ़ोल्डर, कनेक्शन या खाते में बदलाव होने पर नई समीक्षा ज़रूरी है।"</string>
@@ -261,12 +597,43 @@
     <string name="dialogs_success_title" formatted="false">"सफल"</string>
     <string name="dialogs_timestamp_unknown" formatted="false">"अज्ञात"</string>
     <string name="dialogs_warning_title" formatted="false">"चेतावनी"</string>
+    <string name="diff_m3_binary" formatted="false">"यह फ़ाइल टेक्स्ट नहीं है, इसलिए तुलना करने के लिए कोई पंक्तियाँ नहीं हैं।"</string>
+    <string name="diff_m3_changes" formatted="false">"बदलाव"</string>
+    <string name="diff_m3_deleted" formatted="false">"यह फ़ाइल हटा दी गई थी। डिस्कार्ड इसे अंतिम कमिट से पुनर्स्थापित करता है।"</string>
+    <string name="diff_m3_discard" formatted="false">"त्यागें"</string>
+    <string name="diff_m3_hunk">"%1$s · लाइन %2$d"</string>
+    <string name="diff_m3_hunk_line">"पंक्ति %1$d"</string>
+    <string name="diff_m3_load_failed" formatted="false">"इस फ़ाइल के परिवर्तन नहीं पढ़ सके।"</string>
+    <string name="diff_m3_next" formatted="false">"अगली फ़ाइल"</string>
+    <string name="diff_m3_no_changes" formatted="false">"अंतिम प्रतिबद्धता के बाद से कोई परिवर्तन नहीं।"</string>
+    <string name="diff_m3_position">"%1$s · %2$d में से %3$d"</string>
+    <string name="diff_m3_preview" formatted="false">"पूर्वावलोकन"</string>
+    <string name="diff_m3_previous" formatted="false">"पिछली फ़ाइल"</string>
+    <string name="diff_m3_stats_a11y">"%1$d पंक्तियाँ जोड़ी गईं, %2$d हटाई गईं"</string>
+    <string name="diff_m3_vs_last_commit">"बनाम अंतिम प्रतिबद्धता %1$s"</string>
+    <string name="diff_m3_vs_nothing" formatted="false">"नई फ़ाइल · अभी तक कोई प्रतिबद्धता नहीं"</string>
+    <string name="diff_m3_whole_file" formatted="false">"पूरी फ़ाइल"</string>
     <string name="discard_clear_staging" formatted="false">"स्टेजिंग हटाएँ"</string>
     <string name="discard_review_all" formatted="false">"नीचे दिए गए ट्रैक किए गए बदलाव और नई फ़ाइलें स्थायी रूप से हटा दी जाएँगी। अनदेखी की गई फ़ाइलें रखी जाएँगी।"</string>
     <string name="discard_review_empty" formatted="false">"हटाने के लिए कोई बदलाव नहीं है।"</string>
     <string name="discard_review_operation" formatted="false">"इससे चल रही Git कार्रवाई भी रद्द हो जाएगी।"</string>
     <string name="discard_review_unborn" formatted="false">"अभी कोई कमिट नहीं है। यह सूचीबद्ध फ़ाइलों की स्टेजिंग हटाता है और उनकी सामग्री रखता है।"</string>
     <string name="discovery_scanned">"%1$s स्कैन किया गया। जोड़ने के लिए कार्यशील प्रतियाँ चुनें।"</string>
+    <string name="editor_m3_commit" formatted="false">"Commit"</string>
+    <string name="editor_m3_markdown" formatted="false">"मार्कडाउन"</string>
+    <string name="editor_m3_md_bold" formatted="false">"बोल्ड"</string>
+    <string name="editor_m3_md_code" formatted="false">"कोड"</string>
+    <string name="editor_m3_md_heading" formatted="false">"शीर्षक"</string>
+    <string name="editor_m3_md_indent" formatted="false">"इंडेंट"</string>
+    <string name="editor_m3_md_link" formatted="false">"लिंक"</string>
+    <string name="editor_m3_md_task" formatted="false">"कार्य"</string>
+    <string name="editor_m3_not_saved" formatted="false">"सहेजा नहीं गया"</string>
+    <string name="editor_m3_save_now" formatted="false">"अभी सहेजें"</string>
+    <string name="editor_m3_saved" formatted="false">"सहेजा गया"</string>
+    <string name="editor_m3_saved_changed">"सहेजा गया · %1$s"</string>
+    <string name="editor_m3_saving" formatted="false">"सेवा ..."</string>
+    <string name="editor_m3_subtitle">"%1$s / %2$s"</string>
+    <string name="editor_m3_vault_ahead">"%1$s ↑%2$d"</string>
     <string name="file_clone_failure" formatted="false">"स्थानीय रिपॉज़िटरी क्लोन नहीं हो सका। स्रोत फ़ोल्डर, स्टोरेज एक्सेस और ब्रांच जाँचें। मौजूदा फ़ोल्डर सुरक्षित रखे गए।"</string>
     <string name="file_clone_guidance" formatted="false">"स्थानीय एक्सेस से डिवाइस का रिपॉज़िटरी क्लोन करें। साझा स्टोरेज के लिए, पहले सेटिंग में फ़ोल्डर एक्सेस की अनुमति दें।"</string>
     <string name="file_delete_body" formatted="false">"फ़ाइल इस डिवाइस से हटा दी जाएगी। अगर Git इसे ट्रैक कर रहा था, तो इसे हटाई गई फ़ाइल के रूप में दिखाएगा।"</string>
@@ -289,15 +656,344 @@
     <string name="file_renamed" formatted="false">"नाम बदला गया"</string>
     <string name="file_save_title" formatted="false">"बदलाव सेव करें?"</string>
     <string name="file_saved" formatted="false">"सेव हुआ"</string>
+    <string name="filehistory_m3_commits" formatted="false">"प्रतिबद्ध"</string>
+    <string name="filehistory_m3_empty" formatted="false">"अभी तक किसी भी कमिट में यह फ़ाइल शामिल नहीं है।"</string>
+    <string name="filehistory_m3_load_failed" formatted="false">"इस फ़ाइल का इतिहास नहीं पढ़ सका।"</string>
+    <string name="filehistory_m3_meta">"%1$s · %2$s · %3$s"</string>
+    <string name="filehistory_m3_subtitle">"इतिहास · %1$s"</string>
     <string name="files_folder" formatted="false">"फ़ोल्डर"</string>
     <string name="files_hide_hidden" formatted="false">"छिपी फ़ाइलें छिपाएँ"</string>
+    <string name="files_m3_actions_for">"%1$s के लिए कार्रवाइयाँ"</string>
+    <string name="files_m3_age_days">"%1$d दिन पहले"</string>
+    <string name="files_m3_age_hours">"%1$dहाल ही में"</string>
+    <string name="files_m3_age_minutes">"%1$dm पहले"</string>
+    <string name="files_m3_age_months">"%1$dmo पहले"</string>
+    <string name="files_m3_age_now" formatted="false">"– अभी।"</string>
+    <string name="files_m3_age_weeks">"%1$dw पहले"</string>
+    <string name="files_m3_age_years">"%1$dy पहले"</string>
+    <string name="files_m3_check_for_changes" formatted="false">"बदलाव जाँचें"</string>
+    <string name="files_m3_delete" formatted="false">"– हटाएँ"</string>
+    <string name="files_m3_delete_folder_body" formatted="false">"यहां केवल खाली फ़ोल्डर्स को हटाया जा सकता है।"</string>
+    <string name="files_m3_delete_folder_title" formatted="false">"फ़ोल्डर हटाएं?"</string>
+    <string name="files_m3_fetch" formatted="false">"फ़ीच"</string>
+    <string name="files_m3_fetch_cd">"रिमोट से %1$s प्राप्त करें"</string>
+    <string name="files_m3_fetch_failed" formatted="false">"इस फ़ाइल को रिमोट से नहीं लाया जा सका। अपना कनेक्शन जांचें और साइन-इन करें, फिर पुनः प्रयास करें।"</string>
+    <string name="files_m3_fetched">"प्राप्त %1$s।"</string>
+    <string name="files_m3_folder_path" formatted="false">"फ़ोल्डर पथ"</string>
+    <string name="files_m3_footnote" formatted="false">"कार्रवाई के लिए किसी भी फ़ाइल को देर तक दबाएँ।"</string>
+    <string name="files_m3_history" formatted="false">"इतिहास"</string>
+    <string name="files_m3_lfs_pointer">"LFS पॉइंटर · remote पर %1$s"</string>
+    <string name="files_m3_meta">"%1$s · %2$s"</string>
+    <string name="files_m3_meta_edited">"संपादित %1$s · %2$s"</string>
+    <string name="files_m3_new_file_cd" formatted="false">"– नया फ़ाइल"</string>
+    <string name="files_m3_open_in" formatted="false">"इसमें खोलें…"</string>
+    <string name="files_m3_open_in_chooser">"%1$s खोलें…"</string>
+    <string name="files_m3_open_in_failed" formatted="false">"इस फ़ोन पर कोई भी ऐप इस फ़ाइल को नहीं खोल सकता है।"</string>
+    <string name="files_m3_rename" formatted="false">"– नाम परिवर्तन"</string>
+    <string name="files_m3_rename_field" formatted="false">"नाम"</string>
+    <string name="files_m3_tag_added" formatted="false">"A"</string>
+    <string name="files_m3_tag_conflict" formatted="false">"!"</string>
+    <string name="files_m3_tag_lfs" formatted="false">"LFS"</string>
+    <string name="files_m3_tag_modified" formatted="false">"M"</string>
     <string name="files_show_hidden" formatted="false">"छिपी फ़ाइलें दिखाएँ"</string>
     <string name="folder_access_not_enabled" formatted="false">"फ़ोल्डर ऐक्सेस चालू नहीं की गई। आप ऐप का स्टोरेज इस्तेमाल करना जारी रख सकते हैं।"</string>
     <string name="folder_picker_unavailable" formatted="false">"इस डिवाइस पर फ़ोल्डर चुनने की सुविधा उपलब्ध नहीं है"</string>
     <string name="folder_settings_unavailable" formatted="false">"Android की स्टोरेज सेटिंग्स उपलब्ध नहीं हैं। ऐप का स्टोरेज अभी भी उपलब्ध है।"</string>
     <string name="folder_unusable" formatted="false">"इस फ़ोल्डर का इस्तेमाल नहीं हो सका"</string>
     <string name="git_fetch" formatted="false">"फ़ीच"</string>
+    <string name="git_m3_abort" formatted="false">"रद्द करें"</string>
+    <string name="git_m3_abort_merge" formatted="false">"merge रद्द करें"</string>
+    <string name="git_m3_abort_merge_body">"%1$s को वापस वहीं रखता है जहां यह विलय से पहले था। अब तक की गई पिक्स को फेंक दिया जाता है।"</string>
+    <string name="git_m3_abort_merge_title" formatted="false">"इस मर्ज को निरस्त करें?"</string>
+    <string name="git_m3_abort_rebase_ask" formatted="false">"रीबेस रद्द करें…"</string>
+    <string name="git_m3_access_github" formatted="false">"GitHub साइन-इन"</string>
+    <string name="git_m3_access_https" formatted="false">"HTTPS"</string>
+    <string name="git_m3_access_local" formatted="false">"स्थानीय फ़ोल्डर"</string>
+    <string name="git_m3_access_ssh" formatted="false">"SSH कुंजी"</string>
+    <string name="git_m3_age_days">"%1$dd"</string>
+    <string name="git_m3_age_hours">"%1$dh"</string>
+    <string name="git_m3_age_minutes">"%1$dm"</string>
+    <string name="git_m3_ago_days">"%1$d दिन पहले"</string>
+    <string name="git_m3_ago_hours">"%1$dहाल ही में"</string>
+    <string name="git_m3_ago_minutes">"%1$dm पहले"</string>
+    <string name="git_m3_ago_now" formatted="false">"– अभी।"</string>
+    <string name="git_m3_ahead">"%1$d आगे"</string>
+    <string name="git_m3_annotated" formatted="false">"एनोटेटेड"</string>
+    <string name="git_m3_applied_toast">"लागू %1$s। भंडार अभी भी बचा हुआ है."</string>
+    <string name="git_m3_apply" formatted="false">"लागू करें"</string>
+    <string name="git_m3_apply_help" formatted="false">"परिवर्तन वापस लाता है और भंडारण रखता है।"</string>
+    <string name="git_m3_back_to_remote" formatted="false">"रिमोट पर वापस"</string>
+    <string name="git_m3_backup_at">"बैकअप: %1$s"</string>
+    <string name="git_m3_behind">"%1$d पीछे"</string>
+    <string name="git_m3_binary_side" formatted="false">"इस फ़ाइल को टेक्स्ट के रूप में नहीं दिखाया जा सकता। संपूर्ण संस्करण चुनें."</string>
+    <string name="git_m3_both_edited_file" formatted="false">"दोनों तरफ़ यह फ़ाइल संपादित हुई।"</string>
+    <string name="git_m3_both_edited_section">"दोनों तरफ़ “%1$s” संपादित हुआ।"</string>
+    <string name="git_m3_both_moved" formatted="false">"दोनों तरफ़ बदलाव हुए"</string>
+    <string name="git_m3_both_moved_body">"केवल तेजी से आगे की ओर खींचें, ताकि यह इन्हें संयोजित न कर सके। मर्ज दोनों इतिहास रखता है। रीबेस आपके %1$d कमिट को शीर्ष पर रखता है।"</string>
+    <string name="git_m3_both_moved_headline" formatted="false">"आपके लिखते समय remote आगे बढ़ गया।"</string>
+    <string name="git_m3_both_sides_edited" formatted="false">"दोनों तरफ़ यह फ़ाइल संपादित हुई।"</string>
+    <string name="git_m3_branch_name" formatted="false">"ब्रांच का नाम"</string>
+    <string name="git_m3_branch_placeholder" formatted="false">"उदा. ड्राफ्ट/सर्दी"</string>
+    <string name="git_m3_branches" formatted="false">"शाखाएँ"</string>
+    <string name="git_m3_branches_stashes_tags" formatted="false">"शाखाएँ, स्टैश और टैग"</string>
+    <string name="git_m3_cancel" formatted="false">"रद्द करें"</string>
+    <string name="git_m3_cant_switch_note" formatted="false">"अन्य शाखा द्वारा ओवरराइट की गई अनट्रैक फ़ाइलें भी स्विच को ब्लॉक कर देती हैं। अभी तक कुछ भी नहीं बदला है."</string>
+    <string name="git_m3_cant_switch_title" formatted="false">"अभी तक स्विच नहीं किया जा सकता"</string>
+    <string name="git_m3_check_changes" formatted="false">"बदलाव जाँचें"</string>
+    <string name="git_m3_commit_as" formatted="false">"इस रूप में commit करें"</string>
+    <string name="git_m3_commit_first" formatted="false">"पहले प्रतिबद्ध हों"</string>
+    <string name="git_m3_commit_history" formatted="false">"प्रतिबद्ध इतिहास"</string>
+    <string name="git_m3_commit_of">"%2$d में से %1$d प्रतिबद्ध करें"</string>
+    <string name="git_m3_conflict_body" formatted="false">"रखने के लिए वर्शन चुनें, या दोनों रखें और बाद में साफ़ करें।"</string>
+    <string name="git_m3_conflict_progress">"%2$d · %3$s का संघर्ष %1$d"</string>
+    <string name="git_m3_connection" formatted="false">"कनेक्शन"</string>
+    <string name="git_m3_continue_retry_first" formatted="false">"रिबेस जारी रखें · पहले पुनः प्रयास करें"</string>
+    <string name="git_m3_create" formatted="false">"बनाएँ"</string>
+    <string name="git_m3_create_tag" formatted="false">"टैग बनाएं"</string>
+    <string name="git_m3_current" formatted="false">"वर्तमान"</string>
+    <string name="git_m3_current_branch" formatted="false">"वर्तमान ब्रांच"</string>
+    <string name="git_m3_delete" formatted="false">"– हटाएँ"</string>
+    <string name="git_m3_delete_branch_body">"इस फ़ोन पर %1$s को हटाता है। GitHub को छुआ नहीं गया है।"</string>
+    <string name="git_m3_delete_branch_cd">"ब्रांच %1$s हटाएँ"</string>
+    <string name="git_m3_delete_branch_title" formatted="false">"ब्रांच हटाएँ?"</string>
+    <string name="git_m3_delete_files_sub" formatted="false">"इस फ़ोन से फ़ोल्डर हटाता है"</string>
+    <string name="git_m3_delete_force" formatted="false">"बल"</string>
+    <string name="git_m3_delete_force_help" formatted="false">"फोर्स शाखा को हटा देता है, भले ही उसके कमिट कभी मर्ज न किए गए हों। वे खो सकते हैं."</string>
+    <string name="git_m3_delete_normal" formatted="false">"सामान्य"</string>
+    <string name="git_m3_delete_normal_help" formatted="false">"शाखा को केवल तभी हटाता है यदि उसके कमिट पहले से ही मर्ज किए गए हों।"</string>
+    <string name="git_m3_delete_tag" formatted="false">"टैग हटाएँ"</string>
+    <string name="git_m3_delete_tag_body">"इस फ़ोन पर टैग चला जाता है। प्रतिबद्ध %1$s रहता है, और पहले से ही GitHub पर भेजी गई प्रतिलिपि को छुआ नहीं जाता है।"</string>
+    <string name="git_m3_delete_tag_cd">"टैग %1$s हटाएँ"</string>
+    <string name="git_m3_delete_tag_title">"क्या \"%1$s\" हटाएँ?"</string>
+    <string name="git_m3_deleted_here_edited_there" formatted="false">"इस फ़ोन ने इसे हटा दिया। दूसरे पक्ष ने इसे संपादित किया."</string>
+    <string name="git_m3_deleted_on_phone" formatted="false">"इस फ़ोन से हटा दिया गया है।"</string>
+    <string name="git_m3_deleted_on_remote">"%1$s पर हटा दिया गया।"</string>
+    <string name="git_m3_detached">"%1$s पर अलग किया गया"</string>
+    <string name="git_m3_discard" formatted="false">"बदलाव त्यागें"</string>
+    <string name="git_m3_disconnected" formatted="false">"डिस्कनेक्ट किया गया"</string>
+    <string name="git_m3_drop" formatted="false">"हटाएँ"</string>
+    <string name="git_m3_drop_cd">"ड्रॉप %1$s"</string>
+    <string name="git_m3_drop_help" formatted="false">"स्टैश को लागू किए बिना हटा देता है।"</string>
+    <string name="git_m3_dropped_toast">"गिरा दिया गया %1$s।"</string>
+    <string name="git_m3_edit_by_hand" formatted="false">"हाथ से संपादित करें"</string>
+    <string name="git_m3_edit_connection" formatted="false">"कनेक्शन संपादित करें"</string>
+    <string name="git_m3_edited_ago">"%1$s संपादित"</string>
+    <string name="git_m3_edited_here_deleted_there" formatted="false">"इस फ़ोन ने इसे संपादित किया। दूसरे पक्ष ने इसे हटा दिया."</string>
+    <string name="git_m3_fetch_again" formatted="false">"पुनः प्राप्त करें"</string>
+    <string name="git_m3_fetch_and_push">"लाएं और पुश करें: %1$s"</string>
+    <string name="git_m3_fetch_hint" formatted="false">"अपने अन्य उपकरणों से नई शाखाएँ देखने के लिए।"</string>
+    <string name="git_m3_fetch_review_again" formatted="false">"पुनः प्राप्त करें और समीक्षा करें"</string>
+    <string name="git_m3_fetch_sub" formatted="false">"नए कमिट के लिए GitHub जांचें"</string>
+    <string name="git_m3_fetched">"%1$s fetch हुआ"</string>
+    <string name="git_m3_finishing_merge" formatted="false">"मर्ज समाप्त हो रहा है…"</string>
+    <string name="git_m3_folder_location" formatted="false">"फ़ोल्डर और उसका स्थान"</string>
+    <string name="git_m3_from" formatted="false">"से"</string>
+    <string name="git_m3_from_remote">"↓%1$d remote से"</string>
+    <string name="git_m3_from_who">" %1$s से"</string>
+    <string name="git_m3_github" formatted="false">"GitHub"</string>
+    <string name="git_m3_hand_edited_markers" formatted="false">"विरोध चिह्न अभी भी फ़ाइल में हैं। उन्हें संपादक में हटाएँ, फिर वापस आएँ।"</string>
+    <string name="git_m3_hand_edited_ready" formatted="false">"हाथ से संपादित। अपनी संपादित फ़ाइल का उपयोग करें, या इसे बदलने के लिए एक पक्ष चुनें।"</string>
+    <string name="git_m3_how" formatted="false">"कैसे"</string>
+    <string name="git_m3_in_sync" formatted="false">"सिंक में"</string>
+    <string name="git_m3_in_sync_headline" formatted="false">"यह फोन रिमोट से मेल खाता है।"</string>
+    <string name="git_m3_in_the_way" formatted="false">"रास्ते में"</string>
+    <string name="git_m3_in_this_vault" formatted="false">"इस तिजोरी में"</string>
+    <string name="git_m3_its_remotes" formatted="false">"इसका रिमोट"</string>
+    <string name="git_m3_keep_backup" formatted="false">"सत्यापित बैकअप रखें"</string>
+    <string name="git_m3_keep_backup_sub" formatted="false">".git फ़ोल्डर की प्रतिलिपि और ज़िप"</string>
+    <string name="git_m3_keep_both" formatted="false">"दोनों रखें"</string>
+    <string name="git_m3_kept_edit" formatted="false">"हाथ से हल किया गया।"</string>
+    <string name="git_m3_kept_local" formatted="false">"दोबारा चलाए गए स्थानीय कमिट को बनाए रखा।"</string>
+    <string name="git_m3_kept_upstream" formatted="false">"अपस्ट्रीम संस्करण रखा।"</string>
+    <string name="git_m3_lfs" formatted="false">"बड़ी फ़ाइलें (LFS)"</string>
+    <string name="git_m3_lfs_none" formatted="false">"उपयोग में नहीं"</string>
+    <string name="git_m3_lfs_value">"%1$s · %2$d लॉक"</string>
+    <string name="git_m3_light" formatted="false">"लाइट"</string>
+    <string name="git_m3_local_only" formatted="false">"केवल स्थानीय"</string>
+    <string name="git_m3_manage_vault" formatted="false">"तिजोरी प्रबंधित करें"</string>
+    <string name="git_m3_marker_end" formatted="false">"दोनों संस्करणों का अंत"</string>
+    <string name="git_m3_marker_ours" formatted="false">"इस फ़ोन का संस्करण"</string>
+    <string name="git_m3_marker_theirs">"%1$s का संस्करण"</string>
+    <string name="git_m3_merge" formatted="false">"मर्ज करें"</string>
+    <string name="git_m3_merge_and_push" formatted="false">"मर्ज करके पुश करें"</string>
+    <string name="git_m3_merge_author">"मर्ज लेखक: %1$s"</string>
+    <string name="git_m3_merge_both_body" formatted="false">"आपके कमिट अपनी आईडी रखते हैं। क्योंकि दोनों पक्ष स्थानांतरित हो गए, इससे विलय की प्रतिबद्धता बनती है। दोनों तरफ से संपादित फ़ाइलों को आपको चुनने की आवश्यकता हो सकती है।"</string>
+    <string name="git_m3_merge_current_body" formatted="false">"दोनों पक्ष मेल खाते हैं। विलय करने के लिए कुछ भी नहीं है"</string>
+    <string name="git_m3_merge_ff_body" formatted="false">"केवल रिमोट चला, इसलिए यह आपकी शाखा को तेजी से आगे बढ़ाता है। कुछ भी नया प्रतिबद्ध नहीं है."</string>
+    <string name="git_m3_merge_in_progress" formatted="false">"विलय प्रगति पर है"</string>
+    <string name="git_m3_merge_into">"%1$s में विलय करें"</string>
+    <string name="git_m3_merge_locally" formatted="false">"स्थानीय रूप से मर्ज करें"</string>
+    <string name="git_m3_merge_message">"%1$s merge करें"</string>
+    <string name="git_m3_merge_named">"%1$s merge करें"</string>
+    <string name="git_m3_merge_pause_note" formatted="false">"यदि दोनों शाखाओं ने एक ही फ़ाइल बदल दी है, तो मर्ज रुक जाता है ताकि आप चुन सकें कि Git में क्या रखना है।"</string>
+    <string name="git_m3_merge_push_body">"%1$s को %2$s से अपडेट करता है, फिर %3$s पर भेजता है। संघर्ष धक्का बंद कर देते हैं. यदि रिमोट इसकी पुष्टि नहीं करता है, तो मर्ज इस फ़ोन पर बना रहता है और आप पुनः प्रयास कर सकते हैं।"</string>
+    <string name="git_m3_merge_push_only_body" formatted="false">"रिमोट पर कुछ भी नया नहीं। मर्ज और पुश आपके कमिट भेजता है।"</string>
+    <string name="git_m3_merge_push_title" formatted="false">"मर्ज करें और पुश करें?"</string>
+    <string name="git_m3_merge_ready" formatted="false">"सभी विवादों का समाधान हो गया। विलय समाप्त करें."</string>
+    <string name="git_m3_merge_reviewing" formatted="false">"रिमोट में क्या है उसे प्राप्त करना और उसकी समीक्षा करना..."</string>
+    <string name="git_m3_merge_sub" formatted="false">"प्राप्त करें, समीक्षा करें, फिर मर्ज करें"</string>
+    <string name="git_m3_merging">"%1$s · विलय %2$s"</string>
+    <string name="git_m3_message_optional" formatted="false">"संदेश (वैकल्पिक)"</string>
+    <string name="git_m3_more_files">"%1$d अधिक"</string>
+    <string name="git_m3_move_repository" formatted="false">"रिपॉज़िटरी स्थानांतरित करें"</string>
+    <string name="git_m3_move_sub" formatted="false">"एक नया फ़ोल्डर चुनें"</string>
+    <string name="git_m3_never_fetched" formatted="false">"अभी तक नहीं लाया गया"</string>
+    <string name="git_m3_new_branch" formatted="false">"नई शाखा"</string>
+    <string name="git_m3_new_on_remote" formatted="false">"रिमोट पर नया"</string>
+    <string name="git_m3_new_on_remote_body">"मिलान करने के लिए तेजी से आगे की ओर %1$s खींचें। इस फ़ोन का कुछ भी नहीं खोया है."</string>
+    <string name="git_m3_new_on_remote_headline" formatted="false">"रिमोट पर ऐसे कमिट हैं जो आपके पास नहीं हैं।"</string>
+    <string name="git_m3_new_tag" formatted="false">"नया टैग"</string>
+    <string name="git_m3_no_backup_warning" formatted="false">"बैकअप के बिना, इस फ़ोन का Git इतिहास हमेशा के लिए हटा दिया जाता है। GitHub पर पहले से ही प्रतिबद्ध सुरक्षित हैं।"</string>
+    <string name="git_m3_no_conflicts" formatted="false">"कोई विरोध नहीं बचा।"</string>
+    <string name="git_m3_no_stashes" formatted="false">"कोई चोरी नहीं बचाई गई।"</string>
+    <string name="git_m3_no_upstream" formatted="false">"केवल स्थानीय · कोई अपस्ट्रीम नहीं"</string>
+    <string name="git_m3_no_upstream_body" formatted="false">"एक अपस्ट्रीम चुनें ताकि खींचें और धकेलें जानें कि कहां जाना है।"</string>
+    <string name="git_m3_no_upstream_headline" formatted="false">"यह शाखा अभी तक किसी दूरस्थ शाखा को ट्रैक नहीं करती है।"</string>
+    <string name="git_m3_no_upstream_kicker" formatted="false">"कोई अपस्ट्रीम नहीं"</string>
+    <string name="git_m3_none" formatted="false">"कोई नहीं"</string>
+    <string name="git_m3_not_set" formatted="false">"सेट नहीं"</string>
+    <string name="git_m3_not_tracked">"%1$s · ट्रैक नहीं किया गया"</string>
+    <string name="git_m3_notes_attachments_any" formatted="false">"आपके नोट्स और अनुलग्नक"</string>
+    <string name="git_m3_nothing_new">"ऐसा कुछ भी नहीं जो %1$s के पास न हो"</string>
+    <string name="git_m3_nothing_to_stash" formatted="false">"छिपाने के लिए कुछ भी नहीं।"</string>
+    <string name="git_m3_nothing_to_stash_body" formatted="false">"इस फ़ोन पर कोई स्थानीय परिवर्तन नहीं। एक नोट संपादित करें और उसे अलग रखने के लिए वापस आएं।"</string>
+    <string name="git_m3_ok" formatted="false">"ठीक है"</string>
+    <string name="git_m3_on_this_phone" formatted="false">"इस फोन पर"</string>
+    <string name="git_m3_only_on">"केवल %1$s पर"</string>
+    <string name="git_m3_open" formatted="false">"खोलें"</string>
+    <string name="git_m3_open_rebase" formatted="false">"रिबेस खोलें"</string>
+    <string name="git_m3_open_sub" formatted="false">"तिजोरी पर वापस जाएँ"</string>
+    <string name="git_m3_plain_folder">"%1$s अब एक सादा फ़ोल्डर है।"</string>
+    <string name="git_m3_plain_folder_body" formatted="false">"आपके नोट वहीं हैं जहां वे थे। GitSync.md अब इस फ़ोल्डर को सिंक नहीं करता है."</string>
+    <string name="git_m3_pop" formatted="false">"पॉप"</string>
+    <string name="git_m3_pop_help" formatted="false">"परिवर्तन वापस लाता है और स्टैश हटा देता है।"</string>
+    <string name="git_m3_popped_toast">"पॉप किया गया %1$s। आपके परिवर्तन वापस आ गए हैं."</string>
+    <string name="git_m3_previously_added" formatted="false">"पहले जोड़ी गई"</string>
+    <string name="git_m3_pull_n">"खींचें ↓%1$d"</string>
+    <string name="git_m3_pull_sub" formatted="false">"केवल फ़ास्ट-फ़ॉरवर्ड"</string>
+    <string name="git_m3_pull_sub_blocked" formatted="false">"केवल तेज़-फ़ॉरवर्ड। अब नहीं कर सकते: दोनों पक्ष चले गए"</string>
+    <string name="git_m3_pulls_from">"%1$s खींचता है और धकेलता है"</string>
+    <string name="git_m3_push" formatted="false">"पुश करें"</string>
+    <string name="git_m3_push_n">"पुश ↑%1$d"</string>
+    <string name="git_m3_push_tag_cd">"%1$s को GitHub पर पुश करें"</string>
+    <string name="git_m3_push_to">"%1$s पर पुश करें"</string>
+    <string name="git_m3_ready_to_push" formatted="false">"push के लिए तैयार"</string>
+    <string name="git_m3_ready_to_push_body">"पुश आपका %1$d कमिट भेजता है। जब तक वह उन्हें स्वीकार नहीं करता तब तक रिमोट पर कुछ भी नहीं बदलता।"</string>
+    <string name="git_m3_ready_to_push_headline" formatted="false">"रिमोट ने अभी तक आपका कमिट नहीं देखा है।"</string>
+    <string name="git_m3_rebase" formatted="false">"रीबेस"</string>
+    <string name="git_m3_rebase_abort_body">"%1$s को %2$s पर वापस डालता है। इस रिबेस के दौरान किए गए संपादन और विरोध चयन को हटा दिया जाता है।"</string>
+    <string name="git_m3_rebase_abort_title" formatted="false">"यह रीबेस रद्द करें?"</string>
+    <string name="git_m3_rebase_aborted" formatted="false">"रीबेस रद्द हुआ"</string>
+    <string name="git_m3_rebase_aborted_headline" formatted="false">"शुरुआती स्थिति में वापस।"</string>
+    <string name="git_m3_rebase_begin_title" formatted="false">"स्थानीय कमिट दोबारा लिखें?"</string>
+    <string name="git_m3_rebase_blocked_body" formatted="false">"जो फ़ाइलें Git में नहीं हैं, उन्हें अगली प्रतिबद्धता द्वारा अधिलेखित कर दिया जाएगा। उन्हें किसी सुरक्षित स्थान पर ले जाएं, ताज़ा करें, फिर पुनः प्रयास करें। पहले से ही दोबारा चलाए गए कमिट रखे गए हैं।"</string>
+    <string name="git_m3_rebase_blocked_headline" formatted="false">"रीबेस एक अवरुद्ध चेकआउट के लिए प्रतीक्षा कर रहा है।"</string>
+    <string name="git_m3_rebase_conflicts">"संघर्ष · %2$d में से %1$d का समाधान हो गया"</string>
+    <string name="git_m3_rebase_conflicts_headline" formatted="false">"रीबेस उन फ़ाइलों पर रुका जिन्हें दोनों पक्षों ने संपादित किया।"</string>
+    <string name="git_m3_rebase_done_headline" formatted="false">"रीबेस पूरा हुआ।"</string>
+    <string name="git_m3_rebase_in_progress" formatted="false">"रीबेस जारी है"</string>
+    <string name="git_m3_rebase_initial" formatted="false">"रिबेस क्या होगा यह देखने के लिए पहले प्राप्त करें।"</string>
+    <string name="git_m3_rebase_restored">"%1$s को %2$s पर पुनर्स्थापित किया गया · ↑%3$d ↓%4$d"</string>
+    <string name="git_m3_rebase_review_body">"%1$s के शीर्ष पर आपके कमिट को दोबारा चलाता है। उनकी आईडी बदल सकती है. मर्ज कमिट अपना आकार बनाए रखते हैं। कुछ भी नहीं धकेला जाता है."</string>
+    <string name="git_m3_rebase_sides_note">"रिबेस में, %1$s Git का \"हमारा\" है और आपका %2$s \"उनका\" है।"</string>
+    <string name="git_m3_rebase_skip_body">"रीप्ले से %1$s गिरता है। पहले इसके परिवर्तन जांचें. यह आपके काम को नए इतिहास से हटा सकता है."</string>
+    <string name="git_m3_rebase_skip_title" formatted="false">"यह स्थानीय कमिट छोड़ें?"</string>
+    <string name="git_m3_rebase_step">"%2$d के %1$d कमिट पर रोक दिया गया।"</string>
+    <string name="git_m3_rebase_stopped" formatted="false">"रिबेस आपका इंतजार कर रहा है।"</string>
+    <string name="git_m3_rebase_sub" formatted="false">"अपने कमिट को शीर्ष पर दोबारा चलाएं · रिबेस फिर से शुरू करें"</string>
+    <string name="git_m3_rebase_theirs">"%1$s पर नया · %2$d"</string>
+    <string name="git_m3_rebase_yours">"आपकी पुनः चलाने की प्रतिबद्धता · %1$d"</string>
+    <string name="git_m3_refresh_branches" formatted="false">"शाखाओं को ताज़ा करें"</string>
+    <string name="git_m3_remote" formatted="false">"Remote"</string>
+    <string name="git_m3_remote_access">"लाएं और पुश करें · %1$s"</string>
+    <string name="git_m3_remote_pill" formatted="false">"remote"</string>
+    <string name="git_m3_remote_reading" formatted="false">"इस वॉल्ट का रिमोट पढ़ना…"</string>
+    <string name="git_m3_remove" formatted="false">"हटाएँ"</string>
+    <string name="git_m3_remove_from_app" formatted="false">"ऐप से हटाएँ"</string>
+    <string name="git_m3_remove_from_app_body" formatted="false">"फ़ोल्डर और इसका Git इतिहास इस फ़ोन पर रहता है। इसे किसी भी समय वापस जोड़ें."</string>
+    <string name="git_m3_remove_from_app_sub" formatted="false">"फ़ाइलें और Git रखता है। इसे किसी भी समय वापस जोड़ें."</string>
+    <string name="git_m3_remove_from_app_title">"ऐप से %1$s हटाएं?"</string>
+    <string name="git_m3_remove_tracking_sub" formatted="false">"आपकी फ़ाइलें रखता है। इस फ़ोल्डर से Git हटाता है।"</string>
+    <string name="git_m3_replayed_commit" formatted="false">"दोबारा चलाया गया कमिट"</string>
+    <string name="git_m3_replayed_label">"स्थानीय प्रतिबद्धता दोबारा चलाई गई · %1$s"</string>
+    <string name="git_m3_resolve" formatted="false">"– समाधान"</string>
+    <string name="git_m3_resolve_conflict" formatted="false">"कॉन्फ़्लिक्ट सुलझाएँ"</string>
+    <string name="git_m3_result_current" formatted="false">"विलय में कुछ भी नया नहीं है।"</string>
+    <string name="git_m3_result_current_kicker" formatted="false">"अपडेटेड"</string>
+    <string name="git_m3_result_local_only" formatted="false">"परिणाम केवल इस फोन पर है। जब आप तैयार हों तो धक्का दें।"</string>
+    <string name="git_m3_result_merged" formatted="false">"दूसरे पक्ष के बदलाव शामिल हैं।"</string>
+    <string name="git_m3_result_merged_kicker" formatted="false">"मर्ज किया गया"</string>
+    <string name="git_m3_result_push_confirmed" formatted="false">"GitHub ने इस प्रतिबद्धता को स्वीकार किया।"</string>
+    <string name="git_m3_result_push_unconfirmed" formatted="false">"रिमोट ने पुश की पुष्टि नहीं की। पुन: प्रयास दोबारा विलय किए बिना वही कमिट भेजता है।"</string>
+    <string name="git_m3_result_saved_locally" formatted="false">"मर्ज कमिट स्थानीय रूप से सहेजा गया।"</string>
+    <string name="git_m3_result_unconfirmed" formatted="false">"यहां सहेजा गया। धक्का ख़त्म नहीं हुआ."</string>
+    <string name="git_m3_result_unconfirmed_kicker" formatted="false">"मर्ज किया गया · धक्का नहीं दिया गया"</string>
+    <string name="git_m3_retry_blocked" formatted="false">"अवरुद्ध कमिट फिर आज़माएँ"</string>
+    <string name="git_m3_retry_push" formatted="false">"सहेजे गए कमिट को पुश करने का पुनः प्रयास करें"</string>
+    <string name="git_m3_return_to_git" formatted="false">"Git पर वापस जाएँ"</string>
+    <string name="git_m3_review_folder" formatted="false">"बहाल फ़ोल्डर की समीक्षा करें"</string>
+    <string name="git_m3_reviewed_plan" formatted="false">"समीक्षित योजना"</string>
+    <string name="git_m3_saved" formatted="false">"सहेजा गया"</string>
+    <string name="git_m3_saved_in" formatted="false">"यहाँ सहेजा गया"</string>
+    <string name="git_m3_set_aside" formatted="false">"अलग रखें"</string>
+    <string name="git_m3_set_upstream" formatted="false">"अपस्ट्रीम सेट करें"</string>
+    <string name="git_m3_show_more">"%1$d और दिखाएँ"</string>
+    <string name="git_m3_skip_commit" formatted="false">"प्रतिबद्धता छोड़ें"</string>
+    <string name="git_m3_skip_commit_ask" formatted="false">"प्रतिबद्धता छोड़ें..."</string>
+    <string name="git_m3_staged" formatted="false">"स्टेज्ड"</string>
+    <string name="git_m3_starts_from">"%1$s से %2$s पर प्रारंभ होता है · आप %2$s पर बने रहें"</string>
+    <string name="git_m3_stash_changes" formatted="false">"स्टैश परिवर्तन"</string>
+    <string name="git_m3_stash_explain">"छिपाने से वे दूर हो जाते हैं और आपकी फ़ाइलें %1$s पर रीसेट हो जाती हैं। उन्हें किसी भी समय वापस ले आओ."</string>
+    <string name="git_m3_stash_local_note" formatted="false">"इस फोन पर स्टैश रहते हैं। उन्हें कभी भी GitHub पर नहीं भेजा जाता।"</string>
+    <string name="git_m3_stash_on">"%1$s पर"</string>
+    <string name="git_m3_stash_placeholder" formatted="false">"आप किसके बीच में थे?"</string>
+    <string name="git_m3_stashed_older" formatted="false">"पुराना वाला अब stash@{1} है।"</string>
+    <string name="git_m3_stashes" formatted="false">"Stash"</string>
+    <string name="git_m3_stay_on">"%1$s पर बने रहें"</string>
+    <string name="git_m3_stays_on_disk" formatted="false">"डिस्क पर रहता है"</string>
+    <string name="git_m3_stop_tracking" formatted="false">"ट्रैकिंग बंद करें…"</string>
+    <string name="git_m3_strategy_always" formatted="false">"हमेशा मर्ज कमिट का उपयोग करें"</string>
+    <string name="git_m3_strategy_always_help">"एक मर्ज कमिट तब भी बनाता है जब %1$s आगे बढ़ सकता है।"</string>
+    <string name="git_m3_strategy_ff" formatted="false">"केवल फ़ास्ट-फ़ॉरवर्ड"</string>
+    <string name="git_m3_strategy_ff_help">"केवल तभी विलय होता है जब %1$s सीधे %2$s से आगे हो। इतिहास को एक सीधी रेखा में रखता है."</string>
+    <string name="git_m3_strategy_prefer" formatted="false">"संभव हो तो फ़ास्ट-फ़ॉरवर्ड"</string>
+    <string name="git_m3_strategy_prefer_help">"जब संभव हो %1$s को आगे बढ़ाता है। अन्यथा एक मर्ज कमिट बनाता है।"</string>
+    <string name="git_m3_subtitle">"%1$s · %2$s"</string>
+    <string name="git_m3_switch" formatted="false">"स्विच करें"</string>
+    <string name="git_m3_tag_kind_help" formatted="false">"एक संदेश के साथ इसे एनोटेट किया गया है। हल्के टैग के लिए इसे खाली छोड़ दें।"</string>
+    <string name="git_m3_tag_name" formatted="false">"टैग नाम"</string>
     <string name="git_m3_tag_name_invalid" formatted="false">"मान्य Git टैग नाम दर्ज करें।"</string>
+    <string name="git_m3_tag_pushed">"%1$s को धक्का दिया।"</string>
+    <string name="git_m3_tag_target">"%1$s पर · नवीनतम %2$s पर"</string>
+    <string name="git_m3_tags" formatted="false">"टैग्स"</string>
+    <string name="git_m3_tags_note" formatted="false">"कमिट और पुश टैग नहीं भेजता है। जब आप चाहें तो प्रत्येक को GitHub पर पुश करें। डिलीट केवल इस फोन से एक टैग हटाता है।"</string>
+    <string name="git_m3_the_named_remote">"%1$s रिमोट"</string>
+    <string name="git_m3_the_remote" formatted="false">"remote"</string>
+    <string name="git_m3_this_phone" formatted="false">"यह फ़ोन"</string>
+    <string name="git_m3_tracking">"ट्रैकिंग %1$s"</string>
+    <string name="git_m3_tracking_backup_body" formatted="false">"GitSync.md Git डेटा की एक कॉपी और एक ज़िप की जाँच करता है, फिर इस फ़ोल्डर को डिस्कनेक्ट कर देता है। आपकी कामकाजी फ़ाइलें यथावत रहती हैं।"</string>
+    <string name="git_m3_tracking_backup_title" formatted="false">"ट्रैकिंग हटाएं और बैकअप रखें?"</string>
+    <string name="git_m3_tracking_cap">"ट्रैकिंग %1$s"</string>
+    <string name="git_m3_tracking_permanent_body" formatted="false">"केवल समीक्षा किया गया .git डेटा हटा दिया गया है। आपकी कामकाजी फ़ाइलें यथावत रहती हैं, लेकिन इस फ़ोन का Git इतिहास किसी अन्य प्रतिलिपि के बिना पुनर्प्राप्त नहीं किया जा सकता है।"</string>
+    <string name="git_m3_tracking_removed" formatted="false">"ट्रैकिंग हटा दी गई"</string>
+    <string name="git_m3_tracking_removed_backup_toast" formatted="false">"Git ट्रैकिंग हटा दी गई। सत्यापित बैकअप सहेजा गया."</string>
+    <string name="git_m3_tracking_removed_kept" formatted="false">"Git ट्रैकिंग हटाई गई · काम की फ़ाइलें सुरक्षित रहीं"</string>
+    <string name="git_m3_tracking_review_body" formatted="false">"आपकी फ़ाइलें वहीं रहेंगी जहां वे हैं। Git की उनके इतिहास की प्रति इस फ़ोल्डर से हटा दी गई है।"</string>
+    <string name="git_m3_tracking_stale" formatted="false">"आपके द्वारा समीक्षा करने के बाद से फ़ोल्डर बदल गया है। रद्द करें और दोबारा समीक्षा करें."</string>
+    <string name="git_m3_uncommitted_plain_any" formatted="false">"सादे फ़ाइलों के रूप में अप्रतिबद्ध संपादन"</string>
+    <string name="git_m3_unresolved" formatted="false">"अनसुलझा"</string>
+    <string name="git_m3_update" formatted="false">"अपडेट करें"</string>
+    <string name="git_m3_upstream_body">"चुनें कि %1$s कहां से खींचता है और कहां धकेलता है। फ़ाइलें, कमिट और सहेजे गए कनेक्शन वही रहते हैं।"</string>
+    <string name="git_m3_upstream_help" formatted="false">"बिना अपस्ट्रीम, पुल और पुश के पता नहीं चलेगा कि कहां जाना है।"</string>
+    <string name="git_m3_use_branch">"%1$s संस्करण का उपयोग करें"</string>
+    <string name="git_m3_use_edited" formatted="false">"मेरे संपादित संस्करण का उपयोग करें"</string>
+    <string name="git_m3_use_phone" formatted="false">"इस फ़ोन के संस्करण का उपयोग करें"</string>
+    <string name="git_m3_use_remote">"%1$s के संस्करण का उपयोग करें"</string>
+    <string name="git_m3_vault_settings" formatted="false">"वॉल्ट सेटिंग्स"</string>
+    <string name="git_m3_vs">"बनाम %1$s"</string>
+    <string name="git_m3_what_each_does" formatted="false">"प्रत्येक क्या करता है"</string>
+    <string name="git_m3_workspace" formatted="false">"वर्कस्पेस"</string>
+    <string name="git_m3_yours">"↑%1$d आपके"</string>
     <string name="git_native_public_only" formatted="false">"Git का मूल प्रोटोकॉल केवल सार्वजनिक एक्सेस का समर्थन करता है। प्रमाणीकरण के लिए HTTPS या SSH का उपयोग करें।"</string>
     <string name="gitops_action_failed" formatted="false">"Git यह कार्रवाई पूरी नहीं कर सका"</string>
     <string name="gitops_branch_action_failed" formatted="false">"ब्रांच कार्रवाई पूरी नहीं हो सकी"</string>
@@ -380,6 +1076,22 @@
     <string name="help_title" formatted="false">"सहायता"</string>
     <string name="history_screen" formatted="false">"इतिहास"</string>
     <string name="http_transport_warning" formatted="false">"HTTP एन्क्रिप्टेड नहीं है। रिपॉज़िटरी का डेटा और आपके दर्ज किए गए उपयोगकर्ता नाम या टोकन को ट्रांसफ़र के दौरान पढ़ा जा सकता है। उपलब्ध होने पर HTTPS का उपयोग करें।"</string>
+    <string name="l10n_a11y_pair">"%1$s, %2$s"</string>
+    <string name="l10n_added_count">"+%1$d"</string>
+    <string name="l10n_background_unavailable" formatted="false">"Background Sync अनुपलब्ध है"</string>
+    <string name="l10n_clone_preview_error" formatted="false">"प्रमाणीकरण विफल रहा। पुनः साइन इन करें और पुनः प्रयास करें."</string>
+    <string name="l10n_count">"%1$d"</string>
+    <string name="l10n_meta_pair">"%1$s · %2$s"</string>
+    <string name="l10n_not_vault_file" formatted="false">"इस वॉल्ट में कोई फ़ाइल नहीं है"</string>
+    <string name="l10n_push_local_branch" formatted="false">"पुश करने से पहले स्थानीय शाखा में स्विच करें"</string>
+    <string name="l10n_removed_count">"−%1$d"</string>
+    <string name="l10n_save_conditions" formatted="false">"Background Sync शर्तों को सहेजा नहीं जा सका"</string>
+    <string name="l10n_save_default_author" formatted="false">"डिफ़ॉल्ट लेखक को सहेजा नहीं जा सका"</string>
+    <string name="l10n_save_ssh_key" formatted="false">"इस फ़ोन की SSH कुंजी सहेजी नहीं जा सकी"</string>
+    <string name="l10n_save_theme" formatted="false">"थीम सहेजा नहीं जा सका"</string>
+    <string name="l10n_save_vault_preferences" formatted="false">"वॉल्ट प्राथमिकताओं को सहेजा नहीं जा सका"</string>
+    <string name="l10n_unsupported_vault_preference" formatted="false">"असमर्थित वॉल्ट प्राथमिकता"</string>
+    <string name="l10n_vault_settings_failed" formatted="false">"वॉल्ट सेटिंग्स अपडेट नहीं किया जा सका"</string>
     <string name="language_settings_legacy" formatted="false">"Android 13 से पहले, यह ऐप डिवाइस की भाषा का उपयोग करता है।"</string>
     <string name="language_settings_title" formatted="false">"भाषा"</string>
     <string name="language_settings_unavailable" formatted="false">"भाषा की सेटिंग नहीं खोली जा सकीं।"</string>
@@ -421,12 +1133,213 @@
     <string name="lfs_locks_server">"LFS सर्वर: %1$s"</string>
     <string name="lfs_locks_title" formatted="false">"सर्वर लॉक"</string>
     <string name="lfs_locks_unsupported" formatted="false">"यह सर्वर Git LFS लॉक का समर्थन नहीं करता।"</string>
+    <string name="lfs_m3_allow_downloads" formatted="false">"डाउनलोड की अनुमति दें"</string>
+    <string name="lfs_m3_allow_uploads" formatted="false">"अपलोड की अनुमति दें"</string>
+    <string name="lfs_m3_apply_rules" formatted="false">"नियम लागू करें"</string>
+    <string name="lfs_m3_apply_tracking" formatted="false">"ट्रैकिंग विकल्प लागू करें"</string>
+    <string name="lfs_m3_approval_scope" formatted="false">"रिपॉजिटरी स्वामी के साथ इस पते की जाँच करें। अनुमोदन इस फ़ोन पर केवल इस रिपॉजिटरी, रिमोट, एंडपॉइंट और दिशा को कवर करता है।"</string>
+    <string name="lfs_m3_approvals_title" formatted="false">"LFS एंडपॉइंट की स्वीकृतियाँ"</string>
+    <string name="lfs_m3_attention" formatted="false">"Git LFS पर ध्यान देना आवश्यक है"</string>
+    <string name="lfs_m3_auth_new" formatted="false">"अलग यूज़रनेम और टोकन"</string>
+    <string name="lfs_m3_auth_reuse" formatted="false">"सहेजे गए एंडपॉइंट क्रेडेंशियल इस्तेमाल करें"</string>
+    <string name="lfs_m3_branch_remote">"%1$s · रिमोट %2$s"</string>
+    <string name="lfs_m3_cache_missing" formatted="false">"कैश में नहीं है"</string>
+    <string name="lfs_m3_cache_verified" formatted="false">"सत्यापित कैश"</string>
+    <string name="lfs_m3_cancel" formatted="false">"रद्द करें"</string>
+    <string name="lfs_m3_candidate_changed">"%1$s · बदला गया, अभी तक ट्रैक नहीं किया गया"</string>
+    <string name="lfs_m3_candidate_new">"%1$s · नया, अभी तक ट्रैक नहीं किया गया"</string>
+    <string name="lfs_m3_check_ownership" formatted="false">"स्वामित्व की जाँच करें"</string>
+    <string name="lfs_m3_create_body" formatted="false">"जब तक आप इसे जारी नहीं करते तब तक अन्य कनेक्शन इसे लॉक के रूप में देखते हैं। इस फ़ोन पर कुछ भी नहीं बदलता है."</string>
+    <string name="lfs_m3_download_body" formatted="false">"यह रिपॉजिटरी एक अलग LFS सर्वर से फ़ाइल सामग्री डाउनलोड करना चाहता है।"</string>
+    <string name="lfs_m3_download_missing" formatted="false">"अनुपलब्ध सामग्री डाउनलोड करें"</string>
+    <string name="lfs_m3_download_progress" formatted="false">"डाउनलोड प्रगति"</string>
+    <string name="lfs_m3_download_title" formatted="false">"LFS डाउनलोड की अनुमति दें?"</string>
+    <string name="lfs_m3_downloading_prepare" formatted="false">"अनुपलब्ध सामग्री डाउनलोड करना"</string>
+    <string name="lfs_m3_downloads" formatted="false">"डाउनलोड"</string>
+    <string name="lfs_m3_endpoint_auth" formatted="false">"एंडपॉइंट प्रमाणीकरण"</string>
+    <string name="lfs_m3_endpoints_empty" formatted="false">"कोई स्वीकृत कस्टम LFS एंडपॉइंट नहीं"</string>
+    <string name="lfs_m3_endpoints_intro" formatted="false">"आपके रिपॉजिटरी द्वारा उपयोग किए जा सकने वाले अलग LFS सर्वर। रद्द करने से उस दिशा में भविष्य में होने वाले स्थानांतरण रुक जाते हैं; पहले से चली आ रही कोई भी चीज़ ख़त्म हो सकती है."</string>
+    <string name="lfs_m3_endpoints_none" formatted="false">"सेटिंग्स · कोई भी स्वीकृत नहीं"</string>
+    <string name="lfs_m3_endpoints_title" formatted="false">"LFS समापन बिंदु"</string>
+    <string name="lfs_m3_error_changed" formatted="false">"समीक्षा के दौरान स्वीकृतियाँ बदल गईं। उन्हें पुनः लोड करें और स्थानांतरण की दोबारा समीक्षा करें।"</string>
+    <string name="lfs_m3_ext_note_existing" formatted="false">"जिन फ़ाइलों के पास पहले से ही अपना स्वयं का ट्रैकिंग विकल्प है, वे इसे रखें।"</string>
+    <string name="lfs_m3_ext_note_limits" formatted="false">"उपेक्षित फ़ाइलें उपेक्षित रहती हैं। भंडारण सीमा आपके Git होस्ट पर निर्भर करती है।"</string>
+    <string name="lfs_m3_ext_note_stage" formatted="false">"केवल .gitattributes परिवर्तन। फ़ाइलों को पॉइंटर्स में बदलने के लिए उन्हें स्टेज करें।"</string>
+    <string name="lfs_m3_ext_scope" formatted="false">"प्रत्येक फ़ोल्डर में वर्तमान और भविष्य की मिलान फ़ाइलों को कवर करता है। मिलान केस-संवेदी है."</string>
+    <string name="lfs_m3_ext_title" formatted="false">"मिलते-जुलते एक्सटेंशन ट्रैक करें?"</string>
+    <string name="lfs_m3_extensions_updated" formatted="false">"एक्सटेंशन नियम अपडेट किए गए। चरण .gitattributes और फ़ाइलें, फिर प्रतिबद्ध करें।"</string>
+    <string name="lfs_m3_fact_endpoint" formatted="false">"LFS एंडपॉइंट"</string>
+    <string name="lfs_m3_fact_remote" formatted="false">"Git रिमोट"</string>
+    <string name="lfs_m3_fact_repository" formatted="false">"रिपॉज़िटरी"</string>
+    <string name="lfs_m3_force_ack" formatted="false">"मैं समझता हूं कि कोई अभी भी इस फ़ाइल को संपादित कर रहा होगा।"</string>
+    <string name="lfs_m3_force_title" formatted="false">"किसी दूसरे स्वामी का लॉक ज़बरदस्ती हटाएँ?"</string>
+    <string name="lfs_m3_force_warning" formatted="false">"यह किसी अन्य कनेक्शन द्वारा लगाए गए लॉक को हटा देता है। पहले उसके मालिक से जाँच करें।"</string>
+    <string name="lfs_m3_http_warning" formatted="false">"HTTP अनएन्क्रिप्टेड है। रिपॉजिटरी डेटा और किसी भी उपयोगकर्ता नाम या टोकन को ट्रांज़िट में पढ़ा जा सकता है। जब संभव हो HTTPS का उपयोग करें।"</string>
+    <string name="lfs_m3_keep_body" formatted="false">"स्पष्ट नियमित-Git नियम जोड़ता है। सामग्री आपकी प्रतिबद्धताओं में चली जाती है। 100 MiB से अधिक की फ़ाइलों को अभी भी LFS की आवश्यकता है।"</string>
+    <string name="lfs_m3_keep_git" formatted="false">"नियमित Git में रखें"</string>
+    <string name="lfs_m3_keep_title" formatted="false">"इन्हें नियमित Git में रखें?"</string>
+    <string name="lfs_m3_list_read_only" formatted="false">"सूची केवल पढ़ने के लिए"</string>
+    <string name="lfs_m3_lock_a_file" formatted="false">"किसी फ़ाइल को लॉक करें"</string>
+    <string name="lfs_m3_lockable_caption" formatted="false">"केवल .gitattributes में लॉक करने योग्य चिह्नित फ़ाइलें ही यहां दिखाई देती हैं।"</string>
+    <string name="lfs_m3_locked" formatted="false">"लॉक"</string>
+    <string name="lfs_m3_locked_on_server" formatted="false">"सर्वर पर लॉक है"</string>
+    <string name="lfs_m3_locks_empty" formatted="false">"इस शाखा पर कुछ भी बंद नहीं है।"</string>
+    <string name="lfs_m3_locks_intro" formatted="false">"ताला बदलने से पहले स्वामित्व की जांच करें। सर्वर पर लॉक रहते हैं; आपकी फ़ाइलें और प्रतिबद्धताएँ यथावत रहेंगी।"</string>
+    <string name="lfs_m3_match_extensions" formatted="false">"मिलान एक्सटेंशन…"</string>
+    <string name="lfs_m3_needs_choice" formatted="false">"ट्रैकिंग विकल्प की आवश्यकता है"</string>
+    <string name="lfs_m3_no_lockable" formatted="false">"कोई अनलॉक की गई लॉक करने योग्य फ़ाइलें नहीं।"</string>
+    <string name="lfs_m3_no_tracked" formatted="false">"इस शाखा पर LFS में अभी तक कोई फ़ाइल संग्रहीत नहीं है।"</string>
+    <string name="lfs_m3_not_shared" formatted="false">"आपका GitHub साइन-इन इस सर्वर के साथ साझा नहीं किया गया है। इस फ़ोन पर अलग-अलग क्रेडेंशियल एन्क्रिप्ट किए गए हैं। उन्हें सेटिंग्स ›एलएफएस एंडपॉइंट्स में प्रबंधित करें।"</string>
+    <string name="lfs_m3_ok" formatted="false">"ठीक है"</string>
+    <string name="lfs_m3_owned_here" formatted="false">"इस कनेक्शन का स्वामित्व"</string>
+    <string name="lfs_m3_owner">"स्वामी: %1$s"</string>
+    <string name="lfs_m3_public_access" formatted="false">"सार्वजनिक ऐक्सेस"</string>
+    <string name="lfs_m3_refresh_required" formatted="false">"यह काम कर गया, लेकिन नई LFS स्थिति लोड नहीं हुई। कुछ और करने से पहले पुनः लोड करें।"</string>
+    <string name="lfs_m3_release_body" formatted="false">"अन्य लोग इसे लॉक कर सकते हैं और फिर से संपादित कर सकते हैं। आपकी स्थानीय फ़ाइल और कमिट वैसे ही रहेंगे जैसे वे हैं।"</string>
+    <string name="lfs_m3_release_review" formatted="false">"रिलीज़…"</string>
+    <string name="lfs_m3_reload" formatted="false">"LFS की स्थिति फिर लोड करें"</string>
+    <string name="lfs_m3_reset_all" formatted="false">"सभी LFS एंडपॉइंट मंज़ूरियाँ रीसेट करें"</string>
+    <string name="lfs_m3_reset_body" formatted="false">"इस फ़ोन पर प्रत्येक कस्टम एंडपॉइंट अनुमोदन और उसके सहेजे गए क्रेडेंशियल्स को हटा देता है। प्रत्येक समापन बिंदु और दिशा को एक नई समीक्षा की आवश्यकता होगी।"</string>
+    <string name="lfs_m3_reset_confirm" formatted="false">"मंज़ूरियाँ रीसेट करें"</string>
+    <string name="lfs_m3_reset_title" formatted="false">"सभी LFS एंडपॉइंट मंज़ूरियाँ रीसेट करें?"</string>
+    <string name="lfs_m3_review_changed" formatted="false">"जब से आपने इसे खोला है ताले बदल गए हैं। रद्द करें और स्वामित्व की पुनः जाँच करें।"</string>
+    <string name="lfs_m3_revoke" formatted="false">"मंज़ूरी हटाएँ"</string>
+    <string name="lfs_m3_revoke_download_body">"%1$s से भविष्य के डाउनलोड के लिए नई समीक्षा की आवश्यकता होगी। अपलोड अनुमोदन और उसके सहेजे गए क्रेडेंशियल बने रहेंगे।"</string>
+    <string name="lfs_m3_revoke_download_title" formatted="false">"डाउनलोड की मंज़ूरी हटाएँ?"</string>
+    <string name="lfs_m3_revoke_downloads" formatted="false">"डाउनलोड की मंज़ूरी हटाएँ"</string>
+    <string name="lfs_m3_revoke_upload_body">"%1$s पर भविष्य के अपलोड के लिए नई समीक्षा की आवश्यकता होगी। डाउनलोड अनुमोदन और इसकी सहेजी गई साख बनी रहती है।"</string>
+    <string name="lfs_m3_revoke_upload_title" formatted="false">"अपलोड की मंज़ूरी हटाएँ?"</string>
+    <string name="lfs_m3_revoke_uploads" formatted="false">"अपलोड की मंज़ूरी हटाएँ"</string>
+    <string name="lfs_m3_scope_read_only" formatted="false">"केवल पढ़ने योग्य सूची · स्वामित्व सत्यापित नहीं है"</string>
+    <string name="lfs_m3_scope_verified" formatted="false">"इस कनेक्शन से स्वामित्व सत्यापित"</string>
+    <string name="lfs_m3_secret" formatted="false">"टोकन या पासवर्ड"</string>
+    <string name="lfs_m3_separate_credentials" formatted="false">"अलग एन्क्रिप्टेड क्रेडेंशियल"</string>
+    <string name="lfs_m3_server">"LFS सर्वर %1$s"</string>
+    <string name="lfs_m3_ssh_authorization" formatted="false">"SSH से प्राधिकरण"</string>
+    <string name="lfs_m3_ssh_review" formatted="false">"इस HTTP एंडपॉइंट को सत्यापित SSH सर्वर से अल्पकालिक प्राधिकरण प्राप्त होता है। आपकी SSH कुंजी इस फ़ोन पर रहती है। प्राधिकरण को ट्रांज़िट में पढ़ा जा सकता है और इसे कभी भी सहेजा नहीं जाता है।"</string>
+    <string name="lfs_m3_stale" formatted="false">"आपके इसे खोलने के बाद से फ़ाइलें बदल गईं। रद्द करें और दोबारा समीक्षा करें."</string>
+    <string name="lfs_m3_state_pointer" formatted="false">"पॉइंटर · सामग्री डाउनलोड करें"</string>
+    <string name="lfs_m3_stored_body" formatted="false">"कमिट छोटे पॉइंटर्स रखते हैं। पुल सामग्री को डाउनलोड करता है, पुश उन्हें पहले अपलोड करता है।"</string>
+    <string name="lfs_m3_stored_kicker" formatted="false">"LFS में संग्रहीत"</string>
+    <string name="lfs_m3_stored_locked">"%1$s · %2$d लॉक"</string>
+    <string name="lfs_m3_subtitle">"%1$s · %2$s · Git LFS"</string>
+    <string name="lfs_m3_tab_files" formatted="false">"फ़ाइलें"</string>
+    <string name="lfs_m3_tab_locks" formatted="false">"ताले"</string>
+    <string name="lfs_m3_title" formatted="false">"बड़ी फ़ाइलें"</string>
+    <string name="lfs_m3_track_body" formatted="false">"नीचे दी गई फ़ाइलों के लिए सटीक-पथ LFS नियम जोड़ता है। भंडारण और बैंडविड्थ सीमा आपके Git होस्ट पर निर्भर करती है। परिवर्तनों को चरणबद्ध करें, फिर प्रतिबद्ध हों।"</string>
+    <string name="lfs_m3_track_title" formatted="false">"इन फ़ाइलों के लिए LFS का उपयोग करें?"</string>
+    <string name="lfs_m3_tracked_files" formatted="false">"ट्रैक की गई फ़ाइलें"</string>
+    <string name="lfs_m3_tracking_caption" formatted="false">"केवल .gitattributes परिवर्तन। आपकी फ़ाइलें तब तक रखी रहती हैं जब तक आप उन्हें चरणबद्ध नहीं कर देते।"</string>
+    <string name="lfs_m3_tracking_updated" formatted="false">"ट्रैकिंग नियम अपडेट किए गए। चरण .gitattributes और फ़ाइलें, फिर प्रतिबद्ध करें।"</string>
+    <string name="lfs_m3_unsupported" formatted="false">"यह सर्वर Git LFS लॉक का समर्थन नहीं करता है।"</string>
+    <string name="lfs_m3_upload_body" formatted="false">"यह रिपॉजिटरी फ़ाइल सामग्री को एक अलग LFS सर्वर पर भेजना चाहता है।"</string>
+    <string name="lfs_m3_upload_title" formatted="false">"LFS अपलोड की अनुमति दें?"</string>
+    <string name="lfs_m3_uploads" formatted="false">"अपलोड"</string>
+    <string name="lfs_m3_username" formatted="false">"LFS एंडपॉइंट यूज़रनेम"</string>
     <string name="lfs_tracking_updated" formatted="false">"ट्रैकिंग नियम अपडेट किए गए। .gitattributes और चुनी गई फ़ाइलों की समीक्षा करके उन्हें स्टेज करें, फिर कमिट करें।"</string>
     <string name="m3_editor_preview" formatted="false">"पूर्वावलोकन"</string>
     <string name="m3_editor_write" formatted="false">"लिखें"</string>
     <string name="m3_open_in_editor" formatted="false">"एडिटर में खोलें"</string>
     <string name="m3_paywall_paid_with_play" formatted="false">"आपके Google Play खाते से भुगतान"</string>
     <string name="m3_pick_a_file" formatted="false">"बदलाव देखने के लिए कोई फ़ाइल चुनें।"</string>
+    <string name="m3home_add_first" formatted="false">"अपना पहला वॉल्ट जोड़ें"</string>
+    <string name="m3home_add_vault" formatted="false">"वॉल्ट जोड़ें"</string>
+    <string name="m3home_auth_body" formatted="false">"आपके नोट इस फ़ोन पर सुरक्षित हैं। कुछ भी नहीं खोया."</string>
+    <string name="m3home_auth_headline" formatted="false">"सिंक रुका हुआ है।"</string>
+    <string name="m3home_auth_held">"↑%1$d रोके गए"</string>
+    <string name="m3home_auth_kicker">"GitHub साइन-इन समाप्त · %1$s"</string>
+    <string name="m3home_auth_paused" formatted="false">"रुका हुआ"</string>
+    <string name="m3home_auth_row_meta">"%1$s · अंतिम बार सिंक किया गया %2$s"</string>
+    <string name="m3home_auth_sign_in" formatted="false">"GitHub से साइन इन करें"</string>
+    <string name="m3home_auth_unaffected_label" formatted="false">"अप्रभावित"</string>
+    <string name="m3home_auth_waiting_label" formatted="false">"साइन-इन की प्रतीक्षा"</string>
+    <string name="m3home_badge_both">"↓%1$d ↑%2$d"</string>
+    <string name="m3home_badge_checking" formatted="false">"जाँच जारी है"</string>
+    <string name="m3home_badge_in_sync" formatted="false">"सिंक में"</string>
+    <string name="m3home_badge_local_only" formatted="false">"केवल स्थानीय"</string>
+    <string name="m3home_badge_needs_you" formatted="false">"आपकी आवश्यकता है"</string>
+    <string name="m3home_badge_sync_failed" formatted="false">"सिंक नहीं हुआ"</string>
+    <string name="m3home_badge_syncing" formatted="false">"सिंक हो रहा है"</string>
+    <string name="m3home_badge_to_pull">"↓%1$d pull के लिए"</string>
+    <string name="m3home_badge_to_push">"↑%1$d push के लिए"</string>
+    <string name="m3home_badge_unreadable" formatted="false">"पढ़ नहीं सकता"</string>
+    <string name="m3home_cred_github" formatted="false">"GitHub खाता"</string>
+    <string name="m3home_cred_local" formatted="false">"इस फोन पर"</string>
+    <string name="m3home_cred_public" formatted="false">"– सार्वजनिक"</string>
+    <string name="m3home_cred_ssh" formatted="false">"SSH कुंजी"</string>
+    <string name="m3home_cred_token" formatted="false">"टोकन"</string>
+    <string name="m3home_empty_rail_description" formatted="false">"फ़ोन और GitHub, अभी तक सिंक करने के लिए कुछ भी नहीं"</string>
+    <string name="m3home_empty_rail_nothing" formatted="false">"सिंक करने के लिए कुछ नहीं"</string>
+    <string name="m3home_empty_signed_in">"@%1$s के रूप में साइन इन"</string>
+    <string name="m3home_empty_title" formatted="false">"अभी कोई वॉल्ट नहीं।"</string>
+    <string name="m3home_filter_all">"सभी %1$d"</string>
+    <string name="m3home_filter_attention">"ध्यान दें %1$d"</string>
+    <string name="m3home_filter_empty_attention" formatted="false">"किसी भी चीज़ को आपकी ज़रूरत नहीं है। हर तिजोरी सिंक में है."</string>
+    <string name="m3home_filter_empty_pinned" formatted="false">"अभी तक कोई पिन किया हुआ वॉल्ट नहीं। वॉल्ट को लंबे समय तक दबाएं और शीर्ष पर पिन करें चुनें।"</string>
+    <string name="m3home_filter_pinned" formatted="false">"पिन किया गया"</string>
+    <string name="m3home_headline_ready_accent" formatted="false">"सिंक में।"</string>
+    <string name="m3home_how_title" formatted="false">"यह कैसे काम करता है"</string>
+    <string name="m3home_meta_checked">"%1$s जाँचा गया"</string>
+    <string name="m3home_meta_checking">"जाँच %1$d"</string>
+    <string name="m3home_meta_in_sync">"%1$d सिंक में"</string>
+    <string name="m3home_meta_lfs">"%1$s LFS"</string>
+    <string name="m3home_meta_loading" formatted="false">"जाँच जारी है…"</string>
+    <string name="m3home_meta_never_checked" formatted="false">"अभी तक जाँच नहीं हुई"</string>
+    <string name="m3home_meta_not_synced" formatted="false">"अभी सिंक नहीं हुआ"</string>
+    <string name="m3home_meta_unreadable" formatted="false">"इस फ़ोल्डर को नहीं पढ़ सकता"</string>
+    <string name="m3home_offline_accent" formatted="false">"हम सब अपडेट कर लेंगे।"</string>
+    <string name="m3home_offline_fab" formatted="false">"ऑनलाइन होने पर सिंक होगा"</string>
+    <string name="m3home_offline_headline" formatted="false">"लिखते रहें।"</string>
+    <string name="m3home_offline_last_known" formatted="false">"अंतिम ज्ञात: सिंक में"</string>
+    <string name="m3home_offline_last_known_behind">"अंतिम ज्ञात: ↓%1$d"</string>
+    <string name="m3home_offline_meta">"कोई कनेक्शन नहीं · अंतिम जाँच %1$s"</string>
+    <string name="m3home_offline_meta_never" formatted="false">"कोई कनेक्शन नहीं"</string>
+    <string name="m3home_offline_queued">"↑%1$d पंक्तिबद्ध"</string>
+    <string name="m3home_offline_row_meta">"%1$s · समन्वयित %2$s"</string>
+    <string name="m3home_onboarding_accent" formatted="false">"हमेशा तालमेल में।"</string>
+    <string name="m3home_onboarding_body" formatted="false">"कोई भी रिपॉज़िटरी क्लोन करें, Obsidian या किसी अन्य ऐप में लिखें और एक टैप में सिंक करें।"</string>
+    <string name="m3home_onboarding_demo" formatted="false">"डेमो वॉल्ट के साथ चारों ओर देखें"</string>
+    <string name="m3home_onboarding_github" formatted="false">"GitHub के साथ जारी रखें"</string>
+    <string name="m3home_onboarding_headline" formatted="false">"आपके नोट्स.\nवास्तविक गिट।"</string>
+    <string name="m3home_onboarding_other" formatted="false">"SSH, टोकन या कोई दूसरा होस्ट"</string>
+    <string name="m3home_onboarding_rail" formatted="false">"आपके फ़ोन के नोट्स और GitHub के commit एक सिंक पॉइंट पर मिलते हुए"</string>
+    <string name="m3home_onboarding_save_error" formatted="false">"आपकी पसंद को सहेजा नहीं जा सका। पुनः प्रयास करें।"</string>
+    <string name="m3home_onboarding_this_phone" formatted="false">"यह फ़ोन"</string>
+    <string name="m3home_pin" formatted="false">"सबसे ऊपर पिन करें"</string>
+    <string name="m3home_pin_failed" formatted="false">"पिन सहेजा नहीं जा सका। पुनः प्रयास करें।"</string>
+    <string name="m3home_pinned" formatted="false">"पिन किया गया"</string>
+    <string name="m3home_rail_github" formatted="false">"GitHub"</string>
+    <string name="m3home_rail_phone" formatted="false">"फ़ोन"</string>
+    <string name="m3home_rail_remote" formatted="false">"Remote"</string>
+    <string name="m3home_remove" formatted="false">": से हटाएँ GitSync.md"</string>
+    <string name="m3home_row_actions" formatted="false">"वॉल्ट क्रियाएँ"</string>
+    <string name="m3home_session_dismiss" formatted="false">"खारिज करें"</string>
+    <string name="m3home_settings" formatted="false">"सेटिंग्स"</string>
+    <string name="m3home_settings_signed_in">"सेटिंग्स, %1$s के रूप में साइन इन किया गया"</string>
+    <string name="m3home_start_github" formatted="false">"GitHub से क्लोन करें"</string>
+    <string name="m3home_start_github_detail" formatted="false">"अपनी किसी रिपॉज़िटरी को चुनें"</string>
+    <string name="m3home_start_local" formatted="false">"इस फ़ोन पर क्लोन ढूंढें"</string>
+    <string name="m3home_start_local_detail" formatted="false">"Obsidian, MGit, टर्मक्स..."</string>
+    <string name="m3home_start_publish" formatted="false">"फ़ोल्डर प्रकाशित करें"</string>
+    <string name="m3home_start_publish_detail" formatted="false">"फ़ोल्डर को नई रिपॉज़िटरी में बदलता है"</string>
+    <string name="m3home_start_url" formatted="false">"एक यूआरएल चिपकाएँ"</string>
+    <string name="m3home_start_url_detail" formatted="false">"कोई भी सार्वजनिक या निजी Git रिमोट"</string>
+    <string name="m3home_start_with" formatted="false">"इससे शुरू करें"</string>
+    <string name="m3home_sync_all" formatted="false">"सभी सिंक करें"</string>
+    <string name="m3home_sync_all_meta">"↓%1$d ↑%2$d"</string>
+    <string name="m3home_sync_busy" formatted="false">"पुल ऑल पहले से ही चल रहा है। जब यह ख़त्म हो जाए तो पुनः प्रयास करें."</string>
+    <string name="m3home_sync_done">"सिंक किया गया · खींचा गया %1$d · धकेला गया %2$d"</string>
+    <string name="m3home_sync_failed">"%1$s को सिंक नहीं किया जा सका"</string>
+    <string name="m3home_sync_start_failed" formatted="false">"सभी सिंक प्रारंभ नहीं हो सके। सेटिंग्स में अपनी वॉल्ट सूची जांचें।"</string>
+    <string name="m3home_syncing" formatted="false">"सिंक हो रहा है"</string>
+    <string name="m3home_syncing_meta">"%1$d / %2$d"</string>
+    <string name="m3home_time_days">"%1$d दिन पहले"</string>
+    <string name="m3home_time_hours">"%1$dहाल ही में"</string>
+    <string name="m3home_time_minutes_long">"%1$d मिनट पहले"</string>
+    <string name="m3home_time_minutes_short">"%1$dm पहले"</string>
+    <string name="m3home_time_now" formatted="false">"– अभी।"</string>
+    <string name="m3home_time_yesterday" formatted="false">"कल"</string>
+    <string name="m3home_unpin" formatted="false">"अनपिन करें"</string>
     <string name="modified" formatted="false">"संशोधित"</string>
     <string name="move_cancelled" formatted="false">"स्थानांतरण रद्द किया गया। मूल कार्यशील प्रति रखी गई।"</string>
     <string name="move_confirm_action" formatted="false">"ले जाएँ"</string>
@@ -450,6 +1363,22 @@
     <string name="move_recovery_done" formatted="false">"स्थानांतरण पुनर्प्राप्ति पूरी हुई"</string>
     <string name="move_recovery_removed" formatted="false">"पुनर्प्राप्ति प्रति हटाई गई"</string>
     <string name="move_title_restore" formatted="false">"पुनर्प्राप्ति प्रति पुनर्स्थापित करें"</string>
+    <string name="newfile_m3_blank" formatted="false">"खाली"</string>
+    <string name="newfile_m3_builtin_idea" formatted="false">"विचार"</string>
+    <string name="newfile_m3_create_open" formatted="false">"बनाएँ और खोलें"</string>
+    <string name="newfile_m3_exists">"%1$s पहले से %2$s में मौजूद है। कोई दूसरा नाम आज़माएँ।"</string>
+    <string name="newfile_m3_file_name" formatted="false">"फ़ाइल नाम"</string>
+    <string name="newfile_m3_folder" formatted="false">"फ़ोल्डर"</string>
+    <string name="newfile_m3_folder_name" formatted="false">"फ़ोल्डर नाम"</string>
+    <string name="newfile_m3_in">"%1$s में"</string>
+    <string name="newfile_m3_invalid" formatted="false">"/ या \\ के बिना नाम का उपयोग करें।"</string>
+    <string name="newfile_m3_invalid_dots" formatted="false">"\"।\" और \"..\" आरक्षित हैं। कोई दूसरा नाम आज़माएं."</string>
+    <string name="newfile_m3_note" formatted="false">"नोट"</string>
+    <string name="newfile_m3_template">"टेम्पलेट · %1$s"</string>
+    <string name="newfile_m3_title_folder" formatted="false">"नया फ़ोल्डर"</string>
+    <string name="newfile_m3_title_note" formatted="false">"नया नोट"</string>
+    <string name="newfile_m3_today" formatted="false">"आज की तारीख"</string>
+    <string name="newfile_m3_too_long" formatted="false">"वह नाम बहुत लंबा है। छोटे का प्रयोग करें."</string>
     <string name="notes_acknowledge" formatted="false">"समझ गया"</string>
     <string name="notes_connections_body" formatted="false">"GitHub खाते और रिपॉज़िटरी लेखक की पहचान प्रबंधित करें। HTTPS या SSH से कनेक्ट करें, क्लोन स्टोरेज चुनें, स्थानीय कॉपी दोबारा कनेक्ट करें, और रिपॉज़िटरी को स्थानांतरित करने या हटाने की समीक्षा करें।"</string>
     <string name="notes_connections_title" formatted="false">"कनेक्शन और स्टोरेज"</string>
@@ -458,6 +1387,10 @@
     <string name="notes_version">"Android %1$s · बिल्ड %2$d"</string>
     <string name="notes_workflow_body" formatted="false">"फ़ाइलें ब्राउज़ और संपादित करें, स्टेज किए गए और बिना स्टेज किए डिफ़ देखें, स्थानीय कमिट बनाएँ, मौजूदा कमिट पुश करें, और ब्रांच, हिस्ट्री, टैग व रीबेस के साथ काम करें।"</string>
     <string name="notes_workflow_title" formatted="false">"रिपॉज़िटरी वर्कफ़्लो"</string>
+    <string name="notification_m3_open_obsidian" formatted="false">"Obsidian में खोलें"</string>
+    <string name="notification_m3_pulled" formatted="false">"पृष्ठभूमि में नए बदलाव लाए गए।"</string>
+    <string name="notification_m3_see_changes" formatted="false">"परिवर्तन देखें"</string>
+    <string name="notification_m3_updated">"%1$s अपडेट हुआ"</string>
     <string name="obsidian_forgotten" formatted="false">"आगे क्रेडेंशियल भेजना बंद है। इस फ़ोल्डर को फिर से कनेक्ट करने के लिए नया कनेक्शन तैयार करें।"</string>
     <string name="obsidian_interrupted" formatted="false">"कनेक्शन रुक गया। कोई अनुरोध अपने-आप दोबारा नहीं चलेगा। Obsidian में पुनः प्रयास करने से पहले नया कनेक्शन तैयार करें।"</string>
     <string name="obsidian_return" formatted="false">"Obsidian पर लौटें"</string>
@@ -560,6 +1493,47 @@
     <string name="pull_all_widget_description" formatted="false">"GitSync.md खोले बिना सभी स्थानीय रिपॉज़िटरी के अपडेट फ़ेच करें और फ़ास्ट-फ़ॉरवर्ड करें।"</string>
     <string name="pull_all_widget_subtitle" formatted="false">"केवल फ़ेच और फ़ास्ट-फ़ॉरवर्ड"</string>
     <string name="pull_screen" formatted="false">"Pull"</string>
+    <string name="pullall_m3_again" formatted="false">"सभी फिर से पुल करें"</string>
+    <string name="pullall_m3_attention_blocked" formatted="false">"अपरिवर्तित रखा गया। पहले स्थानीय परिवर्तन प्रतिबद्ध करें या छिपाएँ।"</string>
+    <string name="pullall_m3_attention_failed" formatted="false">"सुरक्षित रूप से खींच नहीं सका। कनेक्शन और फ़ोल्डर पहुंच की जाँच करें."</string>
+    <string name="pullall_m3_attention_lfs" formatted="false">"खींच लिया गया। कुछ Git LFS फ़ाइलों को अभी भी डाउनलोड करने की आवश्यकता है।"</string>
+    <string name="pullall_m3_background" formatted="false">"बैकग्राउंड में सभी पुल करें"</string>
+    <string name="pullall_m3_blocked" formatted="false">"अपरिवर्तित रखा गया। स्थानीय परिवर्तन प्रतिबद्ध करें या छिपाएँ, या खुला Git ऑपरेशन समाप्त करें, फिर पुनः प्रयास करें।"</string>
+    <string name="pullall_m3_clear" formatted="false">"बैकग्राउंड सारांश साफ़ करें"</string>
+    <string name="pullall_m3_clear_body" formatted="false">"यह नवीनतम पृष्ठभूमि सारांश को हटा देता है। आपकी तिजोरियाँ और सेटिंग्स वैसी ही रहेंगी जैसी वे हैं। बाधित कार्य अपने आप पुनः प्रारंभ नहीं होगा।"</string>
+    <string name="pullall_m3_clear_confirm" formatted="false">"स्पष्ट सारांश"</string>
+    <string name="pullall_m3_clear_title" formatted="false">"पृष्ठभूमि सारांश साफ़ करें?"</string>
+    <string name="pullall_m3_complete" formatted="false">"सभी पुल करें पूरा हुआ। सहेजा गया सारांश देखें।"</string>
+    <string name="pullall_m3_control_failed" formatted="false">"वह नहीं बदला। इस स्क्रीन को दोबारा खोलें और पुनः प्रयास करें।"</string>
+    <string name="pullall_m3_counts">"अपडेट किया गया %1$d · वर्तमान %2$d · LFS %3$d · अवरुद्ध %4$d · विफल %5$d"</string>
+    <string name="pullall_m3_current" formatted="false">"कोई आने वाला बदलाव नहीं"</string>
+    <string name="pullall_m3_empty" formatted="false">"अभी तक खींचने के लिए कोई वॉल्ट नहीं है। पहले एक को क्लोन करें या जोड़ें।"</string>
+    <string name="pullall_m3_failed" formatted="false">"एक त्रुटि के कारण सभी को खींचना बंद हो गया। कुछ खींचतान ख़त्म हो गई होगी. इसे दोबारा चलाने से पहले सारांश और प्रत्येक वॉल्ट की जाँच करें।"</string>
+    <string name="pullall_m3_help" formatted="false">"अपनी होम स्क्रीन पर पुल ऑल विजेट, या टाइल को त्वरित सेटिंग्स में जोड़ें। दोनों ऐप खोले बिना एक बार चलते हैं। क्या हुआ यह देखने के लिए यहां वापस आएं।"</string>
+    <string name="pullall_m3_interrupted" formatted="false">"सभी को खींचना बाधित हो गया था और अपने आप पुनः आरंभ नहीं हुआ। हो सकता है कि कोई खींचतान पहले ख़त्म हो गई हो. प्रत्येक वॉल्ट को दोबारा चलाने से पहले उसकी जाँच करें।"</string>
+    <string name="pullall_m3_item_failed" formatted="false">"सुरक्षित रूप से खींच नहीं सका। कनेक्शन और फ़ोल्डर पहुंच की जांच करें, फिर विचलन के लिए Git देखें।"</string>
+    <string name="pullall_m3_lfs" formatted="false">"खींच लिया गया। कुछ Git LFS फ़ाइलों को अभी भी डाउनलोड करने की आवश्यकता है। पुनः प्रयास करने के लिए Git LFS खोलें।"</string>
+    <string name="pullall_m3_not_run" formatted="false">"नहीं चलाया गया"</string>
+    <string name="pullall_m3_progress_cd" formatted="false">"सभी प्रगति खींचें"</string>
+    <string name="pullall_m3_pulling" formatted="false">"pull हो रहा है…"</string>
+    <string name="pullall_m3_running" formatted="false">"ऐप खोले बिना पुल ऑल चल रहा है। जब आप स्टॉप पर टैप करते हैं तो बाकी चीजें रुक जाती हैं।"</string>
+    <string name="pullall_m3_scope" formatted="false">"इस फोन पर प्रत्येक वॉल्ट को प्राप्त करें और तेजी से आगे बढ़ाएं। पुल ऑल कभी भी आपके परिवर्तनों को चरणबद्ध, प्रतिबद्ध या आगे नहीं बढ़ाता है।"</string>
+    <string name="pullall_m3_source_shortcut" formatted="false">"शॉर्टकट"</string>
+    <string name="pullall_m3_source_tile" formatted="false">"टाइल"</string>
+    <string name="pullall_m3_source_widget" formatted="false">"विजेट"</string>
+    <string name="pullall_m3_start" formatted="false">": सभी निकालें"</string>
+    <string name="pullall_m3_start_failed" formatted="false">"सभी खींचें प्रारंभ नहीं हो सकीं। अपनी वॉल्ट सेटिंग जांचें और पुनः प्रयास करें।"</string>
+    <string name="pullall_m3_stop" formatted="false">"सभी पुल करना रोकें"</string>
+    <string name="pullall_m3_stopped" formatted="false">"रुका हुआ। हो सकता है कि पहले से खींची जा रही तिजोरी समाप्त हो गई हो, इसलिए पुनः प्रयास करने से पहले उसकी स्थिति जांच लें। बाकी शुरू नहीं हुए थे."</string>
+    <string name="pullall_m3_stopping" formatted="false">"इस वॉल्ट के बाद रुकना..."</string>
+    <string name="pullall_m3_surfaces" formatted="false">"विजेट और त्वरित सेटिंग्स टाइल"</string>
+    <string name="pullall_m3_tile_preview" formatted="false">"GitSync.md\nसभी खींचें"</string>
+    <string name="pullall_m3_title" formatted="false">": सभी निकालें"</string>
+    <string name="pullall_m3_unreadable" formatted="false">"सहेजा गया पृष्ठभूमि सारांश पढ़ा नहीं जा सकता और रखा गया था। दूसरा बैकग्राउंड रन शुरू करने से पहले इसे साफ़ करें।"</string>
+    <string name="pullall_m3_updated" formatted="false">"रिमोट से अपडेट किया गया"</string>
+    <string name="pullall_m3_when_source">"%1$s · %2$s से"</string>
+    <string name="pullall_m3_widget_name" formatted="false">": सभी निकालें"</string>
+    <string name="pullall_m3_widget_sub" formatted="false">"केवल फ़ेच और फ़ास्ट-फ़ॉरवर्ड"</string>
     <string name="push_all_repositories" formatted="false">"भविष्य में बनने वाली सहित सभी रिपॉज़िटरी"</string>
     <string name="push_cancelled" formatted="false">"GitHub से कनेक्शन रद्द किया गया।"</string>
     <string name="push_channel" formatted="false">"रिपॉज़िटरी के अपडेट"</string>
@@ -617,6 +1591,7 @@
     <string name="repository_actions_changes">"बदले गए पथ: %1$d"</string>
     <string name="repository_actions_confirm" formatted="false">"एक बार चलाएँ"</string>
     <string name="repository_actions_destination">"अपस्ट्रीम: %1$s / %2$s"</string>
+    <string name="repository_actions_destination_none" formatted="false">"अपस्ट्रीम: कोई नहीं"</string>
     <string name="repository_actions_dirty" formatted="false">"स्थानीय बदलाव आने वाले कमिट पुल करने से रोकते हैं। पहले उनका कमिट करें या उन्हें स्टैश करें।"</string>
     <string name="repository_actions_diverged" formatted="false">"स्थानीय और रिमोट इतिहास अलग हो गए हैं। Git नियंत्रणों में स्पष्ट रूप से मर्ज या रीबेस चुनें।"</string>
     <string name="repository_actions_failed" formatted="false">"कार्रवाई पूरी नहीं हो सकी। कनेक्शन, खाता, भरोसा और फ़ोल्डर की पहुँच जाँचें, फिर दोबारा कोशिश करने से पहले मौजूदा स्थिति की समीक्षा करें।"</string>
@@ -681,6 +1656,325 @@
     <string name="resolve_local_superseded" formatted="false">"चुनी गई रिपॉज़िटरी बदल गई है। स्थानीय बदलावों की फिर से समीक्षा करें।"</string>
     <string name="resolve_local_title" formatted="false">": स्थानीय संपादन इस पुल को रोकते हैं।"</string>
     <string name="settings_folder_unavailable" formatted="false">"फ़ोल्डर की पहुँच पर ध्यान देना आवश्यक है"</string>
+    <string name="settings_m3_account_meta">"@%1$s · GitHub"</string>
+    <string name="settings_m3_accounts" formatted="false">"GitHub खाते"</string>
+    <string name="settings_m3_app_storage" formatted="false">"ऐप स्टोरेज"</string>
+    <string name="settings_m3_author_account_meta">"%1$s · इस तिजोरी में अभी तक कुछ भी सहेजा नहीं गया है"</string>
+    <string name="settings_m3_author_account_meta_global">"%1$s · अभी तक कोई डिफ़ॉल्ट सहेजा नहीं गया"</string>
+    <string name="settings_m3_author_changed" formatted="false">"इस लेखक को GitSync.md के बाहर बदल दिया गया था, शायद आपके Mac पर Git द्वारा। अब यह क्या कहता है यह देखने के लिए पुनः लोड करें।"</string>
+    <string name="settings_m3_author_default" formatted="false">": डिफ़ॉल्ट"</string>
+    <string name="settings_m3_author_email" formatted="false">"लेखक का ईमेल"</string>
+    <string name="settings_m3_author_from_account" formatted="false">"आपके GitHub खाते से"</string>
+    <string name="settings_m3_author_global_subtitle" formatted="false">"प्रत्येक वॉल्ट का अपना लेखक नहीं होता"</string>
+    <string name="settings_m3_author_help_changed" formatted="false">"सहेजने से पहले पुनः लोड करें, अन्यथा आप नए लेखक को बदल देंगे।"</string>
+    <string name="settings_m3_author_help_match" formatted="false">"आपके Mac पर Git द्वारा उपयोग किए जाने वाले ईमेल का मिलान करें ताकि दोनों आपके रूप में दिखाई दें।"</string>
+    <string name="settings_m3_author_help_noreply" formatted="false">"GitHub का निजी पता, इसलिए आपका वास्तविक ईमेल छिपा रहता है।"</string>
+    <string name="settings_m3_author_intro" formatted="false">"इस वॉल्ट में नए कमिट इस नाम और ईमेल का उपयोग करते हैं। आपने जो प्रतिबद्धताएं पहले ही बना ली हैं, उनके लेखक को अपने पास रखें।"</string>
+    <string name="settings_m3_author_intro_global" formatted="false">"आपके वॉल्ट में नए कमिट इस नाम और ईमेल का उपयोग करते हैं, जब तक कि कोई वॉल्ट स्वयं को सेव न कर ले। आपने जो प्रतिबद्धताएं पहले ही बना ली हैं, उनके लेखक को अपने पास रखें।"</string>
+    <string name="settings_m3_author_name" formatted="false">"लेखक का नाम"</string>
+    <string name="settings_m3_author_override" formatted="false">"ओवरराइड"</string>
+    <string name="settings_m3_author_preview_message" formatted="false">"GitSync.md से अपडेट"</string>
+    <string name="settings_m3_author_preview_meta">"%1$s &lt;%2$s&gt; · अभी"</string>
+    <string name="settings_m3_author_preview_title" formatted="false">"आपकी अगली प्रतिबद्धता पढ़ी जाएगी"</string>
+    <string name="settings_m3_author_reading" formatted="false">"इस वॉल्ट की Git कॉन्फ़िगरेशन को पढ़ रहा है..."</string>
+    <string name="settings_m3_author_save" formatted="false">"लेखक सहेजें"</string>
+    <string name="settings_m3_author_save_note" formatted="false">"सहेजने से यह पृष्ठ बंद हो जाता है। कुछ भी प्रतिबद्ध नहीं है."</string>
+    <string name="settings_m3_author_saved_global" formatted="false">"सभी वॉल्ट के लिए सहेजा गया"</string>
+    <string name="settings_m3_author_saved_global_meta">"इस फ़ोन पर · %1$s को ओवरराइड करता है"</string>
+    <string name="settings_m3_author_saved_vault" formatted="false">"इस तिजोरी में सहेजा गया"</string>
+    <string name="settings_m3_author_saved_vault_meta">".git/config · %1$s को ओवरराइड करता है"</string>
+    <string name="settings_m3_author_scope" formatted="false">"केवल यह वॉल्ट बदलता है। आपके अन्य वॉल्ट अपना स्वयं का लेखक रखते हैं, या GitHub खाते का उपयोग करते हैं जिसके साथ वे समन्वयित होते हैं।"</string>
+    <string name="settings_m3_author_scope_global" formatted="false">"एक लेखक के साथ वॉल्ट इसे अपने .git/config में सहेजते हैं। आप अभी भी इसकी वॉल्ट सेटिंग में एकल वॉल्ट को बदल सकते हैं।"</string>
+    <string name="settings_m3_author_use_account" formatted="false">"इसके बजाय मेरे GitHub खाते का उपयोग करें"</string>
+    <string name="settings_m3_author_your_account" formatted="false">"आपका GitHub खाता"</string>
+    <string name="settings_m3_background_on">"चालू · %1$d वॉल्ट"</string>
+    <string name="settings_m3_background_sync" formatted="false">"Background Sync"</string>
+    <string name="settings_m3_bg_attention_short" formatted="false">"समीक्षा की आवश्यकता है"</string>
+    <string name="settings_m3_bg_charging" formatted="false">"चार्जिंग"</string>
+    <string name="settings_m3_bg_cond_any" formatted="false">"किसी भी कनेक्शन पर"</string>
+    <string name="settings_m3_bg_cond_both" formatted="false">"चार्ज करते समय केवल वाई-फ़ाई पर"</string>
+    <string name="settings_m3_bg_cond_charging" formatted="false">"केवल चार्ज करते समय"</string>
+    <string name="settings_m3_bg_cond_wifi" formatted="false">"केवल वाई-फाई पर"</string>
+    <string name="settings_m3_bg_conditions_apply">"प्रत्येक सम्मिलित वॉल्ट की तरह, %1$s चलाता है।"</string>
+    <string name="settings_m3_bg_connect" formatted="false">"कनेक्ट करें"</string>
+    <string name="settings_m3_bg_failed_short" formatted="false">"सिंक नहीं हो सका"</string>
+    <string name="settings_m3_bg_include_cd">"Background Sync में %1$s शामिल करें"</string>
+    <string name="settings_m3_bg_intro" formatted="false">"Android कनेक्टिविटी, बैटरी और सिस्टम प्रतिबंधों के आधार पर, हर 15 मिनट या बाद में शेड्यूल की जांच करता है। सर्वोत्तम प्रयास, वास्तविक समय कभी नहीं।"</string>
+    <string name="settings_m3_bg_modes" formatted="false">"मोड"</string>
+    <string name="settings_m3_bg_never" formatted="false">"यह कभी नहीं"</string>
+    <string name="settings_m3_bg_no_runs" formatted="false">"अभी तक कोई रन नहीं। Android लगभग 15 मिनट के भीतर पहली जांच शुरू करता है।"</string>
+    <string name="settings_m3_bg_nudge" formatted="false">"जब GitHub बदलता है तो एक संकेत प्राप्त करें"</string>
+    <string name="settings_m3_bg_nudge_sub" formatted="false">"ऑप्ट-इन करें। खींचतान तुरंत शुरू हो सकती है."</string>
+    <string name="settings_m3_bg_only_when" formatted="false">"केवल जब"</string>
+    <string name="settings_m3_bg_pull_sub" formatted="false">"केवल फ़ास्ट-फ़ॉरवर्ड"</string>
+    <string name="settings_m3_bg_push_sub" formatted="false">"यदि रिमोट पहले चला जाए तो रुक जाता है"</string>
+    <string name="settings_m3_bg_recent" formatted="false">"हाल के रन"</string>
+    <string name="settings_m3_bg_run_failed">"%1$s सिंक नहीं हो सका"</string>
+    <string name="settings_m3_bg_run_local_edits">"%1$s छोड़ दिया गया: स्थानीय संपादन"</string>
+    <string name="settings_m3_bg_run_offline">"%1$s कनेक्शन की प्रतीक्षा कर रहा है"</string>
+    <string name="settings_m3_bg_run_power">"%1$s चार्जिंग की प्रतीक्षा में"</string>
+    <string name="settings_m3_bg_run_pushed" formatted="false">"↑ धकेला गया"</string>
+    <string name="settings_m3_bg_run_review">"%1$s को समीक्षा की आवश्यकता है"</string>
+    <string name="settings_m3_bg_run_skipped">"%1$s छोड़ा गया: %2$s"</string>
+    <string name="settings_m3_bg_run_wifi">"%1$s वाई-फाई की प्रतीक्षा कर रहा है"</string>
+    <string name="settings_m3_bg_vault_missing" formatted="false">"फ़ोल्डर अब नहीं जोड़ा गया। इसे भूल जाओ या फिर से तिजोरी जोड़ दो।"</string>
+    <string name="settings_m3_bg_vault_not_included" formatted="false">"शामिल नहीं"</string>
+    <string name="settings_m3_bg_vaults" formatted="false">"वॉल्ट"</string>
+    <string name="settings_m3_bg_wifi" formatted="false">"वाई-फाई पर"</string>
+    <string name="settings_m3_close" formatted="false">"बंद करें"</string>
+    <string name="settings_m3_commit_as" formatted="false">"इस रूप में commit करें"</string>
+    <string name="settings_m3_debug_app" formatted="false">"ऐप"</string>
+    <string name="settings_m3_debug_background" formatted="false">"BACKGROUND"</string>
+    <string name="settings_m3_debug_bg" formatted="false">"BG"</string>
+    <string name="settings_m3_debug_clear" formatted="false">"– स्पष्ट"</string>
+    <string name="settings_m3_debug_copy" formatted="false">"दृश्यमान प्रविष्टियों की प्रतिलिपि बनाएँ"</string>
+    <string name="settings_m3_debug_day_time">"%1$s %2$s"</string>
+    <string name="settings_m3_debug_error" formatted="false">"त्रुटि"</string>
+    <string name="settings_m3_debug_errors_count">"त्रुटियाँ %1$d"</string>
+    <string name="settings_m3_debug_info" formatted="false">"डिबग जानकारी दिखाएँ"</string>
+    <string name="settings_m3_debug_info_tag" formatted="false">"जानकारी"</string>
+    <string name="settings_m3_debug_log" formatted="false">"डीबग लॉग"</string>
+    <string name="settings_m3_debug_removed_vault" formatted="false">"हटाई गई तिजोरी"</string>
+    <string name="settings_m3_debug_share" formatted="false">"निदान साझा करें"</string>
+    <string name="settings_m3_debug_warn" formatted="false">"चेतावनी"</string>
+    <string name="settings_m3_discord" formatted="false">"Discord से जुड़ें"</string>
+    <string name="settings_m3_done" formatted="false">"हो गया"</string>
+    <string name="settings_m3_feedback_subtitle" formatted="false">"आपका ईमेल ऐप खोलता है"</string>
+    <string name="settings_m3_forget" formatted="false">"भूलें"</string>
+    <string name="settings_m3_full_access" formatted="false">"GitSync.md पूरी एक्सेस"</string>
+    <string name="settings_m3_group_app" formatted="false">"ऐप"</string>
+    <string name="settings_m3_group_more" formatted="false">"कनेक्शन और सहायता"</string>
+    <string name="settings_m3_group_new_vaults" formatted="false">"नए वॉल्ट"</string>
+    <string name="settings_m3_group_purchase" formatted="false">"खरीद"</string>
+    <string name="settings_m3_group_sync" formatted="false">"सिंक"</string>
+    <string name="settings_m3_help" formatted="false">"सहायता और उसके बारे में"</string>
+    <string name="settings_m3_how_clone_url" formatted="false">"URL से क्लोन करें"</string>
+    <string name="settings_m3_how_count" formatted="false">"जानने योग्य 4 बातें"</string>
+    <string name="settings_m3_how_github" formatted="false">"GitHub"</string>
+    <string name="settings_m3_how_it_works" formatted="false">"यह कैसे काम करता है"</string>
+    <string name="settings_m3_how_sample" formatted="false">"ऑफ़लाइन नमूना आज़माएँ"</string>
+    <string name="settings_m3_how_start" formatted="false">"यहां से प्रारंभ करें"</string>
+    <string name="settings_m3_how_storage" formatted="false">"स्टोरेज चुनें"</string>
+    <string name="settings_m3_how_subtitle" formatted="false">"बुनियादी बातों पर दो मिनट की नज़र"</string>
+    <string name="settings_m3_how_title" formatted="false">"GitSync कैसे काम करता है"</string>
+    <string name="settings_m3_language" formatted="false">"भाषा"</string>
+    <string name="settings_m3_lfs_endpoints" formatted="false">"LFS समापन बिंदु"</string>
+    <string name="settings_m3_license" formatted="false">"लाइसेंस"</string>
+    <string name="settings_m3_license_subtitle" formatted="false">"Google Play से एक बार की खरीदारी"</string>
+    <string name="settings_m3_move_action" formatted="false">"वॉल्ट स्थानांतरित करें"</string>
+    <string name="settings_m3_move_cancel_meta" formatted="false">"वॉल्ट को उसके पुराने फ़ोल्डर में छोड़ देता है"</string>
+    <string name="settings_m3_move_confirm_guidance" formatted="false">"स्थानांतरण समाप्त होने तक Obsidian और अन्य ऐप्स को दोनों फ़ोल्डरों से बाहर रखें।"</string>
+    <string name="settings_m3_move_confirm_retained" formatted="false">"मूल एक रिकवरी कॉपी के रूप में बना रहता है।"</string>
+    <string name="settings_m3_move_confirm_title" formatted="false">"इस तिजोरी को स्थानांतरित करें?"</string>
+    <string name="settings_m3_move_copy_note" formatted="false">"यह किसी और स्टोरेज वॉल्यूम तक जाता है, इसलिए GitSync.md हर फ़ाइल की कॉपी करता है और जाँच करता है, फिर मूल को Move recoveries के तहत रखता है जब तक आप इसे नहीं हटाते।"</string>
+    <string name="settings_m3_move_finish_meta" formatted="false">"जहां रुका था वहीं से शुरू करता है"</string>
+    <string name="settings_m3_move_from" formatted="false">"से"</string>
+    <string name="settings_m3_move_interrupted" formatted="false">"एक चाल बाधित हुई। हमें मिली प्रत्येक प्रति तब तक रखी जाती है जब तक आप उसे पूरा नहीं कर लेते।"</string>
+    <string name="settings_m3_move_into" formatted="false">"में"</string>
+    <string name="settings_m3_move_intro" formatted="false">"संपूर्ण वॉल्ट को स्थानांतरित करता है: फ़ाइलें, Git इतिहास और चरणबद्ध परिवर्तन। इसका खाता और प्रतिबद्ध लेखक इसके साथ चलते हैं।"</string>
+    <string name="settings_m3_move_moving_button" formatted="false">"चल रहा है... GitSync.md को खुला रखें"</string>
+    <string name="settings_m3_move_progress" formatted="false">"वॉल्ट सेटिंग्स को स्थानांतरित करना और सहेजना…"</string>
+    <string name="settings_m3_move_title" formatted="false">"वॉल्ट स्थानांतरित करें"</string>
+    <string name="settings_m3_move_will_move_to" formatted="false">"की ओर बढ़ेंगे"</string>
+    <string name="settings_m3_never_force" formatted="false">"Force-push"</string>
+    <string name="settings_m3_never_overwrite" formatted="false">"संपादन ओवरराइट करें"</string>
+    <string name="settings_m3_never_rebase" formatted="false">"rebase या merge"</string>
+    <string name="settings_m3_never_resolve" formatted="false">"कॉन्फ़्लिक्ट सुलझाएँ"</string>
+    <string name="settings_m3_never_send" formatted="false">"अपनी फ़ाइलें हमें भेजें"</string>
+    <string name="settings_m3_never_switch" formatted="false">"ब्रांच बदलें"</string>
+    <string name="settings_m3_not_now" formatted="false">"अभी नहीं"</string>
+    <string name="settings_m3_obsidian" formatted="false">"Obsidian कनेक्शन"</string>
+    <string name="settings_m3_obsidian_add_vault" formatted="false">"वॉल्ट जोड़ें"</string>
+    <string name="settings_m3_obsidian_before" formatted="false">"शुरू करने से पहले"</string>
+    <string name="settings_m3_obsidian_command" formatted="false">"GitSync.md Connect: इस वॉल्ट को कनेक्ट करें"</string>
+    <string name="settings_m3_obsidian_connected" formatted="false">"कनेक्ट है"</string>
+    <string name="settings_m3_obsidian_empty" formatted="false">"पहले डिवाइस फ़ोल्डर में वॉल्ट जोड़ें या क्लोन करें। ऐप स्टोरेज में वॉल्ट Obsidian द्वारा नहीं खोले जा सकते।"</string>
+    <string name="settings_m3_obsidian_error" formatted="false">"Obsidian कनेक्ट नहीं हो सका। फ़ोल्डर पहुंच, GitHub HTTPS रिमोट और वॉल्ट का खाता जांचें, फिर एक नया कनेक्शन तैयार करें।"</string>
+    <string name="settings_m3_obsidian_failed" formatted="false">"कनेक्ट नहीं हुआ"</string>
+    <string name="settings_m3_obsidian_forget_action" formatted="false">"कनेक्शन भूलें"</string>
+    <string name="settings_m3_obsidian_forget_body">"GitSync.md %1$s के लिए Obsidian को क्रेडेंशियल सौंपना बंद कर देता है। क्रेडेंशियल्स Obsidian पहले से ही वहां आयातित रहते हैं; उन्हें अलग से निरस्त करें. आपकी फ़ाइलें यथावत रहती हैं."</string>
+    <string name="settings_m3_obsidian_forget_title" formatted="false">"इस कनेक्शन को भूल गए?"</string>
+    <string name="settings_m3_obsidian_intro" formatted="false">"Obsidian Git प्लगइन को इस वॉल्ट के GitHub खाते से पुश और पुल करने दें। सहयोगी प्लगइन के लिए क्रेडेंशियल एन्क्रिप्ट किए गए हैं और कभी भी कोई लिंक नहीं डाला गया है।"</string>
+    <string name="settings_m3_obsidian_prepare" formatted="false">"कनेक्शन तैयार करें"</string>
+    <string name="settings_m3_obsidian_prepared_lead" formatted="false">"कनेक्शन तैयार।"</string>
+    <string name="settings_m3_obsidian_prepared_open">"Obsidian में %1$s खोलें और चलाएं"</string>
+    <string name="settings_m3_obsidian_prepared_tail" formatted="false">". एक नया अनुरोध इसका स्थान ले लेता है।"</string>
+    <string name="settings_m3_obsidian_ready">"एन्क्रिप्टेड क्रेडेंशियल Obsidian के लिए तैयार हैं। Obsidian Git अब %1$s को सिंक कर सकता है।"</string>
+    <string name="settings_m3_obsidian_req1_body" formatted="false">"Obsidian और GitSync.md को एक डिवाइस फ़ोल्डर साझा करना होगा।"</string>
+    <string name="settings_m3_obsidian_req1_title" formatted="false">"Obsidian में वही फ़ोल्डर खोलें"</string>
+    <string name="settings_m3_obsidian_req2_body" formatted="false">"Git और GitSync.md Connect, Obsidian › सेटिंग्स में।"</string>
+    <string name="settings_m3_obsidian_req2_title" formatted="false">"दो सामुदायिक प्लगइन्स चालू करें"</string>
+    <string name="settings_m3_obsidian_req3_body" formatted="false">"वॉल्ट के कनेक्शन में चुने गए GitHub खाते के साथ।"</string>
+    <string name="settings_m3_obsidian_req3_title" formatted="false">"HTTPS GitHub रिमोट का उपयोग करें"</string>
+    <string name="settings_m3_obsidian_req4_body" formatted="false">"केवल क्रेडेंशियल तैयार करना, फ़ाइलें या इतिहास नहीं।"</string>
+    <string name="settings_m3_obsidian_req4_title" formatted="false">"तिजोरी में कुछ भी नहीं बदला"</string>
+    <string name="settings_m3_obsidian_return_failed" formatted="false">"Obsidian नहीं खुला। Obsidian में GitSync.md Connect चालू करें, फिर दोबारा लौटने का प्रयास करें।"</string>
+    <string name="settings_m3_obsidian_subtitle" formatted="false">"Obsidian Git + GitSync.md Connect"</string>
+    <string name="settings_m3_obsidian_this_vault" formatted="false">"यह वॉल्ट"</string>
+    <string name="settings_m3_obsidian_vaults" formatted="false">"इस फोन पर वॉल्ट"</string>
+    <string name="settings_m3_obsidian_waiting" formatted="false">"Obsidian की प्रतीक्षा की जा रही है"</string>
+    <string name="settings_m3_off" formatted="false">"बंद"</string>
+    <string name="settings_m3_on" formatted="false">"चालू"</string>
+    <string name="settings_m3_perk_nudge_body" formatted="false">"एक GitHub पुश सेकंडों में ऐप को धकेल देता है।"</string>
+    <string name="settings_m3_perk_nudge_title" formatted="false">"पुश सिंक के साथ तात्कालिक पुल"</string>
+    <string name="settings_m3_perk_pull_body" formatted="false">"केवल fast-forward। कुछ भी असामान्य आपकी प्रतीक्षा करता है।"</string>
+    <string name="settings_m3_perk_pull_title" formatted="false">"बैकग्राउंड में pull करें"</string>
+    <string name="settings_m3_perk_push_body" formatted="false">"डिफ़ॉल्ट रूप से बंद। आप चुनते हैं कि कौन-से वॉल्ट प्रकाशित हों।"</string>
+    <string name="settings_m3_perk_push_title" formatted="false">"संपादन commit और push करें"</string>
+    <string name="settings_m3_privacy" formatted="false">"गोपनीयता"</string>
+    <string name="settings_m3_privacy_policy" formatted="false">"गोपनीयता नीति"</string>
+    <string name="settings_m3_push_active" formatted="false">"सक्रिय"</string>
+    <string name="settings_m3_push_all_repos" formatted="false">"सभी रिपॉजिटरीज, नई भी शामिल हैं"</string>
+    <string name="settings_m3_push_channel_sub" formatted="false">"रिपॉजिटरी अपडेट्स नोटिफिकेशन चैनल का उपयोग करता है"</string>
+    <string name="settings_m3_push_checked">"जाँचा गया %1$d · अपडेट किया गया %2$d · समीक्षा की आवश्यकता %3$d"</string>
+    <string name="settings_m3_push_connect_again" formatted="false">"फिर से GitHub से कनेक्ट करें"</string>
+    <string name="settings_m3_push_connect_sub" formatted="false">"GitSync.md ऐप इंस्टॉल करें और रिपॉजिटरीज चुनें"</string>
+    <string name="settings_m3_push_connected" formatted="false">"कनेक्ट है"</string>
+    <string name="settings_m3_push_connection" formatted="false">"GitHub कनेक्शन"</string>
+    <string name="settings_m3_push_err_cancelled" formatted="false">"GitHub कनेक्शन रद्द कर दिया गया। कुछ भी बदला नहीं। जब आप तैयार हों तो फिर से कनेक्ट करें।"</string>
+    <string name="settings_m3_push_err_cancelled_title" formatted="false">"GitHub से वापस"</string>
+    <string name="settings_m3_push_err_not_selected" formatted="false">"इस फोन पर कोई भी वॉल्ट इस GitHub रिपो और ब्रांच से मेल नहीं खाता। GitHub पर ऐप की पहुँच में रिपो जोड़ें, या वॉल्ट के कनेक्शन और ब्रांच की जाँच करें।"</string>
+    <string name="settings_m3_push_err_not_selected_title" formatted="false">"यह रिपो ऐप के साथ साझा नहीं है"</string>
+    <string name="settings_m3_push_err_owner_title" formatted="false">"मालिक का साइन-इन आवश्यक है"</string>
+    <string name="settings_m3_push_example_cd" formatted="false">"उदाहरण सूचना"</string>
+    <string name="settings_m3_push_example_meta" formatted="false">"GitSync.md · रिपॉज़िटरी अपडेट्स · अभी"</string>
+    <string name="settings_m3_push_example_note" formatted="false">"लॉक स्क्रीन पर निजी। अगर वॉल्ट साफ था, तो इसे आप देख रहे हैं उससे पहले ही खींच लिया गया है।"</string>
+    <string name="settings_m3_push_example_repo" formatted="false">"owner/vault"</string>
+    <string name="settings_m3_push_example_title" formatted="false">"एक नज दिखने में इस तरह लगता है"</string>
+    <string name="settings_m3_push_existing_scope" formatted="false">"खाते के मालिक के रूप में साइन इन करें, या संगठन के किसी मालिक के रूप में। ऐप अपनी वर्तमान रिपॉज़िटरी पहुँच बनाए रखता है।"</string>
+    <string name="settings_m3_push_github_app" formatted="false">"GitHub App"</string>
+    <string name="settings_m3_push_handoff_body" formatted="false">"एक ब्राउज़र टैब खुला। खाता चुनें और ऐप किन रिपॉज़ को देख सकता है, तय करें, फिर वापस आएं। जब आप लौटेंगे तो यह स्क्रीन फिर से जांचती है।"</string>
+    <string name="settings_m3_push_handoff_title" formatted="false">"GitHub पर समाप्त करें"</string>
+    <string name="settings_m3_push_intro" formatted="false">"GitSync.md GitHub App को कनेक्ट करें और GitHub पर एक पुश इस फोन को कुछ ही सेकंड में नोटिस करता है। साफ़ वॉल्ट स्वतः फेच और फास्ट-फॉरवर्ड कर लेते हैं। फिर से जांचने के लिए नोटिफिकेशन टैप करें।"</string>
+    <string name="settings_m3_push_never" formatted="false">"पुश सिंक कभी नहीं"</string>
+    <string name="settings_m3_push_never_commit" formatted="false">"प्रतिबद्ध"</string>
+    <string name="settings_m3_push_never_hint" formatted="false">"स्थानीय परिवर्तन और विभाजित इतिहास वॉल्ट में आपके इंतजार में हैं।"</string>
+    <string name="settings_m3_push_never_merge" formatted="false">"विभाजित इतिहास मिलाता है"</string>
+    <string name="settings_m3_push_never_switch" formatted="false">"शाखाओं को बदलता है"</string>
+    <string name="settings_m3_push_never_upload" formatted="false">"परिवर्तन अपलोड करता है"</string>
+    <string name="settings_m3_push_no_connections" formatted="false">"चुनने के लिए कि कौन से रिपॉज़ अपडेट भेज सकते हैं, किसी GitHub खाता या संगठन को कनेक्ट करें।"</string>
+    <string name="settings_m3_push_open_vault" formatted="false">"वॉल्ट खोलें"</string>
+    <string name="settings_m3_push_permission" formatted="false">"Android सेटिंग्स में GitSync.md के लिए सूचनाओं की अनुमति दें, फिर पुश सिंक चालू करें।"</string>
+    <string name="settings_m3_push_registered" formatted="false">"यह फ़ोन सूचनाओं के लिए पंजीकृत है"</string>
+    <string name="settings_m3_push_remove" formatted="false">"हटाएँ"</string>
+    <string name="settings_m3_push_remove_body">"पुश सिंक @%1$s से इस फ़ोन तक अपडेट भेजना बंद कर देता है। GitHub App इंस्टॉल रह जाता है। इसका एक्सेस बदलने या अनइंस्टॉल करने के लिए GitHub पर Manage का उपयोग करें।"</string>
+    <string name="settings_m3_push_remove_title" formatted="false">"क्या इस कनेक्शन को हटाएं?"</string>
+    <string name="settings_m3_push_result_updated" formatted="false">"GitHub से अपडेट किया गया"</string>
+    <string name="settings_m3_push_stop" formatted="false">"कार्रवाई रोकें"</string>
+    <string name="settings_m3_push_suspended" formatted="false">"निलंबित"</string>
+    <string name="settings_m3_push_sync" formatted="false">"GitHub से पुश सिंक"</string>
+    <string name="settings_m3_push_this_phone" formatted="false">"यह फ़ोन"</string>
+    <string name="settings_m3_push_title" formatted="false">"Push Sync"</string>
+    <string name="settings_m3_push_waiting" formatted="false">"GitHub का इंतजार है"</string>
+    <string name="settings_m3_save_clones_in" formatted="false">"नए क्लोन यहाँ सहेजें"</string>
+    <string name="settings_m3_sc_action" formatted="false">"क्रिया"</string>
+    <string name="settings_m3_sc_authorized" formatted="false">"अधिकृत"</string>
+    <string name="settings_m3_sc_background_sub" formatted="false">"परिणाम यहाँ और एक सूचना में आते हैं"</string>
+    <string name="settings_m3_sc_branch">"ब्रांच %1$s"</string>
+    <string name="settings_m3_sc_branch_reviewed">"ब्रांच %1$s · समीक्षा की गई %2$s"</string>
+    <string name="settings_m3_sc_clear" formatted="false">"– स्पष्ट"</string>
+    <string name="settings_m3_sc_clear_results" formatted="false">"सहेजे गए परिणाम साफ़ करें"</string>
+    <string name="settings_m3_sc_ff_only" formatted="false">"केवल फ़ेच और फ़ास्ट-फ़ॉरवर्ड"</string>
+    <string name="settings_m3_sc_item_title">"%1$s: %2$s"</string>
+    <string name="settings_m3_sc_launcher" formatted="false">"होम स्क्रीन शॉर्टकट"</string>
+    <string name="settings_m3_sc_link_identity">"लिंक %1$s · बनाया गया %2$s"</string>
+    <string name="settings_m3_sc_link_private" formatted="false">"इस लिंक वाला कोई भी इसे चला सकता है। इसे निजी रखें।"</string>
+    <string name="settings_m3_sc_links" formatted="false">"अधिकृत लिंक"</string>
+    <string name="settings_m3_sc_new_title" formatted="false">"एक वॉल्ट के लिए नया शॉर्टकट"</string>
+    <string name="settings_m3_sc_no_links" formatted="false">"कोई अधिकृत लिंक नहीं। Obsidian या Shortcuts जैसी ऐप्स इसके लिए पूछ सकती हैं।"</string>
+    <string name="settings_m3_sc_no_shortcuts" formatted="false">"अभी कोई लॉन्चर शॉर्टकट नहीं। ऊपर एक वॉल्ट और एक क्रिया चुनें।"</string>
+    <string name="settings_m3_sc_open_pull_all" formatted="false">"Pull All खोलें"</string>
+    <string name="settings_m3_sc_open_pull_all_sub" formatted="false">"हर वॉल्ट को अब खींचें और प्रत्येक परिणाम देखें"</string>
+    <string name="settings_m3_sc_pin_consent">"प्रत्येक टैप इसे एक बार चलाता है, बिना फिर से पूछे। यह %1$s, शाखा %2$s और इस खाते से जुड़ा रहता है। यदि इनमें से कोई भी बदलता है, तो शॉर्टकट बंद हो जाता है और आप नया बनाते हैं। इसे किसी भी समय यहाँ रद्द करें।"</string>
+    <string name="settings_m3_sc_pin_writes">"“%1$s” के साथ कमिट करता है और प्रत्येक टैप पर हर परिवर्तन अपलोड करता है।"</string>
+    <string name="settings_m3_sc_pinned" formatted="false">"पिन किया गया"</string>
+    <string name="settings_m3_sc_pull" formatted="false">"Pull"</string>
+    <string name="settings_m3_sc_pull_all" formatted="false">": सभी निकालें"</string>
+    <string name="settings_m3_sc_pull_all_note" formatted="false">"प्रत्येक टैप हर वॉल्ट को एक बार खींचता है। कुछ भी कमिट या पुश नहीं होता। परिणाम Pull All में प्रतीक्षा करते हैं।"</string>
+    <string name="settings_m3_sc_pull_all_repos" formatted="false">": सभी रिपॉजिटरियों को पुल करें"</string>
+    <string name="settings_m3_sc_pull_all_title" formatted="false">"ऐप खोले बिना Pull All"</string>
+    <string name="settings_m3_sc_pull_sub" formatted="false">"केवल फ़ेच और फ़ास्ट-फ़ॉरवर्ड"</string>
+    <string name="settings_m3_sc_push" formatted="false">"Commit और push"</string>
+    <string name="settings_m3_sc_push_sub" formatted="false">"हर परिवर्तन को कमिट करता है, फिर अपलोड करता है"</string>
+    <string name="settings_m3_sc_refresh" formatted="false">"रीफ़्रेश करें"</string>
+    <string name="settings_m3_sc_requested" formatted="false">"शॉर्टकट का अनुरोध किया गया। इसे अपने लांचर में अनुमोदित करें, फिर इसे जांचने के लिए नीचे Refresh पर टैप करें।"</string>
+    <string name="settings_m3_sc_returns_to">"%1$s पर लौटता है"</string>
+    <string name="settings_m3_sc_review_again" formatted="false">"फिर से समीक्षा करें"</string>
+    <string name="settings_m3_sc_revoke" formatted="false">"मंज़ूरी हटाएँ"</string>
+    <string name="settings_m3_sc_revoke_body" formatted="false">"यह Git क्रियाओं को चलाना बंद कर देता है। इसका आइकन आपके होम स्क्रीन पर बना रह सकता है, धूसर रंग में, जब तक आप इसे हटा नहीं देते। एक नए शॉर्टकट को फिर से अनुमोदन की आवश्यकता है।"</string>
+    <string name="settings_m3_sc_revoke_link" formatted="false">"लिंक की अनुमति रद्द करें"</string>
+    <string name="settings_m3_sc_revoke_title" formatted="false">"क्या आप इस शॉर्टकट को रद्द करना चाहते हैं?"</string>
+    <string name="settings_m3_sc_revoked" formatted="false">"अनुमति रद्द"</string>
+    <string name="settings_m3_sc_run_once" formatted="false">"अभी एक बार चलाएँ"</string>
+    <string name="settings_m3_sc_runs_closed" formatted="false">"GitSync.md खोले बिना चलता है"</string>
+    <string name="settings_m3_sc_runs_open" formatted="false">"GitSync.md खोलता है, फिर एक बार चलता है"</string>
+    <string name="settings_m3_sc_status" formatted="false">"स्थिति पढ़ें"</string>
+    <string name="settings_m3_sc_status_sub" formatted="false">"कोई नेटवर्क नहीं। क्या बदल गया है यह दिखाता है।"</string>
+    <string name="settings_m3_sc_sync" formatted="false">"सिंक"</string>
+    <string name="settings_m3_sc_sync_sub" formatted="false">"पहले पुल करें, फिर कमिट और पुश करें"</string>
+    <string name="settings_m3_sc_tile_how" formatted="false">"क्विक सेटिंग्स को नीचे खींचें › संपादित करें › \'पुल ऑल\' में खींचें।"</string>
+    <string name="settings_m3_sc_tile_lead" formatted="false">"टाइल:"</string>
+    <string name="settings_m3_sc_title" formatted="false">"विजेट और शॉर्टकट"</string>
+    <string name="settings_m3_sc_upstream">"अपस्ट्रीम %1$s / %2$s"</string>
+    <string name="settings_m3_sc_waiting" formatted="false">"लॉन्चर का इंतजार है"</string>
+    <string name="settings_m3_sc_widget_how" formatted="false">"अपने होम स्क्रीन को लंबे समय तक दबाएँ › विजेट्स › GitSync.md."</string>
+    <string name="settings_m3_sc_widget_lead" formatted="false">"विजेट:"</string>
+    <string name="settings_m3_sc_writes" formatted="false">"हर परिवर्तन को स्टेज करता है, जरूरत पड़ने पर कमिट करता है, फिर अपलोड करता है। कॉन्फ़्लिक्ट, विभाजित इतिहास या एक रिमोट जो पहले हिल गया हो, इसे रोकते हैं, और एक असफल अपलोड नए कमिट को बनाए रखता है।"</string>
+    <string name="settings_m3_shortcuts" formatted="false">"विजेट और लॉन्चर शॉर्टकट"</string>
+    <string name="settings_m3_sign_out" formatted="false">"साइन आउट करें"</string>
+    <string name="settings_m3_ssh_hosts" formatted="false">"SSH सर्वर"</string>
+    <string name="settings_m3_storage_hint" formatted="false">"फ़ोन स्टोरेज और एसडी कार्ड काम करते हैं। Google Drive जैसी क्लाउड फ़ोल्डर Git रिपॉजिटरी को नहीं रख सकतीं।"</string>
+    <string name="settings_m3_storage_intro" formatted="false">"वो फ़ोल्डर चुनें जहाँ नए क्लोन जाएँ। आपके पास जो वॉल्ट पहले से हैं, वे वहीं रहते हैं जहाँ वे हैं।"</string>
+    <string name="settings_m3_storage_move_title" formatted="false">"पहले से मौजूद वॉल्ट को स्थानांतरित करें"</string>
+    <string name="settings_m3_system_default" formatted="false">"सिस्टम डिफ़ॉल्ट"</string>
+    <string name="settings_m3_terms" formatted="false">"शर्तें"</string>
+    <string name="settings_m3_theme" formatted="false">"थीम"</string>
+    <string name="settings_m3_theme_dark" formatted="false">"गहरा"</string>
+    <string name="settings_m3_theme_light" formatted="false">"हल्का"</string>
+    <string name="settings_m3_title" formatted="false">"सेटिंग्स"</string>
+    <string name="settings_m3_unlocked" formatted="false">"अनलॉक है"</string>
+    <string name="settings_m3_upgrade_body" formatted="false">"सुबह Obsidian खोलें और सब कुछ पहले से वहाँ है।"</string>
+    <string name="settings_m3_upgrade_illustration" formatted="false">"GitHub के साथ लॉक फ़ोन को रात भर पुलिंग और पुशिंग"</string>
+    <string name="settings_m3_upgrade_last_run">"%1$s · खींचा गया %2$d · धक्का दिया गया %3$d"</string>
+    <string name="settings_m3_upgrade_locked_phone" formatted="false">"फ़ोन लॉक किया गया"</string>
+    <string name="settings_m3_upgrade_note" formatted="false">"GitSync.md के साथ शामिल है। Android यह तय करता है कि बैकग्राउंड कार्य कब चलता है; यह सर्वश्रेष्ठ प्रयास है। बैटरी सेवर इसे देरी कर सकता है।"</string>
+    <string name="settings_m3_upgrade_pull" formatted="false">"बैकग्राउंड में pull करें"</string>
+    <string name="settings_m3_upgrade_push" formatted="false">"मेरे संपादनों को भी commit और push करें"</string>
+    <string name="settings_m3_upgrade_title" formatted="false">"आपके सोते समय\nसिंक।"</string>
+    <string name="settings_m3_upgrade_turn_on" formatted="false">"Background Sync चालू करें"</string>
+    <string name="settings_m3_vault_check_ok" formatted="false">"ठीक है"</string>
+    <string name="settings_m3_vault_delete_action" formatted="false">"– हटाएँ"</string>
+    <string name="settings_m3_vault_delete_body" formatted="false">"इस फ़ोल्डर, इसके फ़ाइलें और इसके Git इतिहास को इस फ़ोन से हटा देता है। GitHub पर नहीं भेजी गई कोई भी चीज़ खो जाएगी।"</string>
+    <string name="settings_m3_vault_delete_title" formatted="false">"वॉल्ट हटाएं और फ़ाइलें मिटाएं?"</string>
+    <string name="settings_m3_vault_display_name" formatted="false">"प्रदर्शित नाम"</string>
+    <string name="settings_m3_vault_display_name_hint" formatted="false">"वॉल्ट का अपना नाम इस्तेमाल करने के लिए खाली छोड़ दें।"</string>
+    <string name="settings_m3_vault_errors" formatted="false">"त्रुटियाँ · 7 दिन"</string>
+    <string name="settings_m3_vault_files" formatted="false">"फ़ाइलें"</string>
+    <string name="settings_m3_vault_folder" formatted="false">"फ़ोल्डर"</string>
+    <string name="settings_m3_vault_group" formatted="false">"यह वॉल्ट"</string>
+    <string name="settings_m3_vault_health" formatted="false">"स्वास्थ्य"</string>
+    <string name="settings_m3_vault_health_attention" formatted="false">"जाँच की ज़रूरत है"</string>
+    <string name="settings_m3_vault_health_good" formatted="false">"अच्छा"</string>
+    <string name="settings_m3_vault_include" formatted="false">"Background Sync में शामिल करें"</string>
+    <string name="settings_m3_vault_include_review" formatted="false">"पहले ब्रांच और रिमोट की समीक्षा करता है"</string>
+    <string name="settings_m3_vault_include_sub">"केवल ब्रांच %1$s, ट्रैकिंग %2$s/%3$s"</string>
+    <string name="settings_m3_vault_include_title" formatted="false">"Background Sync में शामिल करें?"</string>
+    <string name="settings_m3_vault_last_check">"अंतिम पृष्ठभूमि जांच %1$s · %2$s"</string>
+    <string name="settings_m3_vault_lfs" formatted="false">"LFS"</string>
+    <string name="settings_m3_vault_no_check" formatted="false">"अभी तक कोई पृष्ठभूमि जांच नहीं हुई"</string>
+    <string name="settings_m3_vault_pin" formatted="false">"होम में सबसे ऊपर पिन करें"</string>
+    <string name="settings_m3_vault_remove" formatted="false">"वॉल्ट हटाएँ…"</string>
+    <string name="settings_m3_vault_remove_action" formatted="false">"हटाएँ"</string>
+    <string name="settings_m3_vault_remove_delete" formatted="false">"वॉल्ट हटाएँ और फ़ाइलें हटाएँ…"</string>
+    <string name="settings_m3_vault_remove_kept" formatted="false">"GitSync.md इसे दिखाना बंद कर देता है। फ़ोल्डर GitSync.md द्वारा प्रबंधित नहीं किया जाता, इसलिए उसकी फ़ाइलें और Git इतिहास वहीं रहते हैं जहां वे हैं।"</string>
+    <string name="settings_m3_vault_remove_title" formatted="false">"क्या इस वॉल्ट को हटाएँ?"</string>
+    <string name="settings_m3_vault_shortcut" formatted="false">"होम स्क्रीन पर शॉर्टकट जोड़ें"</string>
+    <string name="settings_m3_vault_shortcut_sub" formatted="false">"एक टैप में पुल या कमिट और पुश करें"</string>
+    <string name="settings_m3_vault_stop_tracking" formatted="false">"ट्रैकिंग बंद करें — फ़ाइलें रखें"</string>
+    <string name="settings_m3_vault_title" formatted="false">"वॉल्ट सेटिंग्स"</string>
+    <string name="settings_m3_whats_new" formatted="false">"नया क्या है"</string>
+    <string name="settings_m3_whats_new_hint" formatted="false">"यह अपडेट के बाद एक बार भी दिखाई देता है। आप इसे हमेशा यहाँ पा सकते हैं।"</string>
+    <string name="settings_m3_whats_new_subtitle">"%1$s के लिए रिलीज़ नोट्स"</string>
     <string name="shortcut_background_attention" formatted="false">"शॉर्टकट पर ध्यान देना ज़रूरी है। फिर कोशिश करने से पहले रिपॉज़िटरी कार्रवाइयाँ खोलकर उसकी स्थिति की समीक्षा करें।"</string>
     <string name="shortcut_background_channel" formatted="false">"शॉर्टकट कार्रवाइयाँ"</string>
     <string name="shortcut_background_complete" formatted="false">"शॉर्टकट कार्रवाई पूरी हुई। नतीजे की समीक्षा के लिए रिपॉज़िटरी कार्रवाइयाँ खोलें।"</string>
@@ -688,9 +1982,37 @@
     <string name="shortcut_background_interrupted" formatted="false">"निष्पादन बीच में रुक गया। यह अपने आप फिर नहीं चलेगा। दोबारा टैप करने से पहले रिपॉज़िटरी की समीक्षा करें।"</string>
     <string name="shortcut_background_option" formatted="false">"GitSync.md खोले बिना चलाएँ"</string>
     <string name="shortcut_background_running" formatted="false">"शॉर्टकट कार्रवाई चल रही है"</string>
+    <string name="shortcut_m3_add_vault" formatted="false">"वॉल्ट जोड़ें"</string>
+    <string name="shortcut_m3_commit_push">"%1$s: कमिट और पुश"</string>
+    <string name="shortcut_m3_commit_short" formatted="false">"Commit और push"</string>
+    <string name="shortcut_m3_pull">"%1$s: पुल"</string>
+    <string name="shortcut_m3_pull_short" formatted="false">"Pull"</string>
     <string name="shortcut_results_clear_scope" formatted="false">"शॉर्टकट और कॉलबैक निष्पादन के सहेजे गए नतीजे हटाएँ। उनकी अनुमतियाँ नहीं बदलेंगी। बीच में रुकी कार्रवाइयाँ अपने आप फिर नहीं चलेंगी।"</string>
     <string name="shortcut_results_unavailable" formatted="false">"सहेजे गए शॉर्टकट नतीजे पढ़े नहीं जा सकते। अनुमति अलग से रखी जाती है।"</string>
     <string name="ssh_hide_private_key" formatted="false">"निजी कुंजी छिपाएँ"</string>
+    <string name="ssh_m3_changed_title" formatted="false">"SSH सर्वर की कुंजी बदल गई"</string>
+    <string name="ssh_m3_changed_warning" formatted="false">"एक बदली हुई कुंजी का मतलब हो सकता है कि कोई सर्वर की नक़ल कर रहा है। भरोसा बदलने से पहले नई फिंगरप्रिंट को उसके मालिक के साथ जाँचें।"</string>
+    <string name="ssh_m3_compare" formatted="false">"जब आप उस पर भरोसा करें, इससे पहले इसे SSH होस्ट कुंजी के साथ तुलना करें जो सर्वर मालिक प्रकाशित करता है।"</string>
+    <string name="ssh_m3_empty" formatted="false">"कोई भरोसेमंद SSH सर्वर नहीं"</string>
+    <string name="ssh_m3_error_save" formatted="false">"SSH सर्वर ट्रस्ट को सहेजा नहीं जा सका। पुनः प्रयास करने से पहले फिंगरप्रिंट को फिर से सत्यापित करें।"</string>
+    <string name="ssh_m3_forget" formatted="false">"भूलें"</string>
+    <string name="ssh_m3_forget_body">"%1$s को फिर से कनेक्ट करने से पहले फिंगरप्रिंट सत्यापन की आवश्यकता होगी।"</string>
+    <string name="ssh_m3_forget_cd">"%1$s को भूल जाएँ"</string>
+    <string name="ssh_m3_forget_server" formatted="false">"सर्वर भूलें"</string>
+    <string name="ssh_m3_forget_title" formatted="false">"SSH सर्वर भूलें?"</string>
+    <string name="ssh_m3_intro" formatted="false">"आप जिन फिंगरप्रिंट्स पर भरोसा करते थे, वे इस फोन में सहेजे गए हैं। किसी एक को भूल जाएँ और अगली बार कनेक्ट करने पर आप इसे फिर से सत्यापित करेंगे। आपकी SSH कुंजियाँ सहेजी रहती हैं।"</string>
+    <string name="ssh_m3_none" formatted="false">"सेटिंग्स · कोई भरोसेमंद नहीं"</string>
+    <string name="ssh_m3_previous">"पहले भरोसा किया गया फ़िंगरप्रिंट: %1$s"</string>
+    <string name="ssh_m3_replace" formatted="false">"भरोसा बदलें और कनेक्ट करें"</string>
+    <string name="ssh_m3_reset_all" formatted="false">"सभी SSH सर्वर भरोसे रीसेट करें"</string>
+    <string name="ssh_m3_reset_body" formatted="false">"हर SSH सर्वर को फिर से कनेक्ट करने से पहले फिंगरप्रिंट सत्यापन की आवश्यकता होगी। यह क्षतिग्रस्त ट्रस्ट प्रविष्टियों को भी साफ करता है।"</string>
+    <string name="ssh_m3_reset_confirm" formatted="false">"भरोसा रीसेट करें"</string>
+    <string name="ssh_m3_reset_title" formatted="false">"सभी SSH सर्वर भरोसे रीसेट करें?"</string>
+    <string name="ssh_m3_saved" formatted="false">"विश्वास इस फोन पर सहेजा जाता है और प्रतीक्षारत कनेक्शन जारी रहता है। रद्द करने पर सर्वर असुरक्षित रह जाता है।"</string>
+    <string name="ssh_m3_title" formatted="false">"SSH सर्वर पर भरोसा"</string>
+    <string name="ssh_m3_trust" formatted="false">"भरोसा करें और कनेक्ट करें"</string>
+    <string name="ssh_m3_trusted" formatted="false">"भरोसेमंद सर्वर"</string>
+    <string name="ssh_m3_verify_title" formatted="false">"SSH सर्वर सत्यापित करें"</string>
     <string name="ssh_show_private_key" formatted="false">"निजी कुंजी दिखाएँ"</string>
     <string name="ssh_trust_error_changed" formatted="false">"समीक्षा के दौरान SSH भरोसा बदल गया। सर्वर की मौजूदा प्रविष्टि की समीक्षा करें और फिर कनेक्ट करें।"</string>
     <string name="ssh_trust_error_damaged" formatted="false">"सहेजे गए SSH भरोसे की समीक्षा ज़रूरी है। दोबारा कोशिश करने से पहले सेटिंग में SSH सर्वर भरोसा रीसेट करें।"</string>
@@ -755,7 +2077,7 @@
     <string name="tide_vault_eyebrow_unreadable" formatted="false">"पढ़ा नहीं जा सका"</string>
     <string name="tide_vault_files_section" formatted="false">"फ़ाइलें"</string>
     <string name="tide_vault_from_remote">"↓%1$d रिमोट से"</string>
-    <string name="tide_vault_git" formatted="false">"GIT"</string>
+    <string name="tide_vault_git" formatted="false">"Git"</string>
     <string name="tide_vault_headline_behind">"रिमोट पर नए: %1$d"</string>
     <string name="tide_vault_headline_unreadable" formatted="false">"यह वॉल्ट पढ़ा नहीं जा सका।"</string>
     <string name="tide_vault_more" formatted="false">"वॉल्ट के और विकल्प"</string>
@@ -768,6 +2090,13 @@
     <string name="tide_vault_sub_empty" formatted="false">"नोट जोड़ें, फिर यहीं से उसका कमिट बनाएँ।"</string>
     <string name="tide_vault_sub_in_sync" formatted="false">"इस फ़ोन पर कुछ लंबित नहीं"</string>
     <string name="tide_vault_yours">"↑%1$d स्थानीय"</string>
+    <string name="tile_m3_background_sync" formatted="false">"Background Sync"</string>
+    <string name="tile_m3_modes">"%1$s · %2$s"</string>
+    <string name="tile_m3_pull_all" formatted="false">": सभी निकालें"</string>
+    <string name="tile_m3_pull_off" formatted="false">"खींचें बंद"</string>
+    <string name="tile_m3_pull_on" formatted="false">"खींचें चालू"</string>
+    <string name="tile_m3_push_off" formatted="false">"धक्का बंद"</string>
+    <string name="tile_m3_push_on" formatted="false">"धक्का चालू"</string>
     <string name="tracking_metadata_size">"Git मेटाडेटा: %1$s"</string>
     <string name="tracking_remove_permanent_title" formatted="false">"Git इतिहास स्थायी रूप से हटाएँ?"</string>
     <string name="tracking_removed_backup">"Git ट्रैकिंग हटाई गई। सत्यापित बैकअप: %1$s"</string>
@@ -778,14 +2107,23 @@
     <string name="ui_1_s_characters_bde60398">"अक्षर: %1$s"</string>
     <string name="ui_1_s_lines_2_s_bytes_c30a0cd1">"पंक्तियाँ: %1$s, बाइट: %2$s"</string>
     <string name="ui_1_s_local_commits_2_s_upstream_commits_77dc6fa8">"%1$s स्थानीय कमिट · %2$s अपस्ट्रीम कमिट"</string>
+    <string name="ui_1_vault_c39776f1" formatted="false">"1 वॉल्ट"</string>
+    <string name="ui_2_of_3_commits_sent_5591e38a" formatted="false">"3 में से 2 कमिट भेजे गए"</string>
+    <string name="ui_3_changes_aren_t_committed_yet_commit_or_s_d878e782" formatted="false">"3 बदलाव अभी तक कमिट नहीं हुए हैं। शाखा बदलने से पहले उन्हें कमिट करें या स्टैश करें।"</string>
+    <string name="ui_3_held_f454ab2b" formatted="false">"↑3 रोके गए"</string>
+    <string name="ui_3_to_push_ac87b7cb" formatted="false">"↑3 भेजने के लिए"</string>
+    <string name="ui_4_in_sync_checked_2_min_ago_a1f1ab5e" formatted="false">"4 सिंक में · 2 मिनट पहले जांचा गया"</string>
     <string name="ui_abort_rebase_fd5cfc32" formatted="false">"रीबेस रद्द करें…"</string>
     <string name="ui_about_4efca0d1" formatted="false">"जानकारी"</string>
+    <string name="ui_about_lfs_538b5b7e" formatted="false">"LFS के बारे में"</string>
+    <string name="ui_all_5_8907f196" formatted="false">"सभी 5"</string>
     <string name="ui_all_conflicts_are_staged_continue_replayin_b86b2a5a" formatted="false">"सभी विरोधों के समाधान स्टेज हो चुके हैं। कमिट दोबारा लागू करना जारी रखें। यदि Git NOTHING_TO_COMMIT बताए, तो जाँचें कि खाली कमिट को छोड़ना चाहिए या नहीं।"</string>
     <string name="ui_all_local_changes_to_this_file_will_be_per_0919f539" formatted="false">": इस फ़ाइल में किए गए सभी स्थानीय परिवर्तन स्थायी रूप से खारिज कर दिए जाएंगे।"</string>
     <string name="ui_allow_local_folder_access_0b2888fb" formatted="false">"स्थानीय फ़ोल्डर ऐक्सेस की अनुमति दें"</string>
     <string name="ui_app_0d04bfeb" formatted="false">"ऐप"</string>
     <string name="ui_app_settings_da645334" formatted="false">"ऐप सेटिंग्स"</string>
     <string name="ui_apply_tracking_choice_47a2e187" formatted="false">"ट्रैकिंग विकल्प लागू करें"</string>
+    <string name="ui_attention_1_fa1ea5dc" formatted="false">"ध्यान 1"</string>
     <string name="ui_authentication_66880d2d" formatted="false">"प्रमाणीकरण"</string>
     <string name="ui_back_639807a2" formatted="false">"वापस"</string>
     <string name="ui_back_aceb696a" formatted="false">"← वापस"</string>
@@ -793,11 +2131,13 @@
     <string name="ui_backup_1_s_6ad01ca6">"बैकअप: %1$s"</string>
     <string name="ui_base_7b47361a" formatted="false">"आधार"</string>
     <string name="ui_binary_large_or_lfs_file_choose_an_entire_52c3278a" formatted="false">"बाइनरी, बड़ी या LFS फ़ाइल: एक पूरा पक्ष चुनें।"</string>
+    <string name="ui_both_sides_edited_step_3_077f9640" formatted="false">"दोनों तरफ़ संपादित किया “चरण 3”।"</string>
     <string name="ui_branch_52656e81" formatted="false">"ब्रांच"</string>
     <string name="ui_branch_optional_e9dedf99" formatted="false">"ब्रांच (वैकल्पिक)"</string>
     <string name="ui_browsing_with_this_account_28a8b330" formatted="false">"इस खाते से ब्राउज़ कर रहे हैं"</string>
     <string name="ui_cancel_pending_move_0858583b" formatted="false">"लंबित स्थानांतरण रद्द करें"</string>
     <string name="ui_changes_bbd4b6a8" formatted="false">"बदलाव"</string>
+    <string name="ui_changes_on_this_phone_6359d3d5" formatted="false">"इस फ़ोन पर बदलाव"</string>
     <string name="ui_choose_a_connected_account_for_this_reposi_c4817ea9" formatted="false">"इस रिपॉज़िटरी के लिए जुड़ा हुआ खाता चुनें।"</string>
     <string name="ui_choose_a_device_folder_d00b7daf" formatted="false">"डिवाइस का फ़ोल्डर चुनें"</string>
     <string name="ui_choose_an_authentication_method_before_clo_c89124ba" formatted="false">"क्लोन करने से पहले प्रमाणीकरण का तरीका चुनें।"</string>
@@ -810,14 +2150,18 @@
     <string name="ui_clone_again_e05eb495" formatted="false">"फिर से क्लोन करें"</string>
     <string name="ui_clone_again_review_the_previous_branch_and_33cba147" formatted="false">"फिर क्लोन करें · शुरू करने से पहले पिछली ब्रांच और कनेक्शन की समीक्षा करें।"</string>
     <string name="ui_clone_storage_47cafc8a" formatted="false">"क्लोन का स्टोरेज"</string>
+    <string name="ui_cloning_and_preparing_the_working_copy_6fe864ff" formatted="false">"कार्य प्रतिलिपि का क्लोनिंग और तैयारी"</string>
+    <string name="ui_commit_3_files_959a8528" formatted="false">"3 फाइलें कमिट करें"</string>
     <string name="ui_commit_author_e9376b3a" formatted="false">"कमिट लेखक"</string>
     <string name="ui_commit_message_a4b361b7" formatted="false">"Commit संदेश…"</string>
     <string name="ui_commit_sha_d0bc6028" formatted="false">"Commit SHA"</string>
     <string name="ui_confirm_eebdd24a" formatted="false">"पुष्टि करें"</string>
+    <string name="ui_conflict_1_of_2_ideas_23283a20" formatted="false">"2 में से 1 संघर्ष · विचार/"</string>
     <string name="ui_continue_rebase_7a14e965" formatted="false">": रीबेसिंग जारी रखें"</string>
     <string name="ui_create_a_file_or_folder_using_new_655c5596" formatted="false">"नया विकल्प से फ़ाइल या फ़ोल्डर बनाएँ।"</string>
     <string name="ui_current_default_d914f86e" formatted="false">"वर्तमान डिफ़ॉल्ट"</string>
     <string name="ui_current_separate_push_address_1_s_2a6ef8f9">"मौजूदा अलग पुश पता: %1$s"</string>
+    <string name="ui_daily_new_file_42_31057cdf" formatted="false">"दैनिक · नई फ़ाइल · +42"</string>
     <string name="ui_debug_info_697b4941" formatted="false">"डिबग जानकारी"</string>
     <string name="ui_delete_1_s_6474596f">"क्या \"%1$s\" हटाएँ?"</string>
     <string name="ui_delete_e2d0a549" formatted="false">"– हटाएँ"</string>
@@ -826,6 +2170,10 @@
     <string name="ui_delete_local_files_20424441" formatted="false">": स्थानीय फ़ाइलों को हटाएँ"</string>
     <string name="ui_destination_1_s_0df94639">"गंतव्य: %1$s"</string>
     <string name="ui_destination_parent_folder_c6c4f97e" formatted="false">"गंतव्य का पैरेंट फ़ोल्डर"</string>
+    <string name="ui_disabled_75081b59" formatted="false">"अक्षम"</string>
+    <string name="ui_discard_3_95e06aed" formatted="false">"3 को अस्वीकार करें"</string>
+    <string name="ui_discard_3_changes_d2ad52aa" formatted="false">"3 बदलाव अस्वीकार करें?"</string>
+    <string name="ui_discard_changes_85bcf416" formatted="false">"बदलाव अस्वीकार करें?"</string>
     <string name="ui_discard_draft_cb30147e" formatted="false">"ड्राफ़्ट हटाएँ"</string>
     <string name="ui_discard_eb1a70e3" formatted="false">"छोड़ें"</string>
     <string name="ui_discard_resolution_draft_47c16148" formatted="false">"समाधान का ड्राफ़्ट हटाएँ?"</string>
@@ -846,6 +2194,8 @@
     <string name="ui_gitsync_md_needs_shared_storage_access_to_f1b339ea" formatted="false">"डिवाइस के फ़ोल्डरों में वास्तविक Git वर्किंग कॉपी प्रबंधित करने के लिए GitSync.md को साझा स्टोरेज की ऐक्सेस चाहिए। Android सेटिंग्स में ऐक्सेस चालू करने के बाद इस्तेमाल करने वाले फ़ोल्डर चुनें।"</string>
     <string name="ui_go_back_and_select_a_repository_c3eedd39" formatted="false">"वापस जाएँ और एक रिपॉज़िटरी चुनें।"</string>
     <string name="ui_hash_a9106914" formatted="false">"हैश"</string>
+    <string name="ui_health_md_f72119f5" formatted="false">"स्वास्थ्य-md"</string>
+    <string name="ui_https_ssh_git_or_file_e79ef5ea" formatted="false">"HTTPS, SSH, git:// या file://."</string>
     <string name="ui_i_understand_that_another_owner_may_still_b4a12b2d" formatted="false">"मैं समझता हूँ कि दूसरा स्वामी अभी भी इस फ़ाइल को संपादित कर रहा हो सकता है।"</string>
     <string name="ui_include_the_ssh_username_in_the_address_gi_beb09b5a" formatted="false">"पते में SSH उपयोगकर्ता नाम शामिल करें: git@host:team/repo.git या ssh://git@host:2222/team/repo.git।"</string>
     <string name="ui_keep_editing_e76fd2ad" formatted="false">"संपादन जारी रखें"</string>
@@ -882,8 +2232,12 @@
     <string name="ui_owner_1_s_599ca9ce">"स्वामी: %1$s"</string>
     <string name="ui_parents_1_s_914efbd0">"पैरेंट (%1$s)"</string>
     <string name="ui_path_62fa5a5b" formatted="false">"पथ"</string>
+    <string name="ui_plain_http_sends_credentials_unencrypted_c99e5672" formatted="false">"साधारण HTTP क्रेडेंशियल्स को अविनcrypted भेजता है।"</string>
     <string name="ui_platform_c78ffe19" formatted="false">"प्लैटफ़ॉर्म"</string>
     <string name="ui_pull_with_rebase_6d25f1e0" formatted="false">": रीबेस के साथ पुल"</string>
+    <string name="ui_push_was_rejected_fbc19d01" formatted="false">"पुश को अस्वीकार कर दिया गया"</string>
+    <string name="ui_pushed_579e8c6a" formatted="false">"push हुआ"</string>
+    <string name="ui_rebase_completed_successfully_53314c91" formatted="false">": रीबेसिंग सफलतापूर्वक पूरा किया गया है।"</string>
     <string name="ui_rebase_in_progress_3ecd9c42" formatted="false">"रीबेस जारी है"</string>
     <string name="ui_rebase_onto_reviewed_upstream_c3b8fb93" formatted="false">"समीक्षित अपस्ट्रीम पर रीबेस करें"</string>
     <string name="ui_reconnect_bf8a9eab" formatted="false">"फिर से कनेक्ट करें"</string>
@@ -893,6 +2247,7 @@
     <string name="ui_reload_author_18a711d8" formatted="false">"लेखक फिर लोड करें"</string>
     <string name="ui_reload_connection_ceed2dae" formatted="false">"कनेक्शन फिर से लोड करें"</string>
     <string name="ui_reload_from_disk_d4288839" formatted="false">"डिस्क से फिर लोड करें"</string>
+    <string name="ui_remote_has_no_new_commits_fetched_2m_ago_bdaa4b95" formatted="false">"रिमोट में कोई नया कमिट नहीं है · 2 मिनट पहले फ़ेच किया गया"</string>
     <string name="ui_remove_1_s_e4dd7c24">"%1$s हटाएँ?"</string>
     <string name="ui_remove_1_s_this_removes_it_from_gitsync_md_0a6b198d">"\"%1$s\" हटाएँ?\n\nयह इसे GitSync.md से हटाता है। सभी स्थानीय फ़ाइलें और Git इतिहास इस डिवाइस पर रहेंगे, और आप इसे बाद में फिर जोड़ सकते हैं। आपकी रिमोट रिपॉज़िटरी प्रभावित नहीं होगी।"</string>
     <string name="ui_remove_all_custom_endpoint_approvals_and_t_ffc30a9e" formatted="false">"इस डिवाइस पर सभी कस्टम एंडपॉइंट मंज़ूरियाँ और उनके सहेजे गए क्रेडेंशियल हटाएँ। हर एंडपॉइंट और ट्रांसफ़र दिशा के लिए नई समीक्षा ज़रूरी होगी।"</string>
@@ -932,17 +2287,20 @@
     <string name="ui_save_1509f561" formatted="false">"सहेजें"</string>
     <string name="ui_save_author_1c24b32a" formatted="false">"लेखक सहेजें"</string>
     <string name="ui_save_connection_df24ef12" formatted="false">"कनेक्शन सहेजें"</string>
+    <string name="ui_saved_credentials_are_encrypted_on_this_de_9320d5e0" formatted="false">"सहेजे गए क्रेडेंशियल्स इस डिवाइस पर एन्क्रिप्टेड हैं।"</string>
     <string name="ui_saving_uses_this_address_for_both_fetch_an_48c82edc" formatted="false">"सहेजने पर इसी पते का उपयोग फ़ेच और पुश दोनों के लिए होगा। रिमोट स्थिति अपडेट करने के लिए बाद में फ़ेच करें।"</string>
     <string name="ui_selected_folder_0cf59bef" formatted="false">"चुना गया फ़ोल्डर"</string>
     <string name="ui_share_backup_archive_ee4ba873" formatted="false">"बैकअप संग्रह साझा करें"</string>
     <string name="ui_some_diagnostics_could_not_be_read_or_save_19e3372d" formatted="false">"कुछ निदान पढ़े या सहेजे नहीं जा सके। मौजूदा डेटा सुरक्षित रखा गया। दोबारा रिकॉर्डिंग शुरू करने के लिए लॉग साफ़ करें।"</string>
     <string name="ui_ssh_private_key_0e92a613" formatted="false">"SSH : निजी कुंजी"</string>
     <string name="ui_stage_de838855" formatted="false">"स्टेज करें"</string>
+    <string name="ui_stay_on_main_915a176c" formatted="false">"मुख्य पर रहें"</string>
     <string name="ui_the_active_destination_stays_in_place_gits_a4f1f68a" formatted="false">"सक्रिय गंतव्य अपनी जगह पर रहेगा। फ़ाइलें और Git इतिहास स्थायी रूप से हटाने से पहले GitSync.md जाँचता है कि रखी गई मूल प्रति में बाद के संपादन नहीं हैं।"</string>
     <string name="ui_the_folder_can_move_directly_on_this_stora_7b29fabb" formatted="false">"इस स्टोरेज वॉल्यूम पर फ़ोल्डर को सीधे ले जाया जा सकता है।"</string>
     <string name="ui_the_previous_github_account_is_disconnecte_628a1f8c" formatted="false">"पिछला GitHub खाता डिस्कनेक्ट है। कोई कनेक्ट किया हुआ खाता या प्रमाणीकरण का दूसरा तरीका चुनें।"</string>
     <string name="ui_the_replayed_local_commit_deletes_this_fil_ab00656d" formatted="false">"दोबारा लागू किया गया स्थानीय कमिट इस फ़ाइल को हटाता है।"</string>
     <string name="ui_the_review_changed_cancel_and_refresh_serv_c7ee804c" formatted="false">"समीक्षा की जानकारी बदल गई है। रद्द करें और सर्वर के लॉक रीफ़्रेश करें।"</string>
+    <string name="ui_these_files_go_back_to_how_they_were_in_a4_02e3cd66" formatted="false">"ये फाइलें a41c9e2 में जैसी थीं वैसी ही हो गई हैं।"</string>
     <string name="ui_this_history_entry_is_unavailable_c2c9f4e0" formatted="false">"यह इतिहास प्रविष्टि उपलब्ध नहीं है।"</string>
     <string name="ui_this_removes_another_connection_s_lock_coo_880defbf" formatted="false">"इससे दूसरे कनेक्शन का लॉक हटता है। आगे बढ़ने से पहले उसके स्वामी से समन्वय करें।"</string>
     <string name="ui_this_repository_will_use_public_access_unt_c94fad61" formatted="false">"जब तक आप फिर से प्रमाणीकरण नहीं चुनते, यह रिपॉज़िटरी सार्वजनिक पहुँच का उपयोग करेगी। इसके लिए आपके साइन इन किए गए GitHub खाते का उपयोग नहीं होगा। फ़ेच और पुश पते नहीं बदलेंगे।"</string>
@@ -955,6 +2313,7 @@
     <string name="ui_use_for_new_clones_be174c95" formatted="false">"नए क्लोन के लिए इस्तेमाल करें"</string>
     <string name="ui_use_saved_default_3bb7260d" formatted="false">"सहेजा हुआ डिफ़ॉल्ट इस्तेमाल करें"</string>
     <string name="ui_username_e3b89e9d" formatted="false">"यूज़रनेम"</string>
+    <string name="ui_working_5474eef8" formatted="false">"काम चल रहा है…"</string>
     <string name="ui_your_edits_have_not_been_saved_625899a4" formatted="false">"आपके बदलाव सेव नहीं हुए हैं।"</string>
     <string name="ui_your_unsubmitted_text_will_be_discarded_th_15717285" formatted="false">"आपका सबमिट नहीं किया गया पाठ हटा दिया जाएगा। कार्यशील फ़ाइल अपरिवर्तित रहेगी।"</string>
     <string name="untracked" formatted="false">"अनट्रैक्ड"</string>
@@ -1048,9 +2407,108 @@
     <string name="vault_l10n_tracking_review_changed" formatted="false">"ट्रैकिंग हटाने की समीक्षा बदल गई है। रिपॉज़िटरी और बैकअप विकल्प की फिर से समीक्षा करें।"</string>
     <string name="vault_l10n_volume_unavailable" formatted="false">"यह स्टोरेज वॉल्यूम उपलब्ध नहीं है"</string>
     <string name="vault_l10n_volume_unavailable_reconnect" formatted="false">"यह स्टोरेज वॉल्यूम उपलब्ध नहीं है। इसे फिर से कनेक्ट करें और फ़ोल्डर फिर से चुनें।"</string>
+    <string name="vault_m3_as_author">"के रूप में %1$s · %2$s"</string>
+    <string name="vault_m3_branch_pushed">"आपके कमिट्स को नई ब्रांच %1$s पर पुश किया गया"</string>
+    <string name="vault_m3_cancel" formatted="false">"रद्द करें"</string>
+    <string name="vault_m3_check_for_changes" formatted="false">"बदलाव जाँचें"</string>
+    <string name="vault_m3_checking" formatted="false">"जाँच जारी है…"</string>
+    <string name="vault_m3_checking_remote">"नए कमिट्स के लिए %1$s की जांच कर रहा है"</string>
+    <string name="vault_m3_chip_theirs">"↓%1$d %2$s से · %3$s"</string>
+    <string name="vault_m3_chip_theirs_plain">"रिमोट से ↓%1$d"</string>
+    <string name="vault_m3_chip_yours">"↑%1$d आपके"</string>
+    <string name="vault_m3_commit_locally" formatted="false">"स्थानीय कमिट करें"</string>
+    <string name="vault_m3_commit_push" formatted="false">"Commit और push"</string>
+    <string name="vault_m3_commits_sent">"%1$d / %2$d commit भेजे गए"</string>
+    <string name="vault_m3_committing" formatted="false">"commit हो रहा है…"</string>
+    <string name="vault_m3_days_ago">"%1$d दिन पहले"</string>
+    <string name="vault_m3_deleted_path">"%1$s (हटाया गया)"</string>
+    <string name="vault_m3_discard_body">"ये फाइलें %1$s में जैसी थीं वैसी हो गई हैं। तब से इस फोन पर की गई सभी संपादन स्थायी रूप से गायब हो गए हैं।"</string>
+    <string name="vault_m3_dismiss" formatted="false">"खारिज करें"</string>
+    <string name="vault_m3_download_progress" formatted="false">"डाउनलोड प्रगति"</string>
+    <string name="vault_m3_effect_delete" formatted="false">"नई फ़ाइल हटाएँ"</string>
+    <string name="vault_m3_effect_restore" formatted="false">"बहाल करें"</string>
+    <string name="vault_m3_effect_revert" formatted="false">"वापस करें"</string>
+    <string name="vault_m3_effect_unstage" formatted="false">"अनस्टेज करें"</string>
+    <string name="vault_m3_fetched_ago">"%1$s fetch हुआ"</string>
+    <string name="vault_m3_hours_ago">"%1$dहाल ही में"</string>
+    <string name="vault_m3_included" formatted="false">"शामिल"</string>
+    <string name="vault_m3_just_now" formatted="false">"– अभी।"</string>
+    <string name="vault_m3_keep_them" formatted="false">"इन्हें रखें"</string>
+    <string name="vault_m3_latest_commit" formatted="false">"नवीनतम commit"</string>
+    <string name="vault_m3_leave_note" formatted="false">"आप इस स्क्रीन को छोड़ सकते हैं। सिंक जारी रहता है और इसकी प्रगति अधिसूचना में दिखाई देती है।"</string>
+    <string name="vault_m3_merge" formatted="false">"merge"</string>
+    <string name="vault_m3_merge_conflicts" formatted="false">"पुलिंग में संघर्ष पाए गए। उन्हें हल करें, फिर पुश करें।"</string>
+    <string name="vault_m3_message" formatted="false">"संदेश"</string>
+    <string name="vault_m3_minutes">"%1$dm"</string>
+    <string name="vault_m3_minutes_ago">"%1$dm पहले"</string>
+    <string name="vault_m3_no_overlap_body" formatted="false">"आपके और उनके संपादन अलग-अलग फ़ाइलों को छूते हैं, इसलिए यह साफ़ तरीके से merge होना चाहिए।"</string>
+    <string name="vault_m3_no_overlap_title" formatted="false">"कोई ओवरलैप नहीं मिला"</string>
+    <string name="vault_m3_no_upstream" formatted="false">"कोई upstream ब्रांच नहीं"</string>
+    <string name="vault_m3_notify_channel" formatted="false">"वॉल्ट सिंक"</string>
+    <string name="vault_m3_notify_title">"%1$s · %2$s"</string>
+    <string name="vault_m3_objects_received">"%1$d / %2$d ऑब्जेक्ट प्राप्त हुए"</string>
+    <string name="vault_m3_objects_sent">"%1$d / %2$d ऑब्जेक्ट भेजे गए"</string>
+    <string name="vault_m3_only_on_phone" formatted="false">"केवल इस फोन पर"</string>
+    <string name="vault_m3_overlap_body" formatted="false">"दोनों पक्षों ने एक ही फ़ाइलों को संपादित किया। पुलिंग आपके लिए संघर्ष पर रुक सकता है ताकि आप उसे हल कर सकें।"</string>
+    <string name="vault_m3_preparing" formatted="false">"तैयार हो रहा है…"</string>
+    <string name="vault_m3_pull" formatted="false">"Pull"</string>
+    <string name="vault_m3_pull_then_push" formatted="false">"उनका पुल करें, फिर पुश करें"</string>
+    <string name="vault_m3_pulled">"%1$s के साथ अद्यतित"</string>
+    <string name="vault_m3_pulling" formatted="false">"pull हो रहा है…"</string>
+    <string name="vault_m3_push" formatted="false">"पुश करें"</string>
+    <string name="vault_m3_push_branch" formatted="false">"किसी ब्रांच पर push करें"</string>
+    <string name="vault_m3_push_right_after" formatted="false">"तुरंत बाद push करें"</string>
+    <string name="vault_m3_pushed_to">"%1$s पर push हुआ"</string>
+    <string name="vault_m3_pushing" formatted="false">"push हो रहा है…"</string>
+    <string name="vault_m3_rejected_kicker" formatted="false">"push नहीं हो सका"</string>
+    <string name="vault_m3_remote_generic" formatted="false">"remote"</string>
+    <string name="vault_m3_remote_is_here">"%1$s आ गया है"</string>
+    <string name="vault_m3_remote_no_new" formatted="false">"रिमोट पर कोई नया कमिट नहीं है"</string>
+    <string name="vault_m3_remote_not_checked" formatted="false">"रिमोट अभी जांचा नहीं गया"</string>
+    <string name="vault_m3_review_first" formatted="false">"पहले समीक्षा करें"</string>
+    <string name="vault_m3_seconds">"%1$ds"</string>
+    <string name="vault_m3_stash_first" formatted="false">"एहतियात के तौर पर पहले एक कॉपी stash करें"</string>
+    <string name="vault_m3_step_branch">"शाखा %1$s बनाएँ"</string>
+    <string name="vault_m3_step_check">"%1$s में नए commit जाँचें"</string>
+    <string name="vault_m3_step_download">"%1$s से डाउनलोड करें"</string>
+    <string name="vault_m3_step_merge">"%1$s merge करें"</string>
+    <string name="vault_m3_step_none" formatted="false">"कोई नहीं"</string>
+    <string name="vault_m3_step_update" formatted="false">"फ़ाइलें अपडेट करें"</string>
+    <string name="vault_m3_step_upload">"%1$s पर अपलोड करें"</string>
+    <string name="vault_m3_steps" formatted="false">"चरण"</string>
+    <string name="vault_m3_suggest_add">"%1$s जोड़ें"</string>
+    <string name="vault_m3_suggest_backup">"वॉल्ट बैकअप: %1$s"</string>
+    <string name="vault_m3_suggest_delete">"%1$s हटाएँ"</string>
+    <string name="vault_m3_suggest_update">"%1$s अपडेट करें"</string>
+    <string name="vault_m3_suggested" formatted="false">"अंतर से सुझाया गया"</string>
+    <string name="vault_m3_sync_cancelled" formatted="false">"सिंक रद्द किया गया। पहले से कमिट किया गया कुछ भी इस फोन पर रहता है।"</string>
+    <string name="vault_m3_sync_failed" formatted="false">"सिंक रोका गया"</string>
+    <string name="vault_m3_tap_for_diff" formatted="false">"अंतर देखने के लिए किसी फ़ाइल पर टैप करें"</string>
+    <string name="vault_m3_time_left">"~%1$s छोड़ा गया"</string>
+    <string name="vault_m3_today" formatted="false">"आज"</string>
+    <string name="vault_m3_upload_progress" formatted="false">"अपलोड प्रगति"</string>
+    <string name="vault_m3_vault_settings" formatted="false">"वॉल्ट सेटिंग्स"</string>
+    <string name="vault_m3_who_both" formatted="false">"दोनों"</string>
+    <string name="vault_m3_who_theirs" formatted="false">"उनका"</string>
+    <string name="vault_m3_who_yours" formatted="false">"आपका"</string>
+    <string name="vault_m3_yesterday" formatted="false">"कल"</string>
     <string name="vault_open_in_files_failed" formatted="false">"यह फ़ोल्डर Files में नहीं खुल सका।"</string>
     <string name="vault_repository_fallback" formatted="false">"रिपॉज़िटरी"</string>
     <string name="vault_url_copied" formatted="false">"कॉपी हो गया!"</string>
+    <string name="widget_m3_choose_vault" formatted="false">"एक वॉल्ट चुनें"</string>
+    <string name="widget_m3_days_ago">"%1$d दिन पहले"</string>
+    <string name="widget_m3_hours_ago">"%1$dहाल ही में"</string>
+    <string name="widget_m3_in_sync" formatted="false">"सिंक में"</string>
+    <string name="widget_m3_list_description" formatted="false">"आपके वॉल्ट्स जिनमें प्रत्येक को पुश करना है, और एक \'सभी को पुल करें\' बटन।"</string>
+    <string name="widget_m3_list_name" formatted="false">"वॉल्ट"</string>
+    <string name="widget_m3_minutes_ago">"%1$dm पहले"</string>
+    <string name="widget_m3_no_vaults" formatted="false">"अभी तक कोई वॉल्ट नहीं। एक जोड़ने के लिए GitSync.md खोलें।"</string>
+    <string name="widget_m3_now" formatted="false">"अभी"</string>
+    <string name="widget_m3_pull_all_repositories" formatted="false">": सभी रिपॉजिटरियों को पुल करें"</string>
+    <string name="widget_m3_vault_description" formatted="false">"एक वॉल्ट और इसमें कितनी बदलावों को पुश करना है।"</string>
+    <string name="widget_m3_vault_missing" formatted="false">"यह वॉल्ट अब इस फोन पर नहीं है।"</string>
+    <string name="widget_m3_vault_name" formatted="false">"वॉल्ट"</string>
+    <string name="widget_m3_vault_widget" formatted="false">"वॉल्ट विजेट"</string>
     <plurals name="account_updated_days">
         <item quantity="one">"%1$d दिन पहले"</item>
         <item quantity="other">"%1$d दिन पहले"</item>
@@ -1075,6 +2533,62 @@
         <item quantity="one">"%1$d वर्ष पहले"</item>
         <item quantity="other">"%1$d वर्ष पहले"</item>
     </plurals>
+    <plurals name="adaptive_changes_on_phone">
+        <item quantity="one">"%1$s इस फोन पर बदलाव"</item>
+        <item quantity="other">"%1$s इस फ़ोन पर बदलाव"</item>
+    </plurals>
+    <plurals name="adaptive_changes_on_tablet">
+        <item quantity="one">"%1$s इस टैबलेट पर बदलाव"</item>
+        <item quantity="other">"%1$s इस टैबलेट पर बदलाव"</item>
+    </plurals>
+    <plurals name="adaptive_commit_changes">
+        <item quantity="one">"%1$d बदलाव को कमिट करें"</item>
+        <item quantity="other">"%1$d बदलावों को कमिट करें"</item>
+    </plurals>
+    <plurals name="adaptive_merging_left">
+        <item quantity="one">"%1$s · %2$d संघर्ष को मर्ज कर रहे हैं"</item>
+        <item quantity="other">"%1$s · %2$d संघर्ष बचे हुए को मर्ज कर रहा है"</item>
+    </plurals>
+    <plurals name="adaptive_merging_left_plain">
+        <item quantity="one">"%1$d संघर्ष बचे हुए को मर्ज कर रहा है"</item>
+        <item quantity="other">"%1$d संघर्ष बचे हुए को मर्ज कर रहा है"</item>
+    </plurals>
+    <plurals name="adaptive_split_editing">
+        <item quantity="one">"%1$d संपादित किया जा रहा है"</item>
+        <item quantity="other">"%1$d संपादित किया जा रहा है"</item>
+    </plurals>
+    <plurals name="adaptive_split_live">
+        <item quantity="one">"%1$s परिवर्तन · लाइव"</item>
+        <item quantity="other">"%1$s परिवर्तन · लाइव"</item>
+    </plurals>
+    <plurals name="adaptive_vaults_need_you">
+        <item quantity="one">"%1$d को आपकी आवश्यकता है"</item>
+        <item quantity="other">"%1$d को आपकी आवश्यकता है"</item>
+    </plurals>
+    <plurals name="add_accounts_signed_in">
+        <item quantity="one">"सेटिंग्स · %1$d साइन इन किया गया"</item>
+        <item quantity="other">"सेटिंग्स · %1$d साइन इन किया गया"</item>
+    </plurals>
+    <plurals name="add_clone_files">
+        <item quantity="one">"%1$d फ़ाइल"</item>
+        <item quantity="other">"%1$d फ़ाइलें"</item>
+    </plurals>
+    <plurals name="add_clone_lfs_files">
+        <item quantity="one">"%1$d फ़ाइल"</item>
+        <item quantity="other">"%1$d फ़ाइलें"</item>
+    </plurals>
+    <plurals name="add_local_folders">
+        <item quantity="one">"%1$d फ़ोल्डर"</item>
+        <item quantity="other">"%1$d फ़ोल्डर"</item>
+    </plurals>
+    <plurals name="add_way_github_repos">
+        <item quantity="one">"%1$d रिपो · निजी शामिल"</item>
+        <item quantity="other">"%1$d रिपॉस · निजी शामिल"</item>
+    </plurals>
+    <plurals name="add_way_github_repos_public">
+        <item quantity="one">"%1$d रिपो"</item>
+        <item quantity="other">"%1$d रिपॉस"</item>
+    </plurals>
     <plurals name="dialogs_error_merge_conflicts">
         <item quantity="one">"मर्ज में %1$d अनसुलझा टकराव है।\n\nमर्ज पूरा करने से पहले इसे सुलझाएँ।"</item>
         <item quantity="other">"मर्ज में %1$d अनसुलझे टकराव हैं।\n\nमर्ज पूरा करने से पहले इन्हें सुलझाएँ।"</item>
@@ -1082,6 +2596,98 @@
     <plurals name="diff_changed_lines">
         <item quantity="one">"+%1$s -%2$s पंक्ति"</item>
         <item quantity="other">"+%1$s -%2$s पंक्तियाँ"</item>
+    </plurals>
+    <plurals name="editor_m3_lines_changed">
+        <item quantity="one">"%1$d लाइन बदली गई"</item>
+        <item quantity="other">"%1$d लाइनें बदली गईं"</item>
+    </plurals>
+    <plurals name="files_m3_items">
+        <item quantity="one">"%1$d आइटम"</item>
+        <item quantity="other">"%1$d आइटम्स"</item>
+    </plurals>
+    <plurals name="files_m3_sync_diverged">
+        <item quantity="one">"%1$d को %2$s पर नया कमिट किया गया है, और इस फोन में कमिट हैं जिन्हें आपने पुश नहीं किया है। उन्हें लाने के लिए चेंजेस टैब खोलें।"</item>
+        <item quantity="other">"%1$d को %2$s पर नए कमिट किए गए हैं, और इस फोन में कमिट हैं जिन्हें आपने पुश नहीं किया है। उन्हें लाने के लिए चेंजेस टैब खोलें।"</item>
+    </plurals>
+    <plurals name="files_m3_sync_local_changes">
+        <item quantity="one">"%1$d को %2$s पर नया कमिट किया गया है। अपने स्थानीय बदलावों को चेंजेस टैब पर कमिट या डिकॉर्ड करें, फिर फिर से सिंक करें।"</item>
+        <item quantity="other">"%1$d पर %2$s नए कमिट हैं। अपने लोकल बदलावों को Changes टैब पर कमिट या डिस्कार्ड करें, फिर फिर से सिंक करें।"</item>
+    </plurals>
+    <plurals name="git_m3_cant_switch_body">
+        <item quantity="one">"%1$s पर स्विच करने से इस फोन पर फ़ाइलें बदल जाएंगी। आपकी %2$d अनकमिटेड बदलावों को पहले सुरक्षित स्थान चाहिए।"</item>
+        <item quantity="other">"%1$s पर स्विच करने से इस फोन पर फ़ाइलें बदल जाएंगी। आपकी %2$d अनकमिटेड बदलावों को पहले सुरक्षित स्थान चाहिए।"</item>
+    </plurals>
+    <plurals name="git_m3_commits_missing">
+        <item quantity="one">"%1$d कमिट %2$s में नहीं है"</item>
+        <item quantity="other">"%1$d कमिट्स %2$s में नहीं हैं"</item>
+    </plurals>
+    <plurals name="git_m3_conflicts_left">
+        <item quantity="one">"%1$d समाधान के लिए टकराव।"</item>
+        <item quantity="other">"%1$d समाधान के लिए टकराव।"</item>
+    </plurals>
+    <plurals name="git_m3_continue_resolve">
+        <item quantity="one">"रिबेस जारी रखें · %1$d और समाधान करें"</item>
+        <item quantity="other">"रिबेस जारी रखें · %1$d और हल करें"</item>
+    </plurals>
+    <plurals name="git_m3_dirty_note">
+        <item quantity="one">"%1$d परिवर्तन अभी तक कमिट नहीं हुआ है। शाखा बदलने से पहले इसे कमिट या स्टैश करें।"</item>
+        <item quantity="other">"%1$d परिवर्तन अभी तक कमिट नहीं हुए हैं। शाखा बदलने से पहले इन्हें कमिट या स्टैश करें।"</item>
+    </plurals>
+    <plurals name="git_m3_files">
+        <item quantity="one">"%1$d फ़ाइल"</item>
+        <item quantity="other">"%1$d फ़ाइलें"</item>
+    </plurals>
+    <plurals name="git_m3_n_branches">
+        <item quantity="one">"%1$d शाखा"</item>
+        <item quantity="other">"%1$d शाखाएँ"</item>
+    </plurals>
+    <plurals name="git_m3_n_commits_history">
+        <item quantity="one">"%1$d इतिहास का कमिट"</item>
+        <item quantity="other">"%1$d इतिहास के कमिट"</item>
+    </plurals>
+    <plurals name="git_m3_n_stashes">
+        <item quantity="one">"%1$d स्टैश"</item>
+        <item quantity="other">"%1$d स्टैशेस"</item>
+    </plurals>
+    <plurals name="git_m3_n_tags">
+        <item quantity="one">"%1$d टैग"</item>
+        <item quantity="other">"%1$d टैग्स"</item>
+    </plurals>
+    <plurals name="git_m3_notes_attachments">
+        <item quantity="one">"%1$d नोट या संलग्नक"</item>
+        <item quantity="other">"%1$d नोट्स और संलग्नक"</item>
+    </plurals>
+    <plurals name="git_m3_push_commits">
+        <item quantity="one">"%1$d कमिट को पुश करें"</item>
+        <item quantity="other">"%1$d कमिट्स को पुश करें"</item>
+    </plurals>
+    <plurals name="git_m3_rebase_begin_body">
+        <item quantity="one">"आपका %1$d लोकल कमिट रिव्यू किए गए अपस्ट्रीम पर दोबारा लागू किया गया है और इसे नया आईडी मिल सकता है। रिबेस इस फोन पर रहता है। पुश करना अलग कदम है।"</item>
+        <item quantity="other">"आपके %1$d लोकल कमिट्स रिव्यू किए गए अपस्ट्रीम पर दोबारा लागू किए गए हैं और इन्हें नए आईडी मिल सकते हैं। रिबेस इस फोन पर रहता है। पुश करना अलग कदम है।"</item>
+    </plurals>
+    <plurals name="git_m3_rebase_done_meta">
+        <item quantity="one">"%1$d कमिट अब %2$s के ऊपर है · नए आईडी · पुश नहीं किया गया"</item>
+        <item quantity="other">"%1$d कमिट्स अब %2$s के ऊपर हैं · नए आईडी · पुश नहीं किया गया"</item>
+    </plurals>
+    <plurals name="git_m3_rebase_put_on_top">
+        <item quantity="one">"अपना %1$d कमिट रिमोट के ऊपर रखें।"</item>
+        <item quantity="other">"अपने %1$d कमिट्स रिमोट के ऊपर रखें।"</item>
+    </plurals>
+    <plurals name="git_m3_stash_n">
+        <item quantity="one">"स्टैश %1$d परिवर्तन"</item>
+        <item quantity="other">"स्टैश %1$d परिवर्तन"</item>
+    </plurals>
+    <plurals name="git_m3_stashed_toast">
+        <item quantity="one">"%1$d परिवर्तन को stash@{0} के रूप में स्टैश किया गया।"</item>
+        <item quantity="other">"%1$d परिवर्तनों को stash@{0} के रूप में स्टैश किया गया।"</item>
+    </plurals>
+    <plurals name="git_m3_uncommitted_changes">
+        <item quantity="one">"%1$s अप्रस्तुत परिवर्तन"</item>
+        <item quantity="other">"%1$s अप्रस्तुत परिवर्तन"</item>
+    </plurals>
+    <plurals name="git_m3_uncommitted_plain">
+        <item quantity="one">"%1$d अप्रस्तुत संपादन, एक साधारण फ़ाइल के रूप में"</item>
+        <item quantity="other">"%1$d अप्रस्तुत संपादन, साधारण फ़ाइलों के रूप में"</item>
     </plurals>
     <plurals name="gitops_merge_stopped_conflicts">
         <item quantity="one">"मर्ज रुका: %1$s (%2$d कॉन्फ़्लिक्ट)"</item>
@@ -1099,6 +2705,30 @@
         <item quantity="one">"%1$d वर्तमान फ़ाइल अपनी स्पष्ट ट्रैकिंग पसंद बनाए रखती है।"</item>
         <item quantity="other">"%1$d वर्तमान फ़ाइलें अपनी स्पष्ट ट्रैकिंग पसंद बनाए रखती हैं।"</item>
     </plurals>
+    <plurals name="lfs_m3_downloading">
+        <item quantity="one">"%1$d फ़ाइल डाउनलोड कर रहा है"</item>
+        <item quantity="other">"%1$d फ़ाइलें डाउनलोड हो रही हैं"</item>
+    </plurals>
+    <plurals name="lfs_m3_endpoints_subtitle">
+        <item quantity="one">"सेटिंग्स · %1$d अनुमोदित"</item>
+        <item quantity="other">"सेटिंग्स · %1$d अनुमोदित"</item>
+    </plurals>
+    <plurals name="lfs_m3_ext_affected">
+        <item quantity="one">"%1$d फ़ाइल LFS में स्थानांतरित हो रही है"</item>
+        <item quantity="other">"%1$d फ़ाइलें LFS में स्थानांतरित हो रही हैं"</item>
+    </plurals>
+    <plurals name="lfs_m3_file_count">
+        <item quantity="one">"%1$d फ़ाइल"</item>
+        <item quantity="other">"%1$d फ़ाइलें"</item>
+    </plurals>
+    <plurals name="lfs_m3_stored_files">
+        <item quantity="one">"%1$d फ़ाइल में"</item>
+        <item quantity="other">"%1$d फ़ाइलों में"</item>
+    </plurals>
+    <plurals name="lfs_m3_track_files">
+        <item quantity="one">"LFS के साथ %1$d फ़ाइल को ट्रैक करें"</item>
+        <item quantity="other">"LFS के साथ %1$d फ़ाइलों को ट्रैक करें"</item>
+    </plurals>
     <plurals name="lfs_restored_files">
         <item quantity="one">"%1$d फ़ाइल बहाल की गई।"</item>
         <item quantity="other">"%1$d फ़ाइलें बहाल की गईं।"</item>
@@ -1107,9 +2737,57 @@
         <item quantity="one">"%1$d फ़ाइल"</item>
         <item quantity="other">"%1$d फ़ाइलें"</item>
     </plurals>
+    <plurals name="m3home_auth_waiting">
+        <item quantity="one">"%1$d वॉल्ट प्रतीक्षा कर रहा है।"</item>
+        <item quantity="other">"%1$d वॉल्ट प्रतीक्षा कर रहे हैं।"</item>
+    </plurals>
+    <plurals name="m3home_badge_edited">
+        <item quantity="one">"%1$d संपादित"</item>
+        <item quantity="other">"%1$d संपादित"</item>
+    </plurals>
+    <plurals name="m3home_headline_attention">
+        <item quantity="one">"%1$d वॉल्ट"</item>
+        <item quantity="other">"%1$d वॉल्ट्स"</item>
+    </plurals>
+    <plurals name="m3home_headline_attention_accent">
+        <item quantity="one">"%1$s आपको चाहिए।"</item>
+        <item quantity="other">"%1$s तुम्हारी ज़रूरत है।"</item>
+    </plurals>
+    <plurals name="m3home_headline_ready">
+        <item quantity="one">"%1$d वॉल्ट"</item>
+        <item quantity="other">"%1$d वॉल्ट्स"</item>
+    </plurals>
+    <plurals name="m3home_sync_nothing_local">
+        <item quantity="other">"सिंक करने के लिए कुछ नहीं। ये %1$d वॉल्ट्स केवल स्थानीय हैं (कोई रिमोट नहीं)।"</item>
+        <item quantity="one">"सिंक करने के लिए कुछ नहीं। %1$d वॉल्ट केवल स्थानीय है (कोई रिमोट नहीं)।"</item>
+    </plurals>
     <plurals name="move_plan_summary">
         <item quantity="one">"Git मेटाडेटा सहित %1$s फ़ाइल · %2$s"</item>
         <item quantity="other">"Git मेटाडेटा सहित %1$s फ़ाइलें · %2$s"</item>
+    </plurals>
+    <plurals name="notification_m3_commits">
+        <item quantity="one">"%1$d कमिट पृष्ठभूमि में खींचा गया।"</item>
+        <item quantity="other">"%1$d कमिट्स पृष्ठभूमि में खींचे गए।"</item>
+    </plurals>
+    <plurals name="notification_m3_commits_from">
+        <item quantity="one">"%1$d कमिट %2$s से पृष्ठभूमि में खींचा गया।"</item>
+        <item quantity="other">"%1$d कमिट्स %2$s से पृष्ठभूमि में खींचे गए।"</item>
+    </plurals>
+    <plurals name="pullall_m3_checked_repositories">
+        <item quantity="one">"%1$d %2$d रिपॉज़िटरी की जाँच की गई"</item>
+        <item quantity="other">"%1$d %2$d रिपॉज़िटरीज की जाँच की गई"</item>
+    </plurals>
+    <plurals name="pullall_m3_checked_vaults">
+        <item quantity="one">"%1$d %2$d वॉल्ट की जाँच की गई"</item>
+        <item quantity="other">"%2$d ताले में से %1$d जाँचे गए"</item>
+    </plurals>
+    <plurals name="pullall_m3_updated_commits">
+        <item quantity="one">"रिमोट से अपडेट किया गया · ↓%1$d कमिट"</item>
+        <item quantity="other">"रिमोट से अपडेट किया गया · ↓%1$d कमिट्स"</item>
+    </plurals>
+    <plurals name="pullall_m3_vaults">
+        <item quantity="one">"%1$d ताला"</item>
+        <item quantity="other">"%1$d ताले"</item>
     </plurals>
     <plurals name="rebase_additional_blocked_paths">
         <item quantity="one">"%1$d अतिरिक्त अवरुद्ध पथ नहीं दिखाया गया है।"</item>
@@ -1131,12 +2809,92 @@
         <item quantity="one">"· %1$d रिपॉज़िटरी"</item>
         <item quantity="other">"· %1$d रिपॉज़िटरी"</item>
     </plurals>
+    <plurals name="settings_m3_bg_included">
+        <item quantity="one">"%1$d ताला शामिल किया गया"</item>
+        <item quantity="other">"%1$d ताले शामिल किए गए"</item>
+    </plurals>
+    <plurals name="settings_m3_bg_run_quiet">
+        <item quantity="one">"%1$d ताला, कुछ नया नहीं"</item>
+        <item quantity="other">"%1$d ताले, कुछ नया नहीं"</item>
+    </plurals>
+    <plurals name="settings_m3_debug_errors_day">
+        <item quantity="one">"24 घंटे में %1$d त्रुटि"</item>
+        <item quantity="other">"24 घंटे में %1$d त्रुटियाँ"</item>
+    </plurals>
+    <plurals name="settings_m3_entries">
+        <item quantity="one">"%1$d प्रविष्टि"</item>
+        <item quantity="other">"%1$d प्रविष्टियाँ"</item>
+    </plurals>
+    <plurals name="settings_m3_push_connections">
+        <item quantity="one">"%1$d GitHub कनेक्शन · चालू"</item>
+        <item quantity="other">"%1$d GitHub कनेक्शन · चालू"</item>
+    </plurals>
+    <plurals name="settings_m3_push_local_changes">
+        <item quantity="one">"इस फोन पर %1$d स्थानीय बदलाव"</item>
+        <item quantity="other">"इस फोन पर %1$d स्थानीय बदलाव"</item>
+    </plurals>
+    <plurals name="settings_m3_sc_subtitle">
+        <item quantity="one">"सभी विजेट खींचें · %1$d शॉर्टकट"</item>
+        <item quantity="other">"सभी विजेट खींचें · %1$d शॉर्टकट्स"</item>
+    </plurals>
+    <plurals name="ssh_m3_subtitle">
+        <item quantity="one">"सेटिंग्स · %1$d सर्वर"</item>
+        <item quantity="other">"सेटिंग्स · %1$d सर्वर"</item>
+    </plurals>
     <plurals name="tide_vault_changes_on_phone">
-        <item quantity="one">"इस फ़ोन पर बदलाव"</item>
-        <item quantity="other">"इस फ़ोन पर बदलाव"</item>
+        <item quantity="one">"%1$s इस फ़ोन पर बदलाव"</item>
+        <item quantity="other">"%1$s इस फ़ोन पर बदलाव"</item>
     </plurals>
     <plurals name="tide_vault_conflicts_to_resolve">
-        <item quantity="one">"हल करने के लिए विरोध"</item>
-        <item quantity="other">"हल करने के लिए विरोध"</item>
+        <item quantity="one">"%1$s हल करने के लिए विरोध"</item>
+        <item quantity="other">"%1$s हल करने के लिए विरोध"</item>
+    </plurals>
+    <plurals name="vault_m3_commit_title">
+        <item quantity="one">"%1$d फ़ाइल कमिट करें"</item>
+        <item quantity="other">"%1$d फ़ाइलें कमिट करें"</item>
+    </plurals>
+    <plurals name="vault_m3_discard_n">
+        <item quantity="one">"%1$d रद्द करें"</item>
+        <item quantity="other">"%1$d रद्द करें"</item>
+    </plurals>
+    <plurals name="vault_m3_discard_title">
+        <item quantity="one">"%1$d बदलाव रद्द करें?"</item>
+        <item quantity="other">"%1$d बदलाव रद्द करें?"</item>
+    </plurals>
+    <plurals name="vault_m3_effect_lines">
+        <item quantity="one">"−%1$d लाइन"</item>
+        <item quantity="other">"−%1$d लाइन्स"</item>
+    </plurals>
+    <plurals name="vault_m3_file_count">
+        <item quantity="one">"%1$d फ़ाइल"</item>
+        <item quantity="other">"%1$d फ़ाइलें"</item>
+    </plurals>
+    <plurals name="vault_m3_overlap_title">
+        <item quantity="one">"दोनों तरफ़ %1$d फ़ाइल बदली गई"</item>
+        <item quantity="other">"दोनों तरफ़ %1$d फ़ाइलें बदली गईं"</item>
+    </plurals>
+    <plurals name="vault_m3_remote_new">
+        <item quantity="one">"रिमोट पर %1$d नया कमिट है"</item>
+        <item quantity="other">"रिमोट पर %1$d नए कमिट्स हैं"</item>
+    </plurals>
+    <plurals name="vault_m3_step_commit">
+        <item quantity="one">"%1$d फ़ाइल कमिट करें"</item>
+        <item quantity="other">"%1$d फ़ाइलें कमिट करें"</item>
+    </plurals>
+    <plurals name="vault_m3_step_lfs">
+        <item quantity="one">"%1$d LFS फ़ाइल अपलोड करें · %2$s"</item>
+        <item quantity="other">"%1$d LFS फ़ाइलें अपलोड करें · %2$s"</item>
+    </plurals>
+    <plurals name="vault_m3_suggest_files">
+        <item quantity="one">"%1$d फ़ाइल अपडेट करें"</item>
+        <item quantity="other">"%1$d फ़ाइलें अपडेट करें"</item>
+    </plurals>
+    <plurals name="vault_m3_uploading_lfs">
+        <item quantity="one">"%1$d LFS फ़ाइल अपलोड हो रही है"</item>
+        <item quantity="other">"%1$d LFS फ़ाइलें अपलोड हो रही हैं"</item>
+    </plurals>
+    <plurals name="widget_m3_changes_to_push">
+        <item quantity="one">"%1$s पुश में बदलाव करें"</item>
+        <item quantity="other">"%1$s पुश में किए जाने वाले बदलाव"</item>
     </plurals>
 </resources>

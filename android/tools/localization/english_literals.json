@@ -989,6 +989,401 @@
       "name": "ui_open_in_files_e1d250d0",
       "source": "Open in Files",
       "arguments": 0
+    },
+    {
+      "name": "shortcut_m3_commit_short",
+      "source": "Commit & push",
+      "arguments": 0
+    },
+    {
+      "name": "ui_2026_11_01_md_4381fb10",
+      "source": "2026-11-01.md",
+      "arguments": 0
+    },
+    {
+      "name": "ui_daily_new_file_42_31057cdf",
+      "source": "daily · new file · +42",
+      "arguments": 0
+    },
+    {
+      "name": "adaptive_abort_merge",
+      "source": "Abort merge",
+      "arguments": 0
+    },
+    {
+      "name": "ui_voice_memo_pipeline_md_2a5a57d3",
+      "source": "voice-memo-pipeline.md",
+      "arguments": 0
+    },
+    {
+      "name": "ui_conflict_1_of_2_ideas_23283a20",
+      "source": "Conflict 1 of 2 · ideas/",
+      "arguments": 0
+    },
+    {
+      "name": "ui_both_sides_edited_step_3_077f9640",
+      "source": "Both sides edited “Step 3”.",
+      "arguments": 0
+    },
+    {
+      "name": "git_m3_conflict_body",
+      "source": "Pick the version to keep, or keep both and tidy up after.",
+      "arguments": 0
+    },
+    {
+      "name": "git_m3_keep_both",
+      "source": "Keep both",
+      "arguments": 0
+    },
+    {
+      "name": "git_m3_edit_by_hand",
+      "source": "Edit by hand",
+      "arguments": 0
+    },
+    {
+      "name": "files_m3_delete",
+      "source": "Delete",
+      "arguments": 0
+    },
+    {
+      "name": "git_m3_stash_changes",
+      "source": "Stash changes",
+      "arguments": 0
+    },
+    {
+      "name": "git_m3_commit_first",
+      "source": "Commit first",
+      "arguments": 0
+    },
+    {
+      "name": "ui_stay_on_main_915a176c",
+      "source": "Stay on main",
+      "arguments": 0
+    },
+    {
+      "name": "ui_push_was_rejected_fbc19d01",
+      "source": "Push was rejected",
+      "arguments": 0
+    },
+    {
+      "name": "ui_discard_changes_85bcf416",
+      "source": "Discard changes?",
+      "arguments": 0
+    },
+    {
+      "name": "ui_pushed_579e8c6a",
+      "source": "Pushed",
+      "arguments": 0
+    },
+    {
+      "name": "ui_about_lfs_538b5b7e",
+      "source": "About LFS",
+      "arguments": 0
+    },
+    {
+      "name": "settings_m3_how_clone_url",
+      "source": "Clone from URL",
+      "arguments": 0
+    },
+    {
+      "name": "ui_https_ssh_git_or_file_e79ef5ea",
+      "source": "HTTPS, SSH, git:// or file://.",
+      "arguments": 0
+    },
+    {
+      "name": "lfs_m3_public_access",
+      "source": "Public access",
+      "arguments": 0
+    },
+    {
+      "name": "ui_plain_http_sends_credentials_unencrypted_c99e5672",
+      "source": "Plain HTTP sends credentials unencrypted.",
+      "arguments": 0
+    },
+    {
+      "name": "ui_cloning_and_preparing_the_working_copy_6fe864ff",
+      "source": "Cloning and preparing the working copy",
+      "arguments": 0
+    },
+    {
+      "name": "ui_saved_credentials_are_encrypted_on_this_de_9320d5e0",
+      "source": "Saved credentials are encrypted on this device.",
+      "arguments": 0
+    },
+    {
+      "name": "ui_rebase_completed_successfully_53314c91",
+      "source": "Rebase completed successfully",
+      "arguments": 0
+    },
+    {
+      "name": "ui_working_5474eef8",
+      "source": "Working…",
+      "arguments": 0
+    },
+    {
+      "name": "rebase_use_local",
+      "source": "Use local commit",
+      "arguments": 0
+    },
+    {
+      "name": "rebase_use_upstream",
+      "source": "Use upstream",
+      "arguments": 0
+    },
+    {
+      "name": "ui_disabled_75081b59",
+      "source": "Disabled",
+      "arguments": 0
+    },
+    {
+      "name": "git_m3_delete_tag",
+      "source": "Delete tag",
+      "arguments": 0
+    },
+    {
+      "name": "ui_codybontecou_voxvault_b16a3db8",
+      "source": "CodyBontecou/VoxVault",
+      "arguments": 0
+    },
+    {
+      "name": "commit_screen",
+      "source": "Commit",
+      "arguments": 0
+    },
+    {
+      "name": "ui_voxvault_daily_3b5d2f35",
+      "source": "VoxVault / daily",
+      "arguments": 0
+    },
+    {
+      "name": "ui_main_codybontecou_voxvault_c727a0dc",
+      "source": "main · CodyBontecou/VoxVault",
+      "arguments": 0
+    },
+    {
+      "name": "ui_notes_ab5aa970",
+      "source": "notes",
+      "arguments": 0
+    },
+    {
+      "name": "ui_ghp_af5282c5",
+      "source": "ghp_…",
+      "arguments": 0
+    },
+    {
+      "name": "add_title",
+      "source": "Add a vault",
+      "arguments": 0
+    },
+    {
+      "name": "ui_1_vault_c39776f1",
+      "source": "1 vault",
+      "arguments": 0
+    },
+    {
+      "name": "ui_4_in_sync_checked_2_min_ago_a1f1ab5e",
+      "source": "4 in sync · checked 2 min ago",
+      "arguments": 0
+    },
+    {
+      "name": "ui_all_5_8907f196",
+      "source": "All 5",
+      "arguments": 0
+    },
+    {
+      "name": "ui_attention_1_fa1ea5dc",
+      "source": "Attention 1",
+      "arguments": 0
+    },
+    {
+      "name": "m3home_filter_pinned",
+      "source": "Pinned",
+      "arguments": 0
+    },
+    {
+      "name": "ui_voxvault_b8d22790",
+      "source": "VoxVault",
+      "arguments": 0
+    },
+    {
+      "name": "ui_3_to_push_ac87b7cb",
+      "source": "↑3 to push",
+      "arguments": 0
+    },
+    {
+      "name": "git_m3_in_sync",
+      "source": "In sync",
+      "arguments": 0
+    },
+    {
+      "name": "ui_3_held_f454ab2b",
+      "source": "↑3 held",
+      "arguments": 0
+    },
+    {
+      "name": "m3home_auth_paused",
+      "source": "Paused",
+      "arguments": 0
+    },
+    {
+      "name": "ui_health_md_f72119f5",
+      "source": "health-md",
+      "arguments": 0
+    },
+    {
+      "name": "adaptive_sync_all",
+      "source": "Sync all",
+      "arguments": 0
+    },
+    {
+      "name": "files_m3_check_for_changes",
+      "source": "Check for changes",
+      "arguments": 0
+    },
+    {
+      "name": "git_m3_vault_settings",
+      "source": "Vault settings",
+      "arguments": 0
+    },
+    {
+      "name": "tide_vault_eyebrow_ready_to_commit",
+      "source": "Ready to commit",
+      "arguments": 0
+    },
+    {
+      "name": "ui_changes_on_this_phone_6359d3d5",
+      "source": "changes on this phone",
+      "arguments": 0
+    },
+    {
+      "name": "ui_remote_has_no_new_commits_fetched_2m_ago_bdaa4b95",
+      "source": "Remote has no new commits · fetched 2m ago",
+      "arguments": 0
+    },
+    {
+      "name": "diff_m3_changes",
+      "source": "Changes",
+      "arguments": 0
+    },
+    {
+      "name": "vault_m3_leave_note",
+      "source": "You can leave this screen. The sync keeps going and shows its progress in a notification.",
+      "arguments": 0
+    },
+    {
+      "name": "ui_3_changes_aren_t_committed_yet_commit_or_s_d878e782",
+      "source": "3 changes aren't committed yet. Commit or stash them before you switch branches.",
+      "arguments": 0
+    },
+    {
+      "name": "diagnostics_operation_clone",
+      "source": "Clone",
+      "arguments": 0
+    },
+    {
+      "name": "settings_m3_not_now",
+      "source": "Not now",
+      "arguments": 0
+    },
+    {
+      "name": "adaptive_review_first",
+      "source": "Review first",
+      "arguments": 0
+    },
+    {
+      "name": "git_m3_discard",
+      "source": "Discard changes",
+      "arguments": 0
+    },
+    {
+      "name": "settings_m3_vault_include",
+      "source": "Include in Background Sync",
+      "arguments": 0
+    },
+    {
+      "name": "settings_m3_vault_pin",
+      "source": "Pin to top of Home",
+      "arguments": 0
+    },
+    {
+      "name": "settings_m3_vault_display_name",
+      "source": "Display name",
+      "arguments": 0
+    },
+    {
+      "name": "settings_m3_debug_error",
+      "source": "ERROR",
+      "arguments": 0
+    },
+    {
+      "name": "paywall_pill_needs_access",
+      "source": "needs access",
+      "arguments": 0
+    },
+    {
+      "name": "vault_m3_pushing",
+      "source": "Pushing…",
+      "arguments": 0
+    },
+    {
+      "name": "ui_2_of_3_commits_sent_5591e38a",
+      "source": "2 of 3 commits sent",
+      "arguments": 0
+    },
+    {
+      "name": "m3home_offline_fab",
+      "source": "Syncs when online",
+      "arguments": 0
+    },
+    {
+      "name": "ui_daily_2026_11_01_md_c8c1afcc",
+      "source": "daily/2026-11-01.md",
+      "arguments": 0
+    },
+    {
+      "name": "ui_old_inbox_md_66b84b5b",
+      "source": "old-inbox.md",
+      "arguments": 0
+    },
+    {
+      "name": "vault_m3_keep_them",
+      "source": "Keep them",
+      "arguments": 0
+    },
+    {
+      "name": "ui_discard_3_95e06aed",
+      "source": "Discard 3",
+      "arguments": 0
+    },
+    {
+      "name": "ui_discard_3_changes_d2ad52aa",
+      "source": "Discard 3 changes?",
+      "arguments": 0
+    },
+    {
+      "name": "ui_these_files_go_back_to_how_they_were_in_a4_02e3cd66",
+      "source": "These files go back to how they were in a41c9e2.",
+      "arguments": 0
+    },
+    {
+      "name": "vault_m3_commit_locally",
+      "source": "Commit locally",
+      "arguments": 0
+    },
+    {
+      "name": "vault_m3_message",
+      "source": "Message",
+      "arguments": 0
+    },
+    {
+      "name": "vault_m3_included",
+      "source": "Included",
+      "arguments": 0
+    },
+    {
+      "name": "ui_commit_3_files_959a8528",
+      "source": "Commit 3 files",
+      "arguments": 0
     }
   ]
 }

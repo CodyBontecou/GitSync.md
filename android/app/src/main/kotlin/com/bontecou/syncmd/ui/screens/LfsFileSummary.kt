@@ -45,7 +45,7 @@ internal fun RowScope.LfsFileSummary(file: LfsFileInfo, locked: Boolean = false)
             file.hydrated -> R.string.lfs_file_available
             else -> R.string.lfs_m3_state_pointer
         }), tone, Modifier.padding(top = 4.dp).testTag("lfs-file-state"))
-        Text("${LfsSizes.format(file.pointer.size)} · ${stringResource(if (file.cached) R.string.lfs_m3_cache_verified else R.string.lfs_m3_cache_missing)}",
+        Text(stringResource(R.string.l10n_meta_pair, LfsSizes.format(file.pointer.size), stringResource(if (file.cached) R.string.lfs_m3_cache_verified else R.string.lfs_m3_cache_missing)),
             style = M3Type.meta, color = c.onVar, modifier = Modifier.padding(top = 4.dp).testTag("lfs-file-storage"))
     }
     if (locked) M3Icon(R.drawable.ic_m3_lock, tint = c.onVar, size = 20.dp, contentDescription = stringResource(R.string.lfs_m3_locked))

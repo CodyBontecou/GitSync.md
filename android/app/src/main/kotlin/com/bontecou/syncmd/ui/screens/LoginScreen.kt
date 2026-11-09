@@ -266,7 +266,7 @@ private fun LoginTokenContent(
         Text(stringResource(R.string.add_token_body), style = M3Type.body, color = c.onVar, modifier = Modifier.padding(top = 6.dp))
         if (error != null) LoginAlert(error, Modifier.padding(top = 20.dp))
         OutlinedTextField(token, onToken, label = { Text(stringResource(R.string.add_token_label)) },
-            placeholder = { Text("ghp_…", style = M3Type.code.copy(fontSize = 15.sp)) }, singleLine = true, isError = error != null,
+            placeholder = { Text(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_ghp_af5282c5), style = M3Type.code.copy(fontSize = 15.sp)) }, singleLine = true, isError = error != null,
             textStyle = M3Type.code.copy(fontSize = 15.sp, fontWeight = FontWeight.Medium, color = c.on),
             visualTransformation = if (visible) VisualTransformation.None else PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, autoCorrect = false, imeAction = ImeAction.Done),

@@ -54,7 +54,7 @@ class CatalogWriteGuardTest(unittest.TestCase):
         (values/'strings.xml').write_text('<resources><string name="keep">Keep</string>'
             '<string name="lost">Lost</string><string name="gain">Gain</string></resources>')
         self.tools=self.root/'tools/localization';self.tools.mkdir(parents=True)
-        for name in ['android_overrides.json','android_workflow_overrides.json']:
+        for name in ['android_overrides.json','android_workflow_overrides.json','android_completion_overrides.json']:
             (self.tools/name).write_text(json.dumps({'strings':{},'plurals':{}}))
         (self.tools/'ios_aliases.json').write_text(json.dumps({'strings':{}}))
         self.coverage=self.tools/'coverage.json'

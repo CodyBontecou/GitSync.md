@@ -42,7 +42,8 @@
     <string name="add_group_other_matching">Everything else matching</string>
     <string name="add_meta_private">private</string>
     <string name="add_meta_public">public</string>
-    <string name="add_meta_obsidian">.obsidian</string>
+    <!-- Literal Obsidian configuration directory, not translatable interface copy. -->
+    <string name="add_meta_obsidian" translatable="false">.obsidian</string>
     <string name="add_meta_lfs">%1$s LFS</string>
     <string name="add_added">Added</string>
     <string name="add_clone">Clone</string>

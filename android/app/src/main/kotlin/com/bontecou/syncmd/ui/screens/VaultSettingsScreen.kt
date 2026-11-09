@@ -1,5 +1,6 @@
 package com.bontecou.syncmd.ui.screens
 
+import com.bontecou.syncmd.ui.util.asString
 import android.text.format.Formatter
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -155,7 +156,7 @@ private fun VaultSettingsContent(repository: SavedRepository?, path: String, sub
         M3TopBar(stringResource(R.string.settings_m3_vault_title), subtitle = subtitle, onBack = onBack)
         Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).navigationBarsPadding()) {
             HealthCard(state.health)
-            state.error?.let { M3Note(it, Modifier.padding(start = 16.dp, end = 16.dp, top = 12.dp), tone = M3NoteTone.Warn) }
+            state.error?.let { M3Note(it.asString(), Modifier.padding(start = 16.dp, end = 16.dp, top = 12.dp), tone = M3NoteTone.Warn) }
             M3Group(stringResource(R.string.settings_m3_vault_group)) {
                 val binding = state.binding
                 M3SettingsRow(stringResource(R.string.settings_m3_vault_include), Modifier.testTag("vault-include"),
@@ -223,7 +224,7 @@ private fun Stat(value: String, label: String, ink: androidx.compose.ui.graphics
 @Preview(name = "16 · Vault settings", heightDp = 915)
 @Composable private fun VaultSettingsPreview() = SyncMdTheme(darkTheme = false) {
     VaultSettingsContent(SavedRepository("VoxVault", "/storage/emulated/0/Documents/Obsidian/VoxVault", managedStorage = true),
-        "/storage/emulated/0/Documents/Obsidian/VoxVault", "CodyBontecou/VoxVault",
+        "/storage/emulated/0/Documents/Obsidian/VoxVault", androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_codybontecou_voxvault_b16a3db8),
         VaultSettingsViewModel.State(health = VaultSettingsViewModel.Health(412, 48_000_000, 0,
             BackgroundHealth(BackgroundHealthKind.UP_TO_DATE, attemptedAt = System.currentTimeMillis() - 14 * 60_000)), binding = Triple("main", "origin", "main")),
         true, true, "VoxVault", {}, {}, {}, {}, {}, {}, {}, {}, {})
@@ -231,6 +232,6 @@ private fun Stat(value: String, label: String, ink: androidx.compose.ui.graphics
 
 @Preview(name = "16 · Vault settings · dark", heightDp = 915)
 @Composable private fun VaultSettingsDarkPreview() = SyncMdTheme(darkTheme = true) {
-    VaultSettingsContent(null, "/storage/emulated/0/Documents/Obsidian/VoxVault", "CodyBontecou/VoxVault",
+    VaultSettingsContent(null, "/storage/emulated/0/Documents/Obsidian/VoxVault", androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_codybontecou_voxvault_b16a3db8),
         VaultSettingsViewModel.State(health = VaultSettingsViewModel.Health(412, 0, 2, null)), false, false, "VoxVault", {}, {}, {}, {}, {}, {}, {}, {}, {})
 }

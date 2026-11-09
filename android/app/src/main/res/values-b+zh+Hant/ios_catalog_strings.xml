@@ -1,4 +1,4 @@
-<!-- Generated from the sibling iOS catalog by tools/localization/import_ios_catalog.py. -->
+<!-- Generated from the canonical Apple catalog and Android overrides by tools/localization/import_ios_catalog.py. -->
 <resources>
     <string name="account_alternative_exists" formatted="false">"已儲存另一個替代連線。請先檢查它，再移轉更多 URL 憑證。"</string>
     <string name="account_api_error">"GitHub API 錯誤：HTTP %1$d"</string>
@@ -95,6 +95,342 @@
     <string name="account_token_invalid">"GitHub 權杖無效或已過期（HTTP %1$d）"</string>
     <string name="account_updated_just_now" formatted="false">"剛剛"</string>
     <string name="account_valid_branch" formatted="false">"請輸入有效的分支名稱"</string>
+    <string name="adaptive_abort_merge" formatted="false">"中止合併"</string>
+    <string name="adaptive_account" formatted="false">"帳號與設定"</string>
+    <string name="adaptive_badge_ahead">"↑%1$d"</string>
+    <string name="adaptive_badge_attention" formatted="false">"!"</string>
+    <string name="adaptive_badge_behind">"↓%1$d"</string>
+    <string name="adaptive_badge_both">"↓%1$d ↑%2$d"</string>
+    <string name="adaptive_badge_checking" formatted="false">"…"</string>
+    <string name="adaptive_badge_edited">"%1$d 已編輯"</string>
+    <string name="adaptive_badge_in_sync" formatted="false">"✓"</string>
+    <string name="adaptive_branch_local_only">"%1$s · 無遠端"</string>
+    <string name="adaptive_branch_to_remote">"%1$s → %2$s"</string>
+    <string name="adaptive_cancel" formatted="false">"取消"</string>
+    <string name="adaptive_commit_message" formatted="false">"提交信息"</string>
+    <string name="adaptive_commit_only" formatted="false">"僅提交"</string>
+    <string name="adaptive_commit_this_file" formatted="false">"提交此檔案"</string>
+    <string name="adaptive_conflict" formatted="false">"衝突"</string>
+    <string name="adaptive_conflict_position">"衝突 %1$d 與 %2$d · %3$s"</string>
+    <string name="adaptive_cover_unfold" formatted="false">"展開以閱讀變更列表旁的差異。"</string>
+    <string name="adaptive_discard_all" formatted="false">"捨棄"</string>
+    <string name="adaptive_edited" formatted="false">"已編輯"</string>
+    <string name="adaptive_include" formatted="false">"包含"</string>
+    <string name="adaptive_keep_this_version" formatted="false">"保留此版本"</string>
+    <string name="adaptive_new_file" formatted="false">"新檔案"</string>
+    <string name="adaptive_no_changes" formatted="false">"此裝置上無變更。編輯筆記，它會出現在這裡。"</string>
+    <string name="adaptive_position">"%1$d / %2$d"</string>
+    <string name="adaptive_pull" formatted="false">"拉取"</string>
+    <string name="adaptive_pull_then_push" formatted="false">"先拉取，然後推送"</string>
+    <string name="adaptive_push" formatted="false">"推送"</string>
+    <string name="adaptive_rejected" formatted="false">"遠端已有更新。先拉取它的提交，再推送你的。"</string>
+    <string name="adaptive_review_first" formatted="false">"先檢視"</string>
+    <string name="adaptive_split_auto_commit" formatted="false">"暫停 2 分鐘後自動提交"</string>
+    <string name="adaptive_split_committed">"↑%1$d 已提交"</string>
+    <string name="adaptive_split_typing" formatted="false">"正在輸入…"</string>
+    <string name="adaptive_split_watching">"正在關注 %1$s"</string>
+    <string name="adaptive_sync_all" formatted="false">"全部同步"</string>
+    <string name="adaptive_sync_all_to_push">"同步全部，%1$d 待推送"</string>
+    <string name="adaptive_this_tablet" formatted="false">"這個平板"</string>
+    <string name="adaptive_vaults" formatted="false">"保險庫"</string>
+    <string name="adaptive_view" formatted="false">"檢視"</string>
+    <string name="adaptive_vs">"對比 %1$s"</string>
+    <string name="add_access_body" formatted="false">"GitSync.md 需要共用儲存存取權限以管理裝置資料夾中的真實 Git 工作副本。請在 Android 設定中開啟，然後選擇你想使用的資料夾。"</string>
+    <string name="add_access_cancel" formatted="false">"取消"</string>
+    <string name="add_access_enable" formatted="false">"啟用存取權"</string>
+    <string name="add_access_note" formatted="false">"現在不嗎？你可以繼續使用應用程式儲存。"</string>
+    <string name="add_access_title" formatted="false">"允許存取本機資料夾"</string>
+    <string name="add_accounts_add" formatted="false">"添加 GitHub 賬戶"</string>
+    <string name="add_accounts_browsing" formatted="false">"正在使用此帳號瀏覽"</string>
+    <string name="add_accounts_cancel" formatted="false">"取消"</string>
+    <string name="add_accounts_empty_body" formatted="false">"本地儲存庫仍然可用。"</string>
+    <string name="add_accounts_empty_title" formatted="false">"沒有已連接的帳號"</string>
+    <string name="add_accounts_intro" formatted="false">"選擇用來瀏覽 GitHub 的帳號。每個儲存庫都維持自己的帳號；在儲存庫連線中更改。"</string>
+    <string name="add_accounts_none_signed_in" formatted="false">"設定 · 無登入"</string>
+    <string name="add_accounts_remove" formatted="false">"移除登入資訊"</string>
+    <string name="add_accounts_remove_body" formatted="false">"使用此帳號的儲存庫將要求你重新登入或在儲存庫連線中選擇其他帳號。你的本地檔案和提交仍然保留。"</string>
+    <string name="add_accounts_remove_title">"移除 %1$s？"</string>
+    <string name="add_accounts_title" formatted="false">"GitHub 帳戶"</string>
+    <string name="add_accounts_use" formatted="false">"用於瀏覽"</string>
+    <string name="add_added" formatted="false">"新增"</string>
+    <string name="add_ago_days">"%1$d 天前"</string>
+    <string name="add_ago_hours">"%1$dh前"</string>
+    <string name="add_ago_minutes">"%1$dm 前"</string>
+    <string name="add_ago_months">"%1$d 前幾個月"</string>
+    <string name="add_ago_now" formatted="false">"，剛剛"</string>
+    <string name="add_ago_weeks">"%1$d 前幾週"</string>
+    <string name="add_ago_years">"%1$d 年前"</string>
+    <string name="add_auth_github" formatted="false">"GitHub"</string>
+    <string name="add_auth_none" formatted="false">"無"</string>
+    <string name="add_auth_saved" formatted="false">"已保存"</string>
+    <string name="add_auth_ssh" formatted="false">"SSH 密鑰"</string>
+    <string name="add_auth_token" formatted="false">"代幣"</string>
+    <string name="add_check_access_ro" formatted="false">"唯讀"</string>
+    <string name="add_check_access_rw" formatted="false">"讀取 · 寫入"</string>
+    <string name="add_check_add_on_github" formatted="false">"在 GitHub 上新增倉庫"</string>
+    <string name="add_check_again" formatted="false">"重新檢查"</string>
+    <string name="add_check_app_callout">"GitHub App 已安裝在 %1$s 上，但此倉庫未被選取。在 GitHub 上新增它，然後再回來。"</string>
+    <string name="add_check_app_missing">"GitSync.md 的 GitHub App 尚未在 %1$s 上。使用此倉庫在 GitHub 上新增它，然後再回來。"</string>
+    <string name="add_check_checking" formatted="false">"正在檢查…"</string>
+    <string name="add_check_clone" formatted="false">"複製儲存庫"</string>
+    <string name="add_check_clone_obsidian" formatted="false">"克隆到 Obsidian"</string>
+    <string name="add_check_clones_to" formatted="false">"複製至"</string>
+    <string name="add_check_head_blocked" formatted="false">"需要先修正一個問題。"</string>
+    <string name="add_check_head_checking" formatted="false">"正在檢查\n你的儲存庫。"</string>
+    <string name="add_check_head_ready" formatted="false">"你的保險庫已就緒。"</string>
+    <string name="add_check_lfs_none" formatted="false">"無"</string>
+    <string name="add_check_lfs_used" formatted="false">"使用中"</string>
+    <string name="add_check_measuring" formatted="false">"正在測量"</string>
+    <string name="add_check_no_obsidian" formatted="false">"尚無 .obsidian/ 資料夾"</string>
+    <string name="add_check_note_blocked" formatted="false">"你尚未支付任何費用。儲存庫通過檢查後才會顯示解鎖選項。"</string>
+    <string name="add_check_note_checking" formatted="false">"只讀取中繼資料。解鎖之前不會下載任何筆記。"</string>
+    <string name="add_check_note_ready" formatted="false">"Google Play 在你確認前，會以你的貨幣顯示最終價格。"</string>
+    <string name="add_check_note_ready_unlocked" formatted="false">"Full Access 已解鎖。無需再付款。"</string>
+    <string name="add_check_obsidian_found" formatted="false">"找到 Obsidian 保險庫"</string>
+    <string name="add_check_obsidian_git" formatted="false">"已設定 Obsidian Git 外掛"</string>
+    <string name="add_check_ok" formatted="false">"正常"</string>
+    <string name="add_check_pick_another" formatted="false">"選擇其他儲存庫"</string>
+    <string name="add_check_play_note" formatted="false">"透過 Google Play 一次性購買。無需訂閱。"</string>
+    <string name="add_check_price_once">"%1$s 一次付費"</string>
+    <string name="add_check_size_files" formatted="false">"大小與檔案"</string>
+    <string name="add_check_stat_access" formatted="false">"存取權限"</string>
+    <string name="add_check_stat_files" formatted="false">"檔案"</string>
+    <string name="add_check_stat_lfs" formatted="false">"Git LFS"</string>
+    <string name="add_check_stat_size" formatted="false">"大小"</string>
+    <string name="add_check_step">"第 %1$d 步，共 3 步"</string>
+    <string name="add_check_sub_blocked" formatted="false">"GitSync.md 可以讀取此版本庫，但無法推送。請在 GitHub 上修復，然後再檢查一次。"</string>
+    <string name="add_check_sub_checking" formatted="false">"在你付費之前，先確認 GitSync.md 能同步此 Git 儲存庫。"</string>
+    <string name="add_check_sub_ready" formatted="false">"一切正常。複製一次，Obsidian 就能連同完整歷史記錄開啟它。"</string>
+    <string name="add_check_title" formatted="false">"儲存庫檢查"</string>
+    <string name="add_check_unknown" formatted="false">"—"</string>
+    <string name="add_check_write_access" formatted="false">"寫入權限"</string>
+    <string name="add_clone" formatted="false">"複製"</string>
+    <string name="add_clone_app_storage" formatted="false">"使用應用程式儲存空間"</string>
+    <string name="add_clone_busy" formatted="false">"正在複製儲存庫"</string>
+    <string name="add_clone_bytes">"%1$s · %2$s"</string>
+    <string name="add_clone_cancel" formatted="false">"取消"</string>
+    <string name="add_clone_checkout" formatted="false">"正在檢出檔案"</string>
+    <string name="add_clone_choose_folder" formatted="false">"選擇其他資料夾"</string>
+    <string name="add_clone_cloned" formatted="false">"已剋隆"</string>
+    <string name="add_clone_continue" formatted="false">"繼續"</string>
+    <string name="add_clone_finishing" formatted="false">"正在完成"</string>
+    <string name="add_clone_finishing_body">"將 %1$s 添加到你的保險庫並檢查其 Git LFS 檔案。"</string>
+    <string name="add_clone_lfs" formatted="false">"複製已完成。部分 Git LFS 檔案仍需檢查或下載。複製內容和本機編輯均已保留。"</string>
+    <string name="add_clone_lfs_review" formatted="false">"檢查 Git LFS"</string>
+    <string name="add_clone_location" formatted="false">"複製位置"</string>
+    <string name="add_clone_new_folder" formatted="false">"新增資料夾"</string>
+    <string name="add_clone_nothing_yet" formatted="false">"直到你點擊克隆前不會下載任何東西。"</string>
+    <string name="add_clone_percent">"%1$d%%"</string>
+    <string name="add_clone_preparing" formatted="false">"連接中"</string>
+    <string name="add_clone_receiving" formatted="false">"正在接收對象"</string>
+    <string name="add_clone_register_failed" formatted="false">"無法新增已複製的儲存庫。檔案已保留。請重試新增，或從「本機儲存庫」重新連結其資料夾。"</string>
+    <string name="add_clone_register_retry" formatted="false">"新增已複製的儲存庫"</string>
+    <string name="add_clone_resolving" formatted="false">"正在解析增量變更"</string>
+    <string name="add_clone_retry" formatted="false">"重試"</string>
+    <string name="add_clone_saved_default" formatted="false">"使用已儲存的預設設定"</string>
+    <string name="add_clone_start" formatted="false">"複製儲存庫"</string>
+    <string name="add_clone_title_cloning" formatted="false">"正在複製儲存庫"</string>
+    <string name="add_clone_title_done" formatted="false">"已剋隆"</string>
+    <string name="add_clone_title_failed" formatted="false">"複製失敗"</string>
+    <string name="add_clone_title_ready" formatted="false">"複製儲存庫"</string>
+    <string name="add_clone_to">"→ %1$s"</string>
+    <string name="add_cloning_name">"正在複製 %1$s"</string>
+    <string name="add_close" formatted="false">"關閉"</string>
+    <string name="add_connected_added" formatted="false">"已添加到你的帳戶"</string>
+    <string name="add_connected_title" formatted="false">"已連結 GitHub 帳號"</string>
+    <string name="add_continue" formatted="false">"繼續"</string>
+    <string name="add_default_branch" formatted="false">"預設分支"</string>
+    <string name="add_done" formatted="false">"完成"</string>
+    <string name="add_github_hint" formatted="false">"使用 GitHub 帳戶登錄 github.com。"</string>
+    <string name="add_group_notes" formatted="false">"看起來像是筆記"</string>
+    <string name="add_group_other" formatted="false">"其他所有內容"</string>
+    <string name="add_group_other_matching" formatted="false">"其他所有符合項目"</string>
+    <string name="add_intro" formatted="false">"帶入你已有的儲存庫，或將資料夾變成儲存庫。"</string>
+    <string name="add_key_copied" formatted="false">"公鑰已複製"</string>
+    <string name="add_key_copy" formatted="false">"拷貝公鑰"</string>
+    <string name="add_key_failed" formatted="false">"無法在此手機上生成密鑰。請改用其他密鑰。"</string>
+    <string name="add_key_hint" formatted="false">"將公鑰添加到您的主機一次。私鑰仍保留在此手機上。"</string>
+    <string name="add_key_meta">"ed25519 · %1$s"</string>
+    <string name="add_key_other" formatted="false">"使用其他方式…"</string>
+    <string name="add_key_this_phone" formatted="false">"使用此手機的密鑰"</string>
+    <string name="add_key_title" formatted="false">"此手機的密鑰"</string>
+    <string name="add_local_add_selected" formatted="false">"新增所選儲存庫"</string>
+    <string name="add_local_added" formatted="false">"已新增的儲存庫"</string>
+    <string name="add_local_already" formatted="false">"已新增"</string>
+    <string name="add_local_clean" formatted="false">"乾淨"</string>
+    <string name="add_local_clone_instead" formatted="false">"改從 GitHub 克隆"</string>
+    <string name="add_local_destination">"目標位置：%1$s"</string>
+    <string name="add_local_detached" formatted="false">"分離的 HEAD 或尚無首次提交"</string>
+    <string name="add_local_dirty" formatted="false">"本機變更"</string>
+    <string name="add_local_discovered" formatted="false">"找到的儲存庫"</string>
+    <string name="add_local_files_deleted" formatted="false">"本機檔案已刪除"</string>
+    <string name="add_local_files_kept" formatted="false">"本機檔案已保留"</string>
+    <string name="add_local_in">"在 %1$s 中"</string>
+    <string name="add_local_interrupted" formatted="false">"中斷的複製作業"</string>
+    <string name="add_local_interrupted_body" formatted="false">"檢查資料夾和連線後，重試新增此複製作業。現有檔案會保留。"</string>
+    <string name="add_local_intro" formatted="false">"尋找已存在於此手機上的 Git 工作副本，如 Obsidian 保險庫資料夾，並添加它們而無需再次克隆。稍後移除條目時會保留其文件。"</string>
+    <string name="add_local_none_added" formatted="false">"尚未新增儲存庫。"</string>
+    <string name="add_local_none_body">"%1$s 中沒有 .git 資料夾。請嘗試使用您的筆記應用所用的資料夾，或從 GitHub 克隆。"</string>
+    <string name="add_local_none_title" formatted="false">"未找到可用的工作副本"</string>
+    <string name="add_local_previous" formatted="false">"曾經新增"</string>
+    <string name="add_local_scan_app" formatted="false">"掃描應用程式資料夾"</string>
+    <string name="add_local_scan_app_label" formatted="false">"應用程式資料夾"</string>
+    <string name="add_local_scan_app_sub" formatted="false">"資料夾 GitSync.md 已經儲存"</string>
+    <string name="add_local_scan_device" formatted="false">"掃描裝置資料夾"</string>
+    <string name="add_local_scan_device_sub" formatted="false">"選擇一個資料夾，例如 文件 或 Obsidian"</string>
+    <string name="add_local_scanning">"正在掃描 %1$s"</string>
+    <string name="add_local_staged">"暫存複本：%1$s"</string>
+    <string name="add_local_title" formatted="false">"本機儲存庫"</string>
+    <string name="add_local_tracking_removed" formatted="false">"已移除 Git 追蹤 · 檔案保留"</string>
+    <string name="add_local_truncated" formatted="false">"掃描已達到深度或資料夾數量上限。部分資料夾未被掃描。"</string>
+    <string name="add_location_body" formatted="false">"當你克隆時選擇不同的資料夾，或在設定中設定預設值。"</string>
+    <string name="add_location_head" formatted="false">"預設儲存位置"</string>
+    <string name="add_location_head_muted" formatted="false">"位置。"</string>
+    <string name="add_location_label" formatted="false">"下載位置"</string>
+    <string name="add_meta_lfs">"%1$s LFS"</string>
+    <string name="add_meta_private" formatted="false">"俬有"</string>
+    <string name="add_meta_public" formatted="false">"公共"</string>
+    <string name="add_more_options" formatted="false">"名稱、分支和資料夾"</string>
+    <string name="add_more_options_meta">"%1$s · %2$s"</string>
+    <string name="add_none_hint" formatted="false">"適用於公共倉庫。GitSync.md 不會傳送任何憑證。"</string>
+    <string name="add_not_signed_in" formatted="false">"未登入"</string>
+    <string name="add_owner_orgs" formatted="false">"組織"</string>
+    <string name="add_owner_starred" formatted="false">"已加星號"</string>
+    <string name="add_owner_yours" formatted="false">"我的"</string>
+    <string name="add_picker_accounts" formatted="false">"GitHub 帳戶"</string>
+    <string name="add_picker_empty_owner" formatted="false">"此處尚無倉庫。"</string>
+    <string name="add_picker_refresh" formatted="false">"重新整理"</string>
+    <string name="add_picker_search" formatted="false">"搜尋儲存庫"</string>
+    <string name="add_picker_starred_failed" formatted="false">"無法載入你標星的倉庫。"</string>
+    <string name="add_picker_title" formatted="false">"選擇儲存庫"</string>
+    <string name="add_publish_account" formatted="false">"GitHub 賬戶"</string>
+    <string name="add_publish_author_email" formatted="false">"作者電子郵件"</string>
+    <string name="add_publish_author_name" formatted="false">"作者名稱"</string>
+    <string name="add_publish_cancel" formatted="false">"取消"</string>
+    <string name="add_publish_check" formatted="false">"檢查原始目標"</string>
+    <string name="add_publish_choose" formatted="false">"選擇資料夾"</string>
+    <string name="add_publish_confirm" formatted="false">"發佈"</string>
+    <string name="add_publish_confirm_body">"這會將 %1$s 設為 %2$s 儲存庫並上傳已保存的第一次提交。請保持應用程式打開。重試會檢查此目標並永遠不會進行第二次提交。"</string>
+    <string name="add_publish_confirm_dest">"%1$s · %2$s\n%3$s · %4$s · %5$s"</string>
+    <string name="add_publish_confirm_title" formatted="false">"發佈此已儲存的提交？"</string>
+    <string name="add_publish_continue" formatted="false">"繼續已儲存的發佈"</string>
+    <string name="add_publish_creating" formatted="false">"正在建立儲存庫…"</string>
+    <string name="add_publish_discard" formatted="false">"捨棄已儲存的檢查結果"</string>
+    <string name="add_publish_file_ignored">"%1$s · 被忽略"</string>
+    <string name="add_publish_file_issue">"%1$s · %2$s"</string>
+    <string name="add_publish_file_large">"%1$s · 超過 10 MiB"</string>
+    <string name="add_publish_file_regular">"%1$s · 一般檔案"</string>
+    <string name="add_publish_file_sensitive">"%1$s · 敏感檔名"</string>
+    <string name="add_publish_files" formatted="false">"檔案"</string>
+    <string name="add_publish_intro" formatted="false">"選擇此手機上的資料夾，檢查其檔案並保存第一次提交。發佈後會在您的 GitHub 上建立新的儲存庫並上傳。"</string>
+    <string name="add_publish_keep_note" formatted="false">"離開後進度會保持保存。如果 Android 移除存取權限，請重新連接相同資料夾。"</string>
+    <string name="add_publish_limits" formatted="false">"你的檔案將保持在原處。每個檔案最多 10 MiB，最多 10,000 個檔案，總共 256 MiB。Git 會跳過空資料夾。"</string>
+    <string name="add_publish_manage_accounts" formatted="false">"管理帳號"</string>
+    <string name="add_publish_message" formatted="false">"初始提交訊息"</string>
+    <string name="add_publish_no_account" formatted="false">"登入 GitHub 以發佈。"</string>
+    <string name="add_publish_open" formatted="false">"打開儲存庫"</string>
+    <string name="add_publish_original" formatted="false">"原始資料夾"</string>
+    <string name="add_publish_phase_created" formatted="false">"儲存庫已建立，等待上傳"</string>
+    <string name="add_publish_phase_done" formatted="false">"已發佈"</string>
+    <string name="add_publish_phase_prepared" formatted="false">"本機提交已準備好"</string>
+    <string name="add_publish_phase_published" formatted="false">"提交已發佈，等待設定"</string>
+    <string name="add_publish_phase_review" formatted="false">"檢查檔案和目標"</string>
+    <string name="add_publish_phase_unknown" formatted="false">"儲存庫建立需要檢查"</string>
+    <string name="add_publish_prepare" formatted="false">"準備本機提交"</string>
+    <string name="add_publish_preparing" formatted="false">"正在準備本地提交…"</string>
+    <string name="add_publish_private" formatted="false">"私有儲存庫"</string>
+    <string name="add_publish_private_off" formatted="false">"任何人都可以讀取所選檔案和歷史。"</string>
+    <string name="add_publish_private_on" formatted="false">"只有你授予存取權限的人才能讀取。"</string>
+    <string name="add_publish_progress_bytes">"%1$s / %2$s · 保持應用程式開啟"</string>
+    <string name="add_publish_progress_keep">"%1$s · 保持應用程式開啟"</string>
+    <string name="add_publish_public_body" formatted="false">"任何人都可以閱讀你發佈的檔案。檢查你選取的內容是否含有機密、個人資料或不可以分享的檔案。"</string>
+    <string name="add_publish_public_confirm" formatted="false">"選擇公開"</string>
+    <string name="add_publish_public_title" formatted="false">"將此儲存庫設為公開？"</string>
+    <string name="add_publish_publish" formatted="false">"發佈到 GitHub"</string>
+    <string name="add_publish_reconnect" formatted="false">"重新連接原始資料夾"</string>
+    <string name="add_publish_refresh" formatted="false">"重新整理檔案"</string>
+    <string name="add_publish_registering" formatted="false">"正在新增資料庫…"</string>
+    <string name="add_publish_reload" formatted="false">"重新載入已儲存的進度"</string>
+    <string name="add_publish_repo_name" formatted="false">"儲存庫名稱"</string>
+    <string name="add_publish_save_review" formatted="false">"儲存檢查結果"</string>
+    <string name="add_publish_saved_commit">"已儲存的提交：%1$s"</string>
+    <string name="add_publish_saved_progress" formatted="false">"已儲存的進度"</string>
+    <string name="add_publish_selected">"已選擇：%1$d · %2$s"</string>
+    <string name="add_publish_step">"第 %1$d 步，共 3 步"</string>
+    <string name="add_publish_stop" formatted="false">"停止"</string>
+    <string name="add_publish_title" formatted="false">"發佈資料夾"</string>
+    <string name="add_publish_unknown_note" formatted="false">"GitHub 可能已經建立了倉庫。請檢查原始目的地。除非您選擇使用匹配的空倉庫，否則不會建立第二個倉庫。"</string>
+    <string name="add_publish_uploading" formatted="false">"正在上傳已儲存的提交…"</string>
+    <string name="add_rail_github" formatted="false">"GitHub"</string>
+    <string name="add_rail_phone" formatted="false">"此手機"</string>
+    <string name="add_remote_file" formatted="false">"本機"</string>
+    <string name="add_remote_git" formatted="false">"git://"</string>
+    <string name="add_remote_http" formatted="false">"HTTP"</string>
+    <string name="add_remote_https" formatted="false">"HTTPS"</string>
+    <string name="add_remote_intro" formatted="false">"GitLab、Gitea、Codeberg、你自己的伺服器。"</string>
+    <string name="add_remote_label" formatted="false">"遠程URL"</string>
+    <string name="add_remote_name_invalid" formatted="false">"使用不含 / 或 \\ 的名稱，且不能為 “.” 或 “..”。"</string>
+    <string name="add_remote_placeholder" formatted="false">"ssh://git@host/owner/repo.git"</string>
+    <string name="add_remote_ssh" formatted="false">"SSH"</string>
+    <string name="add_remote_title" formatted="false">"任何 Git 主機"</string>
+    <string name="add_resume_meta">"%1$s · 第 %2$d 步，共 3 步 · 已保存"</string>
+    <string name="add_resume_title" formatted="false">"繼續發佈"</string>
+    <string name="add_saved_hint" formatted="false">"重新使用為此儲存庫保存的加密連線。"</string>
+    <string name="add_sign_in_with" formatted="false">"登入方式"</string>
+    <string name="add_signed_in_as">"已以 @%1$s 身分登入"</string>
+    <string name="add_signin_back_accounts" formatted="false">"返回帳戶"</string>
+    <string name="add_signin_body" formatted="false">"複製任意儲存庫，在 Obsidian 或其他 App 中書寫，輕點即可同步。"</string>
+    <string name="add_signin_busy" formatted="false">"登入中⋯"</string>
+    <string name="add_signin_eyebrow" formatted="false">"任何儲存庫，同步到 Android。"</string>
+    <string name="add_signin_github" formatted="false">"使用 GitHub 登入"</string>
+    <string name="add_signin_head_1" formatted="false">"你的筆記。"</string>
+    <string name="add_signin_head_2" formatted="false">"真正的 Git。"</string>
+    <string name="add_signin_head_3" formatted="false">"始終同步前進。"</string>
+    <string name="add_signin_rail" formatted="false">"這支手機與 GitHub 會議在同一同步點"</string>
+    <string name="add_signin_sample" formatted="false">"試用範例儲存庫"</string>
+    <string name="add_signin_sample_busy" formatted="false">"正在開啟範例…"</string>
+    <string name="add_signin_sample_hint" formatted="false">"真實 Git，離線。無需帳戶。"</string>
+    <string name="add_signin_token" formatted="false">"個人存取權杖"</string>
+    <string name="add_signin_waiting" formatted="false">"在瀏覽器分頁完成 GitHub。你會立即回來。"</string>
+    <string name="add_ssh_import_failed" formatted="false">"無法讀取該金鑰檔案。"</string>
+    <string name="add_ssh_import_key" formatted="false">"匯入金鑰檔案"</string>
+    <string name="add_test_clone" formatted="false">"測試並複製"</string>
+    <string name="add_test_failed_auth" formatted="false">"主機拒絕此登入。請檢查金鑰或令牌及其對倉庫的存取權限。"</string>
+    <string name="add_test_failed_branch">"主機沒有名為 %1$s 的分支。"</string>
+    <string name="add_test_failed_missing" formatted="false">"此地址的主機沒有倉庫。"</string>
+    <string name="add_test_failed_network" formatted="false">"無法連接至主機。請檢查地址及你的連線。"</string>
+    <string name="add_test_host_key" formatted="false">"確認主機的 SSH 金鑰，然後再次點擊測試與克隆。"</string>
+    <string name="add_testing" formatted="false">"測試登入中…"</string>
+    <string name="add_title" formatted="false">"加入保險庫"</string>
+    <string name="add_token_body" formatted="false">"貼上具有儲存庫存取權限的 GitHub 權杖。"</string>
+    <string name="add_token_create" formatted="false">"在 GitHub 上建立代幣"</string>
+    <string name="add_token_hide" formatted="false">"隱藏"</string>
+    <string name="add_token_hint" formatted="false">"該代幣會在此手機上加密，並僅傳送到此主機。"</string>
+    <string name="add_token_label" formatted="false">"代幣"</string>
+    <string name="add_token_scopes" formatted="false">"範圍：repo 和 user:email。該代幣會在此手機上加密。"</string>
+    <string name="add_token_secret" formatted="false">"代幣"</string>
+    <string name="add_token_show" formatted="false">"顯示"</string>
+    <string name="add_token_sign_in" formatted="false">"登入"</string>
+    <string name="add_token_title" formatted="false">"個人存取權杖"</string>
+    <string name="add_token_user" formatted="false">"使用者名稱"</string>
+    <string name="add_unlock_rail">"%1$s · %2$s · 已勾選，準備克隆"</string>
+    <string name="add_unlock_rail_cd">"%1$s，已勾選，準備從 GitHub 克隆到 Obsidian"</string>
+    <string name="add_unlock_rail_from" formatted="false">"GitHub"</string>
+    <string name="add_unlock_rail_plain">"%1$s · 已勾選，準備克隆"</string>
+    <string name="add_unlock_rail_to" formatted="false">"Obsidian"</string>
+    <string name="add_url_hint" formatted="false">"HTTPS、SSH、git:// 或 owner/repo。自行架設？點一下鑰匙圖像。"</string>
+    <string name="add_url_key" formatted="false">"其他主機的登入選項"</string>
+    <string name="add_url_label" formatted="false">"儲存庫 URL"</string>
+    <string name="add_url_placeholder" formatted="false">"https://github.com/owner/repo"</string>
+    <string name="add_url_section" formatted="false">"或貼上 URL"</string>
+    <string name="add_way_github" formatted="false">"從 GitHub 複製"</string>
+    <string name="add_way_github_sign_in" formatted="false">"登入以選擇你的倉庫"</string>
+    <string name="add_way_local" formatted="false">"在此手機上尋找克隆"</string>
+    <string name="add_way_local_sub" formatted="false">"掃描共享存儲中現有的 .git 資料夾"</string>
+    <string name="add_way_open" formatted="false">"打開儲存庫資料夾"</string>
+    <string name="add_way_open_sub" formatted="false">"使用系統資料夾選擇器選擇一個 Git 倉庫"</string>
+    <string name="add_way_publish" formatted="false">"發佈資料夾"</string>
+    <string name="add_way_publish_sub" formatted="false">"用你的筆記建立新的 GitHub 儲存庫"</string>
     <string name="automation_shortcut_label">"%1$s：%2$s"</string>
     <string name="background_allow_push" formatted="false">"允許自動發佈"</string>
     <string name="background_binding">"僅限追蹤 %2$s/%3$s 的 %1$s 分支。分支、資料夾、連線或帳號變更後需要重新檢查。"</string>
@@ -261,12 +597,43 @@
     <string name="dialogs_success_title" formatted="false">"成功"</string>
     <string name="dialogs_timestamp_unknown" formatted="false">"未知"</string>
     <string name="dialogs_warning_title" formatted="false">"警告"</string>
+    <string name="diff_m3_binary" formatted="false">"此檔案不是文字檔，因此沒有可比較的行。"</string>
+    <string name="diff_m3_changes" formatted="false">"更改"</string>
+    <string name="diff_m3_deleted" formatted="false">"此檔案已被刪除。放棄會從最後一次提交恢復它。"</string>
+    <string name="diff_m3_discard" formatted="false">"捨棄"</string>
+    <string name="diff_m3_hunk">"%1$s · 第 %2$d 行"</string>
+    <string name="diff_m3_hunk_line">"第 %1$d 行"</string>
+    <string name="diff_m3_load_failed" formatted="false">"無法讀取此檔案的變更。"</string>
+    <string name="diff_m3_next" formatted="false">"下一個檔案"</string>
+    <string name="diff_m3_no_changes" formatted="false">"自上次提交以來沒有變更。"</string>
+    <string name="diff_m3_position">"%1$s · %2$d / %3$d"</string>
+    <string name="diff_m3_preview" formatted="false">"預覽"</string>
+    <string name="diff_m3_previous" formatted="false">"上一個檔案"</string>
+    <string name="diff_m3_stats_a11y">"新增 %1$d 行，移除 %2$d 行"</string>
+    <string name="diff_m3_vs_last_commit">"與上次提交比較 %1$s"</string>
+    <string name="diff_m3_vs_nothing" formatted="false">"新檔案 · 尚無提交"</string>
+    <string name="diff_m3_whole_file" formatted="false">"整個檔案"</string>
     <string name="discard_clear_staging" formatted="false">"清除暫存"</string>
     <string name="discard_review_all" formatted="false">"下列已追蹤檔案的變更和新檔案將被永久捨棄。忽略的檔案會保留。"</string>
     <string name="discard_review_empty" formatted="false">"沒有可捨棄的變更。"</string>
     <string name="discard_review_operation" formatted="false">"此操作也會中止進行中的 Git 操作。"</string>
     <string name="discard_review_unborn" formatted="false">"尚無提交。此操作將取消所列檔案的暫存，並保留其內容。"</string>
     <string name="discovery_scanned">"已掃描 %1$s。請選擇要加入的工作副本。"</string>
+    <string name="editor_m3_commit" formatted="false">"提交"</string>
+    <string name="editor_m3_markdown" formatted="false">"Markdown"</string>
+    <string name="editor_m3_md_bold" formatted="false">"粗體"</string>
+    <string name="editor_m3_md_code" formatted="false">"程式碼"</string>
+    <string name="editor_m3_md_heading" formatted="false">"標題"</string>
+    <string name="editor_m3_md_indent" formatted="false">"縮排"</string>
+    <string name="editor_m3_md_link" formatted="false">"連結"</string>
+    <string name="editor_m3_md_task" formatted="false">"任務"</string>
+    <string name="editor_m3_not_saved" formatted="false">"尚未儲存"</string>
+    <string name="editor_m3_save_now" formatted="false">"立即儲存"</string>
+    <string name="editor_m3_saved" formatted="false">"已保存"</string>
+    <string name="editor_m3_saved_changed">"已保存 · %1$s"</string>
+    <string name="editor_m3_saving" formatted="false">"正在保存……"</string>
+    <string name="editor_m3_subtitle">"%1$s / %2$s"</string>
+    <string name="editor_m3_vault_ahead">"%1$s ↑%2$d"</string>
     <string name="file_clone_failure" formatted="false">"無法複製本機儲存庫。請檢查來源資料夾、儲存空間存取權和分支。現有資料夾已保留。"</string>
     <string name="file_clone_guidance" formatted="false">"使用本機存取複製裝置上的儲存庫。若使用共用儲存空間，請先在設定中授予資料夾存取權。"</string>
     <string name="file_delete_body" formatted="false">"檔案將從此裝置移除。如果該檔案受 Git 追蹤，Git 會將其顯示為已刪除。"</string>
@@ -289,15 +656,344 @@
     <string name="file_renamed" formatted="false">"已重新命名"</string>
     <string name="file_save_title" formatted="false">"儲存變更？"</string>
     <string name="file_saved" formatted="false">"已儲存"</string>
+    <string name="filehistory_m3_commits" formatted="false">"提交"</string>
+    <string name="filehistory_m3_empty" formatted="false">"尚無提交包含此檔案。"</string>
+    <string name="filehistory_m3_load_failed" formatted="false">"無法讀取此檔案的歷史紀錄。"</string>
+    <string name="filehistory_m3_meta">"%1$s · %2$s · %3$s"</string>
+    <string name="filehistory_m3_subtitle">"歷史紀錄 · %1$s"</string>
     <string name="files_folder" formatted="false">"資料夾"</string>
     <string name="files_hide_hidden" formatted="false">"隱藏隱藏檔案"</string>
+    <string name="files_m3_actions_for">"%1$s 的動作"</string>
+    <string name="files_m3_age_days">"%1$d 天前"</string>
+    <string name="files_m3_age_hours">"%1$dh前"</string>
+    <string name="files_m3_age_minutes">"%1$dm 前"</string>
+    <string name="files_m3_age_months">"%1$d 前幾個月"</string>
+    <string name="files_m3_age_now" formatted="false">"，剛剛"</string>
+    <string name="files_m3_age_weeks">"%1$d 前幾週"</string>
+    <string name="files_m3_age_years">"%1$d 年前"</string>
+    <string name="files_m3_check_for_changes" formatted="false">"檢查變更"</string>
+    <string name="files_m3_delete" formatted="false">"刪除"</string>
+    <string name="files_m3_delete_folder_body" formatted="false">"此處只能刪除空資料夾。"</string>
+    <string name="files_m3_delete_folder_title" formatted="false">"刪除資料夾？"</string>
+    <string name="files_m3_fetch" formatted="false">"穫取"</string>
+    <string name="files_m3_fetch_cd">"從遠端抓取 %1$s"</string>
+    <string name="files_m3_fetch_failed" formatted="false">"無法從遠端抓取此檔案。請檢查您的連線和登入，然後再試一次。"</string>
+    <string name="files_m3_fetched">"已抓取 %1$s。"</string>
+    <string name="files_m3_folder_path" formatted="false">"資料夾路徑"</string>
+    <string name="files_m3_footnote" formatted="false">"長按任意檔案以操作。"</string>
+    <string name="files_m3_history" formatted="false">"歷史記錄"</string>
+    <string name="files_m3_lfs_pointer">"LFS 指標 · 遠端上為 %1$s"</string>
+    <string name="files_m3_meta">"%1$s · %2$s"</string>
+    <string name="files_m3_meta_edited">"已編輯 %1$s · %2$s"</string>
+    <string name="files_m3_new_file_cd" formatted="false">"新文件"</string>
+    <string name="files_m3_open_in" formatted="false">"打開方式…"</string>
+    <string name="files_m3_open_in_chooser">"在…中打開 %1$s"</string>
+    <string name="files_m3_open_in_failed" formatted="false">"此手機上沒有應用程式可以打開此檔案。"</string>
+    <string name="files_m3_rename" formatted="false">"重命名"</string>
+    <string name="files_m3_rename_field" formatted="false">"名稱"</string>
+    <string name="files_m3_tag_added" formatted="false">"A"</string>
+    <string name="files_m3_tag_conflict" formatted="false">"!"</string>
+    <string name="files_m3_tag_lfs" formatted="false">"LFS"</string>
+    <string name="files_m3_tag_modified" formatted="false">"M"</string>
     <string name="files_show_hidden" formatted="false">"顯示隱藏檔案"</string>
     <string name="folder_access_not_enabled" formatted="false">"未啟用資料夾存取權限。你可以繼續使用應用程式儲存空間。"</string>
     <string name="folder_picker_unavailable" formatted="false">"此裝置沒有可用的資料夾選擇器"</string>
     <string name="folder_settings_unavailable" formatted="false">"無法使用 Android 儲存空間設定。應用程式儲存空間仍然可用。"</string>
     <string name="folder_unusable" formatted="false">"無法使用此資料夾"</string>
     <string name="git_fetch" formatted="false">"穫取"</string>
+    <string name="git_m3_abort" formatted="false">"中止"</string>
+    <string name="git_m3_abort_merge" formatted="false">"中止合併"</string>
+    <string name="git_m3_abort_merge_body">"將 %1$s 放回合併前的位置。目前已做的選擇將被丟棄。"</string>
+    <string name="git_m3_abort_merge_title" formatted="false">"取消此次合併？"</string>
+    <string name="git_m3_abort_rebase_ask" formatted="false">"中止變基…"</string>
+    <string name="git_m3_access_github" formatted="false">"GitHub 登録"</string>
+    <string name="git_m3_access_https" formatted="false">"HTTPS"</string>
+    <string name="git_m3_access_local" formatted="false">"本地資料夾"</string>
+    <string name="git_m3_access_ssh" formatted="false">"SSH 密鑰"</string>
+    <string name="git_m3_age_days">"%1$dd"</string>
+    <string name="git_m3_age_hours">"%1$dh"</string>
+    <string name="git_m3_age_minutes">"%1$dm"</string>
+    <string name="git_m3_ago_days">"%1$d 天前"</string>
+    <string name="git_m3_ago_hours">"%1$dh前"</string>
+    <string name="git_m3_ago_minutes">"%1$dm 前"</string>
+    <string name="git_m3_ago_now" formatted="false">"，剛剛"</string>
+    <string name="git_m3_ahead">"領先 %1$d"</string>
+    <string name="git_m3_annotated" formatted="false">"註釋"</string>
+    <string name="git_m3_applied_toast">"已套用 %1$s。暫存仍然保留。"</string>
+    <string name="git_m3_apply" formatted="false">"套用"</string>
+    <string name="git_m3_apply_help" formatted="false">"帶回變更並保留暫存。"</string>
+    <string name="git_m3_back_to_remote" formatted="false">"回到遠端"</string>
+    <string name="git_m3_backup_at">"備份：%1$s"</string>
+    <string name="git_m3_behind">"落後 %1$d"</string>
+    <string name="git_m3_binary_side" formatted="false">"此檔案無法以文字顯示。請選擇完整版本。"</string>
+    <string name="git_m3_both_edited_file" formatted="false">"雙方都編輯了此檔案。"</string>
+    <string name="git_m3_both_edited_section">"雙方都編輯了「%1$s」。"</string>
+    <string name="git_m3_both_moved" formatted="false">"雙方都有變動"</string>
+    <string name="git_m3_both_moved_body">"僅拉取快轉，因此無法合併這些。合併會保留兩者歷史。變基會將你的 %1$d 提交放在最上方。"</string>
+    <string name="git_m3_both_moved_headline" formatted="false">"你寫作期間遠端已有新進展。"</string>
+    <string name="git_m3_both_sides_edited" formatted="false">"雙方都編輯了此檔案。"</string>
+    <string name="git_m3_branch_name" formatted="false">"分支名稱"</string>
+    <string name="git_m3_branch_placeholder" formatted="false">"例如 draft/winter"</string>
+    <string name="git_m3_branches" formatted="false">"分支"</string>
+    <string name="git_m3_branches_stashes_tags" formatted="false">"分支、暫存和標籤"</string>
+    <string name="git_m3_cancel" formatted="false">"取消"</string>
+    <string name="git_m3_cant_switch_note" formatted="false">"未追蹤檔案若被其他分支覆蓋也會阻止切換。尚未有變更。"</string>
+    <string name="git_m3_cant_switch_title" formatted="false">"尚無法切換"</string>
+    <string name="git_m3_check_changes" formatted="false">"檢查變更"</string>
+    <string name="git_m3_commit_as" formatted="false">"提交身分"</string>
+    <string name="git_m3_commit_first" formatted="false">"請先提交"</string>
+    <string name="git_m3_commit_history" formatted="false">"提交歷史"</string>
+    <string name="git_m3_commit_of">"%2$d 的提交 %1$d"</string>
+    <string name="git_m3_conflict_body" formatted="false">"選擇要保留的版本，或兩者都保留之後再整理。"</string>
+    <string name="git_m3_conflict_progress">"衝突 %1$d 與 %2$d · %3$s"</string>
+    <string name="git_m3_connection" formatted="false">"連線"</string>
+    <string name="git_m3_continue_retry_first" formatted="false">"繼續 rebase · 先重試"</string>
+    <string name="git_m3_create" formatted="false">"建立"</string>
+    <string name="git_m3_create_tag" formatted="false">"建立標籤"</string>
+    <string name="git_m3_current" formatted="false">"當前"</string>
+    <string name="git_m3_current_branch" formatted="false">"目前分支"</string>
+    <string name="git_m3_delete" formatted="false">"刪除"</string>
+    <string name="git_m3_delete_branch_body">"刪除此手機上的 %1$s。GitHub 不受影響。"</string>
+    <string name="git_m3_delete_branch_cd">"刪除分支 %1$s"</string>
+    <string name="git_m3_delete_branch_title" formatted="false">"要刪除分支嗎？"</string>
+    <string name="git_m3_delete_files_sub" formatted="false">"從此手機移除此資料夾"</string>
+    <string name="git_m3_delete_force" formatted="false">"強制"</string>
+    <string name="git_m3_delete_force_help" formatted="false">"即使分支的提交從未合併，也強制刪除該分支。它們可能會丟失。"</string>
+    <string name="git_m3_delete_normal" formatted="false">"一般"</string>
+    <string name="git_m3_delete_normal_help" formatted="false">"僅在分支的提交已合併時刪除該分支。"</string>
+    <string name="git_m3_delete_tag" formatted="false">"刪除標籤"</string>
+    <string name="git_m3_delete_tag_body">"標籤會從此手機中消失。提交 %1$s 保留，且已推送到 GitHub 的副本不受影響。"</string>
+    <string name="git_m3_delete_tag_cd">"刪除標籤 %1$s"</string>
+    <string name="git_m3_delete_tag_title">"刪除「%1$s」？"</string>
+    <string name="git_m3_deleted_here_edited_there" formatted="false">"此手機已刪除它。另一端對它進行了編輯。"</string>
+    <string name="git_m3_deleted_on_phone" formatted="false">"已在此手機刪除。"</string>
+    <string name="git_m3_deleted_on_remote">"已在 %1$s 刪除。"</string>
+    <string name="git_m3_detached">"已從 %1$s 分離"</string>
+    <string name="git_m3_discard" formatted="false">"捨棄變更"</string>
+    <string name="git_m3_disconnected" formatted="false">"已斷開連接"</string>
+    <string name="git_m3_drop" formatted="false">"丟棄"</string>
+    <string name="git_m3_drop_cd">"丟棄 %1$s"</string>
+    <string name="git_m3_drop_help" formatted="false">"刪除暫存而不應用它。"</string>
+    <string name="git_m3_dropped_toast">"已丟棄 %1$s。"</string>
+    <string name="git_m3_edit_by_hand" formatted="false">"手動編輯"</string>
+    <string name="git_m3_edit_connection" formatted="false">"編輯連線"</string>
+    <string name="git_m3_edited_ago">"編輯於 %1$s"</string>
+    <string name="git_m3_edited_here_deleted_there" formatted="false">"此手機編輯了它。對方刪除了它。"</string>
+    <string name="git_m3_fetch_again" formatted="false">"再次抓取"</string>
+    <string name="git_m3_fetch_and_push">"抓取並推送：%1$s"</string>
+    <string name="git_m3_fetch_hint" formatted="false">"查看從其他設備推送的新分支。"</string>
+    <string name="git_m3_fetch_review_again" formatted="false">"再次抓取並查看"</string>
+    <string name="git_m3_fetch_sub" formatted="false">"檢查 GitHub 是否有新的提交"</string>
+    <string name="git_m3_fetched">"擷取於 %1$s"</string>
+    <string name="git_m3_finishing_merge" formatted="false">"正在完成合併…"</string>
+    <string name="git_m3_folder_location" formatted="false">"資料夾及其位置"</string>
+    <string name="git_m3_from" formatted="false">"來自"</string>
+    <string name="git_m3_from_remote">"↓%1$d 個來自遠端"</string>
+    <string name="git_m3_from_who">" 來自 %1$s"</string>
+    <string name="git_m3_github" formatted="false">"GitHub"</string>
+    <string name="git_m3_hand_edited_markers" formatted="false">"檔案中仍有衝突標記。請在編輯器中移除它們，然後再回來。"</string>
+    <string name="git_m3_hand_edited_ready" formatted="false">"手動編輯。使用你編輯的檔案，或選擇一方來替換它。"</string>
+    <string name="git_m3_how" formatted="false">"如何"</string>
+    <string name="git_m3_in_sync" formatted="false">"已同步"</string>
+    <string name="git_m3_in_sync_headline" formatted="false">"這支手機與遠端匹配。"</string>
+    <string name="git_m3_in_the_way" formatted="false">"擋路中"</string>
+    <string name="git_m3_in_this_vault" formatted="false">"在此保險庫中"</string>
+    <string name="git_m3_its_remotes" formatted="false">"其遠端"</string>
+    <string name="git_m3_keep_backup" formatted="false">"保持經驗證的備份"</string>
+    <string name="git_m3_keep_backup_sub" formatted="false">".git 資料夾的複製與 ZIP"</string>
+    <string name="git_m3_keep_both" formatted="false">"兩者都保留"</string>
+    <string name="git_m3_kept_edit" formatted="false">"手動解決。"</string>
+    <string name="git_m3_kept_local" formatted="false">"保留重新播放的本地提交。"</string>
+    <string name="git_m3_kept_upstream" formatted="false">"保留上游版本。"</string>
+    <string name="git_m3_lfs" formatted="false">"大型檔案（LFS）"</string>
+    <string name="git_m3_lfs_none" formatted="false">"未使用"</string>
+    <string name="git_m3_lfs_value">"%1$s · %2$d 已鎖定"</string>
+    <string name="git_m3_light" formatted="false">"輕量"</string>
+    <string name="git_m3_local_only" formatted="false">"僅限本機"</string>
+    <string name="git_m3_manage_vault" formatted="false">"管理保險庫"</string>
+    <string name="git_m3_marker_end" formatted="false">"雙方版本結束"</string>
+    <string name="git_m3_marker_ours" formatted="false">"此手機的版本"</string>
+    <string name="git_m3_marker_theirs">"%1$s 的版本"</string>
+    <string name="git_m3_merge" formatted="false">"合併"</string>
+    <string name="git_m3_merge_and_push" formatted="false">"合併並推送"</string>
+    <string name="git_m3_merge_author">"合併作者: %1$s"</string>
+    <string name="git_m3_merge_both_body" formatted="false">"你的提交保持其ID。因為雙方都有變動，這會生成一個合併提交。雙方都編輯的文件可能需要你選擇。"</string>
+    <string name="git_m3_merge_current_body" formatted="false">"雙方匹配。沒有需要合併的內容。"</string>
+    <string name="git_m3_merge_ff_body" formatted="false">"只有遠端有變動，所以這會快進你的分支。沒有新的提交。"</string>
+    <string name="git_m3_merge_in_progress" formatted="false">"正在合併中"</string>
+    <string name="git_m3_merge_into">"合併到 %1$s"</string>
+    <string name="git_m3_merge_locally" formatted="false">"在本機合併"</string>
+    <string name="git_m3_merge_message">"合併 %1$s"</string>
+    <string name="git_m3_merge_named">"合併 %1$s"</string>
+    <string name="git_m3_merge_pause_note" formatted="false">"如果兩個分支都更改了相同的檔案，合併會暫停，以便你選擇要保留的內容於 Git。"</string>
+    <string name="git_m3_merge_push_body">"將 %1$s 更新為 %2$s，然後推送到 %3$s。衝突會阻止推送。如果遠端沒有確認，合併將保留在這支手機上，你可以重試。"</string>
+    <string name="git_m3_merge_push_only_body" formatted="false">"遠端沒有新內容。合併並推送會傳送你的提交。"</string>
+    <string name="git_m3_merge_push_title" formatted="false">"要合併並推送嗎？"</string>
+    <string name="git_m3_merge_ready" formatted="false">"所有衝突已解決。完成合併。"</string>
+    <string name="git_m3_merge_reviewing" formatted="false">"正在抓取並檢視遠端的內容…"</string>
+    <string name="git_m3_merge_sub" formatted="false">"抓取、檢視，然後合併"</string>
+    <string name="git_m3_merging">"%1$s · 正在合併 %2$s"</string>
+    <string name="git_m3_message_optional" formatted="false">"訊息（可選）"</string>
+    <string name="git_m3_more_files">"%1$d 更多"</string>
+    <string name="git_m3_move_repository" formatted="false">"移動儲存庫"</string>
+    <string name="git_m3_move_sub" formatted="false">"選擇新資料夾"</string>
+    <string name="git_m3_never_fetched" formatted="false">"尚未取得"</string>
+    <string name="git_m3_new_branch" formatted="false">"新分支"</string>
+    <string name="git_m3_new_on_remote" formatted="false">"遠端新增"</string>
+    <string name="git_m3_new_on_remote_body">"拉取快進 %1$s 以匹配。此手機上的任何資料都不會丟失。"</string>
+    <string name="git_m3_new_on_remote_headline" formatted="false">"遠端有你尚未擁有的提交。"</string>
+    <string name="git_m3_new_tag" formatted="false">"新標籤"</string>
+    <string name="git_m3_no_backup_warning" formatted="false">"若沒有備份，這支手機的 Git 歷史紀錄將永久刪除。已存在 GitHub 的提交是安全的。"</string>
+    <string name="git_m3_no_conflicts" formatted="false">"沒有剩餘衝突。"</string>
+    <string name="git_m3_no_stashes" formatted="false">"沒有儲存任何暫存。"</string>
+    <string name="git_m3_no_upstream" formatted="false">"僅限本地 · 無上游"</string>
+    <string name="git_m3_no_upstream_body" formatted="false">"選擇一個上游，以便拉取和推送時知道去向。"</string>
+    <string name="git_m3_no_upstream_headline" formatted="false">"此分支尚未追蹤任何遠端分支。"</string>
+    <string name="git_m3_no_upstream_kicker" formatted="false">"沒有上游分支"</string>
+    <string name="git_m3_none" formatted="false">"無"</string>
+    <string name="git_m3_not_set" formatted="false">"未設定"</string>
+    <string name="git_m3_not_tracked">"%1$s · 未追蹤"</string>
+    <string name="git_m3_notes_attachments_any" formatted="false">"你的筆記和附件"</string>
+    <string name="git_m3_nothing_new">"沒有 %1$s 沒有的東西"</string>
+    <string name="git_m3_nothing_to_stash" formatted="false">"沒有東西可暫存。"</string>
+    <string name="git_m3_nothing_to_stash_body" formatted="false">"此手機上無本地更改。編輯筆記後再回來暫存它。"</string>
+    <string name="git_m3_ok" formatted="false">"確定"</string>
+    <string name="git_m3_on_this_phone" formatted="false">"在此手機上"</string>
+    <string name="git_m3_only_on">"只在 %1$s 上"</string>
+    <string name="git_m3_open" formatted="false">"開啟"</string>
+    <string name="git_m3_open_rebase" formatted="false">"開啟 rebase"</string>
+    <string name="git_m3_open_sub" formatted="false">"返回保險庫"</string>
+    <string name="git_m3_plain_folder">"%1$s 現在是一個普通資料夾。"</string>
+    <string name="git_m3_plain_folder_body" formatted="false">"你的筆記仍在原處。GitSync.md 不再同步此資料夾。"</string>
+    <string name="git_m3_pop" formatted="false">"彈出"</string>
+    <string name="git_m3_pop_help" formatted="false">"將更改恢復，並移除暫存。"</string>
+    <string name="git_m3_popped_toast">"彈出 %1$s。您的更改已回來。"</string>
+    <string name="git_m3_previously_added" formatted="false">"曾經新增"</string>
+    <string name="git_m3_pull_n">"拉取 ↓%1$d"</string>
+    <string name="git_m3_pull_sub" formatted="false">"僅快轉"</string>
+    <string name="git_m3_pull_sub_blocked" formatted="false">"僅快進。現在不能：雙方都有變動"</string>
+    <string name="git_m3_pulls_from">"%1$s 拉取並推送到"</string>
+    <string name="git_m3_push" formatted="false">"推送"</string>
+    <string name="git_m3_push_n">"推送 ↑%1$d"</string>
+    <string name="git_m3_push_tag_cd">"將 %1$s 推送到 GitHub"</string>
+    <string name="git_m3_push_to">"推送到 %1$s"</string>
+    <string name="git_m3_ready_to_push" formatted="false">"可以推送"</string>
+    <string name="git_m3_ready_to_push_body">"推送會傳送您的 %1$d 提交。在遠端接受之前，遠端不會有任何變更。"</string>
+    <string name="git_m3_ready_to_push_headline" formatted="false">"遠端尚未看到您的提交。"</string>
+    <string name="git_m3_rebase" formatted="false">"重置基準"</string>
+    <string name="git_m3_rebase_abort_body">"將 %1$s 放回 %2$s。在此 rebase 過程中所做的編輯和衝突選擇將被丟棄。"</string>
+    <string name="git_m3_rebase_abort_title" formatted="false">"中止此次重定基底？"</string>
+    <string name="git_m3_rebase_aborted" formatted="false">"重定基底已中止"</string>
+    <string name="git_m3_rebase_aborted_headline" formatted="false">"已回到初始狀態。"</string>
+    <string name="git_m3_rebase_begin_title" formatted="false">"重寫本機提交？"</string>
+    <string name="git_m3_rebase_blocked_body" formatted="false">"不在 Git 的檔案會被下一次提交覆蓋。請將它們移到安全的地方，刷新後再重試。已經重放的提交將被保留。"</string>
+    <string name="git_m3_rebase_blocked_headline" formatted="false">"重定基底正在等待受阻的簽出操作。"</string>
+    <string name="git_m3_rebase_conflicts">"衝突 · 已解決 %2$d 的 %1$d"</string>
+    <string name="git_m3_rebase_conflicts_headline" formatted="false">"重定基底在兩端都編輯過的檔案處停止。"</string>
+    <string name="git_m3_rebase_done_headline" formatted="false">"重定基底已完成。"</string>
+    <string name="git_m3_rebase_in_progress" formatted="false">"正在重定基底"</string>
+    <string name="git_m3_rebase_initial" formatted="false">"先抓取以查看 rebase 會移動什麼。"</string>
+    <string name="git_m3_rebase_restored">"將 %1$s 恢復到 %2$s · ↑%3$d ↓%4$d"</string>
+    <string name="git_m3_rebase_review_body">"將你的提交重放在 %1$s 之上。它們的 ID 可能會改變。合併提交會保持其形狀。沒有任何東西被推送。"</string>
+    <string name="git_m3_rebase_sides_note">"在 rebase 中，%1$s 是 Git 的「我們的版本」，而你的 %2$s 是「他們的版本」。"</string>
+    <string name="git_m3_rebase_skip_body">"從重放中刪除 %1$s。先檢查它的更改。這可能會從新歷史中移除你的工作。"</string>
+    <string name="git_m3_rebase_skip_title" formatted="false">"略過此本機提交？"</string>
+    <string name="git_m3_rebase_step">"已在提交 %1$d 的 %2$d 停止。"</string>
+    <string name="git_m3_rebase_stopped" formatted="false">"變基正在等待您。"</string>
+    <string name="git_m3_rebase_sub" formatted="false">"將您的提交重演到最上層 · 繼續變基"</string>
+    <string name="git_m3_rebase_theirs">"%1$s 上的新內容 · %2$d"</string>
+    <string name="git_m3_rebase_yours">"待重演的提交 · %1$d"</string>
+    <string name="git_m3_refresh_branches" formatted="false">"刷新分支"</string>
+    <string name="git_m3_remote" formatted="false">"遠端"</string>
+    <string name="git_m3_remote_access">"拉取和推送 · %1$s"</string>
+    <string name="git_m3_remote_pill" formatted="false">"遠端"</string>
+    <string name="git_m3_remote_reading" formatted="false">"正在讀取此儲存庫的遠端…"</string>
+    <string name="git_m3_remove" formatted="false">"移除"</string>
+    <string name="git_m3_remove_from_app" formatted="false">"從 App 中移除"</string>
+    <string name="git_m3_remove_from_app_body" formatted="false">"此資料夾及其 Git 歷史保留在此手機上。隨時可以添加回來。"</string>
+    <string name="git_m3_remove_from_app_sub" formatted="false">"保留檔案和 Git。隨時可以添加回來。"</string>
+    <string name="git_m3_remove_from_app_title">"要從應用程式中移除 %1$s 嗎？"</string>
+    <string name="git_m3_remove_tracking_sub" formatted="false">"保留您的檔案。將 Git 從此資料夾移除。"</string>
+    <string name="git_m3_replayed_commit" formatted="false">"已重演的提交"</string>
+    <string name="git_m3_replayed_label">"已重播本地提交 · %1$s"</string>
+    <string name="git_m3_resolve" formatted="false">"解決"</string>
+    <string name="git_m3_resolve_conflict" formatted="false">"解決衝突"</string>
+    <string name="git_m3_result_current" formatted="false">"沒有新的內容需要合併。"</string>
+    <string name="git_m3_result_current_kicker" formatted="false">"已是最新"</string>
+    <string name="git_m3_result_local_only" formatted="false">"結果僅存在於此手機中。準備好時再推送。"</string>
+    <string name="git_m3_result_merged" formatted="false">"已包含另一端的變更。"</string>
+    <string name="git_m3_result_merged_kicker" formatted="false">"已合併"</string>
+    <string name="git_m3_result_push_confirmed" formatted="false">"GitHub 已確認此提交。"</string>
+    <string name="git_m3_result_push_unconfirmed" formatted="false">"遠端未確認推送。重試會傳送相同的提交而不再合併。"</string>
+    <string name="git_m3_result_saved_locally" formatted="false">"合併提交已儲存在本機。"</string>
+    <string name="git_m3_result_unconfirmed" formatted="false">"已儲存在此處。推送未完成。"</string>
+    <string name="git_m3_result_unconfirmed_kicker" formatted="false">"已合併 · 未推送"</string>
+    <string name="git_m3_retry_blocked" formatted="false">"重試受阻提交"</string>
+    <string name="git_m3_retry_push" formatted="false">"重試推送已儲存的提交"</string>
+    <string name="git_m3_return_to_git" formatted="false">"返回 Git"</string>
+    <string name="git_m3_review_folder" formatted="false">"檢閱已還原的資料夾"</string>
+    <string name="git_m3_reviewed_plan" formatted="false">"已檢查的計畫"</string>
+    <string name="git_m3_saved" formatted="false">"已保存"</string>
+    <string name="git_m3_saved_in" formatted="false">"儲存於"</string>
+    <string name="git_m3_set_aside" formatted="false">"擱置"</string>
+    <string name="git_m3_set_upstream" formatted="false">"設定上游"</string>
+    <string name="git_m3_show_more">"顯示更多 %1$d"</string>
+    <string name="git_m3_skip_commit" formatted="false">"忽略提交"</string>
+    <string name="git_m3_skip_commit_ask" formatted="false">"忽略提交…"</string>
+    <string name="git_m3_staged" formatted="false">"已暫存"</string>
+    <string name="git_m3_starts_from">"從 %1$s 在 %2$s 開始 · 你停留在 %2$s"</string>
+    <string name="git_m3_stash_changes" formatted="false">"暫存更改"</string>
+    <string name="git_m3_stash_explain">"暫存會將更改收起並重置檔案至 %1$s。隨時可以取回。"</string>
+    <string name="git_m3_stash_local_note" formatted="false">"暫存項保存在此手機上，永遠不會推送到 GitHub。"</string>
+    <string name="git_m3_stash_on">"在 %1$s"</string>
+    <string name="git_m3_stash_placeholder" formatted="false">"你正在進行什麼？"</string>
+    <string name="git_m3_stashed_older" formatted="false">"舊的現在是 stash@{1}。"</string>
+    <string name="git_m3_stashes" formatted="false">"儲藏"</string>
+    <string name="git_m3_stay_on">"停留在 %1$s"</string>
+    <string name="git_m3_stays_on_disk" formatted="false">"保留在磁碟上"</string>
+    <string name="git_m3_stop_tracking" formatted="false">"停止追蹤…"</string>
+    <string name="git_m3_strategy_always" formatted="false">"一律使用合併提交"</string>
+    <string name="git_m3_strategy_always_help">"即使 %1$s 可以直接前進，也會建立合併提交。"</string>
+    <string name="git_m3_strategy_ff" formatted="false">"僅快轉"</string>
+    <string name="git_m3_strategy_ff_help">"只有在 %1$s 緊跟在 %2$s 之後時才合併。保持歷史為直線。"</string>
+    <string name="git_m3_strategy_prefer" formatted="false">"盡可能快轉"</string>
+    <string name="git_m3_strategy_prefer_help">"當可以時，將 %1$s 前移。否則建立合併提交。"</string>
+    <string name="git_m3_subtitle">"%1$s · %2$s"</string>
+    <string name="git_m3_switch" formatted="false">"切換"</string>
+    <string name="git_m3_tag_kind_help" formatted="false">"有訊息時則為註解標籤。不填寫則為輕量標籤。"</string>
+    <string name="git_m3_tag_name" formatted="false">"標籤名稱"</string>
     <string name="git_m3_tag_name_invalid" formatted="false">"請輸入有效的 Git 標籤名稱。"</string>
+    <string name="git_m3_tag_pushed">"已推送 %1$s。"</string>
+    <string name="git_m3_tag_target">"在 %1$s 上 · 最新在 %2$s 上"</string>
+    <string name="git_m3_tags" formatted="false">"標籤"</string>
+    <string name="git_m3_tags_note" formatted="false">"Commit &amp; push 不會發送標籤。當你希望它在 GitHub 上時，分別推送每個標籤。刪除僅會從此手機移除標籤。"</string>
+    <string name="git_m3_the_named_remote">"%1$s 遠端"</string>
+    <string name="git_m3_the_remote" formatted="false">"遠端"</string>
+    <string name="git_m3_this_phone" formatted="false">"此手機"</string>
+    <string name="git_m3_tracking">"追蹤 %1$s"</string>
+    <string name="git_m3_tracking_backup_body" formatted="false">"GitSync.md 檢查 Git 資料的複本和 ZIP，然後斷開此資料夾。您的工作檔案保持原位。"</string>
+    <string name="git_m3_tracking_backup_title" formatted="false">"移除追蹤並保留備份？"</string>
+    <string name="git_m3_tracking_cap">"正在追蹤 %1$s"</string>
+    <string name="git_m3_tracking_permanent_body" formatted="false">"只有已審核的 .git 資料會被刪除。您的工作檔案保持原位，但此手機的 Git 歷史記錄在沒有其他副本的情況下無法恢復。"</string>
+    <string name="git_m3_tracking_removed" formatted="false">"追蹤已移除"</string>
+    <string name="git_m3_tracking_removed_backup_toast" formatted="false">"Git 追蹤已移除。備份已驗證並保存。"</string>
+    <string name="git_m3_tracking_removed_kept" formatted="false">"Git 追蹤已移除 · 工作檔案已保留"</string>
+    <string name="git_m3_tracking_review_body" formatted="false">"您的檔案保持原位。Git 的歷史複本已從此資料夾移除。"</string>
+    <string name="git_m3_tracking_stale" formatted="false">"自您審核後資料夾已更改。取消並重新審核。"</string>
+    <string name="git_m3_uncommitted_plain_any" formatted="false">"未提交的編輯，作為純檔案"</string>
+    <string name="git_m3_unresolved" formatted="false">"未解決"</string>
+    <string name="git_m3_update" formatted="false">"更新"</string>
+    <string name="git_m3_upstream_body">"選擇 %1$s 從哪裡拉取及推送到哪裡。檔案、提交和已保存的連接保持不變。"</string>
+    <string name="git_m3_upstream_help" formatted="false">"沒有上游，拉取和推送將不知道去哪裡。"</string>
+    <string name="git_m3_use_branch">"使用 %1$s 版本"</string>
+    <string name="git_m3_use_edited" formatted="false">"使用我編輯的版本"</string>
+    <string name="git_m3_use_phone" formatted="false">"使用這支手機的版本"</string>
+    <string name="git_m3_use_remote">"使用 %1$s 的版本"</string>
+    <string name="git_m3_vault_settings" formatted="false">"保險庫設定"</string>
+    <string name="git_m3_vs">"對比 %1$s"</string>
+    <string name="git_m3_what_each_does" formatted="false">"每個操作的功能"</string>
+    <string name="git_m3_workspace" formatted="false">"工作區"</string>
+    <string name="git_m3_yours">"↑%1$d 個我的"</string>
     <string name="git_native_public_only" formatted="false">"Git 原生通訊協定僅支援公開存取。請使用 HTTPS 或 SSH 進行驗證。"</string>
     <string name="gitops_action_failed" formatted="false">"Git 無法完成此動作"</string>
     <string name="gitops_branch_action_failed" formatted="false">"無法完成分支動作"</string>
@@ -380,6 +1076,22 @@
     <string name="help_title" formatted="false">"幫助"</string>
     <string name="history_screen" formatted="false">"歷史記錄"</string>
     <string name="http_transport_warning" formatted="false">"HTTP 未加密。儲存庫資料及你輸入的使用者名稱或權杖可能在傳輸過程中被讀取。請盡可能使用 HTTPS。"</string>
+    <string name="l10n_a11y_pair">"%1$s, %2$s"</string>
+    <string name="l10n_added_count">"+%1$d"</string>
+    <string name="l10n_background_unavailable" formatted="false">"Background Sync 無法使用"</string>
+    <string name="l10n_clone_preview_error" formatted="false">"驗證失敗。請重新登入並重試。"</string>
+    <string name="l10n_count">"%1$d"</string>
+    <string name="l10n_meta_pair">"%1$s · %2$s"</string>
+    <string name="l10n_not_vault_file" formatted="false">"這個保管庫中沒有該檔案"</string>
+    <string name="l10n_push_local_branch" formatted="false">"推送前切換到本地分支"</string>
+    <string name="l10n_removed_count">"−%1$d"</string>
+    <string name="l10n_save_conditions" formatted="false">"無法保存 Background Sync 條件"</string>
+    <string name="l10n_save_default_author" formatted="false">"無法保存默認作者"</string>
+    <string name="l10n_save_ssh_key" formatted="false">"無法保存此手機的 SSH 鍵"</string>
+    <string name="l10n_save_theme" formatted="false">"無法保存主題"</string>
+    <string name="l10n_save_vault_preferences" formatted="false">"無法保存保險庫偏好設定"</string>
+    <string name="l10n_unsupported_vault_preference" formatted="false">"不支援的保險庫偏好設定"</string>
+    <string name="l10n_vault_settings_failed" formatted="false">"無法更新保險庫設定"</string>
     <string name="language_settings_legacy" formatted="false">"在 Android 13 之前，此 App 使用裝置語言。"</string>
     <string name="language_settings_title" formatted="false">"語言"</string>
     <string name="language_settings_unavailable" formatted="false">"無法開啟語言設定。"</string>
@@ -421,12 +1133,213 @@
     <string name="lfs_locks_server">"LFS 伺服器：%1$s"</string>
     <string name="lfs_locks_title" formatted="false">"伺服器鎖定"</string>
     <string name="lfs_locks_unsupported" formatted="false">"此伺服器不支援 Git LFS 鎖定。"</string>
+    <string name="lfs_m3_allow_downloads" formatted="false">"允許下載"</string>
+    <string name="lfs_m3_allow_uploads" formatted="false">"允許上傳"</string>
+    <string name="lfs_m3_apply_rules" formatted="false">"套用規則"</string>
+    <string name="lfs_m3_apply_tracking" formatted="false">"套用追蹤選項"</string>
+    <string name="lfs_m3_approval_scope" formatted="false">"請與儲存庫擁有者確認此地址。批准僅適用於此儲存庫、遠端、端點及此手機上的方向。"</string>
+    <string name="lfs_m3_approvals_title" formatted="false">"LFS 端點授權"</string>
+    <string name="lfs_m3_attention" formatted="false">"Git LFS 需要處理"</string>
+    <string name="lfs_m3_auth_new" formatted="false">"獨立的使用者名稱和權杖"</string>
+    <string name="lfs_m3_auth_reuse" formatted="false">"使用已儲存的端點憑證"</string>
+    <string name="lfs_m3_branch_remote">"%1$s · 遠端 %2$s"</string>
+    <string name="lfs_m3_cache_missing" formatted="false">"未快取"</string>
+    <string name="lfs_m3_cache_verified" formatted="false">"已驗證的快取"</string>
+    <string name="lfs_m3_cancel" formatted="false">"取消"</string>
+    <string name="lfs_m3_candidate_changed">"%1$s · 已更改，尚未追蹤"</string>
+    <string name="lfs_m3_candidate_new">"%1$s · 新增，尚未追蹤"</string>
+    <string name="lfs_m3_check_ownership" formatted="false">"檢查所有權"</string>
+    <string name="lfs_m3_create_body" formatted="false">"其他連線會將其視為鎖定，直到你釋放它。此手機上的內容不會改變。"</string>
+    <string name="lfs_m3_download_body" formatted="false">"此儲存庫想從另一個 LFS 伺服器下載檔案內容。"</string>
+    <string name="lfs_m3_download_missing" formatted="false">"下載缺少的內容"</string>
+    <string name="lfs_m3_download_progress" formatted="false">"下載進度"</string>
+    <string name="lfs_m3_download_title" formatted="false">"允許 LFS 下載？"</string>
+    <string name="lfs_m3_downloading_prepare" formatted="false">"下載缺失內容"</string>
+    <string name="lfs_m3_downloads" formatted="false">"下載"</string>
+    <string name="lfs_m3_endpoint_auth" formatted="false">"端點驗證"</string>
+    <string name="lfs_m3_endpoints_empty" formatted="false">"沒有已核准的自訂 LFS 端點"</string>
+    <string name="lfs_m3_endpoints_intro" formatted="false">"你的倉庫可能使用的獨立 LFS 伺服器。撤銷會停止該方向的未來傳輸；任何已在進行中的傳輸可能會完成。"</string>
+    <string name="lfs_m3_endpoints_none" formatted="false">"設定 · 無已核准"</string>
+    <string name="lfs_m3_endpoints_title" formatted="false">"LFS 端點"</string>
+    <string name="lfs_m3_error_changed" formatted="false">"審查期間批准已變更。重新載入並再次審查傳輸。"</string>
+    <string name="lfs_m3_ext_note_existing" formatted="false">"已有追蹤選擇的檔案將保留其選擇。"</string>
+    <string name="lfs_m3_ext_note_limits" formatted="false">"被忽略的檔案仍保持忽略狀態。儲存限制取決於你的 Git 主機。"</string>
+    <string name="lfs_m3_ext_note_stage" formatted="false">"僅 .gitattributes 發生更改。將檔案暫存以將它們轉換為指標。"</string>
+    <string name="lfs_m3_ext_scope" formatted="false">"涵蓋每個資料夾中目前和未來的匹配檔案。匹配區分大小寫。"</string>
+    <string name="lfs_m3_ext_title" formatted="false">"追蹤相符的副檔名？"</string>
+    <string name="lfs_m3_extensions_updated" formatted="false">"擴展名規則已更新。暫存 .gitattributes 和檔案，然後提交。"</string>
+    <string name="lfs_m3_fact_endpoint" formatted="false">"LFS 端點"</string>
+    <string name="lfs_m3_fact_remote" formatted="false">"Git 遠端儲存庫"</string>
+    <string name="lfs_m3_fact_repository" formatted="false">"儲存庫"</string>
+    <string name="lfs_m3_force_ack" formatted="false">"我了解有人可能仍在編輯此檔案。"</string>
+    <string name="lfs_m3_force_title" formatted="false">"強制解除其他擁有者的鎖定？"</string>
+    <string name="lfs_m3_force_warning" formatted="false">"這將移除另一個連線保持的鎖定。請先與其擁有者確認。"</string>
+    <string name="lfs_m3_http_warning" formatted="false">"HTTP 未加密。儲存庫資料以及任何使用者名稱或代幣在傳輸中可能被讀取。能使用 HTTPS 時請使用 HTTPS。"</string>
+    <string name="lfs_m3_keep_body" formatted="false">"新增明確的正則 Git 規則。內容將納入您的提交中。超過 100 MiB 的檔案仍需使用 LFS。"</string>
+    <string name="lfs_m3_keep_git" formatted="false">"保持在一般 Git"</string>
+    <string name="lfs_m3_keep_title" formatted="false">"將這些保留在一般 Git？"</string>
+    <string name="lfs_m3_list_read_only" formatted="false">"列表唯讀"</string>
+    <string name="lfs_m3_lock_a_file" formatted="false">"鎖定檔案"</string>
+    <string name="lfs_m3_lockable_caption" formatted="false">"只有在 .gitattributes 中標記為可鎖定的檔案會顯示在這裡。"</string>
+    <string name="lfs_m3_locked" formatted="false">"已鎖定"</string>
+    <string name="lfs_m3_locked_on_server" formatted="false">"已在伺服器上鎖定"</string>
+    <string name="lfs_m3_locks_empty" formatted="false">"此分支上沒有鎖定的檔案。"</string>
+    <string name="lfs_m3_locks_intro" formatted="false">"在更改鎖定之前請檢查所有權。鎖定存在於伺服器上；您的檔案和提交保持不變。"</string>
+    <string name="lfs_m3_match_extensions" formatted="false">"匹配副檔名…"</string>
+    <string name="lfs_m3_needs_choice" formatted="false">"需要追蹤選項"</string>
+    <string name="lfs_m3_no_lockable" formatted="false">"沒有未鎖定的可鎖定檔案。"</string>
+    <string name="lfs_m3_no_tracked" formatted="false">"此分支尚未在 LFS 中儲存任何檔案。"</string>
+    <string name="lfs_m3_not_shared" formatted="false">"您的 GitHub 登入資訊未與此伺服器共享。單獨的憑證會在此手機上加密。可於設定 › LFS 端點中管理。"</string>
+    <string name="lfs_m3_ok" formatted="false">"確定"</string>
+    <string name="lfs_m3_owned_here" formatted="false">"此連線擁有"</string>
+    <string name="lfs_m3_owner">"擁有者：%1$s"</string>
+    <string name="lfs_m3_public_access" formatted="false">"公開存取"</string>
+    <string name="lfs_m3_refresh_required" formatted="false">"這樣有效，但新的 LFS 狀態沒有加載。在執行其他操作之前請重新加載。"</string>
+    <string name="lfs_m3_release_body" formatted="false">"其他人可以再次鎖定和編輯它。您的本地檔案和提交保持不變。"</string>
+    <string name="lfs_m3_release_review" formatted="false">"釋放…"</string>
+    <string name="lfs_m3_reload" formatted="false">"重新載入 LFS 狀態"</string>
+    <string name="lfs_m3_reset_all" formatted="false">"重設所有 LFS 端點核准"</string>
+    <string name="lfs_m3_reset_body" formatted="false">"移除此手機上的每個自訂端點批准及其儲存的憑證。每個端點和方向都需要重新審核。"</string>
+    <string name="lfs_m3_reset_confirm" formatted="false">"重設核准"</string>
+    <string name="lfs_m3_reset_title" formatted="false">"重設所有 LFS 端點核准？"</string>
+    <string name="lfs_m3_review_changed" formatted="false">"鎖定自您打開後已更改。取消並再次檢查所有權。"</string>
+    <string name="lfs_m3_revoke" formatted="false">"撤銷"</string>
+    <string name="lfs_m3_revoke_download_body">"從 %1$s 的未來下載將需要重新審核。上傳批准及其儲存的憑證保持不變。"</string>
+    <string name="lfs_m3_revoke_download_title" formatted="false">"撤銷下載核准？"</string>
+    <string name="lfs_m3_revoke_downloads" formatted="false">"撤銷下載"</string>
+    <string name="lfs_m3_revoke_upload_body">"未來上傳到 %1$s 將需要重新審核。下載批准及其儲存的憑證保持不變。"</string>
+    <string name="lfs_m3_revoke_upload_title" formatted="false">"撤銷上傳核准？"</string>
+    <string name="lfs_m3_revoke_uploads" formatted="false">"撤銷上傳"</string>
+    <string name="lfs_m3_scope_read_only" formatted="false">"僅限閱讀清單 · 所有權未驗證"</string>
+    <string name="lfs_m3_scope_verified" formatted="false">"透過此連線驗證所有權"</string>
+    <string name="lfs_m3_secret" formatted="false">"令牌或密碼"</string>
+    <string name="lfs_m3_separate_credentials" formatted="false">"分開的加密認證"</string>
+    <string name="lfs_m3_server">"LFS 伺服器 %1$s"</string>
+    <string name="lfs_m3_ssh_authorization" formatted="false">"來自 SSH 的授權"</string>
+    <string name="lfs_m3_ssh_review" formatted="false">"此 HTTP 端點從已驗證的 SSH 伺服器獲取短期授權。您的 SSH 金鑰保留在此手機上。授權在傳輸過程中可被讀取，但永遠不會被保存。"</string>
+    <string name="lfs_m3_stale" formatted="false">"自您開啟後檔案已有變更。取消並重新檢視。"</string>
+    <string name="lfs_m3_state_pointer" formatted="false">"指標 · 下載內容"</string>
+    <string name="lfs_m3_stored_body" formatted="false">"提交僅保留小型指標。拉取會下載內容，推送會先上傳內容。"</string>
+    <string name="lfs_m3_stored_kicker" formatted="false">"儲存在 LFS"</string>
+    <string name="lfs_m3_stored_locked">"%1$s · %2$d 已鎖定"</string>
+    <string name="lfs_m3_subtitle">"%1$s · %2$s · Git LFS"</string>
+    <string name="lfs_m3_tab_files" formatted="false">"檔案"</string>
+    <string name="lfs_m3_tab_locks" formatted="false">"鎖定"</string>
+    <string name="lfs_m3_title" formatted="false">"大型檔案"</string>
+    <string name="lfs_m3_track_body" formatted="false">"為以下檔案新增精確路徑 LFS 規則。儲存和頻寬限制取決於您的 Git 主機。先將變更暫存，然後提交。"</string>
+    <string name="lfs_m3_track_title" formatted="false">"要對這些檔案使用 LFS 嗎？"</string>
+    <string name="lfs_m3_tracked_files" formatted="false">"已追蹤的檔案"</string>
+    <string name="lfs_m3_tracking_caption" formatted="false">"只有 .gitattributes 有更改。你的檔案會保持原位，直到你將它們暫存。"</string>
+    <string name="lfs_m3_tracking_updated" formatted="false">"追蹤規則已更新。暫存 .gitattributes 和檔案，然後提交。"</string>
+    <string name="lfs_m3_unsupported" formatted="false">"此伺服器不支援 Git LFS 鎖定。"</string>
+    <string name="lfs_m3_upload_body" formatted="false">"此儲存庫想將檔案內容發送到另一個 LFS 伺服器。"</string>
+    <string name="lfs_m3_upload_title" formatted="false">"允許 LFS 上傳？"</string>
+    <string name="lfs_m3_uploads" formatted="false">"上傳"</string>
+    <string name="lfs_m3_username" formatted="false">"LFS 端點使用者名稱"</string>
     <string name="lfs_tracking_updated" formatted="false">"追蹤規則已更新。請檢閱並暫存 .gitattributes 和所選檔案，然後提交。"</string>
     <string name="m3_editor_preview" formatted="false">"預覽"</string>
     <string name="m3_editor_write" formatted="false">"編寫"</string>
     <string name="m3_open_in_editor" formatted="false">"在編輯器中開啟"</string>
     <string name="m3_paywall_paid_with_play" formatted="false">"使用你的 Google Play 帳戶付款"</string>
     <string name="m3_pick_a_file" formatted="false">"選擇一個檔案以查看其變更。"</string>
+    <string name="m3home_add_first" formatted="false">"加入你的第一個保險庫"</string>
+    <string name="m3home_add_vault" formatted="false">"加入保險庫"</string>
+    <string name="m3home_auth_body" formatted="false">"你的筆記在這支手機上是安全的。沒有任何遺失。"</string>
+    <string name="m3home_auth_headline" formatted="false">"同步已暫停。"</string>
+    <string name="m3home_auth_held">"↑%1$d 個暫緩"</string>
+    <string name="m3home_auth_kicker">"GitHub 登入已過期 · %1$s"</string>
+    <string name="m3home_auth_paused" formatted="false">"已暫停"</string>
+    <string name="m3home_auth_row_meta">"%1$s · 上次同步於 %2$s"</string>
+    <string name="m3home_auth_sign_in" formatted="false">"使用 GitHub 登入"</string>
+    <string name="m3home_auth_unaffected_label" formatted="false">"不受影響"</string>
+    <string name="m3home_auth_waiting_label" formatted="false">"等待登入"</string>
+    <string name="m3home_badge_both">"↓%1$d ↑%2$d"</string>
+    <string name="m3home_badge_checking" formatted="false">"正在檢查"</string>
+    <string name="m3home_badge_in_sync" formatted="false">"已同步"</string>
+    <string name="m3home_badge_local_only" formatted="false">"僅限本機"</string>
+    <string name="m3home_badge_needs_you" formatted="false">"需要你"</string>
+    <string name="m3home_badge_sync_failed" formatted="false">"未同步"</string>
+    <string name="m3home_badge_syncing" formatted="false">"同步中"</string>
+    <string name="m3home_badge_to_pull">"↓%1$d 個待拉取"</string>
+    <string name="m3home_badge_to_push">"↑%1$d 個待推送"</string>
+    <string name="m3home_badge_unreadable" formatted="false">"無法讀取"</string>
+    <string name="m3home_cred_github" formatted="false">"GitHub 賬戶"</string>
+    <string name="m3home_cred_local" formatted="false">"在這支手機上"</string>
+    <string name="m3home_cred_public" formatted="false">"公共"</string>
+    <string name="m3home_cred_ssh" formatted="false">"SSH 密鑰"</string>
+    <string name="m3home_cred_token" formatted="false">"權杖"</string>
+    <string name="m3home_empty_rail_description" formatted="false">"手機和 GitHub，還沒有需要同步的內容"</string>
+    <string name="m3home_empty_rail_nothing" formatted="false">"沒有要同步的內容"</string>
+    <string name="m3home_empty_signed_in">"已以 @%1$s 身分登入"</string>
+    <string name="m3home_empty_title" formatted="false">"還沒有保險庫。"</string>
+    <string name="m3home_filter_all">"全部 %1$d 個"</string>
+    <string name="m3home_filter_attention">"需處理 %1$d"</string>
+    <string name="m3home_filter_empty_attention" formatted="false">"沒有任何需要你處理的。每個保險庫都已同步。"</string>
+    <string name="m3home_filter_empty_pinned" formatted="false">"尚未有固定的保險庫。長按某個保險庫並選擇釘選到頂部。"</string>
+    <string name="m3home_filter_pinned" formatted="false">"已置頂"</string>
+    <string name="m3home_headline_ready_accent" formatted="false">"已同步。"</string>
+    <string name="m3home_how_title" formatted="false">"運作方式"</string>
+    <string name="m3home_meta_checked">"已檢查 %1$s"</string>
+    <string name="m3home_meta_checking">"正在檢查 %1$d"</string>
+    <string name="m3home_meta_in_sync">"%1$d 個已同步"</string>
+    <string name="m3home_meta_lfs">"%1$s LFS"</string>
+    <string name="m3home_meta_loading" formatted="false">"正在檢查…"</string>
+    <string name="m3home_meta_never_checked" formatted="false">"尚未檢查"</string>
+    <string name="m3home_meta_not_synced" formatted="false">"尚未同步"</string>
+    <string name="m3home_meta_unreadable" formatted="false">"無法讀取此資料夾"</string>
+    <string name="m3home_offline_accent" formatted="false">"我們會趕上的。"</string>
+    <string name="m3home_offline_fab" formatted="false">"連線時同步"</string>
+    <string name="m3home_offline_headline" formatted="false">"繼續寫作。"</string>
+    <string name="m3home_offline_last_known" formatted="false">"上次已知：已同步"</string>
+    <string name="m3home_offline_last_known_behind">"上次已知：↓%1$d"</string>
+    <string name="m3home_offline_meta">"沒有連線 · 上次檢查於 %1$s"</string>
+    <string name="m3home_offline_meta_never" formatted="false">"無連線"</string>
+    <string name="m3home_offline_queued">"↑%1$d 已排隊"</string>
+    <string name="m3home_offline_row_meta">"%1$s · 已同步 %2$s"</string>
+    <string name="m3home_onboarding_accent" formatted="false">"始終同步前進。"</string>
+    <string name="m3home_onboarding_body" formatted="false">"複製任意儲存庫，在 Obsidian 或其他 App 中書寫，輕點即可同步。"</string>
+    <string name="m3home_onboarding_demo" formatted="false">"使用示範保險庫四處看看"</string>
+    <string name="m3home_onboarding_github" formatted="false">"透過 GitHub 繼續"</string>
+    <string name="m3home_onboarding_headline" formatted="false">"你的筆記。\n真正的 git。"</string>
+    <string name="m3home_onboarding_other" formatted="false">"SSH、權杖或其他主機"</string>
+    <string name="m3home_onboarding_rail" formatted="false">"手機上的筆記與 GitHub 上的提交在同一個同步點交會"</string>
+    <string name="m3home_onboarding_save_error" formatted="false">"無法保存你的選擇。請再試一次。"</string>
+    <string name="m3home_onboarding_this_phone" formatted="false">"此手機"</string>
+    <string name="m3home_pin" formatted="false">"置頂"</string>
+    <string name="m3home_pin_failed" formatted="false">"無法保存釘選。請再試一次。"</string>
+    <string name="m3home_pinned" formatted="false">"已置頂"</string>
+    <string name="m3home_rail_github" formatted="false">"GitHub"</string>
+    <string name="m3home_rail_phone" formatted="false">"手機"</string>
+    <string name="m3home_rail_remote" formatted="false">"遠端"</string>
+    <string name="m3home_remove" formatted="false">"從...中移除 GitSync.md"</string>
+    <string name="m3home_row_actions" formatted="false">"保險庫操作"</string>
+    <string name="m3home_session_dismiss" formatted="false">"關閉"</string>
+    <string name="m3home_settings" formatted="false">"設定"</string>
+    <string name="m3home_settings_signed_in">"設定，已登入為 %1$s"</string>
+    <string name="m3home_start_github" formatted="false">"從 GitHub 複製"</string>
+    <string name="m3home_start_github_detail" formatted="false">"選擇你的一個儲存庫"</string>
+    <string name="m3home_start_local" formatted="false">"在此手機上尋找克隆"</string>
+    <string name="m3home_start_local_detail" formatted="false">"Obsidian、MGit、Termux…"</string>
+    <string name="m3home_start_publish" formatted="false">"發佈資料夾"</string>
+    <string name="m3home_start_publish_detail" formatted="false">"將資料夾轉換為新儲存庫"</string>
+    <string name="m3home_start_url" formatted="false">"粘貼 URL"</string>
+    <string name="m3home_start_url_detail" formatted="false">"任何公開或私有的 Git 遠端儲存庫"</string>
+    <string name="m3home_start_with" formatted="false">"開始方式"</string>
+    <string name="m3home_sync_all" formatted="false">"全部同步"</string>
+    <string name="m3home_sync_all_meta">"↓%1$d ↑%2$d"</string>
+    <string name="m3home_sync_busy" formatted="false">"全部拉取已在運行。完成後再試一次。"</string>
+    <string name="m3home_sync_done">"已同步 · 已拉取 %1$d · 已推送 %2$d"</string>
+    <string name="m3home_sync_failed">"無法同步 %1$s"</string>
+    <string name="m3home_sync_start_failed" formatted="false">"無法開始全部同步。請在設定中檢查您的保險庫列表。"</string>
+    <string name="m3home_syncing" formatted="false">"同步中"</string>
+    <string name="m3home_syncing_meta">"%1$d / %2$d"</string>
+    <string name="m3home_time_days">"%1$d 天前"</string>
+    <string name="m3home_time_hours">"%1$dh前"</string>
+    <string name="m3home_time_minutes_long">"%1$d 分鐘前"</string>
+    <string name="m3home_time_minutes_short">"%1$dm 前"</string>
+    <string name="m3home_time_now" formatted="false">"，剛剛"</string>
+    <string name="m3home_time_yesterday" formatted="false">"昨天"</string>
+    <string name="m3home_unpin" formatted="false">"取消置頂"</string>
     <string name="modified" formatted="false">"已修改"</string>
     <string name="move_cancelled" formatted="false">"已取消移動。原始工作副本已保留。"</string>
     <string name="move_confirm_action" formatted="false">"移動"</string>
@@ -450,6 +1363,22 @@
     <string name="move_recovery_done" formatted="false">"移動復原已完成"</string>
     <string name="move_recovery_removed" formatted="false">"已移除復原副本"</string>
     <string name="move_title_restore" formatted="false">"還原復原副本"</string>
+    <string name="newfile_m3_blank" formatted="false">"空白"</string>
+    <string name="newfile_m3_builtin_idea" formatted="false">"想法"</string>
+    <string name="newfile_m3_create_open" formatted="false">"建立並打開"</string>
+    <string name="newfile_m3_exists">"%1$s 已存在於 %2$s 中。請換一個名稱。"</string>
+    <string name="newfile_m3_file_name" formatted="false">"檔案名稱"</string>
+    <string name="newfile_m3_folder" formatted="false">"資料夾"</string>
+    <string name="newfile_m3_folder_name" formatted="false">"資料夾名稱"</string>
+    <string name="newfile_m3_in">"在 %1$s 中"</string>
+    <string name="newfile_m3_invalid" formatted="false">"使用不含 / 或 \\ 的名稱。"</string>
+    <string name="newfile_m3_invalid_dots" formatted="false">"“.” 和 “..” 是保留名稱。請使用其他名稱。"</string>
+    <string name="newfile_m3_note" formatted="false">"筆記"</string>
+    <string name="newfile_m3_template">"範本 · %1$s"</string>
+    <string name="newfile_m3_title_folder" formatted="false">"新增資料夾"</string>
+    <string name="newfile_m3_title_note" formatted="false">"新筆記"</string>
+    <string name="newfile_m3_today" formatted="false">"今天的日期"</string>
+    <string name="newfile_m3_too_long" formatted="false">"名稱太長。請使用較短的名稱。"</string>
     <string name="notes_acknowledge" formatted="false">"知道了"</string>
     <string name="notes_connections_body" formatted="false">"管理 GitHub 帳號和儲存庫作者身分。透過 HTTPS 或 SSH 連線，選擇複製作業的儲存位置，重新連接本機複本，並檢查儲存庫移動或移除操作。"</string>
     <string name="notes_connections_title" formatted="false">"連線與儲存空間"</string>
@@ -458,6 +1387,10 @@
     <string name="notes_version">"Android %1$s · 組建 %2$d"</string>
     <string name="notes_workflow_body" formatted="false">"瀏覽和編輯檔案，檢查已暫存及未暫存的差異，在本機提交，推送現有提交，並使用分支、歷史、標籤和重定基底功能。"</string>
     <string name="notes_workflow_title" formatted="false">"儲存庫工作流程"</string>
+    <string name="notification_m3_open_obsidian" formatted="false">"在 Obsidian 中打開"</string>
+    <string name="notification_m3_pulled" formatted="false">"新的更改已在背景中拉取。"</string>
+    <string name="notification_m3_see_changes" formatted="false">"查看更改"</string>
+    <string name="notification_m3_updated">"%1$s 已更新"</string>
     <string name="obsidian_forgotten" formatted="false">"已停用日後的憑證傳遞。請準備新連線以重新連接此資料夾。"</string>
     <string name="obsidian_interrupted" formatted="false">"連線已停止。請求不會自動重新執行。在 Obsidian 中重試前，請準備新連線。"</string>
     <string name="obsidian_return" formatted="false">"返回 Obsidian"</string>
@@ -560,6 +1493,47 @@
     <string name="pull_all_widget_description" formatted="false">"在不開啟 GitSync.md 的情況下，擷取所有本機儲存庫的更新並執行快轉更新。"</string>
     <string name="pull_all_widget_subtitle" formatted="false">"僅擷取和快轉更新"</string>
     <string name="pull_screen" formatted="false">"拉取"</string>
+    <string name="pullall_m3_again" formatted="false">"再次全部拉取"</string>
+    <string name="pullall_m3_attention_blocked" formatted="false">"保持不變。請先提交或暫存本地更改。"</string>
+    <string name="pullall_m3_attention_failed" formatted="false">"無法安全拉取。請檢查連線及資料夾訪問權限。"</string>
+    <string name="pullall_m3_attention_lfs" formatted="false">"已拉取。部分 Git LFS 文件仍需下載。"</string>
+    <string name="pullall_m3_background" formatted="false">"背景全部拉取"</string>
+    <string name="pullall_m3_blocked" formatted="false">"保持不變。請提交或暫存本地更改，或完成打開的 Git 操作，然後重試。"</string>
+    <string name="pullall_m3_clear" formatted="false">"清除背景摘要"</string>
+    <string name="pullall_m3_clear_body" formatted="false">"這會刪除最新的背景摘要。你的保險庫和設定將保持不變。中斷的工作不會自動重新啟動。"</string>
+    <string name="pullall_m3_clear_confirm" formatted="false">"清除摘要"</string>
+    <string name="pullall_m3_clear_title" formatted="false">"清除背景摘要？"</string>
+    <string name="pullall_m3_complete" formatted="false">"全部拉取已完成。請查看已儲存的摘要。"</string>
+    <string name="pullall_m3_control_failed" formatted="false">"沒有改變。請重新打開此畫面再試一次。"</string>
+    <string name="pullall_m3_counts">"已更新 %1$d · 當前 %2$d · LFS %3$d · 已封鎖 %4$d · 失敗 %5$d"</string>
+    <string name="pullall_m3_current" formatted="false">"沒有傳入變更"</string>
+    <string name="pullall_m3_empty" formatted="false">"尚無可拉取的保險庫。請先克隆或新增一個。"</string>
+    <string name="pullall_m3_failed" formatted="false">"拉取全部時發生錯誤而停止。某些拉取可能已完成。請在再次執行前檢查摘要及每個保險庫。"</string>
+    <string name="pullall_m3_help" formatted="false">"將「拉取全部」小工具添加到主畫面，或將磁貼添加到快速設置。兩者都可以在不打開應用的情況下運行一次。回到這裡查看發生了什麼。"</string>
+    <string name="pullall_m3_interrupted" formatted="false">"「拉取全部」已被中斷，且不會自動重新啟動。某些拉取可能已先完成。再次運行前請檢查每個保險庫。"</string>
+    <string name="pullall_m3_item_failed" formatted="false">"無法安全拉取。請檢查連接和資料夾訪問權限，然後查看 Git 以了解差異。"</string>
+    <string name="pullall_m3_lfs" formatted="false">"已拉取。部分 Git LFS 文件仍需下載。打開 Git LFS 以重試。"</string>
+    <string name="pullall_m3_not_run" formatted="false">"未執行"</string>
+    <string name="pullall_m3_progress_cd" formatted="false">"拉取全部進度"</string>
+    <string name="pullall_m3_pulling" formatted="false">"正在拉取…"</string>
+    <string name="pullall_m3_running" formatted="false">"「拉取全部」在不打開應用的情況下運行。當你點擊停止時，其餘將停止。"</string>
+    <string name="pullall_m3_scope" formatted="false">"抓取並快進此手機上的每個保險庫。拉取所有未暫存、提交或推送的更改。"</string>
+    <string name="pullall_m3_source_shortcut" formatted="false">"快捷方式"</string>
+    <string name="pullall_m3_source_tile" formatted="false">"平鋪"</string>
+    <string name="pullall_m3_source_widget" formatted="false">"小工具"</string>
+    <string name="pullall_m3_start" formatted="false">"全部拉取"</string>
+    <string name="pullall_m3_start_failed" formatted="false">"拉取全部無法開始。請檢查您的保險庫設置並重試。"</string>
+    <string name="pullall_m3_stop" formatted="false">"停止全部拉取"</string>
+    <string name="pullall_m3_stopped" formatted="false">"已停止。一個正在拉取的保險庫可能已完成，因此請在重試前檢查其狀態。其餘的未開始。"</string>
+    <string name="pullall_m3_stopping" formatted="false">"在此保險庫之後停止…"</string>
+    <string name="pullall_m3_surfaces" formatted="false">"小工具和快速設置平鋪"</string>
+    <string name="pullall_m3_tile_preview" formatted="false">"GitSync.md\n拉取全部"</string>
+    <string name="pullall_m3_title" formatted="false">"全部拉取"</string>
+    <string name="pullall_m3_unreadable" formatted="false">"無法讀取已保存的背景摘要，已保留。在開始另一個背景運行之前請先清除它。"</string>
+    <string name="pullall_m3_updated" formatted="false">"已從遠端更新"</string>
+    <string name="pullall_m3_when_source">"%1$s · 從 %2$s"</string>
+    <string name="pullall_m3_widget_name" formatted="false">"全部拉取"</string>
+    <string name="pullall_m3_widget_sub" formatted="false">"僅擷取和快轉更新"</string>
     <string name="push_all_repositories" formatted="false">"所有儲存庫，包括日後建立的儲存庫"</string>
     <string name="push_cancelled" formatted="false">"已取消連結 GitHub。"</string>
     <string name="push_channel" formatted="false">"儲存庫更新"</string>
@@ -617,6 +1591,7 @@
     <string name="repository_actions_changes">"已變更的路徑：%1$d"</string>
     <string name="repository_actions_confirm" formatted="false">"執行一次"</string>
     <string name="repository_actions_destination">"上游：%1$s / %2$s"</string>
+    <string name="repository_actions_destination_none" formatted="false">"上游：無"</string>
     <string name="repository_actions_dirty" formatted="false">"本機變更使傳入的提交無法拉取。請先提交變更或將其存入 stash。"</string>
     <string name="repository_actions_diverged" formatted="false">"本機和遠端歷程已分歧。請在 Git 控制項中明確選擇合併或重定基底。"</string>
     <string name="repository_actions_failed" formatted="false">"無法完成操作。請檢查連線、帳號、信任和資料夾存取權限，並在重試前檢查目前狀態。"</string>
@@ -681,6 +1656,325 @@
     <string name="resolve_local_superseded" formatted="false">"所選儲存庫已變更。請重新檢查本機變更。"</string>
     <string name="resolve_local_title" formatted="false">"：本地編輯會阻止此拉取操作"</string>
     <string name="settings_folder_unavailable" formatted="false">"請檢查資料夾存取權限"</string>
+    <string name="settings_m3_account_meta">"@%1$s · GitHub"</string>
+    <string name="settings_m3_accounts" formatted="false">"GitHub 帳戶"</string>
+    <string name="settings_m3_app_storage" formatted="false">"App 儲存空間"</string>
+    <string name="settings_m3_author_account_meta">"%1$s · 這個保險庫尚未儲存任何內容"</string>
+    <string name="settings_m3_author_account_meta_global">"%1$s · 尚未儲存預設值"</string>
+    <string name="settings_m3_author_changed" formatted="false">"這個作者是在 GitSync.md 之外被更改的，可能是在你的 Mac 上由 Git 更改。重新載入以查看目前的內容。"</string>
+    <string name="settings_m3_author_default" formatted="false">"默認值"</string>
+    <string name="settings_m3_author_email" formatted="false">"作者電子郵件"</string>
+    <string name="settings_m3_author_from_account" formatted="false">"來自你的 GitHub 帳戶"</string>
+    <string name="settings_m3_author_global_subtitle" formatted="false">"每個沒有自己作者的保險庫"</string>
+    <string name="settings_m3_author_help_changed" formatted="false">"儲存前請重新載入，否則你將取代較新的作者。"</string>
+    <string name="settings_m3_author_help_match" formatted="false">"匹配 Git 在你的 Mac 上使用的電子郵件，以便兩者都顯示為你。"</string>
+    <string name="settings_m3_author_help_noreply" formatted="false">"GitHub 的私人地址，以便你的真實電子郵件保持隱藏。"</string>
+    <string name="settings_m3_author_intro" formatted="false">"這個保險庫中的新提交將使用此名稱和電子郵件。你已經提交的內容將保留其原作者。"</string>
+    <string name="settings_m3_author_intro_global" formatted="false">"您保管庫中的新提交將使用此名稱和電子郵件，除非某個保管庫使用自己的保存。您已經進行的提交將保留其作者資訊。"</string>
+    <string name="settings_m3_author_name" formatted="false">"作者名稱"</string>
+    <string name="settings_m3_author_override" formatted="false">"覆蓋"</string>
+    <string name="settings_m3_author_preview_message" formatted="false">"從 GitSync.md 更新"</string>
+    <string name="settings_m3_author_preview_meta">"%1$s &lt;%2$s&gt; · 現在"</string>
+    <string name="settings_m3_author_preview_title" formatted="false">"你的下次提交將顯示"</string>
+    <string name="settings_m3_author_reading" formatted="false">"讀取此金庫的 Git 配置…"</string>
+    <string name="settings_m3_author_save" formatted="false">"儲存作者"</string>
+    <string name="settings_m3_author_save_note" formatted="false">"保存會關閉此頁面。尚未提交任何內容。"</string>
+    <string name="settings_m3_author_saved_global" formatted="false">"已為所有金庫保存"</string>
+    <string name="settings_m3_author_saved_global_meta">"在此手機上 · 覆蓋 %1$s"</string>
+    <string name="settings_m3_author_saved_vault" formatted="false">"已保存於此金庫"</string>
+    <string name="settings_m3_author_saved_vault_meta">".git/config · 覆蓋 %1$s"</string>
+    <string name="settings_m3_author_scope" formatted="false">"只有此金庫會變更。你的其他金庫會保留他們自己的作者，或使用與其同步的 GitHub 帳號。"</string>
+    <string name="settings_m3_author_scope_global" formatted="false">"在其自身 .git/config 保存了作者的金庫將保留此設置。你仍然可以在金庫設定中更改單個金庫。"</string>
+    <string name="settings_m3_author_use_account" formatted="false">"改用我的 GitHub 帳號"</string>
+    <string name="settings_m3_author_your_account" formatted="false">"你的 GitHub 帳戶"</string>
+    <string name="settings_m3_background_on">"開啟 · %1$d 個保險庫"</string>
+    <string name="settings_m3_background_sync" formatted="false">"Background Sync"</string>
+    <string name="settings_m3_bg_attention_short" formatted="false">"需要審核"</string>
+    <string name="settings_m3_bg_charging" formatted="false">"充電中"</string>
+    <string name="settings_m3_bg_cond_any" formatted="false">"在任何連線下"</string>
+    <string name="settings_m3_bg_cond_both" formatted="false">"只在充電且使用 Wi-Fi 時"</string>
+    <string name="settings_m3_bg_cond_charging" formatted="false">"只在充電時"</string>
+    <string name="settings_m3_bg_cond_wifi" formatted="false">"只在 Wi-Fi 下"</string>
+    <string name="settings_m3_bg_conditions_apply">"運行 %1$s，就像每個包含的保險庫一樣。"</string>
+    <string name="settings_m3_bg_connect" formatted="false">"連接"</string>
+    <string name="settings_m3_bg_failed_short" formatted="false">"無法同步"</string>
+    <string name="settings_m3_bg_include_cd">"在 Background Sync 中包括 %1$s"</string>
+    <string name="settings_m3_bg_intro" formatted="false">"Android 大約每 15 分鐘或更久檢查一次，取決於連線、電池和系統限制。盡最大努力，從不即時。"</string>
+    <string name="settings_m3_bg_modes" formatted="false">"模式"</string>
+    <string name="settings_m3_bg_never" formatted="false">"絕不會"</string>
+    <string name="settings_m3_bg_no_runs" formatted="false">"尚未有運行。Android 在大約 15 分鐘內開始第一次檢查。"</string>
+    <string name="settings_m3_bg_nudge" formatted="false">"當 GitHub 變更時收到提醒"</string>
+    <string name="settings_m3_bg_nudge_sub" formatted="false">"選擇加入。抓取可以立即開始。"</string>
+    <string name="settings_m3_bg_only_when" formatted="false">"僅當"</string>
+    <string name="settings_m3_bg_pull_sub" formatted="false">"僅快轉"</string>
+    <string name="settings_m3_bg_push_sub" formatted="false">"如果遠端先移動則停止"</string>
+    <string name="settings_m3_bg_recent" formatted="false">"最近執行"</string>
+    <string name="settings_m3_bg_run_failed">"%1$s 無法同步"</string>
+    <string name="settings_m3_bg_run_local_edits">"%1$s 已跳過：本地編輯"</string>
+    <string name="settings_m3_bg_run_offline">"%1$s 等待連線"</string>
+    <string name="settings_m3_bg_run_power">"%1$s 等待充電"</string>
+    <string name="settings_m3_bg_run_pushed" formatted="false">"↑ 已推送"</string>
+    <string name="settings_m3_bg_run_review">"%1$s 需要審核"</string>
+    <string name="settings_m3_bg_run_skipped">"已略過 %1$s：%2$s"</string>
+    <string name="settings_m3_bg_run_wifi">"%1$s 等待 Wi-Fi"</string>
+    <string name="settings_m3_bg_vault_missing" formatted="false">"資料夾不再新增。忘記它或重新加入保險庫。"</string>
+    <string name="settings_m3_bg_vault_not_included" formatted="false">"未納入"</string>
+    <string name="settings_m3_bg_vaults" formatted="false">"保險庫"</string>
+    <string name="settings_m3_bg_wifi" formatted="false">"在 Wi-Fi 上"</string>
+    <string name="settings_m3_close" formatted="false">"關閉"</string>
+    <string name="settings_m3_commit_as" formatted="false">"提交身分"</string>
+    <string name="settings_m3_debug_app" formatted="false">"App"</string>
+    <string name="settings_m3_debug_background" formatted="false">"BACKGROUND"</string>
+    <string name="settings_m3_debug_bg" formatted="false">"BG"</string>
+    <string name="settings_m3_debug_clear" formatted="false">"清晰"</string>
+    <string name="settings_m3_debug_copy" formatted="false">"複製可見項目"</string>
+    <string name="settings_m3_debug_day_time">"%1$s %2$s"</string>
+    <string name="settings_m3_debug_error" formatted="false">"錯誤"</string>
+    <string name="settings_m3_debug_errors_count">"錯誤 %1$d"</string>
+    <string name="settings_m3_debug_info" formatted="false">"顯示除錯資訊"</string>
+    <string name="settings_m3_debug_info_tag" formatted="false">"信息"</string>
+    <string name="settings_m3_debug_log" formatted="false">"除錯記錄"</string>
+    <string name="settings_m3_debug_removed_vault" formatted="false">"已移除保險庫"</string>
+    <string name="settings_m3_debug_share" formatted="false">"分享診斷"</string>
+    <string name="settings_m3_debug_warn" formatted="false">"警告"</string>
+    <string name="settings_m3_discord" formatted="false">"加入 Discord"</string>
+    <string name="settings_m3_done" formatted="false">"完成"</string>
+    <string name="settings_m3_feedback_subtitle" formatted="false">"打開你的電子郵件應用程式"</string>
+    <string name="settings_m3_forget" formatted="false">"忘記"</string>
+    <string name="settings_m3_full_access" formatted="false">"GitSync.md 完整版"</string>
+    <string name="settings_m3_group_app" formatted="false">"App"</string>
+    <string name="settings_m3_group_more" formatted="false">"連接與幫助"</string>
+    <string name="settings_m3_group_new_vaults" formatted="false">"新保險庫"</string>
+    <string name="settings_m3_group_purchase" formatted="false">"購買"</string>
+    <string name="settings_m3_group_sync" formatted="false">"同步"</string>
+    <string name="settings_m3_help" formatted="false">"幫助與關於"</string>
+    <string name="settings_m3_how_clone_url" formatted="false">"從 URL 複製"</string>
+    <string name="settings_m3_how_count" formatted="false">"需要知道的四件事"</string>
+    <string name="settings_m3_how_github" formatted="false">"GitHub"</string>
+    <string name="settings_m3_how_it_works" formatted="false">"運作方式"</string>
+    <string name="settings_m3_how_sample" formatted="false">"嘗試離線範例"</string>
+    <string name="settings_m3_how_start" formatted="false">"從這裡開始"</string>
+    <string name="settings_m3_how_storage" formatted="false">"選擇儲存位置"</string>
+    <string name="settings_m3_how_subtitle" formatted="false">"二分鐘了解基礎知識"</string>
+    <string name="settings_m3_how_title" formatted="false">"GitSync 的運作方式"</string>
+    <string name="settings_m3_language" formatted="false">"語言"</string>
+    <string name="settings_m3_lfs_endpoints" formatted="false">"LFS 端點"</string>
+    <string name="settings_m3_license" formatted="false">"授權"</string>
+    <string name="settings_m3_license_subtitle" formatted="false">"透過 Google Play 一次性購買"</string>
+    <string name="settings_m3_move_action" formatted="false">"移動知識庫"</string>
+    <string name="settings_m3_move_cancel_meta" formatted="false">"將保險庫保留在原本的資料夾中"</string>
+    <string name="settings_m3_move_confirm_guidance" formatted="false">"在移動完成之前，請將 Obsidian 和其他應用程式保持在兩個資料夾之外。"</string>
+    <string name="settings_m3_move_confirm_retained" formatted="false">"原始的會保留作為恢復副本。"</string>
+    <string name="settings_m3_move_confirm_title" formatted="false">"是否要移動此保險庫？"</string>
+    <string name="settings_m3_move_copy_note" formatted="false">"這會跨到另一個存儲卷，因此 GitSync.md 會複製並檢查每個檔案，然後在您移除之前將原始檔保留在移動恢復中。"</string>
+    <string name="settings_m3_move_finish_meta" formatted="false">"從中斷的地方繼續"</string>
+    <string name="settings_m3_move_from" formatted="false">"來自"</string>
+    <string name="settings_m3_move_interrupted" formatted="false">"移動操作被中斷。我們找到的每個副本都會被保留，直到你完成它。"</string>
+    <string name="settings_m3_move_into" formatted="false">"到"</string>
+    <string name="settings_m3_move_intro" formatted="false">"移動整個保險庫：檔案、Git 歷史和暫存更改。它的帳號和提交作者會隨之移動。"</string>
+    <string name="settings_m3_move_moving_button" formatted="false">"移動中…保持 GitSync.md 開啟"</string>
+    <string name="settings_m3_move_progress" formatted="false">"移動並儲存保險庫設定…"</string>
+    <string name="settings_m3_move_title" formatted="false">"移動知識庫"</string>
+    <string name="settings_m3_move_will_move_to" formatted="false">"將移動到"</string>
+    <string name="settings_m3_never_force" formatted="false">"強制推送"</string>
+    <string name="settings_m3_never_overwrite" formatted="false">"覆寫編輯"</string>
+    <string name="settings_m3_never_rebase" formatted="false">"重定基底或合併"</string>
+    <string name="settings_m3_never_resolve" formatted="false">"解決衝突"</string>
+    <string name="settings_m3_never_send" formatted="false">"將你的檔案傳送給我們"</string>
+    <string name="settings_m3_never_switch" formatted="false">"切換分支"</string>
+    <string name="settings_m3_not_now" formatted="false">"現在不"</string>
+    <string name="settings_m3_obsidian" formatted="false">"Obsidian 連線"</string>
+    <string name="settings_m3_obsidian_add_vault" formatted="false">"加入保險庫"</string>
+    <string name="settings_m3_obsidian_before" formatted="false">"開始之前"</string>
+    <string name="settings_m3_obsidian_command" formatted="false">"GitSync.md Connect：連接此保險庫"</string>
+    <string name="settings_m3_obsidian_connected" formatted="false">"已連線"</string>
+    <string name="settings_m3_obsidian_empty" formatted="false">"先將保險庫新增或複製到裝置資料夾。應用程式儲存的保險庫無法由 Obsidian 開啟。"</string>
+    <string name="settings_m3_obsidian_error" formatted="false">"Obsidian 無法連接。請檢查資料夾存取權限、GitHub HTTPS 遠端及保險庫帳戶，然後準備新的連線。"</string>
+    <string name="settings_m3_obsidian_failed" formatted="false">"未連接"</string>
+    <string name="settings_m3_obsidian_forget_action" formatted="false">"忘記連線"</string>
+    <string name="settings_m3_obsidian_forget_body">"GitSync.md 已停止向 Obsidian 提供 %1$s 的憑證。已導入的憑證 Obsidian 仍保留；需另外撤銷這些憑證。您的檔案保持原位。"</string>
+    <string name="settings_m3_obsidian_forget_title" formatted="false">"忘記這個連線嗎？"</string>
+    <string name="settings_m3_obsidian_intro" formatted="false">"讓 Obsidian Git 插件與此保管庫的 GitHub 帳戶推送和拉取。憑證已加密給配套插件，且絕不會放在連結中。"</string>
+    <string name="settings_m3_obsidian_prepare" formatted="false">"準備連線"</string>
+    <string name="settings_m3_obsidian_prepared_lead" formatted="false">"連線已準備好。"</string>
+    <string name="settings_m3_obsidian_prepared_open">"在 Obsidian 中打開 %1$s 並運行"</string>
+    <string name="settings_m3_obsidian_prepared_tail" formatted="false">"。更新的請求將取代此請求。"</string>
+    <string name="settings_m3_obsidian_ready">"加密憑證已經為 Obsidian 準備好。Obsidian Git 現在可以同步 %1$s。"</string>
+    <string name="settings_m3_obsidian_req1_body" formatted="false">"Obsidian 和 GitSync.md 必須共享同一個裝置資料夾。"</string>
+    <string name="settings_m3_obsidian_req1_title" formatted="false">"在 Obsidian 中打開同一個資料夾"</string>
+    <string name="settings_m3_obsidian_req2_body" formatted="false">"Git 和 GitSync.md Connect，在 Obsidian › 設定。"</string>
+    <string name="settings_m3_obsidian_req2_title" formatted="false">"打開兩個社區插件"</string>
+    <string name="settings_m3_obsidian_req3_body" formatted="false">"在保險庫的連接中選擇一個 GitHub 帳戶。"</string>
+    <string name="settings_m3_obsidian_req3_title" formatted="false">"使用 HTTPS GitHub 遠端"</string>
+    <string name="settings_m3_obsidian_req4_body" formatted="false">"準備階段僅提供憑證，沒有檔案或歷史紀錄。"</string>
+    <string name="settings_m3_obsidian_req4_title" formatted="false">"保險庫中的內容不變"</string>
+    <string name="settings_m3_obsidian_return_failed" formatted="false">"Obsidian 未打開。請在 Obsidian 中開啟 GitSync.md Connect，然後再嘗試返回。"</string>
+    <string name="settings_m3_obsidian_subtitle" formatted="false">"Obsidian Git + GitSync.md Connect"</string>
+    <string name="settings_m3_obsidian_this_vault" formatted="false">"此保險庫"</string>
+    <string name="settings_m3_obsidian_vaults" formatted="false">"此手機上的保險庫"</string>
+    <string name="settings_m3_obsidian_waiting" formatted="false">"等待 Obsidian"</string>
+    <string name="settings_m3_off" formatted="false">"關閉"</string>
+    <string name="settings_m3_on" formatted="false">"開啟"</string>
+    <string name="settings_m3_perk_nudge_body" formatted="false">"GitHub 推送在幾秒內提示應用。"</string>
+    <string name="settings_m3_perk_nudge_title" formatted="false">"使用推送同步進行即時拉取"</string>
+    <string name="settings_m3_perk_pull_body" formatted="false">"僅快轉。遇到異常情況會等你處理。"</string>
+    <string name="settings_m3_perk_pull_title" formatted="false">"在背景拉取"</string>
+    <string name="settings_m3_perk_push_body" formatted="false">"預設關閉。由你選擇哪些保險庫要發佈。"</string>
+    <string name="settings_m3_perk_push_title" formatted="false">"提交並推送編輯"</string>
+    <string name="settings_m3_privacy" formatted="false">"隱私權"</string>
+    <string name="settings_m3_privacy_policy" formatted="false">"隱私權政策"</string>
+    <string name="settings_m3_push_active" formatted="false">"啟用"</string>
+    <string name="settings_m3_push_all_repos" formatted="false">"所有儲存庫，包括新的"</string>
+    <string name="settings_m3_push_channel_sub" formatted="false">"使用儲存庫更新通知通道"</string>
+    <string name="settings_m3_push_checked">"已檢查 %1$d · 已更新 %2$d · 需要審核 %3$d"</string>
+    <string name="settings_m3_push_connect_again" formatted="false">"再次連接 GitHub"</string>
+    <string name="settings_m3_push_connect_sub" formatted="false">"安裝 GitSync.md 應用並選擇資料庫"</string>
+    <string name="settings_m3_push_connected" formatted="false">"已連線"</string>
+    <string name="settings_m3_push_connection" formatted="false">"GitHub 連接"</string>
+    <string name="settings_m3_push_err_cancelled" formatted="false">"GitHub 連接已取消。未做任何更改。準備好時請再次連接。"</string>
+    <string name="settings_m3_push_err_cancelled_title" formatted="false">"從 GitHub 回來"</string>
+    <string name="settings_m3_push_err_not_selected" formatted="false">"這支手機上沒有任何保險庫與此 GitHub 儲存庫和分支相符。將儲存庫新增到應用程式在 GitHub 的存取權限，或檢查保險庫的連線和分支。"</string>
+    <string name="settings_m3_push_err_not_selected_title" formatted="false">"此儲存庫未與應用程式共享"</string>
+    <string name="settings_m3_push_err_owner_title" formatted="false">"需要擁有者登入"</string>
+    <string name="settings_m3_push_example_cd" formatted="false">"範例通知"</string>
+    <string name="settings_m3_push_example_meta" formatted="false">"GitSync.md · 儲存庫更新 · 現在"</string>
+    <string name="settings_m3_push_example_note" formatted="false">"鎖定畫面時為私密。如果保險庫是乾淨的，你看到這個時，它已經被拉取。"</string>
+    <string name="settings_m3_push_example_repo" formatted="false">"owner/vault"</string>
+    <string name="settings_m3_push_example_title" formatted="false">"提示看起來像這樣"</string>
+    <string name="settings_m3_push_existing_scope" formatted="false">"以帳戶擁有者或組織擁有者登入。應用程式會保持當前儲存庫存取權限。"</string>
+    <string name="settings_m3_push_github_app" formatted="false">"GitHub App"</string>
+    <string name="settings_m3_push_handoff_body" formatted="false">"打開瀏覽器標籤。選擇帳號以及應用程式可以查看的倉庫，然後返回。當你返回時，這個畫面會再次檢查。"</string>
+    <string name="settings_m3_push_handoff_title" formatted="false">"在 GitHub 上完成"</string>
+    <string name="settings_m3_push_intro" formatted="false">"連接 GitSync.md GitHub App 並推送到 GitHub 將在幾秒內提示這支手機。乾淨的保管庫會自動取得更新並快進。點擊通知再次檢查。"</string>
+    <string name="settings_m3_push_never" formatted="false">"推送同步從不"</string>
+    <string name="settings_m3_push_never_commit" formatted="false">"提交"</string>
+    <string name="settings_m3_push_never_hint" formatted="false">"本地更改和拆分歷史在保管庫中等待你"</string>
+    <string name="settings_m3_push_never_merge" formatted="false">"合併拆分歷史"</string>
+    <string name="settings_m3_push_never_switch" formatted="false">"切換分支"</string>
+    <string name="settings_m3_push_never_upload" formatted="false">"上傳更改"</string>
+    <string name="settings_m3_push_no_connections" formatted="false">"連接 GitHub 帳號或組織以選擇哪些倉庫可以發送更新"</string>
+    <string name="settings_m3_push_open_vault" formatted="false">"打開保管庫"</string>
+    <string name="settings_m3_push_permission" formatted="false">"在 Android 設定中允許 GitSync.md 的通知，然後打開推送同步。"</string>
+    <string name="settings_m3_push_registered" formatted="false">"此手機已註冊通知"</string>
+    <string name="settings_m3_push_remove" formatted="false">"移除"</string>
+    <string name="settings_m3_push_remove_body">"推送同步會停止將 @%1$s 的更新傳送到此手機。GitHub App 仍然安裝中。使用 GitHub 上的管理來更改其存取權或解除安裝。"</string>
+    <string name="settings_m3_push_remove_title" formatted="false">"移除此連線？"</string>
+    <string name="settings_m3_push_result_updated" formatted="false">"已從 GitHub 更新"</string>
+    <string name="settings_m3_push_stop" formatted="false">"停止操作"</string>
+    <string name="settings_m3_push_suspended" formatted="false">"已暫停"</string>
+    <string name="settings_m3_push_sync" formatted="false">"來自 GitHub 的推送同步"</string>
+    <string name="settings_m3_push_this_phone" formatted="false">"此手機"</string>
+    <string name="settings_m3_push_title" formatted="false">"Push Sync"</string>
+    <string name="settings_m3_push_waiting" formatted="false">"等待 GitHub"</string>
+    <string name="settings_m3_save_clones_in" formatted="false">"新複製的儲存位置"</string>
+    <string name="settings_m3_sc_action" formatted="false">"操作"</string>
+    <string name="settings_m3_sc_authorized" formatted="false">"已授權"</string>
+    <string name="settings_m3_sc_background_sub" formatted="false">"結果會顯示在這裡及通知中"</string>
+    <string name="settings_m3_sc_branch">"分支 %1$s"</string>
+    <string name="settings_m3_sc_branch_reviewed">"分支 %1$s · 已檢閱 %2$s"</string>
+    <string name="settings_m3_sc_clear" formatted="false">"清晰"</string>
+    <string name="settings_m3_sc_clear_results" formatted="false">"清除已儲存的結果"</string>
+    <string name="settings_m3_sc_ff_only" formatted="false">"僅擷取和快轉更新"</string>
+    <string name="settings_m3_sc_item_title">"%1$s: %2$s"</string>
+    <string name="settings_m3_sc_launcher" formatted="false">"主畫面捷徑"</string>
+    <string name="settings_m3_sc_link_identity">"連結 %1$s · 建立於 %2$s"</string>
+    <string name="settings_m3_sc_link_private" formatted="false">"任何擁有此連結的人都可以運行它。請保持私密。"</string>
+    <string name="settings_m3_sc_links" formatted="false">"已授權的連結"</string>
+    <string name="settings_m3_sc_new_title" formatted="false">"單個保險庫的新捷徑"</string>
+    <string name="settings_m3_sc_no_links" formatted="false">"沒有授權的連結。像 Obsidian 或捷徑這類應用可以請求一個。"</string>
+    <string name="settings_m3_sc_no_shortcuts" formatted="false">"尚無啟動器捷徑。請在上方選擇一個保險庫和動作。"</string>
+    <string name="settings_m3_sc_open_pull_all" formatted="false">"打開拉取全部"</string>
+    <string name="settings_m3_sc_open_pull_all_sub" formatted="false">"立即拉取每個保險庫並查看每個結果"</string>
+    <string name="settings_m3_sc_pin_consent">"每次點按時只會執行一次，且不再詢問。它將保持與 %1$s、分支 %2$s 以及此帳戶綁定。如果其中任何一項變更，捷徑將停止，你需要重新建立一個。在此隨時撤銷。"</string>
+    <string name="settings_m3_sc_pin_writes">"使用“%1$s”提交，並在每次點按時上傳每個變更。"</string>
+    <string name="settings_m3_sc_pinned" formatted="false">"已置頂"</string>
+    <string name="settings_m3_sc_pull" formatted="false">"拉取"</string>
+    <string name="settings_m3_sc_pull_all" formatted="false">"全部拉取"</string>
+    <string name="settings_m3_sc_pull_all_note" formatted="false">"每次輕觸會拉取每個保險庫一次。沒有任何提交或推送。結果會顯示在『全部拉取』中。"</string>
+    <string name="settings_m3_sc_pull_all_repos" formatted="false">"拉取所有倉庫"</string>
+    <string name="settings_m3_sc_pull_all_title" formatted="false">"全部拉取，而不打開應用程式"</string>
+    <string name="settings_m3_sc_pull_sub" formatted="false">"僅擷取和快轉更新"</string>
+    <string name="settings_m3_sc_push" formatted="false">"提交並推送"</string>
+    <string name="settings_m3_sc_push_sub" formatted="false">"提交每個更改，然後上傳"</string>
+    <string name="settings_m3_sc_refresh" formatted="false">"重新整理"</string>
+    <string name="settings_m3_sc_requested" formatted="false">"已請求捷徑。在您的啟動器中批准它，然後點擊下面的『刷新』以檢查。"</string>
+    <string name="settings_m3_sc_returns_to">"返回到 %1$s"</string>
+    <string name="settings_m3_sc_review_again" formatted="false">"再次查看"</string>
+    <string name="settings_m3_sc_revoke" formatted="false">"撤銷"</string>
+    <string name="settings_m3_sc_revoke_body" formatted="false">"停止運行 Git 操作。其圖示可能會留在您的主畫面上，但呈灰色，直到您移除它。新的捷徑需要再次獲得批准。"</string>
+    <string name="settings_m3_sc_revoke_link" formatted="false">"撤銷連結授權"</string>
+    <string name="settings_m3_sc_revoke_title" formatted="false">"撤銷此捷徑？"</string>
+    <string name="settings_m3_sc_revoked" formatted="false">"已撤銷"</string>
+    <string name="settings_m3_sc_run_once" formatted="false">"立即執行一次"</string>
+    <string name="settings_m3_sc_runs_closed" formatted="false">"執行但不打開 GitSync.md"</string>
+    <string name="settings_m3_sc_runs_open" formatted="false">"打開 GitSync.md，然後執行一次"</string>
+    <string name="settings_m3_sc_status" formatted="false">"讀取狀態"</string>
+    <string name="settings_m3_sc_status_sub" formatted="false">"無網路。顯示已變更的內容。"</string>
+    <string name="settings_m3_sc_sync" formatted="false">"同步"</string>
+    <string name="settings_m3_sc_sync_sub" formatted="false">"先拉取，然後提交並推送"</string>
+    <string name="settings_m3_sc_tile_how" formatted="false">"下拉［快速設定］› 編輯 › 拖入［全部拉取］。"</string>
+    <string name="settings_m3_sc_tile_lead" formatted="false">"磚塊："</string>
+    <string name="settings_m3_sc_title" formatted="false">"小工具與捷徑"</string>
+    <string name="settings_m3_sc_upstream">"上游 %1$s / %2$s"</string>
+    <string name="settings_m3_sc_waiting" formatted="false">"等待啟動器"</string>
+    <string name="settings_m3_sc_widget_how" formatted="false">"長按主畫面 › 小工具 › GitSync.md。"</string>
+    <string name="settings_m3_sc_widget_lead" formatted="false">"小工具："</string>
+    <string name="settings_m3_sc_writes" formatted="false">"暫存每個變更，必要時提交，然後上傳。若有衝突、歷史拆分或遠端先移動，將停止操作，且若上傳失敗，仍保留新的提交。"</string>
+    <string name="settings_m3_shortcuts" formatted="false">"小工具與啟動器快捷方式"</string>
+    <string name="settings_m3_sign_out" formatted="false">"登出"</string>
+    <string name="settings_m3_ssh_hosts" formatted="false">"SSH 伺服器"</string>
+    <string name="settings_m3_storage_hint" formatted="false">"手機儲存空間和 SD 卡可用。雲端資料夾如 Google Drive 無法容納 Git 儲存庫。"</string>
+    <string name="settings_m3_storage_intro" formatted="false">"選擇新複製項目要放入的資料夾。你已擁有的保險庫將保持原位。"</string>
+    <string name="settings_m3_storage_move_title" formatted="false">"移動已擁有的保險庫"</string>
+    <string name="settings_m3_system_default" formatted="false">"系統預設"</string>
+    <string name="settings_m3_terms" formatted="false">"條款"</string>
+    <string name="settings_m3_theme" formatted="false">"主題"</string>
+    <string name="settings_m3_theme_dark" formatted="false">"深色"</string>
+    <string name="settings_m3_theme_light" formatted="false">"淺色"</string>
+    <string name="settings_m3_title" formatted="false">"設定"</string>
+    <string name="settings_m3_unlocked" formatted="false">"已解鎖"</string>
+    <string name="settings_m3_upgrade_body" formatted="false">"早上打開 Obsidian，一切都已就緒。"</string>
+    <string name="settings_m3_upgrade_illustration" formatted="false">"鎖定的手機在夜間使用 GitHub 進行拉取和推送"</string>
+    <string name="settings_m3_upgrade_last_run">"%1$s · 已拉取 %2$d · 已推送 %3$d"</string>
+    <string name="settings_m3_upgrade_locked_phone" formatted="false">"鎖定的手機"</string>
+    <string name="settings_m3_upgrade_note" formatted="false">"隨 GitSync.md 提供。Android 決定背景工作何時執行；這是最佳努力。省電模式可能會延遲它。"</string>
+    <string name="settings_m3_upgrade_pull" formatted="false">"在背景拉取"</string>
+    <string name="settings_m3_upgrade_push" formatted="false">"同時提交並推送我的編輯"</string>
+    <string name="settings_m3_upgrade_title" formatted="false">"睡覺時\n也在同步。"</string>
+    <string name="settings_m3_upgrade_turn_on" formatted="false">"開啟 Background Sync"</string>
+    <string name="settings_m3_vault_check_ok" formatted="false">"正常"</string>
+    <string name="settings_m3_vault_delete_action" formatted="false">"刪除"</string>
+    <string name="settings_m3_vault_delete_body" formatted="false">"刪除此資料夾、其檔案及其 Git 歷史紀錄從此手機。任何未推送到 GitHub 的內容將會遺失。"</string>
+    <string name="settings_m3_vault_delete_title" formatted="false">"移除保險庫並刪除檔案？"</string>
+    <string name="settings_m3_vault_display_name" formatted="false">"顯示名稱"</string>
+    <string name="settings_m3_vault_display_name_hint" formatted="false">"留空以使用保險庫自訂的名稱。"</string>
+    <string name="settings_m3_vault_errors" formatted="false">"錯誤 · 7 天"</string>
+    <string name="settings_m3_vault_files" formatted="false">"檔案"</string>
+    <string name="settings_m3_vault_folder" formatted="false">"資料夾"</string>
+    <string name="settings_m3_vault_group" formatted="false">"此保險庫"</string>
+    <string name="settings_m3_vault_health" formatted="false">"健康狀態"</string>
+    <string name="settings_m3_vault_health_attention" formatted="false">"需要檢查"</string>
+    <string name="settings_m3_vault_health_good" formatted="false">"好的"</string>
+    <string name="settings_m3_vault_include" formatted="false">"納入 Background Sync"</string>
+    <string name="settings_m3_vault_include_review" formatted="false">"先檢查分支與遠端"</string>
+    <string name="settings_m3_vault_include_sub">"僅分支 %1$s，追蹤 %2$s/%3$s"</string>
+    <string name="settings_m3_vault_include_title" formatted="false">"包含在 Background Sync 中？"</string>
+    <string name="settings_m3_vault_last_check">"上次背景檢查 %1$s · %2$s"</string>
+    <string name="settings_m3_vault_lfs" formatted="false">"LFS"</string>
+    <string name="settings_m3_vault_no_check" formatted="false">"尚未進行背景檢查"</string>
+    <string name="settings_m3_vault_pin" formatted="false">"在主畫面置頂"</string>
+    <string name="settings_m3_vault_remove" formatted="false">"移除保險庫…"</string>
+    <string name="settings_m3_vault_remove_action" formatted="false">"移除"</string>
+    <string name="settings_m3_vault_remove_delete" formatted="false">"移除保險庫並刪除檔案…"</string>
+    <string name="settings_m3_vault_remove_kept" formatted="false">"GitSync.md 停止顯示它。這個資料夾不是由 GitSync.md 管理的，因此其檔案和 Git 歷史會保持原位。"</string>
+    <string name="settings_m3_vault_remove_title" formatted="false">"要移除此保險庫嗎？"</string>
+    <string name="settings_m3_vault_shortcut" formatted="false">"新增主畫面捷徑"</string>
+    <string name="settings_m3_vault_shortcut_sub" formatted="false">"一次點擊即可拉取或提交並推送"</string>
+    <string name="settings_m3_vault_stop_tracking" formatted="false">"停止追蹤 — 保留檔案"</string>
+    <string name="settings_m3_vault_title" formatted="false">"保險庫設定"</string>
+    <string name="settings_m3_whats_new" formatted="false">"新功能"</string>
+    <string name="settings_m3_whats_new_hint" formatted="false">"這在更新後也會彈出一次。你隨時可以在這裡找到它。"</string>
+    <string name="settings_m3_whats_new_subtitle">"%1$s 的發行說明"</string>
     <string name="shortcut_background_attention" formatted="false">"捷徑需要處理。重試前請開啟儲存庫操作並檢查狀態。"</string>
     <string name="shortcut_background_channel" formatted="false">"主畫面捷徑操作"</string>
     <string name="shortcut_background_complete" formatted="false">"捷徑操作已完成。請開啟儲存庫操作以檢查結果。"</string>
@@ -688,9 +1982,37 @@
     <string name="shortcut_background_interrupted" formatted="false">"執行已中斷，不會自動再次執行。請在再次點按前檢查儲存庫。"</string>
     <string name="shortcut_background_option" formatted="false">"不開啟 GitSync.md 即可執行"</string>
     <string name="shortcut_background_running" formatted="false">"捷徑操作執行中"</string>
+    <string name="shortcut_m3_add_vault" formatted="false">"加入保險庫"</string>
+    <string name="shortcut_m3_commit_push">"%1$s: 提交並推送"</string>
+    <string name="shortcut_m3_commit_short" formatted="false">"提交並推送"</string>
+    <string name="shortcut_m3_pull">"%1$s: 拉取"</string>
+    <string name="shortcut_m3_pull_short" formatted="false">"拉取"</string>
     <string name="shortcut_results_clear_scope" formatted="false">"刪除已儲存的捷徑和回呼執行結果。它們的授權維持不變。中斷的操作不會自動再次執行。"</string>
     <string name="shortcut_results_unavailable" formatted="false">"無法讀取已儲存的捷徑結果。授權另行保留。"</string>
     <string name="ssh_hide_private_key" formatted="false">"隱藏私密金鑰"</string>
+    <string name="ssh_m3_changed_title" formatted="false">"SSH 伺服器金鑰已變更"</string>
+    <string name="ssh_m3_changed_warning" formatted="false">"金鑰變更可能意味著有人假冒伺服器。在替換信任之前，請先與其擁有人核對新的指紋。"</string>
+    <string name="ssh_m3_compare" formatted="false">"在你信任之前，將其與伺服器擁有人發布的 SSH 主機金鑰進行比較。"</string>
+    <string name="ssh_m3_empty" formatted="false">"沒有受信任的 SSH 伺服器"</string>
+    <string name="ssh_m3_error_save" formatted="false">"無法保存 SSH 伺服器信任。在重試之前請再次驗證指紋。"</string>
+    <string name="ssh_m3_forget" formatted="false">"忘記"</string>
+    <string name="ssh_m3_forget_body">"在再次連接之前，%1$s 需要指紋驗證。"</string>
+    <string name="ssh_m3_forget_cd">"忘記 %1$s"</string>
+    <string name="ssh_m3_forget_server" formatted="false">"忘記伺服器"</string>
+    <string name="ssh_m3_forget_title" formatted="false">"忘記 SSH 伺服器？"</string>
+    <string name="ssh_m3_intro" formatted="false">"您信任的指紋已保存在此手機上。忘記其中一個，下一次連接時需要再次驗證。您的 SSH 金鑰將保持保存。"</string>
+    <string name="ssh_m3_none" formatted="false">"設定 · 無信任"</string>
+    <string name="ssh_m3_previous">"先前信任的指紋：%1$s"</string>
+    <string name="ssh_m3_replace" formatted="false">"取代信任並連線"</string>
+    <string name="ssh_m3_reset_all" formatted="false">"重設所有 SSH 伺服器信任"</string>
+    <string name="ssh_m3_reset_body" formatted="false">"每個 SSH 伺服器在再次連接之前都需要指紋驗證。這也會清除損壞的信任條目。"</string>
+    <string name="ssh_m3_reset_confirm" formatted="false">"重設信任"</string>
+    <string name="ssh_m3_reset_title" formatted="false">"重設所有 SSH 伺服器信任？"</string>
+    <string name="ssh_m3_saved" formatted="false">"信任已保存在此手機上，等待中的連線將繼續。取消會使伺服器變為不受信任。"</string>
+    <string name="ssh_m3_title" formatted="false">"SSH 伺服器信任設定"</string>
+    <string name="ssh_m3_trust" formatted="false">"信任並連線"</string>
+    <string name="ssh_m3_trusted" formatted="false">"信任的伺服器"</string>
+    <string name="ssh_m3_verify_title" formatted="false">"驗證 SSH 伺服器"</string>
     <string name="ssh_show_private_key" formatted="false">"顯示私密金鑰"</string>
     <string name="ssh_trust_error_changed" formatted="false">"檢查期間 SSH 信任已變更。請檢查目前的伺服器記錄並重試連線。"</string>
     <string name="ssh_trust_error_damaged" formatted="false">"已儲存的 SSH 信任需要檢查。重試前請在設定中重設 SSH 伺服器信任。"</string>
@@ -755,7 +2077,7 @@
     <string name="tide_vault_eyebrow_unreadable" formatted="false">"無法讀取"</string>
     <string name="tide_vault_files_section" formatted="false">"檔案"</string>
     <string name="tide_vault_from_remote">"來自遠端：↓%1$d"</string>
-    <string name="tide_vault_git" formatted="false">"GIT"</string>
+    <string name="tide_vault_git" formatted="false">"Git"</string>
     <string name="tide_vault_headline_behind">"遠端新增：%1$d"</string>
     <string name="tide_vault_headline_unreadable" formatted="false">"無法讀取此儲存庫。"</string>
     <string name="tide_vault_more" formatted="false">"更多儲存庫選項"</string>
@@ -768,6 +2090,13 @@
     <string name="tide_vault_sub_empty" formatted="false">"加入筆記後，在此處提交。"</string>
     <string name="tide_vault_sub_in_sync" formatted="false">"此手機上沒有待處理內容"</string>
     <string name="tide_vault_yours">"本機：↑%1$d"</string>
+    <string name="tile_m3_background_sync" formatted="false">"Background Sync"</string>
+    <string name="tile_m3_modes">"%1$s · %2$s"</string>
+    <string name="tile_m3_pull_all" formatted="false">"全部拉取"</string>
+    <string name="tile_m3_pull_off" formatted="false">"拉取完成"</string>
+    <string name="tile_m3_pull_on" formatted="false">"拉取"</string>
+    <string name="tile_m3_push_off" formatted="false">"推送完成"</string>
+    <string name="tile_m3_push_on" formatted="false">"推送"</string>
     <string name="tracking_metadata_size">"Git 中繼資料：%1$s"</string>
     <string name="tracking_remove_permanent_title" formatted="false">"永久移除 Git 歷史記錄？"</string>
     <string name="tracking_removed_backup">"已移除 Git 追蹤。已驗證的備份：%1$s"</string>
@@ -778,14 +2107,23 @@
     <string name="ui_1_s_characters_bde60398">"字元數：%1$s"</string>
     <string name="ui_1_s_lines_2_s_bytes_c30a0cd1">"行數：%1$s，位元組數：%2$s"</string>
     <string name="ui_1_s_local_commits_2_s_upstream_commits_77dc6fa8">"%1$s 個本機提交 · %2$s 個上游提交"</string>
+    <string name="ui_1_vault_c39776f1" formatted="false">"1 個保險庫"</string>
+    <string name="ui_2_of_3_commits_sent_5591e38a" formatted="false">"已傳送 2/3 個提交"</string>
+    <string name="ui_3_changes_aren_t_committed_yet_commit_or_s_d878e782" formatted="false">"尚有 3 個更改未提交。在切換分支前請提交或暫存它們。"</string>
+    <string name="ui_3_held_f454ab2b" formatted="false">"↑3 已保留"</string>
+    <string name="ui_3_to_push_ac87b7cb" formatted="false">"↑3 待推送"</string>
+    <string name="ui_4_in_sync_checked_2_min_ago_a1f1ab5e" formatted="false">"4 已同步 · 2 分鐘前檢查"</string>
     <string name="ui_abort_rebase_fd5cfc32" formatted="false">"中止變基…"</string>
     <string name="ui_about_4efca0d1" formatted="false">"關於"</string>
+    <string name="ui_about_lfs_538b5b7e" formatted="false">"關於 LFS"</string>
+    <string name="ui_all_5_8907f196" formatted="false">"全部 5 個"</string>
     <string name="ui_all_conflicts_are_staged_continue_replayin_b86b2a5a" formatted="false">"所有衝突解決結果均已暫存。請繼續重播提交。如果 Git 回報 NOTHING_TO_COMMIT，請檢查是否應略過空提交。"</string>
     <string name="ui_all_local_changes_to_this_file_will_be_per_0919f539" formatted="false">"：對本文件的所有本地修改都將永久丟失。"</string>
     <string name="ui_allow_local_folder_access_0b2888fb" formatted="false">"允許存取本機資料夾"</string>
     <string name="ui_app_0d04bfeb" formatted="false">"應用程式"</string>
     <string name="ui_app_settings_da645334" formatted="false">"應用程式設定"</string>
     <string name="ui_apply_tracking_choice_47a2e187" formatted="false">"套用追蹤選項"</string>
+    <string name="ui_attention_1_fa1ea5dc" formatted="false">"注意 1 個"</string>
     <string name="ui_authentication_66880d2d" formatted="false">"認証"</string>
     <string name="ui_back_639807a2" formatted="false">"返回"</string>
     <string name="ui_back_aceb696a" formatted="false">"← 返回"</string>
@@ -793,11 +2131,13 @@
     <string name="ui_backup_1_s_6ad01ca6">"備份：%1$s"</string>
     <string name="ui_base_7b47361a" formatted="false">"共同祖先"</string>
     <string name="ui_binary_large_or_lfs_file_choose_an_entire_52c3278a" formatted="false">"二進位、大型或 LFS 檔案：請選擇一方的完整版本。"</string>
+    <string name="ui_both_sides_edited_step_3_077f9640" formatted="false">"雙方都編輯了「步驟 3」。"</string>
     <string name="ui_branch_52656e81" formatted="false">"分支"</string>
     <string name="ui_branch_optional_e9dedf99" formatted="false">"分支（選填）"</string>
     <string name="ui_browsing_with_this_account_28a8b330" formatted="false">"正在使用此帳號瀏覽"</string>
     <string name="ui_cancel_pending_move_0858583b" formatted="false">"取消待處理的移動"</string>
     <string name="ui_changes_bbd4b6a8" formatted="false">"更改"</string>
+    <string name="ui_changes_on_this_phone_6359d3d5" formatted="false">"此手機上的更改"</string>
     <string name="ui_choose_a_connected_account_for_this_reposi_c4817ea9" formatted="false">"為此儲存庫選擇已連接的帳號。"</string>
     <string name="ui_choose_a_device_folder_d00b7daf" formatted="false">"選擇裝置上的資料夾"</string>
     <string name="ui_choose_an_authentication_method_before_clo_c89124ba" formatted="false">"複製前請選擇驗證方式。"</string>
@@ -810,14 +2150,18 @@
     <string name="ui_clone_again_e05eb495" formatted="false">"重新複製"</string>
     <string name="ui_clone_again_review_the_previous_branch_and_33cba147" formatted="false">"重新複製 · 開始前請檢查先前的分支與連線設定。"</string>
     <string name="ui_clone_storage_47cafc8a" formatted="false">"複製儲存位置"</string>
+    <string name="ui_cloning_and_preparing_the_working_copy_6fe864ff" formatted="false">"複製並準備工作副本"</string>
+    <string name="ui_commit_3_files_959a8528" formatted="false">"提交 3 個文件"</string>
     <string name="ui_commit_author_e9376b3a" formatted="false">"提交作者"</string>
     <string name="ui_commit_message_a4b361b7" formatted="false">"提交訊息⋯"</string>
     <string name="ui_commit_sha_d0bc6028" formatted="false">"提交 SHA"</string>
     <string name="ui_confirm_eebdd24a" formatted="false">"確認"</string>
+    <string name="ui_conflict_1_of_2_ideas_23283a20" formatted="false">"衝突 1/2 · ideas/"</string>
     <string name="ui_continue_rebase_7a14e965" formatted="false">"繼續重基線"</string>
     <string name="ui_create_a_file_or_folder_using_new_655c5596" formatted="false">"使用「新增」建立檔案或資料夾。"</string>
     <string name="ui_current_default_d914f86e" formatted="false">"目前的預設資料夾"</string>
     <string name="ui_current_separate_push_address_1_s_2a6ef8f9">"目前獨立的推送位址：%1$s"</string>
+    <string name="ui_daily_new_file_42_31057cdf" formatted="false">"daily · 新文件 · +42"</string>
     <string name="ui_debug_info_697b4941" formatted="false">"偵錯資訊"</string>
     <string name="ui_delete_1_s_6474596f">"刪除「%1$s」？"</string>
     <string name="ui_delete_e2d0a549" formatted="false">"刪除"</string>
@@ -826,6 +2170,10 @@
     <string name="ui_delete_local_files_20424441" formatted="false">"刪除本地文件"</string>
     <string name="ui_destination_1_s_0df94639">"目標位置：%1$s"</string>
     <string name="ui_destination_parent_folder_c6c4f97e" formatted="false">"目標上層資料夾"</string>
+    <string name="ui_disabled_75081b59" formatted="false">"喪失能力的"</string>
+    <string name="ui_discard_3_95e06aed" formatted="false">"放棄 3 個"</string>
+    <string name="ui_discard_3_changes_d2ad52aa" formatted="false">"要放棄 3 個更改嗎？"</string>
+    <string name="ui_discard_changes_85bcf416" formatted="false">"要放棄更改嗎？"</string>
     <string name="ui_discard_draft_cb30147e" formatted="false">"捨棄草稿"</string>
     <string name="ui_discard_eb1a70e3" formatted="false">"捨棄"</string>
     <string name="ui_discard_resolution_draft_47c16148" formatted="false">"捨棄解決方案草稿？"</string>
@@ -846,6 +2194,8 @@
     <string name="ui_gitsync_md_needs_shared_storage_access_to_f1b339ea" formatted="false">"GitSync.md 需要共用儲存空間的存取權，才能管理裝置資料夾中的實際 Git 工作複本。在 Android 設定中啟用存取權後，請選擇要使用的資料夾。"</string>
     <string name="ui_go_back_and_select_a_repository_c3eedd39" formatted="false">"返回並選取一個儲存庫。"</string>
     <string name="ui_hash_a9106914" formatted="false">"雜湊"</string>
+    <string name="ui_health_md_f72119f5" formatted="false">"health-md"</string>
+    <string name="ui_https_ssh_git_or_file_e79ef5ea" formatted="false">"HTTPS、SSH、git:// 或 file://."</string>
     <string name="ui_i_understand_that_another_owner_may_still_b4a12b2d" formatted="false">"我了解其他擁有者可能仍在編輯此檔案。"</string>
     <string name="ui_include_the_ssh_username_in_the_address_gi_beb09b5a" formatted="false">"請在位址中包含 SSH 使用者名稱：git@host:team/repo.git 或 ssh://git@host:2222/team/repo.git。"</string>
     <string name="ui_keep_editing_e76fd2ad" formatted="false">"繼續編輯"</string>
@@ -882,8 +2232,12 @@
     <string name="ui_owner_1_s_599ca9ce">"擁有者：%1$s"</string>
     <string name="ui_parents_1_s_914efbd0">"父提交 (%1$s)"</string>
     <string name="ui_path_62fa5a5b" formatted="false">"路徑"</string>
+    <string name="ui_plain_http_sends_credentials_unencrypted_c99e5672" formatted="false">"純 HTTP 會以未加密方式傳送憑證。"</string>
     <string name="ui_platform_c78ffe19" formatted="false">"平台"</string>
     <string name="ui_pull_with_rebase_6d25f1e0" formatted="false">"重置基準值下的拉取"</string>
+    <string name="ui_push_was_rejected_fbc19d01" formatted="false">"推送被拒絕"</string>
+    <string name="ui_pushed_579e8c6a" formatted="false">"已推送"</string>
+    <string name="ui_rebase_completed_successfully_53314c91" formatted="false">"重置基準成功完成"</string>
     <string name="ui_rebase_in_progress_3ecd9c42" formatted="false">"正在重定基底"</string>
     <string name="ui_rebase_onto_reviewed_upstream_c3b8fb93" formatted="false">"重定基底至已檢查的上游"</string>
     <string name="ui_reconnect_bf8a9eab" formatted="false">"重新連接"</string>
@@ -893,6 +2247,7 @@
     <string name="ui_reload_author_18a711d8" formatted="false">"重新載入作者"</string>
     <string name="ui_reload_connection_ceed2dae" formatted="false">"重新載入連線"</string>
     <string name="ui_reload_from_disk_d4288839" formatted="false">"從磁碟重新載入"</string>
+    <string name="ui_remote_has_no_new_commits_fetched_2m_ago_bdaa4b95" formatted="false">"遠端沒有新的提交 · 2 分鐘前已抓取"</string>
     <string name="ui_remove_1_s_e4dd7c24">"移除 %1$s？"</string>
     <string name="ui_remove_1_s_this_removes_it_from_gitsync_md_0a6b198d">"移除「%1$s」？\n\n這會將其從 GitSync.md 中移除。所有本機檔案和 Git 歷史記錄都會保留在此裝置上，之後可以重新連接。遠端儲存庫不會受到影響。"</string>
     <string name="ui_remove_all_custom_endpoint_approvals_and_t_ffc30a9e" formatted="false">"移除此裝置上的所有自訂端點核准及其已儲存的憑證。每個端點和傳輸方向都需要重新檢查。"</string>
@@ -932,17 +2287,20 @@
     <string name="ui_save_1509f561" formatted="false">"儲存"</string>
     <string name="ui_save_author_1c24b32a" formatted="false">"儲存作者"</string>
     <string name="ui_save_connection_df24ef12" formatted="false">"儲存連線"</string>
+    <string name="ui_saved_credentials_are_encrypted_on_this_de_9320d5e0" formatted="false">"已儲存的憑證在此裝置上已加密。"</string>
     <string name="ui_saving_uses_this_address_for_both_fetch_an_48c82edc" formatted="false">"儲存後，擷取和推送都會使用此位址。之後請執行擷取以重新整理遠端狀態。"</string>
     <string name="ui_selected_folder_0cf59bef" formatted="false">"所選資料夾"</string>
     <string name="ui_share_backup_archive_ee4ba873" formatted="false">"分享備份封存檔"</string>
     <string name="ui_some_diagnostics_could_not_be_read_or_save_19e3372d" formatted="false">"無法讀取或儲存部分診斷。現有資料已保留。清空日誌以重新開始記錄。"</string>
     <string name="ui_ssh_private_key_0e92a613" formatted="false">"SSH 俬鑰"</string>
     <string name="ui_stage_de838855" formatted="false">"暫存"</string>
+    <string name="ui_stay_on_main_915a176c" formatted="false">"停留在 main 分支"</string>
     <string name="ui_the_active_destination_stays_in_place_gits_a4f1f68a" formatted="false">"使用中的目標資料夾會保留。GitSync.md 會先檢查保留的原始副本是否沒有後續編輯，再永久移除其檔案和 Git 歷史記錄。"</string>
     <string name="ui_the_folder_can_move_directly_on_this_stora_7b29fabb" formatted="false">"此資料夾可在目前的儲存磁碟區上直接移動。"</string>
     <string name="ui_the_previous_github_account_is_disconnecte_628a1f8c" formatted="false">"先前的 GitHub 帳號已中斷連線。請選擇已連結的帳號或其他驗證方式。"</string>
     <string name="ui_the_replayed_local_commit_deletes_this_fil_ab00656d" formatted="false">"重播的本機提交會刪除此檔案。"</string>
     <string name="ui_the_review_changed_cancel_and_refresh_serv_c7ee804c" formatted="false">"檢閱資訊已變更。請取消並重新整理伺服器鎖定。"</string>
+    <string name="ui_these_files_go_back_to_how_they_were_in_a4_02e3cd66" formatted="false">"這些檔案回到 a41c9e2 時的狀態。"</string>
     <string name="ui_this_history_entry_is_unavailable_c2c9f4e0" formatted="false">"此歷史記錄無法使用。"</string>
     <string name="ui_this_removes_another_connection_s_lock_coo_880defbf" formatted="false">"這會移除其他連線的鎖定。請在繼續前與擁有者協調。"</string>
     <string name="ui_this_repository_will_use_public_access_unt_c94fad61" formatted="false">"此儲存庫會使用公開存取，直到你重新選擇驗證方式。你已登入的 GitHub 帳號不會用於此儲存庫。擷取和推送位址保持不變。"</string>
@@ -955,6 +2313,7 @@
     <string name="ui_use_for_new_clones_be174c95" formatted="false">"用於新複製"</string>
     <string name="ui_use_saved_default_3bb7260d" formatted="false">"使用已儲存的預設設定"</string>
     <string name="ui_username_e3b89e9d" formatted="false">"使用者名稱"</string>
+    <string name="ui_working_5474eef8" formatted="false">"正在處理…"</string>
     <string name="ui_your_edits_have_not_been_saved_625899a4" formatted="false">"你的編輯尚未儲存。"</string>
     <string name="ui_your_unsubmitted_text_will_be_discarded_th_15717285" formatted="false">"尚未送出的文字將被捨棄。工作檔案保持不變。"</string>
     <string name="untracked" formatted="false">"未追蹤"</string>
@@ -1048,9 +2407,108 @@
     <string name="vault_l10n_tracking_review_changed" formatted="false">"停止追蹤的檢查內容已變更。請重新檢查儲存庫和備份選項。"</string>
     <string name="vault_l10n_volume_unavailable" formatted="false">"此儲存磁碟區無法使用"</string>
     <string name="vault_l10n_volume_unavailable_reconnect" formatted="false">"此儲存磁碟區無法使用。請重新連接後再次選擇資料夾。"</string>
+    <string name="vault_m3_as_author">"像 %1$s · %2$s"</string>
+    <string name="vault_m3_branch_pushed">"已將你的提交推送到新分支 %1$s"</string>
+    <string name="vault_m3_cancel" formatted="false">"取消"</string>
+    <string name="vault_m3_check_for_changes" formatted="false">"檢查變更"</string>
+    <string name="vault_m3_checking" formatted="false">"正在檢查…"</string>
+    <string name="vault_m3_checking_remote">"正在檢查 %1$s 是否有新的提交"</string>
+    <string name="vault_m3_chip_theirs">"↓%1$d 個來自 %2$s · %3$s"</string>
+    <string name="vault_m3_chip_theirs_plain">"從遠端 ↓%1$d"</string>
+    <string name="vault_m3_chip_yours">"↑%1$d 個我的"</string>
+    <string name="vault_m3_commit_locally" formatted="false">"本機提交"</string>
+    <string name="vault_m3_commit_push" formatted="false">"提交並推送"</string>
+    <string name="vault_m3_commits_sent">"已傳送 %1$d / %2$d 個提交"</string>
+    <string name="vault_m3_committing" formatted="false">"正在提交…"</string>
+    <string name="vault_m3_days_ago">"%1$d 天前"</string>
+    <string name="vault_m3_deleted_path">"%1$s（已刪除）"</string>
+    <string name="vault_m3_discard_body">"這些檔案回到 %1$s 的狀態。自那時以來在此手機上所做的編輯將永久消失。"</string>
+    <string name="vault_m3_dismiss" formatted="false">"關閉"</string>
+    <string name="vault_m3_download_progress" formatted="false">"下載進度"</string>
+    <string name="vault_m3_effect_delete" formatted="false">"刪除新檔案"</string>
+    <string name="vault_m3_effect_restore" formatted="false">"恢復"</string>
+    <string name="vault_m3_effect_revert" formatted="false">"撤銷"</string>
+    <string name="vault_m3_effect_unstage" formatted="false">"取消暫存"</string>
+    <string name="vault_m3_fetched_ago">"擷取於 %1$s"</string>
+    <string name="vault_m3_hours_ago">"%1$dh前"</string>
+    <string name="vault_m3_included" formatted="false">"已納入"</string>
+    <string name="vault_m3_just_now" formatted="false">"，剛剛"</string>
+    <string name="vault_m3_keep_them" formatted="false">"保留它們"</string>
+    <string name="vault_m3_latest_commit" formatted="false">"最新提交"</string>
+    <string name="vault_m3_leave_note" formatted="false">"你可以離開此畫面。同步會繼續，並在通知中顯示進度。"</string>
+    <string name="vault_m3_merge" formatted="false">"合併"</string>
+    <string name="vault_m3_merge_conflicts" formatted="false">"拉取時發現衝突。解決它們，然後再推送。"</string>
+    <string name="vault_m3_message" formatted="false">"訊息"</string>
+    <string name="vault_m3_minutes">"%1$dm"</string>
+    <string name="vault_m3_minutes_ago">"%1$dm 前"</string>
+    <string name="vault_m3_no_overlap_body" formatted="false">"你的編輯和對方的編輯涉及不同檔案，應該可以順利合併。"</string>
+    <string name="vault_m3_no_overlap_title" formatted="false">"未發現重疊"</string>
+    <string name="vault_m3_no_upstream" formatted="false">"沒有上游分支"</string>
+    <string name="vault_m3_notify_channel" formatted="false">"保管庫同步"</string>
+    <string name="vault_m3_notify_title">"%1$s · %2$s"</string>
+    <string name="vault_m3_objects_received">"已接收 %1$d / %2$d 個物件"</string>
+    <string name="vault_m3_objects_sent">"已傳送 %1$d / %2$d 個物件"</string>
+    <string name="vault_m3_only_on_phone" formatted="false">"只有在這台手機上"</string>
+    <string name="vault_m3_overlap_body" formatted="false">"雙方編輯了相同的檔案。拉取時可能會因衝突而停止，等待你解決。"</string>
+    <string name="vault_m3_preparing" formatted="false">"正在準備…"</string>
+    <string name="vault_m3_pull" formatted="false">"拉取"</string>
+    <string name="vault_m3_pull_then_push" formatted="false">"先拉取他人的，再推送"</string>
+    <string name="vault_m3_pulled">"與 %1$s 同步"</string>
+    <string name="vault_m3_pulling" formatted="false">"正在拉取…"</string>
+    <string name="vault_m3_push" formatted="false">"推送"</string>
+    <string name="vault_m3_push_branch" formatted="false">"推送到分支"</string>
+    <string name="vault_m3_push_right_after" formatted="false">"隨後立即推送"</string>
+    <string name="vault_m3_pushed_to">"已推送到 %1$s"</string>
+    <string name="vault_m3_pushing" formatted="false">"正在推送…"</string>
+    <string name="vault_m3_rejected_kicker" formatted="false">"推送未成功"</string>
+    <string name="vault_m3_remote_generic" formatted="false">"遠端"</string>
+    <string name="vault_m3_remote_is_here">"%1$s 在這裡"</string>
+    <string name="vault_m3_remote_no_new" formatted="false">"遠端沒有新提交"</string>
+    <string name="vault_m3_remote_not_checked" formatted="false">"遠端尚未檢查"</string>
+    <string name="vault_m3_review_first" formatted="false">"先檢視"</string>
+    <string name="vault_m3_seconds">"%1$ds"</string>
+    <string name="vault_m3_stash_first" formatted="false">"以防萬一，先儲藏一份副本"</string>
+    <string name="vault_m3_step_branch">"建立分支 %1$s"</string>
+    <string name="vault_m3_step_check">"檢查 %1$s 是否有新提交"</string>
+    <string name="vault_m3_step_download">"從 %1$s 下載"</string>
+    <string name="vault_m3_step_merge">"合併 %1$s"</string>
+    <string name="vault_m3_step_none" formatted="false">"無"</string>
+    <string name="vault_m3_step_update" formatted="false">"更新檔案"</string>
+    <string name="vault_m3_step_upload">"上傳到 %1$s"</string>
+    <string name="vault_m3_steps" formatted="false">"步驟"</string>
+    <string name="vault_m3_suggest_add">"新增 %1$s"</string>
+    <string name="vault_m3_suggest_backup">"保險庫備份：%1$s"</string>
+    <string name="vault_m3_suggest_delete">"刪除 %1$s"</string>
+    <string name="vault_m3_suggest_update">"更新 %1$s"</string>
+    <string name="vault_m3_suggested" formatted="false">"建議從差異中"</string>
+    <string name="vault_m3_sync_cancelled" formatted="false">"同步已取消。任何已提交的內容仍保留在這支手機上。"</string>
+    <string name="vault_m3_sync_failed" formatted="false">"同步已停止"</string>
+    <string name="vault_m3_tap_for_diff" formatted="false">"點擊檔案以查看差異"</string>
+    <string name="vault_m3_time_left">"~%1$s 剩餘"</string>
+    <string name="vault_m3_today" formatted="false">"今天"</string>
+    <string name="vault_m3_upload_progress" formatted="false">"上傳進度"</string>
+    <string name="vault_m3_vault_settings" formatted="false">"保險庫設定"</string>
+    <string name="vault_m3_who_both" formatted="false">"兩者"</string>
+    <string name="vault_m3_who_theirs" formatted="false">"對方的"</string>
+    <string name="vault_m3_who_yours" formatted="false">"我的"</string>
+    <string name="vault_m3_yesterday" formatted="false">"昨天"</string>
     <string name="vault_open_in_files_failed" formatted="false">"無法在「檔案」中開啟此資料夾。"</string>
     <string name="vault_repository_fallback" formatted="false">"儲存庫"</string>
     <string name="vault_url_copied" formatted="false">"已複製！"</string>
+    <string name="widget_m3_choose_vault" formatted="false">"選擇一個保險庫"</string>
+    <string name="widget_m3_days_ago">"%1$d 天前"</string>
+    <string name="widget_m3_hours_ago">"%1$dh前"</string>
+    <string name="widget_m3_in_sync" formatted="false">"已同步"</string>
+    <string name="widget_m3_list_description" formatted="false">"你的保險庫及每個保險庫需推送的內容，以及「全部拉取」按鈕。"</string>
+    <string name="widget_m3_list_name" formatted="false">"保險庫"</string>
+    <string name="widget_m3_minutes_ago">"%1$dm 前"</string>
+    <string name="widget_m3_no_vaults" formatted="false">"尚無保險庫。打開 GitSync.md 以新增一個。"</string>
+    <string name="widget_m3_now" formatted="false">"現在"</string>
+    <string name="widget_m3_pull_all_repositories" formatted="false">"拉取所有倉庫"</string>
+    <string name="widget_m3_vault_description" formatted="false">"一個保險庫及其需要推送的變更數量。"</string>
+    <string name="widget_m3_vault_missing" formatted="false">"此保險庫不再在這支手機上。"</string>
+    <string name="widget_m3_vault_name" formatted="false">"保險庫"</string>
+    <string name="widget_m3_vault_widget" formatted="false">"保險庫小工具"</string>
     <plurals name="account_updated_days">
         <item quantity="one">"%1$d 天前"</item>
         <item quantity="other">"%1$d 天前"</item>
@@ -1075,6 +2533,48 @@
         <item quantity="one">"%1$d 年前"</item>
         <item quantity="other">"%1$d 年前"</item>
     </plurals>
+    <plurals name="adaptive_changes_on_phone">
+        <item quantity="other">"%1$s 此手機上的更改"</item>
+    </plurals>
+    <plurals name="adaptive_changes_on_tablet">
+        <item quantity="other">"%1$s 這個平板上的更改"</item>
+    </plurals>
+    <plurals name="adaptive_commit_changes">
+        <item quantity="other">"提交 %1$d 的更改"</item>
+    </plurals>
+    <plurals name="adaptive_merging_left">
+        <item quantity="other">"合併 %1$s · %2$d 剩餘衝突"</item>
+    </plurals>
+    <plurals name="adaptive_merging_left_plain">
+        <item quantity="other">"正在合併 · %1$d 剩餘衝突"</item>
+    </plurals>
+    <plurals name="adaptive_split_editing">
+        <item quantity="other">"%1$d 正在編輯"</item>
+    </plurals>
+    <plurals name="adaptive_split_live">
+        <item quantity="other">"%1$s 更改 · 在線"</item>
+    </plurals>
+    <plurals name="adaptive_vaults_need_you">
+        <item quantity="other">"%1$d 需要你"</item>
+    </plurals>
+    <plurals name="add_accounts_signed_in">
+        <item quantity="other">"設定 · %1$d 已登入"</item>
+    </plurals>
+    <plurals name="add_clone_files">
+        <item quantity="other">"%1$d 檔案"</item>
+    </plurals>
+    <plurals name="add_clone_lfs_files">
+        <item quantity="other">"%1$d 檔案"</item>
+    </plurals>
+    <plurals name="add_local_folders">
+        <item quantity="other">"%1$d 資料夾"</item>
+    </plurals>
+    <plurals name="add_way_github_repos">
+        <item quantity="other">"%1$d 倉庫 · 包含私人倉庫"</item>
+    </plurals>
+    <plurals name="add_way_github_repos_public">
+        <item quantity="other">"%1$d 倉庫"</item>
+    </plurals>
     <plurals name="dialogs_error_merge_conflicts">
         <item quantity="one">"合併中有 %1$d 個未解決的衝突。\n\n請在完成合併前解決它們。"</item>
         <item quantity="other">"合併中有 %1$d 個未解決的衝突。\n\n請在完成合併前解決它們。"</item>
@@ -1082,6 +2582,75 @@
     <plurals name="diff_changed_lines">
         <item quantity="one">"+%1$s -%2$s 行"</item>
         <item quantity="other">"+%1$s -%2$s 行"</item>
+    </plurals>
+    <plurals name="editor_m3_lines_changed">
+        <item quantity="other">"%1$d 行已更改"</item>
+    </plurals>
+    <plurals name="files_m3_items">
+        <item quantity="other">"%1$d 項目"</item>
+    </plurals>
+    <plurals name="files_m3_sync_diverged">
+        <item quantity="other">"%1$d 在 %2$s 上有新的提交，而且這支手機有尚未推送的提交。請打開變更標籤以拉取它們。"</item>
+    </plurals>
+    <plurals name="files_m3_sync_local_changes">
+        <item quantity="other">"%1$d 在 %2$s 上有新的提交。請在變更標籤中提交或捨棄您的本地變更，然後再次同步。"</item>
+    </plurals>
+    <plurals name="git_m3_cant_switch_body">
+        <item quantity="other">"切換到 %1$s 將會替換此手機上的檔案。您的 %2$d 尚未提交的變更需要先有安全的存放位置。"</item>
+    </plurals>
+    <plurals name="git_m3_commits_missing">
+        <item quantity="other">"%1$d 有 %2$s 所沒有的提交"</item>
+    </plurals>
+    <plurals name="git_m3_conflicts_left">
+        <item quantity="other">"%1$d 有衝突需要解決。"</item>
+    </plurals>
+    <plurals name="git_m3_continue_resolve">
+        <item quantity="other">"繼續變基 · 尚需解決 %1$d 個"</item>
+    </plurals>
+    <plurals name="git_m3_dirty_note">
+        <item quantity="other">"%1$d 的變更尚未提交。在切換分支之前，請先提交或暫存它們。"</item>
+    </plurals>
+    <plurals name="git_m3_files">
+        <item quantity="other">"%1$d 檔案"</item>
+    </plurals>
+    <plurals name="git_m3_n_branches">
+        <item quantity="other">"%1$d 分支"</item>
+    </plurals>
+    <plurals name="git_m3_n_commits_history">
+        <item quantity="other">"%1$d 歷史提交"</item>
+    </plurals>
+    <plurals name="git_m3_n_stashes">
+        <item quantity="other">"%1$d 暫存變更"</item>
+    </plurals>
+    <plurals name="git_m3_n_tags">
+        <item quantity="other">"%1$d 標籤"</item>
+    </plurals>
+    <plurals name="git_m3_notes_attachments">
+        <item quantity="other">"%1$d 註解和附件"</item>
+    </plurals>
+    <plurals name="git_m3_push_commits">
+        <item quantity="other">"推送 %1$d 提交"</item>
+    </plurals>
+    <plurals name="git_m3_rebase_begin_body">
+        <item quantity="other">"你的 %1$d 本地提交已重放到已審核的上游，可能會獲得新的 ID。變基只停留在這支手機上。推送是獨立的操作步驟。"</item>
+    </plurals>
+    <plurals name="git_m3_rebase_done_meta">
+        <item quantity="other">"%1$d 提交現在在 %2$s 之上 · 新 ID · 尚未推送"</item>
+    </plurals>
+    <plurals name="git_m3_rebase_put_on_top">
+        <item quantity="other">"將你的 %1$d 提交放到遠端之上。"</item>
+    </plurals>
+    <plurals name="git_m3_stash_n">
+        <item quantity="other">"暫存 %1$d 變更"</item>
+    </plurals>
+    <plurals name="git_m3_stashed_toast">
+        <item quantity="other">"已將 %1$d 變更暫存為 stash@{0}。"</item>
+    </plurals>
+    <plurals name="git_m3_uncommitted_changes">
+        <item quantity="other">"%1$s 未提交的更改"</item>
+    </plurals>
+    <plurals name="git_m3_uncommitted_plain">
+        <item quantity="other">"%1$d 未提交的編輯，作為普通文件"</item>
     </plurals>
     <plurals name="gitops_merge_stopped_conflicts">
         <item quantity="one">"合併已停止：%1$s（%2$d 個衝突）"</item>
@@ -1099,6 +2668,24 @@
         <item quantity="one">"%1$d 個現有檔案會保留其明確選擇的追蹤方式。"</item>
         <item quantity="other">"%1$d 個現有檔案會保留其明確選擇的追蹤方式。"</item>
     </plurals>
+    <plurals name="lfs_m3_downloading">
+        <item quantity="other">"正在下載 %1$d 文件"</item>
+    </plurals>
+    <plurals name="lfs_m3_endpoints_subtitle">
+        <item quantity="other">"設定 · %1$d 已批准"</item>
+    </plurals>
+    <plurals name="lfs_m3_ext_affected">
+        <item quantity="other">"%1$d 文件移動到 LFS"</item>
+    </plurals>
+    <plurals name="lfs_m3_file_count">
+        <item quantity="other">"%1$d 文件"</item>
+    </plurals>
+    <plurals name="lfs_m3_stored_files">
+        <item quantity="other">"在 %1$d 文件中"</item>
+    </plurals>
+    <plurals name="lfs_m3_track_files">
+        <item quantity="other">"使用 LFS 跟蹤 %1$d 文件"</item>
+    </plurals>
     <plurals name="lfs_restored_files">
         <item quantity="one">"已還原 %1$d 個檔案。"</item>
         <item quantity="other">"已還原 %1$d 個檔案。"</item>
@@ -1107,9 +2694,45 @@
         <item quantity="one">"%1$d 個檔案"</item>
         <item quantity="other">"%1$d 個檔案"</item>
     </plurals>
+    <plurals name="m3home_auth_waiting">
+        <item quantity="other">"%1$d 保險庫正在等待。"</item>
+    </plurals>
+    <plurals name="m3home_badge_edited">
+        <item quantity="other">"%1$d 已編輯"</item>
+    </plurals>
+    <plurals name="m3home_headline_attention">
+        <item quantity="other">"%1$d 保險庫"</item>
+    </plurals>
+    <plurals name="m3home_headline_attention_accent">
+        <item quantity="other">"%1$s 需要你。"</item>
+    </plurals>
+    <plurals name="m3home_headline_ready">
+        <item quantity="other">"%1$d 保險庫"</item>
+    </plurals>
+    <plurals name="m3home_sync_nothing_local">
+        <item quantity="other">"無需同步。這些 %1$d 保險庫僅限本地（無遠程）。"</item>
+    </plurals>
     <plurals name="move_plan_summary">
         <item quantity="one">"%1$s 個檔案（含 Git 中繼資料）· %2$s"</item>
         <item quantity="other">"%1$s 個檔案（含 Git 中繼資料）· %2$s"</item>
+    </plurals>
+    <plurals name="notification_m3_commits">
+        <item quantity="other">"%1$d 提交在背景中拉取。"</item>
+    </plurals>
+    <plurals name="notification_m3_commits_from">
+        <item quantity="other">"從 %2$s 拉取的 %1$d 次提交在背景進行中。"</item>
+    </plurals>
+    <plurals name="pullall_m3_checked_repositories">
+        <item quantity="other">"已檢查 %2$d 個倉庫中的 %1$d 個"</item>
+    </plurals>
+    <plurals name="pullall_m3_checked_vaults">
+        <item quantity="other">"已檢查 %2$d 個保險庫中的 %1$d 個"</item>
+    </plurals>
+    <plurals name="pullall_m3_updated_commits">
+        <item quantity="other">"從遠端更新 · ↓%1$d 次提交"</item>
+    </plurals>
+    <plurals name="pullall_m3_vaults">
+        <item quantity="other">"%1$d 個保險庫"</item>
     </plurals>
     <plurals name="rebase_additional_blocked_paths">
         <item quantity="one">"另有 %1$d 個受阻路徑未顯示。"</item>
@@ -1131,12 +2754,72 @@
         <item quantity="one">"· %1$d 個儲存庫"</item>
         <item quantity="other">"· %1$d 個儲存庫"</item>
     </plurals>
+    <plurals name="settings_m3_bg_included">
+        <item quantity="other">"已包括 %1$d 個保險庫"</item>
+    </plurals>
+    <plurals name="settings_m3_bg_run_quiet">
+        <item quantity="other">"%1$d 個保險庫，無新內容"</item>
+    </plurals>
+    <plurals name="settings_m3_debug_errors_day">
+        <item quantity="other">"24小時內 %1$d 個錯誤"</item>
+    </plurals>
+    <plurals name="settings_m3_entries">
+        <item quantity="other">"%1$d 個條目"</item>
+    </plurals>
+    <plurals name="settings_m3_push_connections">
+        <item quantity="other">"%1$d 個 GitHub 連線 · 已開啟"</item>
+    </plurals>
+    <plurals name="settings_m3_push_local_changes">
+        <item quantity="other">"此手機上有 %1$d 個本地更改"</item>
+    </plurals>
+    <plurals name="settings_m3_sc_subtitle">
+        <item quantity="other">"全部拉取小工具 · %1$d 個捷徑"</item>
+    </plurals>
+    <plurals name="ssh_m3_subtitle">
+        <item quantity="other">"設定 · %1$d 個伺服器"</item>
+    </plurals>
     <plurals name="tide_vault_changes_on_phone">
-        <item quantity="one">"此手機上的變更"</item>
-        <item quantity="other">"此手機上的變更"</item>
+        <item quantity="one">"%1$s 此手機上的變更"</item>
+        <item quantity="other">"%1$s 此手機上的變更"</item>
     </plurals>
     <plurals name="tide_vault_conflicts_to_resolve">
-        <item quantity="one">"待解決的衝突"</item>
-        <item quantity="other">"待解決的衝突"</item>
+        <item quantity="one">"%1$s 待解決的衝突"</item>
+        <item quantity="other">"%1$s 待解決的衝突"</item>
+    </plurals>
+    <plurals name="vault_m3_commit_title">
+        <item quantity="other">"提交 %1$d 個檔案"</item>
+    </plurals>
+    <plurals name="vault_m3_discard_n">
+        <item quantity="other">"丟棄 %1$d"</item>
+    </plurals>
+    <plurals name="vault_m3_discard_title">
+        <item quantity="other">"要丟棄 %1$d 的更改嗎？"</item>
+    </plurals>
+    <plurals name="vault_m3_effect_lines">
+        <item quantity="other">"−%1$d 行"</item>
+    </plurals>
+    <plurals name="vault_m3_file_count">
+        <item quantity="other">"%1$d 個檔案"</item>
+    </plurals>
+    <plurals name="vault_m3_overlap_title">
+        <item quantity="other">"%1$d 個檔案在雙方都有更改"</item>
+    </plurals>
+    <plurals name="vault_m3_remote_new">
+        <item quantity="other">"遠端有 %1$d 個新提交"</item>
+    </plurals>
+    <plurals name="vault_m3_step_commit">
+        <item quantity="other">"提交 %1$d 個檔案"</item>
+    </plurals>
+    <plurals name="vault_m3_step_lfs">
+        <item quantity="other">"上傳 %1$d 個 LFS 檔案 · %2$s"</item>
+    </plurals>
+    <plurals name="vault_m3_suggest_files">
+        <item quantity="other">"更新 %1$d 個檔案"</item>
+    </plurals>
+    <plurals name="vault_m3_uploading_lfs">
+        <item quantity="other">"正在上傳 %1$d 個 LFS 檔案"</item>
+    </plurals>
+    <plurals name="widget_m3_changes_to_push">
+        <item quantity="other">"%1$s 待推送的更改"</item>
     </plurals>
 </resources>

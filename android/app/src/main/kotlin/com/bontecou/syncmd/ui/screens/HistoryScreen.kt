@@ -1,5 +1,6 @@
 package com.bontecou.syncmd.ui.screens
 
+import com.bontecou.syncmd.ui.util.SampleGitData
 import android.text.format.DateUtils
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -235,10 +236,10 @@ private fun HistoryContent(
 private val previewCommits = listOf(
     Commit("e93b1f0aa", author = "Cody Bontecou", message = "Draft speaker tagging idea", timestamp = System.currentTimeMillis() - 1_200_000),
     Commit("7c0d2aa11", author = "Cody Bontecou", message = "Add Nov 1 daily note", timestamp = System.currentTimeMillis() - 3_600_000),
-    Commit("a41c9e2aa", author = "Obsidian Git", message = "Capture morning voice notes", timestamp = System.currentTimeMillis() - 6 * 3_600_000),
+    Commit("a41c9e2aa", author = "Obsidian Git", message = SampleGitData.MORNING, timestamp = System.currentTimeMillis() - 6 * 3_600_000),
     Commit("51fe80322", author = "Cody Bontecou", message = "Merge draft/pipeline into main", timestamp = System.currentTimeMillis() - 9 * 3_600_000,
         parentHashes = listOf("a", "b")),
-    Commit("0b8d77144", author = "Background Sync", message = "vault backup: 2026-10-31", timestamp = System.currentTimeMillis() - 30 * 3_600_000),
+    Commit("0b8d77144", author = "Background Sync", message = SampleGitData.BACKUP, timestamp = System.currentTimeMillis() - 30 * 3_600_000),
 )
 
 private val previewMarks = HistoryMarks("origin/main", "a41c9e2aa", setOf("e93b1f0aa", "7c0d2aa11"),
@@ -247,11 +248,11 @@ private val previewMarks = HistoryMarks("origin/main", "a41c9e2aa", setOf("e93b1
 @Preview(name = "History · light", heightDp = 915, widthDp = 412)
 @Composable
 private fun PreviewHistory() = SyncMdTheme {
-    HistoryContent("VoxVault", "main · CodyBontecou/VoxVault", previewCommits, previewMarks, previewMarks.tags, "GitHub", false, null, {}, true, {})
+    HistoryContent("VoxVault", androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_main_codybontecou_voxvault_c727a0dc), previewCommits, previewMarks, previewMarks.tags, "GitHub", false, null, {}, true, {})
 }
 
 @Preview(name = "History · dark", heightDp = 915, widthDp = 412)
 @Composable
 private fun PreviewHistoryDark() = SyncMdTheme(darkTheme = true) {
-    HistoryContent("VoxVault", "main · CodyBontecou/VoxVault", previewCommits, previewMarks, previewMarks.tags, "GitHub", false, null, {}, true, {})
+    HistoryContent("VoxVault", androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_main_codybontecou_voxvault_c727a0dc), previewCommits, previewMarks, previewMarks.tags, "GitHub", false, null, {}, true, {})
 }

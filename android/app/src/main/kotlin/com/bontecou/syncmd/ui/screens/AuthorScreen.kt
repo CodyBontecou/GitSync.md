@@ -213,7 +213,7 @@ private fun initials(name: String): String {
 
 @Composable
 private fun AuthorPreview(view: CommitAsView, name: String = "Cody Bontecou", email: String = "cody@codybontecou.com") =
-    AuthorContent(view, false, "CodyBontecou/VoxVault", "CodyBontecou", false, false, null, name, email, {}, {}, {}, {}, {}, null)
+    AuthorContent(view, false, androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_codybontecou_voxvault_b16a3db8), "CodyBontecou", false, false, null, name, email, {}, {}, {}, {}, {}, null)
 
 @Preview(name = "CommitAs · account", heightDp = 915)
 @Composable private fun AuthorAccountPreview() = SyncMdTheme(darkTheme = false) { AuthorPreview(CommitAsView.ACCOUNT, email = "CodyBontecou@users.noreply.github.com") }

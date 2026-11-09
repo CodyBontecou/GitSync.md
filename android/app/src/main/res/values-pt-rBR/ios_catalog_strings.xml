@@ -1,4 +1,4 @@
-<!-- Generated from the sibling iOS catalog by tools/localization/import_ios_catalog.py. -->
+<!-- Generated from the canonical Apple catalog and Android overrides by tools/localization/import_ios_catalog.py. -->
 <resources>
     <string name="account_alternative_exists" formatted="false">"Outra conexão alternativa já está salva. Revise-a antes de migrar mais credenciais de URL."</string>
     <string name="account_api_error">"Erro da API do GitHub: HTTP %1$d"</string>
@@ -95,6 +95,342 @@
     <string name="account_token_invalid">"O token do GitHub é inválido ou expirou (HTTP %1$d)"</string>
     <string name="account_updated_just_now" formatted="false">"agora mesmo"</string>
     <string name="account_valid_branch" formatted="false">"Digite um nome de branch válido"</string>
+    <string name="adaptive_abort_merge" formatted="false">"Abortar merge"</string>
+    <string name="adaptive_account" formatted="false">"Conta e configurações"</string>
+    <string name="adaptive_badge_ahead">"↑%1$d"</string>
+    <string name="adaptive_badge_attention" formatted="false">"!"</string>
+    <string name="adaptive_badge_behind">"↓%1$d"</string>
+    <string name="adaptive_badge_both">"↓%1$d ↑%2$d"</string>
+    <string name="adaptive_badge_checking" formatted="false">"…"</string>
+    <string name="adaptive_badge_edited">"%1$d editado"</string>
+    <string name="adaptive_badge_in_sync" formatted="false">"✓"</string>
+    <string name="adaptive_branch_local_only">"%1$s · sem remoto"</string>
+    <string name="adaptive_branch_to_remote">"%1$s → %2$s"</string>
+    <string name="adaptive_cancel" formatted="false">"Cancelar"</string>
+    <string name="adaptive_commit_message" formatted="false">"Mensagem de commit"</string>
+    <string name="adaptive_commit_only" formatted="false">"Apenas commit"</string>
+    <string name="adaptive_commit_this_file" formatted="false">"Comitar este arquivo"</string>
+    <string name="adaptive_conflict" formatted="false">"conflito"</string>
+    <string name="adaptive_conflict_position">"Conflito %1$d de %2$d · %3$s"</string>
+    <string name="adaptive_cover_unfold" formatted="false">"Desdobrar para ler a diferença ao lado da lista de alterações."</string>
+    <string name="adaptive_discard_all" formatted="false">"Descartar"</string>
+    <string name="adaptive_edited" formatted="false">"editado"</string>
+    <string name="adaptive_include" formatted="false">"Incluir"</string>
+    <string name="adaptive_keep_this_version" formatted="false">"Manter esta versão"</string>
+    <string name="adaptive_new_file" formatted="false">"arquivo novo"</string>
+    <string name="adaptive_no_changes" formatted="false">"Sem alterações neste dispositivo. Edite uma nota e ela aparecerá aqui."</string>
+    <string name="adaptive_position">"%1$d de %2$d"</string>
+    <string name="adaptive_pull" formatted="false">"Pull"</string>
+    <string name="adaptive_pull_then_push" formatted="false">"Puxar, depois enviar"</string>
+    <string name="adaptive_push" formatted="false">"Enviar"</string>
+    <string name="adaptive_rejected" formatted="false">"O remoto avançou. Puxe primeiro os commits dele, depois envie os seus."</string>
+    <string name="adaptive_review_first" formatted="false">"Revisar antes"</string>
+    <string name="adaptive_split_auto_commit" formatted="false">"Auto-commit quando eu pausar por 2 min"</string>
+    <string name="adaptive_split_committed">"↑%1$d comitado"</string>
+    <string name="adaptive_split_typing" formatted="false">"digitando…"</string>
+    <string name="adaptive_split_watching">"acompanhando %1$s"</string>
+    <string name="adaptive_sync_all" formatted="false">"Sincronizar tudo"</string>
+    <string name="adaptive_sync_all_to_push">"Sincronizar tudo, %1$d para enviar"</string>
+    <string name="adaptive_this_tablet" formatted="false">"Este tablet"</string>
+    <string name="adaptive_vaults" formatted="false">"Cofres"</string>
+    <string name="adaptive_view" formatted="false">"Ver"</string>
+    <string name="adaptive_vs">"vs %1$s"</string>
+    <string name="add_access_body" formatted="false">"GitSync.md precisa de acesso ao armazenamento compartilhado para gerenciar cópias de trabalho Git reais nas pastas do dispositivo. Ative-o em Configurações Android, e então escolha as pastas que deseja usar."</string>
+    <string name="add_access_cancel" formatted="false">"Cancelar"</string>
+    <string name="add_access_enable" formatted="false">"Ativar acesso"</string>
+    <string name="add_access_note" formatted="false">"Não agora? Você pode continuar usando o armazenamento do aplicativo."</string>
+    <string name="add_access_title" formatted="false">"Permitir acesso a pastas locais"</string>
+    <string name="add_accounts_add" formatted="false">"Adicionar GitHub Conta"</string>
+    <string name="add_accounts_browsing" formatted="false">"Navegando com esta conta"</string>
+    <string name="add_accounts_cancel" formatted="false">"Cancelar"</string>
+    <string name="add_accounts_empty_body" formatted="false">"Repositórios locais permanecem disponíveis."</string>
+    <string name="add_accounts_empty_title" formatted="false">"Nenhuma conta conectada"</string>
+    <string name="add_accounts_intro" formatted="false">"Escolha a conta usada para navegar em GitHub. Cada repositório mantém sua própria conta; altere-a em Conexão de repositório."</string>
+    <string name="add_accounts_none_signed_in" formatted="false">"Configurações · nenhum usuário conectado"</string>
+    <string name="add_accounts_remove" formatted="false">"Remover login"</string>
+    <string name="add_accounts_remove_body" formatted="false">"Repositórios que usam esta conta irão pedir para você entrar novamente ou escolher outra conta em Conexão de repositório. Seus arquivos e commits locais permanecem intactos."</string>
+    <string name="add_accounts_remove_title">"Remover %1$s?"</string>
+    <string name="add_accounts_title" formatted="false">"Contas do GitHub"</string>
+    <string name="add_accounts_use" formatted="false">"Usar para navegar"</string>
+    <string name="add_added" formatted="false">"Adicionado"</string>
+    <string name="add_ago_days">"há %1$dd"</string>
+    <string name="add_ago_hours">"%1$dhá h dias"</string>
+    <string name="add_ago_minutes">"%1$dhá m dias"</string>
+    <string name="add_ago_months">"%1$d meses atrás"</string>
+    <string name="add_ago_now" formatted="false">"agora mesmo"</string>
+    <string name="add_ago_weeks">"%1$d semanas atrás"</string>
+    <string name="add_ago_years">"%1$d anos atrás"</string>
+    <string name="add_auth_github" formatted="false">"GitHub"</string>
+    <string name="add_auth_none" formatted="false">"Nenhuma"</string>
+    <string name="add_auth_saved" formatted="false">"Salvo"</string>
+    <string name="add_auth_ssh" formatted="false">"SSH "</string>
+    <string name="add_auth_token" formatted="false">"Token"</string>
+    <string name="add_check_access_ro" formatted="false">"somente leitura"</string>
+    <string name="add_check_access_rw" formatted="false">"leitura · escrita"</string>
+    <string name="add_check_add_on_github" formatted="false">"Adicionar repositório em GitHub"</string>
+    <string name="add_check_again" formatted="false">"Verificar novamente"</string>
+    <string name="add_check_app_callout">"O GitHub App está instalado em %1$s, mas este repositório não está selecionado. Adicione-o em GitHub, e depois volte."</string>
+    <string name="add_check_app_missing">"GitHub App do GitSync.md ainda não está em %1$s. Adicione-o em GitHub com este repositório, e depois volte."</string>
+    <string name="add_check_checking" formatted="false">"Verificando…"</string>
+    <string name="add_check_clone" formatted="false">"Clonar cofre"</string>
+    <string name="add_check_clone_obsidian" formatted="false">"Clonar em Obsidian"</string>
+    <string name="add_check_clones_to" formatted="false">"Clonar Para"</string>
+    <string name="add_check_head_blocked" formatted="false">"Primeiro, há um ponto a corrigir."</string>
+    <string name="add_check_head_checking" formatted="false">"Verificando\nseu cofre."</string>
+    <string name="add_check_head_ready" formatted="false">"Seu cofre está pronto."</string>
+    <string name="add_check_lfs_none" formatted="false">"nenhum"</string>
+    <string name="add_check_lfs_used" formatted="false">"em uso"</string>
+    <string name="add_check_measuring" formatted="false">"medindo"</string>
+    <string name="add_check_no_obsidian" formatted="false">"Ainda não há pasta .obsidian/"</string>
+    <string name="add_check_note_blocked" formatted="false">"Você não pagou nada. O desbloqueio só aparece quando seu cofre passa na verificação."</string>
+    <string name="add_check_note_checking" formatted="false">"Apenas metadados são lidos. Nenhuma nota é baixada até você desbloquear."</string>
+    <string name="add_check_note_ready" formatted="false">"Google Play mostra o preço final na sua moeda antes de você confirmar."</string>
+    <string name="add_check_note_ready_unlocked" formatted="false">"Full Access está desbloqueado. Nada mais a pagar."</string>
+    <string name="add_check_obsidian_found" formatted="false">"Cofre do Obsidian encontrado"</string>
+    <string name="add_check_obsidian_git" formatted="false">"Plugin Obsidian Git configurado"</string>
+    <string name="add_check_ok" formatted="false">"OK"</string>
+    <string name="add_check_pick_another" formatted="false">"Escolher outro repositório"</string>
+    <string name="add_check_play_note" formatted="false">"Compra única pelo Google Play. Sem assinatura."</string>
+    <string name="add_check_price_once">"%1$s uma vez"</string>
+    <string name="add_check_size_files" formatted="false">"Tamanho e arquivos"</string>
+    <string name="add_check_stat_access" formatted="false">"ACESSO"</string>
+    <string name="add_check_stat_files" formatted="false">"Arquivos"</string>
+    <string name="add_check_stat_lfs" formatted="false">"Git LFS"</string>
+    <string name="add_check_stat_size" formatted="false">"TAMANHO"</string>
+    <string name="add_check_step">"Etapa %1$d de 3"</string>
+    <string name="add_check_sub_blocked" formatted="false">"GitSync.md pode ler este repositório, mas não pode enviar alterações para ele. Corrija isso em GitHub, depois verifique novamente."</string>
+    <string name="add_check_sub_checking" formatted="false">"Verificando se o GitSync.md consegue sincronizar este repositório antes de você pagar qualquer coisa."</string>
+    <string name="add_check_sub_ready" formatted="false">"Tudo certo. Um clone e o Obsidian o abre com o histórico intacto."</string>
+    <string name="add_check_title" formatted="false">"Verificação do cofre"</string>
+    <string name="add_check_unknown" formatted="false">"—"</string>
+    <string name="add_check_write_access" formatted="false">"Acesso de escrita"</string>
+    <string name="add_clone" formatted="false">"Clonar"</string>
+    <string name="add_clone_app_storage" formatted="false">"Usar armazenamento do aplicativo"</string>
+    <string name="add_clone_busy" formatted="false">"Clonando Repositório"</string>
+    <string name="add_clone_bytes">"%1$s · %2$s"</string>
+    <string name="add_clone_cancel" formatted="false">"Cancelar"</string>
+    <string name="add_clone_checkout" formatted="false">"Verificando arquivos"</string>
+    <string name="add_clone_choose_folder" formatted="false">"Escolher outra pasta"</string>
+    <string name="add_clone_cloned" formatted="false">"Clonado"</string>
+    <string name="add_clone_continue" formatted="false">"Continuar"</string>
+    <string name="add_clone_finishing" formatted="false">"Finalizando"</string>
+    <string name="add_clone_finishing_body">"Adicionando %1$s aos seus cofres e verificando seus arquivos Git LFS."</string>
+    <string name="add_clone_lfs" formatted="false">"Clonagem concluída. Alguns arquivos do Git LFS ainda precisam de revisão ou download. Seu clone e suas alterações locais foram mantidos."</string>
+    <string name="add_clone_lfs_review" formatted="false">"Revisar Git LFS"</string>
+    <string name="add_clone_location" formatted="false">"Local do clone"</string>
+    <string name="add_clone_new_folder" formatted="false">"Nova pasta"</string>
+    <string name="add_clone_nothing_yet" formatted="false">"Nada será baixado até você tocar em Clonar."</string>
+    <string name="add_clone_percent">"%1$d%%"</string>
+    <string name="add_clone_preparing" formatted="false">"Conectando"</string>
+    <string name="add_clone_receiving" formatted="false">"Recebendo objetos"</string>
+    <string name="add_clone_register_failed" formatted="false">"Não foi possível adicionar o repositório clonado. Os arquivos foram mantidos. Tente adicioná-lo novamente ou reconecte a pasta em Repositórios locais."</string>
+    <string name="add_clone_register_retry" formatted="false">"Adicionar repositório clonado"</string>
+    <string name="add_clone_resolving" formatted="false">"Resolvendo deltas"</string>
+    <string name="add_clone_retry" formatted="false">"Tente novamente"</string>
+    <string name="add_clone_saved_default" formatted="false">"Usar padrão salvo"</string>
+    <string name="add_clone_start" formatted="false">"Clonar Repositório"</string>
+    <string name="add_clone_title_cloning" formatted="false">"Clonando Repositório"</string>
+    <string name="add_clone_title_done" formatted="false">"Clonado"</string>
+    <string name="add_clone_title_failed" formatted="false">"Falha ao clonar"</string>
+    <string name="add_clone_title_ready" formatted="false">"Clonar Repositório"</string>
+    <string name="add_clone_to">"→ %1$s"</string>
+    <string name="add_cloning_name">"Clonando %1$s"</string>
+    <string name="add_close" formatted="false">"Fechar"</string>
+    <string name="add_connected_added" formatted="false">"Adicionado às suas contas"</string>
+    <string name="add_connected_title" formatted="false">"Conta do GitHub conectada"</string>
+    <string name="add_continue" formatted="false">"Continuar"</string>
+    <string name="add_default_branch" formatted="false">"Branch padrão"</string>
+    <string name="add_done" formatted="false">"Concluído"</string>
+    <string name="add_github_hint" formatted="false">"Usa o login da conta GitHub para github.com."</string>
+    <string name="add_group_notes" formatted="false">"Parece notas"</string>
+    <string name="add_group_other" formatted="false">"Todo o resto"</string>
+    <string name="add_group_other_matching" formatted="false">"Todo o resto correspondente"</string>
+    <string name="add_intro" formatted="false">"Traga um repo que você já tem ou transforme uma pasta em um."</string>
+    <string name="add_key_copied" formatted="false">"Chave pública copiada"</string>
+    <string name="add_key_copy" formatted="false">"Copiar chave pública"</string>
+    <string name="add_key_failed" formatted="false">"Não foi possível criar uma chave neste telefone. Use outra chave."</string>
+    <string name="add_key_hint" formatted="false">"Adicione a chave pública ao seu host uma vez. A chave privada permanece neste telefone."</string>
+    <string name="add_key_meta">"ed25519 · %1$s"</string>
+    <string name="add_key_other" formatted="false">"Usar outro…"</string>
+    <string name="add_key_this_phone" formatted="false">"Usar a chave deste telefone"</string>
+    <string name="add_key_title" formatted="false">"Chave deste telefone"</string>
+    <string name="add_local_add_selected" formatted="false">"Adicionar repositórios selecionados"</string>
+    <string name="add_local_added" formatted="false">"Repositórios adicionados"</string>
+    <string name="add_local_already" formatted="false">"Já adicionado"</string>
+    <string name="add_local_clean" formatted="false">"limpo"</string>
+    <string name="add_local_clone_instead" formatted="false">"Clonar de GitHub em vez disso"</string>
+    <string name="add_local_destination">"Destino: %1$s"</string>
+    <string name="add_local_detached" formatted="false">"HEAD desanexado ou sem primeiro commit"</string>
+    <string name="add_local_dirty" formatted="false">"Alterações locais"</string>
+    <string name="add_local_discovered" formatted="false">"Repositórios encontrados"</string>
+    <string name="add_local_files_deleted" formatted="false">"Arquivos locais excluídos"</string>
+    <string name="add_local_files_kept" formatted="false">"Arquivos locais mantidos"</string>
+    <string name="add_local_in">"em %1$s"</string>
+    <string name="add_local_interrupted" formatted="false">"Clonagens interrompidas"</string>
+    <string name="add_local_interrupted_body" formatted="false">"Tente adicionar este clone novamente após revisar a pasta e a conexão. Os arquivos existentes são preservados."</string>
+    <string name="add_local_intro" formatted="false">"Encontre cópias de trabalho de Git já neste telefone, como uma pasta de cofre Obsidian, e adicione-as sem clonar novamente. Remover uma entrada depois mantém seus arquivos."</string>
+    <string name="add_local_none_added" formatted="false">"Nenhum repositório adicionado ainda."</string>
+    <string name="add_local_none_body">"Nada em %1$s tinha uma pasta .git. Tente a pasta que seu aplicativo de notas usa ou clone de GitHub."</string>
+    <string name="add_local_none_title" formatted="false">"Nenhuma cópia de trabalho encontrada"</string>
+    <string name="add_local_previous" formatted="false">"Adicionados anteriormente"</string>
+    <string name="add_local_scan_app" formatted="false">"Examinar pastas do app"</string>
+    <string name="add_local_scan_app_label" formatted="false">"pastas do aplicativo"</string>
+    <string name="add_local_scan_app_sub" formatted="false">"Pastas GitSync.md já armazenadas"</string>
+    <string name="add_local_scan_device" formatted="false">"Examinar pasta do dispositivo"</string>
+    <string name="add_local_scan_device_sub" formatted="false">"Escolha uma pasta, como Documentos ou Obsidian"</string>
+    <string name="add_local_scanning">"Escaneando %1$s"</string>
+    <string name="add_local_staged">"Cópia temporária: %1$s"</string>
+    <string name="add_local_title" formatted="false">"Repositórios locais"</string>
+    <string name="add_local_tracking_removed" formatted="false">"Rastreamento de Git removido · arquivos mantidos"</string>
+    <string name="add_local_truncated" formatted="false">"A busca atingiu o limite de profundidade ou pastas. Algumas pastas não foram examinadas."</string>
+    <string name="add_location_body" formatted="false">"Escolha uma pasta diferente ao clonar, ou defina uma padrão em Configurações."</string>
+    <string name="add_location_head" formatted="false">"Salvar em"</string>
+    <string name="add_location_head_muted" formatted="false">"local."</string>
+    <string name="add_location_label" formatted="false">"Local de download"</string>
+    <string name="add_meta_lfs">"%1$s LFS"</string>
+    <string name="add_meta_private" formatted="false">"privado"</string>
+    <string name="add_meta_public" formatted="false">"público"</string>
+    <string name="add_more_options" formatted="false">"Nome, branch e pasta"</string>
+    <string name="add_more_options_meta">"%1$s · %2$s"</string>
+    <string name="add_none_hint" formatted="false">"Para repositórios públicos. GitSync.md não envia credenciais."</string>
+    <string name="add_not_signed_in" formatted="false">"Sem login"</string>
+    <string name="add_owner_orgs" formatted="false">"Orgs"</string>
+    <string name="add_owner_starred" formatted="false">"Com estrela"</string>
+    <string name="add_owner_yours" formatted="false">"Seus"</string>
+    <string name="add_picker_accounts" formatted="false">"Contas do GitHub"</string>
+    <string name="add_picker_empty_owner" formatted="false">"Nenhum repositório aqui ainda."</string>
+    <string name="add_picker_refresh" formatted="false">"Atualizar"</string>
+    <string name="add_picker_search" formatted="false">"Buscar repositórios"</string>
+    <string name="add_picker_starred_failed" formatted="false">"Não foi possível carregar seus repositórios favoritos."</string>
+    <string name="add_picker_title" formatted="false">"Escolha um repo"</string>
+    <string name="add_publish_account" formatted="false">"GitHub Conta"</string>
+    <string name="add_publish_author_email" formatted="false">"E-mail do Autor"</string>
+    <string name="add_publish_author_name" formatted="false">"Nome do Autor"</string>
+    <string name="add_publish_cancel" formatted="false">"Cancelar"</string>
+    <string name="add_publish_check" formatted="false">"Verificar destino original"</string>
+    <string name="add_publish_choose" formatted="false">"Escolher uma Pasta"</string>
+    <string name="add_publish_confirm" formatted="false">"Publicar"</string>
+    <string name="add_publish_confirm_body">"Isso transforma %1$s em um repositório %2$s e faz o upload do primeiro commit salvo. Mantenha o aplicativo aberto. Uma nova tentativa verifica este destino e nunca faz um segundo commit."</string>
+    <string name="add_publish_confirm_dest">"%1$s · %2$s\n%3$s · %4$s · %5$s"</string>
+    <string name="add_publish_confirm_title" formatted="false">"Publicar este commit salvo?"</string>
+    <string name="add_publish_continue" formatted="false">"Continuar publicação salva"</string>
+    <string name="add_publish_creating" formatted="false">"Criando o repositório…"</string>
+    <string name="add_publish_discard" formatted="false">"Descartar revisão salva"</string>
+    <string name="add_publish_file_ignored">"%1$s · Ignorado"</string>
+    <string name="add_publish_file_issue">"%1$s · %2$s"</string>
+    <string name="add_publish_file_large">"%1$s · Mais de 10 MiB"</string>
+    <string name="add_publish_file_regular">"%1$s · Arquivo regular"</string>
+    <string name="add_publish_file_sensitive">"%1$s · Nome de arquivo sensível"</string>
+    <string name="add_publish_files" formatted="false">"Arquivos"</string>
+    <string name="add_publish_intro" formatted="false">"Escolha uma pasta neste telefone, revise seus arquivos e salve o primeiro commit. Publicar fará então um novo repositório no seu GitHub e fará o upload dele."</string>
+    <string name="add_publish_keep_note" formatted="false">"O progresso permanece salvo quando você sair. Se Android remover o acesso, reconecte a mesma pasta."</string>
+    <string name="add_publish_limits" formatted="false">"Seus arquivos permanecem onde estão. Até 10 MiB por arquivo, 10.000 arquivos e 256 MiB no total. Git pula pastas vazias."</string>
+    <string name="add_publish_manage_accounts" formatted="false">"Gerenciar contas"</string>
+    <string name="add_publish_message" formatted="false">"Mensagem do commit inicial"</string>
+    <string name="add_publish_no_account" formatted="false">"Faça login no GitHub para publicar."</string>
+    <string name="add_publish_open" formatted="false">"Abrir Repositório"</string>
+    <string name="add_publish_original" formatted="false">"Pasta original"</string>
+    <string name="add_publish_phase_created" formatted="false">"Repositório criado; envio pendente"</string>
+    <string name="add_publish_phase_done" formatted="false">"Publicado"</string>
+    <string name="add_publish_phase_prepared" formatted="false">"Commit local preparado"</string>
+    <string name="add_publish_phase_published" formatted="false">"Commit publicado; configuração pendente"</string>
+    <string name="add_publish_phase_review" formatted="false">"Revisar arquivos e destino"</string>
+    <string name="add_publish_phase_unknown" formatted="false">"A criação do repositório precisa de revisão"</string>
+    <string name="add_publish_prepare" formatted="false">"Preparar commit local"</string>
+    <string name="add_publish_preparing" formatted="false">"Preparando o commit local…"</string>
+    <string name="add_publish_private" formatted="false">"Repositório privado"</string>
+    <string name="add_publish_private_off" formatted="false">"Qualquer pessoa pode ler os arquivos selecionados e o histórico."</string>
+    <string name="add_publish_private_on" formatted="false">"Somente as pessoas às quais você conceder acesso podem ler."</string>
+    <string name="add_publish_progress_bytes">"%1$s / %2$s · mantenha o aplicativo aberto"</string>
+    <string name="add_publish_progress_keep">"%1$s · mantenha o aplicativo aberto"</string>
+    <string name="add_publish_public_body" formatted="false">"Qualquer pessoa poderá ler os arquivos que você publicar. Verifique sua seleção quanto a segredos, detalhes pessoais e arquivos que você não pode compartilhar."</string>
+    <string name="add_publish_public_confirm" formatted="false">"Escolher público"</string>
+    <string name="add_publish_public_title" formatted="false">"Tornar este repositório público?"</string>
+    <string name="add_publish_publish" formatted="false">"Publicar no GitHub"</string>
+    <string name="add_publish_reconnect" formatted="false">"Reconectar pasta original"</string>
+    <string name="add_publish_refresh" formatted="false">"Atualizar arquivos"</string>
+    <string name="add_publish_registering" formatted="false">"Adicionando o repositório…"</string>
+    <string name="add_publish_reload" formatted="false">"Recarregar progresso salvo"</string>
+    <string name="add_publish_repo_name" formatted="false">"Nome do Repositório"</string>
+    <string name="add_publish_save_review" formatted="false">"Salvar revisão"</string>
+    <string name="add_publish_saved_commit">"Commit salvo: %1$s"</string>
+    <string name="add_publish_saved_progress" formatted="false">"Progresso Salvo"</string>
+    <string name="add_publish_selected">"Selecionados: %1$d · %2$s"</string>
+    <string name="add_publish_step">"Etapa %1$d de 3"</string>
+    <string name="add_publish_stop" formatted="false">"Parar"</string>
+    <string name="add_publish_title" formatted="false">"Publicar uma pasta"</string>
+    <string name="add_publish_unknown_note" formatted="false">"GitHub pode já ter criado o repositório. Verifique o destino original. Nenhum segundo repositório é criado, a menos que você escolha usar um vazio correspondente."</string>
+    <string name="add_publish_uploading" formatted="false">"Enviando o commit salvo…"</string>
+    <string name="add_rail_github" formatted="false">"GitHub"</string>
+    <string name="add_rail_phone" formatted="false">"este telefone"</string>
+    <string name="add_remote_file" formatted="false">"local"</string>
+    <string name="add_remote_git" formatted="false">"git://"</string>
+    <string name="add_remote_http" formatted="false">"HTTP"</string>
+    <string name="add_remote_https" formatted="false">"HTTPS"</string>
+    <string name="add_remote_intro" formatted="false">"GitLab, Gitea, Codeberg, seu próprio servidor."</string>
+    <string name="add_remote_label" formatted="false">"URL Remoto"</string>
+    <string name="add_remote_name_invalid" formatted="false">"Use um nome sem / ou \\, e não “.” ou “..”."</string>
+    <string name="add_remote_placeholder" formatted="false">"ssh://git@host/owner/repo.git"</string>
+    <string name="add_remote_ssh" formatted="false">"SSH"</string>
+    <string name="add_remote_title" formatted="false">"Qualquer host Git"</string>
+    <string name="add_resume_meta">"%1$s · passo %2$d de 3 · salvo"</string>
+    <string name="add_resume_title" formatted="false">"Retomar publicação"</string>
+    <string name="add_saved_hint" formatted="false">"Reutiliza a conexão criptografada salva para este repositório."</string>
+    <string name="add_sign_in_with" formatted="false">"Entrar com"</string>
+    <string name="add_signed_in_as">"conectado como @%1$s"</string>
+    <string name="add_signin_back_accounts" formatted="false">"Voltar para contas"</string>
+    <string name="add_signin_body" formatted="false">"Clone qualquer repositório, escreva no Obsidian ou em outro app e sincronize com um toque."</string>
+    <string name="add_signin_busy" formatted="false">"Entrando…"</string>
+    <string name="add_signin_eyebrow" formatted="false">"QUALQUER REPOSITÓRIO. SINCRONIZADO NO ANDROID."</string>
+    <string name="add_signin_github" formatted="false">"Entrar com GitHub"</string>
+    <string name="add_signin_head_1" formatted="false">"Suas notas."</string>
+    <string name="add_signin_head_2" formatted="false">"Git de verdade."</string>
+    <string name="add_signin_head_3" formatted="false">"Sempre em sintonia."</string>
+    <string name="add_signin_rail" formatted="false">"Este telefone e GitHub se encontram em um ponto de sincronização"</string>
+    <string name="add_signin_sample" formatted="false">"Experimentar repositório de exemplo"</string>
+    <string name="add_signin_sample_busy" formatted="false">"Abrindo exemplo…"</string>
+    <string name="add_signin_sample_hint" formatted="false">"Real Git, offline. Nenhuma conta necessária."</string>
+    <string name="add_signin_token" formatted="false">"Token de acesso pessoal"</string>
+    <string name="add_signin_waiting" formatted="false">"Termine em GitHub na aba do navegador. Você voltará imediatamente."</string>
+    <string name="add_ssh_import_failed" formatted="false">"Não foi possível ler esse arquivo de chave."</string>
+    <string name="add_ssh_import_key" formatted="false">"Importar arquivo de chave"</string>
+    <string name="add_test_clone" formatted="false">"Testar e clonar"</string>
+    <string name="add_test_failed_auth" formatted="false">"O host recusou este login. Verifique a chave ou o token e seu acesso ao repositório."</string>
+    <string name="add_test_failed_branch">"O host não possui um branch chamado %1$s."</string>
+    <string name="add_test_failed_missing" formatted="false">"O host não possui um repositório neste endereço."</string>
+    <string name="add_test_failed_network" formatted="false">"Não foi possível alcançar o host. Verifique o endereço e sua conexão."</string>
+    <string name="add_test_host_key" formatted="false">"Confirme a chave SSH do host, depois toque em Testar &amp; clonar novamente."</string>
+    <string name="add_testing" formatted="false">"Testando login…"</string>
+    <string name="add_title" formatted="false">"Adicionar um cofre"</string>
+    <string name="add_token_body" formatted="false">"Cole um token do GitHub com acesso a repositórios."</string>
+    <string name="add_token_create" formatted="false">"Crie um token em GitHub"</string>
+    <string name="add_token_hide" formatted="false">"Ocultar"</string>
+    <string name="add_token_hint" formatted="false">"O token é criptografado neste telefone e enviado apenas para este host."</string>
+    <string name="add_token_label" formatted="false">"Token"</string>
+    <string name="add_token_scopes" formatted="false">"Escopos: repo e user:email. O token é criptografado neste telefone."</string>
+    <string name="add_token_secret" formatted="false">"Token"</string>
+    <string name="add_token_show" formatted="false">"Mostrar"</string>
+    <string name="add_token_sign_in" formatted="false">"Entrar"</string>
+    <string name="add_token_title" formatted="false">"Token de acesso pessoal"</string>
+    <string name="add_token_user" formatted="false">"Nome de Usuário"</string>
+    <string name="add_unlock_rail">"%1$s · %2$s · marcado, pronto para clonar"</string>
+    <string name="add_unlock_rail_cd">"%1$s, marcado e pronto para clonar de GitHub para Obsidian"</string>
+    <string name="add_unlock_rail_from" formatted="false">"GitHub"</string>
+    <string name="add_unlock_rail_plain">"%1$s · marcado, pronto para clonar"</string>
+    <string name="add_unlock_rail_to" formatted="false">"Obsidian"</string>
+    <string name="add_url_hint" formatted="false">"HTTPS, SSH, git:// ou owner/repo. Servidor próprio? Toque na chave."</string>
+    <string name="add_url_key" formatted="false">"Opções de login para outros hosts"</string>
+    <string name="add_url_label" formatted="false">"URL do Repositório"</string>
+    <string name="add_url_placeholder" formatted="false">"https://github.com/owner/repo"</string>
+    <string name="add_url_section" formatted="false">"Ou cole um URL"</string>
+    <string name="add_way_github" formatted="false">"Clonar do GitHub"</string>
+    <string name="add_way_github_sign_in" formatted="false">"Faça login para escolher entre seus repositórios"</string>
+    <string name="add_way_local" formatted="false">"Encontrar clones neste telefone"</string>
+    <string name="add_way_local_sub" formatted="false">"Procurar no armazenamento compartilhado por pastas existentes de .git"</string>
+    <string name="add_way_open" formatted="false">"Abrir uma pasta de repo"</string>
+    <string name="add_way_open_sub" formatted="false">"Escolha um repositório Git com o seletor de pastas do sistema"</string>
+    <string name="add_way_publish" formatted="false">"Publicar uma pasta"</string>
+    <string name="add_way_publish_sub" formatted="false">"Crie um repo no GitHub com suas notas"</string>
     <string name="automation_shortcut_label">"%1$s: %2$s"</string>
     <string name="background_allow_push" formatted="false">"Permitir publicação automática"</string>
     <string name="background_binding">"Somente a branch %1$s, que acompanha %2$s/%3$s. Mudar a branch, pasta, conexão ou conta exige uma nova revisão."</string>
@@ -261,12 +597,43 @@
     <string name="dialogs_success_title" formatted="false">"Sucesso"</string>
     <string name="dialogs_timestamp_unknown" formatted="false">"Desconhecido"</string>
     <string name="dialogs_warning_title" formatted="false">"Aviso"</string>
+    <string name="diff_m3_binary" formatted="false">"Este arquivo não é um texto, então não há linhas para comparar."</string>
+    <string name="diff_m3_changes" formatted="false">"Alterações"</string>
+    <string name="diff_m3_deleted" formatted="false">"Este arquivo foi excluído. Descartar o restaura a partir do último commit."</string>
+    <string name="diff_m3_discard" formatted="false">"Descartar"</string>
+    <string name="diff_m3_hunk">"%1$s · linha %2$d"</string>
+    <string name="diff_m3_hunk_line">"linha %1$d"</string>
+    <string name="diff_m3_load_failed" formatted="false">"Não foi possível ler as alterações deste arquivo."</string>
+    <string name="diff_m3_next" formatted="false">"Próximo arquivo"</string>
+    <string name="diff_m3_no_changes" formatted="false">"Nenhuma alteração desde o último commit."</string>
+    <string name="diff_m3_position">"%1$s · %2$d de %3$d"</string>
+    <string name="diff_m3_preview" formatted="false">"Pré-visualizar"</string>
+    <string name="diff_m3_previous" formatted="false">"Arquivo anterior"</string>
+    <string name="diff_m3_stats_a11y">"%1$d linhas adicionadas, %2$d removidas"</string>
+    <string name="diff_m3_vs_last_commit">"vs último commit %1$s"</string>
+    <string name="diff_m3_vs_nothing" formatted="false">"novo arquivo · ainda sem commits"</string>
+    <string name="diff_m3_whole_file" formatted="false">"Arquivo inteiro"</string>
     <string name="discard_clear_staging" formatted="false">"Limpar preparação"</string>
     <string name="discard_review_all" formatted="false">"As alterações em arquivos rastreados e os novos arquivos listados abaixo serão descartados permanentemente. Os arquivos ignorados serão mantidos."</string>
     <string name="discard_review_empty" formatted="false">"Não há alterações para descartar."</string>
     <string name="discard_review_operation" formatted="false">"Isso também abandona a operação Git ativa."</string>
     <string name="discard_review_unborn" formatted="false">"Ainda não há commits. Isso remove os arquivos listados da área de preparação e mantém seu conteúdo."</string>
     <string name="discovery_scanned">"%1$s verificado. Escolha as cópias de trabalho a adicionar."</string>
+    <string name="editor_m3_commit" formatted="false">"Commit"</string>
+    <string name="editor_m3_markdown" formatted="false">"Markdown"</string>
+    <string name="editor_m3_md_bold" formatted="false">"Negrito"</string>
+    <string name="editor_m3_md_code" formatted="false">"Código"</string>
+    <string name="editor_m3_md_heading" formatted="false">"Título"</string>
+    <string name="editor_m3_md_indent" formatted="false">"Recuo"</string>
+    <string name="editor_m3_md_link" formatted="false">"Link"</string>
+    <string name="editor_m3_md_task" formatted="false">"Tarefa"</string>
+    <string name="editor_m3_not_saved" formatted="false">"Não salvo"</string>
+    <string name="editor_m3_save_now" formatted="false">"Salvar agora"</string>
+    <string name="editor_m3_saved" formatted="false">"Salvo"</string>
+    <string name="editor_m3_saved_changed">"Salvo · %1$s"</string>
+    <string name="editor_m3_saving" formatted="false">"Salvando..."</string>
+    <string name="editor_m3_subtitle">"%1$s / %2$s"</string>
+    <string name="editor_m3_vault_ahead">"%1$s ↑%2$d"</string>
     <string name="file_clone_failure" formatted="false">"Não foi possível clonar o repositório local. Verifique a pasta de origem, o acesso ao armazenamento e a branch. As pastas existentes foram preservadas."</string>
     <string name="file_clone_guidance" formatted="false">"Clone um repositório do dispositivo usando acesso local. Para o armazenamento compartilhado, conceda primeiro acesso à pasta nas Configurações."</string>
     <string name="file_delete_body" formatted="false">"O arquivo será removido deste dispositivo. O Git o mostrará como excluído se ele era rastreado."</string>
@@ -289,15 +656,344 @@
     <string name="file_renamed" formatted="false">"Renomeado"</string>
     <string name="file_save_title" formatted="false">"Salvar alterações?"</string>
     <string name="file_saved" formatted="false">"Salvo"</string>
+    <string name="filehistory_m3_commits" formatted="false">"Commits"</string>
+    <string name="filehistory_m3_empty" formatted="false">"Nenhum commit inclui este arquivo ainda."</string>
+    <string name="filehistory_m3_load_failed" formatted="false">"Não foi possível ler o histórico deste arquivo."</string>
+    <string name="filehistory_m3_meta">"%1$s · %2$s · %3$s"</string>
+    <string name="filehistory_m3_subtitle">"Histórico · %1$s"</string>
     <string name="files_folder" formatted="false">"Pasta"</string>
     <string name="files_hide_hidden" formatted="false">"Ocultar arquivos ocultos"</string>
+    <string name="files_m3_actions_for">"Ações para %1$s"</string>
+    <string name="files_m3_age_days">"há %1$dd"</string>
+    <string name="files_m3_age_hours">"%1$dhá h dias"</string>
+    <string name="files_m3_age_minutes">"%1$dhá m dias"</string>
+    <string name="files_m3_age_months">"%1$d meses atrás"</string>
+    <string name="files_m3_age_now" formatted="false">"agora mesmo"</string>
+    <string name="files_m3_age_weeks">"%1$d semanas atrás"</string>
+    <string name="files_m3_age_years">"%1$d anos atrás"</string>
+    <string name="files_m3_check_for_changes" formatted="false">"Verificar alterações"</string>
+    <string name="files_m3_delete" formatted="false">"Excluir"</string>
+    <string name="files_m3_delete_folder_body" formatted="false">"Apenas pastas vazias podem ser deletadas aqui."</string>
+    <string name="files_m3_delete_folder_title" formatted="false">"Deletar pasta?"</string>
+    <string name="files_m3_fetch" formatted="false">"Recuperar"</string>
+    <string name="files_m3_fetch_cd">"Buscar %1$s do remoto"</string>
+    <string name="files_m3_fetch_failed" formatted="false">"Não foi possível buscar este arquivo do remoto. Verifique sua conexão e login, e tente novamente."</string>
+    <string name="files_m3_fetched">"%1$s buscado."</string>
+    <string name="files_m3_folder_path" formatted="false">"Caminho da pasta"</string>
+    <string name="files_m3_footnote" formatted="false">"Pressione e segure qualquer arquivo para ações."</string>
+    <string name="files_m3_history" formatted="false">"Histórico"</string>
+    <string name="files_m3_lfs_pointer">"Ponteiro LFS · %1$s no remoto"</string>
+    <string name="files_m3_meta">"%1$s · %2$s"</string>
+    <string name="files_m3_meta_edited">"editado %1$s · %2$s"</string>
+    <string name="files_m3_new_file_cd" formatted="false">"Arquivo Novo"</string>
+    <string name="files_m3_open_in" formatted="false">"Abrir em…"</string>
+    <string name="files_m3_open_in_chooser">"Abrir %1$s em…"</string>
+    <string name="files_m3_open_in_failed" formatted="false">"Nenhum aplicativo neste telefone pode abrir este arquivo."</string>
+    <string name="files_m3_rename" formatted="false">"Renomear"</string>
+    <string name="files_m3_rename_field" formatted="false">"Nome"</string>
+    <string name="files_m3_tag_added" formatted="false">"A"</string>
+    <string name="files_m3_tag_conflict" formatted="false">"!"</string>
+    <string name="files_m3_tag_lfs" formatted="false">"LFS"</string>
+    <string name="files_m3_tag_modified" formatted="false">"M"</string>
     <string name="files_show_hidden" formatted="false">"Mostrar arquivos ocultos"</string>
     <string name="folder_access_not_enabled" formatted="false">"O acesso às pastas não foi ativado. Você pode continuar usando o armazenamento do aplicativo."</string>
     <string name="folder_picker_unavailable" formatted="false">"Nenhum seletor de pastas está disponível neste dispositivo"</string>
     <string name="folder_settings_unavailable" formatted="false">"As configurações de armazenamento do Android estão indisponíveis. O armazenamento do aplicativo continua disponível."</string>
     <string name="folder_unusable" formatted="false">"Não foi possível usar esta pasta"</string>
     <string name="git_fetch" formatted="false">"Recuperar"</string>
+    <string name="git_m3_abort" formatted="false">"Abortar"</string>
+    <string name="git_m3_abort_merge" formatted="false">"Abortar merge"</string>
+    <string name="git_m3_abort_merge_body">"Coloca %1$s de volta onde estava antes da mesclagem. As escolhas feitas até agora são descartadas."</string>
+    <string name="git_m3_abort_merge_title" formatted="false">"Abortara esta mesclagem?"</string>
+    <string name="git_m3_abort_rebase_ask" formatted="false">"Abortar rebase…"</string>
+    <string name="git_m3_access_github" formatted="false">"GitHub – Entrar\nO"</string>
+    <string name="git_m3_access_https" formatted="false">"HTTPS"</string>
+    <string name="git_m3_access_local" formatted="false">"pasta local"</string>
+    <string name="git_m3_access_ssh" formatted="false">"SSH "</string>
+    <string name="git_m3_age_days">"%1$dd"</string>
+    <string name="git_m3_age_hours">"%1$dh"</string>
+    <string name="git_m3_age_minutes">"%1$dm"</string>
+    <string name="git_m3_ago_days">"há %1$dd"</string>
+    <string name="git_m3_ago_hours">"%1$dhá h dias"</string>
+    <string name="git_m3_ago_minutes">"%1$dhá m dias"</string>
+    <string name="git_m3_ago_now" formatted="false">"agora mesmo"</string>
+    <string name="git_m3_ahead">"%1$d à frente"</string>
+    <string name="git_m3_annotated" formatted="false">"anotada"</string>
+    <string name="git_m3_applied_toast">"Aplicado %1$s. O stash ainda está salvo."</string>
+    <string name="git_m3_apply" formatted="false">"Aplicar"</string>
+    <string name="git_m3_apply_help" formatted="false">"Traz as alterações de volta e mantém o stash."</string>
+    <string name="git_m3_back_to_remote" formatted="false">"De volta para Remoto"</string>
+    <string name="git_m3_backup_at">"Backup: %1$s"</string>
+    <string name="git_m3_behind">"%1$d atrás"</string>
+    <string name="git_m3_binary_side" formatted="false">"Este arquivo não pode ser exibido como texto. Escolha uma versão inteira."</string>
+    <string name="git_m3_both_edited_file" formatted="false">"Os dois lados editaram este arquivo."</string>
+    <string name="git_m3_both_edited_section">"Os dois lados editaram “%1$s”."</string>
+    <string name="git_m3_both_moved" formatted="false">"Os dois lados avançaram"</string>
+    <string name="git_m3_both_moved_body">"Puxe apenas avanços rápidos, então não pode combinar estes. Merge mantém ambos os históricos. Rebase coloca seus commits %1$d no topo."</string>
+    <string name="git_m3_both_moved_headline" formatted="false">"O remoto avançou enquanto você escrevia."</string>
+    <string name="git_m3_both_sides_edited" formatted="false">"Os dois lados editaram este arquivo."</string>
+    <string name="git_m3_branch_name" formatted="false">"Nome da branch"</string>
+    <string name="git_m3_branch_placeholder" formatted="false">"ex. draft/winter"</string>
+    <string name="git_m3_branches" formatted="false">"Ramificações"</string>
+    <string name="git_m3_branches_stashes_tags" formatted="false">"Ramificações, stashes e tags"</string>
+    <string name="git_m3_cancel" formatted="false">"Cancelar"</string>
+    <string name="git_m3_cant_switch_note" formatted="false">"Arquivos não rastreados que a outra branch sobrescreveria também bloqueiam a troca. Nada mudou ainda."</string>
+    <string name="git_m3_cant_switch_title" formatted="false">"Não é possível mudar ainda"</string>
+    <string name="git_m3_check_changes" formatted="false">"Verificar alterações"</string>
+    <string name="git_m3_commit_as" formatted="false">"Commit como"</string>
+    <string name="git_m3_commit_first" formatted="false">"Faça commit primeiro"</string>
+    <string name="git_m3_commit_history" formatted="false">"Histórico de commits"</string>
+    <string name="git_m3_commit_of">"commit %1$d de %2$d"</string>
+    <string name="git_m3_conflict_body" formatted="false">"Escolha a versão a manter, ou mantenha ambas e organize depois."</string>
+    <string name="git_m3_conflict_progress">"Conflito %1$d de %2$d · %3$s"</string>
+    <string name="git_m3_connection" formatted="false">"Conexão"</string>
+    <string name="git_m3_continue_retry_first" formatted="false">"Continuar rebase · tentar primeiro"</string>
+    <string name="git_m3_create" formatted="false">"Criar"</string>
+    <string name="git_m3_create_tag" formatted="false">"Criar tag"</string>
+    <string name="git_m3_current" formatted="false">"Atual"</string>
+    <string name="git_m3_current_branch" formatted="false">"Branch atual"</string>
+    <string name="git_m3_delete" formatted="false">"Excluir"</string>
+    <string name="git_m3_delete_branch_body">"Exclui %1$s neste telefone. GitHub não é alterado."</string>
+    <string name="git_m3_delete_branch_cd">"Excluir branch %1$s"</string>
+    <string name="git_m3_delete_branch_title" formatted="false">"Excluir branch?"</string>
+    <string name="git_m3_delete_files_sub" formatted="false">"Remove a pasta deste telefone"</string>
+    <string name="git_m3_delete_force" formatted="false">"Forçar"</string>
+    <string name="git_m3_delete_force_help" formatted="false">"Exclui forçadamente o branch mesmo que seus commits nunca tenham sido mesclados. Eles podem ser perdidos."</string>
+    <string name="git_m3_delete_normal" formatted="false">"Normal"</string>
+    <string name="git_m3_delete_normal_help" formatted="false">"Somente exclui o branch se seus commits já estiverem mesclados."</string>
+    <string name="git_m3_delete_tag" formatted="false">"Excluir tag"</string>
+    <string name="git_m3_delete_tag_body">"A tag sumirá neste telefone. O commit %1$s permanece, e uma cópia já enviada para GitHub não é alterada."</string>
+    <string name="git_m3_delete_tag_cd">"Excluir tag %1$s"</string>
+    <string name="git_m3_delete_tag_title">"Excluir \"%1$s\"?"</string>
+    <string name="git_m3_deleted_here_edited_there" formatted="false">"Este telefone o excluiu. O outro lado o editou."</string>
+    <string name="git_m3_deleted_on_phone" formatted="false">"Excluído neste telefone."</string>
+    <string name="git_m3_deleted_on_remote">"Excluído em %1$s."</string>
+    <string name="git_m3_detached">"Destacado em %1$s"</string>
+    <string name="git_m3_discard" formatted="false">"Descartar alterações"</string>
+    <string name="git_m3_disconnected" formatted="false">"Desconectado"</string>
+    <string name="git_m3_drop" formatted="false">"Descartar"</string>
+    <string name="git_m3_drop_cd">"Descartar %1$s"</string>
+    <string name="git_m3_drop_help" formatted="false">"Exclui o stash sem aplicá-lo."</string>
+    <string name="git_m3_dropped_toast">"%1$s descartado."</string>
+    <string name="git_m3_edit_by_hand" formatted="false">"Editar à mão"</string>
+    <string name="git_m3_edit_connection" formatted="false">"Editar conexão"</string>
+    <string name="git_m3_edited_ago">"editado %1$s"</string>
+    <string name="git_m3_edited_here_deleted_there" formatted="false">"Este telefone editou. O outro lado deletou."</string>
+    <string name="git_m3_fetch_again" formatted="false">"Buscar novamente"</string>
+    <string name="git_m3_fetch_and_push">"Buscar e enviar: %1$s"</string>
+    <string name="git_m3_fetch_hint" formatted="false">"para ver novos ramos enviados a partir de seus outros dispositivos."</string>
+    <string name="git_m3_fetch_review_again" formatted="false">"Buscar e revisar novamente"</string>
+    <string name="git_m3_fetch_sub" formatted="false">"Verifique GitHub para novos commits"</string>
+    <string name="git_m3_fetched">"fetch %1$s"</string>
+    <string name="git_m3_finishing_merge" formatted="false">"Finalizando o merge…"</string>
+    <string name="git_m3_folder_location" formatted="false">"A pasta e sua localização"</string>
+    <string name="git_m3_from" formatted="false">"De"</string>
+    <string name="git_m3_from_remote">"↓%1$d do remoto"</string>
+    <string name="git_m3_from_who">" de %1$s"</string>
+    <string name="git_m3_github" formatted="false">"GitHub"</string>
+    <string name="git_m3_hand_edited_markers" formatted="false">"Marcadores de conflito ainda estão no arquivo. Remova-os no editor e depois volte."</string>
+    <string name="git_m3_hand_edited_ready" formatted="false">"Editado manualmente. Use seu arquivo editado ou escolha um lado para substituí-lo."</string>
+    <string name="git_m3_how" formatted="false">"Como"</string>
+    <string name="git_m3_in_sync" formatted="false">"Sincronizado"</string>
+    <string name="git_m3_in_sync_headline" formatted="false">"Este telefone corresponde ao remoto."</string>
+    <string name="git_m3_in_the_way" formatted="false">"No caminho"</string>
+    <string name="git_m3_in_this_vault" formatted="false">"Neste cofre"</string>
+    <string name="git_m3_its_remotes" formatted="false">"Seus remotos"</string>
+    <string name="git_m3_keep_backup" formatted="false">"Mantenha um backup verificado"</string>
+    <string name="git_m3_keep_backup_sub" formatted="false">"cópia e ZIP da pasta .git"</string>
+    <string name="git_m3_keep_both" formatted="false">"Manter ambos"</string>
+    <string name="git_m3_kept_edit" formatted="false">"Resolvido manualmente."</string>
+    <string name="git_m3_kept_local" formatted="false">"Mantido o commit local reproduzido."</string>
+    <string name="git_m3_kept_upstream" formatted="false">"Mantida a versão do servidor."</string>
+    <string name="git_m3_lfs" formatted="false">"Arquivos grandes (LFS)"</string>
+    <string name="git_m3_lfs_none" formatted="false">"não usado"</string>
+    <string name="git_m3_lfs_value">"%1$s · %2$d bloqueado"</string>
+    <string name="git_m3_light" formatted="false">"leve"</string>
+    <string name="git_m3_local_only" formatted="false">"apenas local"</string>
+    <string name="git_m3_manage_vault" formatted="false">"Gerenciar cofre"</string>
+    <string name="git_m3_marker_end" formatted="false">"Fim de ambas as versões"</string>
+    <string name="git_m3_marker_ours" formatted="false">"Versão deste telefone"</string>
+    <string name="git_m3_marker_theirs">"Versão de %1$s"</string>
+    <string name="git_m3_merge" formatted="false">"Mesclar"</string>
+    <string name="git_m3_merge_and_push" formatted="false">"Mesclar e enviar"</string>
+    <string name="git_m3_merge_author">"Autor do merge: %1$s"</string>
+    <string name="git_m3_merge_both_body" formatted="false">"Seus commits mantêm seus IDs. Como ambos os lados se moveram, isso cria um commit de merge. Arquivos editados em ambos os lados podem precisar que você escolha."</string>
+    <string name="git_m3_merge_current_body" formatted="false">"Ambos os lados coincidem. Não há nada para mesclar."</string>
+    <string name="git_m3_merge_ff_body" formatted="false">"Apenas o remoto se moveu, então isso avança rapidamente seu branch. Nada novo é commitado."</string>
+    <string name="git_m3_merge_in_progress" formatted="false">"Merge em andamento"</string>
+    <string name="git_m3_merge_into">"Mesclar em %1$s"</string>
+    <string name="git_m3_merge_locally" formatted="false">"Mesclar localmente"</string>
+    <string name="git_m3_merge_message">"Merge de %1$s"</string>
+    <string name="git_m3_merge_named">"Merge de %1$s"</string>
+    <string name="git_m3_merge_pause_note" formatted="false">"Se ambos os ramos alteraram o mesmo arquivo, a mesclagem pausa para que você escolha o que manter em Git."</string>
+    <string name="git_m3_merge_push_body">"Atualiza %1$s com %2$s, depois envia para %3$s. Conflitos impedem o envio. Se o remoto não confirmar, a mesclagem permanece neste telefone e você pode tentar novamente."</string>
+    <string name="git_m3_merge_push_only_body" formatted="false">"Nada de novo no remoto. Mesclar e enviar envia seus commits."</string>
+    <string name="git_m3_merge_push_title" formatted="false">"Mesclar e enviar?"</string>
+    <string name="git_m3_merge_ready" formatted="false">"Todos os conflitos resolvidos. Concluir a mesclagem."</string>
+    <string name="git_m3_merge_reviewing" formatted="false">"Buscando e revisando o que o remoto tem..."</string>
+    <string name="git_m3_merge_sub" formatted="false">"Buscar, revisar e depois mesclar"</string>
+    <string name="git_m3_merging">"%1$s · mesclando %2$s"</string>
+    <string name="git_m3_message_optional" formatted="false">"Mensagem (opcional)"</string>
+    <string name="git_m3_more_files">"%1$d mais"</string>
+    <string name="git_m3_move_repository" formatted="false">"Mover repositório"</string>
+    <string name="git_m3_move_sub" formatted="false">"Escolher uma nova pasta"</string>
+    <string name="git_m3_never_fetched" formatted="false">"ainda não buscado"</string>
+    <string name="git_m3_new_branch" formatted="false">"Novo branch"</string>
+    <string name="git_m3_new_on_remote" formatted="false">"Novo no remoto"</string>
+    <string name="git_m3_new_on_remote_body">"Pull avança %1$s para corresponder. Nada neste telefone será perdido."</string>
+    <string name="git_m3_new_on_remote_headline" formatted="false">"O remoto tem commits que você não tem."</string>
+    <string name="git_m3_new_tag" formatted="false">"Nova tag"</string>
+    <string name="git_m3_no_backup_warning" formatted="false">"Sem um backup, o histórico de Git deste telefone é apagado para sempre. Commits já no GitHub estão seguros."</string>
+    <string name="git_m3_no_conflicts" formatted="false">"Nenhum conflito restante."</string>
+    <string name="git_m3_no_stashes" formatted="false">"Nenhum stash salvo."</string>
+    <string name="git_m3_no_upstream" formatted="false">"apenas local · sem upstream"</string>
+    <string name="git_m3_no_upstream_body" formatted="false">"Escolha um upstream para que pull e push saibam para onde ir."</string>
+    <string name="git_m3_no_upstream_headline" formatted="false">"Este branch ainda não rastreia um branch remoto."</string>
+    <string name="git_m3_no_upstream_kicker" formatted="false">"Sem upstream"</string>
+    <string name="git_m3_none" formatted="false">"Nenhuma"</string>
+    <string name="git_m3_not_set" formatted="false">"Não definido"</string>
+    <string name="git_m3_not_tracked">"%1$s · não rastreado"</string>
+    <string name="git_m3_notes_attachments_any" formatted="false">"Suas notas e anexos"</string>
+    <string name="git_m3_nothing_new">"nada que %1$s não tenha"</string>
+    <string name="git_m3_nothing_to_stash" formatted="false">"Nada para guardar."</string>
+    <string name="git_m3_nothing_to_stash_body" formatted="false">"Nenhuma alteração local neste telefone. Edite uma nota e volte aqui para colocá-la de lado."</string>
+    <string name="git_m3_ok" formatted="false">"OK"</string>
+    <string name="git_m3_on_this_phone" formatted="false">"Neste telefone"</string>
+    <string name="git_m3_only_on">"Apenas em %1$s"</string>
+    <string name="git_m3_open" formatted="false">"Abrir"</string>
+    <string name="git_m3_open_rebase" formatted="false">"Abrir rebase"</string>
+    <string name="git_m3_open_sub" formatted="false">"De volta ao cofre"</string>
+    <string name="git_m3_plain_folder">"%1$s agora é uma pasta simples."</string>
+    <string name="git_m3_plain_folder_body" formatted="false">"Suas notas estão onde estavam. GitSync.md não sincroniza mais esta pasta."</string>
+    <string name="git_m3_pop" formatted="false">"Extrair"</string>
+    <string name="git_m3_pop_help" formatted="false">"Traz as mudanças de volta e remove o stash."</string>
+    <string name="git_m3_popped_toast">"Estourou %1$s. Suas alterações voltaram."</string>
+    <string name="git_m3_previously_added" formatted="false">"Adicionados anteriormente"</string>
+    <string name="git_m3_pull_n">"Puxar ↓%1$d"</string>
+    <string name="git_m3_pull_sub" formatted="false">"Somente fast-forward"</string>
+    <string name="git_m3_pull_sub_blocked" formatted="false">"Apenas avanço rápido. Não é possível agora: ambos os lados se moveram"</string>
+    <string name="git_m3_pulls_from">"%1$s puxa de e envia para"</string>
+    <string name="git_m3_push" formatted="false">"Enviar"</string>
+    <string name="git_m3_push_n">"Enviar ↑%1$d"</string>
+    <string name="git_m3_push_tag_cd">"Enviar %1$s para GitHub"</string>
+    <string name="git_m3_push_to">"enviar para %1$s"</string>
+    <string name="git_m3_ready_to_push" formatted="false">"Pronto para push"</string>
+    <string name="git_m3_ready_to_push_body">"Enviar envia seus %1$d commits. Nada no remoto muda até que ele os aceite."</string>
+    <string name="git_m3_ready_to_push_headline" formatted="false">"O remoto ainda não viu seus commits."</string>
+    <string name="git_m3_rebase" formatted="false">"Rebase"</string>
+    <string name="git_m3_rebase_abort_body">"Coloca %1$s de volta em %2$s. Edições e escolhas de conflito feitas durante este rebase são descartadas."</string>
+    <string name="git_m3_rebase_abort_title" formatted="false">"Abortar este rebase?"</string>
+    <string name="git_m3_rebase_aborted" formatted="false">"Rebase abortado"</string>
+    <string name="git_m3_rebase_aborted_headline" formatted="false">"De volta ao ponto de partida."</string>
+    <string name="git_m3_rebase_begin_title" formatted="false">"Reescrever os commits locais?"</string>
+    <string name="git_m3_rebase_blocked_body" formatted="false">"Arquivos que não estão em Git seriam sobrescritos pelo próximo commit. Mova-os para um local seguro, atualize e tente novamente. Commits já reproduzidos são mantidos."</string>
+    <string name="git_m3_rebase_blocked_headline" formatted="false">"O rebase está aguardando um checkout bloqueado."</string>
+    <string name="git_m3_rebase_conflicts">"Conflitos · %1$d de %2$d resolvidos"</string>
+    <string name="git_m3_rebase_conflicts_headline" formatted="false">"O rebase parou em arquivos editados dos dois lados."</string>
+    <string name="git_m3_rebase_done_headline" formatted="false">"O rebase terminou."</string>
+    <string name="git_m3_rebase_in_progress" formatted="false">"Rebase em andamento"</string>
+    <string name="git_m3_rebase_initial" formatted="false">"Faça um fetch primeiro para ver o que um rebase moveria."</string>
+    <string name="git_m3_rebase_restored">"%1$s restaurado para %2$s · ↑%3$d ↓%4$d"</string>
+    <string name="git_m3_rebase_review_body">"Reproduz seus commits em cima de %1$s. Seus IDs podem mudar. Commits de merge mantêm sua forma. Nada é enviado."</string>
+    <string name="git_m3_rebase_sides_note">"Em um rebase, %1$s é o “nosso” de Git e seu %2$s é o “deles”."</string>
+    <string name="git_m3_rebase_skip_body">"Remove %1$s da reprodução. Verifique suas mudanças primeiro. Isso pode remover seu trabalho do novo histórico."</string>
+    <string name="git_m3_rebase_skip_title" formatted="false">"Pular este commit local?"</string>
+    <string name="git_m3_rebase_step">"Parado no commit %1$d de %2$d."</string>
+    <string name="git_m3_rebase_stopped" formatted="false">"O rebase está esperando por você."</string>
+    <string name="git_m3_rebase_sub" formatted="false">"Reaplique seus commits no topo · retomar um rebase"</string>
+    <string name="git_m3_rebase_theirs">"Novo em %1$s · %2$d"</string>
+    <string name="git_m3_rebase_yours">"Seus commits a reaplicar · %1$d"</string>
+    <string name="git_m3_refresh_branches" formatted="false">"Atualizar branches"</string>
+    <string name="git_m3_remote" formatted="false">"Remoto"</string>
+    <string name="git_m3_remote_access">"buscar e enviar · %1$s"</string>
+    <string name="git_m3_remote_pill" formatted="false">"remoto"</string>
+    <string name="git_m3_remote_reading" formatted="false">"Lendo o remoto deste cofre..."</string>
+    <string name="git_m3_remove" formatted="false">"Remover"</string>
+    <string name="git_m3_remove_from_app" formatted="false">"Remover do app"</string>
+    <string name="git_m3_remove_from_app_body" formatted="false">"A pasta e seu histórico Git permanecem neste telefone. Adicione de volta a qualquer momento."</string>
+    <string name="git_m3_remove_from_app_sub" formatted="false">"Mantém arquivos e Git. Adicione de volta a qualquer momento."</string>
+    <string name="git_m3_remove_from_app_title">"Remover %1$s do aplicativo?"</string>
+    <string name="git_m3_remove_tracking_sub" formatted="false">"Mantém seus arquivos. Remove Git desta pasta."</string>
+    <string name="git_m3_replayed_commit" formatted="false">"commit reaplicado"</string>
+    <string name="git_m3_replayed_label">"Commit local reproduzido · %1$s"</string>
+    <string name="git_m3_resolve" formatted="false">"Resolver"</string>
+    <string name="git_m3_resolve_conflict" formatted="false">"Resolver conflito"</string>
+    <string name="git_m3_result_current" formatted="false">"Nada novo para mesclar."</string>
+    <string name="git_m3_result_current_kicker" formatted="false">"Atualizado"</string>
+    <string name="git_m3_result_local_only" formatted="false">"O resultado está apenas neste telefone. Envie quando estiver pronto."</string>
+    <string name="git_m3_result_merged" formatted="false">"As alterações do outro lado estão incluídas."</string>
+    <string name="git_m3_result_merged_kicker" formatted="false">"Mesclado"</string>
+    <string name="git_m3_result_push_confirmed" formatted="false">"GitHub reconheceu este commit."</string>
+    <string name="git_m3_result_push_unconfirmed" formatted="false">"O remoto não confirmou o envio. Repetir envia o mesmo commit sem mesclar novamente."</string>
+    <string name="git_m3_result_saved_locally" formatted="false">"Commit de mesclagem salvo localmente."</string>
+    <string name="git_m3_result_unconfirmed" formatted="false">"Salvo aqui. O envio não foi concluído."</string>
+    <string name="git_m3_result_unconfirmed_kicker" formatted="false">"Mesclado · não enviado"</string>
+    <string name="git_m3_retry_blocked" formatted="false">"Tentar novamente o commit bloqueado"</string>
+    <string name="git_m3_retry_push" formatted="false">"Tentar enviar o commit salvo novamente"</string>
+    <string name="git_m3_return_to_git" formatted="false">"Voltar ao Git"</string>
+    <string name="git_m3_review_folder" formatted="false">"Revisar pasta restaurada"</string>
+    <string name="git_m3_reviewed_plan" formatted="false">"Plano revisado"</string>
+    <string name="git_m3_saved" formatted="false">"Salvo"</string>
+    <string name="git_m3_saved_in" formatted="false">"Salvo em"</string>
+    <string name="git_m3_set_aside" formatted="false">"Separado"</string>
+    <string name="git_m3_set_upstream" formatted="false">"Definir upstream"</string>
+    <string name="git_m3_show_more">"Mostrar %1$d a mais"</string>
+    <string name="git_m3_skip_commit" formatted="false">"Pular commit"</string>
+    <string name="git_m3_skip_commit_ask" formatted="false">"Pulando commit…"</string>
+    <string name="git_m3_staged" formatted="false">"preparado"</string>
+    <string name="git_m3_starts_from">"começa de %1$s em %2$s · você permanece em %2$s"</string>
+    <string name="git_m3_stash_changes" formatted="false">"Guardar mudanças"</string>
+    <string name="git_m3_stash_explain">"Guardar coloca-as de lado e redefine seus arquivos para %1$s. Traga-as de volta a qualquer momento."</string>
+    <string name="git_m3_stash_local_note" formatted="false">"Os stashes ficam neste telefone. Eles nunca são enviados para GitHub."</string>
+    <string name="git_m3_stash_on">"Em %1$s"</string>
+    <string name="git_m3_stash_placeholder" formatted="false">"No que você estava trabalhando?"</string>
+    <string name="git_m3_stashed_older" formatted="false">"O mais antigo agora é stash@{1}."</string>
+    <string name="git_m3_stashes" formatted="false">"Stashes"</string>
+    <string name="git_m3_stay_on">"Permaneça em %1$s"</string>
+    <string name="git_m3_stays_on_disk" formatted="false">"Permanece no disco"</string>
+    <string name="git_m3_stop_tracking" formatted="false">"Parar rastreamento…"</string>
+    <string name="git_m3_strategy_always" formatted="false">"Sempre usar commit de merge"</string>
+    <string name="git_m3_strategy_always_help">"Cria um commit de merge mesmo quando %1$s poderia apenas avançar."</string>
+    <string name="git_m3_strategy_ff" formatted="false">"Somente fast-forward"</string>
+    <string name="git_m3_strategy_ff_help">"Só faz merge quando %1$s está diretamente à frente de %2$s. Mantém o histórico em linha reta."</string>
+    <string name="git_m3_strategy_prefer" formatted="false">"Fast-forward se possível"</string>
+    <string name="git_m3_strategy_prefer_help">"Avança %1$s quando possível. Caso contrário, cria um commit de merge."</string>
+    <string name="git_m3_subtitle">"%1$s · %2$s"</string>
+    <string name="git_m3_switch" formatted="false">"Mudar"</string>
+    <string name="git_m3_tag_kind_help" formatted="false">"Com uma mensagem, ele é anotado. Deixe vazio para uma tag leve."</string>
+    <string name="git_m3_tag_name" formatted="false">"Nome da tag"</string>
     <string name="git_m3_tag_name_invalid" formatted="false">"Digite um nome de tag Git válido."</string>
+    <string name="git_m3_tag_pushed">"%1$s enviado."</string>
+    <string name="git_m3_tag_target">"em %1$s · último em %2$s"</string>
+    <string name="git_m3_tags" formatted="false">"Tags"</string>
+    <string name="git_m3_tags_note" formatted="false">"Commit &amp; push não envia tags. Envie cada uma quando quiser que esteja em GitHub. Delete remove uma tag apenas deste telefone."</string>
+    <string name="git_m3_the_named_remote">"O remoto %1$s"</string>
+    <string name="git_m3_the_remote" formatted="false">"o remoto"</string>
+    <string name="git_m3_this_phone" formatted="false">"este telefone"</string>
+    <string name="git_m3_tracking">"rastreando %1$s"</string>
+    <string name="git_m3_tracking_backup_body" formatted="false">"GitSync.md verifica uma cópia e um ZIP dos dados Git, depois desconecta esta pasta. Seus arquivos de trabalho permanecem no lugar."</string>
+    <string name="git_m3_tracking_backup_title" formatted="false">"Remover o rastreamento e manter um backup?"</string>
+    <string name="git_m3_tracking_cap">"Rastreando %1$s"</string>
+    <string name="git_m3_tracking_permanent_body" formatted="false">"Apenas os dados .git revisados são excluídos. Seus arquivos de trabalho permanecem no lugar, mas o histórico Git deste telefone não pode ser recuperado sem outra cópia."</string>
+    <string name="git_m3_tracking_removed" formatted="false">"Rastreamento removido"</string>
+    <string name="git_m3_tracking_removed_backup_toast" formatted="false">"Rastreamento de Git removido. Backup verificado salvo."</string>
+    <string name="git_m3_tracking_removed_kept" formatted="false">"Rastreamento Git removido · arquivos de trabalho mantidos"</string>
+    <string name="git_m3_tracking_review_body" formatted="false">"Seus arquivos permanecem onde estão. A cópia do histórico de Git é removida desta pasta."</string>
+    <string name="git_m3_tracking_stale" formatted="false">"A pasta mudou desde que você a revisou. Cancelar e revisar novamente."</string>
+    <string name="git_m3_uncommitted_plain_any" formatted="false">"Edições não comitadas, como arquivos simples"</string>
+    <string name="git_m3_unresolved" formatted="false">"Não resolvido"</string>
+    <string name="git_m3_update" formatted="false">"atualizar"</string>
+    <string name="git_m3_upstream_body">"Escolha de onde %1$s puxa e para onde envia. Arquivos, commits e conexões salvas permanecem os mesmos."</string>
+    <string name="git_m3_upstream_help" formatted="false">"Sem um upstream, pull e push não saberão para onde ir."</string>
+    <string name="git_m3_use_branch">"Use a versão de %1$s"</string>
+    <string name="git_m3_use_edited" formatted="false">"Use minha versão editada"</string>
+    <string name="git_m3_use_phone" formatted="false">"Use a versão deste telefone"</string>
+    <string name="git_m3_use_remote">"Use a versão de %1$s"</string>
+    <string name="git_m3_vault_settings" formatted="false">"Ajustes do cofre"</string>
+    <string name="git_m3_vs">"vs %1$s"</string>
+    <string name="git_m3_what_each_does" formatted="false">"O que cada um faz"</string>
+    <string name="git_m3_workspace" formatted="false">"Espaço de trabalho"</string>
+    <string name="git_m3_yours">"↑%1$d seus"</string>
     <string name="git_native_public_only" formatted="false">"O protocolo nativo do Git permite apenas acesso público. Use HTTPS ou SSH para autenticação."</string>
     <string name="gitops_action_failed" formatted="false">"O Git não conseguiu concluir esta ação"</string>
     <string name="gitops_branch_action_failed" formatted="false">"Não foi possível concluir a ação no branch"</string>
@@ -375,11 +1071,27 @@
     <string name="guide_step">"Etapa %1$d de 4"</string>
     <string name="help_copy_email" formatted="false">"Copiar e-mail de suporte"</string>
     <string name="help_email_copied" formatted="false">"E-mail de suporte copiado"</string>
-    <string name="help_feedback" formatted="false">"Enviar Feedback"</string>
+    <string name="help_feedback" formatted="false">"Enviar feedback"</string>
     <string name="help_open_failed" formatted="false">"Nenhum aplicativo pôde abrir este link. Você pode copiar o e-mail de suporte."</string>
     <string name="help_title" formatted="false">"Ajuda"</string>
     <string name="history_screen" formatted="false">"Histórico"</string>
     <string name="http_transport_warning" formatted="false">"HTTP não é criptografado. Os dados do repositório e qualquer usuário ou token informado podem ser lidos durante a transmissão. Use HTTPS quando disponível."</string>
+    <string name="l10n_a11y_pair">"%1$s, %2$s"</string>
+    <string name="l10n_added_count">"+%1$d"</string>
+    <string name="l10n_background_unavailable" formatted="false">"Background Sync está indisponível"</string>
+    <string name="l10n_clone_preview_error" formatted="false">"Falha na autenticação. Faça login novamente e tente de novo."</string>
+    <string name="l10n_count">"%1$d"</string>
+    <string name="l10n_meta_pair">"%1$s · %2$s"</string>
+    <string name="l10n_not_vault_file" formatted="false">"Não é um arquivo neste cofre"</string>
+    <string name="l10n_push_local_branch" formatted="false">"Mude para um branch local antes de enviar"</string>
+    <string name="l10n_removed_count">"−%1$d"</string>
+    <string name="l10n_save_conditions" formatted="false">"Não foi possível salvar condições de Background Sync"</string>
+    <string name="l10n_save_default_author" formatted="false">"Não foi possível salvar o autor padrão"</string>
+    <string name="l10n_save_ssh_key" formatted="false">"Não foi possível salvar a chave SSH deste telefone"</string>
+    <string name="l10n_save_theme" formatted="false">"Não foi possível salvar o tema"</string>
+    <string name="l10n_save_vault_preferences" formatted="false">"Não foi possível salvar as preferências do cofre"</string>
+    <string name="l10n_unsupported_vault_preference" formatted="false">"Preferência de cofre não suportada"</string>
+    <string name="l10n_vault_settings_failed" formatted="false">"Não foi possível atualizar as configurações do cofre"</string>
     <string name="language_settings_legacy" formatted="false">"Antes do Android 13, este app usa o idioma do dispositivo."</string>
     <string name="language_settings_title" formatted="false">"Idioma"</string>
     <string name="language_settings_unavailable" formatted="false">"Não foi possível abrir as configurações de idioma."</string>
@@ -421,12 +1133,213 @@
     <string name="lfs_locks_server">"Servidor LFS: %1$s"</string>
     <string name="lfs_locks_title" formatted="false">"Bloqueios do servidor"</string>
     <string name="lfs_locks_unsupported" formatted="false">"Este servidor não oferece suporte a bloqueios do Git LFS."</string>
+    <string name="lfs_m3_allow_downloads" formatted="false">"Permitir downloads"</string>
+    <string name="lfs_m3_allow_uploads" formatted="false">"Permitir uploads"</string>
+    <string name="lfs_m3_apply_rules" formatted="false">"Aplicar regras"</string>
+    <string name="lfs_m3_apply_tracking" formatted="false">"Aplicar opção de rastreamento"</string>
+    <string name="lfs_m3_approval_scope" formatted="false">"Verifique este endereço com o proprietário do repositório. A aprovação cobre apenas este repositório, remoto, ponto de extremidade e direção neste telefone."</string>
+    <string name="lfs_m3_approvals_title" formatted="false">"Autorizações de endpoints LFS"</string>
+    <string name="lfs_m3_attention" formatted="false">"Git LFS requer atenção"</string>
+    <string name="lfs_m3_auth_new" formatted="false">"Nome de usuário e token separados"</string>
+    <string name="lfs_m3_auth_reuse" formatted="false">"Usar credenciais salvas do endpoint"</string>
+    <string name="lfs_m3_branch_remote">"%1$s · remoto %2$s"</string>
+    <string name="lfs_m3_cache_missing" formatted="false">"Fora do cache"</string>
+    <string name="lfs_m3_cache_verified" formatted="false">"Cache verificado"</string>
+    <string name="lfs_m3_cancel" formatted="false">"Cancelar"</string>
+    <string name="lfs_m3_candidate_changed">"%1$s · alterado, ainda não rastreado"</string>
+    <string name="lfs_m3_candidate_new">"%1$s · novo, ainda não rastreado"</string>
+    <string name="lfs_m3_check_ownership" formatted="false">"Verificar propriedade"</string>
+    <string name="lfs_m3_create_body" formatted="false">"Outras conexões veem como bloqueado até você liberá-lo. Nada neste telefone muda."</string>
+    <string name="lfs_m3_download_body" formatted="false">"Este repositório quer baixar o conteúdo de arquivos de um servidor LFS separado."</string>
+    <string name="lfs_m3_download_missing" formatted="false">"Baixar conteúdos ausentes"</string>
+    <string name="lfs_m3_download_progress" formatted="false">"Progresso do download"</string>
+    <string name="lfs_m3_download_title" formatted="false">"Permitir downloads LFS?"</string>
+    <string name="lfs_m3_downloading_prepare" formatted="false">"Baixando conteúdos ausentes"</string>
+    <string name="lfs_m3_downloads" formatted="false">"Downloads"</string>
+    <string name="lfs_m3_endpoint_auth" formatted="false">"Autenticação do endpoint"</string>
+    <string name="lfs_m3_endpoints_empty" formatted="false">"Nenhum endpoint LFS personalizado aprovado"</string>
+    <string name="lfs_m3_endpoints_intro" formatted="false">"Servidores LFS separados que seus repositórios podem usar. Revogar impede futuras transferências nessa direção; qualquer coisa já em execução pode ser concluída."</string>
+    <string name="lfs_m3_endpoints_none" formatted="false">"Configurações · nenhum aprovado"</string>
+    <string name="lfs_m3_endpoints_title" formatted="false">"Endpoints LFS"</string>
+    <string name="lfs_m3_error_changed" formatted="false">"Aprovações alteradas durante a revisão. Recarregue-as e revise a transferência novamente."</string>
+    <string name="lfs_m3_ext_note_existing" formatted="false">"Arquivos que já possuem sua própria escolha de rastreamento a mantêm."</string>
+    <string name="lfs_m3_ext_note_limits" formatted="false">"Arquivos ignorados permanecem ignorados. Limites de armazenamento dependem do seu host Git."</string>
+    <string name="lfs_m3_ext_note_stage" formatted="false">"Apenas .gitattributes muda. Coloque os arquivos no stage para transformá-los em ponteiros."</string>
+    <string name="lfs_m3_ext_scope" formatted="false">"Cobre os arquivos correspondentes atuais e futuros em todas as pastas. A correspondência diferencia maiúsculas de minúsculas."</string>
+    <string name="lfs_m3_ext_title" formatted="false">"Rastrear extensões correspondentes?"</string>
+    <string name="lfs_m3_extensions_updated" formatted="false">"Regras de extensão atualizadas. Estagie .gitattributes e os arquivos, depois faça o commit."</string>
+    <string name="lfs_m3_fact_endpoint" formatted="false">"Endpoint LFS"</string>
+    <string name="lfs_m3_fact_remote" formatted="false">"Remoto Git"</string>
+    <string name="lfs_m3_fact_repository" formatted="false">"Repositório"</string>
+    <string name="lfs_m3_force_ack" formatted="false">"Entendo que alguém ainda pode estar editando este arquivo."</string>
+    <string name="lfs_m3_force_title" formatted="false">"Forçar a liberação do bloqueio de outro proprietário?"</string>
+    <string name="lfs_m3_force_warning" formatted="false">"Isso remove um bloqueio mantido por outra conexão. Verifique com o proprietário primeiro."</string>
+    <string name="lfs_m3_http_warning" formatted="false">"HTTP não é criptografado. Dados do repositório e qualquer nome de usuário ou token podem ser lidos durante a transmissão. Use HTTPS quando puder."</string>
+    <string name="lfs_m3_keep_body" formatted="false">"Adiciona regras explícitas de expressão regular Git. O conteúdo vai para seus commits. Arquivos acima de 100 MiB ainda necessitam de LFS."</string>
+    <string name="lfs_m3_keep_git" formatted="false">"Mantenha em Git regular"</string>
+    <string name="lfs_m3_keep_title" formatted="false">"Manter estes em Git regular?"</string>
+    <string name="lfs_m3_list_read_only" formatted="false">"Lista somente leitura"</string>
+    <string name="lfs_m3_lock_a_file" formatted="false">"Bloquear um arquivo"</string>
+    <string name="lfs_m3_lockable_caption" formatted="false">"Apenas arquivos marcados como bloqueáveis em .gitattributes aparecem aqui."</string>
+    <string name="lfs_m3_locked" formatted="false">"bloqueado"</string>
+    <string name="lfs_m3_locked_on_server" formatted="false">"Bloqueado no servidor"</string>
+    <string name="lfs_m3_locks_empty" formatted="false">"Nada está bloqueado neste branch."</string>
+    <string name="lfs_m3_locks_intro" formatted="false">"Verifique a propriedade antes de alterar um bloqueio. Os bloqueios vivem no servidor; seus arquivos e commits permanecem no lugar."</string>
+    <string name="lfs_m3_match_extensions" formatted="false">"Coincidir extensões…"</string>
+    <string name="lfs_m3_needs_choice" formatted="false">"Precisa de uma escolha de rastreamento"</string>
+    <string name="lfs_m3_no_lockable" formatted="false">"Nenhum arquivo desbloqueável disponível."</string>
+    <string name="lfs_m3_no_tracked" formatted="false">"Nenhum arquivo está armazenado no LFS neste branch ainda."</string>
+    <string name="lfs_m3_not_shared" formatted="false">"Seu login no GitHub não está compartilhado com este servidor. Credenciais separadas são criptografadas neste telefone. Gerencie-as em Configurações › Endpoints do LFS."</string>
+    <string name="lfs_m3_ok" formatted="false">"OK"</string>
+    <string name="lfs_m3_owned_here" formatted="false">"Pertence a esta conexão"</string>
+    <string name="lfs_m3_owner">"Proprietário: %1$s"</string>
+    <string name="lfs_m3_public_access" formatted="false">"Acesso público"</string>
+    <string name="lfs_m3_refresh_required" formatted="false">"Funcionou, mas o novo estado LFS não foi carregado. Recarregue antes de fazer qualquer outra coisa."</string>
+    <string name="lfs_m3_release_body" formatted="false">"Outros podem bloquear e editar novamente. Seu arquivo local e commits permanecem como estão."</string>
+    <string name="lfs_m3_release_review" formatted="false">"Liberar…"</string>
+    <string name="lfs_m3_reload" formatted="false">"Recarregar estado do LFS"</string>
+    <string name="lfs_m3_reset_all" formatted="false">"Redefinir todas as aprovações de endpoints LFS"</string>
+    <string name="lfs_m3_reset_body" formatted="false">"Remove toda aprovação de endpoint personalizada e suas credenciais salvas neste telefone. Cada endpoint e direção precisará de uma nova revisão."</string>
+    <string name="lfs_m3_reset_confirm" formatted="false">"Redefinir aprovações"</string>
+    <string name="lfs_m3_reset_title" formatted="false">"Redefinir todas as aprovações de endpoints LFS?"</string>
+    <string name="lfs_m3_review_changed" formatted="false">"Os bloqueios mudaram desde que você abriu isso. Cancele e verifique a propriedade novamente."</string>
+    <string name="lfs_m3_revoke" formatted="false">"Revogar"</string>
+    <string name="lfs_m3_revoke_download_body">"Downloads futuros de %1$s precisarão de uma nova revisão. A aprovação de upload e suas credenciais salvas permanecem."</string>
+    <string name="lfs_m3_revoke_download_title" formatted="false">"Revogar a aprovação de download?"</string>
+    <string name="lfs_m3_revoke_downloads" formatted="false">"Revogar downloads"</string>
+    <string name="lfs_m3_revoke_upload_body">"Uploads futuros para %1$s precisarão de uma nova revisão. A aprovação de download e suas credenciais salvas permanecem."</string>
+    <string name="lfs_m3_revoke_upload_title" formatted="false">"Revogar a aprovação de upload?"</string>
+    <string name="lfs_m3_revoke_uploads" formatted="false">"Revogar uploads"</string>
+    <string name="lfs_m3_scope_read_only" formatted="false">"Lista somente leitura · propriedade não verificada"</string>
+    <string name="lfs_m3_scope_verified" formatted="false">"Propriedade verificada com esta conexão"</string>
+    <string name="lfs_m3_secret" formatted="false">"token ou senha"</string>
+    <string name="lfs_m3_separate_credentials" formatted="false">"Credenciais criptografadas separadas"</string>
+    <string name="lfs_m3_server">"Servidor LFS %1$s"</string>
+    <string name="lfs_m3_ssh_authorization" formatted="false">"Autorização por SSH"</string>
+    <string name="lfs_m3_ssh_review" formatted="false">"Este endpoint HTTP obtém autorização de curta duração do servidor SSH verificado. Sua chave SSH permanece neste telefone. A autorização pode ser lida em trânsito e nunca é salva."</string>
+    <string name="lfs_m3_stale" formatted="false">"Os arquivos mudaram desde que você abriu isto. Cancele e revise novamente."</string>
+    <string name="lfs_m3_state_pointer" formatted="false">"Ponteiro · baixar conteúdos"</string>
+    <string name="lfs_m3_stored_body" formatted="false">"Commits mantêm pequenos ponteiros. Pull baixa os conteúdos, push os envia primeiro."</string>
+    <string name="lfs_m3_stored_kicker" formatted="false">"Armazenado no LFS"</string>
+    <string name="lfs_m3_stored_locked">"%1$s · %2$d bloqueado"</string>
+    <string name="lfs_m3_subtitle">"%1$s · %2$s · Git LFS"</string>
+    <string name="lfs_m3_tab_files" formatted="false">"Arquivos"</string>
+    <string name="lfs_m3_tab_locks" formatted="false">"Bloqueios"</string>
+    <string name="lfs_m3_title" formatted="false">"Arquivos grandes"</string>
+    <string name="lfs_m3_track_body" formatted="false">"Adiciona regras de LFS para caminho exato para os arquivos abaixo. Limites de armazenamento e largura de banda dependem do seu host Git. Faça o stage das mudanças, depois faça o commit."</string>
+    <string name="lfs_m3_track_title" formatted="false">"Usar LFS para estes arquivos?"</string>
+    <string name="lfs_m3_tracked_files" formatted="false">"Arquivos rastreados"</string>
+    <string name="lfs_m3_tracking_caption" formatted="false">"Apenas .gitattributes muda. Seus arquivos permanecem no lugar até você prepará-los."</string>
+    <string name="lfs_m3_tracking_updated" formatted="false">"Regras de rastreamento atualizadas. Prepare .gitattributes e os arquivos, depois faça o commit."</string>
+    <string name="lfs_m3_unsupported" formatted="false">"Este servidor não suporta bloqueios Git LFS."</string>
+    <string name="lfs_m3_upload_body" formatted="false">"Este repositório quer enviar o conteúdo dos arquivos para um servidor LFS separado."</string>
+    <string name="lfs_m3_upload_title" formatted="false">"Permitir uploads LFS?"</string>
+    <string name="lfs_m3_uploads" formatted="false">"Envio"</string>
+    <string name="lfs_m3_username" formatted="false">"Nome de usuário do endpoint LFS"</string>
     <string name="lfs_tracking_updated" formatted="false">"Regras de rastreamento atualizadas. Revise e prepare .gitattributes e os arquivos selecionados; depois faça commit."</string>
     <string name="m3_editor_preview" formatted="false">"Pré-visualização"</string>
     <string name="m3_editor_write" formatted="false">"Escrever"</string>
     <string name="m3_open_in_editor" formatted="false">"Abrir no editor"</string>
     <string name="m3_paywall_paid_with_play" formatted="false">"Pago com sua conta do Google Play"</string>
     <string name="m3_pick_a_file" formatted="false">"Escolha um arquivo para ver as alterações."</string>
+    <string name="m3home_add_first" formatted="false">"Adicione seu primeiro cofre"</string>
+    <string name="m3home_add_vault" formatted="false">"Adicionar um cofre"</string>
+    <string name="m3home_auth_body" formatted="false">"Suas notas estão seguras neste telefone. Nada foi perdido."</string>
+    <string name="m3home_auth_headline" formatted="false">"Sincronização pausada."</string>
+    <string name="m3home_auth_held">"↑%1$d retidos"</string>
+    <string name="m3home_auth_kicker">"Login do GitHub expirou · %1$s"</string>
+    <string name="m3home_auth_paused" formatted="false">"pausado"</string>
+    <string name="m3home_auth_row_meta">"%1$s · último sincronizado %2$s"</string>
+    <string name="m3home_auth_sign_in" formatted="false">"Entrar com GitHub"</string>
+    <string name="m3home_auth_unaffected_label" formatted="false">"Não afetado"</string>
+    <string name="m3home_auth_waiting_label" formatted="false">"Aguardando login"</string>
+    <string name="m3home_badge_both">"↓%1$d ↑%2$d"</string>
+    <string name="m3home_badge_checking" formatted="false">"Verificando"</string>
+    <string name="m3home_badge_in_sync" formatted="false">"Sincronizado"</string>
+    <string name="m3home_badge_local_only" formatted="false">"apenas local"</string>
+    <string name="m3home_badge_needs_you" formatted="false">"Precisa de você"</string>
+    <string name="m3home_badge_sync_failed" formatted="false">"Não sincronizado"</string>
+    <string name="m3home_badge_syncing" formatted="false">"sincronizando"</string>
+    <string name="m3home_badge_to_pull">"↓%1$d para pull"</string>
+    <string name="m3home_badge_to_push">"↑%1$d para push"</string>
+    <string name="m3home_badge_unreadable" formatted="false">"Não é possível ler"</string>
+    <string name="m3home_cred_github" formatted="false">"GitHub Conta"</string>
+    <string name="m3home_cred_local" formatted="false">"neste telefone"</string>
+    <string name="m3home_cred_public" formatted="false">"público"</string>
+    <string name="m3home_cred_ssh" formatted="false">"SSH "</string>
+    <string name="m3home_cred_token" formatted="false">"token"</string>
+    <string name="m3home_empty_rail_description" formatted="false">"Telefone e GitHub, nada para sincronizar ainda"</string>
+    <string name="m3home_empty_rail_nothing" formatted="false">"nada para sincronizar"</string>
+    <string name="m3home_empty_signed_in">"conectado como @%1$s"</string>
+    <string name="m3home_empty_title" formatted="false">"Nenhum cofre ainda."</string>
+    <string name="m3home_filter_all">"Todos (%1$d)"</string>
+    <string name="m3home_filter_attention">"Atenção %1$d"</string>
+    <string name="m3home_filter_empty_attention" formatted="false">"Nada precisa de você. Todos os cofres estão sincronizados."</string>
+    <string name="m3home_filter_empty_pinned" formatted="false">"Nenhum cofre fixado ainda. Pressione longamente um cofre e escolha Fixar no topo."</string>
+    <string name="m3home_filter_pinned" formatted="false">"Fixado"</string>
+    <string name="m3home_headline_ready_accent" formatted="false">"sincronizado."</string>
+    <string name="m3home_how_title" formatted="false">"Como funciona"</string>
+    <string name="m3home_meta_checked">"verificado %1$s"</string>
+    <string name="m3home_meta_checking">"verificando %1$d"</string>
+    <string name="m3home_meta_in_sync">"%1$d sincronizados"</string>
+    <string name="m3home_meta_lfs">"%1$s LFS"</string>
+    <string name="m3home_meta_loading" formatted="false">"Verificando…"</string>
+    <string name="m3home_meta_never_checked" formatted="false">"Ainda não verificado"</string>
+    <string name="m3home_meta_not_synced" formatted="false">"ainda não sincronizado"</string>
+    <string name="m3home_meta_unreadable" formatted="false">"não é possível ler esta pasta"</string>
+    <string name="m3home_offline_accent" formatted="false">"A gente põe em dia."</string>
+    <string name="m3home_offline_fab" formatted="false">"Sincroniza quando online"</string>
+    <string name="m3home_offline_headline" formatted="false">"Continue escrevendo."</string>
+    <string name="m3home_offline_last_known" formatted="false">"último estado: sincronizado"</string>
+    <string name="m3home_offline_last_known_behind">"último conhecido: ↓%1$d"</string>
+    <string name="m3home_offline_meta">"sem conexão · última verificação %1$s"</string>
+    <string name="m3home_offline_meta_never" formatted="false">"sem conexão"</string>
+    <string name="m3home_offline_queued">"↑%1$d na fila"</string>
+    <string name="m3home_offline_row_meta">"%1$s · sincronizado %2$s"</string>
+    <string name="m3home_onboarding_accent" formatted="false">"Sempre em sintonia."</string>
+    <string name="m3home_onboarding_body" formatted="false">"Clone qualquer repositório, escreva no Obsidian ou em outro app e sincronize com um toque."</string>
+    <string name="m3home_onboarding_demo" formatted="false">"Explore com um cofre de demonstração"</string>
+    <string name="m3home_onboarding_github" formatted="false">"Continuar com GitHub"</string>
+    <string name="m3home_onboarding_headline" formatted="false">"Suas anotações.\nGit real."</string>
+    <string name="m3home_onboarding_other" formatted="false">"SSH, token ou outro host"</string>
+    <string name="m3home_onboarding_rail" formatted="false">"Notas no seu celular e commits no GitHub se encontrando em um ponto de sincronização"</string>
+    <string name="m3home_onboarding_save_error" formatted="false">"Não foi possível salvar sua escolha. Tente novamente."</string>
+    <string name="m3home_onboarding_this_phone" formatted="false">"este telefone"</string>
+    <string name="m3home_pin" formatted="false">"Fixar no topo"</string>
+    <string name="m3home_pin_failed" formatted="false">"Não foi possível salvar a fixação. Tente novamente."</string>
+    <string name="m3home_pinned" formatted="false">"Fixado"</string>
+    <string name="m3home_rail_github" formatted="false">"GitHub"</string>
+    <string name="m3home_rail_phone" formatted="false">"Telefone"</string>
+    <string name="m3home_rail_remote" formatted="false">"Remoto"</string>
+    <string name="m3home_remove" formatted="false">"Remover de GitSync.md"</string>
+    <string name="m3home_row_actions" formatted="false">"Ações do cofre"</string>
+    <string name="m3home_session_dismiss" formatted="false">"Fechar"</string>
+    <string name="m3home_settings" formatted="false">"Configurações"</string>
+    <string name="m3home_settings_signed_in">"Configurações, conectado como %1$s"</string>
+    <string name="m3home_start_github" formatted="false">"Clonar do GitHub"</string>
+    <string name="m3home_start_github_detail" formatted="false">"escolha um dos seus repositórios"</string>
+    <string name="m3home_start_local" formatted="false">"Encontrar clones neste telefone"</string>
+    <string name="m3home_start_local_detail" formatted="false">"Obsidian, MGit, Termux…"</string>
+    <string name="m3home_start_publish" formatted="false">"Publicar uma pasta"</string>
+    <string name="m3home_start_publish_detail" formatted="false">"transforma uma pasta em um novo repositório"</string>
+    <string name="m3home_start_url" formatted="false">"Cole uma URL"</string>
+    <string name="m3home_start_url_detail" formatted="false">"qualquer repositório Git remoto, público ou privado"</string>
+    <string name="m3home_start_with" formatted="false">"Começar com"</string>
+    <string name="m3home_sync_all" formatted="false">"Sincronizar tudo"</string>
+    <string name="m3home_sync_all_meta">"↓%1$d ↑%2$d"</string>
+    <string name="m3home_sync_busy" formatted="false">"Puxar tudo já está em execução. Tente novamente quando terminar."</string>
+    <string name="m3home_sync_done">"Sincronizado · puxado %1$d · enviado %2$d"</string>
+    <string name="m3home_sync_failed">"Não foi possível sincronizar %1$s"</string>
+    <string name="m3home_sync_start_failed" formatted="false">"Não foi possível iniciar sincronização de tudo. Verifique sua lista de cofres em Configurações."</string>
+    <string name="m3home_syncing" formatted="false">"sincronizando"</string>
+    <string name="m3home_syncing_meta">"%1$d de %2$d"</string>
+    <string name="m3home_time_days">"há %1$dd"</string>
+    <string name="m3home_time_hours">"%1$dhá h dias"</string>
+    <string name="m3home_time_minutes_long">"há %1$d min"</string>
+    <string name="m3home_time_minutes_short">"%1$dhá m dias"</string>
+    <string name="m3home_time_now" formatted="false">"agora mesmo"</string>
+    <string name="m3home_time_yesterday" formatted="false">"ontem"</string>
+    <string name="m3home_unpin" formatted="false">"Desafixar"</string>
     <string name="modified" formatted="false">"Modificado"</string>
     <string name="move_cancelled" formatted="false">"Movimentação cancelada. A cópia de trabalho original foi mantida."</string>
     <string name="move_confirm_action" formatted="false">"Mover"</string>
@@ -450,6 +1363,22 @@
     <string name="move_recovery_done" formatted="false">"Recuperação da movimentação concluída"</string>
     <string name="move_recovery_removed" formatted="false">"Cópia de recuperação removida"</string>
     <string name="move_title_restore" formatted="false">"Restaurar cópia de recuperação"</string>
+    <string name="newfile_m3_blank" formatted="false">"Em branco"</string>
+    <string name="newfile_m3_builtin_idea" formatted="false">"ideia"</string>
+    <string name="newfile_m3_create_open" formatted="false">"Criar e abrir"</string>
+    <string name="newfile_m3_exists">"%1$s já existe em %2$s. Tente outro nome."</string>
+    <string name="newfile_m3_file_name" formatted="false">"Nome do arquivo"</string>
+    <string name="newfile_m3_folder" formatted="false">"Pasta"</string>
+    <string name="newfile_m3_folder_name" formatted="false">"Nome da pasta"</string>
+    <string name="newfile_m3_in">"em %1$s"</string>
+    <string name="newfile_m3_invalid" formatted="false">"Use um nome sem / ou \\."</string>
+    <string name="newfile_m3_invalid_dots" formatted="false">"“.” e “..” são reservados. Tente outro nome."</string>
+    <string name="newfile_m3_note" formatted="false">"Nota"</string>
+    <string name="newfile_m3_template">"Modelo · %1$s"</string>
+    <string name="newfile_m3_title_folder" formatted="false">"Nova pasta"</string>
+    <string name="newfile_m3_title_note" formatted="false">"Nova nota"</string>
+    <string name="newfile_m3_today" formatted="false">"Data de hoje"</string>
+    <string name="newfile_m3_too_long" formatted="false">"Esse nome é muito longo. Use um mais curto."</string>
     <string name="notes_acknowledge" formatted="false">"Entendi"</string>
     <string name="notes_connections_body" formatted="false">"Gerencie contas do GitHub e a identidade do autor do repositório. Conecte via HTTPS ou SSH, escolha o armazenamento de clones, reconecte cópias locais e revise movimentações ou remoções de repositórios."</string>
     <string name="notes_connections_title" formatted="false">"Conexões e armazenamento"</string>
@@ -458,6 +1387,10 @@
     <string name="notes_version">"Android %1$s · compilação %2$d"</string>
     <string name="notes_workflow_body" formatted="false">"Navegue e edite arquivos, revise diferenças de alterações preparadas e não preparadas, crie commits locais, envie commits existentes e trabalhe com branches, histórico, tags e rebase."</string>
     <string name="notes_workflow_title" formatted="false">"Fluxo de trabalho do repositório"</string>
+    <string name="notification_m3_open_obsidian" formatted="false">"Abrir em Obsidian"</string>
+    <string name="notification_m3_pulled" formatted="false">"Novas alterações puxadas em segundo plano."</string>
+    <string name="notification_m3_see_changes" formatted="false">"Ver alterações"</string>
+    <string name="notification_m3_updated">"%1$s foi atualizado"</string>
     <string name="obsidian_forgotten" formatted="false">"As transferências futuras estão desativadas. Prepare uma nova conexão para reconectar esta pasta."</string>
     <string name="obsidian_interrupted" formatted="false">"Conexão interrompida. Nenhuma solicitação será repetida automaticamente. Prepare uma nova conexão antes de tentar novamente no Obsidian."</string>
     <string name="obsidian_return" formatted="false">"Voltar ao Obsidian"</string>
@@ -560,6 +1493,47 @@
     <string name="pull_all_widget_description" formatted="false">"Busca e faz fast-forward em todos os repositórios locais sem abrir GitSync.md."</string>
     <string name="pull_all_widget_subtitle" formatted="false">"Somente busca e fast-forward"</string>
     <string name="pull_screen" formatted="false">"Pull"</string>
+    <string name="pullall_m3_again" formatted="false">"Buscar tudo novamente"</string>
+    <string name="pullall_m3_attention_blocked" formatted="false">"Mantido sem alterações. Faça commit ou armazene as alterações locais primeiro."</string>
+    <string name="pullall_m3_attention_failed" formatted="false">"Não foi possível puxar com segurança. Verifique a conexão e o acesso à pasta."</string>
+    <string name="pullall_m3_attention_lfs" formatted="false">"Puxado. Alguns arquivos Git LFS ainda precisam ser baixados."</string>
+    <string name="pullall_m3_background" formatted="false">"Buscar tudo em segundo plano"</string>
+    <string name="pullall_m3_blocked" formatted="false">"Mantido sem alterações. Faça commit ou armazene as alterações locais, ou finalize a operação Git aberta, e depois tente novamente."</string>
+    <string name="pullall_m3_clear" formatted="false">"Limpar resumo de segundo plano"</string>
+    <string name="pullall_m3_clear_body" formatted="false">"Isso exclui o resumo de fundo mais recente. Seus cofres e configurações permanecem como estão. Trabalhos interrompidos não reiniciarão por conta própria."</string>
+    <string name="pullall_m3_clear_confirm" formatted="false">"Limpar resumo"</string>
+    <string name="pullall_m3_clear_title" formatted="false">"Limpar resumo de fundo?"</string>
+    <string name="pullall_m3_complete" formatted="false">"Buscar tudo terminou. Revise o resumo salvo."</string>
+    <string name="pullall_m3_control_failed" formatted="false">"Isso não mudou. Reabra esta tela e tente novamente."</string>
+    <string name="pullall_m3_counts">"Atualizado %1$d · Atual %2$d · LFS %3$d · Bloqueado %4$d · Falhou %5$d"</string>
+    <string name="pullall_m3_current" formatted="false">"Nenhuma alteração recebida"</string>
+    <string name="pullall_m3_empty" formatted="false">"Nenhum cofre para puxar ainda. Clone ou adicione um primeiro."</string>
+    <string name="pullall_m3_failed" formatted="false">"Puxar tudo foi interrompido com um erro. Alguns puxamentos podem ter sido concluídos. Verifique o resumo e cada cofre antes de executá-lo novamente."</string>
+    <string name="pullall_m3_help" formatted="false">"Adicione o widget Puxar tudo à sua tela inicial ou o bloco às Configurações rápidas. Ambos são executados uma vez sem abrir o aplicativo. Volte aqui para ver o que aconteceu."</string>
+    <string name="pullall_m3_interrupted" formatted="false">"Puxar tudo foi interrompido e não reiniciará sozinho. Um puxar pode ter sido concluído primeiro. Verifique cada cofre antes de executá-lo novamente."</string>
+    <string name="pullall_m3_item_failed" formatted="false">"Não foi possível puxar com segurança. Verifique a conexão e o acesso à pasta, depois veja Git para divergência."</string>
+    <string name="pullall_m3_lfs" formatted="false">"Puxado. Alguns arquivos Git LFS ainda precisam ser baixados. Abra Git LFS para tentar novamente."</string>
+    <string name="pullall_m3_not_run" formatted="false">"Não executado"</string>
+    <string name="pullall_m3_progress_cd" formatted="false">"Progresso de Puxar tudo"</string>
+    <string name="pullall_m3_pulling" formatted="false">"Fazendo pull…"</string>
+    <string name="pullall_m3_running" formatted="false">"Puxar tudo está em execução sem abrir o aplicativo. O restante para quando você tocar em Parar."</string>
+    <string name="pullall_m3_scope" formatted="false">"Buscar e avançar rapidamente todos os cofres neste telefone. Puxe todos os estágios, commits ou pushs que você nunca fez."</string>
+    <string name="pullall_m3_source_shortcut" formatted="false">"atalho"</string>
+    <string name="pullall_m3_source_tile" formatted="false">"bloco"</string>
+    <string name="pullall_m3_source_widget" formatted="false">"widget"</string>
+    <string name="pullall_m3_start" formatted="false">"Selecionar Todos"</string>
+    <string name="pullall_m3_start_failed" formatted="false">"Não foi possível iniciar o Pull all. Verifique as configurações do seu cofre e tente novamente."</string>
+    <string name="pullall_m3_stop" formatted="false">"Parar a busca"</string>
+    <string name="pullall_m3_stopped" formatted="false">"Parado. Um cofre que já está sendo puxado pode ter sido concluído, então verifique seu status antes de tentar novamente. O restante não foi iniciado."</string>
+    <string name="pullall_m3_stopping" formatted="false">"Parando após este cofre…"</string>
+    <string name="pullall_m3_surfaces" formatted="false">"Widget e bloco de Configurações Rápidas"</string>
+    <string name="pullall_m3_tile_preview" formatted="false">"GitSync.md\nPull all"</string>
+    <string name="pullall_m3_title" formatted="false">"Selecionar Todos"</string>
+    <string name="pullall_m3_unreadable" formatted="false">"O resumo de plano de fundo salvo não pode ser lido e foi mantido. Limpe-o antes de iniciar outra execução em segundo plano."</string>
+    <string name="pullall_m3_updated" formatted="false">"Atualizado a partir do remoto"</string>
+    <string name="pullall_m3_when_source">"%1$s · de %2$s"</string>
+    <string name="pullall_m3_widget_name" formatted="false">"Selecionar Todos"</string>
+    <string name="pullall_m3_widget_sub" formatted="false">"Somente busca e fast-forward"</string>
     <string name="push_all_repositories" formatted="false">"Todos os repositórios, inclusive os futuros"</string>
     <string name="push_cancelled" formatted="false">"A conexão com o GitHub foi cancelada."</string>
     <string name="push_channel" formatted="false">"Atualizações dos repositórios"</string>
@@ -617,6 +1591,7 @@
     <string name="repository_actions_changes">"Caminhos alterados: %1$d"</string>
     <string name="repository_actions_confirm" formatted="false">"Executar uma vez"</string>
     <string name="repository_actions_destination">"Upstream: %1$s / %2$s"</string>
+    <string name="repository_actions_destination_none" formatted="false">"Upstream: nenhum"</string>
     <string name="repository_actions_dirty" formatted="false">"As alterações locais impedem baixar os commits recebidos. Primeiro faça um commit ou guarde-as no stash."</string>
     <string name="repository_actions_diverged" formatted="false">"Os históricos local e remoto divergiram. Escolha explicitamente merge ou rebase nos controles Git."</string>
     <string name="repository_actions_failed" formatted="false">"Não foi possível concluir a ação. Verifique a conexão, a conta, a confiança e o acesso à pasta; depois revise o estado atual antes de tentar novamente."</string>
@@ -681,6 +1656,325 @@
     <string name="resolve_local_superseded" formatted="false">"O repositório selecionado mudou. Revise as alterações locais novamente."</string>
     <string name="resolve_local_title" formatted="false">": Edições locais bloqueiam esta operação de pull."</string>
     <string name="settings_folder_unavailable" formatted="false">"O acesso à pasta precisa de atenção"</string>
+    <string name="settings_m3_account_meta">"@%1$s · GitHub"</string>
+    <string name="settings_m3_accounts" formatted="false">"Contas do GitHub"</string>
+    <string name="settings_m3_app_storage" formatted="false">"Armazenamento do app"</string>
+    <string name="settings_m3_author_account_meta">"%1$s · nada foi salvo neste cofre ainda"</string>
+    <string name="settings_m3_author_account_meta_global">"%1$s · nenhum padrão salvo ainda"</string>
+    <string name="settings_m3_author_changed" formatted="false">"Este autor foi alterado fora de GitSync.md, talvez por Git no seu Mac. Recarregue para ver o que ele diz agora."</string>
+    <string name="settings_m3_author_default" formatted="false">"Valor Padrão"</string>
+    <string name="settings_m3_author_email" formatted="false">"E-mail do Autor"</string>
+    <string name="settings_m3_author_from_account" formatted="false">"Da sua conta GitHub"</string>
+    <string name="settings_m3_author_global_subtitle" formatted="false">"Cada cofre sem seu próprio autor"</string>
+    <string name="settings_m3_author_help_changed" formatted="false">"Recarregue antes de salvar, ou você substituirá o autor mais recente."</string>
+    <string name="settings_m3_author_help_match" formatted="false">"Combine o e-mail que Git usa no seu Mac para que ambos apareçam como você."</string>
+    <string name="settings_m3_author_help_noreply" formatted="false">"Endereço privado de GitHub, para que seu e-mail real permaneça oculto."</string>
+    <string name="settings_m3_author_intro" formatted="false">"Novos commits neste cofre usam este nome e e-mail. Commits que você já fez mantêm seu autor."</string>
+    <string name="settings_m3_author_intro_global" formatted="false">"Novos commits em seus cofres usam este nome e e-mail, a menos que um cofre salve os seus próprios. Commits que você já fez mantêm o autor."</string>
+    <string name="settings_m3_author_name" formatted="false">"Nome do Autor"</string>
+    <string name="settings_m3_author_override" formatted="false">"Substituir"</string>
+    <string name="settings_m3_author_preview_message" formatted="false">"Atualização do GitSync.md"</string>
+    <string name="settings_m3_author_preview_meta">"%1$s &lt;%2$s&gt; · agora"</string>
+    <string name="settings_m3_author_preview_title" formatted="false">"Seu próximo commit será"</string>
+    <string name="settings_m3_author_reading" formatted="false">"Lendo a configuração Git deste cofre…"</string>
+    <string name="settings_m3_author_save" formatted="false">"Salvar autor"</string>
+    <string name="settings_m3_author_save_note" formatted="false">"Salvar fecha esta página. Nada será comitado."</string>
+    <string name="settings_m3_author_saved_global" formatted="false">"Salvo para todos os cofres"</string>
+    <string name="settings_m3_author_saved_global_meta">"neste telefone · substitui %1$s"</string>
+    <string name="settings_m3_author_saved_vault" formatted="false">"Salvo neste cofre"</string>
+    <string name="settings_m3_author_saved_vault_meta">".git/config · substitui %1$s"</string>
+    <string name="settings_m3_author_scope" formatted="false">"Apenas este cofre muda. Seus outros cofres mantêm seu próprio autor ou usam a conta GitHub com a qual sincronizam."</string>
+    <string name="settings_m3_author_scope_global" formatted="false">"Cofres com um autor salvo em seu próprio .git/config o mantêm. Você ainda pode alterar um único cofre em suas configurações de Cofre."</string>
+    <string name="settings_m3_author_use_account" formatted="false">"Use minha conta GitHub em vez disso"</string>
+    <string name="settings_m3_author_your_account" formatted="false">"sua conta GitHub"</string>
+    <string name="settings_m3_background_on">"ativado · %1$d cofres"</string>
+    <string name="settings_m3_background_sync" formatted="false">"Background Sync"</string>
+    <string name="settings_m3_bg_attention_short" formatted="false">"Precisa de revisão"</string>
+    <string name="settings_m3_bg_charging" formatted="false">"Carregando"</string>
+    <string name="settings_m3_bg_cond_any" formatted="false">"em qualquer conexão"</string>
+    <string name="settings_m3_bg_cond_both" formatted="false">"apenas no Wi-Fi enquanto carrega"</string>
+    <string name="settings_m3_bg_cond_charging" formatted="false">"apenas enquanto carrega"</string>
+    <string name="settings_m3_bg_cond_wifi" formatted="false">"apenas no Wi-Fi"</string>
+    <string name="settings_m3_bg_conditions_apply">"Executa %1$s, como todos os cofres incluídos."</string>
+    <string name="settings_m3_bg_connect" formatted="false">"Conectar"</string>
+    <string name="settings_m3_bg_failed_short" formatted="false">"Não pôde sincronizar"</string>
+    <string name="settings_m3_bg_include_cd">"Incluir %1$s em Background Sync"</string>
+    <string name="settings_m3_bg_intro" formatted="false">"Android agenda verificações a cada aproximadamente 15 minutos ou mais tarde, dependendo da conectividade, bateria e restrições do sistema. Melhor esforço, nunca em tempo real."</string>
+    <string name="settings_m3_bg_modes" formatted="false">"Modos"</string>
+    <string name="settings_m3_bg_never" formatted="false">"Nunca vai"</string>
+    <string name="settings_m3_bg_no_runs" formatted="false">"Nenhuma execução ainda. Android inicia a primeira verificação em cerca de 15 minutos."</string>
+    <string name="settings_m3_bg_nudge" formatted="false">"Receba um aviso quando GitHub mudar"</string>
+    <string name="settings_m3_bg_nudge_sub" formatted="false">"Aceitar. A transferência pode começar imediatamente."</string>
+    <string name="settings_m3_bg_only_when" formatted="false">"Somente quando"</string>
+    <string name="settings_m3_bg_pull_sub" formatted="false">"Somente fast-forward"</string>
+    <string name="settings_m3_bg_push_sub" formatted="false">"Para se o remoto se mover primeiro"</string>
+    <string name="settings_m3_bg_recent" formatted="false">"Execuções recentes"</string>
+    <string name="settings_m3_bg_run_failed">"%1$s não pôde sincronizar"</string>
+    <string name="settings_m3_bg_run_local_edits">"%1$s pulado: edições locais"</string>
+    <string name="settings_m3_bg_run_offline">"%1$s esperando por uma conexão"</string>
+    <string name="settings_m3_bg_run_power">"%1$s esperando para carregar"</string>
+    <string name="settings_m3_bg_run_pushed" formatted="false">"↑ enviado"</string>
+    <string name="settings_m3_bg_run_review">"%1$s precisa de revisão"</string>
+    <string name="settings_m3_bg_run_skipped">"%1$s ignorado: %2$s"</string>
+    <string name="settings_m3_bg_run_wifi">"%1$s esperando por Wi-Fi"</string>
+    <string name="settings_m3_bg_vault_missing" formatted="false">"Pasta não adicionada. Esqueça ou adicione o cofre novamente."</string>
+    <string name="settings_m3_bg_vault_not_included" formatted="false">"Não incluído"</string>
+    <string name="settings_m3_bg_vaults" formatted="false">"Cofres"</string>
+    <string name="settings_m3_bg_wifi" formatted="false">"No Wi-Fi"</string>
+    <string name="settings_m3_close" formatted="false">"Fechar"</string>
+    <string name="settings_m3_commit_as" formatted="false">"Commit como"</string>
+    <string name="settings_m3_debug_app" formatted="false">"App"</string>
+    <string name="settings_m3_debug_background" formatted="false">"BACKGROUND"</string>
+    <string name="settings_m3_debug_bg" formatted="false">"BG"</string>
+    <string name="settings_m3_debug_clear" formatted="false">"Limpo"</string>
+    <string name="settings_m3_debug_copy" formatted="false">"Copiar entradas visíveis"</string>
+    <string name="settings_m3_debug_day_time">"%1$s %2$s"</string>
+    <string name="settings_m3_debug_error" formatted="false">"ERRO"</string>
+    <string name="settings_m3_debug_errors_count">"Erros %1$d"</string>
+    <string name="settings_m3_debug_info" formatted="false">"Mostrar informações de depuração"</string>
+    <string name="settings_m3_debug_info_tag" formatted="false">"Informações"</string>
+    <string name="settings_m3_debug_log" formatted="false">"Log de depuração"</string>
+    <string name="settings_m3_debug_removed_vault" formatted="false">"cofre removido"</string>
+    <string name="settings_m3_debug_share" formatted="false">"Compartilhar diagnósticos"</string>
+    <string name="settings_m3_debug_warn" formatted="false">"AVISO"</string>
+    <string name="settings_m3_discord" formatted="false">"Entre no Discord"</string>
+    <string name="settings_m3_done" formatted="false">"Concluído"</string>
+    <string name="settings_m3_feedback_subtitle" formatted="false">"Abre seu aplicativo de e-mail"</string>
+    <string name="settings_m3_forget" formatted="false">"Esquecer"</string>
+    <string name="settings_m3_full_access" formatted="false">"Acesso completo ao GitSync.md"</string>
+    <string name="settings_m3_group_app" formatted="false">"App"</string>
+    <string name="settings_m3_group_more" formatted="false">"Conexões e ajuda"</string>
+    <string name="settings_m3_group_new_vaults" formatted="false">"Novos cofres"</string>
+    <string name="settings_m3_group_purchase" formatted="false">"Comprar"</string>
+    <string name="settings_m3_group_sync" formatted="false">"Sincronizar"</string>
+    <string name="settings_m3_help" formatted="false">"Ajuda e sobre"</string>
+    <string name="settings_m3_how_clone_url" formatted="false">"Clonar de URL"</string>
+    <string name="settings_m3_how_count" formatted="false">"4 coisas para saber"</string>
+    <string name="settings_m3_how_github" formatted="false">"GitHub"</string>
+    <string name="settings_m3_how_it_works" formatted="false">"Como funciona"</string>
+    <string name="settings_m3_how_sample" formatted="false">"Experimente o exemplo offline"</string>
+    <string name="settings_m3_how_start" formatted="false">"Comece por aqui"</string>
+    <string name="settings_m3_how_storage" formatted="false">"Escolher armazenamento"</string>
+    <string name="settings_m3_how_subtitle" formatted="false">"Um olhar de dois minutos sobre o básico"</string>
+    <string name="settings_m3_how_title" formatted="false">"Como o GitSync funciona"</string>
+    <string name="settings_m3_language" formatted="false">"Idioma"</string>
+    <string name="settings_m3_lfs_endpoints" formatted="false">"Endpoints LFS"</string>
+    <string name="settings_m3_license" formatted="false">"Licença"</string>
+    <string name="settings_m3_license_subtitle" formatted="false">"Compra única pelo Google Play"</string>
+    <string name="settings_m3_move_action" formatted="false">"Mover cofre"</string>
+    <string name="settings_m3_move_cancel_meta" formatted="false">"Deixa o cofre em sua pasta antiga"</string>
+    <string name="settings_m3_move_confirm_guidance" formatted="false">"Mantenha Obsidian e outros aplicativos fora de ambas as pastas até que a transferência termine."</string>
+    <string name="settings_m3_move_confirm_retained" formatted="false">"O original permanece como uma cópia de recuperação."</string>
+    <string name="settings_m3_move_confirm_title" formatted="false">"Mover este cofre?"</string>
+    <string name="settings_m3_move_copy_note" formatted="false">"Isso atravessa para outro volume de armazenamento, então GitSync.md copia e verifica cada arquivo, depois mantém o original em Recuperações de movimentação até que você o remova."</string>
+    <string name="settings_m3_move_finish_meta" formatted="false">"Retoma de onde parou"</string>
+    <string name="settings_m3_move_from" formatted="false">"De"</string>
+    <string name="settings_m3_move_interrupted" formatted="false">"Uma movimentação foi interrompida. Cada cópia encontrada é mantida até que você a conclua."</string>
+    <string name="settings_m3_move_into" formatted="false">"Para"</string>
+    <string name="settings_m3_move_intro" formatted="false">"Move todo o cofre: arquivos, histórico do Git e alterações em estágio. Sua conta e o autor do commit se movem com ele."</string>
+    <string name="settings_m3_move_moving_button" formatted="false">"Movendo… mantenha GitSync.md aberto"</string>
+    <string name="settings_m3_move_progress" formatted="false">"Movendo e salvando as configurações do cofre…"</string>
+    <string name="settings_m3_move_title" formatted="false">"Mover cofre"</string>
+    <string name="settings_m3_move_will_move_to" formatted="false">"Será movido para"</string>
+    <string name="settings_m3_never_force" formatted="false">"Force-push"</string>
+    <string name="settings_m3_never_overwrite" formatted="false">"Sobrescrever edições"</string>
+    <string name="settings_m3_never_rebase" formatted="false">"Rebase ou merge"</string>
+    <string name="settings_m3_never_resolve" formatted="false">"Resolver conflitos"</string>
+    <string name="settings_m3_never_send" formatted="false">"Envie seus arquivos para nós"</string>
+    <string name="settings_m3_never_switch" formatted="false">"Trocar de branch"</string>
+    <string name="settings_m3_not_now" formatted="false">"Não agora"</string>
+    <string name="settings_m3_obsidian" formatted="false">"Conexões do Obsidian"</string>
+    <string name="settings_m3_obsidian_add_vault" formatted="false">"Adicionar um cofre"</string>
+    <string name="settings_m3_obsidian_before" formatted="false">"Antes de começar"</string>
+    <string name="settings_m3_obsidian_command" formatted="false">"GitSync.md Connect: Conecte este cofre"</string>
+    <string name="settings_m3_obsidian_connected" formatted="false">"conectado"</string>
+    <string name="settings_m3_obsidian_empty" formatted="false">"Adicione ou clone um cofre em uma pasta do dispositivo primeiro. Cofres no armazenamento do app não podem ser abertos pelo Obsidian."</string>
+    <string name="settings_m3_obsidian_error" formatted="false">"Obsidian não conseguiu se conectar. Verifique o acesso à pasta, o remoto HTTPS GitHub e a conta do cofre, depois prepare uma nova conexão."</string>
+    <string name="settings_m3_obsidian_failed" formatted="false">"Não conectado"</string>
+    <string name="settings_m3_obsidian_forget_action" formatted="false">"Esquecer conexão"</string>
+    <string name="settings_m3_obsidian_forget_body">"GitSync.md deixa de fornecer credenciais para Obsidian para %1$s. Credenciais Obsidian já importadas permanecem lá; revogue essas separadamente. Seus arquivos permanecem no lugar."</string>
+    <string name="settings_m3_obsidian_forget_title" formatted="false">"Esquecer esta conexão?"</string>
+    <string name="settings_m3_obsidian_intro" formatted="false">"Deixe o plugin Obsidian Git enviar e receber dados com a conta GitHub deste cofre. As credenciais são criptografadas para o plugin acompanhante e nunca colocadas em um link."</string>
+    <string name="settings_m3_obsidian_prepare" formatted="false">"Preparar conexão"</string>
+    <string name="settings_m3_obsidian_prepared_lead" formatted="false">"Conexão preparada."</string>
+    <string name="settings_m3_obsidian_prepared_open">"Abra %1$s em Obsidian e execute"</string>
+    <string name="settings_m3_obsidian_prepared_tail" formatted="false">". Uma solicitação mais recente substitui esta."</string>
+    <string name="settings_m3_obsidian_ready">"Credenciais criptografadas estão prontas para Obsidian. Obsidian Git agora pode sincronizar %1$s."</string>
+    <string name="settings_m3_obsidian_req1_body" formatted="false">"Obsidian e GitSync.md devem compartilhar uma pasta de dispositivo."</string>
+    <string name="settings_m3_obsidian_req1_title" formatted="false">"Abra a mesma pasta em Obsidian"</string>
+    <string name="settings_m3_obsidian_req2_body" formatted="false">"Git e GitSync.md Connect, em Obsidian › Configurações."</string>
+    <string name="settings_m3_obsidian_req2_title" formatted="false">"Ative dois plugins comunitários"</string>
+    <string name="settings_m3_obsidian_req3_body" formatted="false">"Com uma conta GitHub selecionada na conexão do cofre."</string>
+    <string name="settings_m3_obsidian_req3_title" formatted="false">"Use um remoto HTTPS GitHub"</string>
+    <string name="settings_m3_obsidian_req4_body" formatted="false">"Preparando apenas fornece credenciais, não arquivos ou histórico."</string>
+    <string name="settings_m3_obsidian_req4_title" formatted="false">"Nada no cofre muda"</string>
+    <string name="settings_m3_obsidian_return_failed" formatted="false">"Obsidian não abriu. Ative GitSync.md Connect em Obsidian, depois tente retornar novamente."</string>
+    <string name="settings_m3_obsidian_subtitle" formatted="false">"Obsidian Git + GitSync.md Connect"</string>
+    <string name="settings_m3_obsidian_this_vault" formatted="false">"Este cofre"</string>
+    <string name="settings_m3_obsidian_vaults" formatted="false">"Cofres neste telefone"</string>
+    <string name="settings_m3_obsidian_waiting" formatted="false">"Aguardando Obsidian"</string>
+    <string name="settings_m3_off" formatted="false">"desativado"</string>
+    <string name="settings_m3_on" formatted="false">"ativado"</string>
+    <string name="settings_m3_perk_nudge_body" formatted="false">"Um push GitHub notifica o app em segundos."</string>
+    <string name="settings_m3_perk_nudge_title" formatted="false">"Pulls instantâneos com Push Sync"</string>
+    <string name="settings_m3_perk_pull_body" formatted="false">"Apenas fast-forward. Qualquer coisa incomum aguarda você."</string>
+    <string name="settings_m3_perk_pull_title" formatted="false">"Pull em segundo plano"</string>
+    <string name="settings_m3_perk_push_body" formatted="false">"Desativado por padrão. Você escolhe quais cofres publicam."</string>
+    <string name="settings_m3_perk_push_title" formatted="false">"Commit e push das edições"</string>
+    <string name="settings_m3_privacy" formatted="false">"Privacidade"</string>
+    <string name="settings_m3_privacy_policy" formatted="false">"Política de Privacidade"</string>
+    <string name="settings_m3_push_active" formatted="false">"Ativo"</string>
+    <string name="settings_m3_push_all_repos" formatted="false">"Todos os repositórios, incluindo os novos"</string>
+    <string name="settings_m3_push_channel_sub" formatted="false">"Usa o canal de notificação de atualizações do repositório"</string>
+    <string name="settings_m3_push_checked">"Verificado %1$d · atualizado %2$d · precisa de revisão %3$d"</string>
+    <string name="settings_m3_push_connect_again" formatted="false">"Conectar GitHub novamente"</string>
+    <string name="settings_m3_push_connect_sub" formatted="false">"Instale o aplicativo GitSync.md e selecione repositórios"</string>
+    <string name="settings_m3_push_connected" formatted="false">"conectado"</string>
+    <string name="settings_m3_push_connection" formatted="false">"Conexão GitHub"</string>
+    <string name="settings_m3_push_err_cancelled" formatted="false">"A conexão GitHub foi cancelada. Nada mudou. Conecte novamente quando estiver pronto."</string>
+    <string name="settings_m3_push_err_cancelled_title" formatted="false">"De volta de GitHub"</string>
+    <string name="settings_m3_push_err_not_selected" formatted="false">"Nencofre neste telefone corresponde a este repositório e branch GitHub. Adicione o repositório ao acesso do app em GitHub, ou verifique a conexão e o branch do cofre."</string>
+    <string name="settings_m3_push_err_not_selected_title" formatted="false">"Este repositório não é compartilhado com o app"</string>
+    <string name="settings_m3_push_err_owner_title" formatted="false">"Login do proprietário necessário"</string>
+    <string name="settings_m3_push_example_cd" formatted="false">"Notificação de exemplo"</string>
+    <string name="settings_m3_push_example_meta" formatted="false">"GitSync.md · Atualizações do repositório · agora"</string>
+    <string name="settings_m3_push_example_note" formatted="false">"Privado na tela de bloqueio. Se o cofre estava limpo, ele já foi puxado quando você vê isto."</string>
+    <string name="settings_m3_push_example_repo" formatted="false">"proprietário/cofre"</string>
+    <string name="settings_m3_push_example_title" formatted="false">"Um empurrão se parece com isto"</string>
+    <string name="settings_m3_push_existing_scope" formatted="false">"Faça login como o proprietário da conta, ou um proprietário da organização. O app mantém seu acesso atual ao repositório."</string>
+    <string name="settings_m3_push_github_app" formatted="false">"GitHub App"</string>
+    <string name="settings_m3_push_handoff_body" formatted="false">"Uma aba do navegador foi aberta. Escolha a conta e quais repositórios o aplicativo pode ver, depois volte. Esta tela verifica novamente quando você retornar."</string>
+    <string name="settings_m3_push_handoff_title" formatted="false">"Concluir em GitHub"</string>
+    <string name="settings_m3_push_intro" formatted="false">"Conecte o GitSync.md GitHub App e um push para GitHub notifica este telefone em segundos. Cofres limpos buscam e avançam rapidamente por conta própria. Toque na notificação para verificar novamente."</string>
+    <string name="settings_m3_push_never" formatted="false">"Sincronizar push nunca"</string>
+    <string name="settings_m3_push_never_commit" formatted="false">"Commits"</string>
+    <string name="settings_m3_push_never_hint" formatted="false">"Alterações locais e históricos divididos aguardam por você no cofre."</string>
+    <string name="settings_m3_push_never_merge" formatted="false">"Junta históricos divididos"</string>
+    <string name="settings_m3_push_never_switch" formatted="false">"Alterna branches"</string>
+    <string name="settings_m3_push_never_upload" formatted="false">"Envia alterações"</string>
+    <string name="settings_m3_push_no_connections" formatted="false">"Conecte uma conta ou organização GitHub para escolher quais repositórios podem enviar atualizações."</string>
+    <string name="settings_m3_push_open_vault" formatted="false">"Abrir cofre"</string>
+    <string name="settings_m3_push_permission" formatted="false">"Permitir notificações para GitSync.md nas configurações de Android, depois ative a Sincronização Push."</string>
+    <string name="settings_m3_push_registered" formatted="false">"Este telefone está registrado para notificações"</string>
+    <string name="settings_m3_push_remove" formatted="false">"Remover"</string>
+    <string name="settings_m3_push_remove_body">"A Sincronização Push interrompe o envio de atualizações de @%1$s para este telefone. O GitHub App continua instalado. Use Gerenciar em GitHub para alterar seu acesso ou desinstalá-lo."</string>
+    <string name="settings_m3_push_remove_title" formatted="false">"Remover esta conexão?"</string>
+    <string name="settings_m3_push_result_updated" formatted="false">"Atualizado de GitHub"</string>
+    <string name="settings_m3_push_stop" formatted="false">"Parar ação"</string>
+    <string name="settings_m3_push_suspended" formatted="false">"Suspenso"</string>
+    <string name="settings_m3_push_sync" formatted="false">"Sincronização Push de GitHub"</string>
+    <string name="settings_m3_push_this_phone" formatted="false">"este telefone"</string>
+    <string name="settings_m3_push_title" formatted="false">"Push Sync"</string>
+    <string name="settings_m3_push_waiting" formatted="false">"Aguardando GitHub"</string>
+    <string name="settings_m3_save_clones_in" formatted="false">"Salvar novos clones em"</string>
+    <string name="settings_m3_sc_action" formatted="false">"Ação"</string>
+    <string name="settings_m3_sc_authorized" formatted="false">"Autorizado"</string>
+    <string name="settings_m3_sc_background_sub" formatted="false">"Resultados chegam aqui e em uma notificação"</string>
+    <string name="settings_m3_sc_branch">"Branch %1$s"</string>
+    <string name="settings_m3_sc_branch_reviewed">"Branch %1$s · revisado %2$s"</string>
+    <string name="settings_m3_sc_clear" formatted="false">"Limpo"</string>
+    <string name="settings_m3_sc_clear_results" formatted="false">"Limpar resultados salvos"</string>
+    <string name="settings_m3_sc_ff_only" formatted="false">"Somente busca e fast-forward"</string>
+    <string name="settings_m3_sc_item_title">"%1$s: %2$s"</string>
+    <string name="settings_m3_sc_launcher" formatted="false">"Atalhos da tela inicial"</string>
+    <string name="settings_m3_sc_link_identity">"Link %1$s · Criado em %2$s"</string>
+    <string name="settings_m3_sc_link_private" formatted="false">"Qualquer pessoa com este link pode executá-lo. Mantenha-o privado."</string>
+    <string name="settings_m3_sc_links" formatted="false">"Links autorizados"</string>
+    <string name="settings_m3_sc_new_title" formatted="false">"Novo atalho para um cofre"</string>
+    <string name="settings_m3_sc_no_links" formatted="false">"Nenhum link autorizado. Apps como Obsidian ou Atalhos podem solicitar um."</string>
+    <string name="settings_m3_sc_no_shortcuts" formatted="false">"Nenhum atalho de lançador ainda. Escolha um cofre e uma ação acima."</string>
+    <string name="settings_m3_sc_open_pull_all" formatted="false">"Abrir Puxar Tudo"</string>
+    <string name="settings_m3_sc_open_pull_all_sub" formatted="false">"Puxar todos os cofres agora e ver cada resultado"</string>
+    <string name="settings_m3_sc_pin_consent">"Cada toque executa isso uma vez, sem perguntar novamente. Fica vinculado a %1$s, branch %2$s e esta conta. Se algum desses mudar, o atalho para e você terá que criar um novo. Revogue-o aqui a qualquer momento."</string>
+    <string name="settings_m3_sc_pin_writes">"Faz commits com “%1$s” e envia cada mudança a cada toque."</string>
+    <string name="settings_m3_sc_pinned" formatted="false">"Fixado"</string>
+    <string name="settings_m3_sc_pull" formatted="false">"Pull"</string>
+    <string name="settings_m3_sc_pull_all" formatted="false">"Selecionar Todos"</string>
+    <string name="settings_m3_sc_pull_all_note" formatted="false">"Cada toque puxa todos os cofres uma vez. Nada é confirmado ou enviado. Os resultados aguardam em Puxar Tudo."</string>
+    <string name="settings_m3_sc_pull_all_repos" formatted="false">"Recuperar Todos os Repositórios"</string>
+    <string name="settings_m3_sc_pull_all_title" formatted="false">"Puxar Tudo, sem abrir o aplicativo"</string>
+    <string name="settings_m3_sc_pull_sub" formatted="false">"Somente busca e fast-forward"</string>
+    <string name="settings_m3_sc_push" formatted="false">"Commit e push"</string>
+    <string name="settings_m3_sc_push_sub" formatted="false">"Confirma cada alteração e depois faz o upload"</string>
+    <string name="settings_m3_sc_refresh" formatted="false">"Atualizar"</string>
+    <string name="settings_m3_sc_requested" formatted="false">"Atalho solicitado. Aprove no seu lançador, depois toque em Atualizar abaixo para verificá-lo."</string>
+    <string name="settings_m3_sc_returns_to">"retorna para %1$s"</string>
+    <string name="settings_m3_sc_review_again" formatted="false">"Revisar novamente"</string>
+    <string name="settings_m3_sc_revoke" formatted="false">"Revogar"</string>
+    <string name="settings_m3_sc_revoke_body" formatted="false">"Para de executar ações Git. Seu ícone pode permanecer na tela inicial, esmaecido, até que você o remova. Um novo atalho precisará ser aprovado novamente."</string>
+    <string name="settings_m3_sc_revoke_link" formatted="false">"Revogar link"</string>
+    <string name="settings_m3_sc_revoke_title" formatted="false">"Revogar este atalho?"</string>
+    <string name="settings_m3_sc_revoked" formatted="false">"Revogado"</string>
+    <string name="settings_m3_sc_run_once" formatted="false">"Executar uma vez agora"</string>
+    <string name="settings_m3_sc_runs_closed" formatted="false">"Executa sem abrir GitSync.md"</string>
+    <string name="settings_m3_sc_runs_open" formatted="false">"Abre GitSync.md, depois executa uma vez"</string>
+    <string name="settings_m3_sc_status" formatted="false">"Ler status"</string>
+    <string name="settings_m3_sc_status_sub" formatted="false">"Sem rede. Mostra o que mudou."</string>
+    <string name="settings_m3_sc_sync" formatted="false">"Sincronizar"</string>
+    <string name="settings_m3_sc_sync_sub" formatted="false">"Primeiro faça pull, depois commit e push"</string>
+    <string name="settings_m3_sc_tile_how" formatted="false">"Puxe para baixo Configurações Rápidas › Editar › arraste em Puxar Tudo."</string>
+    <string name="settings_m3_sc_tile_lead" formatted="false">"Azulejo:"</string>
+    <string name="settings_m3_sc_title" formatted="false">"Widget e atalhos"</string>
+    <string name="settings_m3_sc_upstream">"Upstream %1$s / %2$s"</string>
+    <string name="settings_m3_sc_waiting" formatted="false">"Aguardando o lançador"</string>
+    <string name="settings_m3_sc_widget_how" formatted="false">"Pressione longamente sua tela inicial › Widgets › GitSync.md."</string>
+    <string name="settings_m3_sc_widget_lead" formatted="false">"Widget:"</string>
+    <string name="settings_m3_sc_writes" formatted="false">"Estagia cada mudança, faz commit se necessário, depois envia. Conflitos, histórico dividido ou um remoto que se moveu primeiro param o processo, e um envio falho mantém o novo commit."</string>
+    <string name="settings_m3_shortcuts" formatted="false">"Atalhos de widget e lançador"</string>
+    <string name="settings_m3_sign_out" formatted="false">"Sair"</string>
+    <string name="settings_m3_ssh_hosts" formatted="false">"Servidores SSH"</string>
+    <string name="settings_m3_storage_hint" formatted="false">"Armazenamento do telefone e cartões SD funcionam. Pastas na nuvem como Google Drive não podem conter um repositório Git."</string>
+    <string name="settings_m3_storage_intro" formatted="false">"Escolha a pasta onde os novos clones irão. Cofres que você já possui permanecem onde estão."</string>
+    <string name="settings_m3_storage_move_title" formatted="false">"Mover um cofre que você já possui"</string>
+    <string name="settings_m3_system_default" formatted="false">"Padrão do sistema"</string>
+    <string name="settings_m3_terms" formatted="false">"Termos"</string>
+    <string name="settings_m3_theme" formatted="false">"Tema"</string>
+    <string name="settings_m3_theme_dark" formatted="false">"Escuro"</string>
+    <string name="settings_m3_theme_light" formatted="false">"Claro"</string>
+    <string name="settings_m3_title" formatted="false">"Configurações"</string>
+    <string name="settings_m3_unlocked" formatted="false">"Desbloqueado"</string>
+    <string name="settings_m3_upgrade_body" formatted="false">"Abra o Obsidian de manhã e tudo já está lá."</string>
+    <string name="settings_m3_upgrade_illustration" formatted="false">"Telefone bloqueado puxando e enviando com GitHub durante a noite"</string>
+    <string name="settings_m3_upgrade_last_run">"%1$s · puxado %2$d · enviado %3$d"</string>
+    <string name="settings_m3_upgrade_locked_phone" formatted="false">"telefone bloqueado"</string>
+    <string name="settings_m3_upgrade_note" formatted="false">"Incluído com GitSync.md. Android decide quando o trabalho em segundo plano é executado; é feito com o melhor esforço. O modo de economia de bateria pode atrasá-lo."</string>
+    <string name="settings_m3_upgrade_pull" formatted="false">"Pull em segundo plano"</string>
+    <string name="settings_m3_upgrade_push" formatted="false">"Também fazer commit e push das minhas edições"</string>
+    <string name="settings_m3_upgrade_title" formatted="false">"Sincronize enquanto\nvocê dorme."</string>
+    <string name="settings_m3_upgrade_turn_on" formatted="false">"Ativar Background Sync"</string>
+    <string name="settings_m3_vault_check_ok" formatted="false">"OK"</string>
+    <string name="settings_m3_vault_delete_action" formatted="false">"Excluir"</string>
+    <string name="settings_m3_vault_delete_body" formatted="false">"Exclui esta pasta, seus arquivos e seu histórico Git deste telefone. Qualquer coisa não enviada para GitHub será perdida."</string>
+    <string name="settings_m3_vault_delete_title" formatted="false">"Remover cofre e excluir arquivos?"</string>
+    <string name="settings_m3_vault_display_name" formatted="false">"Nome de exibição"</string>
+    <string name="settings_m3_vault_display_name_hint" formatted="false">"Deixe vazio para usar o próprio nome do cofre."</string>
+    <string name="settings_m3_vault_errors" formatted="false">"erros · 7d"</string>
+    <string name="settings_m3_vault_files" formatted="false">"arquivos"</string>
+    <string name="settings_m3_vault_folder" formatted="false">"Pasta"</string>
+    <string name="settings_m3_vault_group" formatted="false">"Este cofre"</string>
+    <string name="settings_m3_vault_health" formatted="false">"Saúde"</string>
+    <string name="settings_m3_vault_health_attention" formatted="false">"Precisa de revisão"</string>
+    <string name="settings_m3_vault_health_good" formatted="false">"bom"</string>
+    <string name="settings_m3_vault_include" formatted="false">"Incluir no Background Sync"</string>
+    <string name="settings_m3_vault_include_review" formatted="false">"Examina primeiro o branch e o remoto"</string>
+    <string name="settings_m3_vault_include_sub">"Apenas o branch %1$s, acompanhando %2$s/%3$s"</string>
+    <string name="settings_m3_vault_include_title" formatted="false">"Incluir em Background Sync?"</string>
+    <string name="settings_m3_vault_last_check">"última verificação de fundo %1$s · %2$s"</string>
+    <string name="settings_m3_vault_lfs" formatted="false">"LFS"</string>
+    <string name="settings_m3_vault_no_check" formatted="false">"ainda não há verificação de fundo"</string>
+    <string name="settings_m3_vault_pin" formatted="false">"Fixar no topo do Início"</string>
+    <string name="settings_m3_vault_remove" formatted="false">"Remover cofre…"</string>
+    <string name="settings_m3_vault_remove_action" formatted="false">"Remover"</string>
+    <string name="settings_m3_vault_remove_delete" formatted="false">"Remover cofre e excluir arquivos…"</string>
+    <string name="settings_m3_vault_remove_kept" formatted="false">"GitSync.md para de mostrar isso. A pasta não é gerenciada por GitSync.md, então seus arquivos e histórico de Git permanecem onde estão."</string>
+    <string name="settings_m3_vault_remove_title" formatted="false">"Remover este cofre?"</string>
+    <string name="settings_m3_vault_shortcut" formatted="false">"Adicionar atalho à tela inicial"</string>
+    <string name="settings_m3_vault_shortcut_sub" formatted="false">"Puxar ou fazer commit &amp; push com um toque"</string>
+    <string name="settings_m3_vault_stop_tracking" formatted="false">"Parar rastreamento — manter arquivos"</string>
+    <string name="settings_m3_vault_title" formatted="false">"Ajustes do cofre"</string>
+    <string name="settings_m3_whats_new" formatted="false">"Novidades"</string>
+    <string name="settings_m3_whats_new_hint" formatted="false">"Isso também aparece uma vez após uma atualização. Você sempre pode encontrá-lo aqui."</string>
+    <string name="settings_m3_whats_new_subtitle">"Notas de lançamento para %1$s"</string>
     <string name="shortcut_background_attention" formatted="false">"O atalho precisa de atenção. Abra as ações do repositório e revise o estado antes de tentar novamente."</string>
     <string name="shortcut_background_channel" formatted="false">"Ações de atalhos"</string>
     <string name="shortcut_background_complete" formatted="false">"Ação do atalho concluída. Abra as ações do repositório para revisar o resultado."</string>
@@ -688,9 +1982,37 @@
     <string name="shortcut_background_interrupted" formatted="false">"A execução foi interrompida. Ela não será repetida automaticamente. Revise o repositório antes de tocar novamente."</string>
     <string name="shortcut_background_option" formatted="false">"Executar sem abrir o GitSync.md"</string>
     <string name="shortcut_background_running" formatted="false">"Ação do atalho em andamento"</string>
+    <string name="shortcut_m3_add_vault" formatted="false">"Adicionar um cofre"</string>
+    <string name="shortcut_m3_commit_push">"%1$s: Commit &amp; push"</string>
+    <string name="shortcut_m3_commit_short" formatted="false">"Commit e push"</string>
+    <string name="shortcut_m3_pull">"%1$s: Puxar"</string>
+    <string name="shortcut_m3_pull_short" formatted="false">"Pull"</string>
     <string name="shortcut_results_clear_scope" formatted="false">"Exclua os resultados salvos de execuções de atalhos e callbacks. Suas autorizações permanecem iguais. As ações interrompidas não serão repetidas automaticamente."</string>
     <string name="shortcut_results_unavailable" formatted="false">"Não é possível ler os resultados salvos dos atalhos. A autorização é mantida separadamente."</string>
     <string name="ssh_hide_private_key" formatted="false">"Ocultar chave privada"</string>
+    <string name="ssh_m3_changed_title" formatted="false">"A chave do servidor SSH mudou"</string>
+    <string name="ssh_m3_changed_warning" formatted="false">"Uma chave alterada pode significar que alguém está se passando pelo servidor. Verifique a nova impressão digital com seu proprietário antes de substituir a confiança."</string>
+    <string name="ssh_m3_compare" formatted="false">"Compare-a com a chave de host SSH que o proprietário do servidor publica antes de confiar nela."</string>
+    <string name="ssh_m3_empty" formatted="false">"Nenhum servidor SSH confiável"</string>
+    <string name="ssh_m3_error_save" formatted="false">"Não foi possível salvar a confiança do servidor SSH. Verifique a impressão digital novamente antes de tentar novamente."</string>
+    <string name="ssh_m3_forget" formatted="false">"Esquecer"</string>
+    <string name="ssh_m3_forget_body">"%1$s precisará de verificação da impressão digital antes de você se conectar novamente."</string>
+    <string name="ssh_m3_forget_cd">"Esquecer %1$s"</string>
+    <string name="ssh_m3_forget_server" formatted="false">"Esquecer servidor"</string>
+    <string name="ssh_m3_forget_title" formatted="false">"Esquecer servidor SSH?"</string>
+    <string name="ssh_m3_intro" formatted="false">"Impressões digitais que você confiou estão salvas neste telefone. Esqueça uma e você irá verificá-la novamente na próxima vez que se conectar. Suas chaves SSH permanecem salvas."</string>
+    <string name="ssh_m3_none" formatted="false">"Configurações · nenhum confiável"</string>
+    <string name="ssh_m3_previous">"Impressão digital confiável anterior: %1$s"</string>
+    <string name="ssh_m3_replace" formatted="false">"Substituir confiança e conectar"</string>
+    <string name="ssh_m3_reset_all" formatted="false">"Redefinir toda a confiança SSH"</string>
+    <string name="ssh_m3_reset_body" formatted="false">"Todo servidor SSH precisará de verificação da impressão digital antes de você se conectar novamente. Isso também limpa entradas de confiança danificadas."</string>
+    <string name="ssh_m3_reset_confirm" formatted="false">"Redefinir confiança"</string>
+    <string name="ssh_m3_reset_title" formatted="false">"Redefinir toda a confiança SSH?"</string>
+    <string name="ssh_m3_saved" formatted="false">"A confiança é salva neste telefone e a conexão pendente continua. Cancelar deixa o servidor não confiável."</string>
+    <string name="ssh_m3_title" formatted="false">"Confiança em servidores SSH"</string>
+    <string name="ssh_m3_trust" formatted="false">"Confiar e conectar"</string>
+    <string name="ssh_m3_trusted" formatted="false">"Servidores confiáveis"</string>
+    <string name="ssh_m3_verify_title" formatted="false">"Verificar servidor SSH"</string>
     <string name="ssh_show_private_key" formatted="false">"Mostrar chave privada"</string>
     <string name="ssh_trust_error_changed" formatted="false">"A confiança SSH mudou durante a revisão. Revise a entrada atual do servidor e tente conectar novamente."</string>
     <string name="ssh_trust_error_damaged" formatted="false">"A confiança SSH salva precisa de revisão. Redefina a confiança dos servidores SSH em Configurações antes de tentar novamente."</string>
@@ -755,7 +2077,7 @@
     <string name="tide_vault_eyebrow_unreadable" formatted="false">"Não foi possível ler"</string>
     <string name="tide_vault_files_section" formatted="false">"Arquivos"</string>
     <string name="tide_vault_from_remote">"↓%1$d do remoto"</string>
-    <string name="tide_vault_git" formatted="false">"GIT"</string>
+    <string name="tide_vault_git" formatted="false">"Git"</string>
     <string name="tide_vault_headline_behind">"Novos no remoto: %1$d"</string>
     <string name="tide_vault_headline_unreadable" formatted="false">"Não foi possível ler este cofre."</string>
     <string name="tide_vault_more" formatted="false">"Mais opções do cofre"</string>
@@ -768,6 +2090,13 @@
     <string name="tide_vault_sub_empty" formatted="false">"Adicione uma nota e faça o commit por aqui."</string>
     <string name="tide_vault_sub_in_sync" formatted="false">"Nada pendente neste telefone"</string>
     <string name="tide_vault_yours">"↑%1$d locais"</string>
+    <string name="tile_m3_background_sync" formatted="false">"Background Sync"</string>
+    <string name="tile_m3_modes">"%1$s · %2$s"</string>
+    <string name="tile_m3_pull_all" formatted="false">"Selecionar Todos"</string>
+    <string name="tile_m3_pull_off" formatted="false">"Puxar para retirar"</string>
+    <string name="tile_m3_pull_on" formatted="false">"Puxar para colocar"</string>
+    <string name="tile_m3_push_off" formatted="false">"Empurrar para retirar"</string>
+    <string name="tile_m3_push_on" formatted="false">"Empurrar para colocar"</string>
     <string name="tracking_metadata_size">"Metadados Git: %1$s"</string>
     <string name="tracking_remove_permanent_title" formatted="false">"Remover o histórico do Git permanentemente?"</string>
     <string name="tracking_removed_backup">"Rastreamento do Git removido. Backup verificado: %1$s"</string>
@@ -778,14 +2107,23 @@
     <string name="ui_1_s_characters_bde60398">"Caracteres: %1$s"</string>
     <string name="ui_1_s_lines_2_s_bytes_c30a0cd1">"Linhas: %1$s, bytes: %2$s"</string>
     <string name="ui_1_s_local_commits_2_s_upstream_commits_77dc6fa8">"%1$s commits locais · %2$s commits do upstream"</string>
+    <string name="ui_1_vault_c39776f1" formatted="false">"1 cofre"</string>
+    <string name="ui_2_of_3_commits_sent_5591e38a" formatted="false">"2 de 3 commits enviados"</string>
+    <string name="ui_3_changes_aren_t_committed_yet_commit_or_s_d878e782" formatted="false">"3 alterações ainda não foram commitadas. Faça commit ou stash delas antes de mudar de branch."</string>
+    <string name="ui_3_held_f454ab2b" formatted="false">"↑3 retidos"</string>
+    <string name="ui_3_to_push_ac87b7cb" formatted="false">"↑3 para empurrar"</string>
+    <string name="ui_4_in_sync_checked_2_min_ago_a1f1ab5e" formatted="false">"4 em sincronia · verificado há 2 min"</string>
     <string name="ui_abort_rebase_fd5cfc32" formatted="false">"Abortar rebase…"</string>
     <string name="ui_about_4efca0d1" formatted="false">"Sobre"</string>
+    <string name="ui_about_lfs_538b5b7e" formatted="false">"Sobre LFS"</string>
+    <string name="ui_all_5_8907f196" formatted="false">"Todos os 5"</string>
     <string name="ui_all_conflicts_are_staged_continue_replayin_b86b2a5a" formatted="false">"Todas as resoluções de conflitos estão preparadas. Continue reaplicando os commits. Se o Git informar NOTHING_TO_COMMIT, avalie se deve pular o commit vazio."</string>
     <string name="ui_all_local_changes_to_this_file_will_be_per_0919f539" formatted="false">": Todas as alterações locais neste arquivo serão permanentemente descartadas."</string>
     <string name="ui_allow_local_folder_access_0b2888fb" formatted="false">"Permitir acesso a pastas locais"</string>
     <string name="ui_app_0d04bfeb" formatted="false">"Aplicativo"</string>
     <string name="ui_app_settings_da645334" formatted="false">"Configurações do App"</string>
     <string name="ui_apply_tracking_choice_47a2e187" formatted="false">"Aplicar opção de rastreamento"</string>
+    <string name="ui_attention_1_fa1ea5dc" formatted="false">"Atenção 1"</string>
     <string name="ui_authentication_66880d2d" formatted="false">"Autenticação"</string>
     <string name="ui_back_639807a2" formatted="false">"VOLTAR"</string>
     <string name="ui_back_aceb696a" formatted="false">"← Voltar"</string>
@@ -793,11 +2131,13 @@
     <string name="ui_backup_1_s_6ad01ca6">"Backup: %1$s"</string>
     <string name="ui_base_7b47361a" formatted="false">"Base"</string>
     <string name="ui_binary_large_or_lfs_file_choose_an_entire_52c3278a" formatted="false">"Arquivo binário, grande ou LFS: escolha um lado inteiro."</string>
+    <string name="ui_both_sides_edited_step_3_077f9640" formatted="false">"Ambos os lados editaram “Passo 3”."</string>
     <string name="ui_branch_52656e81" formatted="false">"Branch"</string>
     <string name="ui_branch_optional_e9dedf99" formatted="false">"Branch (opcional)"</string>
     <string name="ui_browsing_with_this_account_28a8b330" formatted="false">"Navegando com esta conta"</string>
     <string name="ui_cancel_pending_move_0858583b" formatted="false">"Cancelar movimentação pendente"</string>
     <string name="ui_changes_bbd4b6a8" formatted="false">"Alterações"</string>
+    <string name="ui_changes_on_this_phone_6359d3d5" formatted="false">"alterações neste telefone"</string>
     <string name="ui_choose_a_connected_account_for_this_reposi_c4817ea9" formatted="false">"Escolha uma conta conectada para este repositório."</string>
     <string name="ui_choose_a_device_folder_d00b7daf" formatted="false">"Escolher uma pasta no dispositivo"</string>
     <string name="ui_choose_an_authentication_method_before_clo_c89124ba" formatted="false">"Escolha um método de autenticação antes de clonar."</string>
@@ -810,14 +2150,18 @@
     <string name="ui_clone_again_e05eb495" formatted="false">"Clonar novamente"</string>
     <string name="ui_clone_again_review_the_previous_branch_and_33cba147" formatted="false">"Clonar novamente · revise a branch e a conexão anteriores antes de começar."</string>
     <string name="ui_clone_storage_47cafc8a" formatted="false">"Armazenamento dos clones"</string>
+    <string name="ui_cloning_and_preparing_the_working_copy_6fe864ff" formatted="false">"Clonando e preparando a cópia de trabalho"</string>
+    <string name="ui_commit_3_files_959a8528" formatted="false">"Comitar 3 arquivos"</string>
     <string name="ui_commit_author_e9376b3a" formatted="false">"Autor do commit"</string>
     <string name="ui_commit_message_a4b361b7" formatted="false">"Mensagem do commit…"</string>
     <string name="ui_commit_sha_d0bc6028" formatted="false">"SHA do Commit"</string>
     <string name="ui_confirm_eebdd24a" formatted="false">"Confirmar"</string>
+    <string name="ui_conflict_1_of_2_ideas_23283a20" formatted="false">"Conflito 1 de 2 · ideias/"</string>
     <string name="ui_continue_rebase_7a14e965" formatted="false">"Continuar Rebase"</string>
     <string name="ui_create_a_file_or_folder_using_new_655c5596" formatted="false">"Crie um arquivo ou uma pasta usando Novo."</string>
     <string name="ui_current_default_d914f86e" formatted="false">"Pasta padrão atual"</string>
     <string name="ui_current_separate_push_address_1_s_2a6ef8f9">"Endereço de push separado atual: %1$s"</string>
+    <string name="ui_daily_new_file_42_31057cdf" formatted="false">"diário · novo arquivo · +42"</string>
     <string name="ui_debug_info_697b4941" formatted="false">"Informações de depuração"</string>
     <string name="ui_delete_1_s_6474596f">"Excluir \"%1$s\"?"</string>
     <string name="ui_delete_e2d0a549" formatted="false">"Excluir"</string>
@@ -826,6 +2170,10 @@
     <string name="ui_delete_local_files_20424441" formatted="false">"Excluir Arquivos Locais"</string>
     <string name="ui_destination_1_s_0df94639">"Destino: %1$s"</string>
     <string name="ui_destination_parent_folder_c6c4f97e" formatted="false">"Pasta pai de destino"</string>
+    <string name="ui_disabled_75081b59" formatted="false">"Desativado"</string>
+    <string name="ui_discard_3_95e06aed" formatted="false">"Descartar 3"</string>
+    <string name="ui_discard_3_changes_d2ad52aa" formatted="false">"Descartar 3 alterações?"</string>
+    <string name="ui_discard_changes_85bcf416" formatted="false">"Descartar alterações?"</string>
     <string name="ui_discard_draft_cb30147e" formatted="false">"Descartar rascunho"</string>
     <string name="ui_discard_eb1a70e3" formatted="false">"Descartar"</string>
     <string name="ui_discard_resolution_draft_47c16148" formatted="false">"Descartar o rascunho da resolução?"</string>
@@ -846,6 +2194,8 @@
     <string name="ui_gitsync_md_needs_shared_storage_access_to_f1b339ea" formatted="false">"O GitSync.md precisa de acesso ao armazenamento compartilhado para gerenciar cópias de trabalho reais do Git nas pastas do dispositivo. Escolha as pastas que deseja usar depois de ativar o acesso nas configurações do Android."</string>
     <string name="ui_go_back_and_select_a_repository_c3eedd39" formatted="false">"Volte e selecione um repositório."</string>
     <string name="ui_hash_a9106914" formatted="false">"Hash"</string>
+    <string name="ui_health_md_f72119f5" formatted="false">"health-md"</string>
+    <string name="ui_https_ssh_git_or_file_e79ef5ea" formatted="false">"HTTPS, SSH, git:// ou file://."</string>
     <string name="ui_i_understand_that_another_owner_may_still_b4a12b2d" formatted="false">"Entendo que outro proprietário ainda pode estar editando este arquivo."</string>
     <string name="ui_include_the_ssh_username_in_the_address_gi_beb09b5a" formatted="false">"Inclua o nome de usuário SSH no endereço: git@host:team/repo.git ou ssh://git@host:2222/team/repo.git."</string>
     <string name="ui_keep_editing_e76fd2ad" formatted="false">"Continuar editando"</string>
@@ -882,8 +2232,12 @@
     <string name="ui_owner_1_s_599ca9ce">"Proprietário: %1$s"</string>
     <string name="ui_parents_1_s_914efbd0">"Pais (%1$s)"</string>
     <string name="ui_path_62fa5a5b" formatted="false">"Caminho"</string>
+    <string name="ui_plain_http_sends_credentials_unencrypted_c99e5672" formatted="false">"HTTP simples envia credenciais sem criptografia."</string>
     <string name="ui_platform_c78ffe19" formatted="false">"Plataforma"</string>
     <string name="ui_pull_with_rebase_6d25f1e0" formatted="false">"Recolhimento com rebase"</string>
+    <string name="ui_push_was_rejected_fbc19d01" formatted="false">"Push foi rejeitado"</string>
+    <string name="ui_pushed_579e8c6a" formatted="false">"Push feito"</string>
+    <string name="ui_rebase_completed_successfully_53314c91" formatted="false">": A rebase foi concluída com sucesso."</string>
     <string name="ui_rebase_in_progress_3ecd9c42" formatted="false">"Rebase em andamento"</string>
     <string name="ui_rebase_onto_reviewed_upstream_c3b8fb93" formatted="false">"Rebase sobre o upstream revisado"</string>
     <string name="ui_reconnect_bf8a9eab" formatted="false">"Reconectar"</string>
@@ -893,6 +2247,7 @@
     <string name="ui_reload_author_18a711d8" formatted="false">"Recarregar autor"</string>
     <string name="ui_reload_connection_ceed2dae" formatted="false">"Recarregar conexão"</string>
     <string name="ui_reload_from_disk_d4288839" formatted="false">"Recarregar do disco"</string>
+    <string name="ui_remote_has_no_new_commits_fetched_2m_ago_bdaa4b95" formatted="false">"O remoto não tem novos commits · buscado há 2m"</string>
     <string name="ui_remove_1_s_e4dd7c24">"Remover %1$s?"</string>
     <string name="ui_remove_1_s_this_removes_it_from_gitsync_md_0a6b198d">"Remover “%1$s”?\n\nIsso o remove do GitSync.md. Todos os arquivos locais e o histórico do Git permanecem neste dispositivo, e você pode reconectá-lo depois. O repositório remoto não é afetado."</string>
     <string name="ui_remove_all_custom_endpoint_approvals_and_t_ffc30a9e" formatted="false">"Remova todas as aprovações de endpoints personalizados e suas credenciais salvas neste dispositivo. Cada endpoint e direção de transferência exigirá uma nova revisão."</string>
@@ -932,17 +2287,20 @@
     <string name="ui_save_1509f561" formatted="false">"Salvar"</string>
     <string name="ui_save_author_1c24b32a" formatted="false">"Salvar autor"</string>
     <string name="ui_save_connection_df24ef12" formatted="false">"Salvar conexão"</string>
+    <string name="ui_saved_credentials_are_encrypted_on_this_de_9320d5e0" formatted="false">"Credenciais salvas estão criptografadas neste dispositivo."</string>
     <string name="ui_saving_uses_this_address_for_both_fetch_an_48c82edc" formatted="false">"Ao salvar, este endereço será usado para fetch e push. Execute fetch depois para atualizar o estado remoto."</string>
     <string name="ui_selected_folder_0cf59bef" formatted="false">"Pasta selecionada"</string>
     <string name="ui_share_backup_archive_ee4ba873" formatted="false">"Compartilhar arquivo de backup"</string>
     <string name="ui_some_diagnostics_could_not_be_read_or_save_19e3372d" formatted="false">"Alguns diagnósticos não puderam ser lidos ou salvos. Os dados existentes foram mantidos. Limpe o log para reiniciar o registro."</string>
     <string name="ui_ssh_private_key_0e92a613" formatted="false">"SSH Chave Privada"</string>
     <string name="ui_stage_de838855" formatted="false">"Preparar"</string>
+    <string name="ui_stay_on_main_915a176c" formatted="false">"Permanecer no main"</string>
     <string name="ui_the_active_destination_stays_in_place_gits_a4f1f68a" formatted="false">"O destino ativo permanece no lugar. O GitSync.md verifica se o original preservado não tem edições posteriores antes de remover permanentemente seus arquivos e histórico do Git."</string>
     <string name="ui_the_folder_can_move_directly_on_this_stora_7b29fabb" formatted="false">"A pasta pode ser movida diretamente neste volume de armazenamento."</string>
     <string name="ui_the_previous_github_account_is_disconnecte_628a1f8c" formatted="false">"A conta anterior do GitHub está desconectada. Selecione uma conta conectada ou escolha outro método de autenticação."</string>
     <string name="ui_the_replayed_local_commit_deletes_this_fil_ab00656d" formatted="false">"O commit local reaplicado exclui este arquivo."</string>
     <string name="ui_the_review_changed_cancel_and_refresh_serv_c7ee804c" formatted="false">"Os dados revisados mudaram. Cancele e atualize os bloqueios do servidor."</string>
+    <string name="ui_these_files_go_back_to_how_they_were_in_a4_02e3cd66" formatted="false">"Esses arquivos voltam ao estado que estavam em a41c9e2."</string>
     <string name="ui_this_history_entry_is_unavailable_c2c9f4e0" formatted="false">"Esta entrada do histórico não está disponível."</string>
     <string name="ui_this_removes_another_connection_s_lock_coo_880defbf" formatted="false">"Isso remove o bloqueio de outra conexão. Combine com o proprietário antes de continuar."</string>
     <string name="ui_this_repository_will_use_public_access_unt_c94fad61" formatted="false">"Este repositório usará acesso público até que você escolha a autenticação novamente. Sua conta do GitHub conectada não será usada nele. Os endereços de fetch e push permanecem inalterados."</string>
@@ -955,6 +2313,7 @@
     <string name="ui_use_for_new_clones_be174c95" formatted="false">"Usar para novos clones"</string>
     <string name="ui_use_saved_default_3bb7260d" formatted="false">"Usar padrão salvo"</string>
     <string name="ui_username_e3b89e9d" formatted="false">"Nome de Usuário"</string>
+    <string name="ui_working_5474eef8" formatted="false">"Trabalhando…"</string>
     <string name="ui_your_edits_have_not_been_saved_625899a4" formatted="false">"Suas alterações não foram salvas."</string>
     <string name="ui_your_unsubmitted_text_will_be_discarded_th_15717285" formatted="false">"Seu texto não enviado será descartado. O arquivo de trabalho permanecerá inalterado."</string>
     <string name="untracked" formatted="false">"Não rastreado"</string>
@@ -1048,9 +2407,108 @@
     <string name="vault_l10n_tracking_review_changed" formatted="false">"A revisão da remoção do rastreamento mudou. Revise o repositório e a opção de backup novamente."</string>
     <string name="vault_l10n_volume_unavailable" formatted="false">"Este volume de armazenamento não está disponível"</string>
     <string name="vault_l10n_volume_unavailable_reconnect" formatted="false">"Este volume de armazenamento não está disponível. Reconecte-o e escolha a pasta novamente."</string>
+    <string name="vault_m3_as_author">"como %1$s · %2$s"</string>
+    <string name="vault_m3_branch_pushed">"Seus commits foram enviados para a nova branch %1$s"</string>
+    <string name="vault_m3_cancel" formatted="false">"Cancelar"</string>
+    <string name="vault_m3_check_for_changes" formatted="false">"Verificar alterações"</string>
+    <string name="vault_m3_checking" formatted="false">"Verificando…"</string>
+    <string name="vault_m3_checking_remote">"Verificando %1$s por novos commits"</string>
+    <string name="vault_m3_chip_theirs">"↓%1$d de %2$s · %3$s"</string>
+    <string name="vault_m3_chip_theirs_plain">"↓%1$d do remoto"</string>
+    <string name="vault_m3_chip_yours">"↑%1$d seus"</string>
+    <string name="vault_m3_commit_locally" formatted="false">"Fazer commit local"</string>
+    <string name="vault_m3_commit_push" formatted="false">"Commit e push"</string>
+    <string name="vault_m3_commits_sent">"%1$d de %2$d commits enviados"</string>
+    <string name="vault_m3_committing" formatted="false">"Fazendo commit…"</string>
+    <string name="vault_m3_days_ago">"há %1$dd"</string>
+    <string name="vault_m3_deleted_path">"%1$s (excluído)"</string>
+    <string name="vault_m3_discard_body">"Esses arquivos voltam ao estado que estavam em %1$s. As edições feitas neste telefone desde então foram perdidas para sempre."</string>
+    <string name="vault_m3_dismiss" formatted="false">"Fechar"</string>
+    <string name="vault_m3_download_progress" formatted="false">"Progresso do download"</string>
+    <string name="vault_m3_effect_delete" formatted="false">"excluir arquivo novo"</string>
+    <string name="vault_m3_effect_restore" formatted="false">"restaurar"</string>
+    <string name="vault_m3_effect_revert" formatted="false">"Reverter"</string>
+    <string name="vault_m3_effect_unstage" formatted="false">"Desfazer"</string>
+    <string name="vault_m3_fetched_ago">"fetch %1$s"</string>
+    <string name="vault_m3_hours_ago">"%1$dhá h dias"</string>
+    <string name="vault_m3_included" formatted="false">"Incluído"</string>
+    <string name="vault_m3_just_now" formatted="false">"agora mesmo"</string>
+    <string name="vault_m3_keep_them" formatted="false">"Manter"</string>
+    <string name="vault_m3_latest_commit" formatted="false">"Último commit"</string>
+    <string name="vault_m3_leave_note" formatted="false">"Você pode sair desta tela. A sincronização continua e mostra seu progresso em uma notificação."</string>
+    <string name="vault_m3_merge" formatted="false">"merge"</string>
+    <string name="vault_m3_merge_conflicts" formatted="false">"O pull encontrou conflitos. Resolva-os e depois envie o push."</string>
+    <string name="vault_m3_message" formatted="false">"Mensagem"</string>
+    <string name="vault_m3_minutes">"%1$dm"</string>
+    <string name="vault_m3_minutes_ago">"%1$dhá m dias"</string>
+    <string name="vault_m3_no_overlap_body" formatted="false">"Suas edições e as deles mexem em arquivos diferentes, então o merge deve ser limpo."</string>
+    <string name="vault_m3_no_overlap_title" formatted="false">"Nenhuma sobreposição encontrada"</string>
+    <string name="vault_m3_no_upstream" formatted="false">"Nenhum branch upstream"</string>
+    <string name="vault_m3_notify_channel" formatted="false">"Sincronização do cofre"</string>
+    <string name="vault_m3_notify_title">"%1$s · %2$s"</string>
+    <string name="vault_m3_objects_received">"%1$d de %2$d objetos recebidos"</string>
+    <string name="vault_m3_objects_sent">"%1$d de %2$d objetos enviados"</string>
+    <string name="vault_m3_only_on_phone" formatted="false">"Apenas neste telefone"</string>
+    <string name="vault_m3_overlap_body" formatted="false">"Ambos os lados editaram os mesmos arquivos. O pull pode parar em um conflito para você resolver."</string>
+    <string name="vault_m3_preparing" formatted="false">"Preparando…"</string>
+    <string name="vault_m3_pull" formatted="false">"Pull"</string>
+    <string name="vault_m3_pull_then_push" formatted="false">"Faça pull do deles, depois faça push"</string>
+    <string name="vault_m3_pulled">"Atualizado com %1$s"</string>
+    <string name="vault_m3_pulling" formatted="false">"Fazendo pull…"</string>
+    <string name="vault_m3_push" formatted="false">"Enviar"</string>
+    <string name="vault_m3_push_branch" formatted="false">"Push para um branch"</string>
+    <string name="vault_m3_push_right_after" formatted="false">"Push logo em seguida"</string>
+    <string name="vault_m3_pushed_to">"Push feito para %1$s"</string>
+    <string name="vault_m3_pushing" formatted="false">"Fazendo push…"</string>
+    <string name="vault_m3_rejected_kicker" formatted="false">"O push não foi concluído"</string>
+    <string name="vault_m3_remote_generic" formatted="false">"o remoto"</string>
+    <string name="vault_m3_remote_is_here">"%1$s está aqui"</string>
+    <string name="vault_m3_remote_no_new" formatted="false">"O remoto não tem novos commits"</string>
+    <string name="vault_m3_remote_not_checked" formatted="false">"Remoto ainda não verificado"</string>
+    <string name="vault_m3_review_first" formatted="false">"Revisar antes"</string>
+    <string name="vault_m3_seconds">"%1$ds"</string>
+    <string name="vault_m3_stash_first" formatted="false">"Guardar uma cópia no stash antes, por precaução"</string>
+    <string name="vault_m3_step_branch">"Criar branch %1$s"</string>
+    <string name="vault_m3_step_check">"Verificar novos commits em %1$s"</string>
+    <string name="vault_m3_step_download">"Baixar de %1$s"</string>
+    <string name="vault_m3_step_merge">"Merge de %1$s"</string>
+    <string name="vault_m3_step_none" formatted="false">"nenhum"</string>
+    <string name="vault_m3_step_update" formatted="false">"Atualizar arquivos"</string>
+    <string name="vault_m3_step_upload">"Enviar para %1$s"</string>
+    <string name="vault_m3_steps" formatted="false">"Etapas"</string>
+    <string name="vault_m3_suggest_add">"Adicionar %1$s"</string>
+    <string name="vault_m3_suggest_backup">"backup do cofre: %1$s"</string>
+    <string name="vault_m3_suggest_delete">"Excluir %1$s"</string>
+    <string name="vault_m3_suggest_update">"Atualizar %1$s"</string>
+    <string name="vault_m3_suggested" formatted="false">"Sugerido a partir da diferença"</string>
+    <string name="vault_m3_sync_cancelled" formatted="false">"Sincronização cancelada. Qualquer coisa já confirmada permanece neste telefone."</string>
+    <string name="vault_m3_sync_failed" formatted="false">"Sincronização interrompida"</string>
+    <string name="vault_m3_tap_for_diff" formatted="false">"toque em um arquivo para ver a diferença"</string>
+    <string name="vault_m3_time_left">"~%1$s restantes"</string>
+    <string name="vault_m3_today" formatted="false">"Hoje"</string>
+    <string name="vault_m3_upload_progress" formatted="false">"Progresso do upload"</string>
+    <string name="vault_m3_vault_settings" formatted="false">"Ajustes do cofre"</string>
+    <string name="vault_m3_who_both" formatted="false">"ambos"</string>
+    <string name="vault_m3_who_theirs" formatted="false">"deles"</string>
+    <string name="vault_m3_who_yours" formatted="false">"seus"</string>
+    <string name="vault_m3_yesterday" formatted="false">"Ontem"</string>
     <string name="vault_open_in_files_failed" formatted="false">"Não foi possível abrir esta pasta em Arquivos."</string>
     <string name="vault_repository_fallback" formatted="false">"Repositório"</string>
     <string name="vault_url_copied" formatted="false">"Copiado!"</string>
+    <string name="widget_m3_choose_vault" formatted="false">"Escolha um cofre"</string>
+    <string name="widget_m3_days_ago">"há %1$dd"</string>
+    <string name="widget_m3_hours_ago">"%1$dhá h dias"</string>
+    <string name="widget_m3_in_sync" formatted="false">"Sincronizado"</string>
+    <string name="widget_m3_list_description" formatted="false">"Seus cofres com o que cada um tem para enviar, e um botão Puxar tudo."</string>
+    <string name="widget_m3_list_name" formatted="false">"Cofres"</string>
+    <string name="widget_m3_minutes_ago">"%1$dhá m dias"</string>
+    <string name="widget_m3_no_vaults" formatted="false">"Nenhum cofre ainda. Abra GitSync.md para adicionar um."</string>
+    <string name="widget_m3_now" formatted="false">"agora"</string>
+    <string name="widget_m3_pull_all_repositories" formatted="false">"Recuperar Todos os Repositórios"</string>
+    <string name="widget_m3_vault_description" formatted="false">"Um cofre e quantas alterações ele tem para enviar."</string>
+    <string name="widget_m3_vault_missing" formatted="false">"Este cofre não está mais neste telefone."</string>
+    <string name="widget_m3_vault_name" formatted="false">"Cofre"</string>
+    <string name="widget_m3_vault_widget" formatted="false">"Widget de cofre"</string>
     <plurals name="account_updated_days">
         <item quantity="one">"há %1$d dia"</item>
         <item quantity="many">"há %1$d dias"</item>
@@ -1081,6 +2539,76 @@
         <item quantity="many">"há %1$d anos"</item>
         <item quantity="other">"há %1$d anos"</item>
     </plurals>
+    <plurals name="adaptive_changes_on_phone">
+        <item quantity="many">"%1$s alterações neste telefone"</item>
+        <item quantity="one">"%1$s alteração neste telefone"</item>
+        <item quantity="other">"%1$s alterações neste telefone"</item>
+    </plurals>
+    <plurals name="adaptive_changes_on_tablet">
+        <item quantity="many">"%1$s alterações neste tablet"</item>
+        <item quantity="one">"%1$s alteração neste tablet"</item>
+        <item quantity="other">"%1$s alterações neste tablet"</item>
+    </plurals>
+    <plurals name="adaptive_commit_changes">
+        <item quantity="many">"Confirmar alterações %1$d"</item>
+        <item quantity="one">"Confirmar alteração %1$d"</item>
+        <item quantity="other">"Confirmar alterações %1$d"</item>
+    </plurals>
+    <plurals name="adaptive_merging_left">
+        <item quantity="many">"Mesclando %1$s · %2$d conflitos restantes"</item>
+        <item quantity="one">"Mesclando %1$s · %2$d conflito restante"</item>
+        <item quantity="other">"Mesclando %1$s · %2$d conflitos restantes"</item>
+    </plurals>
+    <plurals name="adaptive_merging_left_plain">
+        <item quantity="many">"Mesclando · %1$d conflitos restantes"</item>
+        <item quantity="one">"Mesclando · %1$d conflito restante"</item>
+        <item quantity="other">"Mesclando · %1$d conflitos restantes"</item>
+    </plurals>
+    <plurals name="adaptive_split_editing">
+        <item quantity="many">"%1$d sendo editado"</item>
+        <item quantity="one">"%1$d sendo editado"</item>
+        <item quantity="other">"%1$d sendo editado"</item>
+    </plurals>
+    <plurals name="adaptive_split_live">
+        <item quantity="many">"%1$s alterações · ao vivo"</item>
+        <item quantity="one">"%1$s alterar · ao vivo"</item>
+        <item quantity="other">"%1$s alterações · ao vivo"</item>
+    </plurals>
+    <plurals name="adaptive_vaults_need_you">
+        <item quantity="many">"%1$d precisa de você"</item>
+        <item quantity="one">"%1$d precisa de você"</item>
+        <item quantity="other">"%1$d precisa de você"</item>
+    </plurals>
+    <plurals name="add_accounts_signed_in">
+        <item quantity="many">"Configurações · %1$d conectado"</item>
+        <item quantity="one">"Configurações · %1$d conectado"</item>
+        <item quantity="other">"Configurações · %1$d conectado"</item>
+    </plurals>
+    <plurals name="add_clone_files">
+        <item quantity="many">"arquivos de %1$d"</item>
+        <item quantity="one">"arquivo de %1$d"</item>
+        <item quantity="other">"arquivos de %1$d"</item>
+    </plurals>
+    <plurals name="add_clone_lfs_files">
+        <item quantity="many">"arquivos de %1$d"</item>
+        <item quantity="one">"arquivo de %1$d"</item>
+        <item quantity="other">"arquivos de %1$d"</item>
+    </plurals>
+    <plurals name="add_local_folders">
+        <item quantity="many">"pastas de %1$d"</item>
+        <item quantity="one">"pasta %1$d"</item>
+        <item quantity="other">"pastas de %1$d"</item>
+    </plurals>
+    <plurals name="add_way_github_repos">
+        <item quantity="many">"%1$d repositórios · privados incluídos"</item>
+        <item quantity="one">"%1$d repositório · privado incluído"</item>
+        <item quantity="other">"%1$d repositórios · privados incluídos"</item>
+    </plurals>
+    <plurals name="add_way_github_repos_public">
+        <item quantity="many">"%1$d repositórios"</item>
+        <item quantity="one">"%1$d repositório"</item>
+        <item quantity="other">"%1$d repositórios"</item>
+    </plurals>
     <plurals name="dialogs_error_merge_conflicts">
         <item quantity="one">"O merge tem %1$d conflito não resolvido.\n\nResolva-o antes de concluir o merge."</item>
         <item quantity="many">"O merge tem %1$d conflitos não resolvidos.\n\nResolva-os antes de concluir o merge."</item>
@@ -1090,6 +2618,121 @@
         <item quantity="one">"+%1$s -%2$s linha"</item>
         <item quantity="many">"+%1$s -%2$s linhas"</item>
         <item quantity="other">"+%1$s -%2$s linhas"</item>
+    </plurals>
+    <plurals name="editor_m3_lines_changed">
+        <item quantity="many">"%1$d linhas alteradas"</item>
+        <item quantity="one">"%1$d linha alterada"</item>
+        <item quantity="other">"%1$d linhas alteradas"</item>
+    </plurals>
+    <plurals name="files_m3_items">
+        <item quantity="many">"%1$d itens"</item>
+        <item quantity="one">"%1$d item"</item>
+        <item quantity="other">"%1$d itens"</item>
+    </plurals>
+    <plurals name="files_m3_sync_diverged">
+        <item quantity="many">"%1$d novos commits em %2$s, e este telefone tem commits que não foram enviados. Abra a aba Alterações para puxá-los."</item>
+        <item quantity="one">"%1$d novo commit em %2$s, e este telefone tem commits que não foram enviados. Abra a aba Alterações para puxá-los."</item>
+        <item quantity="other">"%1$d novos commits em %2$s, e este telefone tem commits que não foram enviados. Abra a aba Alterações para puxá-los."</item>
+    </plurals>
+    <plurals name="files_m3_sync_local_changes">
+        <item quantity="many">"%1$d novos commits em %2$s. Faça commit ou descarte suas alterações locais na aba Alterações, depois sincronize novamente."</item>
+        <item quantity="one">"%1$d novo commit em %2$s. Faça commit ou descarte suas alterações locais na aba Alterações, depois sincronize novamente."</item>
+        <item quantity="other">"%1$d novos commits em %2$s. Faça commit ou descarte suas alterações locais na aba Alterações, depois sincronize novamente."</item>
+    </plurals>
+    <plurals name="git_m3_cant_switch_body">
+        <item quantity="many">"Alternar para %1$s substituiria os arquivos neste telefone. Suas alterações não confirmadas de %2$d precisam de um local seguro primeiro."</item>
+        <item quantity="one">"Alternar para %1$s substituiria os arquivos neste telefone. Sua alteração não confirmada de %2$d precisa de um local seguro primeiro."</item>
+        <item quantity="other">"Alternar para %1$s substituiria os arquivos neste telefone. Suas alterações não confirmadas de %2$d precisam de um local seguro primeiro."</item>
+    </plurals>
+    <plurals name="git_m3_commits_missing">
+        <item quantity="many">"%1$d confirmações que %2$s não possui"</item>
+        <item quantity="one">"%1$d confirmação que %2$s não possui"</item>
+        <item quantity="other">"%1$d confirmações que %2$s não possui"</item>
+    </plurals>
+    <plurals name="git_m3_conflicts_left">
+        <item quantity="many">"%1$d conflitos a resolver."</item>
+        <item quantity="one">"%1$d conflito a resolver."</item>
+        <item quantity="other">"Conflitos de %1$d a resolver."</item>
+    </plurals>
+    <plurals name="git_m3_continue_resolve">
+        <item quantity="many">"Continuar rebase · resolver mais %1$d"</item>
+        <item quantity="one">"Continuar rebase · resolver mais %1$d"</item>
+        <item quantity="other">"Continuar rebase · resolver mais %1$d"</item>
+    </plurals>
+    <plurals name="git_m3_dirty_note">
+        <item quantity="many">"As alterações de %1$d ainda não foram confirmadas. Faça commit ou stash delas antes de mudar de branch."</item>
+        <item quantity="one">"A alteração de %1$d ainda não foi confirmada. Faça commit ou stash dela antes de mudar de branch."</item>
+        <item quantity="other">"As alterações de %1$d ainda não foram confirmadas. Faça commit ou stash delas antes de mudar de branch."</item>
+    </plurals>
+    <plurals name="git_m3_files">
+        <item quantity="many">"arquivos de %1$d"</item>
+        <item quantity="one">"arquivo de %1$d"</item>
+        <item quantity="other">"arquivos de %1$d"</item>
+    </plurals>
+    <plurals name="git_m3_n_branches">
+        <item quantity="many">"Branches de %1$d"</item>
+        <item quantity="one">"Branch de %1$d"</item>
+        <item quantity="other">"Branches de %1$d"</item>
+    </plurals>
+    <plurals name="git_m3_n_commits_history">
+        <item quantity="many">"Commits de histórico de %1$d"</item>
+        <item quantity="one">"%1$d commit de histórico"</item>
+        <item quantity="other">"%1$d commits de histórico"</item>
+    </plurals>
+    <plurals name="git_m3_n_stashes">
+        <item quantity="many">"%1$d stashes"</item>
+        <item quantity="one">"%1$d stash"</item>
+        <item quantity="other">"%1$d stashes"</item>
+    </plurals>
+    <plurals name="git_m3_n_tags">
+        <item quantity="many">"%1$d tags"</item>
+        <item quantity="one">"%1$d tag"</item>
+        <item quantity="other">"%1$d tags"</item>
+    </plurals>
+    <plurals name="git_m3_notes_attachments">
+        <item quantity="many">"%1$d notas e anexos"</item>
+        <item quantity="one">"%1$d nota ou anexo"</item>
+        <item quantity="other">"%1$d notas e anexos"</item>
+    </plurals>
+    <plurals name="git_m3_push_commits">
+        <item quantity="many">"Enviar %1$d commits"</item>
+        <item quantity="one">"Enviar %1$d commit"</item>
+        <item quantity="other">"Enviar %1$d commits"</item>
+    </plurals>
+    <plurals name="git_m3_rebase_begin_body">
+        <item quantity="many">"Seus %1$d commits locais são reproduzidos no upstream revisado e podem receber novos IDs. O rebase permanece neste telefone. Enviar é uma etapa separada."</item>
+        <item quantity="one">"Seu %1$d commit local é reproduzido no upstream revisado e pode receber um novo ID. O rebase permanece neste telefone. Enviar é uma etapa separada."</item>
+        <item quantity="other">"Seus %1$d commits locais são reproduzidos no upstream revisado e podem receber novos IDs. O rebase permanece neste telefone. Enviar é uma etapa separada."</item>
+    </plurals>
+    <plurals name="git_m3_rebase_done_meta">
+        <item quantity="many">"%1$d commits agora no topo de %2$s · novos IDs · não enviado"</item>
+        <item quantity="one">"%1$d commit agora no topo de %2$s · novos IDs · não enviado"</item>
+        <item quantity="other">"%1$d commits agora no topo de %2$s · novos IDs · não enviado"</item>
+    </plurals>
+    <plurals name="git_m3_rebase_put_on_top">
+        <item quantity="many">"Coloque seus commits %1$d no topo do remoto."</item>
+        <item quantity="one">"Coloque seu commit %1$d no topo do remoto."</item>
+        <item quantity="other">"Coloque seus commits %1$d no topo do remoto."</item>
+    </plurals>
+    <plurals name="git_m3_stash_n">
+        <item quantity="many">"Guardar alterações %1$d"</item>
+        <item quantity="one">"Guardar alteração %1$d"</item>
+        <item quantity="other">"Guardar alterações %1$d"</item>
+    </plurals>
+    <plurals name="git_m3_stashed_toast">
+        <item quantity="many">"Alterações %1$d guardadas como stash@{0}."</item>
+        <item quantity="one">"Alteração %1$d guardada como stash@{0}."</item>
+        <item quantity="other">"Guardadas as alterações de %1$d como stash@{0}."</item>
+    </plurals>
+    <plurals name="git_m3_uncommitted_changes">
+        <item quantity="many">"%1$s alterações não confirmadas"</item>
+        <item quantity="one">"%1$s alteração não confirmada"</item>
+        <item quantity="other">"%1$s alterações não confirmadas"</item>
+    </plurals>
+    <plurals name="git_m3_uncommitted_plain">
+        <item quantity="many">"edições não confirmadas de %1$d, como arquivos simples"</item>
+        <item quantity="one">"edição não confirmada de %1$d, como um arquivo simples"</item>
+        <item quantity="other">"edições não confirmadas de %1$d, como arquivos simples"</item>
     </plurals>
     <plurals name="gitops_merge_stopped_conflicts">
         <item quantity="one">"Merge interrompido: %1$s (%2$d conflito)"</item>
@@ -1111,6 +2754,36 @@
         <item quantity="many">"%1$d arquivos atuais mantêm suas escolhas explícitas de rastreamento."</item>
         <item quantity="other">"%1$d arquivos atuais mantêm suas escolhas explícitas de rastreamento."</item>
     </plurals>
+    <plurals name="lfs_m3_downloading">
+        <item quantity="many">"Baixando arquivos de %1$d"</item>
+        <item quantity="one">"Baixando arquivo de %1$d"</item>
+        <item quantity="other">"Baixando arquivos de %1$d"</item>
+    </plurals>
+    <plurals name="lfs_m3_endpoints_subtitle">
+        <item quantity="many">"Configurações · %1$d aprovado"</item>
+        <item quantity="one">"Configurações · %1$d aprovado"</item>
+        <item quantity="other">"Configurações · %1$d aprovado"</item>
+    </plurals>
+    <plurals name="lfs_m3_ext_affected">
+        <item quantity="many">"arquivos de %1$d movidos para LFS"</item>
+        <item quantity="one">"arquivo %1$d move-se para LFS"</item>
+        <item quantity="other">"arquivos %1$d movem-se para LFS"</item>
+    </plurals>
+    <plurals name="lfs_m3_file_count">
+        <item quantity="many">"arquivos %1$d"</item>
+        <item quantity="one">"arquivo %1$d"</item>
+        <item quantity="other">"arquivos %1$d"</item>
+    </plurals>
+    <plurals name="lfs_m3_stored_files">
+        <item quantity="many">"em arquivos %1$d"</item>
+        <item quantity="one">"em arquivo %1$d"</item>
+        <item quantity="other">"em arquivos %1$d"</item>
+    </plurals>
+    <plurals name="lfs_m3_track_files">
+        <item quantity="many">"Rastrear arquivos %1$d com LFS"</item>
+        <item quantity="one">"Rastrear arquivo %1$d com LFS"</item>
+        <item quantity="other">"Rastrear arquivos %1$d com LFS"</item>
+    </plurals>
     <plurals name="lfs_restored_files">
         <item quantity="one">"%1$d arquivo restaurado."</item>
         <item quantity="many">"%1$d arquivos restaurados."</item>
@@ -1121,10 +2794,70 @@
         <item quantity="many">"%1$d arquivos"</item>
         <item quantity="other">"%1$d arquivos"</item>
     </plurals>
+    <plurals name="m3home_auth_waiting">
+        <item quantity="many">"cofres %1$d estão esperando."</item>
+        <item quantity="one">"cofre %1$d está esperando."</item>
+        <item quantity="other">"cofres %1$d estão esperando."</item>
+    </plurals>
+    <plurals name="m3home_badge_edited">
+        <item quantity="many">"%1$d editado"</item>
+        <item quantity="one">"%1$d editado"</item>
+        <item quantity="other">"%1$d editado"</item>
+    </plurals>
+    <plurals name="m3home_headline_attention">
+        <item quantity="many">"Cofres %1$d"</item>
+        <item quantity="one">"Cofre %1$d"</item>
+        <item quantity="other">"Cofres %1$d"</item>
+    </plurals>
+    <plurals name="m3home_headline_attention_accent">
+        <item quantity="many">"%1$s precisa de você."</item>
+        <item quantity="one">"%1$s precisa de você."</item>
+        <item quantity="other">"%1$s precisa de você."</item>
+    </plurals>
+    <plurals name="m3home_headline_ready">
+        <item quantity="many">"Cofres %1$d"</item>
+        <item quantity="one">"Cofre %1$d"</item>
+        <item quantity="other">"Cofres %1$d"</item>
+    </plurals>
+    <plurals name="m3home_sync_nothing_local">
+        <item quantity="many">"Nada para sincronizar. Estes cofres %1$d são apenas locais (sem remoto)."</item>
+        <item quantity="other">"Nada para sincronizar. Estes cofres %1$d são apenas locais (sem remoto)."</item>
+        <item quantity="one">"Nada para sincronizar. O cofre %1$d é apenas local (sem remoto)."</item>
+    </plurals>
     <plurals name="move_plan_summary">
         <item quantity="one">"%1$s arquivo, incluindo metadados do Git · %2$s"</item>
         <item quantity="many">"%1$s arquivos, incluindo metadados do Git · %2$s"</item>
         <item quantity="other">"%1$s arquivos, incluindo metadados do Git · %2$s"</item>
+    </plurals>
+    <plurals name="notification_m3_commits">
+        <item quantity="many">"Commits %1$d puxados em segundo plano."</item>
+        <item quantity="one">"Commit %1$d puxado em segundo plano."</item>
+        <item quantity="other">"%1$d commits puxados em segundo plano."</item>
+    </plurals>
+    <plurals name="notification_m3_commits_from">
+        <item quantity="many">"%1$d commits de %2$s puxados em segundo plano."</item>
+        <item quantity="one">"%1$d commit de %2$s puxado em segundo plano."</item>
+        <item quantity="other">"%1$d commits de %2$s puxados em segundo plano."</item>
+    </plurals>
+    <plurals name="pullall_m3_checked_repositories">
+        <item quantity="many">"%1$d de %2$d repositórios verificados"</item>
+        <item quantity="one">"%1$d de %2$d repositório verificado"</item>
+        <item quantity="other">"%1$d de %2$d repositórios verificados"</item>
+    </plurals>
+    <plurals name="pullall_m3_checked_vaults">
+        <item quantity="many">"%1$d de %2$d cofres verificados"</item>
+        <item quantity="one">"%1$d de %2$d cofre verificado"</item>
+        <item quantity="other">"%1$d de %2$d cofres verificados"</item>
+    </plurals>
+    <plurals name="pullall_m3_updated_commits">
+        <item quantity="many">"Atualizado a partir do remoto · ↓%1$d commits"</item>
+        <item quantity="one">"Atualizado a partir do remoto · ↓%1$d commit"</item>
+        <item quantity="other">"Atualizado a partir do remoto · ↓%1$d commits"</item>
+    </plurals>
+    <plurals name="pullall_m3_vaults">
+        <item quantity="many">"cofres %1$d"</item>
+        <item quantity="one">"cofre %1$d"</item>
+        <item quantity="other">"cofres %1$d"</item>
     </plurals>
     <plurals name="rebase_additional_blocked_paths">
         <item quantity="one">"%1$d caminho bloqueado adicional não é exibido."</item>
@@ -1151,14 +2884,114 @@
         <item quantity="many">"· %1$d repositórios"</item>
         <item quantity="other">"· %1$d repositórios"</item>
     </plurals>
+    <plurals name="settings_m3_bg_included">
+        <item quantity="many">"cofres %1$d incluídos"</item>
+        <item quantity="one">"cofre %1$d incluído"</item>
+        <item quantity="other">"cofres %1$d incluídos"</item>
+    </plurals>
+    <plurals name="settings_m3_bg_run_quiet">
+        <item quantity="many">"cofres %1$d, nada novo"</item>
+        <item quantity="one">"cofre %1$d, nada novo"</item>
+        <item quantity="other">"cofres %1$d, nada novo"</item>
+    </plurals>
+    <plurals name="settings_m3_debug_errors_day">
+        <item quantity="many">"erros %1$d em 24h"</item>
+        <item quantity="one">"erro %1$d em 24h"</item>
+        <item quantity="other">"erros %1$d em 24h"</item>
+    </plurals>
+    <plurals name="settings_m3_entries">
+        <item quantity="many">"entradas %1$d"</item>
+        <item quantity="one">"Entrada de %1$d"</item>
+        <item quantity="other">"Entradas de %1$d"</item>
+    </plurals>
+    <plurals name="settings_m3_push_connections">
+        <item quantity="many">"Conexões de %1$d GitHub · ativadas"</item>
+        <item quantity="one">"Conexão de %1$d GitHub · ativada"</item>
+        <item quantity="other">"Conexões de %1$d GitHub · ativadas"</item>
+    </plurals>
+    <plurals name="settings_m3_push_local_changes">
+        <item quantity="many">"Alterações locais de %1$d neste telefone"</item>
+        <item quantity="one">"Alteração local de %1$d neste telefone"</item>
+        <item quantity="other">"Alterações locais de %1$d neste telefone"</item>
+    </plurals>
+    <plurals name="settings_m3_sc_subtitle">
+        <item quantity="many">"Widget Puxar Tudo · atalhos de %1$d"</item>
+        <item quantity="one">"Widget Puxar Tudo · atalho de %1$d"</item>
+        <item quantity="other">"Widget Puxar Tudo · atalhos de %1$d"</item>
+    </plurals>
+    <plurals name="ssh_m3_subtitle">
+        <item quantity="many">"Configurações · servidores %1$d"</item>
+        <item quantity="one">"Configurações · servidor %1$d"</item>
+        <item quantity="other">"Configurações · servidores %1$d"</item>
+    </plurals>
     <plurals name="tide_vault_changes_on_phone">
-        <item quantity="one">"alteração neste telefone"</item>
-        <item quantity="many">"alterações neste telefone"</item>
-        <item quantity="other">"alterações neste telefone"</item>
+        <item quantity="one">"%1$s alteração neste telefone"</item>
+        <item quantity="many">"%1$s alterações neste telefone"</item>
+        <item quantity="other">"%1$s alterações neste telefone"</item>
     </plurals>
     <plurals name="tide_vault_conflicts_to_resolve">
-        <item quantity="one">"conflito para resolver"</item>
-        <item quantity="many">"conflitos para resolver"</item>
-        <item quantity="other">"conflitos para resolver"</item>
+        <item quantity="one">"%1$s conflito para resolver"</item>
+        <item quantity="many">"%1$s conflitos para resolver"</item>
+        <item quantity="other">"%1$s conflitos para resolver"</item>
+    </plurals>
+    <plurals name="vault_m3_commit_title">
+        <item quantity="many">"Confirmar arquivos %1$d"</item>
+        <item quantity="one">"Confirmar arquivo %1$d"</item>
+        <item quantity="other">"Confirmar arquivos %1$d"</item>
+    </plurals>
+    <plurals name="vault_m3_discard_n">
+        <item quantity="many">"Descartar %1$d"</item>
+        <item quantity="one">"Descartar %1$d"</item>
+        <item quantity="other">"Descartar %1$d"</item>
+    </plurals>
+    <plurals name="vault_m3_discard_title">
+        <item quantity="many">"Descartar alterações %1$d?"</item>
+        <item quantity="one">"Descartar alteração %1$d?"</item>
+        <item quantity="other">"Descartar alterações %1$d?"</item>
+    </plurals>
+    <plurals name="vault_m3_effect_lines">
+        <item quantity="many">"−%1$d linhas"</item>
+        <item quantity="one">"−%1$d linha"</item>
+        <item quantity="other">"−%1$d linhas"</item>
+    </plurals>
+    <plurals name="vault_m3_file_count">
+        <item quantity="many">"arquivos %1$d"</item>
+        <item quantity="one">"arquivo %1$d"</item>
+        <item quantity="other">"arquivos %1$d"</item>
+    </plurals>
+    <plurals name="vault_m3_overlap_title">
+        <item quantity="many">"%1$d arquivos alterados em ambos os lados"</item>
+        <item quantity="one">"arquivo %1$d alterado em ambos os lados"</item>
+        <item quantity="other">"arquivos %1$d alterados em ambos os lados"</item>
+    </plurals>
+    <plurals name="vault_m3_remote_new">
+        <item quantity="many">"O remoto tem %1$d novos commits"</item>
+        <item quantity="one">"O remoto tem %1$d novo commit"</item>
+        <item quantity="other">"O remoto tem %1$d novos commits"</item>
+    </plurals>
+    <plurals name="vault_m3_step_commit">
+        <item quantity="many">"Commit de %1$d arquivos"</item>
+        <item quantity="one">"Commit de %1$d arquivo"</item>
+        <item quantity="other">"Commit de %1$d arquivos"</item>
+    </plurals>
+    <plurals name="vault_m3_step_lfs">
+        <item quantity="many">"Enviar %1$d arquivos LFS · %2$s"</item>
+        <item quantity="one">"Enviar %1$d arquivo LFS · %2$s"</item>
+        <item quantity="other">"Enviar %1$d arquivos LFS · %2$s"</item>
+    </plurals>
+    <plurals name="vault_m3_suggest_files">
+        <item quantity="many">"Atualizar %1$d arquivos"</item>
+        <item quantity="one">"Atualizar %1$d arquivo"</item>
+        <item quantity="other">"Atualizar %1$d arquivos"</item>
+    </plurals>
+    <plurals name="vault_m3_uploading_lfs">
+        <item quantity="many">"Enviando arquivos LFS %1$d"</item>
+        <item quantity="one">"Enviando arquivo LFS %1$d"</item>
+        <item quantity="other">"Enviando arquivos LFS %1$d"</item>
+    </plurals>
+    <plurals name="widget_m3_changes_to_push">
+        <item quantity="many">"%1$s alterações a enviar"</item>
+        <item quantity="one">"%1$s alteração a enviar"</item>
+        <item quantity="other">"%1$s alterações a enviar"</item>
     </plurals>
 </resources>

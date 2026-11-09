@@ -1,4 +1,4 @@
-<!-- Generated from the sibling iOS catalog by tools/localization/import_ios_catalog.py. -->
+<!-- Generated from the canonical Apple catalog and Android overrides by tools/localization/import_ios_catalog.py. -->
 <resources>
     <string name="account_alternative_exists" formatted="false">"Már van mentett másik alternatív kapcsolat. További URL-hitelesítő adatok átköltöztetése előtt ellenőrizd."</string>
     <string name="account_api_error">"GitHub API-hiba: HTTP %1$d"</string>
@@ -95,6 +95,342 @@
     <string name="account_token_invalid">"A GitHub-token érvénytelen vagy lejárt (HTTP %1$d)"</string>
     <string name="account_updated_just_now" formatted="false">"épp most"</string>
     <string name="account_valid_branch" formatted="false">"Adj meg érvényes ágnevet"</string>
+    <string name="adaptive_abort_merge" formatted="false">"Összevonás megszakítása"</string>
+    <string name="adaptive_account" formatted="false">"Fiók és beállítások"</string>
+    <string name="adaptive_badge_ahead">"↑%1$d"</string>
+    <string name="adaptive_badge_attention" formatted="false">"!"</string>
+    <string name="adaptive_badge_behind">"↓%1$d"</string>
+    <string name="adaptive_badge_both">"↓%1$d ↑%2$d"</string>
+    <string name="adaptive_badge_checking" formatted="false">"…"</string>
+    <string name="adaptive_badge_edited">"%1$d szerkesztve"</string>
+    <string name="adaptive_badge_in_sync" formatted="false">"✓"</string>
+    <string name="adaptive_branch_local_only">"%1$s · nincs távoli"</string>
+    <string name="adaptive_branch_to_remote">"%1$s → %2$s"</string>
+    <string name="adaptive_cancel" formatted="false">"Mégsem"</string>
+    <string name="adaptive_commit_message" formatted="false">"– Állítási üzenet"</string>
+    <string name="adaptive_commit_only" formatted="false">"Csak rögzítés"</string>
+    <string name="adaptive_commit_this_file" formatted="false">"Rögzítsd ezt a fájlt"</string>
+    <string name="adaptive_conflict" formatted="false">"ütközés"</string>
+    <string name="adaptive_conflict_position">"Konfliktus %1$d és %2$d között · %3$s"</string>
+    <string name="adaptive_cover_unfold" formatted="false">"Bontsd ki a módosításhoz tartozó különbségek olvasásához."</string>
+    <string name="adaptive_discard_all" formatted="false">"Elvetés"</string>
+    <string name="adaptive_edited" formatted="false">"szerkesztve"</string>
+    <string name="adaptive_include" formatted="false">"Tartalmazza"</string>
+    <string name="adaptive_keep_this_version" formatted="false">"Ennek a verziónak a megtartása"</string>
+    <string name="adaptive_new_file" formatted="false">"új fájl"</string>
+    <string name="adaptive_no_changes" formatted="false">"Nincsenek változások ezen az eszközön. Szerkessz megjegyzést, és itt fog megjelenni."</string>
+    <string name="adaptive_position">"%1$d / %2$d"</string>
+    <string name="adaptive_pull" formatted="false">"Lekérés"</string>
+    <string name="adaptive_pull_then_push" formatted="false">"Húzás, majd tolás"</string>
+    <string name="adaptive_push" formatted="false">"Push"</string>
+    <string name="adaptive_rejected" formatted="false">"A távoli előre lépett. Először húzd le az ő rögzítéseit, majd a tiedet tolhatod."</string>
+    <string name="adaptive_review_first" formatted="false">"Előbb átnézés"</string>
+    <string name="adaptive_split_auto_commit" formatted="false">"Automatikus rögzítés, ha 2 percig szünetelök"</string>
+    <string name="adaptive_split_committed">"↑%1$d rögzítve"</string>
+    <string name="adaptive_split_typing" formatted="false">"gépelés…"</string>
+    <string name="adaptive_split_watching">"%1$s figyelése"</string>
+    <string name="adaptive_sync_all" formatted="false">"Összes szinkronizálása"</string>
+    <string name="adaptive_sync_all_to_push">"Szinkronizálás mind, %1$d küldésre"</string>
+    <string name="adaptive_this_tablet" formatted="false">"Ez a táblagép"</string>
+    <string name="adaptive_vaults" formatted="false">"Széfek"</string>
+    <string name="adaptive_view" formatted="false">"Megtekintés"</string>
+    <string name="adaptive_vs">"vs %1$s"</string>
+    <string name="add_access_body" formatted="false">"GitSync.md megosztott tárhely hozzáférést igényel ahhoz, hogy kezelje a valós Git munkamásolatokat az eszköz mappáiban. Kapcsold be a Android Beállításokban, majd válaszd ki a használni kívánt mappákat."</string>
+    <string name="add_access_cancel" formatted="false">"Mégsem"</string>
+    <string name="add_access_enable" formatted="false">"Hozzáférés engedélyezése"</string>
+    <string name="add_access_note" formatted="false">"Nem most? Az alkalmazás tárhelyét továbbra is használhatod."</string>
+    <string name="add_access_title" formatted="false">"Helyi mappák elérésének engedélyezése"</string>
+    <string name="add_accounts_add" formatted="false">"– Hozzáadás GitHub számla"</string>
+    <string name="add_accounts_browsing" formatted="false">"Böngészés ezzel a fiókkal"</string>
+    <string name="add_accounts_cancel" formatted="false">"Mégsem"</string>
+    <string name="add_accounts_empty_body" formatted="false">"A helyi tárolók továbbra is elérhetők."</string>
+    <string name="add_accounts_empty_title" formatted="false">"Nincs csatlakoztatott fiók"</string>
+    <string name="add_accounts_intro" formatted="false">"Válaszd ki a fiókot, amelyet a GitHub böngészéséhez használsz. Minden tároló saját fiókot használ; a módosításhoz menj a Tárolókapcsolat menübe."</string>
+    <string name="add_accounts_none_signed_in" formatted="false">"Beállítások · nincs bejelentkezve"</string>
+    <string name="add_accounts_remove" formatted="false">"Bejelentkezés eltávolítása"</string>
+    <string name="add_accounts_remove_body" formatted="false">"Azok a tárolók, amelyek ezt a fiókot használják, újra bejelentkezést vagy másik fiók kiválasztását fogják kérni a Tárolókapcsolatban. A helyi fájljaid és commitjaid érintetlenek maradnak."</string>
+    <string name="add_accounts_remove_title">"Eltávolítod: %1$s?"</string>
+    <string name="add_accounts_title" formatted="false">"GitHub-fiókok"</string>
+    <string name="add_accounts_use" formatted="false">"Használat böngészéshez"</string>
+    <string name="add_added" formatted="false">"Hozzáadva"</string>
+    <string name="add_ago_days">"%1$d napja"</string>
+    <string name="add_ago_hours">"%1$dh ezelőtt"</string>
+    <string name="add_ago_minutes">"%1$dm időjelem előtt"</string>
+    <string name="add_ago_months">"%1$d hónapja"</string>
+    <string name="add_ago_now" formatted="false">"– mostanra"</string>
+    <string name="add_ago_weeks">"%1$d hete"</string>
+    <string name="add_ago_years">"%1$d éve"</string>
+    <string name="add_auth_github" formatted="false">"GitHub"</string>
+    <string name="add_auth_none" formatted="false">"Nincs"</string>
+    <string name="add_auth_saved" formatted="false">"mentve"</string>
+    <string name="add_auth_ssh" formatted="false">"SSH kulcs"</string>
+    <string name="add_auth_token" formatted="false">"Token"</string>
+    <string name="add_check_access_ro" formatted="false">"csak olvasás"</string>
+    <string name="add_check_access_rw" formatted="false">"olvasás · írás"</string>
+    <string name="add_check_add_on_github" formatted="false">"Repo hozzáadása a(z) GitHub-hoz"</string>
+    <string name="add_check_again" formatted="false">"Ellenőrzés újra"</string>
+    <string name="add_check_app_callout">"A(z) GitHub App telepítve van a(z) %1$s-ra, de ez a repo nincs kiválasztva. Add hozzá a(z) GitHub-n, majd térj vissza."</string>
+    <string name="add_check_app_missing">"A(z) GitSync.md GitHub App még nincs a(z) %1$s-on. Add hozzá a(z) GitHub-on ezzel a repóval, majd térj vissza."</string>
+    <string name="add_check_checking" formatted="false">"Ellenőrzés…"</string>
+    <string name="add_check_clone" formatted="false">"Tár klónozása"</string>
+    <string name="add_check_clone_obsidian" formatted="false">"Klónozás a(z) Obsidian-ba"</string>
+    <string name="add_check_clones_to" formatted="false">"Klónozás ide"</string>
+    <string name="add_check_head_blocked" formatted="false">"Előbb egy dolgot javítani kell."</string>
+    <string name="add_check_head_checking" formatted="false">"A tárad\nellenőrzése."</string>
+    <string name="add_check_head_ready" formatted="false">"A széf készen áll."</string>
+    <string name="add_check_lfs_none" formatted="false">"nincs"</string>
+    <string name="add_check_lfs_used" formatted="false">"használatban"</string>
+    <string name="add_check_measuring" formatted="false">"mérés"</string>
+    <string name="add_check_no_obsidian" formatted="false">"Még nincs .obsidian/ mappa"</string>
+    <string name="add_check_note_blocked" formatted="false">"Még semmit sem fizettél. A feloldás csak akkor jelenik meg, ha a tárad átmegy az ellenőrzésen."</string>
+    <string name="add_check_note_checking" formatted="false">"Csak metaadatokat olvasunk. Egy jegyzet sem töltődik le a feloldásig."</string>
+    <string name="add_check_note_ready" formatted="false">"A(z) Google Play az végső árat a te pénznemedben mutatja, mielőtt megerősítenéd."</string>
+    <string name="add_check_note_ready_unlocked" formatted="false">"A(z) Full Access ki van nyitva. Többet nincs fizetendő."</string>
+    <string name="add_check_obsidian_found" formatted="false">"Obsidian-széf található"</string>
+    <string name="add_check_obsidian_git" formatted="false">"Obsidian Git bővítmény beállítva"</string>
+    <string name="add_check_ok" formatted="false">"OK"</string>
+    <string name="add_check_pick_another" formatted="false">"Másik tároló választása"</string>
+    <string name="add_check_play_note" formatted="false">"Egyszeri vásárlás a Google Playen. Nincs előfizetés."</string>
+    <string name="add_check_price_once">"%1$s egyszer"</string>
+    <string name="add_check_size_files" formatted="false">"Méret és fájlok"</string>
+    <string name="add_check_stat_access" formatted="false">"HOZZÁFÉRÉS"</string>
+    <string name="add_check_stat_files" formatted="false">"Fájlok"</string>
+    <string name="add_check_stat_lfs" formatted="false">"Git LFS"</string>
+    <string name="add_check_stat_size" formatted="false">"MÉRET"</string>
+    <string name="add_check_step">"%1$d. lépés a 3-ból"</string>
+    <string name="add_check_sub_blocked" formatted="false">"A GitSync.md olvashatja ezt a repót, de nem tud bele push-olni. Javítsa GitHub-en, majd ellenőrizze újra."</string>
+    <string name="add_check_sub_checking" formatted="false">"Ellenőrizzük, hogy a GitSync.md tudja-e szinkronizálni ezt a tárolót, mielőtt bármit fizetnél."</string>
+    <string name="add_check_sub_ready" formatted="false">"Minden rendben. Egy klónozás, és az Obsidian az előzményekkel együtt megnyitja."</string>
+    <string name="add_check_title" formatted="false">"Tárellenőrzés"</string>
+    <string name="add_check_unknown" formatted="false">"—"</string>
+    <string name="add_check_write_access" formatted="false">"Írási hozzáférés"</string>
+    <string name="add_clone" formatted="false">"Klónozás"</string>
+    <string name="add_clone_app_storage" formatted="false">"Alkalmazás tárhelyének használata"</string>
+    <string name="add_clone_busy" formatted="false">"Tároló klónozása"</string>
+    <string name="add_clone_bytes">"%1$s · %2$s"</string>
+    <string name="add_clone_cancel" formatted="false">"Mégsem"</string>
+    <string name="add_clone_checkout" formatted="false">"Fájlok ellenőrzése"</string>
+    <string name="add_clone_choose_folder" formatted="false">"Másik mappa választása"</string>
+    <string name="add_clone_cloned" formatted="false">"– clone alapján készült"</string>
+    <string name="add_clone_continue" formatted="false">"Tovább"</string>
+    <string name="add_clone_finishing" formatted="false">"Befejezés"</string>
+    <string name="add_clone_finishing_body">"Hozzáadva a %1$s a tárolóihoz és ellenőrizzük a Git LFS fájljait."</string>
+    <string name="add_clone_lfs" formatted="false">"A klónozás befejeződött. Néhány Git LFS-fájlt még ellenőrizni vagy letölteni kell. A klón és a helyi módosítások megmaradtak."</string>
+    <string name="add_clone_lfs_review" formatted="false">"Git LFS ellenőrzése"</string>
+    <string name="add_clone_location" formatted="false">"Klónozás helye"</string>
+    <string name="add_clone_new_folder" formatted="false">"Új mappa"</string>
+    <string name="add_clone_nothing_yet" formatted="false">"Semmi sem töltődik le, amíg meg nem koppintja a Klónozás gombot."</string>
+    <string name="add_clone_percent">"%1$d%%"</string>
+    <string name="add_clone_preparing" formatted="false">"Kapcsolódás"</string>
+    <string name="add_clone_receiving" formatted="false">"Objektumok fogadása"</string>
+    <string name="add_clone_register_failed" formatted="false">"A klónozott tárolót nem sikerült hozzáadni. A fájljai megmaradtak. Próbáld újra hozzáadni, vagy csatlakoztasd újra a mappáját a Helyi tárolók alatt."</string>
+    <string name="add_clone_register_retry" formatted="false">"Klónozott tároló hozzáadása"</string>
+    <string name="add_clone_resolving" formatted="false">"Delta-k feloldása"</string>
+    <string name="add_clone_retry" formatted="false">"Ismételje meg"</string>
+    <string name="add_clone_saved_default" formatted="false">"Mentett alapértelmezés használata"</string>
+    <string name="add_clone_start" formatted="false">"Tároló klónozása"</string>
+    <string name="add_clone_title_cloning" formatted="false">"Tároló klónozása"</string>
+    <string name="add_clone_title_done" formatted="false">"– clone alapján készült"</string>
+    <string name="add_clone_title_failed" formatted="false">"Sikertelen klónozás"</string>
+    <string name="add_clone_title_ready" formatted="false">"Tároló klónozása"</string>
+    <string name="add_clone_to">"→ %1$s"</string>
+    <string name="add_cloning_name">"%1$s klónozása"</string>
+    <string name="add_close" formatted="false">"Bezárás"</string>
+    <string name="add_connected_added" formatted="false">"Hozzáadva a fiókjaihoz"</string>
+    <string name="add_connected_title" formatted="false">"GitHub-fiók csatlakoztatva"</string>
+    <string name="add_continue" formatted="false">"Tovább"</string>
+    <string name="add_default_branch" formatted="false">"Alapértelmezett ág"</string>
+    <string name="add_done" formatted="false">"Kész"</string>
+    <string name="add_github_hint" formatted="false">"A github.com-hoz a GitHub fiók bejelentkezését használja."</string>
+    <string name="add_group_notes" formatted="false">"Úgy néz ki, mint a jegyzetek"</string>
+    <string name="add_group_other" formatted="false">"Minden más"</string>
+    <string name="add_group_other_matching" formatted="false">"Minden más egyező"</string>
+    <string name="add_intro" formatted="false">"Hozzon be egy meglévő tárolót, vagy alakítson egy mappát tárolóvá."</string>
+    <string name="add_key_copied" formatted="false">"Nyilvános kulcs másolva"</string>
+    <string name="add_key_copy" formatted="false">"Nyilvános kulcs másolása"</string>
+    <string name="add_key_failed" formatted="false">"Nem sikerült kulcsot létrehozni ezen a telefonon. Használjon helyette másik kulcsot."</string>
+    <string name="add_key_hint" formatted="false">"Egyszer adja hozzá a nyilvános kulcsot a hoszthoz. A privát kulcs ezen a telefonon marad."</string>
+    <string name="add_key_meta">"ed25519 · %1$s"</string>
+    <string name="add_key_other" formatted="false">"Másik használata…"</string>
+    <string name="add_key_this_phone" formatted="false">"Használja ezt a telefon kulcsát"</string>
+    <string name="add_key_title" formatted="false">"Ennek a telefonnak a kulcsa"</string>
+    <string name="add_local_add_selected" formatted="false">"Kijelölt tárolók hozzáadása"</string>
+    <string name="add_local_added" formatted="false">"Hozzáadott tárolók"</string>
+    <string name="add_local_already" formatted="false">"Már hozzáadva"</string>
+    <string name="add_local_clean" formatted="false">"tiszta"</string>
+    <string name="add_local_clone_instead" formatted="false">"Helyette klónozza innen: GitHub"</string>
+    <string name="add_local_destination">"Cél: %1$s"</string>
+    <string name="add_local_detached" formatted="false">"Leválasztott HEAD vagy még nincs első commit"</string>
+    <string name="add_local_dirty" formatted="false">"Helyi módosítások"</string>
+    <string name="add_local_discovered" formatted="false">"Talált tárolók"</string>
+    <string name="add_local_files_deleted" formatted="false">"Helyi fájlok törölve"</string>
+    <string name="add_local_files_kept" formatted="false">"Helyi fájlok megtartva"</string>
+    <string name="add_local_in">"a %1$s-ban"</string>
+    <string name="add_local_interrupted" formatted="false">"Megszakadt klónozások"</string>
+    <string name="add_local_interrupted_body" formatted="false">"A mappa és a kapcsolat ellenőrzése után próbáld újra hozzáadni ezt a klónt. A meglévő fájlok megmaradnak."</string>
+    <string name="add_local_intro" formatted="false">"Keresse meg a Git működő példányait ezen a telefonon, például egy Obsidian tároló mappát, és adja hozzá őket újraklónozás nélkül. Egy bejegyzés későbbi eltávolítása megtartja a fájlokat."</string>
+    <string name="add_local_none_added" formatted="false">"Még nincs hozzáadott tároló."</string>
+    <string name="add_local_none_body">"Semmi a %1$s-ban nem tartalmazott .git mappát. Próbálja meg azt a mappát, amelyet a jegyzetalkalmazása használ, vagy klónozza innen: GitHub."</string>
+    <string name="add_local_none_title" formatted="false">"Nem található működő példány"</string>
+    <string name="add_local_previous" formatted="false">"Korábban hozzáadva"</string>
+    <string name="add_local_scan_app" formatted="false">"Alkalmazásmappák keresése"</string>
+    <string name="add_local_scan_app_label" formatted="false">"app mappák"</string>
+    <string name="add_local_scan_app_sub" formatted="false">"A(z) GitSync.md mappák már tárolva vannak"</string>
+    <string name="add_local_scan_device" formatted="false">"Eszközmappa keresése"</string>
+    <string name="add_local_scan_device_sub" formatted="false">"Válassz egy mappát, például Dokumentumok vagy Obsidian"</string>
+    <string name="add_local_scanning">"Ellenőrzés folyamatban %1$s"</string>
+    <string name="add_local_staged">"Átmeneti másolat: %1$s"</string>
+    <string name="add_local_title" formatted="false">"Helyi tárolók"</string>
+    <string name="add_local_tracking_removed" formatted="false">"Git nyomon követése eltávolítva · fájlok megtartva"</string>
+    <string name="add_local_truncated" formatted="false">"A keresés elérte a mélység- vagy mappakorlátot. Néhány mappát nem vizsgált át."</string>
+    <string name="add_location_body" formatted="false">"Válassz egy másik mappát a klónozáskor, vagy állíts be alapértelmezettet a Beállításokban."</string>
+    <string name="add_location_head" formatted="false">"Alapértelmezett mentés"</string>
+    <string name="add_location_head_muted" formatted="false">"helyen."</string>
+    <string name="add_location_label" formatted="false">"Letöltési hely"</string>
+    <string name="add_meta_lfs">"%1$s LFS"</string>
+    <string name="add_meta_private" formatted="false">"– magánadat"</string>
+    <string name="add_meta_public" formatted="false">"– közösségi adatok"</string>
+    <string name="add_more_options" formatted="false">"Név, ág és mappa"</string>
+    <string name="add_more_options_meta">"%1$s · %2$s"</string>
+    <string name="add_none_hint" formatted="false">"Nyilvános repók számára. A(z) GitSync.md nem küld azonosítókat."</string>
+    <string name="add_not_signed_in" formatted="false">"Nincs bejelentkezve"</string>
+    <string name="add_owner_orgs" formatted="false">"Szervezetek"</string>
+    <string name="add_owner_starred" formatted="false">"Csillagozott"</string>
+    <string name="add_owner_yours" formatted="false">"Az Öné"</string>
+    <string name="add_picker_accounts" formatted="false">"GitHub-fiókok"</string>
+    <string name="add_picker_empty_owner" formatted="false">"Itt még nincs repó."</string>
+    <string name="add_picker_refresh" formatted="false">"Frissítés"</string>
+    <string name="add_picker_search" formatted="false">"Tárolók keresése"</string>
+    <string name="add_picker_starred_failed" formatted="false">"Nem sikerült betölteni a csillagozott repóidat."</string>
+    <string name="add_picker_title" formatted="false">"Válasszon tárolót"</string>
+    <string name="add_publish_account" formatted="false">"GitHub számla"</string>
+    <string name="add_publish_author_email" formatted="false">"Szerző e-mail címe"</string>
+    <string name="add_publish_author_name" formatted="false">"Szerző neve"</string>
+    <string name="add_publish_cancel" formatted="false">"Mégsem"</string>
+    <string name="add_publish_check" formatted="false">"Eredeti cél ellenőrzése"</string>
+    <string name="add_publish_choose" formatted="false">"Mappa választása"</string>
+    <string name="add_publish_confirm" formatted="false">"Közlés"</string>
+    <string name="add_publish_confirm_body">"Ez %1$s-t %2$s tárhelyként hozza létre, és feltölti az elmentett első commitot. Tartsd nyitva az alkalmazást. Egy újrapróbálkozás ellenőrzi ezt a célt, és soha nem készít második commitot."</string>
+    <string name="add_publish_confirm_dest">"%1$s · %2$s\n%3$s · %4$s · %5$s"</string>
+    <string name="add_publish_confirm_title" formatted="false">"Közzéteszed ezt a mentett commitot?"</string>
+    <string name="add_publish_continue" formatted="false">"Mentett közzététel folytatása"</string>
+    <string name="add_publish_creating" formatted="false">"Tárhely létrehozása…"</string>
+    <string name="add_publish_discard" formatted="false">"Mentett ellenőrzés elvetése"</string>
+    <string name="add_publish_file_ignored">"%1$s · Figyelmen kívül hagyva"</string>
+    <string name="add_publish_file_issue">"%1$s · %2$s"</string>
+    <string name="add_publish_file_large">"%1$s · Több mint 10 MiB"</string>
+    <string name="add_publish_file_regular">"%1$s · Normál fájl"</string>
+    <string name="add_publish_file_sensitive">"%1$s · Érzékeny fájlnév"</string>
+    <string name="add_publish_files" formatted="false">"Fájlok"</string>
+    <string name="add_publish_intro" formatted="false">"Válassz egy mappát ezen a telefonon, tekintsd át a fájljait, és mentsd el az első commitot. A közzététel ekkor új tárhelyet hoz létre a GitHub-on és feltölti azt."</string>
+    <string name="add_publish_keep_note" formatted="false">"A folyamat előrehaladása megmarad, amikor elhagyod. Ha Android megszünteti a hozzáférést, csatlakoztasd újra ugyanazt a mappát."</string>
+    <string name="add_publish_limits" formatted="false">"A fájljaid ott maradnak, ahol vannak. Egy fájl mérete legfeljebb 10 MiB, 10 000 fájl és összesen 256 MiB. Git kihagyja az üres mappákat."</string>
+    <string name="add_publish_manage_accounts" formatted="false">"Fiókok kezelése"</string>
+    <string name="add_publish_message" formatted="false">"Kezdeti commitüzenet"</string>
+    <string name="add_publish_no_account" formatted="false">"Jelentkezz be a GitHub-ba, hogy közzétehesd."</string>
+    <string name="add_publish_open" formatted="false">"Tároló megnyitása"</string>
+    <string name="add_publish_original" formatted="false">"Eredeti mappa"</string>
+    <string name="add_publish_phase_created" formatted="false">"Tároló létrehozva; feltöltés függőben"</string>
+    <string name="add_publish_phase_done" formatted="false">"Közzétéve"</string>
+    <string name="add_publish_phase_prepared" formatted="false">"Helyi commit előkészítve"</string>
+    <string name="add_publish_phase_published" formatted="false">"Commit közzétéve; beállítás függőben"</string>
+    <string name="add_publish_phase_review" formatted="false">"Fájlok és cél ellenőrzése"</string>
+    <string name="add_publish_phase_unknown" formatted="false">"A tároló létrehozása ellenőrzést igényel"</string>
+    <string name="add_publish_prepare" formatted="false">"Helyi commit előkészítése"</string>
+    <string name="add_publish_preparing" formatted="false">"Helyi commit előkészítése…"</string>
+    <string name="add_publish_private" formatted="false">"Privát tároló"</string>
+    <string name="add_publish_private_off" formatted="false">"Bárki olvashatja a kijelölt fájlokat és az előzményeket."</string>
+    <string name="add_publish_private_on" formatted="false">"Csak azok olvashatják, akiknek hozzáférést adsz."</string>
+    <string name="add_publish_progress_bytes">"%1$s / %2$s · tartsd nyitva az alkalmazást"</string>
+    <string name="add_publish_progress_keep">"%1$s · tartsd nyitva az alkalmazást"</string>
+    <string name="add_publish_public_body" formatted="false">"Bárki olvashatja a közzétett fájljaidat. Ellenőrizd a kiválasztott fájlokat titkok, személyes adatok és meg nem osztható fájlok szempontjából."</string>
+    <string name="add_publish_public_confirm" formatted="false">"Nyilvános választása"</string>
+    <string name="add_publish_public_title" formatted="false">"Nyilvánossá teszed ezt a tárolót?"</string>
+    <string name="add_publish_publish" formatted="false">"Közzététel a GitHubon"</string>
+    <string name="add_publish_reconnect" formatted="false">"Eredeti mappa újracsatlakoztatása"</string>
+    <string name="add_publish_refresh" formatted="false">"Fájlok frissítése"</string>
+    <string name="add_publish_registering" formatted="false">"Tároló hozzáadása…"</string>
+    <string name="add_publish_reload" formatted="false">"Mentett folyamat újratöltése"</string>
+    <string name="add_publish_repo_name" formatted="false">"Tároló neve"</string>
+    <string name="add_publish_save_review" formatted="false">"Ellenőrzés mentése"</string>
+    <string name="add_publish_saved_commit">"Mentett commit: %1$s"</string>
+    <string name="add_publish_saved_progress" formatted="false">"Mentett előrehaladás"</string>
+    <string name="add_publish_selected">"Kijelölve: %1$d · %2$s"</string>
+    <string name="add_publish_step">"%1$d. lépés a 3-ból"</string>
+    <string name="add_publish_stop" formatted="false">"Leállítás"</string>
+    <string name="add_publish_title" formatted="false">"Mappa közzététele"</string>
+    <string name="add_publish_unknown_note" formatted="false">"Lehetséges, hogy GitHub már létrehozta a repót. Ellenőrizd az eredeti célhelyet. Második repó csak akkor készül, ha úgy döntesz, hogy egy megfelelő üreset használsz."</string>
+    <string name="add_publish_uploading" formatted="false">"Mentett commit feltöltése…"</string>
+    <string name="add_rail_github" formatted="false">"GitHub"</string>
+    <string name="add_rail_phone" formatted="false">"ez a telefon"</string>
+    <string name="add_remote_file" formatted="false">"helyi"</string>
+    <string name="add_remote_git" formatted="false">"git://"</string>
+    <string name="add_remote_http" formatted="false">"HTTP"</string>
+    <string name="add_remote_https" formatted="false">"HTTPS"</string>
+    <string name="add_remote_intro" formatted="false">"GitLab, Gitea, Codeberg, saját kiszolgáló."</string>
+    <string name="add_remote_label" formatted="false">"távvezetékes URL-cím"</string>
+    <string name="add_remote_name_invalid" formatted="false">"Használjon nevet / vagy \\ nélkül, és ne \".\" vagy \"..\"."</string>
+    <string name="add_remote_placeholder" formatted="false">"ssh://git@host/owner/repo.git"</string>
+    <string name="add_remote_ssh" formatted="false">"SSH"</string>
+    <string name="add_remote_title" formatted="false">"Bármely Git-kiszolgáló"</string>
+    <string name="add_resume_meta">"%1$s · %2$d lépés a 3-ból · elmentve"</string>
+    <string name="add_resume_title" formatted="false">"Folytassa a közzétételt"</string>
+    <string name="add_saved_hint" formatted="false">"Újrahasználja a tárolóhoz mentett titkosított kapcsolatot."</string>
+    <string name="add_sign_in_with" formatted="false">"Bejelentkezés ezzel:"</string>
+    <string name="add_signed_in_as">"bejelentkezve: @%1$s"</string>
+    <string name="add_signin_back_accounts" formatted="false">"Vissza a fiókokhoz"</string>
+    <string name="add_signin_body" formatted="false">"Klónozz egy tárolót, írj Obsidianban vagy más alkalmazásban, és szinkronizálj egy koppintással."</string>
+    <string name="add_signin_busy" formatted="false">"Bejelentkezés…"</string>
+    <string name="add_signin_eyebrow" formatted="false">"BÁRMELY REPÓ. SZINKRONIZÁLVA AZ ANDROIDDAL."</string>
+    <string name="add_signin_github" formatted="false">"Bejelentkezés GitHub-bal"</string>
+    <string name="add_signin_head_1" formatted="false">"Az Ön jegyzetei."</string>
+    <string name="add_signin_head_2" formatted="false">"Valódi git."</string>
+    <string name="add_signin_head_3" formatted="false">"Mindig lépésben."</string>
+    <string name="add_signin_rail" formatted="false">"Ez a telefon és a GitHub találkozása egy szinkronizációs ponton"</string>
+    <string name="add_signin_sample" formatted="false">"Mintatároló kipróbálása"</string>
+    <string name="add_signin_sample_busy" formatted="false">"Minta megnyitása…"</string>
+    <string name="add_signin_sample_hint" formatted="false">"Valódi Git, offline. Nincs szükség fiókra."</string>
+    <string name="add_signin_token" formatted="false">"Személyes hozzáférési token"</string>
+    <string name="add_signin_waiting" formatted="false">"Fejezze be a GitHub használatát a böngészőfülön. Azonnal visszajön."</string>
+    <string name="add_ssh_import_failed" formatted="false">"Nem sikerült olvasni a kulcsfájlt."</string>
+    <string name="add_ssh_import_key" formatted="false">"Kulcsfájl importálása"</string>
+    <string name="add_test_clone" formatted="false">"Teszt és klónozás"</string>
+    <string name="add_test_failed_auth" formatted="false">"A hoszt elutasította ezt a bejelentkezést. Ellenőrizze a kulcsot vagy a tokent és a hozzáférést a tárolóhoz."</string>
+    <string name="add_test_failed_branch">"A hosztnak nincs %1$s nevű ága."</string>
+    <string name="add_test_failed_missing" formatted="false">"A hosztnak nincs tárolója ezen a címen."</string>
+    <string name="add_test_failed_network" formatted="false">"Nem sikerült elérni a hosztot. Ellenőrizze a címet és a kapcsolatot."</string>
+    <string name="add_test_host_key" formatted="false">"Erősítse meg a hoszt SSH kulcsát, majd koppintson ismét a Tesztelés &amp; klónozás gombra."</string>
+    <string name="add_testing" formatted="false">"Bejelentkezés tesztelése…"</string>
+    <string name="add_title" formatted="false">"Széf hozzáadása"</string>
+    <string name="add_token_body" formatted="false">"Illessz be egy tároló-hozzáféréssel rendelkező GitHub-tokent."</string>
+    <string name="add_token_create" formatted="false">"Hozz létre egy tokent a GitHub-on"</string>
+    <string name="add_token_hide" formatted="false">"Elrejtés"</string>
+    <string name="add_token_hint" formatted="false">"A token titkosítva van ezen a telefonon, és csak ennek a gazdagépnek küldik el."</string>
+    <string name="add_token_label" formatted="false">"Token"</string>
+    <string name="add_token_scopes" formatted="false">"Jogosultságok: repo és user:email. A token titkosítva van ezen a telefonon."</string>
+    <string name="add_token_secret" formatted="false">"Token"</string>
+    <string name="add_token_show" formatted="false">"Megjelenítés"</string>
+    <string name="add_token_sign_in" formatted="false">"Bejelentkezés"</string>
+    <string name="add_token_title" formatted="false">"Személyes hozzáférési token"</string>
+    <string name="add_token_user" formatted="false">"Felhasználónév"</string>
+    <string name="add_unlock_rail">"%1$s · %2$s · bejelölve, klónozásra kész"</string>
+    <string name="add_unlock_rail_cd">"%1$s, bejelölve és kész a klónozásra a GitHub-ről a Obsidian-be"</string>
+    <string name="add_unlock_rail_from" formatted="false">"GitHub"</string>
+    <string name="add_unlock_rail_plain">"%1$s · bejelölve, klónozásra kész"</string>
+    <string name="add_unlock_rail_to" formatted="false">"Obsidian"</string>
+    <string name="add_url_hint" formatted="false">"HTTPS, SSH, git:// vagy owner/repo. Saját kiszolgáló? Koppintson a kulcsra."</string>
+    <string name="add_url_key" formatted="false">"Bejelentkezési lehetőségek más gazdagépekre"</string>
+    <string name="add_url_label" formatted="false">"Tároló URL"</string>
+    <string name="add_url_placeholder" formatted="false">"https://github.com/owner/repo"</string>
+    <string name="add_url_section" formatted="false">"Vagy illesszen be egy URL-t"</string>
+    <string name="add_way_github" formatted="false">"Klónozás GitHubról"</string>
+    <string name="add_way_github_sign_in" formatted="false">"Jelentkezz be a repoid közül való választáshoz"</string>
+    <string name="add_way_local" formatted="false">"Keresd a klónokat ezen a telefonon"</string>
+    <string name="add_way_local_sub" formatted="false">"Vizsgáld át a megosztott tárhelyet meglévő .git mappák után"</string>
+    <string name="add_way_open" formatted="false">"Tárolómappa megnyitása"</string>
+    <string name="add_way_open_sub" formatted="false">"Válasszon egy Git repót a rendszer mappaválasztójával"</string>
+    <string name="add_way_publish" formatted="false">"Mappa közzététele"</string>
+    <string name="add_way_publish_sub" formatted="false">"Új GitHub-tároló a jegyzeteiből"</string>
     <string name="automation_shortcut_label">"%1$s: %2$s"</string>
     <string name="background_allow_push" formatted="false">"Automatikus közzététel engedélyezése"</string>
     <string name="background_binding">"Csak a(z) %1$s ág, amely ezt követi: %2$s/%3$s. Az ág, mappa, kapcsolat vagy fiók módosítása új ellenőrzést igényel."</string>
@@ -261,12 +597,43 @@
     <string name="dialogs_success_title" formatted="false">"Sikeres"</string>
     <string name="dialogs_timestamp_unknown" formatted="false">"Ismeretlen"</string>
     <string name="dialogs_warning_title" formatted="false">"Figyelmeztetés"</string>
+    <string name="diff_m3_binary" formatted="false">"Ez a fájl nem szöveg, így nincs összehasonlítható sor."</string>
+    <string name="diff_m3_changes" formatted="false">"Változások"</string>
+    <string name="diff_m3_deleted" formatted="false">"Ez a fájl törölve lett. A Visszavonás az utolsó commitból állítja vissza."</string>
+    <string name="diff_m3_discard" formatted="false">"Elvetés"</string>
+    <string name="diff_m3_hunk">"%1$s · sor %2$d"</string>
+    <string name="diff_m3_hunk_line">"%1$d. sor"</string>
+    <string name="diff_m3_load_failed" formatted="false">"Nem sikerült olvasni ennek a fájlnak a változásait."</string>
+    <string name="diff_m3_next" formatted="false">"Következő fájl"</string>
+    <string name="diff_m3_no_changes" formatted="false">"Nincs változás az utolsó commit óta."</string>
+    <string name="diff_m3_position">"%1$s · %2$d / %3$d"</string>
+    <string name="diff_m3_preview" formatted="false">"Előnézet"</string>
+    <string name="diff_m3_previous" formatted="false">"Előző fájl"</string>
+    <string name="diff_m3_stats_a11y">"%1$d sor hozzáadva, %2$d eltávolítva"</string>
+    <string name="diff_m3_vs_last_commit">"vs utolsó commit %1$s"</string>
+    <string name="diff_m3_vs_nothing" formatted="false">"új fájl · még nincs commit"</string>
+    <string name="diff_m3_whole_file" formatted="false">"Teljes fájl"</string>
     <string name="discard_clear_staging" formatted="false">"Index ürítése"</string>
     <string name="discard_review_all" formatted="false">"Az alább felsorolt követett módosítások és új fájlok végleg elvesznek. A figyelmen kívül hagyott fájlok megmaradnak."</string>
     <string name="discard_review_empty" formatted="false">"Nincs elvethető módosítás."</string>
     <string name="discard_review_operation" formatted="false">"Ez az aktív Git-műveletet is megszakítja."</string>
     <string name="discard_review_unborn" formatted="false">"Még nincs commit. Ez eltávolítja a felsorolt fájlokat az indexből, de megtartja a tartalmukat."</string>
     <string name="discovery_scanned">"%1$s átvizsgálva. Válaszd ki a hozzáadandó munkapéldányokat."</string>
+    <string name="editor_m3_commit" formatted="false">"Commit"</string>
+    <string name="editor_m3_markdown" formatted="false">"Markdown"</string>
+    <string name="editor_m3_md_bold" formatted="false">"Félkövér"</string>
+    <string name="editor_m3_md_code" formatted="false">"Kód"</string>
+    <string name="editor_m3_md_heading" formatted="false">"Címsor"</string>
+    <string name="editor_m3_md_indent" formatted="false">"Behúzás"</string>
+    <string name="editor_m3_md_link" formatted="false">"Link"</string>
+    <string name="editor_m3_md_task" formatted="false">"Feladat"</string>
+    <string name="editor_m3_not_saved" formatted="false">"Nincs mentve"</string>
+    <string name="editor_m3_save_now" formatted="false">"Mentés most"</string>
+    <string name="editor_m3_saved" formatted="false">"mentve"</string>
+    <string name="editor_m3_saved_changed">"Mentve · %1$s"</string>
+    <string name="editor_m3_saving" formatted="false">"mentés..."</string>
+    <string name="editor_m3_subtitle">"%1$s / %2$s"</string>
+    <string name="editor_m3_vault_ahead">"%1$s ↑%2$d"</string>
     <string name="file_clone_failure" formatted="false">"Nem sikerült klónozni a helyi tárolót. Ellenőrizd a forrásmappát, a tárhely-hozzáférést és az ágat. A meglévő mappák megmaradtak."</string>
     <string name="file_clone_guidance" formatted="false">"Klónozz egy eszközön lévő tárolót helyi hozzáféréssel. Megosztott tárhelyhez előbb engedélyezd a mappa elérését a Beállításokban."</string>
     <string name="file_delete_body" formatted="false">"A fájl eltávolításra kerül erről az eszközről. A Git töröltként jeleníti meg, ha követve volt."</string>
@@ -289,15 +656,344 @@
     <string name="file_renamed" formatted="false">"Átnevezve"</string>
     <string name="file_save_title" formatted="false">"Mented a módosításokat?"</string>
     <string name="file_saved" formatted="false">"Mentve"</string>
+    <string name="filehistory_m3_commits" formatted="false">"Elkötelezések"</string>
+    <string name="filehistory_m3_empty" formatted="false">"Egyik elkötelezés sem tartalmazza még ezt a fájlt."</string>
+    <string name="filehistory_m3_load_failed" formatted="false">"Nem sikerült olvasni ennek a fájlnak a történetét."</string>
+    <string name="filehistory_m3_meta">"%1$s · %2$s · %3$s"</string>
+    <string name="filehistory_m3_subtitle">"Történelem · %1$s"</string>
     <string name="files_folder" formatted="false">"Mappa"</string>
     <string name="files_hide_hidden" formatted="false">"Rejtett fájlok elrejtése"</string>
+    <string name="files_m3_actions_for">"Műveletek: %1$s"</string>
+    <string name="files_m3_age_days">"%1$d napja"</string>
+    <string name="files_m3_age_hours">"%1$dh ezelőtt"</string>
+    <string name="files_m3_age_minutes">"%1$dm időjelem előtt"</string>
+    <string name="files_m3_age_months">"%1$d hónapja"</string>
+    <string name="files_m3_age_now" formatted="false">"– mostanra"</string>
+    <string name="files_m3_age_weeks">"%1$d hete"</string>
+    <string name="files_m3_age_years">"%1$d éve"</string>
+    <string name="files_m3_check_for_changes" formatted="false">"Módosítások keresése"</string>
+    <string name="files_m3_delete" formatted="false">"törlés"</string>
+    <string name="files_m3_delete_folder_body" formatted="false">"Itt csak üres mappák törölhetők."</string>
+    <string name="files_m3_delete_folder_title" formatted="false">"Törölje a mappát?"</string>
+    <string name="files_m3_fetch" formatted="false">"– Felhívás"</string>
+    <string name="files_m3_fetch_cd">"%1$s lekérése a távoli helyről"</string>
+    <string name="files_m3_fetch_failed" formatted="false">"Nem sikerült lekérni ezt a fájlt a távoli helyről. Ellenőrizze a kapcsolatát és a bejelentkezést, majd próbálkozzon újra."</string>
+    <string name="files_m3_fetched">"%1$s lekérve."</string>
+    <string name="files_m3_folder_path" formatted="false">"Mappa útvonala"</string>
+    <string name="files_m3_footnote" formatted="false">"Az összes fájlra hosszú nyomással érhetők el műveletek."</string>
+    <string name="files_m3_history" formatted="false">"Előzmények"</string>
+    <string name="files_m3_lfs_pointer">"LFS-mutató · %1$s a távolin"</string>
+    <string name="files_m3_meta">"%1$s · %2$s"</string>
+    <string name="files_m3_meta_edited">"szerkesztve %1$s · %2$s"</string>
+    <string name="files_m3_new_file_cd" formatted="false">"– Új fájl"</string>
+    <string name="files_m3_open_in" formatted="false">"Megnyitás itt…"</string>
+    <string name="files_m3_open_in_chooser">"Nyissa meg %1$s a(z)…"</string>
+    <string name="files_m3_open_in_failed" formatted="false">"Ezen a telefonon nincs olyan alkalmazás, amely meg tudná nyitni ezt a fájlt."</string>
+    <string name="files_m3_rename" formatted="false">"– Megnevezés módosítása"</string>
+    <string name="files_m3_rename_field" formatted="false">"Név"</string>
+    <string name="files_m3_tag_added" formatted="false">"A"</string>
+    <string name="files_m3_tag_conflict" formatted="false">"!"</string>
+    <string name="files_m3_tag_lfs" formatted="false">"LFS"</string>
+    <string name="files_m3_tag_modified" formatted="false">"M"</string>
     <string name="files_show_hidden" formatted="false">"Rejtett fájlok megjelenítése"</string>
     <string name="folder_access_not_enabled" formatted="false">"A mappahozzáférés nem lett engedélyezve. Továbbra is használhatod az alkalmazás tárhelyét."</string>
     <string name="folder_picker_unavailable" formatted="false">"Ezen az eszközön nem érhető el mappaválasztó"</string>
     <string name="folder_settings_unavailable" formatted="false">"Az Android tárhelybeállításai nem érhetők el. Az alkalmazás tárhelye továbbra is használható."</string>
     <string name="folder_unusable" formatted="false">"Ez a mappa nem használható"</string>
     <string name="git_fetch" formatted="false">"– Felhívás"</string>
+    <string name="git_m3_abort" formatted="false">"Megszakítás"</string>
+    <string name="git_m3_abort_merge" formatted="false">"Összevonás megszakítása"</string>
+    <string name="git_m3_abort_merge_body">"Visszahelyezi %1$s a merge előtti helyére. Az eddig kiválasztott elemek a kukába kerülnek."</string>
+    <string name="git_m3_abort_merge_title" formatted="false">"Megszakítja ezt az egyesítést?"</string>
+    <string name="git_m3_abort_rebase_ask" formatted="false">"Rebase megszakítása…"</string>
+    <string name="git_m3_access_github" formatted="false">"GitHub bejelentkezés\nA"</string>
+    <string name="git_m3_access_https" formatted="false">"HTTPS"</string>
+    <string name="git_m3_access_local" formatted="false">"helyi mappa"</string>
+    <string name="git_m3_access_ssh" formatted="false">"SSH kulcs"</string>
+    <string name="git_m3_age_days">"%1$dd"</string>
+    <string name="git_m3_age_hours">"%1$dh"</string>
+    <string name="git_m3_age_minutes">"%1$dm"</string>
+    <string name="git_m3_ago_days">"%1$d napja"</string>
+    <string name="git_m3_ago_hours">"%1$dh ezelőtt"</string>
+    <string name="git_m3_ago_minutes">"%1$dm időjelem előtt"</string>
+    <string name="git_m3_ago_now" formatted="false">"– mostanra"</string>
+    <string name="git_m3_ahead">"%1$d előrébb"</string>
+    <string name="git_m3_annotated" formatted="false">"megjegyzett"</string>
+    <string name="git_m3_applied_toast">"Alkalmazva %1$s. A stash továbbra is el van mentve."</string>
+    <string name="git_m3_apply" formatted="false">"Alkalmazás"</string>
+    <string name="git_m3_apply_help" formatted="false">"Visszahozza a változásokat, és megőrzi a stash-t."</string>
+    <string name="git_m3_back_to_remote" formatted="false">"Vissza a Remote-hoz"</string>
+    <string name="git_m3_backup_at">"Biztonsági mentés: %1$s"</string>
+    <string name="git_m3_behind">"%1$d lemaradva"</string>
+    <string name="git_m3_binary_side" formatted="false">"Ezt a fájlt nem lehet szövegként megjeleníteni. Válassz egy teljes verziót."</string>
+    <string name="git_m3_both_edited_file" formatted="false">"Mindkét oldal szerkesztette ezt a fájlt."</string>
+    <string name="git_m3_both_edited_section">"Mindkét oldal szerkesztette: „%1$s”."</string>
+    <string name="git_m3_both_moved" formatted="false">"Mindkét oldal továbblépett"</string>
+    <string name="git_m3_both_moved_body">"Csak gyors előrehaladásokat húz, így nem tudja ezeket kombinálni. Az összeolvasztás mindkét előzményt megtartja. Az újraalapozás a te %1$d commitedet helyezi a tetejére."</string>
+    <string name="git_m3_both_moved_headline" formatted="false">"A távoli előrébb lépett, amíg Ön írt."</string>
+    <string name="git_m3_both_sides_edited" formatted="false">"Mindkét oldal szerkesztette ezt a fájlt."</string>
+    <string name="git_m3_branch_name" formatted="false">"Ág neve"</string>
+    <string name="git_m3_branch_placeholder" formatted="false">"pl. draft/winter"</string>
+    <string name="git_m3_branches" formatted="false">"Ágak"</string>
+    <string name="git_m3_branches_stashes_tags" formatted="false">"Ágak, stash-ek és címkék"</string>
+    <string name="git_m3_cancel" formatted="false">"Mégsem"</string>
+    <string name="git_m3_cant_switch_note" formatted="false">"Azok a nem követett fájlok, amelyeket a másik ág felülírna, szintén blokkolják a váltást. Még semmi sem változott."</string>
+    <string name="git_m3_cant_switch_title" formatted="false">"Még nem lehet váltani"</string>
+    <string name="git_m3_check_changes" formatted="false">"Módosítások keresése"</string>
+    <string name="git_m3_commit_as" formatted="false">"Commit szerzője"</string>
+    <string name="git_m3_commit_first" formatted="false">"Először commit-olj"</string>
+    <string name="git_m3_commit_history" formatted="false">"Commit előzmények"</string>
+    <string name="git_m3_commit_of">"%1$d commit %2$d"</string>
+    <string name="git_m3_conflict_body" formatted="false">"Válassza ki a megtartandó verziót, vagy tartsa meg mindkettőt, és rendezze később."</string>
+    <string name="git_m3_conflict_progress">"Konfliktus %1$d és %2$d között · %3$s"</string>
+    <string name="git_m3_connection" formatted="false">"Kapcsolat"</string>
+    <string name="git_m3_continue_retry_first" formatted="false">"Folytassa az újraalapozást · próbálja újra először"</string>
+    <string name="git_m3_create" formatted="false">"Létrehozás"</string>
+    <string name="git_m3_create_tag" formatted="false">"Címke létrehozása"</string>
+    <string name="git_m3_current" formatted="false">"Jelenlegi"</string>
+    <string name="git_m3_current_branch" formatted="false">"Jelenlegi ág"</string>
+    <string name="git_m3_delete" formatted="false">"törlés"</string>
+    <string name="git_m3_delete_branch_body">"Törli a %1$s-t ezen a telefonon. A GitHub nincs érintve."</string>
+    <string name="git_m3_delete_branch_cd">"%1$s ág törlése"</string>
+    <string name="git_m3_delete_branch_title" formatted="false">"Törli az ágat?"</string>
+    <string name="git_m3_delete_files_sub" formatted="false">"Eltávolítja a mappát erről a telefonról"</string>
+    <string name="git_m3_delete_force" formatted="false">"Kényszerítés"</string>
+    <string name="git_m3_delete_force_help" formatted="false">"A ág kényszerített törlése akkor is, ha annak commitjai soha nem lettek összevonva. Ezek elveszhetnek."</string>
+    <string name="git_m3_delete_normal" formatted="false">"Normál"</string>
+    <string name="git_m3_delete_normal_help" formatted="false">"Csak akkor törli az ágat, ha annak commitjai már össze lettek vonva."</string>
+    <string name="git_m3_delete_tag" formatted="false">"Címke törlése"</string>
+    <string name="git_m3_delete_tag_body">"A címke eltűnik erről a telefonról. A %1$s commit megmarad, és a GitHub-re már feltöltött másolat nincs érintve."</string>
+    <string name="git_m3_delete_tag_cd">"%1$s címke törlése"</string>
+    <string name="git_m3_delete_tag_title">"Törlöd ezt: „%1$s”?"</string>
+    <string name="git_m3_deleted_here_edited_there" formatted="false">"Ezt a telefont törölte. A másik oldalon szerkesztették."</string>
+    <string name="git_m3_deleted_on_phone" formatted="false">"Törölve a telefonon."</string>
+    <string name="git_m3_deleted_on_remote">"Törölve a %1$s-on."</string>
+    <string name="git_m3_detached">"Leválasztva: %1$s"</string>
+    <string name="git_m3_discard" formatted="false">"Módosítások elvetése"</string>
+    <string name="git_m3_disconnected" formatted="false">"Leválasztva"</string>
+    <string name="git_m3_drop" formatted="false">"Eldobás"</string>
+    <string name="git_m3_drop_cd">"Dobd el: %1$s"</string>
+    <string name="git_m3_drop_help" formatted="false">"Törli a stash-t anélkül, hogy alkalmazná."</string>
+    <string name="git_m3_dropped_toast">"Elvetve: %1$s."</string>
+    <string name="git_m3_edit_by_hand" formatted="false">"Kézi szerkesztés"</string>
+    <string name="git_m3_edit_connection" formatted="false">"Kapcsolat szerkesztése"</string>
+    <string name="git_m3_edited_ago">"szerkesztve: %1$s"</string>
+    <string name="git_m3_edited_here_deleted_there" formatted="false">"Ezt a telefont szerkesztette. A másik oldal törölte."</string>
+    <string name="git_m3_fetch_again" formatted="false">"Újrafelvétel"</string>
+    <string name="git_m3_fetch_and_push">"Lekérés és feltöltés: %1$s"</string>
+    <string name="git_m3_fetch_hint" formatted="false">"hogy lásd az új ágakat, amelyeket a többi eszközödön feltoltak."</string>
+    <string name="git_m3_fetch_review_again" formatted="false">"Lekérés és újbóli áttekintés"</string>
+    <string name="git_m3_fetch_sub" formatted="false">"Ellenőrizd a(z) GitHub új commitjait"</string>
+    <string name="git_m3_fetched">"lekérve: %1$s"</string>
+    <string name="git_m3_finishing_merge" formatted="false">"A merge befejezése…"</string>
+    <string name="git_m3_folder_location" formatted="false">"A mappa és annak helye"</string>
+    <string name="git_m3_from" formatted="false">"Innen"</string>
+    <string name="git_m3_from_remote">"↓%1$d a távoliról"</string>
+    <string name="git_m3_from_who">" innen: %1$s"</string>
+    <string name="git_m3_github" formatted="false">"GitHub"</string>
+    <string name="git_m3_hand_edited_markers" formatted="false">"Az ütközési jelölők még a fájlban vannak. Távolítsd el őket a szerkesztőben, majd térj vissza."</string>
+    <string name="git_m3_hand_edited_ready" formatted="false">"Kézzel szerkesztve. Használd a szerkesztett fájlodat, vagy válassz egy oldalt a cserére."</string>
+    <string name="git_m3_how" formatted="false">"Hogyan"</string>
+    <string name="git_m3_in_sync" formatted="false">"Szinkronban"</string>
+    <string name="git_m3_in_sync_headline" formatted="false">"Ez a telefon megegyezik a távolival."</string>
+    <string name="git_m3_in_the_way" formatted="false">"Útban"</string>
+    <string name="git_m3_in_this_vault" formatted="false">"Ebben a trezorban"</string>
+    <string name="git_m3_its_remotes" formatted="false">"A távoli kapcsolatai"</string>
+    <string name="git_m3_keep_backup" formatted="false">"Őrizd meg a hitelesített biztonsági másolatot"</string>
+    <string name="git_m3_keep_backup_sub" formatted="false">".git mappa másolata és ZIP fájlja"</string>
+    <string name="git_m3_keep_both" formatted="false">"Mindkettő megtartása"</string>
+    <string name="git_m3_kept_edit" formatted="false">"Kézzel megoldva."</string>
+    <string name="git_m3_kept_local" formatted="false">"Megtartottuk a visszajátszott helyi commitot."</string>
+    <string name="git_m3_kept_upstream" formatted="false">"Megtartottuk a távoli verziót."</string>
+    <string name="git_m3_lfs" formatted="false">"Nagy fájlok (LFS)"</string>
+    <string name="git_m3_lfs_none" formatted="false">"nincs használva"</string>
+    <string name="git_m3_lfs_value">"%1$s · %2$d zárolva"</string>
+    <string name="git_m3_light" formatted="false">"könnyű"</string>
+    <string name="git_m3_local_only" formatted="false">"csak helyi"</string>
+    <string name="git_m3_manage_vault" formatted="false">"Trezor kezelése"</string>
+    <string name="git_m3_marker_end" formatted="false">"Mindkét verzió vége"</string>
+    <string name="git_m3_marker_ours" formatted="false">"Ennek a telefonnak a verziója"</string>
+    <string name="git_m3_marker_theirs">"%1$s verziója"</string>
+    <string name="git_m3_merge" formatted="false">"Összevonás"</string>
+    <string name="git_m3_merge_and_push" formatted="false">"Egyesítés és feltöltés"</string>
+    <string name="git_m3_merge_author">"Merge szerzője: %1$s"</string>
+    <string name="git_m3_merge_both_body" formatted="false">"A commitjaid megtartják az azonosítóikat. Mivel mindkét oldal mozgott, ez merge commitot eredményez. A mindkét oldalon szerkesztett fájlokat ki kell választanod."</string>
+    <string name="git_m3_merge_current_body" formatted="false">"Mindkét oldal megegyezik. Nincs mit összefésülni."</string>
+    <string name="git_m3_merge_ff_body" formatted="false">"Csak a távoli oldal mozdult, így ez gyorsítja az ágad. Semmi új nincs commitolva."</string>
+    <string name="git_m3_merge_in_progress" formatted="false">"Merge folyamatban"</string>
+    <string name="git_m3_merge_into">"Egyesítés a %1$s-be"</string>
+    <string name="git_m3_merge_locally" formatted="false">"Egyesítés helyileg"</string>
+    <string name="git_m3_merge_message">"%1$s összevonása"</string>
+    <string name="git_m3_merge_named">"%1$s összevonása"</string>
+    <string name="git_m3_merge_pause_note" formatted="false">"Ha mindkét ág ugyanazt a fájlt módosította, az egyesítés szünetel, hogy kiválaszthasd, mit tartasz meg a Git-ben."</string>
+    <string name="git_m3_merge_push_body">"Frissíti a %1$s-t a %2$s-nel, majd feltölti a %3$s-be. Az ütközések megszakítják a feltöltést. Ha a távoli gép nem erősíti meg, az egyesítés ezen a telefonon marad, és újrapróbálkozhatsz."</string>
+    <string name="git_m3_merge_push_only_body" formatted="false">"Nincs újdonság a távoli gépen. Az egyesítés és feltöltés elküldi a commitjaidat."</string>
+    <string name="git_m3_merge_push_title" formatted="false">"Egyesítés és feltöltés?"</string>
+    <string name="git_m3_merge_ready" formatted="false">"Minden ütközés megoldva. Fejezd be az egyesítést."</string>
+    <string name="git_m3_merge_reviewing" formatted="false">"Lekérdezés és a távoli gép tartalmának áttekintése…"</string>
+    <string name="git_m3_merge_sub" formatted="false">"Lekérdezés, áttekintés, majd egyesítés"</string>
+    <string name="git_m3_merging">"%1$s · egyesítés a %2$s-nel"</string>
+    <string name="git_m3_message_optional" formatted="false">"Üzenet (opcionális)"</string>
+    <string name="git_m3_more_files">"%1$d több"</string>
+    <string name="git_m3_move_repository" formatted="false">"Tároló áthelyezése"</string>
+    <string name="git_m3_move_sub" formatted="false">"Válassz egy új mappát"</string>
+    <string name="git_m3_never_fetched" formatted="false">"még nem lett lekérdezve"</string>
+    <string name="git_m3_new_branch" formatted="false">"Új ág"</string>
+    <string name="git_m3_new_on_remote" formatted="false">"Új a távoli tárolón"</string>
+    <string name="git_m3_new_on_remote_body">"A Pull gyorsan előre viszi %1$s-t a szinkronhoz. Semmi sincs elveszve ezen a telefonon."</string>
+    <string name="git_m3_new_on_remote_headline" formatted="false">"A távoli tárolóban olyan commitok vannak, amelyek nálad nincsenek."</string>
+    <string name="git_m3_new_tag" formatted="false">"Új címke"</string>
+    <string name="git_m3_no_backup_warning" formatted="false">"Biztonsági mentés nélkül ennek a telefonnak a Git története véglegesen törlődik. A GitHub-on már lévő commitok biztonságban vannak."</string>
+    <string name="git_m3_no_conflicts" formatted="false">"Nincsenek több konfliktusok."</string>
+    <string name="git_m3_no_stashes" formatted="false">"Nincsenek elmentett stash-ek."</string>
+    <string name="git_m3_no_upstream" formatted="false">"csak helyi · nincs upstream"</string>
+    <string name="git_m3_no_upstream_body" formatted="false">"Válassz egy upstream-et, hogy a pull és a push tudja, hová menjen."</string>
+    <string name="git_m3_no_upstream_headline" formatted="false">"Ez a ág még nem követ távoli ágat."</string>
+    <string name="git_m3_no_upstream_kicker" formatted="false">"Nincs upstream"</string>
+    <string name="git_m3_none" formatted="false">"Nincs"</string>
+    <string name="git_m3_not_set" formatted="false">"Nincs beállítva"</string>
+    <string name="git_m3_not_tracked">"%1$s · nincs követve"</string>
+    <string name="git_m3_notes_attachments_any" formatted="false">"Jegyzeteid és csatolmányaid"</string>
+    <string name="git_m3_nothing_new">"semmi, ami %1$s-nak nincs meg"</string>
+    <string name="git_m3_nothing_to_stash" formatted="false">"Nincs elrakni való."</string>
+    <string name="git_m3_nothing_to_stash_body" formatted="false">"Nincsenek helyi változtatások ezen a telefonon. Szerkessz egy jegyzetet, majd térj vissza, hogy félretehesd."</string>
+    <string name="git_m3_ok" formatted="false">"OK"</string>
+    <string name="git_m3_on_this_phone" formatted="false">"Ezen a telefonon"</string>
+    <string name="git_m3_only_on">"Csak a %1$s-on"</string>
+    <string name="git_m3_open" formatted="false">"Megnyitás"</string>
+    <string name="git_m3_open_rebase" formatted="false">"Nyitott rebase"</string>
+    <string name="git_m3_open_sub" formatted="false">"Vissza a trezorba"</string>
+    <string name="git_m3_plain_folder">"%1$s most egyszerű mappa."</string>
+    <string name="git_m3_plain_folder_body" formatted="false">"A jegyzeteid ott vannak, ahol voltak. GitSync.md már nem szinkronizálja ezt a mappát."</string>
+    <string name="git_m3_pop" formatted="false">"Kiemelés"</string>
+    <string name="git_m3_pop_help" formatted="false">"Visszahozza a változtatásokat és eltávolítja a stash-t."</string>
+    <string name="git_m3_popped_toast">"%1$s ki lett pattintva. A változtatásaid visszaálltak."</string>
+    <string name="git_m3_previously_added" formatted="false">"Korábban hozzáadva"</string>
+    <string name="git_m3_pull_n">"Húzás ↓%1$d"</string>
+    <string name="git_m3_pull_sub" formatted="false">"Csak fast-forward"</string>
+    <string name="git_m3_pull_sub_blocked" formatted="false">"Csak gyors előre lépés. Most nem megy: mindkét oldal elmozdult"</string>
+    <string name="git_m3_pulls_from">"%1$s húz és tol"</string>
+    <string name="git_m3_push" formatted="false">"Push"</string>
+    <string name="git_m3_push_n">"Tolás ↑%1$d"</string>
+    <string name="git_m3_push_tag_cd">"Tolás %1$s-t GitHub-be"</string>
+    <string name="git_m3_push_to">"tolás ide: %1$s"</string>
+    <string name="git_m3_ready_to_push" formatted="false">"Pushra kész"</string>
+    <string name="git_m3_ready_to_push_body">"A tolás elküldi a %1$d elkötelezéseidet. A távoli semmi sem változik, amíg nem fogadja el őket."</string>
+    <string name="git_m3_ready_to_push_headline" formatted="false">"A távoli még nem látta az elkötelezéseidet."</string>
+    <string name="git_m3_rebase" formatted="false">"Rebase"</string>
+    <string name="git_m3_rebase_abort_body">"%1$s visszakerül %2$s-re. Az újraalapozás során végzett szerkesztések és konfliktusválasztások eldobásra kerülnek."</string>
+    <string name="git_m3_rebase_abort_title" formatted="false">"Megszakítod ezt az újraalapozást?"</string>
+    <string name="git_m3_rebase_aborted" formatted="false">"Újraalapozás megszakítva"</string>
+    <string name="git_m3_rebase_aborted_headline" formatted="false">"Vissza a kiindulópontra."</string>
+    <string name="git_m3_rebase_begin_title" formatted="false">"Újraírod a helyi commitokat?"</string>
+    <string name="git_m3_rebase_blocked_body" formatted="false">"A fájlok, amelyek nem a Git-ban vannak, a következő commit során felülíródnának. Mozgasd őket biztonságos helyre, frissíts, majd próbáld újra. A már lejátszott commitok megmaradnak."</string>
+    <string name="git_m3_rebase_blocked_headline" formatted="false">"Az újraalapozás egy blokkolt checkoutra vár."</string>
+    <string name="git_m3_rebase_conflicts">"Konfliktusok · %1$d a %2$d-ból megoldva"</string>
+    <string name="git_m3_rebase_conflicts_headline" formatted="false">"Az újraalapozás megállt a mindkét oldalon szerkesztett fájloknál."</string>
+    <string name="git_m3_rebase_done_headline" formatted="false">"Az újraalapozás befejeződött."</string>
+    <string name="git_m3_rebase_in_progress" formatted="false">"Újraalapozás folyamatban"</string>
+    <string name="git_m3_rebase_initial" formatted="false">"Elsőként fetch-elj, hogy lásd, mit mozgatna a rebase."</string>
+    <string name="git_m3_rebase_restored">"%1$s visszaállítva %2$s-re · ↑%3$d ↓%4$d"</string>
+    <string name="git_m3_rebase_review_body">"A commitjaid lejátszása a %1$s tetején. Az azonosítóik megváltozhatnak. A merge commitok megtartják az alakjukat. Semmi nincs feltöltve."</string>
+    <string name="git_m3_rebase_sides_note">"Rebase esetén %1$s a Git „miénk”, és a te %2$s-ed a „ténk”."</string>
+    <string name="git_m3_rebase_skip_body">"%1$s eltávolítása a lejátszásból. Előbb ellenőrizd a változásait. Ez eltávolíthatja a munkádat az új történetből."</string>
+    <string name="git_m3_rebase_skip_title" formatted="false">"Kihagyod ezt a helyi commitot?"</string>
+    <string name="git_m3_rebase_step">"Megállt a %1$d commitnál a %2$d-ben."</string>
+    <string name="git_m3_rebase_stopped" formatted="false">"A rebase a te intézkedésedre vár."</string>
+    <string name="git_m3_rebase_sub" formatted="false">"Játssza újra a commitjaidat a tetején · folytat egy rebase-t"</string>
+    <string name="git_m3_rebase_theirs">"Új a %1$s-on · %2$d"</string>
+    <string name="git_m3_rebase_yours">"A commitjaid újrajátszáshoz · %1$d"</string>
+    <string name="git_m3_refresh_branches" formatted="false">"Frissítse az ágakat"</string>
+    <string name="git_m3_remote" formatted="false">"Távoli"</string>
+    <string name="git_m3_remote_access">"lekérés és feltolás · %1$s"</string>
+    <string name="git_m3_remote_pill" formatted="false">"távoli"</string>
+    <string name="git_m3_remote_reading" formatted="false">"Olvassa ennek a tárolónak a távoli helyét…"</string>
+    <string name="git_m3_remove" formatted="false">"Eltávolítás"</string>
+    <string name="git_m3_remove_from_app" formatted="false">"Eltávolítás az alkalmazásból"</string>
+    <string name="git_m3_remove_from_app_body" formatted="false">"A mappa és annak Git története ezen a telefonon marad. Bármikor visszaadhatod."</string>
+    <string name="git_m3_remove_from_app_sub" formatted="false">"Megőrzi a fájlokat és a Git-t. Bármikor visszaadhatod."</string>
+    <string name="git_m3_remove_from_app_title">"Eltávolítja a %1$s-t az alkalmazásból?"</string>
+    <string name="git_m3_remove_tracking_sub" formatted="false">"Megőrzi a fájljaidat. Eltávolítja a Git-t erről a mappáról."</string>
+    <string name="git_m3_replayed_commit" formatted="false">"újrajátszott commit"</string>
+    <string name="git_m3_replayed_label">"Helyi commit visszajátszva · %1$s"</string>
+    <string name="git_m3_resolve" formatted="false">"– Megoldás"</string>
+    <string name="git_m3_resolve_conflict" formatted="false">"Ütközés feloldása"</string>
+    <string name="git_m3_result_current" formatted="false">"Nincs új, amit össze lehetne vonni."</string>
+    <string name="git_m3_result_current_kicker" formatted="false">"Naprakész"</string>
+    <string name="git_m3_result_local_only" formatted="false">"Az eredmény csak ezen a telefonon van. Töltsd fel, amikor készen állsz."</string>
+    <string name="git_m3_result_merged" formatted="false">"A másik oldal változásai bekerültek."</string>
+    <string name="git_m3_result_merged_kicker" formatted="false">"Egyesítve"</string>
+    <string name="git_m3_result_push_confirmed" formatted="false">"GitHub elismerte ezt a commitot."</string>
+    <string name="git_m3_result_push_unconfirmed" formatted="false">"A távoli fél nem erősítette meg a feltöltést. Újrapróbálkozás ugyanazt a commitot küldi el, anélkül, hogy újra összeolvasztaná."</string>
+    <string name="git_m3_result_saved_locally" formatted="false">"Merge commit helyileg mentve."</string>
+    <string name="git_m3_result_unconfirmed" formatted="false">"Itt mentve. A feltöltés nem fejeződött be."</string>
+    <string name="git_m3_result_unconfirmed_kicker" formatted="false">"Összeolvadt · nincs feltöltve"</string>
+    <string name="git_m3_retry_blocked" formatted="false">"Blokkolt commit újrapróbálása"</string>
+    <string name="git_m3_retry_push" formatted="false">"Mentett commit feltöltésének újrapróbálása"</string>
+    <string name="git_m3_return_to_git" formatted="false">"Vissza a Githez"</string>
+    <string name="git_m3_review_folder" formatted="false">"Visszaállított mappa áttekintése"</string>
+    <string name="git_m3_reviewed_plan" formatted="false">"Ellenőrzött terv"</string>
+    <string name="git_m3_saved" formatted="false">"mentve"</string>
+    <string name="git_m3_saved_in" formatted="false">"Mentve ide:"</string>
+    <string name="git_m3_set_aside" formatted="false">"Félretéve"</string>
+    <string name="git_m3_set_upstream" formatted="false">"Felső ág beállítása"</string>
+    <string name="git_m3_show_more">"Mutasson még %1$d-t"</string>
+    <string name="git_m3_skip_commit" formatted="false">"Commit kihagyása"</string>
+    <string name="git_m3_skip_commit_ask" formatted="false">"Commit kihagyása…"</string>
+    <string name="git_m3_staged" formatted="false">"előkészítve"</string>
+    <string name="git_m3_starts_from">"%2$s-tól kezdve %1$s · te maradsz a %2$s-n"</string>
+    <string name="git_m3_stash_changes" formatted="false">"Változtatások elrejtése"</string>
+    <string name="git_m3_stash_explain">"Az elrejtés elteszi őket, és visszaállítja a fájljaidat %1$s-ra. Bármikor visszahozhatod őket."</string>
+    <string name="git_m3_stash_local_note" formatted="false">"Az elrejtett változtatások ezen a telefonon maradnak. Soha nem kerülnek feltöltésre GitHub-ra."</string>
+    <string name="git_m3_stash_on">"%1$s-n"</string>
+    <string name="git_m3_stash_placeholder" formatted="false">"Min dolgoztál közben?"</string>
+    <string name="git_m3_stashed_older" formatted="false">"A régebbi most stash@{1}."</string>
+    <string name="git_m3_stashes" formatted="false">"Stash-ek"</string>
+    <string name="git_m3_stay_on">"Maradjon a %1$s-n"</string>
+    <string name="git_m3_stays_on_disk" formatted="false">"A lemezen marad"</string>
+    <string name="git_m3_stop_tracking" formatted="false">"Követés leállítása…"</string>
+    <string name="git_m3_strategy_always" formatted="false">"Mindig egyesítési commit használata"</string>
+    <string name="git_m3_strategy_always_help">"Egyesítő commitot hoz létre, még akkor is, ha %1$s csak tovább tudna lépni."</string>
+    <string name="git_m3_strategy_ff" formatted="false">"Csak fast-forward"</string>
+    <string name="git_m3_strategy_ff_help">"Csak akkor egyesít, ha %1$s közvetlenül %2$s előtt van. A történetet egyenes vonalban tartja."</string>
+    <string name="git_m3_strategy_prefer" formatted="false">"Fast-forward, ha lehetséges"</string>
+    <string name="git_m3_strategy_prefer_help">"%1$s tovább lép, amikor lehet. Egyébként egyesítő commitot hoz létre."</string>
+    <string name="git_m3_subtitle">"%1$s · %2$s"</string>
+    <string name="git_m3_switch" formatted="false">"Váltás"</string>
+    <string name="git_m3_tag_kind_help" formatted="false">"Üzenettel meg van jegyzetelve. Hagyja üresen a könnyű címkéhez."</string>
+    <string name="git_m3_tag_name" formatted="false">"Címke neve"</string>
     <string name="git_m3_tag_name_invalid" formatted="false">"Adj meg egy érvényes Git-címkenevet."</string>
+    <string name="git_m3_tag_pushed">"%1$s feltöltve."</string>
+    <string name="git_m3_tag_target">"a %1$s-on · legfrissebb a %2$s-on"</string>
+    <string name="git_m3_tags" formatted="false">"Címkék"</string>
+    <string name="git_m3_tags_note" formatted="false">"A commit és push nem küld címkéket. Nyomja fel mindegyiket, amikor a GitHub-on szeretné. A törlés csak erről a telefonról távolítja el a címkét."</string>
+    <string name="git_m3_the_named_remote">"A(z) %1$s távoli"</string>
+    <string name="git_m3_the_remote" formatted="false">"a távoli"</string>
+    <string name="git_m3_this_phone" formatted="false">"ez a telefon"</string>
+    <string name="git_m3_tracking">"követés alatt tartja %1$s"</string>
+    <string name="git_m3_tracking_backup_body" formatted="false">"A GitSync.md ellenőrzi a Git adatok másolatát és a ZIP fájlját, majd leválasztja ezt a mappát. A munkafájljaid a helyükön maradnak."</string>
+    <string name="git_m3_tracking_backup_title" formatted="false">"Eltávolítani a követést és megtartani egy biztonsági másolatot?"</string>
+    <string name="git_m3_tracking_cap">"%1$s követés"</string>
+    <string name="git_m3_tracking_permanent_body" formatted="false">"Csak a felülvizsgált .git adatok törlődnek. A munkafájljaid a helyükön maradnak, de ennek a telefonnak a Git előzményei nem állíthatók vissza egy másik másolat nélkül."</string>
+    <string name="git_m3_tracking_removed" formatted="false">"Követés eltávolítva"</string>
+    <string name="git_m3_tracking_removed_backup_toast" formatted="false">"Git követés eltávolítva. Ellenőrzött biztonsági másolat mentve."</string>
+    <string name="git_m3_tracking_removed_kept" formatted="false">"Git-követés eltávolítva · munkafájlok megtartva"</string>
+    <string name="git_m3_tracking_review_body" formatted="false">"A fájljaid ott maradnak, ahol vannak. A Git történetük másolata eltávolításra került ebből a mappából."</string>
+    <string name="git_m3_tracking_stale" formatted="false">"A mappa megváltozott azóta, hogy felülvizsgáltad. Mégse és újra felülvizsgálat."</string>
+    <string name="git_m3_uncommitted_plain_any" formatted="false">"Elkötelezetlen szerkesztések, sima fájlként"</string>
+    <string name="git_m3_unresolved" formatted="false">"Feloldatlan"</string>
+    <string name="git_m3_update" formatted="false">"frissítés"</string>
+    <string name="git_m3_upstream_body">"Válaszd ki, honnan és hova húz %1$s és tolja. A fájlok, elkötelezések és mentett kapcsolatok változatlanok maradnak."</string>
+    <string name="git_m3_upstream_help" formatted="false">"Upstream nélkül a húzás és tolás nem fogja tudni, hova menjen."</string>
+    <string name="git_m3_use_branch">"Használd a %1$s verziót"</string>
+    <string name="git_m3_use_edited" formatted="false">"Használd az általam szerkesztettet verziót"</string>
+    <string name="git_m3_use_phone" formatted="false">"Használd ennek a telefonnak a verzióját"</string>
+    <string name="git_m3_use_remote">"Használd %1$s verzióját"</string>
+    <string name="git_m3_vault_settings" formatted="false">"Széfbeállítások"</string>
+    <string name="git_m3_vs">"vs %1$s"</string>
+    <string name="git_m3_what_each_does" formatted="false">"Mit csinál mindegyik"</string>
+    <string name="git_m3_workspace" formatted="false">"Munkaterület"</string>
+    <string name="git_m3_yours">"↑%1$d az Öné"</string>
     <string name="git_native_public_only" formatted="false">"A Git natív protokollja csak nyilvános hozzáférést támogat. Hitelesítéshez használj HTTPS-t vagy SSH-t."</string>
     <string name="gitops_action_failed" formatted="false">"A Git nem tudta befejezni ezt a műveletet"</string>
     <string name="gitops_branch_action_failed" formatted="false">"Az ágművelet nem fejeződött be"</string>
@@ -380,6 +1076,22 @@
     <string name="help_title" formatted="false">"Segítség"</string>
     <string name="history_screen" formatted="false">"Előzmények"</string>
     <string name="http_transport_warning" formatted="false">"A HTTP nem titkosított. A tároló adatai és a megadott felhasználónév vagy token átvitel közben olvasható. Ha elérhető, használj HTTPS-t."</string>
+    <string name="l10n_a11y_pair">"%1$s, %2$s"</string>
+    <string name="l10n_added_count">"+%1$d"</string>
+    <string name="l10n_background_unavailable" formatted="false">"Background Sync nem elérhető"</string>
+    <string name="l10n_clone_preview_error" formatted="false">"Hitelesítés sikertelen. Jelentkezz be újra és próbáld újra."</string>
+    <string name="l10n_count">"%1$d"</string>
+    <string name="l10n_meta_pair">"%1$s · %2$s"</string>
+    <string name="l10n_not_vault_file" formatted="false">"Nem egy fájl ebben a tárolóban"</string>
+    <string name="l10n_push_local_branch" formatted="false">"Váltson egy helyi ágra tolás előtt"</string>
+    <string name="l10n_removed_count">"−%1$d"</string>
+    <string name="l10n_save_conditions" formatted="false">"Nem lehetett menteni a Background Sync feltételeket"</string>
+    <string name="l10n_save_default_author" formatted="false">"Nem sikerült menteni az alapértelmezett szerzőt"</string>
+    <string name="l10n_save_ssh_key" formatted="false">"Nem sikerült menteni ennek a telefonnak a SSH kulcsát"</string>
+    <string name="l10n_save_theme" formatted="false">"Nem sikerült menteni a témát"</string>
+    <string name="l10n_save_vault_preferences" formatted="false">"Nem sikerült menteni a tárhely beállításait"</string>
+    <string name="l10n_unsupported_vault_preference" formatted="false">"Nem támogatott tároló beállítás"</string>
+    <string name="l10n_vault_settings_failed" formatted="false">"Nem sikerült frissíteni a tároló beállításait"</string>
     <string name="language_settings_legacy" formatted="false">"Az Android 13 előtti verziókban az alkalmazás az eszköz nyelvét használja."</string>
     <string name="language_settings_title" formatted="false">"Nyelv"</string>
     <string name="language_settings_unavailable" formatted="false">"Nem sikerült megnyitni a nyelvi beállításokat."</string>
@@ -421,12 +1133,213 @@
     <string name="lfs_locks_server">"LFS-kiszolgáló: %1$s"</string>
     <string name="lfs_locks_title" formatted="false">"Kiszolgálói zárolások"</string>
     <string name="lfs_locks_unsupported" formatted="false">"Ez a kiszolgáló nem támogatja a Git LFS-zárolásokat."</string>
+    <string name="lfs_m3_allow_downloads" formatted="false">"Letöltések engedélyezése"</string>
+    <string name="lfs_m3_allow_uploads" formatted="false">"Feltöltések engedélyezése"</string>
+    <string name="lfs_m3_apply_rules" formatted="false">"Szabályok alkalmazása"</string>
+    <string name="lfs_m3_apply_tracking" formatted="false">"Követési beállítás alkalmazása"</string>
+    <string name="lfs_m3_approval_scope" formatted="false">"Ellenőrizze ezt a címet a tároló tulajdonosánál. Az engedély csak erre a tárolóra, távoli kapcsolatára, végpontra és irányra vonatkozik ezen a telefonon."</string>
+    <string name="lfs_m3_approvals_title" formatted="false">"LFS-végpontok jóváhagyásai"</string>
+    <string name="lfs_m3_attention" formatted="false">"A Git LFS figyelmet igényel"</string>
+    <string name="lfs_m3_auth_new" formatted="false">"Külön felhasználónév és token"</string>
+    <string name="lfs_m3_auth_reuse" formatted="false">"Mentett végpont-hitelesítő adatok használata"</string>
+    <string name="lfs_m3_branch_remote">"%1$s · távoli %2$s"</string>
+    <string name="lfs_m3_cache_missing" formatted="false">"Nincs a gyorsítótárban"</string>
+    <string name="lfs_m3_cache_verified" formatted="false">"Ellenőrzött gyorsítótár"</string>
+    <string name="lfs_m3_cancel" formatted="false">"Mégsem"</string>
+    <string name="lfs_m3_candidate_changed">"%1$s · módosítva, még nincs nyomon követve"</string>
+    <string name="lfs_m3_candidate_new">"%1$s · új, még nincs nyomon követve"</string>
+    <string name="lfs_m3_check_ownership" formatted="false">"Tulajdonjog ellenőrzése"</string>
+    <string name="lfs_m3_create_body" formatted="false">"Más kapcsolatok zároltnak látják, amíg fel nem szabadítja. Ez a telefonon semmit sem változtat."</string>
+    <string name="lfs_m3_download_body" formatted="false">"Ez a tároló külön LFS szerverről szeretné letölteni a fájl tartalmát."</string>
+    <string name="lfs_m3_download_missing" formatted="false">"Hiányzó tartalom letöltése"</string>
+    <string name="lfs_m3_download_progress" formatted="false">"Letöltés előrehaladása"</string>
+    <string name="lfs_m3_download_title" formatted="false">"Engedélyezed az LFS-letöltéseket?"</string>
+    <string name="lfs_m3_downloading_prepare" formatted="false">"Hiányzó tartalmak letöltése"</string>
+    <string name="lfs_m3_downloads" formatted="false">"Letöltések"</string>
+    <string name="lfs_m3_endpoint_auth" formatted="false">"Végpont-hitelesítés"</string>
+    <string name="lfs_m3_endpoints_empty" formatted="false">"Nincsenek jóváhagyott egyéni LFS-végpontok"</string>
+    <string name="lfs_m3_endpoints_intro" formatted="false">"Külön LFS szerverek, amelyeket a tárolóid használhatnak. A visszavonás leállítja a jövőbeni átviteleket ebbe az irányba; ami már fut, az befejezheti."</string>
+    <string name="lfs_m3_endpoints_none" formatted="false">"Beállítások · nincs jóváhagyva"</string>
+    <string name="lfs_m3_endpoints_title" formatted="false">"LFS végpontok"</string>
+    <string name="lfs_m3_error_changed" formatted="false">"A jóváhagyások a felülvizsgálat során változtak. Töltsd újra őket, és ellenőrizd újra az átviteleket."</string>
+    <string name="lfs_m3_ext_note_existing" formatted="false">"A fájlok, amelyeknek már van saját nyomon követési választása, megtartják azt."</string>
+    <string name="lfs_m3_ext_note_limits" formatted="false">"A figyelmen kívül hagyott fájlok figyelmen kívül maradnak. A tárolási korlátok a Git gazdától függenek."</string>
+    <string name="lfs_m3_ext_note_stage" formatted="false">"Csak a .gitattributes változik. A fájlokat állítsd színpadra, hogy pointerekké váljanak."</string>
+    <string name="lfs_m3_ext_scope" formatted="false">"Lefedi az aktuális és jövőbeni egyező fájlokat minden mappában. Az egyezés kis- és nagybetű érzékeny."</string>
+    <string name="lfs_m3_ext_title" formatted="false">"Követed az egyező kiterjesztéseket?"</string>
+    <string name="lfs_m3_extensions_updated" formatted="false">"A kiterjesztési szabályok frissítve. Stage .gitattributes és a fájlokat, majd commit."</string>
+    <string name="lfs_m3_fact_endpoint" formatted="false">"LFS-végpont"</string>
+    <string name="lfs_m3_fact_remote" formatted="false">"Git-távoli tároló"</string>
+    <string name="lfs_m3_fact_repository" formatted="false">"Tároló"</string>
+    <string name="lfs_m3_force_ack" formatted="false">"Értem, valaki még mindig szerkesztheti ezt a fájlt."</string>
+    <string name="lfs_m3_force_title" formatted="false">"Más tulajdonos zárolásának kényszerített feloldása?"</string>
+    <string name="lfs_m3_force_warning" formatted="false">"Ez eltávolít egy zárolást, amelyet egy másik kapcsolat tart. Először egyeztess a tulajdonosával."</string>
+    <string name="lfs_m3_http_warning" formatted="false">"A HTTP titkosítatlan. A repository adatai, valamint bármilyen felhasználónév vagy token olvasható átvitel közben. Használj HTTPS-t, amikor lehet."</string>
+    <string name="lfs_m3_keep_body" formatted="false">"Hozzáad explicit regular-Git szabályokat. A tartalma bekerül a commitjaidba. A 100 MiB-nál nagyobb fájlokhoz továbbra is LFS szükséges."</string>
+    <string name="lfs_m3_keep_git" formatted="false">"Tartsd a regular Git alatt."</string>
+    <string name="lfs_m3_keep_title" formatted="false">"Tartsuk ezeket a regular Git alatt?"</string>
+    <string name="lfs_m3_list_read_only" formatted="false">"Csak olvasható lista"</string>
+    <string name="lfs_m3_lock_a_file" formatted="false">"Fájl zárolása"</string>
+    <string name="lfs_m3_lockable_caption" formatted="false">"Csak az .gitattributes-ban zárolhatónak jelölt fájlok jelennek meg itt."</string>
+    <string name="lfs_m3_locked" formatted="false">"zárolva"</string>
+    <string name="lfs_m3_locked_on_server" formatted="false">"A szerveren zárolva"</string>
+    <string name="lfs_m3_locks_empty" formatted="false">"Ezen az ágon semmi sincs zárolva."</string>
+    <string name="lfs_m3_locks_intro" formatted="false">"Ellenőrizd a tulajdonjogot, mielőtt megváltoztatnád a zárolást. A zárolások a szerveren vannak; a fájljaid és a commitjaid a helyükön maradnak."</string>
+    <string name="lfs_m3_match_extensions" formatted="false">"Kiterjesztések egyezése…"</string>
+    <string name="lfs_m3_needs_choice" formatted="false">"Követés választása szükséges"</string>
+    <string name="lfs_m3_no_lockable" formatted="false">"Nincsenek feloldatlan zárolható fájlok."</string>
+    <string name="lfs_m3_no_tracked" formatted="false">"Ezen az ágon még nincsenek LFS-ben tárolt fájlok."</string>
+    <string name="lfs_m3_not_shared" formatted="false">"A GitHub bejelentkezésed nincs megosztva ezzel a szerverrel. A különböző hitelesítő adatok titkosítva vannak ezen a telefonon. Kezeld őket a Beállítások › LFS végpontok menüben."</string>
+    <string name="lfs_m3_ok" formatted="false">"OK"</string>
+    <string name="lfs_m3_owned_here" formatted="false">"Ezzel a kapcsolattal tulajdonolt"</string>
+    <string name="lfs_m3_owner">"Tulajdonos: %1$s"</string>
+    <string name="lfs_m3_public_access" formatted="false">"Nyilvános hozzáférés"</string>
+    <string name="lfs_m3_refresh_required" formatted="false">"Ez működött, de az új LFS állapot nem töltődött be. Töltsd újra, mielőtt bármi mást csinálsz."</string>
+    <string name="lfs_m3_release_body" formatted="false">"Mások újra zárolhatják és szerkeszthetik azt. A helyi fájlod és a commitjaid változatlanok maradnak."</string>
+    <string name="lfs_m3_release_review" formatted="false">"Feloldás…"</string>
+    <string name="lfs_m3_reload" formatted="false">"LFS-állapot újratöltése"</string>
+    <string name="lfs_m3_reset_all" formatted="false">"Minden LFS-végpontjóváhagyás alaphelyzetbe állítása"</string>
+    <string name="lfs_m3_reset_body" formatted="false">"Eltávolít minden egyedi végpont jóváhagyást és annak mentett hitelesítő adatait ezen a telefonon. Minden végpontnak és iránynak új felülvizsgálatra lesz szüksége."</string>
+    <string name="lfs_m3_reset_confirm" formatted="false">"Jóváhagyások alaphelyzetbe állítása"</string>
+    <string name="lfs_m3_reset_title" formatted="false">"Minden LFS-végpontjóváhagyás alaphelyzetbe állítása?"</string>
+    <string name="lfs_m3_review_changed" formatted="false">"A zárolások változtak azóta, hogy megnyitottad. Mégsem, és ellenőrizd újra a tulajdonjogot."</string>
+    <string name="lfs_m3_revoke" formatted="false">"Visszavonás"</string>
+    <string name="lfs_m3_revoke_download_body">"A jövőbeli letöltések a %1$s-ról új felülvizsgálatot igényelnek. A feltöltési jóváhagyás és annak mentett hitelesítő adatai megmaradnak."</string>
+    <string name="lfs_m3_revoke_download_title" formatted="false">"Visszavonod a letöltési jóváhagyást?"</string>
+    <string name="lfs_m3_revoke_downloads" formatted="false">"Letöltések engedélyének visszavonása"</string>
+    <string name="lfs_m3_revoke_upload_body">"A jövőbeli feltöltések a %1$s-ra új felülvizsgálatot igényelnek. A letöltési jóváhagyás és annak mentett hitelesítő adatai megmaradnak."</string>
+    <string name="lfs_m3_revoke_upload_title" formatted="false">"Visszavonod a feltöltési jóváhagyást?"</string>
+    <string name="lfs_m3_revoke_uploads" formatted="false">"Feltöltések engedélyének visszavonása"</string>
+    <string name="lfs_m3_scope_read_only" formatted="false">"Csak olvasható lista · tulajdonjog nem ellenőrzött"</string>
+    <string name="lfs_m3_scope_verified" formatted="false">"Tulajdonjog ez azzal a kapcsolattal ellenőrizve"</string>
+    <string name="lfs_m3_secret" formatted="false">"token vagy jelszó"</string>
+    <string name="lfs_m3_separate_credentials" formatted="false">"Külön titkosított hitelesítő adatok"</string>
+    <string name="lfs_m3_server">"LFS szerver %1$s"</string>
+    <string name="lfs_m3_ssh_authorization" formatted="false">"SSH-kiszolgálói engedélyezés"</string>
+    <string name="lfs_m3_ssh_review" formatted="false">"Ez a HTTP végpont rövid ideig érvényes hitelesítést szerez a hitelesített SSH szervertől. Az Ön SSH kulcsa ezen a telefonon marad. A hitelesítés menet közben olvasható, de soha nem kerül mentésre."</string>
+    <string name="lfs_m3_stale" formatted="false">"A fájlok azóta változtak, hogy megnyitotta őket. Mégse, és nézze át újra."</string>
+    <string name="lfs_m3_state_pointer" formatted="false">"Mutató · tartalom letöltése"</string>
+    <string name="lfs_m3_stored_body" formatted="false">"A commitok kis mutatókat tartanak. A pull letölti a tartalmakat, a push először feltölti azokat."</string>
+    <string name="lfs_m3_stored_kicker" formatted="false">"LFS-ben tárolva"</string>
+    <string name="lfs_m3_stored_locked">"%1$s · %2$d zárolva"</string>
+    <string name="lfs_m3_subtitle">"%1$s · %2$s · Git LFS"</string>
+    <string name="lfs_m3_tab_files" formatted="false">"Fájlok"</string>
+    <string name="lfs_m3_tab_locks" formatted="false">"Zárolások"</string>
+    <string name="lfs_m3_title" formatted="false">"Nagy fájlok"</string>
+    <string name="lfs_m3_track_body" formatted="false">"Pontos elérési út LFS szabályokat ad hozzá az alábbi fájlokhoz. A tárolási és sávszélesség-korlátok a Git hosttól függenek. Készítse elő a változtatásokat, majd commitolja."</string>
+    <string name="lfs_m3_track_title" formatted="false">"Használja LFS-t ezekhez a fájlokhoz?"</string>
+    <string name="lfs_m3_tracked_files" formatted="false">"Követett fájlok"</string>
+    <string name="lfs_m3_tracking_caption" formatted="false">"Csak .gitattributes változik. A fájljaid ott maradnak, amíg nem állítod színpadra őket."</string>
+    <string name="lfs_m3_tracking_updated" formatted="false">"A nyomkövetési szabályok frissültek. Állítsd színpadra .gitattributes és a fájlokat, majd kövesd el."</string>
+    <string name="lfs_m3_unsupported" formatted="false">"Ez a szerver nem támogatja a Git LFS zárolást."</string>
+    <string name="lfs_m3_upload_body" formatted="false">"Ez a tároló a fájltartalmakat külön LFS szerverre szeretné küldeni."</string>
+    <string name="lfs_m3_upload_title" formatted="false">"Engedélyezed az LFS-feltöltéseket?"</string>
+    <string name="lfs_m3_uploads" formatted="false">"Feltöltések"</string>
+    <string name="lfs_m3_username" formatted="false">"LFS-végpont felhasználóneve"</string>
     <string name="lfs_tracking_updated" formatted="false">"A követési szabályok frissültek. Tekintsd át és add az indexhez a .gitattributes fájlt és a kijelölt fájlokat, majd készíts commitot."</string>
     <string name="m3_editor_preview" formatted="false">"Előnézet"</string>
     <string name="m3_editor_write" formatted="false">"Írás"</string>
     <string name="m3_open_in_editor" formatted="false">"Megnyitás szerkesztőben"</string>
     <string name="m3_paywall_paid_with_play" formatted="false">"A Google Play-fiókoddal fizetsz"</string>
     <string name="m3_pick_a_file" formatted="false">"Válassz egy fájlt a módosításai megtekintéséhez."</string>
+    <string name="m3home_add_first" formatted="false">"Első széf hozzáadása"</string>
+    <string name="m3home_add_vault" formatted="false">"Széf hozzáadása"</string>
+    <string name="m3home_auth_body" formatted="false">"A jegyzeteid biztonságban vannak ezen a telefonon. Semmi sem veszett el."</string>
+    <string name="m3home_auth_headline" formatted="false">"A szinkronizálás szünetel."</string>
+    <string name="m3home_auth_held">"↑%1$d visszatartva"</string>
+    <string name="m3home_auth_kicker">"A GitHub-bejelentkezés lejárt · %1$s"</string>
+    <string name="m3home_auth_paused" formatted="false">"szünetel"</string>
+    <string name="m3home_auth_row_meta">"%1$s · utoljára szinkronizálva %2$s"</string>
+    <string name="m3home_auth_sign_in" formatted="false">"Bejelentkezés GitHub-bal"</string>
+    <string name="m3home_auth_unaffected_label" formatted="false">"Nem érintett"</string>
+    <string name="m3home_auth_waiting_label" formatted="false">"Várakozás bejelentkezésre"</string>
+    <string name="m3home_badge_both">"↓%1$d ↑%2$d"</string>
+    <string name="m3home_badge_checking" formatted="false">"Ellenőrzés"</string>
+    <string name="m3home_badge_in_sync" formatted="false">"Szinkronban"</string>
+    <string name="m3home_badge_local_only" formatted="false">"csak helyi"</string>
+    <string name="m3home_badge_needs_you" formatted="false">"Szükség van rád"</string>
+    <string name="m3home_badge_sync_failed" formatted="false">"Nem szinkronizált"</string>
+    <string name="m3home_badge_syncing" formatted="false">"szinkronizálás"</string>
+    <string name="m3home_badge_to_pull">"↓%1$d pullra vár"</string>
+    <string name="m3home_badge_to_push">"↑%1$d pushra vár"</string>
+    <string name="m3home_badge_unreadable" formatted="false">"Nem olvasható"</string>
+    <string name="m3home_cred_github" formatted="false">"GitHub számla"</string>
+    <string name="m3home_cred_local" formatted="false">"ezen a telefonon"</string>
+    <string name="m3home_cred_public" formatted="false">"– közösségi adatok"</string>
+    <string name="m3home_cred_ssh" formatted="false">"SSH kulcs"</string>
+    <string name="m3home_cred_token" formatted="false">"token"</string>
+    <string name="m3home_empty_rail_description" formatted="false">"Telefon és GitHub, még nincs szinkronizálni való"</string>
+    <string name="m3home_empty_rail_nothing" formatted="false">"nincs mit szinkronizálni"</string>
+    <string name="m3home_empty_signed_in">"bejelentkezve: @%1$s"</string>
+    <string name="m3home_empty_title" formatted="false">"Még nincsenek széfek."</string>
+    <string name="m3home_filter_all">"Mind (%1$d)"</string>
+    <string name="m3home_filter_attention">"Figyelem: %1$d"</string>
+    <string name="m3home_filter_empty_attention" formatted="false">"Nincs, amire szükséged lenne. Minden tároló szinkronban van."</string>
+    <string name="m3home_filter_empty_pinned" formatted="false">"Még nincs kitűzött tároló. Hosszan nyomj egy tárolóra, és válaszd a \"Kitűzés a tetejére\" lehetőséget."</string>
+    <string name="m3home_filter_pinned" formatted="false">"Kitűzve"</string>
+    <string name="m3home_headline_ready_accent" formatted="false">"szinkronban."</string>
+    <string name="m3home_how_title" formatted="false">"Hogyan működik"</string>
+    <string name="m3home_meta_checked">"ellenőrizve: %1$s"</string>
+    <string name="m3home_meta_checking">"ellenőrzés %1$d"</string>
+    <string name="m3home_meta_in_sync">"%1$d szinkronban"</string>
+    <string name="m3home_meta_lfs">"%1$s LFS"</string>
+    <string name="m3home_meta_loading" formatted="false">"Ellenőrzés…"</string>
+    <string name="m3home_meta_never_checked" formatted="false">"Még nincs ellenőrizve"</string>
+    <string name="m3home_meta_not_synced" formatted="false">"még nincs szinkronizálva"</string>
+    <string name="m3home_meta_unreadable" formatted="false">"nem olvasható ez a mappa"</string>
+    <string name="m3home_offline_accent" formatted="false">"Behozzuk a lemaradást."</string>
+    <string name="m3home_offline_fab" formatted="false">"Online szinkronizál"</string>
+    <string name="m3home_offline_headline" formatted="false">"Írjon tovább."</string>
+    <string name="m3home_offline_last_known" formatted="false">"utolsó ismert: szinkronban"</string>
+    <string name="m3home_offline_last_known_behind">"utolsó ismert: ↓%1$d"</string>
+    <string name="m3home_offline_meta">"nincs kapcsolat · utolsó ellenőrzés: %1$s"</string>
+    <string name="m3home_offline_meta_never" formatted="false">"nincs kapcsolat"</string>
+    <string name="m3home_offline_queued">"↑%1$d sorban"</string>
+    <string name="m3home_offline_row_meta">"%1$s · szinkronizálva %2$s"</string>
+    <string name="m3home_onboarding_accent" formatted="false">"Mindig lépésben."</string>
+    <string name="m3home_onboarding_body" formatted="false">"Klónozz egy tárolót, írj Obsidianban vagy más alkalmazásban, és szinkronizálj egy koppintással."</string>
+    <string name="m3home_onboarding_demo" formatted="false">"Nézz körül egy bemutató tárolóval"</string>
+    <string name="m3home_onboarding_github" formatted="false">"Folytatás GitHubbal"</string>
+    <string name="m3home_onboarding_headline" formatted="false">"A jegyzeteid.\nValódi git."</string>
+    <string name="m3home_onboarding_other" formatted="false">"SSH, token vagy más kiszolgáló"</string>
+    <string name="m3home_onboarding_rail" formatted="false">"A telefon jegyzetei és a GitHub commitjai egyetlen szinkronpontban találkoznak"</string>
+    <string name="m3home_onboarding_save_error" formatted="false">"Nem sikerült menteni a választásod. Próbáld újra."</string>
+    <string name="m3home_onboarding_this_phone" formatted="false">"ez a telefon"</string>
+    <string name="m3home_pin" formatted="false">"Kitűzés felülre"</string>
+    <string name="m3home_pin_failed" formatted="false">"Nem sikerült menteni a kitűzést. Próbáld újra."</string>
+    <string name="m3home_pinned" formatted="false">"Kitűzve"</string>
+    <string name="m3home_rail_github" formatted="false">"GitHub"</string>
+    <string name="m3home_rail_phone" formatted="false">"Telefon"</string>
+    <string name="m3home_rail_remote" formatted="false">"Távoli"</string>
+    <string name="m3home_remove" formatted="false">"– eltávolítás GitSync.md"</string>
+    <string name="m3home_row_actions" formatted="false">"Tároló műveletek"</string>
+    <string name="m3home_session_dismiss" formatted="false">"Bezárás"</string>
+    <string name="m3home_settings" formatted="false">"Beállítások"</string>
+    <string name="m3home_settings_signed_in">"Beállítások, bejelentkezve mint %1$s"</string>
+    <string name="m3home_start_github" formatted="false">"Klónozás GitHubról"</string>
+    <string name="m3home_start_github_detail" formatted="false">"válassz egyet a tárolóid közül"</string>
+    <string name="m3home_start_local" formatted="false">"Keresd a klónokat ezen a telefonon"</string>
+    <string name="m3home_start_local_detail" formatted="false">"Obsidian, MGit, Termux…"</string>
+    <string name="m3home_start_publish" formatted="false">"Mappa közzététele"</string>
+    <string name="m3home_start_publish_detail" formatted="false">"egy mappából új tárolót készít"</string>
+    <string name="m3home_start_url" formatted="false">"Illessz be egy URL-t"</string>
+    <string name="m3home_start_url_detail" formatted="false">"bármely nyilvános vagy privát távoli Git-tároló"</string>
+    <string name="m3home_start_with" formatted="false">"Kezdés ezzel:"</string>
+    <string name="m3home_sync_all" formatted="false">"Összes szinkronizálása"</string>
+    <string name="m3home_sync_all_meta">"↓%1$d ↑%2$d"</string>
+    <string name="m3home_sync_busy" formatted="false">"A \"Pull all\" már fut. Próbálkozz újra, amikor befejeződik."</string>
+    <string name="m3home_sync_done">"Szinkronizálva · lehúzva %1$d · feltöltve %2$d"</string>
+    <string name="m3home_sync_failed">"Nem sikerült szinkronizálni %1$s"</string>
+    <string name="m3home_sync_start_failed" formatted="false">"A \"Sync all\" nem tudott elindulni. Ellenőrizd a tárolólistádat a Beállításokban."</string>
+    <string name="m3home_syncing" formatted="false">"szinkronizálás"</string>
+    <string name="m3home_syncing_meta">"%1$d / %2$d"</string>
+    <string name="m3home_time_days">"%1$d napja"</string>
+    <string name="m3home_time_hours">"%1$dh ezelőtt"</string>
+    <string name="m3home_time_minutes_long">"%1$d perce"</string>
+    <string name="m3home_time_minutes_short">"%1$dm időjelem előtt"</string>
+    <string name="m3home_time_now" formatted="false">"– mostanra"</string>
+    <string name="m3home_time_yesterday" formatted="false">"tegnap"</string>
+    <string name="m3home_unpin" formatted="false">"Kitűzés megszüntetése"</string>
     <string name="modified" formatted="false">"Módosítva"</string>
     <string name="move_cancelled" formatted="false">"Áthelyezés megszakítva. Az eredeti munkapéldány megmaradt."</string>
     <string name="move_confirm_action" formatted="false">"Áthelyezés"</string>
@@ -450,6 +1363,22 @@
     <string name="move_recovery_done" formatted="false">"Az áthelyezés helyreállítása befejeződött"</string>
     <string name="move_recovery_removed" formatted="false">"Helyreállítási másolat eltávolítva"</string>
     <string name="move_title_restore" formatted="false">"Helyreállítási másolat visszaállítása"</string>
+    <string name="newfile_m3_blank" formatted="false">"Üres"</string>
+    <string name="newfile_m3_builtin_idea" formatted="false">"ötlet"</string>
+    <string name="newfile_m3_create_open" formatted="false">"Létrehozás és megnyitás"</string>
+    <string name="newfile_m3_exists">"%1$s már létezik itt: %2$s. Próbáljon másik nevet."</string>
+    <string name="newfile_m3_file_name" formatted="false">"Fájlnév"</string>
+    <string name="newfile_m3_folder" formatted="false">"Mappa"</string>
+    <string name="newfile_m3_folder_name" formatted="false">"Mappa neve"</string>
+    <string name="newfile_m3_in">"a %1$s-ban"</string>
+    <string name="newfile_m3_invalid" formatted="false">"Használjon nevet / vagy \\ nélkül."</string>
+    <string name="newfile_m3_invalid_dots" formatted="false">"A \".\" és \"..\" fenntartott nevek. Próbáljon másikat."</string>
+    <string name="newfile_m3_note" formatted="false">"Jegyzet"</string>
+    <string name="newfile_m3_template">"Sablon · %1$s"</string>
+    <string name="newfile_m3_title_folder" formatted="false">"Új mappa"</string>
+    <string name="newfile_m3_title_note" formatted="false">"Új jegyzet"</string>
+    <string name="newfile_m3_today" formatted="false">"Mai dátum"</string>
+    <string name="newfile_m3_too_long" formatted="false">"Ez a név túl hosszú. Használjon rövidebbet."</string>
     <string name="notes_acknowledge" formatted="false">"Értem"</string>
     <string name="notes_connections_body" formatted="false">"Kezeld a GitHub-fiókokat és a tároló szerzői adatait. Kapcsolódj HTTPS-sel vagy SSH-val, válassz tárhelyet a klónozáshoz, csatlakoztasd újra a helyi másolatokat, és ellenőrizd a tárolók áthelyezését vagy eltávolítását."</string>
     <string name="notes_connections_title" formatted="false">"Kapcsolatok és tárhely"</string>
@@ -458,6 +1387,10 @@
     <string name="notes_version">"Android %1$s · build %2$d"</string>
     <string name="notes_workflow_body" formatted="false">"Böngéssz és szerkessz fájlokat, ellenőrizd a stagingben lévő és azon kívüli diffeket, commitolj helyileg, töltsd fel a meglévő commitokat, és dolgozz ágakkal, előzményekkel, tagekkel és rebase-zel."</string>
     <string name="notes_workflow_title" formatted="false">"Tároló munkafolyamata"</string>
+    <string name="notification_m3_open_obsidian" formatted="false">"Megnyitás Obsidian"</string>
+    <string name="notification_m3_pulled" formatted="false">"Új módosítások húzása a háttérben."</string>
+    <string name="notification_m3_see_changes" formatted="false">"Módosítások megtekintése"</string>
+    <string name="notification_m3_updated">"%1$s frissült"</string>
     <string name="obsidian_forgotten" formatted="false">"A jövőbeli átadások le vannak tiltva. A mappa újracsatlakoztatásához készíts elő új kapcsolatot."</string>
     <string name="obsidian_interrupted" formatted="false">"A kapcsolat leállt. Egyetlen kérés sem ismétlődik meg automatikusan. Újabb Obsidian-próba előtt készíts elő új kapcsolatot."</string>
     <string name="obsidian_return" formatted="false">"Vissza az Obsidianhoz"</string>
@@ -560,6 +1493,47 @@
     <string name="pull_all_widget_description" formatted="false">"Frissítések letöltése és fast-forward minden helyi adattáron a GitSync.md megnyitása nélkül."</string>
     <string name="pull_all_widget_subtitle" formatted="false">"Csak letöltés és fast-forward"</string>
     <string name="pull_screen" formatted="false">"Lekérés"</string>
+    <string name="pullall_m3_again" formatted="false">"Összes lehúzása újra"</string>
+    <string name="pullall_m3_attention_blocked" formatted="false">"Változatlanul megtartva. Először kötelezze el vagy készítse el a helyi változtatások mentését."</string>
+    <string name="pullall_m3_attention_failed" formatted="false">"Nem sikerült biztonságosan húzni. Ellenőrizze a kapcsolatot és a mappa-hozzáférést."</string>
+    <string name="pullall_m3_attention_lfs" formatted="false">"Húzva. Néhány Git LFS fájl még letöltésre vár."</string>
+    <string name="pullall_m3_background" formatted="false">"Összes lehúzása a háttérben"</string>
+    <string name="pullall_m3_blocked" formatted="false">"Változatlanul megtartva. Először kötelezze el vagy mentse el a helyi változtatásokat, vagy fejezze be a nyitott Git műveletet, majd próbálja újra."</string>
+    <string name="pullall_m3_clear" formatted="false">"Háttér-összegzés törlése"</string>
+    <string name="pullall_m3_clear_body" formatted="false">"Ez törli a legutóbbi háttérösszefoglalót. A tárhelyeid és a beállításaid változatlanok maradnak. A megszakított munka nem indul újra automatikusan."</string>
+    <string name="pullall_m3_clear_confirm" formatted="false">"Összefoglaló törlése"</string>
+    <string name="pullall_m3_clear_title" formatted="false">"Törli a háttérösszefoglalót?"</string>
+    <string name="pullall_m3_complete" formatted="false">"Az Összes lehúzása befejeződött. Tekintsd át a mentett összegzést."</string>
+    <string name="pullall_m3_control_failed" formatted="false">"Ez nem változott. Nyisd meg újra ezt a képernyőt, és próbáld újra."</string>
+    <string name="pullall_m3_counts">"Frissítve %1$d · Aktuális %2$d · LFS %3$d · Blokkolva %4$d · Sikertelen %5$d"</string>
+    <string name="pullall_m3_current" formatted="false">"Nincs bejövő módosítás"</string>
+    <string name="pullall_m3_empty" formatted="false">"Nincs még tárhely, amit lehúzhatnál. Előbb klónozz vagy adj hozzá egyet."</string>
+    <string name="pullall_m3_failed" formatted="false">"Minden lehúzás hibával megállt. Néhány lehúzás talán befejeződött. Ellenőrizd az összefoglalót és minden tárhelyet, mielőtt újra lefuttatnád."</string>
+    <string name="pullall_m3_help" formatted="false">"Add hozzá a Minden lehúzás widgetet a kezdőképernyődhöz, vagy a csempét a Gyorsbeállításokhoz. Mindkettő egyszer fut anélkül, hogy megnyitnád az alkalmazást. Tégy vissza ide, hogy lásd, mi történt."</string>
+    <string name="pullall_m3_interrupted" formatted="false">"A Minden lehúzás megszakadt, és nem indul újra magától. Lehet, hogy egy lehúzás előbb befejeződött. Ellenőrizd minden tárolót, mielőtt újra futtatnád."</string>
+    <string name="pullall_m3_item_failed" formatted="false">"Nem sikerült biztonságosan lehúzni. Ellenőrizd a kapcsolatot és a mappa-hozzáférést, majd nézd meg a Git fájlt az eltéréshez."</string>
+    <string name="pullall_m3_lfs" formatted="false">"Lehúzva. Néhány Git LFS fájl még mindig le kell tölteni. Nyisd meg a Git LFS fájlt a próbálkozáshoz."</string>
+    <string name="pullall_m3_not_run" formatted="false">"Nem futott le"</string>
+    <string name="pullall_m3_progress_cd" formatted="false">"Minden lehúzás folyamatban"</string>
+    <string name="pullall_m3_pulling" formatted="false">"Pull folyamatban…"</string>
+    <string name="pullall_m3_running" formatted="false">"A Minden lehúzás fut anélkül, hogy megnyitnád az alkalmazást. A többi megáll, ha megérinted a Leállítás gombot."</string>
+    <string name="pullall_m3_scope" formatted="false">"Minden tárolót lekérni és gyorsan továbbítani ezen a telefonon. Húzd be az összes soha nem lépett szakaszt, commitot vagy push-olt változtatásaidat."</string>
+    <string name="pullall_m3_source_shortcut" formatted="false">"gyorsparancs"</string>
+    <string name="pullall_m3_source_tile" formatted="false">"csempe"</string>
+    <string name="pullall_m3_source_widget" formatted="false">"widget"</string>
+    <string name="pullall_m3_start" formatted="false">"– Mindenet szállítása"</string>
+    <string name="pullall_m3_start_failed" formatted="false">"A \"Pull all\" nem tudott elindulni. Ellenőrizd a tárolód beállításait, és próbáld újra."</string>
+    <string name="pullall_m3_stop" formatted="false">"Lehúzás leállítása"</string>
+    <string name="pullall_m3_stopped" formatted="false">"Leállítva. Egy már húzás alatt lévő tároló valószínűleg befejeződött, ezért ellenőrizd az állapotát újrapróbálkozás előtt. A többi nem indult el."</string>
+    <string name="pullall_m3_stopping" formatted="false">"Leállítás a következő tároló után…"</string>
+    <string name="pullall_m3_surfaces" formatted="false">"Widget és Gyorsbeállítások csempe"</string>
+    <string name="pullall_m3_tile_preview" formatted="false">"GitSync.md\nHúzd be mindet"</string>
+    <string name="pullall_m3_title" formatted="false">"– Mindenet szállítása"</string>
+    <string name="pullall_m3_unreadable" formatted="false">"A mentett háttér-összefoglaló nem olvasható és megmaradt. Töröld, mielőtt újabb háttérfuttatást indítasz."</string>
+    <string name="pullall_m3_updated" formatted="false">"Frissítve a távoli adattárból"</string>
+    <string name="pullall_m3_when_source">"%1$s · a következőből: %2$s"</string>
+    <string name="pullall_m3_widget_name" formatted="false">"– Mindenet szállítása"</string>
+    <string name="pullall_m3_widget_sub" formatted="false">"Csak letöltés és fast-forward"</string>
     <string name="push_all_repositories" formatted="false">"Minden adattár, a később létrehozottak is"</string>
     <string name="push_cancelled" formatted="false">"A GitHub-kapcsolat létrehozása megszakítva."</string>
     <string name="push_channel" formatted="false">"Adattárfrissítések"</string>
@@ -617,6 +1591,7 @@
     <string name="repository_actions_changes">"Módosult elérési utak: %1$d"</string>
     <string name="repository_actions_confirm" formatted="false">"Futtatás egyszer"</string>
     <string name="repository_actions_destination">"Követett ág: %1$s / %2$s"</string>
+    <string name="repository_actions_destination_none" formatted="false">"Felső szint: nincs"</string>
     <string name="repository_actions_dirty" formatted="false">"A helyi változások megakadályozzák a beérkező commitok letöltését. Előbb készíts róluk commitot, vagy tedd őket stashbe."</string>
     <string name="repository_actions_diverged" formatted="false">"A helyi és a távoli előzmények szétváltak. Válassz kifejezetten merge vagy rebase műveletet a Git-vezérlőkben."</string>
     <string name="repository_actions_failed" formatted="false">"A művelet nem fejezhető be. Ellenőrizd a kapcsolatot, a fiókot, a bizalmi beállításokat és a mappa elérését, majd az aktuális állapotot az újrapróbálás előtt."</string>
@@ -681,6 +1656,325 @@
     <string name="resolve_local_superseded" formatted="false">"A kiválasztott tároló megváltozott. Ellenőrizd újra a helyi módosításokat."</string>
     <string name="resolve_local_title" formatted="false">": helyi módosítások elkerülik ezt a kiválasztást."</string>
     <string name="settings_folder_unavailable" formatted="false">"A mappahozzáférés figyelmet igényel"</string>
+    <string name="settings_m3_account_meta">"@%1$s · GitHub"</string>
+    <string name="settings_m3_accounts" formatted="false">"GitHub-fiókok"</string>
+    <string name="settings_m3_app_storage" formatted="false">"Alkalmazástárhely"</string>
+    <string name="settings_m3_author_account_meta">"%1$s · még nincs semmi mentve ebben a tárolóban"</string>
+    <string name="settings_m3_author_account_meta_global">"%1$s · még nincs alapértelmezett mentve"</string>
+    <string name="settings_m3_author_changed" formatted="false">"Ezt a szerzőt a GitSync.md kívül megváltoztatták, talán a Git a Mac gépeden. Töltsd újra, hogy lásd, mit ír most."</string>
+    <string name="settings_m3_author_default" formatted="false">"Standard"</string>
+    <string name="settings_m3_author_email" formatted="false">"Szerző e-mail címe"</string>
+    <string name="settings_m3_author_from_account" formatted="false">"A GitHub fiókodból"</string>
+    <string name="settings_m3_author_global_subtitle" formatted="false">"Minden tároló, aminek nincs saját szerzője"</string>
+    <string name="settings_m3_author_help_changed" formatted="false">"Töltsd újra a mentés előtt, különben felülírod az újabb szerzőt."</string>
+    <string name="settings_m3_author_help_match" formatted="false">"Egyeztesd az Git által a Maceden használt e-mailt, így mindkettő téged fog jelezni."</string>
+    <string name="settings_m3_author_help_noreply" formatted="false">"A GitHub privát címe, így a valódi e-mail címed rejtve marad."</string>
+    <string name="settings_m3_author_intro" formatted="false">"Az új commitok ebben a tárolóban ezt a nevet és e-mailt használják. A már megtett commitok megtartják a szerzőjüket."</string>
+    <string name="settings_m3_author_intro_global" formatted="false">"Az új commitok a tárolóidban ezt a nevet és e-mailt használják, kivéve, ha egy tároló sajátot ment. A már elkészített commitok megtartják a szerzőjüket."</string>
+    <string name="settings_m3_author_name" formatted="false">"Szerző neve"</string>
+    <string name="settings_m3_author_override" formatted="false">"Felülbírálás"</string>
+    <string name="settings_m3_author_preview_message" formatted="false">"Frissítés a GitSync.md-ből"</string>
+    <string name="settings_m3_author_preview_meta">"%1$s &lt;%2$s&gt; · most"</string>
+    <string name="settings_m3_author_preview_title" formatted="false">"A következő commitod így fog szerepelni"</string>
+    <string name="settings_m3_author_reading" formatted="false">"Ennek a trezornak a Git beállításainak olvasása…"</string>
+    <string name="settings_m3_author_save" formatted="false">"Szerző mentése"</string>
+    <string name="settings_m3_author_save_note" formatted="false">"A mentés bezárja ezt az oldalt. Semmi nincs commitálva."</string>
+    <string name="settings_m3_author_saved_global" formatted="false">"Minden trezor számára elmentve"</string>
+    <string name="settings_m3_author_saved_global_meta">"ezen a telefonon · felülírja a %1$s-t"</string>
+    <string name="settings_m3_author_saved_vault" formatted="false">"Elmentve ebben a trezorban"</string>
+    <string name="settings_m3_author_saved_vault_meta">".git/config · felülírja a %1$s-t"</string>
+    <string name="settings_m3_author_scope" formatted="false">"Csak ez a trezor változik. A többi trezorod megtartja a saját szerzőjét, vagy használja a GitHub fiókot, amellyel szinkronizálnak."</string>
+    <string name="settings_m3_author_scope_global" formatted="false">"Azok a trezorok, amelyek saját .git/config fájlban mentett szerzővel rendelkeznek, megtartják azt. Egyetlen trezort még mindig megváltoztathatsz a trezor Beállításainál."</string>
+    <string name="settings_m3_author_use_account" formatted="false">"Használjam helyette a GitHub fiókomat"</string>
+    <string name="settings_m3_author_your_account" formatted="false">"a(z) GitHub fiókod"</string>
+    <string name="settings_m3_background_on">"be · %1$d széf"</string>
+    <string name="settings_m3_background_sync" formatted="false">"Background Sync"</string>
+    <string name="settings_m3_bg_attention_short" formatted="false">"Áttekintés szükséges"</string>
+    <string name="settings_m3_bg_charging" formatted="false">"Töltés"</string>
+    <string name="settings_m3_bg_cond_any" formatted="false">"bármilyen kapcsolat esetén"</string>
+    <string name="settings_m3_bg_cond_both" formatted="false">"csak Wi-Fi-n, töltés közben"</string>
+    <string name="settings_m3_bg_cond_charging" formatted="false">"csak töltés közben"</string>
+    <string name="settings_m3_bg_cond_wifi" formatted="false">"csak Wi-Fi-n"</string>
+    <string name="settings_m3_bg_conditions_apply">"Futtatja a(z) %1$s-t, mint minden mellékelt tárolót."</string>
+    <string name="settings_m3_bg_connect" formatted="false">"Csatlakozás"</string>
+    <string name="settings_m3_bg_failed_short" formatted="false">"Nem sikerült szinkronizálni"</string>
+    <string name="settings_m3_bg_include_cd">"Tartalmazza a(z) %1$s-t a(z) Background Sync-ben"</string>
+    <string name="settings_m3_bg_intro" formatted="false">"A(z) Android ellenőrzéseket ütemez nagyjából 15 percenként vagy később, a kapcsolódás, az akkumulátor és a rendszerkorlátozások függvényében. Legjobb igyekezet, soha nem valós idejű."</string>
+    <string name="settings_m3_bg_modes" formatted="false">"Módok"</string>
+    <string name="settings_m3_bg_never" formatted="false">"Soha nem"</string>
+    <string name="settings_m3_bg_no_runs" formatted="false">"Még nincs futás. A(z) Android az első ellenőrzést körülbelül 15 percen belül kezdi."</string>
+    <string name="settings_m3_bg_nudge" formatted="false">"Értesítést kap, amikor GitHub megváltozik"</string>
+    <string name="settings_m3_bg_nudge_sub" formatted="false">"Feliratkozás. A lehúzás azonnal elindulhat."</string>
+    <string name="settings_m3_bg_only_when" formatted="false">"Csak akkor"</string>
+    <string name="settings_m3_bg_pull_sub" formatted="false">"Csak fast-forward"</string>
+    <string name="settings_m3_bg_push_sub" formatted="false">"Leáll, ha a távoli előbb mozdult"</string>
+    <string name="settings_m3_bg_recent" formatted="false">"Legutóbbi futások"</string>
+    <string name="settings_m3_bg_run_failed">"%1$s nem tudott szinkronizálni"</string>
+    <string name="settings_m3_bg_run_local_edits">"%1$s kihagyva: helyi módosítások"</string>
+    <string name="settings_m3_bg_run_offline">"%1$s csatlakozásra vár"</string>
+    <string name="settings_m3_bg_run_power">"%1$s töltésre vár"</string>
+    <string name="settings_m3_bg_run_pushed" formatted="false">"↑ feltöltve"</string>
+    <string name="settings_m3_bg_run_review">"%1$s felülvizsgálatra szorul"</string>
+    <string name="settings_m3_bg_run_skipped">"%1$s kihagyva: %2$s"</string>
+    <string name="settings_m3_bg_run_wifi">"%1$s Wi-Fi-re vár"</string>
+    <string name="settings_m3_bg_vault_missing" formatted="false">"A mappa már nincs hozzáadva. Felejtsd el, vagy add hozzá újra a tárolót."</string>
+    <string name="settings_m3_bg_vault_not_included" formatted="false">"Nincs bevonva"</string>
+    <string name="settings_m3_bg_vaults" formatted="false">"Széfek"</string>
+    <string name="settings_m3_bg_wifi" formatted="false">"Wi-Fi-n"</string>
+    <string name="settings_m3_close" formatted="false">"Bezárás"</string>
+    <string name="settings_m3_commit_as" formatted="false">"Commit szerzője"</string>
+    <string name="settings_m3_debug_app" formatted="false">"App"</string>
+    <string name="settings_m3_debug_background" formatted="false">"BACKGROUND"</string>
+    <string name="settings_m3_debug_bg" formatted="false">"BG"</string>
+    <string name="settings_m3_debug_clear" formatted="false">"– Széleskörű"</string>
+    <string name="settings_m3_debug_copy" formatted="false">"Látható bejegyzések másolása"</string>
+    <string name="settings_m3_debug_day_time">"%1$s %2$s"</string>
+    <string name="settings_m3_debug_error" formatted="false">"hiba"</string>
+    <string name="settings_m3_debug_errors_count">"Hibák: %1$d"</string>
+    <string name="settings_m3_debug_info" formatted="false">"Hibakeresési információk megjelenítése"</string>
+    <string name="settings_m3_debug_info_tag" formatted="false">"Információ"</string>
+    <string name="settings_m3_debug_log" formatted="false">"Hibakeresési napló"</string>
+    <string name="settings_m3_debug_removed_vault" formatted="false">"eltávolított tároló"</string>
+    <string name="settings_m3_debug_share" formatted="false">"Diagnosztika megosztása"</string>
+    <string name="settings_m3_debug_warn" formatted="false">"FIGYELMEZTETÉS"</string>
+    <string name="settings_m3_discord" formatted="false">"Csatlakozás a Discordhoz"</string>
+    <string name="settings_m3_done" formatted="false">"Kész"</string>
+    <string name="settings_m3_feedback_subtitle" formatted="false">"Megnyitja az email alkalmazásod"</string>
+    <string name="settings_m3_forget" formatted="false">"Elfelejtés"</string>
+    <string name="settings_m3_full_access" formatted="false">"GitSync.md teljes hozzáférés"</string>
+    <string name="settings_m3_group_app" formatted="false">"App"</string>
+    <string name="settings_m3_group_more" formatted="false">"Kapcsolatok és segítség"</string>
+    <string name="settings_m3_group_new_vaults" formatted="false">"Új széfek"</string>
+    <string name="settings_m3_group_purchase" formatted="false">"Vásárlás"</string>
+    <string name="settings_m3_group_sync" formatted="false">"Szinkronizálás"</string>
+    <string name="settings_m3_help" formatted="false">"Segítség és információ"</string>
+    <string name="settings_m3_how_clone_url" formatted="false">"Klónozás URL-ről"</string>
+    <string name="settings_m3_how_count" formatted="false">"4 dolog, amit tudni kell"</string>
+    <string name="settings_m3_how_github" formatted="false">"GitHub"</string>
+    <string name="settings_m3_how_it_works" formatted="false">"Hogyan működik"</string>
+    <string name="settings_m3_how_sample" formatted="false">"Próbáld ki az offline mintát"</string>
+    <string name="settings_m3_how_start" formatted="false">"Innen kezdve"</string>
+    <string name="settings_m3_how_storage" formatted="false">"Tárolóhely kiválasztása"</string>
+    <string name="settings_m3_how_subtitle" formatted="false">"Kétperces áttekintés az alapokról"</string>
+    <string name="settings_m3_how_title" formatted="false">"Hogyan működik a GitSync"</string>
+    <string name="settings_m3_language" formatted="false">"Nyelv"</string>
+    <string name="settings_m3_lfs_endpoints" formatted="false">"LFS végpontok"</string>
+    <string name="settings_m3_license" formatted="false">"Licenc"</string>
+    <string name="settings_m3_license_subtitle" formatted="false">"Egyszeri vásárlás a Google Playen"</string>
+    <string name="settings_m3_move_action" formatted="false">"Tároló áthelyezése"</string>
+    <string name="settings_m3_move_cancel_meta" formatted="false">"A trezort a régi mappájában hagyja"</string>
+    <string name="settings_m3_move_confirm_guidance" formatted="false">"Tartsd a Obsidian és más alkalmazásokat mindkét mappától távol, amíg a mozgatás be nem fejeződik."</string>
+    <string name="settings_m3_move_confirm_retained" formatted="false">"Az eredeti mentésként marad meg."</string>
+    <string name="settings_m3_move_confirm_title" formatted="false">"Ezt a trezort át akarod mozgatni?"</string>
+    <string name="settings_m3_move_copy_note" formatted="false">"Ez egy másik tárolóeszközre visz át, így GitSync.md minden fájlt másol és ellenőriz, majd az eredetit a Move recoveries alatt tartja, amíg el nem távolítod."</string>
+    <string name="settings_m3_move_finish_meta" formatted="false">"Ott folytatja, ahol abbahagyta"</string>
+    <string name="settings_m3_move_from" formatted="false">"Innen"</string>
+    <string name="settings_m3_move_interrupted" formatted="false">"Egy mozgatás megszakadt. Minden megtalált másolatot megtartunk, amíg be nem fejezed."</string>
+    <string name="settings_m3_move_into" formatted="false">"Ide"</string>
+    <string name="settings_m3_move_intro" formatted="false">"Az egész trezort áthelyezi: fájlokat, Git történetet és folyamatban lévő módosításokat. A fiókja és a commit szerzője is vele mozog."</string>
+    <string name="settings_m3_move_moving_button" formatted="false">"Mozgatás… tartsd nyitva GitSync.md-t"</string>
+    <string name="settings_m3_move_progress" formatted="false">"Mozgatás és a tároló beállításainak mentése…"</string>
+    <string name="settings_m3_move_title" formatted="false">"Tároló áthelyezése"</string>
+    <string name="settings_m3_move_will_move_to" formatted="false">"Áthelyezés ide"</string>
+    <string name="settings_m3_never_force" formatted="false">"Force-push"</string>
+    <string name="settings_m3_never_overwrite" formatted="false">"Szerkesztések felülírása"</string>
+    <string name="settings_m3_never_rebase" formatted="false">"Rebase vagy összevonás"</string>
+    <string name="settings_m3_never_resolve" formatted="false">"Ütközések feloldása"</string>
+    <string name="settings_m3_never_send" formatted="false">"Fájlok elküldése nekünk"</string>
+    <string name="settings_m3_never_switch" formatted="false">"Ágak váltása"</string>
+    <string name="settings_m3_not_now" formatted="false">"Nem most"</string>
+    <string name="settings_m3_obsidian" formatted="false">"Obsidian-kapcsolatok"</string>
+    <string name="settings_m3_obsidian_add_vault" formatted="false">"Széf hozzáadása"</string>
+    <string name="settings_m3_obsidian_before" formatted="false">"Mielőtt elkezdenéd"</string>
+    <string name="settings_m3_obsidian_command" formatted="false">"GitSync.md Connect: Csatlakoztasd ezt a tárolót"</string>
+    <string name="settings_m3_obsidian_connected" formatted="false">"csatlakozva"</string>
+    <string name="settings_m3_obsidian_empty" formatted="false">"Először adj hozzá vagy klónozz egy tárolót egy eszköz mappájába. Az alkalmazás tárolásában lévő tárolók nem nyithatók meg Obsidian által."</string>
+    <string name="settings_m3_obsidian_error" formatted="false">"Obsidian nem tudott csatlakozni. Ellenőrizd a mappa-hozzáférést, az GitHub HTTPS távoli elérést és a tároló fiókját, majd készíts elő egy új kapcsolatot."</string>
+    <string name="settings_m3_obsidian_failed" formatted="false">"Nem csatlakozott"</string>
+    <string name="settings_m3_obsidian_forget_action" formatted="false">"Kapcsolat elfelejtése"</string>
+    <string name="settings_m3_obsidian_forget_body">"GitSync.md leáll a hitelesítő adatok átadásával Obsidian-nak a %1$s számára. A már importált Obsidian hitelesítő adatok ott maradnak; ezeket külön kell visszavonni. A fájljaid a helyükön maradnak."</string>
+    <string name="settings_m3_obsidian_forget_title" formatted="false">"Elfelejti ezt a kapcsolatot?"</string>
+    <string name="settings_m3_obsidian_intro" formatted="false">"Hagyja, hogy a Obsidian Git beépülő modul a GitHub fiókkal tolja és húzza ezt a tárat. A hitelesítő adatok titkosítva vannak a társbeépülő modul számára, és soha nem kerülnek linkbe."</string>
+    <string name="settings_m3_obsidian_prepare" formatted="false">"Kapcsolat előkészítése"</string>
+    <string name="settings_m3_obsidian_prepared_lead" formatted="false">"Kapcsolat előkészítve."</string>
+    <string name="settings_m3_obsidian_prepared_open">"Nyissa meg a %1$s programot a Obsidian-ben és futtassa"</string>
+    <string name="settings_m3_obsidian_prepared_tail" formatted="false">". Egy újabb kérés váltja fel ezt."</string>
+    <string name="settings_m3_obsidian_ready">"A titkosított hitelesítő adatok készen állnak Obsidian számára. A Obsidian Git most már szinkronizálhatja a %1$s-t."</string>
+    <string name="settings_m3_obsidian_req1_body" formatted="false">"A Obsidian-nek és a GitSync.md-nak ugyanazt az eszközmappát kell megosztania."</string>
+    <string name="settings_m3_obsidian_req1_title" formatted="false">"Nyissa meg ugyanazt a mappát a Obsidian-ban"</string>
+    <string name="settings_m3_obsidian_req2_body" formatted="false">"Git és GitSync.md Connect, a Obsidian › Beállítások."</string>
+    <string name="settings_m3_obsidian_req2_title" formatted="false">"Kapcsoljon be két közösségi bővítményt"</string>
+    <string name="settings_m3_obsidian_req3_body" formatted="false">"Egy GitHub fiókkal a tároló kapcsolatában kiválasztva."</string>
+    <string name="settings_m3_obsidian_req3_title" formatted="false">"Használjon HTTPS GitHub távoli elérést"</string>
+    <string name="settings_m3_obsidian_req4_body" formatted="false">"A Preparing csak a hitelesítő adatokat adja át, fájlokat vagy előzményeket nem."</string>
+    <string name="settings_m3_obsidian_req4_title" formatted="false">"A tároló semmi sem változik"</string>
+    <string name="settings_m3_obsidian_return_failed" formatted="false">"Obsidian nem nyílt meg. Kapcsolja be a GitSync.md Connect a Obsidian-ben, majd próbálja újra visszatérni."</string>
+    <string name="settings_m3_obsidian_subtitle" formatted="false">"Obsidian Git + GitSync.md Connect"</string>
+    <string name="settings_m3_obsidian_this_vault" formatted="false">"Ez a széf"</string>
+    <string name="settings_m3_obsidian_vaults" formatted="false">"Tárolók ezen a telefonon"</string>
+    <string name="settings_m3_obsidian_waiting" formatted="false">"Várakozás a Obsidian-ra"</string>
+    <string name="settings_m3_off" formatted="false">"ki"</string>
+    <string name="settings_m3_on" formatted="false">"be"</string>
+    <string name="settings_m3_perk_nudge_body" formatted="false">"Egy GitHub push másodpercek alatt felingerli az alkalmazást."</string>
+    <string name="settings_m3_perk_nudge_title" formatted="false">"Azonnali lehúzások Push Sync használatával"</string>
+    <string name="settings_m3_perk_pull_body" formatted="false">"Csak fast-forward. Minden szokatlan Önre vár."</string>
+    <string name="settings_m3_perk_pull_title" formatted="false">"Pull a háttérben"</string>
+    <string name="settings_m3_perk_push_body" formatted="false">"Alapból kikapcsolva. Ön választja ki, mely széfek tesznek közzé."</string>
+    <string name="settings_m3_perk_push_title" formatted="false">"Módosítások commitolása és pusholása"</string>
+    <string name="settings_m3_privacy" formatted="false">"Adatvédelem"</string>
+    <string name="settings_m3_privacy_policy" formatted="false">"Adatvédelmi irányelvek"</string>
+    <string name="settings_m3_push_active" formatted="false">"Aktív"</string>
+    <string name="settings_m3_push_all_repos" formatted="false">"Minden tár, beleértve az újakat is"</string>
+    <string name="settings_m3_push_channel_sub" formatted="false">"Használja a Repository frissítések értesítési csatornáját"</string>
+    <string name="settings_m3_push_checked">"Ellenőrizve %1$d · frissítve %2$d · felülvizsgálat szükséges %3$d"</string>
+    <string name="settings_m3_push_connect_again" formatted="false">"Csatlakoztasd újra GitHub-t"</string>
+    <string name="settings_m3_push_connect_sub" formatted="false">"Telepítsd a GitSync.md alkalmazást és válassz tárhelyeket"</string>
+    <string name="settings_m3_push_connected" formatted="false">"csatlakozva"</string>
+    <string name="settings_m3_push_connection" formatted="false">"GitHub kapcsolat"</string>
+    <string name="settings_m3_push_err_cancelled" formatted="false">"A GitHub kapcsolatot megszakították. Semmi sem változott. Csatlakozz újra, amikor készen állsz."</string>
+    <string name="settings_m3_push_err_cancelled_title" formatted="false">"Vissza GitHub-ból"</string>
+    <string name="settings_m3_push_err_not_selected" formatted="false">"Ezen a telefonon nincs olyan tároló, amely megfelelne ennek a GitHub adattárnak és ágnak. Add hozzá az adattárat az alkalmazás hozzáféréséhez a GitHub-on, vagy ellenőrizd a tároló kapcsolatát és ágát."</string>
+    <string name="settings_m3_push_err_not_selected_title" formatted="false">"Ez az adattár nincs megosztva az alkalmazással"</string>
+    <string name="settings_m3_push_err_owner_title" formatted="false">"Tulajdonosi bejelentkezés szükséges"</string>
+    <string name="settings_m3_push_example_cd" formatted="false">"Példa értesítés"</string>
+    <string name="settings_m3_push_example_meta" formatted="false">"GitSync.md · Adattár frissítések · most"</string>
+    <string name="settings_m3_push_example_note" formatted="false">"Privát a zárolt képernyőn. Ha a tároló tiszta volt, már letöltődött, mire ezt látod."</string>
+    <string name="settings_m3_push_example_repo" formatted="false">"tulaj/vault"</string>
+    <string name="settings_m3_push_example_title" formatted="false">"Egy figyelmeztetés így néz ki"</string>
+    <string name="settings_m3_push_existing_scope" formatted="false">"Jelentkezz be a fiók tulajdonosaként, vagy a szervezet egyik tulajdonosaként. Az alkalmazás megőrzi a jelenlegi adattár-hozzáférést."</string>
+    <string name="settings_m3_push_github_app" formatted="false">"GitHub App"</string>
+    <string name="settings_m3_push_handoff_body" formatted="false">"Megnyílt egy böngészőfül. Válaszd ki a fiókot és azt, hogy mely repókat láthatja az alkalmazás, majd térj vissza. Ez a képernyő újra ellenőriz, amikor visszatérsz."</string>
+    <string name="settings_m3_push_handoff_title" formatted="false">"Befejezés a(z) GitHub-on"</string>
+    <string name="settings_m3_push_intro" formatted="false">"Csatlakoztasd a(z) GitSync.md GitHub App-t, és egy push a(z) GitHub-ra másodpercek alatt riasztja ezt a telefont. A tiszta tárolók maguktól lekérik és gyorsítják előre a változásokat. Érintsd meg az értesítést az újbóli ellenőrzéshez."</string>
+    <string name="settings_m3_push_never" formatted="false">"Push szinkronizálás soha"</string>
+    <string name="settings_m3_push_never_commit" formatted="false">"Elkötelezések"</string>
+    <string name="settings_m3_push_never_hint" formatted="false">"A helyi változtatások és elágazó történetek a tárolóban várnak rád."</string>
+    <string name="settings_m3_push_never_merge" formatted="false">"Összeilleszti az elágazó történeteket"</string>
+    <string name="settings_m3_push_never_switch" formatted="false">"Vált a branch-ek között"</string>
+    <string name="settings_m3_push_never_upload" formatted="false">"Feltölti a változtatásokat"</string>
+    <string name="settings_m3_push_no_connections" formatted="false">"Csatlakoztass egy GitHub fiókot vagy szervezetet, hogy kiválaszthasd, mely repók küldhetnek frissítéseket."</string>
+    <string name="settings_m3_push_open_vault" formatted="false">"Tároló megnyitása"</string>
+    <string name="settings_m3_push_permission" formatted="false">"Engedélyezze az értesítéseket a(z) GitSync.md számára a(z) Android beállításokban, majd kapcsolja be a Push Sync-et."</string>
+    <string name="settings_m3_push_registered" formatted="false">"Ez a telefon regisztrálva van az értesítésekhez"</string>
+    <string name="settings_m3_push_remove" formatted="false">"Eltávolítás"</string>
+    <string name="settings_m3_push_remove_body">"A Push Sync leállítja az @%1$s frissítések továbbítását ehhez a telefonhoz. A(z) GitHub App telepítve marad. Használja a Kezelés lehetőséget a(z) GitHub-n a hozzáférés módosításához vagy az eltávolításhoz."</string>
+    <string name="settings_m3_push_remove_title" formatted="false">"Eltávolítja ezt a kapcsolatot?"</string>
+    <string name="settings_m3_push_result_updated" formatted="false">"Frissítve a(z) GitHub-ról"</string>
+    <string name="settings_m3_push_stop" formatted="false">"Művelet leállítása"</string>
+    <string name="settings_m3_push_suspended" formatted="false">"Felfüggesztve"</string>
+    <string name="settings_m3_push_sync" formatted="false">"Push Sync a(z) GitHub-ról"</string>
+    <string name="settings_m3_push_this_phone" formatted="false">"ez a telefon"</string>
+    <string name="settings_m3_push_title" formatted="false">"Push Sync"</string>
+    <string name="settings_m3_push_waiting" formatted="false">"Várakozás a(z) GitHub-ra"</string>
+    <string name="settings_m3_save_clones_in" formatted="false">"Új klónok mentési helye"</string>
+    <string name="settings_m3_sc_action" formatted="false">"Művelet"</string>
+    <string name="settings_m3_sc_authorized" formatted="false">"Engedélyezve"</string>
+    <string name="settings_m3_sc_background_sub" formatted="false">"Eredmények ide és egy értesítésbe érkeznek"</string>
+    <string name="settings_m3_sc_branch">"Ág: %1$s"</string>
+    <string name="settings_m3_sc_branch_reviewed">"%1$s ág · átnézve %2$s"</string>
+    <string name="settings_m3_sc_clear" formatted="false">"– Széleskörű"</string>
+    <string name="settings_m3_sc_clear_results" formatted="false">"Mentett eredmények törlése"</string>
+    <string name="settings_m3_sc_ff_only" formatted="false">"Csak letöltés és fast-forward"</string>
+    <string name="settings_m3_sc_item_title">"%1$s: %2$s"</string>
+    <string name="settings_m3_sc_launcher" formatted="false">"Kezdőképernyős parancsikonok"</string>
+    <string name="settings_m3_sc_link_identity">"Hivatkozás: %1$s · Létrehozva: %2$s"</string>
+    <string name="settings_m3_sc_link_private" formatted="false">"Bárki, akinek megvan ez a link, futtathatja. Tartsd privátként."</string>
+    <string name="settings_m3_sc_links" formatted="false">"Engedélyezett hivatkozások"</string>
+    <string name="settings_m3_sc_new_title" formatted="false">"Új gyorsparancs egy tárhőz"</string>
+    <string name="settings_m3_sc_no_links" formatted="false">"Nincsenek engedélyezett linkek. Olyan alkalmazások, mint a Obsidian vagy a Gyorsparancsok, kérhetnek ilyet."</string>
+    <string name="settings_m3_sc_no_shortcuts" formatted="false">"Nincsenek még indító gyorsparancsok. Válassz a fenti tárak közül, valamint egy műveletet."</string>
+    <string name="settings_m3_sc_open_pull_all" formatted="false">"Pull All megnyitása"</string>
+    <string name="settings_m3_sc_open_pull_all_sub" formatted="false">"Most húzd le az összes tárat, és lásd az egyes eredményeket"</string>
+    <string name="settings_m3_sc_pin_consent">"Minden érintés egyszer futtatja ezt, további kérdés nélkül. Továbbra is a %1$s, %2$s ághoz és ehhez a fiókhoz kapcsolódik. Ha bármelyik megváltozik, a gyorsparancs leáll, és újat kell készítened. Bármikor visszavonhatod itt."</string>
+    <string name="settings_m3_sc_pin_writes">"A „%1$s” elkötelezése és az összes változás feltöltése minden érintésnél."</string>
+    <string name="settings_m3_sc_pinned" formatted="false">"Kitűzve"</string>
+    <string name="settings_m3_sc_pull" formatted="false">"Lekérés"</string>
+    <string name="settings_m3_sc_pull_all" formatted="false">"– Mindenet szállítása"</string>
+    <string name="settings_m3_sc_pull_all_note" formatted="false">"Minden koppintás egyszer lehúzza az összes trezort. Semmi nincs elkötelezve vagy feltöltve. Eredmények a Minden lehúzása menüpontban várakoznak."</string>
+    <string name="settings_m3_sc_pull_all_repos" formatted="false">"– összes adathordozót kinyitás"</string>
+    <string name="settings_m3_sc_pull_all_title" formatted="false">"Minden lehúzása anélkül, hogy megnyitnád az alkalmazást"</string>
+    <string name="settings_m3_sc_pull_sub" formatted="false">"Csak letöltés és fast-forward"</string>
+    <string name="settings_m3_sc_push" formatted="false">"Commit és push"</string>
+    <string name="settings_m3_sc_push_sub" formatted="false">"Minden változtatást elkötelez, majd feltölt"</string>
+    <string name="settings_m3_sc_refresh" formatted="false">"Frissítés"</string>
+    <string name="settings_m3_sc_requested" formatted="false">"Gyorsbillentyű kérése. Engedélyezd a launcherben, majd koppints az alábbi Frissítésre, hogy ellenőrizd."</string>
+    <string name="settings_m3_sc_returns_to">"visszatér a %1$s-hoz"</string>
+    <string name="settings_m3_sc_review_again" formatted="false">"Tekintsd át újra"</string>
+    <string name="settings_m3_sc_revoke" formatted="false">"Visszavonás"</string>
+    <string name="settings_m3_sc_revoke_body" formatted="false">"Leállítja a Git műveleteket. Az ikonja a kezdőképernyőn szürke állapotban maradhat, amíg el nem távolítod. Egy új gyorsbillentyű ismét jóváhagyást igényel."</string>
+    <string name="settings_m3_sc_revoke_link" formatted="false">"Hivatkozás engedélyének visszavonása"</string>
+    <string name="settings_m3_sc_revoke_title" formatted="false">"Visszavonod ezt a gyorsbillentyűt?"</string>
+    <string name="settings_m3_sc_revoked" formatted="false">"Visszavonva"</string>
+    <string name="settings_m3_sc_run_once" formatted="false">"Futtatás egyszer most"</string>
+    <string name="settings_m3_sc_runs_closed" formatted="false">"Futtat GitSync.md megnyitása nélkül"</string>
+    <string name="settings_m3_sc_runs_open" formatted="false">"Megnyitja GitSync.md-t, majd egyszer fut"</string>
+    <string name="settings_m3_sc_status" formatted="false">"Állapot olvasása"</string>
+    <string name="settings_m3_sc_status_sub" formatted="false">"Nincs hálózat. Megmutatja, mi változott."</string>
+    <string name="settings_m3_sc_sync" formatted="false">"Szinkronizálás"</string>
+    <string name="settings_m3_sc_sync_sub" formatted="false">"Először húzd le, majd commit &amp; push"</string>
+    <string name="settings_m3_sc_tile_how" formatted="false">"Húzd le a Gyorsbeállításokat › Szerkesztés › húzd be a Minden lehúzása-t."</string>
+    <string name="settings_m3_sc_tile_lead" formatted="false">"Csempe:"</string>
+    <string name="settings_m3_sc_title" formatted="false">"Widgetek és parancsikonok"</string>
+    <string name="settings_m3_sc_upstream">"Felső forrás %1$s / %2$s"</string>
+    <string name="settings_m3_sc_waiting" formatted="false">"Várakozás az indítóra"</string>
+    <string name="settings_m3_sc_widget_how" formatted="false">"Hosszan nyomd az otthoni képernyődet › Widgetek › GitSync.md."</string>
+    <string name="settings_m3_sc_widget_lead" formatted="false">"Widget:"</string>
+    <string name="settings_m3_sc_writes" formatted="false">"Minden változtatást lépésenként készít elő, ha szükséges commitál, majd feltölti. Konfliktus, megosztott előzmények vagy egy előbb lépő távoli megállítja, és egy sikertelen feltöltés megtartja az új commitot."</string>
+    <string name="settings_m3_shortcuts" formatted="false">"Widgetek és indítóparancsikonok"</string>
+    <string name="settings_m3_sign_out" formatted="false">"Kijelentkezés"</string>
+    <string name="settings_m3_ssh_hosts" formatted="false">"SSH szerverek"</string>
+    <string name="settings_m3_storage_hint" formatted="false">"A telefon tárhelye és SD kártyái működnek. A felhőmappák, mint a Google Drive, nem tudnak Git adattárat tárolni."</string>
+    <string name="settings_m3_storage_intro" formatted="false">"Válaszd ki a mappát, ahova az új klónok kerülnek. A meglévő tárak ott maradnak, ahol vannak."</string>
+    <string name="settings_m3_storage_move_title" formatted="false">"Mozgasd a meglévő táraidat"</string>
+    <string name="settings_m3_system_default" formatted="false">"Rendszer alapértelmezett"</string>
+    <string name="settings_m3_terms" formatted="false">"Feltételek"</string>
+    <string name="settings_m3_theme" formatted="false">"Téma"</string>
+    <string name="settings_m3_theme_dark" formatted="false">"Sötét"</string>
+    <string name="settings_m3_theme_light" formatted="false">"Világos"</string>
+    <string name="settings_m3_title" formatted="false">"Beállítások"</string>
+    <string name="settings_m3_unlocked" formatted="false">"Feloldva"</string>
+    <string name="settings_m3_upgrade_body" formatted="false">"Nyissa meg reggel az Obsidiant, és már minden ott van."</string>
+    <string name="settings_m3_upgrade_illustration" formatted="false">"Zárolt telefon, ami GitHub-tal történő húzással és küldéssel egész éjszaka"</string>
+    <string name="settings_m3_upgrade_last_run">"%1$s · lehúzva %2$d · feltöltve %3$d"</string>
+    <string name="settings_m3_upgrade_locked_phone" formatted="false">"zárolt telefon"</string>
+    <string name="settings_m3_upgrade_note" formatted="false">"Tartalmazza GitSync.md. Android dönti el, mikor fut a háttérmunka; ez a legjobb igyekezet szerinti. Az akkumulátor-kímélő késleltetheti."</string>
+    <string name="settings_m3_upgrade_pull" formatted="false">"Pull a háttérben"</string>
+    <string name="settings_m3_upgrade_push" formatted="false">"A módosításaimat is commitolja és pusholja"</string>
+    <string name="settings_m3_upgrade_title" formatted="false">"Szinkron,\namíg alszik."</string>
+    <string name="settings_m3_upgrade_turn_on" formatted="false">"Background Sync bekapcsolása"</string>
+    <string name="settings_m3_vault_check_ok" formatted="false">"OK"</string>
+    <string name="settings_m3_vault_delete_action" formatted="false">"törlés"</string>
+    <string name="settings_m3_vault_delete_body" formatted="false">"Törli ezt a mappát, annak fájljait és a Git előzményeit erről a telefonról. Minden, ami nincs felküldve a GitHub-ra, elveszik."</string>
+    <string name="settings_m3_vault_delete_title" formatted="false">"Eltávolítja a tárat és törli a fájlokat?"</string>
+    <string name="settings_m3_vault_display_name" formatted="false">"Megjelenített név"</string>
+    <string name="settings_m3_vault_display_name_hint" formatted="false">"Hagyja üresen a tár saját nevének használatához."</string>
+    <string name="settings_m3_vault_errors" formatted="false">"hibák · 7 nap"</string>
+    <string name="settings_m3_vault_files" formatted="false">"fájl"</string>
+    <string name="settings_m3_vault_folder" formatted="false">"Mappa"</string>
+    <string name="settings_m3_vault_group" formatted="false">"Ez a széf"</string>
+    <string name="settings_m3_vault_health" formatted="false">"Állapot"</string>
+    <string name="settings_m3_vault_health_attention" formatted="false">"Ellenőrzést igényel"</string>
+    <string name="settings_m3_vault_health_good" formatted="false">"jó"</string>
+    <string name="settings_m3_vault_include" formatted="false">"Felvétel a Background Sync szolgáltatásba"</string>
+    <string name="settings_m3_vault_include_review" formatted="false">"Először ellenőrzi az ágat és a távoli példányt"</string>
+    <string name="settings_m3_vault_include_sub">"Csak a %1$s ág, követi a %2$s/%3$s-t"</string>
+    <string name="settings_m3_vault_include_title" formatted="false">"Belefoglalja a Background Sync-ba?"</string>
+    <string name="settings_m3_vault_last_check">"utolsó háttérellenőrzés %1$s · %2$s"</string>
+    <string name="settings_m3_vault_lfs" formatted="false">"LFS"</string>
+    <string name="settings_m3_vault_no_check" formatted="false">"még nincs háttérellenőrzés"</string>
+    <string name="settings_m3_vault_pin" formatted="false">"Kitűzés a Kezdőlap tetejére"</string>
+    <string name="settings_m3_vault_remove" formatted="false">"Tára eltávolítása…"</string>
+    <string name="settings_m3_vault_remove_action" formatted="false">"Eltávolítás"</string>
+    <string name="settings_m3_vault_remove_delete" formatted="false">"Tára eltávolítása és fájlok törlése…"</string>
+    <string name="settings_m3_vault_remove_kept" formatted="false">"GitSync.md abbahagyja a megjelenítését. A mappát nem kezeli GitSync.md, így a fájljai és a Git előzményei ott maradnak, ahol vannak."</string>
+    <string name="settings_m3_vault_remove_title" formatted="false">"Eltávolítja ezt a trezort?"</string>
+    <string name="settings_m3_vault_shortcut" formatted="false">"Kezdőképernyős parancsikon hozzáadása"</string>
+    <string name="settings_m3_vault_shortcut_sub" formatted="false">"Húzás vagy elkötelezés és feltöltés egyetlen koppintással"</string>
+    <string name="settings_m3_vault_stop_tracking" formatted="false">"Követés leállítása – fájlok megtartása"</string>
+    <string name="settings_m3_vault_title" formatted="false">"Széfbeállítások"</string>
+    <string name="settings_m3_whats_new" formatted="false">"Újdonságok"</string>
+    <string name="settings_m3_whats_new_hint" formatted="false">"Ez is egyszer felugrik egy frissítés után. Mindig megtalálhatja itt."</string>
+    <string name="settings_m3_whats_new_subtitle">"%1$s kiadási megjegyzései"</string>
     <string name="shortcut_background_attention" formatted="false">"A parancsikon figyelmet igényel. Újrapróbálás előtt nyisd meg a tárolóműveleteket, és ellenőrizd az állapotát."</string>
     <string name="shortcut_background_channel" formatted="false">"Parancsikonok műveletei"</string>
     <string name="shortcut_background_complete" formatted="false">"A parancsikon művelete befejeződött. Az eredmény áttekintéséhez nyisd meg a tárolóműveleteket."</string>
@@ -688,9 +1982,37 @@
     <string name="shortcut_background_interrupted" formatted="false">"A végrehajtás megszakadt. Nem indul újra automatikusan. Újabb koppintás előtt ellenőrizd a tárolót."</string>
     <string name="shortcut_background_option" formatted="false">"Futtatás a GitSync.md megnyitása nélkül"</string>
     <string name="shortcut_background_running" formatted="false">"A parancsikon művelete fut"</string>
+    <string name="shortcut_m3_add_vault" formatted="false">"Széf hozzáadása"</string>
+    <string name="shortcut_m3_commit_push">"%1$s: Elkötelezés és feltöltés"</string>
+    <string name="shortcut_m3_commit_short" formatted="false">"Commit és push"</string>
+    <string name="shortcut_m3_pull">"%1$s: Húzás"</string>
+    <string name="shortcut_m3_pull_short" formatted="false">"Lekérés"</string>
     <string name="shortcut_results_clear_scope" formatted="false">"Törli a parancsikonok és callbackek mentett futtatási eredményeit. Engedélyeik változatlanok maradnak. A megszakított műveletek nem indulnak újra automatikusan."</string>
     <string name="shortcut_results_unavailable" formatted="false">"A mentett parancsikoneredmények nem olvashatók. Az engedélyek külön maradnak."</string>
     <string name="ssh_hide_private_key" formatted="false">"Privát kulcs elrejtése"</string>
+    <string name="ssh_m3_changed_title" formatted="false">"Az SSH-szerver kulcsa megváltozott"</string>
+    <string name="ssh_m3_changed_warning" formatted="false">"A megváltozott kulcs azt jelentheti, hogy valaki a szervert személyesíti meg. Ellenőrizze az új ujjlenyomatot a tulajdonosával, mielőtt cseréli a bizalmat."</string>
+    <string name="ssh_m3_compare" formatted="false">"Hasonlítsa össze a szerver tulajdonosa által közzétett SSH host kulccsal, mielőtt megbízik benne."</string>
+    <string name="ssh_m3_empty" formatted="false">"Nincsenek megbízható SSH-szerverek"</string>
+    <string name="ssh_m3_error_save" formatted="false">"Nem sikerült menteni a SSH szerver megbízhatóságát. Ellenőrizze újra az ujjlenyomatot, mielőtt újra próbálkozik."</string>
+    <string name="ssh_m3_forget" formatted="false">"Elfelejtés"</string>
+    <string name="ssh_m3_forget_body">"A %1$s esetében szükség lesz az ujjlenyomat ellenőrzésére, mielőtt újra csatlakozna."</string>
+    <string name="ssh_m3_forget_cd">"Felejtse el a %1$s-t"</string>
+    <string name="ssh_m3_forget_server" formatted="false">"Szerver elfelejtése"</string>
+    <string name="ssh_m3_forget_title" formatted="false">"SSH-szerver elfelejtése?"</string>
+    <string name="ssh_m3_intro" formatted="false">"A megbízható ujjlenyomatok elmentésre kerültek ezen a telefonon. Ha elfelejt egyet, legközelebb újra ellenőriznie kell, amikor csatlakozik. A SSH kulcsai megmaradnak."</string>
+    <string name="ssh_m3_none" formatted="false">"Beállítások · nincs megbízhatóság"</string>
+    <string name="ssh_m3_previous">"Korábban megbízható: %1$s"</string>
+    <string name="ssh_m3_replace" formatted="false">"Bizalom cseréje és csatlakozás"</string>
+    <string name="ssh_m3_reset_all" formatted="false">"Minden SSH-szerverbizalom alaphelyzetbe állítása"</string>
+    <string name="ssh_m3_reset_body" formatted="false">"Minden SSH szerver esetében szükség lesz az ujjlenyomat ellenőrzésére, mielőtt újra csatlakozna. Ez a sérült megbízhatósági bejegyzéseket is törli."</string>
+    <string name="ssh_m3_reset_confirm" formatted="false">"Bizalom alaphelyzetbe állítása"</string>
+    <string name="ssh_m3_reset_title" formatted="false">"Minden SSH-szerverbizalom alaphelyzetbe állítása?"</string>
+    <string name="ssh_m3_saved" formatted="false">"A bizalom ezen a telefonon van elmentve, és a várakozó kapcsolat folytatódik. A Mégse gombbal a szerver nem lesz megbízható."</string>
+    <string name="ssh_m3_title" formatted="false">"SSH-kiszolgálók megbízhatósága"</string>
+    <string name="ssh_m3_trust" formatted="false">"Megbízás és csatlakozás"</string>
+    <string name="ssh_m3_trusted" formatted="false">"Megbízható szerverek"</string>
+    <string name="ssh_m3_verify_title" formatted="false">"SSH-szerver ellenőrzése"</string>
     <string name="ssh_show_private_key" formatted="false">"Privát kulcs megjelenítése"</string>
     <string name="ssh_trust_error_changed" formatted="false">"Az SSH-bizalom megváltozott az ellenőrzés során. Ellenőrizd a szerver aktuális bejegyzését, és próbálj újra csatlakozni."</string>
     <string name="ssh_trust_error_damaged" formatted="false">"A mentett SSH-bizalmat ellenőrizni kell. Újrapróbálás előtt állítsd alaphelyzetbe az SSH-szerverek bizalmát a Beállításokban."</string>
@@ -710,7 +2032,7 @@
     <string name="tide_merge_conflict_headline" formatted="false">"Mindkét oldal szerkesztette ezt a fájlt."</string>
     <string name="tide_merge_conflict_pick" formatted="false">"Válaszd ki a megtartandó verziót, vagy szerkeszd az eredményt kézzel."</string>
     <string name="tide_merge_conflict_renamed_headline" formatted="false">"Két különböző módon átnevezve."</string>
-    <string name="tide_merge_conflict_result" formatted="false">"eredmény"</string>
+    <string name="tide_merge_conflict_result" formatted="false">"Eredmény"</string>
     <string name="tide_merge_conflict_result_hint" formatted="false">"– ezt az adatot a szerveren tárolják."</string>
     <string name="tide_merge_diff_added" formatted="false">"Hozzáadva"</string>
     <string name="tide_merge_diff_binary_body" formatted="false">"A bináris tartalom nem jeleníthető meg szövegként."</string>
@@ -755,7 +2077,7 @@
     <string name="tide_vault_eyebrow_unreadable" formatted="false">"Nem sikerült olvasni"</string>
     <string name="tide_vault_files_section" formatted="false">"Fájlok"</string>
     <string name="tide_vault_from_remote">"↓%1$d a távoli oldalról"</string>
-    <string name="tide_vault_git" formatted="false">"GIT"</string>
+    <string name="tide_vault_git" formatted="false">"Git"</string>
     <string name="tide_vault_headline_behind">"Új a távoli oldalon: %1$d"</string>
     <string name="tide_vault_headline_unreadable" formatted="false">"Nem sikerült olvasni ezt a tárat."</string>
     <string name="tide_vault_more" formatted="false">"További tárbeállítások"</string>
@@ -768,6 +2090,13 @@
     <string name="tide_vault_sub_empty" formatted="false">"Adj hozzá egy jegyzetet, majd készíts róla itt commitot."</string>
     <string name="tide_vault_sub_in_sync" formatted="false">"Ezen a telefonon nincs várakozó módosítás"</string>
     <string name="tide_vault_yours">"↑%1$d helyben"</string>
+    <string name="tile_m3_background_sync" formatted="false">"Background Sync"</string>
+    <string name="tile_m3_modes">"%1$s · %2$s"</string>
+    <string name="tile_m3_pull_all" formatted="false">"– Mindenet szállítása"</string>
+    <string name="tile_m3_pull_off" formatted="false">"Lehúzás"</string>
+    <string name="tile_m3_pull_on" formatted="false">"Felfelé húzás"</string>
+    <string name="tile_m3_push_off" formatted="false">"Kikapcsolás"</string>
+    <string name="tile_m3_push_on" formatted="false">"Bekapcsolás"</string>
     <string name="tracking_metadata_size">"Git-metaadatok: %1$s"</string>
     <string name="tracking_remove_permanent_title" formatted="false">"Végleg eltávolítod a Git-előzményeket?"</string>
     <string name="tracking_removed_backup">"Git-követés eltávolítva. Ellenőrzött biztonsági mentés: %1$s"</string>
@@ -778,14 +2107,23 @@
     <string name="ui_1_s_characters_bde60398">"Karakterek: %1$s"</string>
     <string name="ui_1_s_lines_2_s_bytes_c30a0cd1">"Sorok: %1$s, bájtok: %2$s"</string>
     <string name="ui_1_s_local_commits_2_s_upstream_commits_77dc6fa8">"%1$s helyi commit · %2$s upstream commit"</string>
+    <string name="ui_1_vault_c39776f1" formatted="false">"1 széf"</string>
+    <string name="ui_2_of_3_commits_sent_5591e38a" formatted="false">"2 a 3 elkötelezés elküldve"</string>
+    <string name="ui_3_changes_aren_t_committed_yet_commit_or_s_d878e782" formatted="false">"3 változtatás még nincs elkötelezve. Kötelezd el vagy pakold el őket, mielőtt átváltanál másik ágra."</string>
+    <string name="ui_3_held_f454ab2b" formatted="false">"↑3 tartva"</string>
+    <string name="ui_3_to_push_ac87b7cb" formatted="false">"↑3 küldésre vár"</string>
+    <string name="ui_4_in_sync_checked_2_min_ago_a1f1ab5e" formatted="false">"4 szinkronban · 2 perce ellenőrizve"</string>
     <string name="ui_abort_rebase_fd5cfc32" formatted="false">"Rebase megszakítása…"</string>
     <string name="ui_about_4efca0d1" formatted="false">"Névjegy"</string>
+    <string name="ui_about_lfs_538b5b7e" formatted="false">"A LFS-ről"</string>
+    <string name="ui_all_5_8907f196" formatted="false">"Mind az 5"</string>
     <string name="ui_all_conflicts_are_staged_continue_replayin_b86b2a5a" formatted="false">"Minden konfliktusmegoldás előkészítve. Folytasd a commitok újraalkalmazását. Ha a Git NOTHING_TO_COMMIT állapotot jelez, mérlegeld az üres commit kihagyását."</string>
     <string name="ui_all_local_changes_to_this_file_will_be_per_0919f539" formatted="false">": Ez a fájlra vonatkozó minden helyi módosítás mindig eltűnik."</string>
     <string name="ui_allow_local_folder_access_0b2888fb" formatted="false">"Helyi mappák elérésének engedélyezése"</string>
     <string name="ui_app_0d04bfeb" formatted="false">"Alkalmazás"</string>
     <string name="ui_app_settings_da645334" formatted="false">"Alkalmazás beállításai"</string>
     <string name="ui_apply_tracking_choice_47a2e187" formatted="false">"Követési beállítás alkalmazása"</string>
+    <string name="ui_attention_1_fa1ea5dc" formatted="false">"Figyelem 1"</string>
     <string name="ui_authentication_66880d2d" formatted="false">"Authentikáció"</string>
     <string name="ui_back_639807a2" formatted="false">"VISSZA"</string>
     <string name="ui_back_aceb696a" formatted="false">"← Vissza"</string>
@@ -793,11 +2131,13 @@
     <string name="ui_backup_1_s_6ad01ca6">"Biztonsági mentés: %1$s"</string>
     <string name="ui_base_7b47361a" formatted="false">"Alap"</string>
     <string name="ui_binary_large_or_lfs_file_choose_an_entire_52c3278a" formatted="false">"Bináris, nagy vagy LFS-fájl: válassz egy teljes oldalt."</string>
+    <string name="ui_both_sides_edited_step_3_077f9640" formatted="false">"Mindkét fél szerkesztette a „3. lépést”."</string>
     <string name="ui_branch_52656e81" formatted="false">"Ág"</string>
     <string name="ui_branch_optional_e9dedf99" formatted="false">"Ág (nem kötelező)"</string>
     <string name="ui_browsing_with_this_account_28a8b330" formatted="false">"Böngészés ezzel a fiókkal"</string>
     <string name="ui_cancel_pending_move_0858583b" formatted="false">"Függő áthelyezés megszakítása"</string>
     <string name="ui_changes_bbd4b6a8" formatted="false">"Változások"</string>
+    <string name="ui_changes_on_this_phone_6359d3d5" formatted="false">"változások ezen a telefonon"</string>
     <string name="ui_choose_a_connected_account_for_this_reposi_c4817ea9" formatted="false">"Válassz csatlakoztatott fiókot ehhez a tárolóhoz."</string>
     <string name="ui_choose_a_device_folder_d00b7daf" formatted="false">"Mappa választása az eszközön"</string>
     <string name="ui_choose_an_authentication_method_before_clo_c89124ba" formatted="false">"Klónozás előtt válassz hitelesítési módot."</string>
@@ -810,14 +2150,18 @@
     <string name="ui_clone_again_e05eb495" formatted="false">"Újraklónozás"</string>
     <string name="ui_clone_again_review_the_previous_branch_and_33cba147" formatted="false">"Újraklónozás · kezdés előtt ellenőrizd a korábbi ágat és kapcsolatot."</string>
     <string name="ui_clone_storage_47cafc8a" formatted="false">"Klónok tárhelye"</string>
+    <string name="ui_cloning_and_preparing_the_working_copy_6fe864ff" formatted="false">"Klónozás és a munkapéldány előkészítése"</string>
+    <string name="ui_commit_3_files_959a8528" formatted="false">"3 fájl elkötelezése"</string>
     <string name="ui_commit_author_e9376b3a" formatted="false">"Commit szerzője"</string>
     <string name="ui_commit_message_a4b361b7" formatted="false">"Commit üzenet…"</string>
     <string name="ui_commit_sha_d0bc6028" formatted="false">"Commit SHA"</string>
     <string name="ui_confirm_eebdd24a" formatted="false">"Megerősítés"</string>
+    <string name="ui_conflict_1_of_2_ideas_23283a20" formatted="false">"Konfliktus 1 a 2-ből · ötletek/"</string>
     <string name="ui_continue_rebase_7a14e965" formatted="false">": Folytatja a rebase-előkészítést"</string>
     <string name="ui_create_a_file_or_folder_using_new_655c5596" formatted="false">"Hozz létre fájlt vagy mappát az Új gombbal."</string>
     <string name="ui_current_default_d914f86e" formatted="false">"Jelenlegi alapértelmezés"</string>
     <string name="ui_current_separate_push_address_1_s_2a6ef8f9">"Jelenlegi külön push-cím: %1$s"</string>
+    <string name="ui_daily_new_file_42_31057cdf" formatted="false">"napi · új fájl · +42"</string>
     <string name="ui_debug_info_697b4941" formatted="false">"Hibakeresési adatok"</string>
     <string name="ui_delete_1_s_6474596f">"Törlöd ezt: „%1$s”?"</string>
     <string name="ui_delete_e2d0a549" formatted="false">"törlés"</string>
@@ -826,6 +2170,10 @@
     <string name="ui_delete_local_files_20424441" formatted="false">": helyi fájlok törlése"</string>
     <string name="ui_destination_1_s_0df94639">"Cél: %1$s"</string>
     <string name="ui_destination_parent_folder_c6c4f97e" formatted="false">"Cél szülőmappája"</string>
+    <string name="ui_disabled_75081b59" formatted="false">"Kiadva"</string>
+    <string name="ui_discard_3_95e06aed" formatted="false">"3 elvetése"</string>
+    <string name="ui_discard_3_changes_d2ad52aa" formatted="false">"3 változás elvetése?"</string>
+    <string name="ui_discard_changes_85bcf416" formatted="false">"Változások elvetése?"</string>
     <string name="ui_discard_draft_cb30147e" formatted="false">"Piszkozat elvetése"</string>
     <string name="ui_discard_eb1a70e3" formatted="false">"Elvetés"</string>
     <string name="ui_discard_resolution_draft_47c16148" formatted="false">"Elveted a megoldás piszkozatát?"</string>
@@ -846,6 +2194,8 @@
     <string name="ui_gitsync_md_needs_shared_storage_access_to_f1b339ea" formatted="false">"A GitSync.md-nek hozzáférésre van szüksége a megosztott tárhelyhez, hogy valódi Git-munkapéldányokat kezeljen az eszköz mappáiban. Az Android beállításaiban engedélyezd a hozzáférést, majd válaszd ki a használni kívánt mappákat."</string>
     <string name="ui_go_back_and_select_a_repository_c3eedd39" formatted="false">"Lépj vissza, és válassz egy tárolót."</string>
     <string name="ui_hash_a9106914" formatted="false">"Hash"</string>
+    <string name="ui_health_md_f72119f5" formatted="false">"egészség-md"</string>
+    <string name="ui_https_ssh_git_or_file_e79ef5ea" formatted="false">"HTTPS, SSH, git:// vagy file://."</string>
     <string name="ui_i_understand_that_another_owner_may_still_b4a12b2d" formatted="false">"Megértettem, hogy egy másik tulajdonos még szerkesztheti ezt a fájlt."</string>
     <string name="ui_include_the_ssh_username_in_the_address_gi_beb09b5a" formatted="false">"Add meg az SSH-felhasználónevet a címben: git@host:team/repo.git vagy ssh://git@host:2222/team/repo.git."</string>
     <string name="ui_keep_editing_e76fd2ad" formatted="false">"Szerkesztés folytatása"</string>
@@ -882,8 +2232,12 @@
     <string name="ui_owner_1_s_599ca9ce">"Tulajdonos: %1$s"</string>
     <string name="ui_parents_1_s_914efbd0">"Szülők (%1$s)"</string>
     <string name="ui_path_62fa5a5b" formatted="false">"Útvonal"</string>
+    <string name="ui_plain_http_sends_credentials_unencrypted_c99e5672" formatted="false">"A sima HTTP titkosítás nélkül küldi a hitelesítő adatokat."</string>
     <string name="ui_platform_c78ffe19" formatted="false">"Platform"</string>
     <string name="ui_pull_with_rebase_6d25f1e0" formatted="false">": Rebase mellett vonás"</string>
+    <string name="ui_push_was_rejected_fbc19d01" formatted="false">"A push elutasítva"</string>
+    <string name="ui_pushed_579e8c6a" formatted="false">"Pusholva"</string>
+    <string name="ui_rebase_completed_successfully_53314c91" formatted="false">": Rebase eljátszott sikeresen."</string>
     <string name="ui_rebase_in_progress_3ecd9c42" formatted="false">"Újraalapozás folyamatban"</string>
     <string name="ui_rebase_onto_reviewed_upstream_c3b8fb93" formatted="false">"Újraalapozás az áttekintett upstreamre"</string>
     <string name="ui_reconnect_bf8a9eab" formatted="false">"Újracsatlakozás"</string>
@@ -893,6 +2247,7 @@
     <string name="ui_reload_author_18a711d8" formatted="false">"Szerző újratöltése"</string>
     <string name="ui_reload_connection_ceed2dae" formatted="false">"Kapcsolat újratöltése"</string>
     <string name="ui_reload_from_disk_d4288839" formatted="false">"Újratöltés a lemezről"</string>
+    <string name="ui_remote_has_no_new_commits_fetched_2m_ago_bdaa4b95" formatted="false">"A távoli nincs új elkötelezés · 2 perce lekérve"</string>
     <string name="ui_remove_1_s_e4dd7c24">"Eltávolítod: %1$s?"</string>
     <string name="ui_remove_1_s_this_removes_it_from_gitsync_md_0a6b198d">"Eltávolítod ezt: „%1$s”?\n\nEz eltávolítja a GitSync.md-ből. Minden helyi fájl és a Git-előzmények megmaradnak ezen az eszközön, és később újra csatlakoztathatod. A távoli tároló nem változik."</string>
     <string name="ui_remove_all_custom_endpoint_approvals_and_t_ffc30a9e" formatted="false">"Az összes egyéni végpontjóváhagyás és a hozzájuk mentett hitelesítő adatok eltávolítása erről az eszközről. Minden végpont és átviteli irány új ellenőrzést igényel."</string>
@@ -932,17 +2287,20 @@
     <string name="ui_save_1509f561" formatted="false">"Mentés"</string>
     <string name="ui_save_author_1c24b32a" formatted="false">"Szerző mentése"</string>
     <string name="ui_save_connection_df24ef12" formatted="false">"Kapcsolat mentése"</string>
+    <string name="ui_saved_credentials_are_encrypted_on_this_de_9320d5e0" formatted="false">"A mentett hitelesítő adatok titkosítva vannak ezen az eszközön."</string>
     <string name="ui_saving_uses_this_address_for_both_fetch_an_48c82edc" formatted="false">"Mentéskor ez a cím lesz használva a fetch és push műveletekhez is. Ezután futtass fetch műveletet a távoli állapot frissítéséhez."</string>
     <string name="ui_selected_folder_0cf59bef" formatted="false">"Kiválasztott mappa"</string>
     <string name="ui_share_backup_archive_ee4ba873" formatted="false">"Biztonsági mentés archívumának megosztása"</string>
     <string name="ui_some_diagnostics_could_not_be_read_or_save_19e3372d" formatted="false">"Egyes diagnosztikai adatok nem voltak olvashatók vagy menthetők. A meglévő adatok megmaradtak. Töröld a naplót a rögzítés újrakezdéséhez."</string>
     <string name="ui_ssh_private_key_0e92a613" formatted="false">"SSH Privát kulcs"</string>
     <string name="ui_stage_de838855" formatted="false">"Előkészítés"</string>
+    <string name="ui_stay_on_main_915a176c" formatted="false">"Maradj a main ágon"</string>
     <string name="ui_the_active_destination_stays_in_place_gits_a4f1f68a" formatted="false">"Az aktív célhely megmarad. A GitSync.md ellenőrzi, hogy a megőrzött eredetiben nincsenek későbbi módosítások, mielőtt végleg eltávolítja annak fájljait és Git-előzményeit."</string>
     <string name="ui_the_folder_can_move_directly_on_this_stora_7b29fabb" formatted="false">"A mappa közvetlenül áthelyezhető ezen a tárolóköteten."</string>
     <string name="ui_the_previous_github_account_is_disconnecte_628a1f8c" formatted="false">"A korábbi GitHub-fiók nincs csatlakoztatva. Válassz egy csatlakoztatott fiókot vagy másik hitelesítési módot."</string>
     <string name="ui_the_replayed_local_commit_deletes_this_fil_ab00656d" formatted="false">"Az újraalkalmazott helyi commit törli ezt a fájlt."</string>
     <string name="ui_the_review_changed_cancel_and_refresh_serv_c7ee804c" formatted="false">"Az áttekintés adatai megváltoztak. Mégse, majd frissítsd a kiszolgáló zárolásait."</string>
+    <string name="ui_these_files_go_back_to_how_they_were_in_a4_02e3cd66" formatted="false">"Ezek a fájlok visszaállnak arra, ahogy az a41c9e2-ben voltak."</string>
     <string name="ui_this_history_entry_is_unavailable_c2c9f4e0" formatted="false">"Ez az előzménybejegyzés nem érhető el."</string>
     <string name="ui_this_removes_another_connection_s_lock_coo_880defbf" formatted="false">"Ez eltávolítja egy másik kapcsolat zárolását. Folytatás előtt egyeztess a tulajdonosával."</string>
     <string name="ui_this_repository_will_use_public_access_unt_c94fad61" formatted="false">"Ez a tároló nyilvános hozzáférést használ, amíg újra nem választasz hitelesítést. A bejelentkezett GitHub-fiókodat nem használja hozzá. A fetch és push címek változatlanok maradnak."</string>
@@ -955,6 +2313,7 @@
     <string name="ui_use_for_new_clones_be174c95" formatted="false">"Használat új klónokhoz"</string>
     <string name="ui_use_saved_default_3bb7260d" formatted="false">"Mentett alapértelmezés használata"</string>
     <string name="ui_username_e3b89e9d" formatted="false">"Felhasználónév"</string>
+    <string name="ui_working_5474eef8" formatted="false">"Folyamatban…"</string>
     <string name="ui_your_edits_have_not_been_saved_625899a4" formatted="false">"A módosításaid nincsenek mentve."</string>
     <string name="ui_your_unsubmitted_text_will_be_discarded_th_15717285" formatted="false">"A még el nem küldött szöveg elvész. A munkafájl változatlan marad."</string>
     <string name="untracked" formatted="false">"Nem követett"</string>
@@ -1048,9 +2407,108 @@
     <string name="vault_l10n_tracking_review_changed" formatted="false">"A követés megszüntetésének áttekintése megváltozott. Nézd át újra a tárolót és a biztonsági mentés választását."</string>
     <string name="vault_l10n_volume_unavailable" formatted="false">"Ez a tárolókötet nem érhető el"</string>
     <string name="vault_l10n_volume_unavailable_reconnect" formatted="false">"Ez a tárolókötet nem érhető el. Csatlakoztasd újra, és válaszd ki újra a mappát."</string>
+    <string name="vault_m3_as_author">"mint %1$s · %2$s"</string>
+    <string name="vault_m3_branch_pushed">"Feltöltötted a commitjaidat az új %1$s ágba"</string>
+    <string name="vault_m3_cancel" formatted="false">"Mégsem"</string>
+    <string name="vault_m3_check_for_changes" formatted="false">"Módosítások keresése"</string>
+    <string name="vault_m3_checking" formatted="false">"Ellenőrzés…"</string>
+    <string name="vault_m3_checking_remote">"Ellenőrzés %1$s új commitok után"</string>
+    <string name="vault_m3_chip_theirs">"↓%1$d innen: %2$s · %3$s"</string>
+    <string name="vault_m3_chip_theirs_plain">"↓%1$d a távoli tárolóból"</string>
+    <string name="vault_m3_chip_yours">"↑%1$d az Öné"</string>
+    <string name="vault_m3_commit_locally" formatted="false">"Véglegesítés helyben"</string>
+    <string name="vault_m3_commit_push" formatted="false">"Commit és push"</string>
+    <string name="vault_m3_commits_sent">"%1$d / %2$d commit elküldve"</string>
+    <string name="vault_m3_committing" formatted="false">"Commitolás…"</string>
+    <string name="vault_m3_days_ago">"%1$d napja"</string>
+    <string name="vault_m3_deleted_path">"%1$s (törölve)"</string>
+    <string name="vault_m3_discard_body">"Ezek a fájlok visszaállnak arra, ahogy %1$s-ban voltak. Azóta ezen a telefonon végzett szerkesztések végleg elvesznek."</string>
+    <string name="vault_m3_dismiss" formatted="false">"Bezárás"</string>
+    <string name="vault_m3_download_progress" formatted="false">"Letöltés előrehaladása"</string>
+    <string name="vault_m3_effect_delete" formatted="false">"új fájl törlése"</string>
+    <string name="vault_m3_effect_restore" formatted="false">"visszaállítás"</string>
+    <string name="vault_m3_effect_revert" formatted="false">"Visszavonás"</string>
+    <string name="vault_m3_effect_unstage" formatted="false">"Visszavonás"</string>
+    <string name="vault_m3_fetched_ago">"lekérve: %1$s"</string>
+    <string name="vault_m3_hours_ago">"%1$dh ezelőtt"</string>
+    <string name="vault_m3_included" formatted="false">"Bevonva"</string>
+    <string name="vault_m3_just_now" formatted="false">"– mostanra"</string>
+    <string name="vault_m3_keep_them" formatted="false">"Megtartás"</string>
+    <string name="vault_m3_latest_commit" formatted="false">"Legutóbbi commit"</string>
+    <string name="vault_m3_leave_note" formatted="false">"Elhagyhatod ezt a képernyőt. A szinkronizálás folytatódik, és értesítésben mutatja előrehaladását."</string>
+    <string name="vault_m3_merge" formatted="false">"összevonás"</string>
+    <string name="vault_m3_merge_conflicts" formatted="false">"A lehúzás konfliktusokat talált. Oldd meg őket, majd töltsd fel."</string>
+    <string name="vault_m3_message" formatted="false">"Üzenet"</string>
+    <string name="vault_m3_minutes">"%1$dm"</string>
+    <string name="vault_m3_minutes_ago">"%1$dm időjelem előtt"</string>
+    <string name="vault_m3_no_overlap_body" formatted="false">"Az Ön és az ő módosításaik különböző fájlokat érintenek, így az összevonásnak tisztán kell mennie."</string>
+    <string name="vault_m3_no_overlap_title" formatted="false">"Nincs átfedés"</string>
+    <string name="vault_m3_no_upstream" formatted="false">"Nincs upstream ág"</string>
+    <string name="vault_m3_notify_channel" formatted="false">"Vault szinkron"</string>
+    <string name="vault_m3_notify_title">"%1$s · %2$s"</string>
+    <string name="vault_m3_objects_received">"%1$d / %2$d objektum fogadva"</string>
+    <string name="vault_m3_objects_sent">"%1$d / %2$d objektum elküldve"</string>
+    <string name="vault_m3_only_on_phone" formatted="false">"Csak ezen a telefonon"</string>
+    <string name="vault_m3_overlap_body" formatted="false">"Mindkét fél ugyanazokat a fájlokat szerkesztette. A lehúzás megállhat egy konfliktusnál, hogy megoldhassa."</string>
+    <string name="vault_m3_preparing" formatted="false">"Előkészítés…"</string>
+    <string name="vault_m3_pull" formatted="false">"Lekérés"</string>
+    <string name="vault_m3_pull_then_push" formatted="false">"Húzza le az övékét, majd tolja fel"</string>
+    <string name="vault_m3_pulled">"Naprakész a %1$s-el"</string>
+    <string name="vault_m3_pulling" formatted="false">"Pull folyamatban…"</string>
+    <string name="vault_m3_push" formatted="false">"Push"</string>
+    <string name="vault_m3_push_branch" formatted="false">"Push egy ágra"</string>
+    <string name="vault_m3_push_right_after" formatted="false">"Push rögtön utána"</string>
+    <string name="vault_m3_pushed_to">"Pusholva ide: %1$s"</string>
+    <string name="vault_m3_pushing" formatted="false">"Push folyamatban…"</string>
+    <string name="vault_m3_rejected_kicker" formatted="false">"A push nem sikerült"</string>
+    <string name="vault_m3_remote_generic" formatted="false">"a távoli"</string>
+    <string name="vault_m3_remote_is_here">"%1$s itt van"</string>
+    <string name="vault_m3_remote_no_new" formatted="false">"A távoli tárolóban nincs új commit"</string>
+    <string name="vault_m3_remote_not_checked" formatted="false">"A távoli még nincs ellenőrizve"</string>
+    <string name="vault_m3_review_first" formatted="false">"Előbb átnézés"</string>
+    <string name="vault_m3_seconds">"%1$ds"</string>
+    <string name="vault_m3_stash_first" formatted="false">"Biztos, ami biztos: előbb másolat a stash-be"</string>
+    <string name="vault_m3_step_branch">"Hozza létre a %1$s ágat"</string>
+    <string name="vault_m3_step_check">"Új commitok keresése: %1$s"</string>
+    <string name="vault_m3_step_download">"Letöltés innen: %1$s"</string>
+    <string name="vault_m3_step_merge">"%1$s összevonása"</string>
+    <string name="vault_m3_step_none" formatted="false">"nincs"</string>
+    <string name="vault_m3_step_update" formatted="false">"Fájlok frissítése"</string>
+    <string name="vault_m3_step_upload">"Feltöltés a %1$s-re"</string>
+    <string name="vault_m3_steps" formatted="false">"Lépések"</string>
+    <string name="vault_m3_suggest_add">"Add %1$s"</string>
+    <string name="vault_m3_suggest_backup">"széfmentés: %1$s"</string>
+    <string name="vault_m3_suggest_delete">"%1$s törlése"</string>
+    <string name="vault_m3_suggest_update">"%1$s frissítése"</string>
+    <string name="vault_m3_suggested" formatted="false">"Javasolt a különbség alapján"</string>
+    <string name="vault_m3_sync_cancelled" formatted="false">"A szinkronizálás megszakítva. Ami már el lett kötelezve, az ezen a telefonon marad."</string>
+    <string name="vault_m3_sync_failed" formatted="false">"Szinkronizacja leállítva"</string>
+    <string name="vault_m3_tap_for_diff" formatted="false">"koppints egy fájlra a különbség megtekintéséhez"</string>
+    <string name="vault_m3_time_left">"~%1$s elhagyta"</string>
+    <string name="vault_m3_today" formatted="false">"Ma"</string>
+    <string name="vault_m3_upload_progress" formatted="false">"Feltöltés állapota"</string>
+    <string name="vault_m3_vault_settings" formatted="false">"Széfbeállítások"</string>
+    <string name="vault_m3_who_both" formatted="false">"mindkettő"</string>
+    <string name="vault_m3_who_theirs" formatted="false">"övék"</string>
+    <string name="vault_m3_who_yours" formatted="false">"az Öné"</string>
+    <string name="vault_m3_yesterday" formatted="false">"Tegnap"</string>
     <string name="vault_open_in_files_failed" formatted="false">"Ez a mappa nem nyitható meg a Fájlokban."</string>
     <string name="vault_repository_fallback" formatted="false">"Tároló"</string>
     <string name="vault_url_copied" formatted="false">"Másolva!"</string>
+    <string name="widget_m3_choose_vault" formatted="false">"Válassz egy trezort"</string>
+    <string name="widget_m3_days_ago">"%1$d napja"</string>
+    <string name="widget_m3_hours_ago">"%1$dh ezelőtt"</string>
+    <string name="widget_m3_in_sync" formatted="false">"Szinkronban"</string>
+    <string name="widget_m3_list_description" formatted="false">"A trezoraid, hogy mit kell mindegyiknek feltöltenie, és egy Húzz mindent gomb."</string>
+    <string name="widget_m3_list_name" formatted="false">"Széfek"</string>
+    <string name="widget_m3_minutes_ago">"%1$dm időjelem előtt"</string>
+    <string name="widget_m3_no_vaults" formatted="false">"Még nincsenek trezorok. Nyisd meg a GitSync.md-t az egy hozzáadásához."</string>
+    <string name="widget_m3_now" formatted="false">"most"</string>
+    <string name="widget_m3_pull_all_repositories" formatted="false">"– összes adathordozót kinyitás"</string>
+    <string name="widget_m3_vault_description" formatted="false">"Egy trezor és hány változást kell feltöltenie."</string>
+    <string name="widget_m3_vault_missing" formatted="false">"Ez a trezor már nincs ezen a telefonon."</string>
+    <string name="widget_m3_vault_name" formatted="false">"Széf"</string>
+    <string name="widget_m3_vault_widget" formatted="false">"Trezor widget"</string>
     <plurals name="account_updated_days">
         <item quantity="one">"%1$d napja"</item>
         <item quantity="other">"%1$d napja"</item>
@@ -1075,6 +2533,62 @@
         <item quantity="one">"%1$d éve"</item>
         <item quantity="other">"%1$d éve"</item>
     </plurals>
+    <plurals name="adaptive_changes_on_phone">
+        <item quantity="one">"%1$s változás ezen a telefonon"</item>
+        <item quantity="other">"%1$s változások ezen a telefonon"</item>
+    </plurals>
+    <plurals name="adaptive_changes_on_tablet">
+        <item quantity="one">"%1$s változás ezen a tableten"</item>
+        <item quantity="other">"%1$s változások ezen a tableten"</item>
+    </plurals>
+    <plurals name="adaptive_commit_changes">
+        <item quantity="one">"Kötelezd el a %1$d változást"</item>
+        <item quantity="other">"Kötelezd el a %1$d változásokat"</item>
+    </plurals>
+    <plurals name="adaptive_merging_left">
+        <item quantity="one">"Összeolvadás %1$s · %2$d konfliktus maradt"</item>
+        <item quantity="other">"Összeolvadás %1$s · %2$d konfliktusok maradtak"</item>
+    </plurals>
+    <plurals name="adaptive_merging_left_plain">
+        <item quantity="one">"Összeolvadás · %1$d konfliktus maradt"</item>
+        <item quantity="other">"Összeolvadás · %1$d konfliktusok maradtak"</item>
+    </plurals>
+    <plurals name="adaptive_split_editing">
+        <item quantity="one">"%1$d szerkesztés alatt"</item>
+        <item quantity="other">"%1$d szerkesztés alatt"</item>
+    </plurals>
+    <plurals name="adaptive_split_live">
+        <item quantity="one">"%1$s változás · élő"</item>
+        <item quantity="other">"%1$s változások · élő"</item>
+    </plurals>
+    <plurals name="adaptive_vaults_need_you">
+        <item quantity="one">"%1$d szüksége van rád"</item>
+        <item quantity="other">"%1$d szükségetek van rád"</item>
+    </plurals>
+    <plurals name="add_accounts_signed_in">
+        <item quantity="one">"Beállítások · %1$d bejelentkezett"</item>
+        <item quantity="other">"Beállítások · %1$d bejelentkezett"</item>
+    </plurals>
+    <plurals name="add_clone_files">
+        <item quantity="one">"%1$d fájl"</item>
+        <item quantity="other">"%1$d fájlok"</item>
+    </plurals>
+    <plurals name="add_clone_lfs_files">
+        <item quantity="one">"%1$d fájl"</item>
+        <item quantity="other">"%1$d fájlok"</item>
+    </plurals>
+    <plurals name="add_local_folders">
+        <item quantity="one">"%1$d mappa"</item>
+        <item quantity="other">"%1$d mappák"</item>
+    </plurals>
+    <plurals name="add_way_github_repos">
+        <item quantity="one">"%1$d repo · privát is beleértve"</item>
+        <item quantity="other">"%1$d repók · privát is beleértve"</item>
+    </plurals>
+    <plurals name="add_way_github_repos_public">
+        <item quantity="one">"%1$d repo"</item>
+        <item quantity="other">"%1$d repók"</item>
+    </plurals>
     <plurals name="dialogs_error_merge_conflicts">
         <item quantity="one">"Az egyesítésben %1$d megoldatlan ütközés van.\n\nOldd meg az egyesítés befejezése előtt."</item>
         <item quantity="other">"Az egyesítésben %1$d megoldatlan ütközés van.\n\nOldd meg őket az egyesítés befejezése előtt."</item>
@@ -1082,6 +2596,98 @@
     <plurals name="diff_changed_lines">
         <item quantity="one">"+%1$s -%2$s sor"</item>
         <item quantity="other">"+%1$s -%2$s sor"</item>
+    </plurals>
+    <plurals name="editor_m3_lines_changed">
+        <item quantity="one">"%1$d sor változtatva"</item>
+        <item quantity="other">"%1$d sorok változtatva"</item>
+    </plurals>
+    <plurals name="files_m3_items">
+        <item quantity="one">"%1$d elem"</item>
+        <item quantity="other">"%1$d elemek"</item>
+    </plurals>
+    <plurals name="files_m3_sync_diverged">
+        <item quantity="one">"%1$d új commit az %2$s-on, és ennek a telefonnak vannak commitjai, amelyeket még nem tett közzé. Nyisd meg a Változások fület, hogy lehúzd őket."</item>
+        <item quantity="other">"%1$d új commitok az %2$s-on, és ennek a telefonnak vannak commitjai, amelyeket még nem tett közzé. Nyisd meg a Változások fület, hogy lehúzd őket."</item>
+    </plurals>
+    <plurals name="files_m3_sync_local_changes">
+        <item quantity="one">"%1$d új commit az %2$s-on. Commitold vagy dobd el a helyi változtatásaidat a Változások fülön, majd szinkronizálj újra."</item>
+        <item quantity="other">"%1$d új commit van a %2$s-on. Commitáld vagy dobd el a helyi változtatásaidat a Változások fülön, majd szinkronizálj újra."</item>
+    </plurals>
+    <plurals name="git_m3_cant_switch_body">
+        <item quantity="one">"A %1$s-ra váltás a telefonon lévő fájlokat cserélné. A %2$d nem commitált változtatásodnak előbb biztonságos helyre van szüksége."</item>
+        <item quantity="other">"A %1$s-ra váltás a telefonon lévő fájlokat cserélné. A %2$d nem commitált változtatásaidnak előbb biztonságos helyre van szüksége."</item>
+    </plurals>
+    <plurals name="git_m3_commits_missing">
+        <item quantity="one">"%1$d commit %2$s nincs"</item>
+        <item quantity="other">"%1$d commitok %2$s nincs"</item>
+    </plurals>
+    <plurals name="git_m3_conflicts_left">
+        <item quantity="one">"%1$d konfliktus megoldandó."</item>
+        <item quantity="other">"%1$d konfliktusok megoldandóak."</item>
+    </plurals>
+    <plurals name="git_m3_continue_resolve">
+        <item quantity="one">"Folytatás a rebase-el · oldd meg még %1$d"</item>
+        <item quantity="other">"Folytassa a rebase-t · oldja meg a %1$d-t"</item>
+    </plurals>
+    <plurals name="git_m3_dirty_note">
+        <item quantity="one">"A %1$d változtatás még nincs elkövetve. Kövesse el vagy tegyen el a váltás előtt ágakat."</item>
+        <item quantity="other">"A %1$d változtatások még nincsenek elkövetve. Kövesse el vagy tegyen el őket, mielőtt ágváltást hajt végre."</item>
+    </plurals>
+    <plurals name="git_m3_files">
+        <item quantity="one">"%1$d fájl"</item>
+        <item quantity="other">"%1$d fájlok"</item>
+    </plurals>
+    <plurals name="git_m3_n_branches">
+        <item quantity="one">"%1$d ág"</item>
+        <item quantity="other">"%1$d ágak"</item>
+    </plurals>
+    <plurals name="git_m3_n_commits_history">
+        <item quantity="one">"%1$d történeti commit"</item>
+        <item quantity="other">"%1$d történeti commitok"</item>
+    </plurals>
+    <plurals name="git_m3_n_stashes">
+        <item quantity="one">"%1$d stash"</item>
+        <item quantity="other">"%1$d stashek"</item>
+    </plurals>
+    <plurals name="git_m3_n_tags">
+        <item quantity="one">"%1$d címke"</item>
+        <item quantity="other">"%1$d címkék"</item>
+    </plurals>
+    <plurals name="git_m3_notes_attachments">
+        <item quantity="one">"%1$d jegyzet vagy csatolmány"</item>
+        <item quantity="other">"%1$d jegyzetek és csatolmányok"</item>
+    </plurals>
+    <plurals name="git_m3_push_commits">
+        <item quantity="one">"%1$d commit feltöltése"</item>
+        <item quantity="other">"%1$d commitok feltöltése"</item>
+    </plurals>
+    <plurals name="git_m3_rebase_begin_body">
+        <item quantity="one">"A helyi %1$d commitod a felülvizsgált upstream-re lett újrajátszva, és új azonosítót kaphat. A rebase ezen a telefonon marad. A feltöltés külön lépés."</item>
+        <item quantity="other">"A helyi %1$d commitjaid a felülvizsgált upstream-re lettek újrajátszva, és új azonosítókat kaphatnak. A rebase ezen a telefonon marad. A feltöltés külön lépés."</item>
+    </plurals>
+    <plurals name="git_m3_rebase_done_meta">
+        <item quantity="one">"%1$d commit most a %2$s tetején · új azonosítók · nincs feltöltve"</item>
+        <item quantity="other">"%1$d commitok most a %2$s tetején · új azonosítók · nincs feltöltve"</item>
+    </plurals>
+    <plurals name="git_m3_rebase_put_on_top">
+        <item quantity="one">"Tedd a %1$d commitodat a távoli tetejére."</item>
+        <item quantity="other">"Tedd a %1$d commitjaidat a távoli tetejére."</item>
+    </plurals>
+    <plurals name="git_m3_stash_n">
+        <item quantity="one">"%1$d változtatás elrejtése"</item>
+        <item quantity="other">"%1$d változtatások elrejtése"</item>
+    </plurals>
+    <plurals name="git_m3_stashed_toast">
+        <item quantity="one">"%1$d változtatás elrejtve a stash@{0} helyre."</item>
+        <item quantity="other">"%1$d változtatások elrejtve a stash@{0} helyre."</item>
+    </plurals>
+    <plurals name="git_m3_uncommitted_changes">
+        <item quantity="one">"%1$s el nem kötelezett változtatás"</item>
+        <item quantity="other">"%1$s el nem kötelezett változtatások"</item>
+    </plurals>
+    <plurals name="git_m3_uncommitted_plain">
+        <item quantity="one">"%1$d el nem kötelezett szerkesztés, sima fájlként"</item>
+        <item quantity="other">"%1$d el nem kötelezett szerkesztések, sima fájlokként"</item>
     </plurals>
     <plurals name="gitops_merge_stopped_conflicts">
         <item quantity="one">"A merge leállt: %1$s (%2$d ütközés)"</item>
@@ -1099,6 +2705,30 @@
         <item quantity="one">"%1$d jelenlegi fájl megtartja a kifejezetten megadott követési beállítását."</item>
         <item quantity="other">"%1$d jelenlegi fájl megtartja a kifejezetten megadott követési beállítását."</item>
     </plurals>
+    <plurals name="lfs_m3_downloading">
+        <item quantity="one">"%1$d fájl letöltése"</item>
+        <item quantity="other">"%1$d fájlok letöltése"</item>
+    </plurals>
+    <plurals name="lfs_m3_endpoints_subtitle">
+        <item quantity="one">"Beállítások · %1$d jóváhagyva"</item>
+        <item quantity="other">"Beállítások · %1$d jóváhagyva"</item>
+    </plurals>
+    <plurals name="lfs_m3_ext_affected">
+        <item quantity="one">"%1$d fájl LFS-be mozgatása"</item>
+        <item quantity="other">"%1$d fájlok LFS-be mozgatása"</item>
+    </plurals>
+    <plurals name="lfs_m3_file_count">
+        <item quantity="one">"%1$d fájl"</item>
+        <item quantity="other">"%1$d fájlok"</item>
+    </plurals>
+    <plurals name="lfs_m3_stored_files">
+        <item quantity="one">"a %1$d fájlban"</item>
+        <item quantity="other">"a %1$d fájlokban"</item>
+    </plurals>
+    <plurals name="lfs_m3_track_files">
+        <item quantity="one">"Kövesd a %1$d fájlt LFS-sel"</item>
+        <item quantity="other">"Kövesse nyomon a %1$d fájlokat LFS-sel"</item>
+    </plurals>
     <plurals name="lfs_restored_files">
         <item quantity="one">"%1$d fájl visszaállítva."</item>
         <item quantity="other">"%1$d fájl visszaállítva."</item>
@@ -1107,9 +2737,57 @@
         <item quantity="one">"%1$d fájl"</item>
         <item quantity="other">"%1$d fájl"</item>
     </plurals>
+    <plurals name="m3home_auth_waiting">
+        <item quantity="one">"A(z) %1$d tároló várakozik."</item>
+        <item quantity="other">"A(z) %1$d tárolók várakoznak."</item>
+    </plurals>
+    <plurals name="m3home_badge_edited">
+        <item quantity="one">"%1$d szerkesztve"</item>
+        <item quantity="other">"%1$d szerkesztve"</item>
+    </plurals>
+    <plurals name="m3home_headline_attention">
+        <item quantity="one">"%1$d tároló"</item>
+        <item quantity="other">"%1$d tárolók"</item>
+    </plurals>
+    <plurals name="m3home_headline_attention_accent">
+        <item quantity="one">"%1$s szükség van rád."</item>
+        <item quantity="other">"%1$s szükség van rám."</item>
+    </plurals>
+    <plurals name="m3home_headline_ready">
+        <item quantity="one">"%1$d tároló"</item>
+        <item quantity="other">"%1$d tárolók"</item>
+    </plurals>
+    <plurals name="m3home_sync_nothing_local">
+        <item quantity="other">"Nincs szinkronizálni való. Ezek a(z) %1$d tárolók csak helyi (nincs távoli)."</item>
+        <item quantity="one">"Nincs mit szinkronizálni. A %1$d tároló csak helyi (nincs távoli)."</item>
+    </plurals>
     <plurals name="move_plan_summary">
         <item quantity="one">"%1$s fájl a Git-metaadatokkal együtt · %2$s"</item>
         <item quantity="other">"%1$s fájl a Git-metaadatokkal együtt · %2$s"</item>
+    </plurals>
+    <plurals name="notification_m3_commits">
+        <item quantity="one">"%1$d commit hátérben letöltve."</item>
+        <item quantity="other">"%1$d commitok hátérben letöltve."</item>
+    </plurals>
+    <plurals name="notification_m3_commits_from">
+        <item quantity="one">"%1$d commit a(z) %2$s tárolóból hátérben letöltve."</item>
+        <item quantity="other">"%1$d %2$s-ből származó elkötelezések a háttérben letöltve."</item>
+    </plurals>
+    <plurals name="pullall_m3_checked_repositories">
+        <item quantity="one">"%2$d tároló %1$d ellenőrizve"</item>
+        <item quantity="other">"%2$d tárolók %1$d ellenőrizve"</item>
+    </plurals>
+    <plurals name="pullall_m3_checked_vaults">
+        <item quantity="one">"%2$d trezor %1$d ellenőrizve"</item>
+        <item quantity="other">"%2$d trezorok %1$d ellenőrizve"</item>
+    </plurals>
+    <plurals name="pullall_m3_updated_commits">
+        <item quantity="one">"Frissítve a távoli szerverről · ↓%1$d elkötelezés"</item>
+        <item quantity="other">"Frissítve a távoli szerverről · ↓%1$d elkötelezések"</item>
+    </plurals>
+    <plurals name="pullall_m3_vaults">
+        <item quantity="one">"%1$d trezor"</item>
+        <item quantity="other">"%1$d trezorok"</item>
     </plurals>
     <plurals name="rebase_additional_blocked_paths">
         <item quantity="one">"%1$d további blokkolt útvonal nem jelenik meg."</item>
@@ -1131,12 +2809,92 @@
         <item quantity="one">"· %1$d tároló"</item>
         <item quantity="other">"· %1$d tároló"</item>
     </plurals>
+    <plurals name="settings_m3_bg_included">
+        <item quantity="one">"%1$d trezor belefoglalva"</item>
+        <item quantity="other">"%1$d trezorok belefoglalva"</item>
+    </plurals>
+    <plurals name="settings_m3_bg_run_quiet">
+        <item quantity="one">"%1$d trezor, semmi új"</item>
+        <item quantity="other">"%1$d trezorok, semmi új"</item>
+    </plurals>
+    <plurals name="settings_m3_debug_errors_day">
+        <item quantity="one">"%1$d hiba 24 órán belül"</item>
+        <item quantity="other">"%1$d hibák 24 órán belül"</item>
+    </plurals>
+    <plurals name="settings_m3_entries">
+        <item quantity="one">"%1$d bejegyzés"</item>
+        <item quantity="other">"%1$d bejegyzések"</item>
+    </plurals>
+    <plurals name="settings_m3_push_connections">
+        <item quantity="one">"%1$d GitHub kapcsolat · bekapcsolva"</item>
+        <item quantity="other">"%1$d GitHub kapcsolatok · bekapcsolva"</item>
+    </plurals>
+    <plurals name="settings_m3_push_local_changes">
+        <item quantity="one">"%1$d helyi változtatás ezen a telefonon"</item>
+        <item quantity="other">"%1$d helyi változtatások ezen a telefonon"</item>
+    </plurals>
+    <plurals name="settings_m3_sc_subtitle">
+        <item quantity="one">"Összes lehúzása widget · %1$d gyorsgomb"</item>
+        <item quantity="other">"Összes lehúzása widget · %1$d gyorsgombok"</item>
+    </plurals>
+    <plurals name="ssh_m3_subtitle">
+        <item quantity="one">"Beállítások · %1$d szerver"</item>
+        <item quantity="other">"Beállítások · %1$d szerverek"</item>
+    </plurals>
     <plurals name="tide_vault_changes_on_phone">
-        <item quantity="one">"módosítás ezen a telefonon"</item>
-        <item quantity="other">"módosítás ezen a telefonon"</item>
+        <item quantity="one">"%1$s módosítás ezen a telefonon"</item>
+        <item quantity="other">"%1$s módosítás ezen a telefonon"</item>
     </plurals>
     <plurals name="tide_vault_conflicts_to_resolve">
-        <item quantity="one">"feloldandó ütközés"</item>
-        <item quantity="other">"feloldandó ütközés"</item>
+        <item quantity="one">"%1$s feloldandó ütközés"</item>
+        <item quantity="other">"%1$s feloldandó ütközés"</item>
+    </plurals>
+    <plurals name="vault_m3_commit_title">
+        <item quantity="one">"%1$d fájl benyújtása"</item>
+        <item quantity="other">"%1$d fájlok benyújtása"</item>
+    </plurals>
+    <plurals name="vault_m3_discard_n">
+        <item quantity="one">"%1$d elvetése"</item>
+        <item quantity="other">"%1$d elvetése"</item>
+    </plurals>
+    <plurals name="vault_m3_discard_title">
+        <item quantity="one">"%1$d módosításának elvetése?"</item>
+        <item quantity="other">"%1$d módosításainak elvetése?"</item>
+    </plurals>
+    <plurals name="vault_m3_effect_lines">
+        <item quantity="one">"−%1$d sor"</item>
+        <item quantity="other">"−%1$d sorok"</item>
+    </plurals>
+    <plurals name="vault_m3_file_count">
+        <item quantity="one">"%1$d fájl"</item>
+        <item quantity="other">"%1$d fájlok"</item>
+    </plurals>
+    <plurals name="vault_m3_overlap_title">
+        <item quantity="one">"%1$d fájl mindkét oldalon megváltozott"</item>
+        <item quantity="other">"%1$d fájlok mindkét oldalon megváltoztak"</item>
+    </plurals>
+    <plurals name="vault_m3_remote_new">
+        <item quantity="one">"A távoli oldalon %1$d új commit van"</item>
+        <item quantity="other">"A távoli oldalon %1$d új commit van"</item>
+    </plurals>
+    <plurals name="vault_m3_step_commit">
+        <item quantity="one">"%1$d fájl benyújtása"</item>
+        <item quantity="other">"%1$d fájlok benyújtása"</item>
+    </plurals>
+    <plurals name="vault_m3_step_lfs">
+        <item quantity="one">"Feltöltés %1$d LFS fájl · %2$s"</item>
+        <item quantity="other">"Feltöltés %1$d LFS fájlok · %2$s"</item>
+    </plurals>
+    <plurals name="vault_m3_suggest_files">
+        <item quantity="one">"Frissítés %1$d fájl"</item>
+        <item quantity="other">"Frissítés %1$d fájlok"</item>
+    </plurals>
+    <plurals name="vault_m3_uploading_lfs">
+        <item quantity="one">"%1$d LFS fájl feltöltése"</item>
+        <item quantity="other">"%1$d LFS fájlok feltöltése"</item>
+    </plurals>
+    <plurals name="widget_m3_changes_to_push">
+        <item quantity="one">"%1$s változtatás push-olásra"</item>
+        <item quantity="other">"%1$s változtatások push-olásra"</item>
     </plurals>
 </resources>

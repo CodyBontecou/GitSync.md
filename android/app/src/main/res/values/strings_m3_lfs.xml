@@ -229,8 +229,8 @@
     <string name="widget_m3_pull_all_repositories">Pull all repositories</string>
     <string name="widget_m3_no_vaults">No vaults yet. Open GitSync.md to add one.</string>
     <plurals name="widget_m3_changes_to_push">
-        <item quantity="one">change to push</item>
-        <item quantity="other">changes to push</item>
+        <item quantity="one">%1$s change to push</item>
+        <item quantity="other">%1$s changes to push</item>
     </plurals>
     <string name="widget_m3_choose_vault">Choose a vault</string>
     <string name="widget_m3_vault_widget">Vault widget</string>

@@ -1,5 +1,6 @@
 package com.bontecou.syncmd.automation
 
+import com.bontecou.syncmd.ui.util.countedPhrase
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
@@ -131,8 +132,11 @@ object VaultWidgets {
             }
             val count = item.status?.toPush ?: 0
             setTextViewText(R.id.vault_widget_name, item.name)
-            setTextViewText(R.id.vault_widget_count, count.toString())
-            setTextViewText(R.id.vault_widget_label, context.resources.getQuantityString(R.plurals.widget_m3_changes_to_push, count))
+            val phrase = countedPhrase(context.resources.getQuantityString(R.plurals.widget_m3_changes_to_push, count),
+                context.getString(R.string.l10n_count, count))
+            setTextViewText(R.id.vault_widget_count, phrase.value)
+            setTextViewText(R.id.vault_widget_label, phrase.label)
+            setContentDescription(R.id.vault_widget_root, context.getString(R.string.l10n_a11y_pair, item.name, phrase.text))
             setTextViewText(R.id.vault_widget_meta, listOfNotNull(item.status?.branch, ago(context, item.status?.lastSync, now)).joinToString(" · "))
             setOnClickPendingIntent(R.id.vault_widget_root, VaultShortcutActivity.pendingIntent(context, VaultShortcutActivity.OPEN, item.path))
         }

@@ -306,13 +306,13 @@ private fun PiecesPreviewBody() {
             kicker = "Both sides moved", headline = "The remote moved on while you were writing.",
             tone = GitWorkTone.DANGER, rail = TideSyncState.Diverged(2, 3), yours = 2, theirs = 3,
             detail = { RebaseCommitCounts(2, 3) },
-            actions = { GitWorkHeroButton("Rebase onto reviewed upstream", {}) },
+            actions = { GitWorkHeroButton(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_rebase_onto_reviewed_upstream_c3b8fb93), {}) },
         )
-        GitWorkNote("Rebase completed successfully", tone = GitWorkTone.SYNCED)
-        GitWorkWorking("Working…")
-        GitWorkPill("Use local commit", {}, style = GitWorkPillStyle.AHEAD)
-        GitWorkPill("Use upstream", {}, style = GitWorkPillStyle.BEHIND)
-        GitWorkPill("Disabled", {}, enabled = false)
+        GitWorkNote(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_rebase_completed_successfully_53314c91), tone = GitWorkTone.SYNCED)
+        GitWorkWorking(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_working_5474eef8))
+        GitWorkPill(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.rebase_use_local), {}, style = GitWorkPillStyle.AHEAD)
+        GitWorkPill(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.rebase_use_upstream), {}, style = GitWorkPillStyle.BEHIND)
+        GitWorkPill(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_disabled_75081b59), {}, enabled = false)
         RebaseAdditionalBlockedPaths(3)
     }
 }

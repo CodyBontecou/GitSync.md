@@ -1,5 +1,6 @@
 package com.bontecou.syncmd.ui.components
 
+import com.bontecou.syncmd.ui.util.SampleGitData
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -305,7 +306,7 @@ private val previewRun = VaultSyncRun(
 )
 
 private val previewDivergence = RemoteDivergence("main", "origin/main", 2, 1,
-    Commit("a41c9e2", author = "Mac", message = "Capture", timestamp = System.currentTimeMillis() - 240_000),
+    Commit("a41c9e2", author = "Mac", message = SampleGitData.CAPTURE, timestamp = System.currentTimeMillis() - 240_000),
     listOf("daily/2026-11-01.md", "projects/q4.md"), listOf("inbox.md"))
 
 @Preview(name = "Syncing", heightDp = 760) @Composable

@@ -1,4 +1,4 @@
-<!-- Generated from the sibling iOS catalog by tools/localization/import_ios_catalog.py. -->
+<!-- Generated from the canonical Apple catalog and Android overrides by tools/localization/import_ios_catalog.py. -->
 <resources>
     <string name="account_alternative_exists" formatted="false">"Er is al een andere alternatieve verbinding opgeslagen. Controleer die voordat je meer URL-inloggegevens migreert."</string>
     <string name="account_api_error">"GitHub API-fout: HTTP %1$d"</string>
@@ -95,6 +95,342 @@
     <string name="account_token_invalid">"GitHub-token is ongeldig of verlopen (HTTP %1$d)"</string>
     <string name="account_updated_just_now" formatted="false">"zojuist"</string>
     <string name="account_valid_branch" formatted="false">"Voer een geldige branchnaam in"</string>
+    <string name="adaptive_abort_merge" formatted="false">"Merge afbreken"</string>
+    <string name="adaptive_account" formatted="false">"Account en instellingen"</string>
+    <string name="adaptive_badge_ahead">"↑%1$d"</string>
+    <string name="adaptive_badge_attention" formatted="false">"!"</string>
+    <string name="adaptive_badge_behind">"↓%1$d"</string>
+    <string name="adaptive_badge_both">"↓%1$d ↑%2$d"</string>
+    <string name="adaptive_badge_checking" formatted="false">"…"</string>
+    <string name="adaptive_badge_edited">"%1$d bewerkt"</string>
+    <string name="adaptive_badge_in_sync" formatted="false">"✓"</string>
+    <string name="adaptive_branch_local_only">"%1$s · geen remote"</string>
+    <string name="adaptive_branch_to_remote">"%1$s → %2$s"</string>
+    <string name="adaptive_cancel" formatted="false">"Annuleren"</string>
+    <string name="adaptive_commit_message" formatted="false">"Verplichtingsbericht"</string>
+    <string name="adaptive_commit_only" formatted="false">"Alleen commit"</string>
+    <string name="adaptive_commit_this_file" formatted="false">"Dit bestand committen"</string>
+    <string name="adaptive_conflict" formatted="false">"conflict"</string>
+    <string name="adaptive_conflict_position">"Conflict %1$d van %2$d · %3$s"</string>
+    <string name="adaptive_cover_unfold" formatted="false">"Uitvouwen om het verschil naast de wijzigingslijst te lezen."</string>
+    <string name="adaptive_discard_all" formatted="false">"Verwerpen"</string>
+    <string name="adaptive_edited" formatted="false">"bewerkt"</string>
+    <string name="adaptive_include" formatted="false">"Opnemen"</string>
+    <string name="adaptive_keep_this_version" formatted="false">"Deze versie behouden"</string>
+    <string name="adaptive_new_file" formatted="false">"nieuw bestand"</string>
+    <string name="adaptive_no_changes" formatted="false">"Geen wijzigingen op dit apparaat. Bewerk een notitie en deze verschijnt hier."</string>
+    <string name="adaptive_position">"%1$d van %2$d"</string>
+    <string name="adaptive_pull" formatted="false">"Pullen"</string>
+    <string name="adaptive_pull_then_push" formatted="false">"Pull, dan push"</string>
+    <string name="adaptive_push" formatted="false">"Pushen"</string>
+    <string name="adaptive_rejected" formatted="false">"De remote is verder gegaan. Haal eerst zijn commits op, push daarna die van jou."</string>
+    <string name="adaptive_review_first" formatted="false">"Eerst controleren"</string>
+    <string name="adaptive_split_auto_commit" formatted="false">"Automatisch committen wanneer ik 2 minuten pauzeer"</string>
+    <string name="adaptive_split_committed">"↑%1$d gecommit"</string>
+    <string name="adaptive_split_typing" formatted="false">"typen…"</string>
+    <string name="adaptive_split_watching">"volgt %1$s"</string>
+    <string name="adaptive_sync_all" formatted="false">"Alles synchroniseren"</string>
+    <string name="adaptive_sync_all_to_push">"Alles synchroniseren, %1$d te pushen"</string>
+    <string name="adaptive_this_tablet" formatted="false">"Deze tablet"</string>
+    <string name="adaptive_vaults" formatted="false">"Kluizen"</string>
+    <string name="adaptive_view" formatted="false">"Bekijk"</string>
+    <string name="adaptive_vs">"vs %1$s"</string>
+    <string name="add_access_body" formatted="false">"GitSync.md heeft gedeelde opslagtoegang nodig om echte Git werkcopy\'s in apparaatmappen te beheren. Schakel dit in bij Android Instellingen, kies vervolgens de mappen die je wilt gebruiken."</string>
+    <string name="add_access_cancel" formatted="false">"Annuleren"</string>
+    <string name="add_access_enable" formatted="false">"Toegang inschakelen"</string>
+    <string name="add_access_note" formatted="false">"Niet nu? Je kunt de app-opslag blijven gebruiken."</string>
+    <string name="add_access_title" formatted="false">"Toegang tot lokale mappen toestaan"</string>
+    <string name="add_accounts_add" formatted="false">"Toevoegen GitHub Rekening"</string>
+    <string name="add_accounts_browsing" formatted="false">"Bladeren met dit account"</string>
+    <string name="add_accounts_cancel" formatted="false">"Annuleren"</string>
+    <string name="add_accounts_empty_body" formatted="false">"Lokale repositories blijven beschikbaar."</string>
+    <string name="add_accounts_empty_title" formatted="false">"Geen verbonden accounts"</string>
+    <string name="add_accounts_intro" formatted="false">"Kies het account dat gebruikt wordt om GitHub te bekijken. Elke repository behoudt zijn eigen account; wijzig dit in Repository-verbinding."</string>
+    <string name="add_accounts_none_signed_in" formatted="false">"Instellingen · niemand aangemeld"</string>
+    <string name="add_accounts_remove" formatted="false">"Aanmelding verwijderen"</string>
+    <string name="add_accounts_remove_body" formatted="false">"Repositories die dit account gebruiken vragen je om opnieuw in te loggen of een ander account te kiezen in Repository-verbinding. Je lokale bestanden en commits blijven behouden."</string>
+    <string name="add_accounts_remove_title">"%1$s verwijderen?"</string>
+    <string name="add_accounts_title" formatted="false">"GitHub-accounts"</string>
+    <string name="add_accounts_use" formatted="false">"Gebruiken om te bladeren"</string>
+    <string name="add_added" formatted="false">"Toegevoegd"</string>
+    <string name="add_ago_days">"%1$d d geleden"</string>
+    <string name="add_ago_hours">"%1$dvoor \'h\' dagen"</string>
+    <string name="add_ago_minutes">"%1$dm geleden"</string>
+    <string name="add_ago_months">"%1$d geleden"</string>
+    <string name="add_ago_now" formatted="false">"nu"</string>
+    <string name="add_ago_weeks">"%1$d w geleden"</string>
+    <string name="add_ago_years">"%1$d j geleden"</string>
+    <string name="add_auth_github" formatted="false">"GitHub"</string>
+    <string name="add_auth_none" formatted="false">"Geen"</string>
+    <string name="add_auth_saved" formatted="false">"is opgeslagen"</string>
+    <string name="add_auth_ssh" formatted="false">"SSH sleutel\nDe verificatie van het TLS-certificaat voor"</string>
+    <string name="add_auth_token" formatted="false">"Token"</string>
+    <string name="add_check_access_ro" formatted="false">"alleen lezen"</string>
+    <string name="add_check_access_rw" formatted="false">"lezen · schrijven"</string>
+    <string name="add_check_add_on_github" formatted="false">"Voeg repo toe op GitHub"</string>
+    <string name="add_check_again" formatted="false">"Opnieuw controleren"</string>
+    <string name="add_check_app_callout">"De GitHub App is geïnstalleerd op %1$s, maar deze repo is niet geselecteerd. Voeg het toe op GitHub, kom daarna terug."</string>
+    <string name="add_check_app_missing">"De GitHub App van GitSync.md staat nog niet op %1$s. Voeg het toe op GitHub met deze repo, kom daarna terug."</string>
+    <string name="add_check_checking" formatted="false">"Controleren…"</string>
+    <string name="add_check_clone" formatted="false">"Kluis klonen"</string>
+    <string name="add_check_clone_obsidian" formatted="false">"Klonen naar Obsidian"</string>
+    <string name="add_check_clones_to" formatted="false">"Klonen naar"</string>
+    <string name="add_check_head_blocked" formatted="false">"Er moet eerst één punt worden opgelost."</string>
+    <string name="add_check_head_checking" formatted="false">"Je kluis\nwordt gecontroleerd."</string>
+    <string name="add_check_head_ready" formatted="false">"Je kluis is klaar."</string>
+    <string name="add_check_lfs_none" formatted="false">"geen"</string>
+    <string name="add_check_lfs_used" formatted="false">"in gebruik"</string>
+    <string name="add_check_measuring" formatted="false">"bezig met meten"</string>
+    <string name="add_check_no_obsidian" formatted="false">"Nog geen .obsidian/-map"</string>
+    <string name="add_check_note_blocked" formatted="false">"Je hebt niets betaald. Ontgrendelen verschijnt pas als je kluis de controle doorstaat."</string>
+    <string name="add_check_note_checking" formatted="false">"Alleen metadata wordt gelezen. Er worden geen notities gedownload tot je ontgrendelt."</string>
+    <string name="add_check_note_ready" formatted="false">"Google Play toont de uiteindelijke prijs in jouw valuta voordat je bevestigt."</string>
+    <string name="add_check_note_ready_unlocked" formatted="false">"Full Access is ontgrendeld. Niets meer te betalen."</string>
+    <string name="add_check_obsidian_found" formatted="false">"Obsidian-kluis gevonden"</string>
+    <string name="add_check_obsidian_git" formatted="false">"Obsidian Git-plug-in ingesteld"</string>
+    <string name="add_check_ok" formatted="false">"OK"</string>
+    <string name="add_check_pick_another" formatted="false">"Andere repository kiezen"</string>
+    <string name="add_check_play_note" formatted="false">"Eenmalige aankoop via Google Play. Geen abonnement."</string>
+    <string name="add_check_price_once">"eenmalig %1$s"</string>
+    <string name="add_check_size_files" formatted="false">"Grootte &amp; bestanden"</string>
+    <string name="add_check_stat_access" formatted="false">"TOEGANG"</string>
+    <string name="add_check_stat_files" formatted="false">"Bestanden"</string>
+    <string name="add_check_stat_lfs" formatted="false">"Git LFS"</string>
+    <string name="add_check_stat_size" formatted="false">"GROOTTE"</string>
+    <string name="add_check_step">"Stap %1$d van 3"</string>
+    <string name="add_check_sub_blocked" formatted="false">"GitSync.md kan deze repo lezen maar kan er niet naar pushen. Los het op op GitHub, en controleer het dan opnieuw."</string>
+    <string name="add_check_sub_checking" formatted="false">"We controleren of GitSync.md deze repository kan synchroniseren voordat je iets betaalt."</string>
+    <string name="add_check_sub_ready" formatted="false">"Alles klopt. Eén keer klonen en Obsidian opent hem met de volledige geschiedenis."</string>
+    <string name="add_check_title" formatted="false">"Kluiscontrole"</string>
+    <string name="add_check_unknown" formatted="false">"—"</string>
+    <string name="add_check_write_access" formatted="false">"Schrijftoegang"</string>
+    <string name="add_clone" formatted="false">"Klonen"</string>
+    <string name="add_clone_app_storage" formatted="false">"App-opslag gebruiken"</string>
+    <string name="add_clone_busy" formatted="false">"Repository klonen"</string>
+    <string name="add_clone_bytes">"%1$s · %2$s"</string>
+    <string name="add_clone_cancel" formatted="false">"Annuleren"</string>
+    <string name="add_clone_checkout" formatted="false">"Bestanden uitchecken"</string>
+    <string name="add_clone_choose_folder" formatted="false">"Andere map kiezen"</string>
+    <string name="add_clone_cloned" formatted="false">"geklonerd"</string>
+    <string name="add_clone_continue" formatted="false">"Doorgaan"</string>
+    <string name="add_clone_finishing" formatted="false">"Afronden"</string>
+    <string name="add_clone_finishing_body">"%1$s toevoegen aan je kluizen en de Git LFS-bestanden controleren."</string>
+    <string name="add_clone_lfs" formatted="false">"Klonen voltooid. Sommige Git LFS-bestanden moeten nog worden gecontroleerd of gedownload. Je kloon en lokale wijzigingen zijn bewaard."</string>
+    <string name="add_clone_lfs_review" formatted="false">"Git LFS controleren"</string>
+    <string name="add_clone_location" formatted="false">"Locatie van kloon"</string>
+    <string name="add_clone_new_folder" formatted="false">"Nieuwe map"</string>
+    <string name="add_clone_nothing_yet" formatted="false">"Er wordt niets gedownload totdat je op Clonen tikt."</string>
+    <string name="add_clone_percent">"%1$d%%"</string>
+    <string name="add_clone_preparing" formatted="false">"Verbinden"</string>
+    <string name="add_clone_receiving" formatted="false">"Objecten ontvangen"</string>
+    <string name="add_clone_register_failed" formatted="false">"Het gekloonde repository kon niet worden toegevoegd. De bestanden zijn behouden. Probeer het opnieuw toe te voegen of verbind de map opnieuw via Lokale repositories."</string>
+    <string name="add_clone_register_retry" formatted="false">"Gekloond repository toevoegen"</string>
+    <string name="add_clone_resolving" formatted="false">"Deltas oplossen"</string>
+    <string name="add_clone_retry" formatted="false">"Herhaal"</string>
+    <string name="add_clone_saved_default" formatted="false">"Opgeslagen standaard gebruiken"</string>
+    <string name="add_clone_start" formatted="false">"Repository klonen"</string>
+    <string name="add_clone_title_cloning" formatted="false">"Repository klonen"</string>
+    <string name="add_clone_title_done" formatted="false">"geklonerd"</string>
+    <string name="add_clone_title_failed" formatted="false">"Klonen mislukt"</string>
+    <string name="add_clone_title_ready" formatted="false">"Repository klonen"</string>
+    <string name="add_clone_to">"→ %1$s"</string>
+    <string name="add_cloning_name">"%1$s wordt gekloond"</string>
+    <string name="add_close" formatted="false">"Sluiten"</string>
+    <string name="add_connected_added" formatted="false">"Toegevoegd aan je accounts"</string>
+    <string name="add_connected_title" formatted="false">"GitHub-account gekoppeld"</string>
+    <string name="add_continue" formatted="false">"Doorgaan"</string>
+    <string name="add_default_branch" formatted="false">"Standaardbranch"</string>
+    <string name="add_done" formatted="false">"Gereed"</string>
+    <string name="add_github_hint" formatted="false">"Gebruikt de aanmelding van het GitHub-account voor github.com."</string>
+    <string name="add_group_notes" formatted="false">"Ziet eruit als notities"</string>
+    <string name="add_group_other" formatted="false">"Al het andere"</string>
+    <string name="add_group_other_matching" formatted="false">"Al het andere dat overeenkomt"</string>
+    <string name="add_intro" formatted="false">"Haal een bestaande repo binnen, of maak er een van een map."</string>
+    <string name="add_key_copied" formatted="false">"Openbare sleutel gekopieerd"</string>
+    <string name="add_key_copy" formatted="false">"Publieke sleutel kopiëren"</string>
+    <string name="add_key_failed" formatted="false">"Kon geen sleutel op deze telefoon maken. Gebruik in plaats daarvan een andere sleutel."</string>
+    <string name="add_key_hint" formatted="false">"Voeg de openbare sleutel eenmaal toe aan je host. De privésleutel blijft op deze telefoon."</string>
+    <string name="add_key_meta">"ed25519 · %1$s"</string>
+    <string name="add_key_other" formatted="false">"Andere gebruiken…"</string>
+    <string name="add_key_this_phone" formatted="false">"Gebruik de sleutel van deze telefoon"</string>
+    <string name="add_key_title" formatted="false">"Sleutel van deze telefoon"</string>
+    <string name="add_local_add_selected" formatted="false">"Geselecteerde repositories toevoegen"</string>
+    <string name="add_local_added" formatted="false">"Toegevoegde repositories"</string>
+    <string name="add_local_already" formatted="false">"Al toegevoegd"</string>
+    <string name="add_local_clean" formatted="false">"schoon"</string>
+    <string name="add_local_clone_instead" formatted="false">"Kopieer in plaats daarvan van GitHub"</string>
+    <string name="add_local_destination">"Bestemming: %1$s"</string>
+    <string name="add_local_detached" formatted="false">"Losgekoppelde HEAD of nog geen eerste commit"</string>
+    <string name="add_local_dirty" formatted="false">"Lokale wijzigingen"</string>
+    <string name="add_local_discovered" formatted="false">"Gevonden repositories"</string>
+    <string name="add_local_files_deleted" formatted="false">"Lokale bestanden gewist"</string>
+    <string name="add_local_files_kept" formatted="false">"Lokale bestanden behouden"</string>
+    <string name="add_local_in">"in %1$s"</string>
+    <string name="add_local_interrupted" formatted="false">"Onderbroken klonen"</string>
+    <string name="add_local_interrupted_body" formatted="false">"Probeer deze kloon opnieuw toe te voegen nadat je de map en verbinding hebt beoordeeld. Bestaande bestanden blijven behouden."</string>
+    <string name="add_local_intro" formatted="false">"Zoek Git werkende kopieën die al op deze telefoon staan, zoals een Obsidian kluismap, en voeg ze toe zonder opnieuw te kopiëren. Het later verwijderen van een item houdt de bestanden."</string>
+    <string name="add_local_none_added" formatted="false">"Nog geen repositories toegevoegd."</string>
+    <string name="add_local_none_body">"Niets in %1$s had een .git map. Probeer de map die je notitie-app gebruikt, of kopieer van GitHub."</string>
+    <string name="add_local_none_title" formatted="false">"Geen werkende kopieën gevonden"</string>
+    <string name="add_local_previous" formatted="false">"Eerder toegevoegd"</string>
+    <string name="add_local_scan_app" formatted="false">"Appmappen scannen"</string>
+    <string name="add_local_scan_app_label" formatted="false">"app-mappen"</string>
+    <string name="add_local_scan_app_sub" formatted="false">"Mappen GitSync.md worden al opgeslagen"</string>
+    <string name="add_local_scan_device" formatted="false">"Een apparaatmap scannen"</string>
+    <string name="add_local_scan_device_sub" formatted="false">"Kies een map, zoals Documenten of Obsidian"</string>
+    <string name="add_local_scanning">"Scannen van %1$s"</string>
+    <string name="add_local_staged">"Tijdelijke kopie: %1$s"</string>
+    <string name="add_local_title" formatted="false">"Lokale repository’s"</string>
+    <string name="add_local_tracking_removed" formatted="false">"Git tracking verwijderd · bestanden behouden"</string>
+    <string name="add_local_truncated" formatted="false">"De scan heeft de diepte- of maplimiet bereikt. Sommige mappen zijn niet gescand."</string>
+    <string name="add_location_body" formatted="false">"Kies een andere map bij het klonen, of stel een standaard in via Instellingen."</string>
+    <string name="add_location_head" formatted="false">"Standaardopslag"</string>
+    <string name="add_location_head_muted" formatted="false">"locatie."</string>
+    <string name="add_location_label" formatted="false">"Downloadlocatie"</string>
+    <string name="add_meta_lfs">"%1$s LFS"</string>
+    <string name="add_meta_private" formatted="false">"privé"</string>
+    <string name="add_meta_public" formatted="false">"openbaar"</string>
+    <string name="add_more_options" formatted="false">"Naam, branch en map"</string>
+    <string name="add_more_options_meta">"%1$s · %2$s"</string>
+    <string name="add_none_hint" formatted="false">"Voor publieke repos. GitSync.md verzendt geen inloggegevens."</string>
+    <string name="add_not_signed_in" formatted="false">"Niet ingelogd"</string>
+    <string name="add_owner_orgs" formatted="false">"Orgs"</string>
+    <string name="add_owner_starred" formatted="false">"Met ster"</string>
+    <string name="add_owner_yours" formatted="false">"Van u"</string>
+    <string name="add_picker_accounts" formatted="false">"GitHub-accounts"</string>
+    <string name="add_picker_empty_owner" formatted="false">"Nog geen repos hier."</string>
+    <string name="add_picker_refresh" formatted="false">"Vernieuwen"</string>
+    <string name="add_picker_search" formatted="false">"Repository\'s zoeken"</string>
+    <string name="add_picker_starred_failed" formatted="false">"Kon je favoriete repos niet laden."</string>
+    <string name="add_picker_title" formatted="false">"Kies een repo"</string>
+    <string name="add_publish_account" formatted="false">"GitHub Rekening"</string>
+    <string name="add_publish_author_email" formatted="false">"E-mailadres auteur"</string>
+    <string name="add_publish_author_name" formatted="false">"Auteursnaam"</string>
+    <string name="add_publish_cancel" formatted="false">"Annuleren"</string>
+    <string name="add_publish_check" formatted="false">"Oorspronkelijke bestemming controleren"</string>
+    <string name="add_publish_choose" formatted="false">"Kies een map"</string>
+    <string name="add_publish_confirm" formatted="false">"Publiceren"</string>
+    <string name="add_publish_confirm_body">"Dit maakt %1$s als een %2$s-repo en uploadt de opgeslagen eerste commit. Houd de app open. Een herhaalde poging controleert deze bestemming en maakt nooit een tweede commit."</string>
+    <string name="add_publish_confirm_dest">"%1$s · %2$s\n%3$s · %4$s · %5$s"</string>
+    <string name="add_publish_confirm_title" formatted="false">"Deze opgeslagen commit publiceren?"</string>
+    <string name="add_publish_continue" formatted="false">"Opgeslagen publicatie voortzetten"</string>
+    <string name="add_publish_creating" formatted="false">"De repository wordt aangemaakt…"</string>
+    <string name="add_publish_discard" formatted="false">"Opgeslagen beoordeling weggooien"</string>
+    <string name="add_publish_file_ignored">"%1$s · Genegeerd"</string>
+    <string name="add_publish_file_issue">"%1$s · %2$s"</string>
+    <string name="add_publish_file_large">"%1$s · Meer dan 10 MiB"</string>
+    <string name="add_publish_file_regular">"%1$s · Normaal bestand"</string>
+    <string name="add_publish_file_sensitive">"%1$s · Gevoelige bestandsnaam"</string>
+    <string name="add_publish_files" formatted="false">"Bestanden"</string>
+    <string name="add_publish_intro" formatted="false">"Kies een map op deze telefoon, bekijk de bestanden en sla een eerste commit op. Publiceren maakt dan een nieuwe repo op je GitHub en uploadt deze."</string>
+    <string name="add_publish_keep_note" formatted="false">"Voortgang blijft opgeslagen wanneer je weggaat. Als Android de toegang verwijdert, verbind dan dezelfde map opnieuw."</string>
+    <string name="add_publish_limits" formatted="false">"Uw bestanden blijven waar ze zijn. Tot 10 MiB per bestand, 10.000 bestanden en in totaal 256 MiB. Git slaat lege mappen over."</string>
+    <string name="add_publish_manage_accounts" formatted="false">"Accounts beheren"</string>
+    <string name="add_publish_message" formatted="false">"Bericht voor eerste commit"</string>
+    <string name="add_publish_no_account" formatted="false">"Meld u aan bij GitHub om te publiceren."</string>
+    <string name="add_publish_open" formatted="false">"Repository openen"</string>
+    <string name="add_publish_original" formatted="false">"Oorspronkelijke map"</string>
+    <string name="add_publish_phase_created" formatted="false">"Repository gemaakt; upload in afwachting"</string>
+    <string name="add_publish_phase_done" formatted="false">"Gepubliceerd"</string>
+    <string name="add_publish_phase_prepared" formatted="false">"Lokale commit voorbereid"</string>
+    <string name="add_publish_phase_published" formatted="false">"Commit gepubliceerd; configuratie in afwachting"</string>
+    <string name="add_publish_phase_review" formatted="false">"Bestanden en bestemming beoordelen"</string>
+    <string name="add_publish_phase_unknown" formatted="false">"Maken van repository vereist beoordeling"</string>
+    <string name="add_publish_prepare" formatted="false">"Lokale commit voorbereiden"</string>
+    <string name="add_publish_preparing" formatted="false">"Lokale commit voorbereiden…"</string>
+    <string name="add_publish_private" formatted="false">"Privérepository"</string>
+    <string name="add_publish_private_off" formatted="false">"Iedereen kan de geselecteerde bestanden en geschiedenis lezen."</string>
+    <string name="add_publish_private_on" formatted="false">"Alleen mensen die je toegang geeft, kunnen deze lezen."</string>
+    <string name="add_publish_progress_bytes">"%1$s / %2$s · houd de app open"</string>
+    <string name="add_publish_progress_keep">"%1$s · houd de app open"</string>
+    <string name="add_publish_public_body" formatted="false">"Iedereen kan de bestanden die u publiceert lezen. Controleer uw selectie op geheimen, persoonlijke gegevens en bestanden die u niet kunt delen."</string>
+    <string name="add_publish_public_confirm" formatted="false">"Openbaar kiezen"</string>
+    <string name="add_publish_public_title" formatted="false">"Deze repository openbaar maken?"</string>
+    <string name="add_publish_publish" formatted="false">"Publiceren naar GitHub"</string>
+    <string name="add_publish_reconnect" formatted="false">"Oorspronkelijke map opnieuw verbinden"</string>
+    <string name="add_publish_refresh" formatted="false">"Bestanden vernieuwen"</string>
+    <string name="add_publish_registering" formatted="false">"Het repository toevoegen…"</string>
+    <string name="add_publish_reload" formatted="false">"Opgeslagen voortgang opnieuw laden"</string>
+    <string name="add_publish_repo_name" formatted="false">"Repositorynaam"</string>
+    <string name="add_publish_save_review" formatted="false">"Beoordeling opslaan"</string>
+    <string name="add_publish_saved_commit">"Opgeslagen commit: %1$s"</string>
+    <string name="add_publish_saved_progress" formatted="false">"Bewaarde voortgang"</string>
+    <string name="add_publish_selected">"Geselecteerd: %1$d · %2$s"</string>
+    <string name="add_publish_step">"Stap %1$d van 3"</string>
+    <string name="add_publish_stop" formatted="false">"Stop"</string>
+    <string name="add_publish_title" formatted="false">"Een map publiceren"</string>
+    <string name="add_publish_unknown_note" formatted="false">"GitHub kan de repository al hebben gemaakt. Controleer de oorspronkelijke bestemming. Er wordt geen tweede repository gemaakt tenzij je ervoor kiest een overeenkomende lege te gebruiken."</string>
+    <string name="add_publish_uploading" formatted="false">"Opgeslagen commit uploaden…"</string>
+    <string name="add_rail_github" formatted="false">"GitHub"</string>
+    <string name="add_rail_phone" formatted="false">"deze telefoon"</string>
+    <string name="add_remote_file" formatted="false">"lokaal"</string>
+    <string name="add_remote_git" formatted="false">"git://"</string>
+    <string name="add_remote_http" formatted="false">"HTTP"</string>
+    <string name="add_remote_https" formatted="false">"HTTPS"</string>
+    <string name="add_remote_intro" formatted="false">"GitLab, Gitea, Codeberg, uw eigen server."</string>
+    <string name="add_remote_label" formatted="false">"Afstandsserver-URL"</string>
+    <string name="add_remote_name_invalid" formatted="false">"Gebruik een naam zonder / of \\, en niet “.” of “..”."</string>
+    <string name="add_remote_placeholder" formatted="false">"ssh://git@host/owner/repo.git"</string>
+    <string name="add_remote_ssh" formatted="false">"SSH"</string>
+    <string name="add_remote_title" formatted="false">"Elke Git-host"</string>
+    <string name="add_resume_meta">"%1$s · stap %2$d van 3 · opgeslagen"</string>
+    <string name="add_resume_title" formatted="false">"Publiceren hervatten"</string>
+    <string name="add_saved_hint" formatted="false">"Hergebruikt de opgeslagen versleutelde verbinding voor deze opslagplaats."</string>
+    <string name="add_sign_in_with" formatted="false">"Inloggen met"</string>
+    <string name="add_signed_in_as">"ingelogd als @%1$s"</string>
+    <string name="add_signin_back_accounts" formatted="false">"Terug naar accounts"</string>
+    <string name="add_signin_body" formatted="false">"Kloon een repository, schrijf in Obsidian of een andere app en synchroniseer met één tik."</string>
+    <string name="add_signin_busy" formatted="false">"Bezig met inloggen…"</string>
+    <string name="add_signin_eyebrow" formatted="false">"ELKE REPO. GESYNCHRONISEERD MET ANDROID."</string>
+    <string name="add_signin_github" formatted="false">"Inloggen met GitHub"</string>
+    <string name="add_signin_head_1" formatted="false">"Uw notities."</string>
+    <string name="add_signin_head_2" formatted="false">"Echte git."</string>
+    <string name="add_signin_head_3" formatted="false">"Altijd in de pas."</string>
+    <string name="add_signin_rail" formatted="false">"Deze telefoon en GitHub bijeenkomst op één synchronisatiepunt"</string>
+    <string name="add_signin_sample" formatted="false">"Voorbeeldrepository proberen"</string>
+    <string name="add_signin_sample_busy" formatted="false">"Voorbeeld openen…"</string>
+    <string name="add_signin_sample_hint" formatted="false">"Echt Git, offline. Geen account nodig."</string>
+    <string name="add_signin_token" formatted="false">"Persoonlijk toegangstoken"</string>
+    <string name="add_signin_waiting" formatted="false">"Voltooi op GitHub in het browsertabblad. Je komt direct terug."</string>
+    <string name="add_ssh_import_failed" formatted="false">"Kan dat sleutelbestand niet lezen."</string>
+    <string name="add_ssh_import_key" formatted="false">"Sleutelbestand importeren"</string>
+    <string name="add_test_clone" formatted="false">"Testen en klonen"</string>
+    <string name="add_test_failed_auth" formatted="false">"De host weigerde deze aanmelding. Controleer de sleutel of token en de toegang tot de repo."</string>
+    <string name="add_test_failed_branch">"De host heeft geen branch genaamd %1$s."</string>
+    <string name="add_test_failed_missing" formatted="false">"De host heeft geen repo op dit adres."</string>
+    <string name="add_test_failed_network" formatted="false">"Kan de host niet bereiken. Controleer het adres en je verbinding."</string>
+    <string name="add_test_host_key" formatted="false">"Bevestig de SSH sleutel van de host en tik dan opnieuw op Test &amp; clone."</string>
+    <string name="add_testing" formatted="false">"Inloggen testen…"</string>
+    <string name="add_title" formatted="false">"Kluis toevoegen"</string>
+    <string name="add_token_body" formatted="false">"Plak een GitHub-token met toegang tot repositories."</string>
+    <string name="add_token_create" formatted="false">"Maak een token aan op GitHub"</string>
+    <string name="add_token_hide" formatted="false">"Verbergen"</string>
+    <string name="add_token_hint" formatted="false">"Het token wordt op deze telefoon versleuteld en alleen naar deze host gestuurd."</string>
+    <string name="add_token_label" formatted="false">"Token"</string>
+    <string name="add_token_scopes" formatted="false">"Scope: repo en user:email. Het token wordt op deze telefoon versleuteld."</string>
+    <string name="add_token_secret" formatted="false">"Token"</string>
+    <string name="add_token_show" formatted="false">"Tonen"</string>
+    <string name="add_token_sign_in" formatted="false">"Inloggen"</string>
+    <string name="add_token_title" formatted="false">"Persoonlijk toegangstoken"</string>
+    <string name="add_token_user" formatted="false">"Gebruikersnaam"</string>
+    <string name="add_unlock_rail">"%1$s · %2$s · aangevinkt, klaar om te klonen"</string>
+    <string name="add_unlock_rail_cd">"%1$s, aangevinkt en klaar om te klonen van GitHub naar Obsidian"</string>
+    <string name="add_unlock_rail_from" formatted="false">"GitHub"</string>
+    <string name="add_unlock_rail_plain">"%1$s · aangevinkt, klaar om te klonen"</string>
+    <string name="add_unlock_rail_to" formatted="false">"Obsidian"</string>
+    <string name="add_url_hint" formatted="false">"HTTPS, SSH, git:// of owner/repo. Zelf gehost? Tik op de sleutel."</string>
+    <string name="add_url_key" formatted="false">"Inlogopties voor andere hosts"</string>
+    <string name="add_url_label" formatted="false">"Repository-URL"</string>
+    <string name="add_url_placeholder" formatted="false">"https://github.com/owner/repo"</string>
+    <string name="add_url_section" formatted="false">"Of plak een URL"</string>
+    <string name="add_way_github" formatted="false">"Klonen van GitHub"</string>
+    <string name="add_way_github_sign_in" formatted="false">"Log in om uit je repos te kiezen"</string>
+    <string name="add_way_local" formatted="false">"Vind clones op deze telefoon"</string>
+    <string name="add_way_local_sub" formatted="false">"Scan gedeelde opslag naar bestaande .git-mappen"</string>
+    <string name="add_way_open" formatted="false">"Een repomap openen"</string>
+    <string name="add_way_open_sub" formatted="false">"Kies een Git repository met de systeemmapkiezer"</string>
+    <string name="add_way_publish" formatted="false">"Een map publiceren"</string>
+    <string name="add_way_publish_sub" formatted="false">"Maak een nieuwe GitHub-repo van uw notities"</string>
     <string name="automation_shortcut_label">"%1$s: %2$s"</string>
     <string name="background_allow_push" formatted="false">"Automatisch publiceren toestaan"</string>
     <string name="background_binding">"Alleen branch %1$s, die %2$s/%3$s volgt. Een wijziging van branch, map, verbinding of account vereist een nieuwe controle."</string>
@@ -261,12 +597,43 @@
     <string name="dialogs_success_title" formatted="false">"Gelukt"</string>
     <string name="dialogs_timestamp_unknown" formatted="false">"Onbekend"</string>
     <string name="dialogs_warning_title" formatted="false">"Waarschuwing"</string>
+    <string name="diff_m3_binary" formatted="false">"Dit bestand is geen tekst, dus er zijn geen regels om te vergelijken."</string>
+    <string name="diff_m3_changes" formatted="false">"Wijzigingen"</string>
+    <string name="diff_m3_deleted" formatted="false">"Dit bestand is verwijderd. Verwerpen herstelt het vanaf de laatste commit."</string>
+    <string name="diff_m3_discard" formatted="false">"Verwerpen"</string>
+    <string name="diff_m3_hunk">"%1$s · regel %2$d"</string>
+    <string name="diff_m3_hunk_line">"regel %1$d"</string>
+    <string name="diff_m3_load_failed" formatted="false">"De wijzigingen van dit bestand konden niet worden gelezen."</string>
+    <string name="diff_m3_next" formatted="false">"Volgend bestand"</string>
+    <string name="diff_m3_no_changes" formatted="false">"Geen wijzigingen sinds de laatste commit."</string>
+    <string name="diff_m3_position">"%1$s · %2$d van %3$d"</string>
+    <string name="diff_m3_preview" formatted="false">"Voorvertoning"</string>
+    <string name="diff_m3_previous" formatted="false">"Vorig bestand"</string>
+    <string name="diff_m3_stats_a11y">"%1$d regels toegevoegd, %2$d verwijderd"</string>
+    <string name="diff_m3_vs_last_commit">"vs laatste commit %1$s"</string>
+    <string name="diff_m3_vs_nothing" formatted="false">"nieuw bestand · nog geen commits"</string>
+    <string name="diff_m3_whole_file" formatted="false">"Heel bestand"</string>
     <string name="discard_clear_staging" formatted="false">"Index leegmaken"</string>
     <string name="discard_review_all" formatted="false">"Bijgehouden wijzigingen en de hieronder vermelde nieuwe bestanden worden permanent verwijderd. Genegeerde bestanden blijven behouden."</string>
     <string name="discard_review_empty" formatted="false">"Er zijn geen wijzigingen om te verwerpen."</string>
     <string name="discard_review_operation" formatted="false">"Hiermee wordt ook de actieve Git-bewerking afgebroken."</string>
     <string name="discard_review_unborn" formatted="false">"Er is nog geen commit. Dit verwijdert de vermelde bestanden uit de index en behoudt hun inhoud."</string>
     <string name="discovery_scanned">"%1$s gescand. Kies de werkkopieën die je wilt toevoegen."</string>
+    <string name="editor_m3_commit" formatted="false">"Commit"</string>
+    <string name="editor_m3_markdown" formatted="false">"Markdown"</string>
+    <string name="editor_m3_md_bold" formatted="false">"Vet"</string>
+    <string name="editor_m3_md_code" formatted="false">"Code"</string>
+    <string name="editor_m3_md_heading" formatted="false">"Kop"</string>
+    <string name="editor_m3_md_indent" formatted="false">"Inspringen"</string>
+    <string name="editor_m3_md_link" formatted="false">"Koppeling"</string>
+    <string name="editor_m3_md_task" formatted="false">"Taak"</string>
+    <string name="editor_m3_not_saved" formatted="false">"Niet opgeslagen"</string>
+    <string name="editor_m3_save_now" formatted="false">"Nu opslaan"</string>
+    <string name="editor_m3_saved" formatted="false">"is opgeslagen"</string>
+    <string name="editor_m3_saved_changed">"Opgeslagen · %1$s"</string>
+    <string name="editor_m3_saving" formatted="false">"Opslaan ..."</string>
+    <string name="editor_m3_subtitle">"%1$s / %2$s"</string>
+    <string name="editor_m3_vault_ahead">"%1$s ↑%2$d"</string>
     <string name="file_clone_failure" formatted="false">"De lokale repository kon niet worden gekloond. Controleer de bronmap, opslagtoegang en branch. Bestaande mappen zijn behouden."</string>
     <string name="file_clone_guidance" formatted="false">"Kloon een repository op het apparaat met lokale toegang. Geef voor gedeelde opslag eerst toegang tot de map in Instellingen."</string>
     <string name="file_delete_body" formatted="false">"Het bestand wordt van dit apparaat verwijderd. Git toont het als verwijderd als het werd gevolgd."</string>
@@ -289,15 +656,344 @@
     <string name="file_renamed" formatted="false">"Hernoemd"</string>
     <string name="file_save_title" formatted="false">"Wijzigingen opslaan?"</string>
     <string name="file_saved" formatted="false">"Opgeslagen"</string>
+    <string name="filehistory_m3_commits" formatted="false">"Commits"</string>
+    <string name="filehistory_m3_empty" formatted="false">"Geen commits bevatten dit bestand nog."</string>
+    <string name="filehistory_m3_load_failed" formatted="false">"Kon de geschiedenis van dit bestand niet lezen."</string>
+    <string name="filehistory_m3_meta">"%1$s · %2$s · %3$s"</string>
+    <string name="filehistory_m3_subtitle">"Geschiedenis · %1$s"</string>
     <string name="files_folder" formatted="false">"Map"</string>
     <string name="files_hide_hidden" formatted="false">"Verborgen bestanden verbergen"</string>
+    <string name="files_m3_actions_for">"Acties voor %1$s"</string>
+    <string name="files_m3_age_days">"%1$d d geleden"</string>
+    <string name="files_m3_age_hours">"%1$dvoor \'h\' dagen"</string>
+    <string name="files_m3_age_minutes">"%1$dm geleden"</string>
+    <string name="files_m3_age_months">"%1$d geleden"</string>
+    <string name="files_m3_age_now" formatted="false">"nu"</string>
+    <string name="files_m3_age_weeks">"%1$d w geleden"</string>
+    <string name="files_m3_age_years">"%1$d j geleden"</string>
+    <string name="files_m3_check_for_changes" formatted="false">"Controleren op wijzigingen"</string>
+    <string name="files_m3_delete" formatted="false">"Verwijderen"</string>
+    <string name="files_m3_delete_folder_body" formatted="false">"Alleen lege mappen kunnen hier worden verwijderd."</string>
+    <string name="files_m3_delete_folder_title" formatted="false">"Map verwijderen?"</string>
+    <string name="files_m3_fetch" formatted="false">"Fetch"</string>
+    <string name="files_m3_fetch_cd">"Haal %1$s op van de externe server"</string>
+    <string name="files_m3_fetch_failed" formatted="false">"Kon dit bestand niet ophalen van de externe server. Controleer uw verbinding en aanmelding, en probeer het opnieuw."</string>
+    <string name="files_m3_fetched">"%1$s opgehaald."</string>
+    <string name="files_m3_folder_path" formatted="false">"Mappad"</string>
+    <string name="files_m3_footnote" formatted="false">"Houd een bestand ingedrukt voor acties."</string>
+    <string name="files_m3_history" formatted="false">"Geschiedenis"</string>
+    <string name="files_m3_lfs_pointer">"LFS-pointer · %1$s op remote"</string>
+    <string name="files_m3_meta">"%1$s · %2$s"</string>
+    <string name="files_m3_meta_edited">"bewerkt %1$s · %2$s"</string>
+    <string name="files_m3_new_file_cd" formatted="false">"– Nieuwe bestand"</string>
+    <string name="files_m3_open_in" formatted="false">"Openen in…"</string>
+    <string name="files_m3_open_in_chooser">"Open %1$s in…"</string>
+    <string name="files_m3_open_in_failed" formatted="false">"Geen app op deze telefoon kan dit bestand openen."</string>
+    <string name="files_m3_rename" formatted="false">": Naam wijzigen"</string>
+    <string name="files_m3_rename_field" formatted="false">"Naam"</string>
+    <string name="files_m3_tag_added" formatted="false">"A"</string>
+    <string name="files_m3_tag_conflict" formatted="false">"!"</string>
+    <string name="files_m3_tag_lfs" formatted="false">"LFS"</string>
+    <string name="files_m3_tag_modified" formatted="false">"M"</string>
     <string name="files_show_hidden" formatted="false">"Verborgen bestanden tonen"</string>
     <string name="folder_access_not_enabled" formatted="false">"Maptoegang is niet ingeschakeld. Je kunt de app-opslag blijven gebruiken."</string>
     <string name="folder_picker_unavailable" formatted="false">"Er is geen mapkiezer beschikbaar op dit apparaat"</string>
     <string name="folder_settings_unavailable" formatted="false">"De opslaginstellingen van Android zijn niet beschikbaar. App-opslag blijft beschikbaar."</string>
     <string name="folder_unusable" formatted="false">"Deze map kon niet worden gebruikt"</string>
     <string name="git_fetch" formatted="false">"Fetch"</string>
+    <string name="git_m3_abort" formatted="false">"Afbreken"</string>
+    <string name="git_m3_abort_merge" formatted="false">"Merge afbreken"</string>
+    <string name="git_m3_abort_merge_body">"Zet %1$s terug waar het was voordat de samenvoeging plaatsvond. Tot nu toe gemaakte selecties worden verwijderd."</string>
+    <string name="git_m3_abort_merge_title" formatted="false">"Deze samenvoeging annuleren?"</string>
+    <string name="git_m3_abort_rebase_ask" formatted="false">"Rebase afbreken…"</string>
+    <string name="git_m3_access_github" formatted="false">"GitHub Inloggen\nMet"</string>
+    <string name="git_m3_access_https" formatted="false">"HTTPS"</string>
+    <string name="git_m3_access_local" formatted="false">"lokale map"</string>
+    <string name="git_m3_access_ssh" formatted="false">"SSH sleutel\nDe verificatie van het TLS-certificaat voor"</string>
+    <string name="git_m3_age_days">"%1$dd"</string>
+    <string name="git_m3_age_hours">"%1$dh"</string>
+    <string name="git_m3_age_minutes">"%1$dm"</string>
+    <string name="git_m3_ago_days">"%1$d d geleden"</string>
+    <string name="git_m3_ago_hours">"%1$dvoor \'h\' dagen"</string>
+    <string name="git_m3_ago_minutes">"%1$dm geleden"</string>
+    <string name="git_m3_ago_now" formatted="false">"nu"</string>
+    <string name="git_m3_ahead">"%1$d voor"</string>
+    <string name="git_m3_annotated" formatted="false">"geannoteerd"</string>
+    <string name="git_m3_applied_toast">"Toegepast %1$s. De stash is nog steeds opgeslagen."</string>
+    <string name="git_m3_apply" formatted="false">"Toepassen"</string>
+    <string name="git_m3_apply_help" formatted="false">"Brengt de wijzigingen terug en behoudt de stash."</string>
+    <string name="git_m3_back_to_remote" formatted="false">"Terug naar Remote"</string>
+    <string name="git_m3_backup_at">"Back-up: %1$s"</string>
+    <string name="git_m3_behind">"%1$d achter"</string>
+    <string name="git_m3_binary_side" formatted="false">"Dit bestand kan niet als tekst worden weergegeven. Kies een volledige versie."</string>
+    <string name="git_m3_both_edited_file" formatted="false">"Beide kanten hebben dit bestand bewerkt."</string>
+    <string name="git_m3_both_edited_section">"Beide kanten hebben “%1$s” bewerkt."</string>
+    <string name="git_m3_both_moved" formatted="false">"Beide kanten zijn veranderd"</string>
+    <string name="git_m3_both_moved_body">"Alleen fast-forwards ophalen, dus het kan deze niet combineren. Merge behoudt beide geschiedenissen. Rebase zet je %1$d commits bovenop."</string>
+    <string name="git_m3_both_moved_headline" formatted="false">"De remote is verdergegaan terwijl u schreef."</string>
+    <string name="git_m3_both_sides_edited" formatted="false">"Beide kanten hebben dit bestand bewerkt."</string>
+    <string name="git_m3_branch_name" formatted="false">"Branchnaam"</string>
+    <string name="git_m3_branch_placeholder" formatted="false">"bv. draft/winter"</string>
+    <string name="git_m3_branches" formatted="false">"-takken"</string>
+    <string name="git_m3_branches_stashes_tags" formatted="false">"Branches, stashes en tags"</string>
+    <string name="git_m3_cancel" formatted="false">"Annuleren"</string>
+    <string name="git_m3_cant_switch_note" formatted="false">"Niet-getrackte bestanden die door de andere branch zouden worden overschreven blokkeren ook de switch. Er is nog niets veranderd."</string>
+    <string name="git_m3_cant_switch_title" formatted="false">"Nog niet kunnen overschakelen"</string>
+    <string name="git_m3_check_changes" formatted="false">"Controleren op wijzigingen"</string>
+    <string name="git_m3_commit_as" formatted="false">"Committen als"</string>
+    <string name="git_m3_commit_first" formatted="false">"Eerst committen"</string>
+    <string name="git_m3_commit_history" formatted="false">"commitgeschiedenis"</string>
+    <string name="git_m3_commit_of">"commit %1$d van %2$d"</string>
+    <string name="git_m3_conflict_body" formatted="false">"Kies de versie die blijft, of behoud beide en ruim daarna op."</string>
+    <string name="git_m3_conflict_progress">"Conflict %1$d van %2$d · %3$s"</string>
+    <string name="git_m3_connection" formatted="false">"Verbinding"</string>
+    <string name="git_m3_continue_retry_first" formatted="false">"Doorgaan met rebase · probeer eerst opnieuw"</string>
+    <string name="git_m3_create" formatted="false">"Aanmaken"</string>
+    <string name="git_m3_create_tag" formatted="false">"Label aanmaken"</string>
+    <string name="git_m3_current" formatted="false">"Huidig"</string>
+    <string name="git_m3_current_branch" formatted="false">"Huidige branch"</string>
+    <string name="git_m3_delete" formatted="false">"Verwijderen"</string>
+    <string name="git_m3_delete_branch_body">"Verwijdert %1$s op deze telefoon. GitHub wordt niet aangeraakt."</string>
+    <string name="git_m3_delete_branch_cd">"Branch %1$s verwijderen"</string>
+    <string name="git_m3_delete_branch_title" formatted="false">"Branch verwijderen?"</string>
+    <string name="git_m3_delete_files_sub" formatted="false">"Verwijdert de map van deze telefoon"</string>
+    <string name="git_m3_delete_force" formatted="false">"Forceer"</string>
+    <string name="git_m3_delete_force_help" formatted="false">"Forceert het verwijderen van de branch, zelfs als de commits nooit zijn samengevoegd. Ze kunnen verloren gaan."</string>
+    <string name="git_m3_delete_normal" formatted="false">"Normaal"</string>
+    <string name="git_m3_delete_normal_help" formatted="false">"Verwijdert de branch alleen als de commits al zijn samengevoegd."</string>
+    <string name="git_m3_delete_tag" formatted="false">"Tag verwijderen"</string>
+    <string name="git_m3_delete_tag_body">"Het label verdwijnt van deze telefoon. Commit %1$s blijft, en een kopie die al naar GitHub is gepusht, wordt niet aangeraakt."</string>
+    <string name="git_m3_delete_tag_cd">"Tag %1$s verwijderen"</string>
+    <string name="git_m3_delete_tag_title">"\"%1$s\" verwijderen?"</string>
+    <string name="git_m3_deleted_here_edited_there" formatted="false">"Deze telefoon heeft het verwijderd. Aan de andere kant is het bewerkt."</string>
+    <string name="git_m3_deleted_on_phone" formatted="false">"Verwijderd op deze telefoon."</string>
+    <string name="git_m3_deleted_on_remote">"Verwijderd op %1$s."</string>
+    <string name="git_m3_detached">"Losgekoppeld bij %1$s"</string>
+    <string name="git_m3_discard" formatted="false">"Wijzigingen verwerpen"</string>
+    <string name="git_m3_disconnected" formatted="false">"Verbinding verbroken"</string>
+    <string name="git_m3_drop" formatted="false">"Verwijderen"</string>
+    <string name="git_m3_drop_cd">"Verwijder %1$s"</string>
+    <string name="git_m3_drop_help" formatted="false">"Verwijdert de stash zonder deze toe te passen."</string>
+    <string name="git_m3_dropped_toast">"%1$s verwijderd."</string>
+    <string name="git_m3_edit_by_hand" formatted="false">"Handmatig bewerken"</string>
+    <string name="git_m3_edit_connection" formatted="false">"Verbinding bewerken"</string>
+    <string name="git_m3_edited_ago">"bewerkt %1$s"</string>
+    <string name="git_m3_edited_here_deleted_there" formatted="false">"Deze telefoon heeft het bewerkt. De andere kant heeft het verwijderd."</string>
+    <string name="git_m3_fetch_again" formatted="false">"Opnieuw ophalen"</string>
+    <string name="git_m3_fetch_and_push">"Ophalen en pushen: %1$s"</string>
+    <string name="git_m3_fetch_hint" formatted="false">"om nieuwe takken te zien die vanaf je andere apparaten zijn gepusht."</string>
+    <string name="git_m3_fetch_review_again" formatted="false">"Ophalen en opnieuw bekijken"</string>
+    <string name="git_m3_fetch_sub" formatted="false">"Controleer GitHub op nieuwe commits"</string>
+    <string name="git_m3_fetched">"opgehaald %1$s"</string>
+    <string name="git_m3_finishing_merge" formatted="false">"De samenvoeging voltooien…"</string>
+    <string name="git_m3_folder_location" formatted="false">"De map en de locatie ervan"</string>
+    <string name="git_m3_from" formatted="false">"Van"</string>
+    <string name="git_m3_from_remote">"↓%1$d van remote"</string>
+    <string name="git_m3_from_who">" van %1$s"</string>
+    <string name="git_m3_github" formatted="false">"GitHub"</string>
+    <string name="git_m3_hand_edited_markers" formatted="false">"Conflictmeldingen staan nog in het bestand. Verwijder ze in de editor en kom daarna terug."</string>
+    <string name="git_m3_hand_edited_ready" formatted="false">"Handmatig bewerkt. Gebruik je bewerkte bestand, of kies een kant om te vervangen."</string>
+    <string name="git_m3_how" formatted="false">"Hoe"</string>
+    <string name="git_m3_in_sync" formatted="false">"Gesynchroniseerd"</string>
+    <string name="git_m3_in_sync_headline" formatted="false">"Deze telefoon komt overeen met de remote."</string>
+    <string name="git_m3_in_the_way" formatted="false">"In de weg"</string>
+    <string name="git_m3_in_this_vault" formatted="false">"In deze kluis"</string>
+    <string name="git_m3_its_remotes" formatted="false">"Zijn remotes"</string>
+    <string name="git_m3_keep_backup" formatted="false">"Bewaar een geverifieerde back-up"</string>
+    <string name="git_m3_keep_backup_sub" formatted="false">"kopie en ZIP van de .git map"</string>
+    <string name="git_m3_keep_both" formatted="false">"Beide behouden"</string>
+    <string name="git_m3_kept_edit" formatted="false">"Met de hand opgelost."</string>
+    <string name="git_m3_kept_local" formatted="false">"De lokaal opnieuw afgespeelde commit behouden."</string>
+    <string name="git_m3_kept_upstream" formatted="false">"De upstream-versie behouden."</string>
+    <string name="git_m3_lfs" formatted="false">"Grote bestanden (LFS)"</string>
+    <string name="git_m3_lfs_none" formatted="false">"niet gebruikt"</string>
+    <string name="git_m3_lfs_value">"%1$s · %2$d vergrendeld"</string>
+    <string name="git_m3_light" formatted="false">"licht"</string>
+    <string name="git_m3_local_only" formatted="false">"alleen lokaal"</string>
+    <string name="git_m3_manage_vault" formatted="false">"Kluis beheren"</string>
+    <string name="git_m3_marker_end" formatted="false">"Einde van beide versies"</string>
+    <string name="git_m3_marker_ours" formatted="false">"Versie van deze telefoon"</string>
+    <string name="git_m3_marker_theirs">"Versie van %1$s"</string>
+    <string name="git_m3_merge" formatted="false">"Samenvoegen"</string>
+    <string name="git_m3_merge_and_push" formatted="false">"Samenvoegen en pushen"</string>
+    <string name="git_m3_merge_author">"Samenvoegingsauteur: %1$s"</string>
+    <string name="git_m3_merge_both_body" formatted="false">"Uw commits behouden hun ID’s. Omdat beide zijden bewogen, maakt dit een merge-commit. Bestanden die aan beide kanten zijn bewerkt, kunnen vereisen dat u een keuze maakt."</string>
+    <string name="git_m3_merge_current_body" formatted="false">"Beide zijden komen overeen. Er is niets om samen te voegen."</string>
+    <string name="git_m3_merge_ff_body" formatted="false">"Alleen de externe kant is vooruitgegaan, dus dit voert uw branch snel door. Er wordt niets nieuws gecommit."</string>
+    <string name="git_m3_merge_in_progress" formatted="false">"Samenvoeging in uitvoering"</string>
+    <string name="git_m3_merge_into">"Samenvoegen in %1$s"</string>
+    <string name="git_m3_merge_locally" formatted="false">"Lokaal samenvoegen"</string>
+    <string name="git_m3_merge_message">"%1$s mergen"</string>
+    <string name="git_m3_merge_named">"%1$s mergen"</string>
+    <string name="git_m3_merge_pause_note" formatted="false">"Als beide takken hetzelfde bestand hebben gewijzigd, pauzeert de samenvoeging zodat je kunt kiezen wat je wilt behouden in Git."</string>
+    <string name="git_m3_merge_push_body">"Werkt %1$s bij met %2$s, en duwt vervolgens naar %3$s. Conflicten stoppen het pushen. Als de remote dit niet bevestigt, blijft de samenvoeging op deze telefoon en kun je het opnieuw proberen."</string>
+    <string name="git_m3_merge_push_only_body" formatted="false">"Niets nieuws op de remote. Samenvoegen en pushen verstuurt je commits."</string>
+    <string name="git_m3_merge_push_title" formatted="false">"Samenvoegen en pushen?"</string>
+    <string name="git_m3_merge_ready" formatted="false">"Alle conflicten opgelost. Voltooi de samenvoeging."</string>
+    <string name="git_m3_merge_reviewing" formatted="false">"Ophalen en bekijken wat de remote heeft…"</string>
+    <string name="git_m3_merge_sub" formatted="false">"Ophalen, bekijken en vervolgens samenvoegen"</string>
+    <string name="git_m3_merging">"%1$s · samenvoegen %2$s"</string>
+    <string name="git_m3_message_optional" formatted="false">"Bericht (optioneel)"</string>
+    <string name="git_m3_more_files">"%1$d meer"</string>
+    <string name="git_m3_move_repository" formatted="false">"Repository verplaatsen"</string>
+    <string name="git_m3_move_sub" formatted="false">"Kies een nieuwe map"</string>
+    <string name="git_m3_never_fetched" formatted="false">"nog niet opgehaald"</string>
+    <string name="git_m3_new_branch" formatted="false">"Nieuwe branch"</string>
+    <string name="git_m3_new_on_remote" formatted="false">"Nieuw op de remote"</string>
+    <string name="git_m3_new_on_remote_body">"Pull brengt %1$s snel bij om overeen te komen. Niets op deze telefoon gaat verloren."</string>
+    <string name="git_m3_new_on_remote_headline" formatted="false">"De remote heeft commits die jij niet hebt."</string>
+    <string name="git_m3_new_tag" formatted="false">"Nieuwe tag"</string>
+    <string name="git_m3_no_backup_warning" formatted="false">"Zonder een back-up wordt de Git geschiedenis van deze telefoon permanent verwijderd. Commits die al op GitHub staan, blijven veilig."</string>
+    <string name="git_m3_no_conflicts" formatted="false">"Geen conflicten meer."</string>
+    <string name="git_m3_no_stashes" formatted="false">"Geen stashes opgeslagen."</string>
+    <string name="git_m3_no_upstream" formatted="false">"alleen lokaal · geen upstream"</string>
+    <string name="git_m3_no_upstream_body" formatted="false">"Kies een upstream zodat pull en push weten waarheen te gaan."</string>
+    <string name="git_m3_no_upstream_headline" formatted="false">"Deze branch volgt nog geen remote branch."</string>
+    <string name="git_m3_no_upstream_kicker" formatted="false">"Geen upstream"</string>
+    <string name="git_m3_none" formatted="false">"Geen"</string>
+    <string name="git_m3_not_set" formatted="false">"Niet ingesteld"</string>
+    <string name="git_m3_not_tracked">"%1$s · niet gevolgd"</string>
+    <string name="git_m3_notes_attachments_any" formatted="false">"Jouw notities en bijlagen"</string>
+    <string name="git_m3_nothing_new">"niets wat %1$s niet heeft"</string>
+    <string name="git_m3_nothing_to_stash" formatted="false">"Niets om op te bergen."</string>
+    <string name="git_m3_nothing_to_stash_body" formatted="false">"Geen lokale wijzigingen op deze telefoon. Bewerk een notitie en kom terug om het apart te zetten."</string>
+    <string name="git_m3_ok" formatted="false">"OK"</string>
+    <string name="git_m3_on_this_phone" formatted="false">"Op deze telefoon"</string>
+    <string name="git_m3_only_on">"Alleen op %1$s"</string>
+    <string name="git_m3_open" formatted="false">"Openen"</string>
+    <string name="git_m3_open_rebase" formatted="false">"Open rebase"</string>
+    <string name="git_m3_open_sub" formatted="false">"Terug naar de kluis"</string>
+    <string name="git_m3_plain_folder">"%1$s is nu een gewone map."</string>
+    <string name="git_m3_plain_folder_body" formatted="false">"Jouw notities zijn waar ze waren. GitSync.md synchroniseert deze map niet langer."</string>
+    <string name="git_m3_pop" formatted="false">"Pop"</string>
+    <string name="git_m3_pop_help" formatted="false">"Brengt de wijzigingen terug en verwijdert de stash."</string>
+    <string name="git_m3_popped_toast">"Gepopt %1$s. Je wijzigingen zijn terug."</string>
+    <string name="git_m3_previously_added" formatted="false">"Eerder toegevoegd"</string>
+    <string name="git_m3_pull_n">"Ophalen ↓%1$d"</string>
+    <string name="git_m3_pull_sub" formatted="false">"Alleen fast-forward"</string>
+    <string name="git_m3_pull_sub_blocked" formatted="false">"Alleen fast-forward. Nu niet mogelijk: beide zijden zijn veranderd"</string>
+    <string name="git_m3_pulls_from">"%1$s haalt op van en duwt naar"</string>
+    <string name="git_m3_push" formatted="false">"Pushen"</string>
+    <string name="git_m3_push_n">"Duwen ↑%1$d"</string>
+    <string name="git_m3_push_tag_cd">"Duw %1$s naar GitHub"</string>
+    <string name="git_m3_push_to">"duwen naar %1$s"</string>
+    <string name="git_m3_ready_to_push" formatted="false">"Klaar om te pushen"</string>
+    <string name="git_m3_ready_to_push_body">"Push verstuurt je %1$d commits. Niets op de remote verandert totdat het ze accepteert."</string>
+    <string name="git_m3_ready_to_push_headline" formatted="false">"De remote heeft je commits nog niet gezien."</string>
+    <string name="git_m3_rebase" formatted="false">"Rebase"</string>
+    <string name="git_m3_rebase_abort_body">"Zet %1$s terug op %2$s. Bewerking en conflictkeuzes gemaakt tijdens deze rebase worden weggegooid."</string>
+    <string name="git_m3_rebase_abort_title" formatted="false">"Deze rebase afbreken?"</string>
+    <string name="git_m3_rebase_aborted" formatted="false">"Rebase afgebroken"</string>
+    <string name="git_m3_rebase_aborted_headline" formatted="false">"Terug bij het begin."</string>
+    <string name="git_m3_rebase_begin_title" formatted="false">"Lokale commits herschrijven?"</string>
+    <string name="git_m3_rebase_blocked_body" formatted="false">"Bestanden die niet in Git staan, worden overschreven bij de volgende commit. Verplaats ze ergens veilig, ververs, en probeer het opnieuw. Commits die al zijn afgespeeld, blijven bewaard."</string>
+    <string name="git_m3_rebase_blocked_headline" formatted="false">"De rebase wacht op een geblokkeerde checkout."</string>
+    <string name="git_m3_rebase_conflicts">"Conflicten · %1$d van %2$d opgelost"</string>
+    <string name="git_m3_rebase_conflicts_headline" formatted="false">"De rebase stopte bij bestanden die aan beide kanten zijn bewerkt."</string>
+    <string name="git_m3_rebase_done_headline" formatted="false">"De rebase is voltooid."</string>
+    <string name="git_m3_rebase_in_progress" formatted="false">"Rebase wordt uitgevoerd"</string>
+    <string name="git_m3_rebase_initial" formatted="false">"Haal eerst op om te zien wat een rebase zou verplaatsen."</string>
+    <string name="git_m3_rebase_restored">"%1$s hersteld naar %2$s · ↑%3$d ↓%4$d"</string>
+    <string name="git_m3_rebase_review_body">"Speelt je commits af bovenop %1$s. Hun ID’s kunnen veranderen. Merge-commits behouden hun vorm. Niets wordt gepusht."</string>
+    <string name="git_m3_rebase_sides_note">"In een rebase is %1$s het “ons” van Git en is jouw %2$s het “hun”."</string>
+    <string name="git_m3_rebase_skip_body">"Verwijdert %1$s van de replay. Controleer eerst de wijzigingen. Dit kan je werk uit de nieuwe geschiedenis verwijderen."</string>
+    <string name="git_m3_rebase_skip_title" formatted="false">"Deze lokale commit overslaan?"</string>
+    <string name="git_m3_rebase_step">"Gestopt op commit %1$d van %2$d."</string>
+    <string name="git_m3_rebase_stopped" formatted="false">"De rebase wacht op u."</string>
+    <string name="git_m3_rebase_sub" formatted="false">"Speel je commits opnieuw af bovenop · hervat een rebase"</string>
+    <string name="git_m3_rebase_theirs">"Nieuw op %1$s · %2$d"</string>
+    <string name="git_m3_rebase_yours">"Je commits om opnieuw af te spelen · %1$d"</string>
+    <string name="git_m3_refresh_branches" formatted="false">"Vernieuw takken"</string>
+    <string name="git_m3_remote" formatted="false">"Remote"</string>
+    <string name="git_m3_remote_access">"ophalen en pushen · %1$s"</string>
+    <string name="git_m3_remote_pill" formatted="false">"remote"</string>
+    <string name="git_m3_remote_reading" formatted="false">"Deze remote van de kluis lezen…"</string>
+    <string name="git_m3_remove" formatted="false">"Verwijderen"</string>
+    <string name="git_m3_remove_from_app" formatted="false">"Verwijderen uit app"</string>
+    <string name="git_m3_remove_from_app_body" formatted="false">"De map en de Git geschiedenis blijven op deze telefoon. Voeg het op elk moment terug toe."</string>
+    <string name="git_m3_remove_from_app_sub" formatted="false">"Houdt bestanden en Git. Voeg het op elk moment terug toe."</string>
+    <string name="git_m3_remove_from_app_title">"Verwijder %1$s uit de app?"</string>
+    <string name="git_m3_remove_tracking_sub" formatted="false">"Houdt je bestanden. Verwijdert Git uit deze map."</string>
+    <string name="git_m3_replayed_commit" formatted="false">"commit opnieuw afgespeeld"</string>
+    <string name="git_m3_replayed_label">"Lokaal commit opnieuw afgespeeld · %1$s"</string>
+    <string name="git_m3_resolve" formatted="false">"Oplossen"</string>
+    <string name="git_m3_resolve_conflict" formatted="false">"Conflict oplossen"</string>
+    <string name="git_m3_result_current" formatted="false">"Niets nieuws om te mergen."</string>
+    <string name="git_m3_result_current_kicker" formatted="false">"Bijgewerkt"</string>
+    <string name="git_m3_result_local_only" formatted="false">"Het resultaat staat alleen op deze telefoon. Push wanneer je klaar bent."</string>
+    <string name="git_m3_result_merged" formatted="false">"De wijzigingen van de andere kant zijn opgenomen."</string>
+    <string name="git_m3_result_merged_kicker" formatted="false">"Samengevoegd"</string>
+    <string name="git_m3_result_push_confirmed" formatted="false">"GitHub heeft dit commit bevestigd."</string>
+    <string name="git_m3_result_push_unconfirmed" formatted="false">"De remote heeft de push niet bevestigd. Opnieuw proberen stuurt hetzelfde commit zonder opnieuw te mergen."</string>
+    <string name="git_m3_result_saved_locally" formatted="false">"Mergecommit lokaal opgeslagen."</string>
+    <string name="git_m3_result_unconfirmed" formatted="false">"Hier opgeslagen. Push is niet voltooid."</string>
+    <string name="git_m3_result_unconfirmed_kicker" formatted="false">"Samengevoegd · niet gepusht"</string>
+    <string name="git_m3_retry_blocked" formatted="false">"Geblokkeerde commit opnieuw proberen"</string>
+    <string name="git_m3_retry_push" formatted="false">"Push van opgeslagen commit opnieuw proberen"</string>
+    <string name="git_m3_return_to_git" formatted="false">"Terug naar Git"</string>
+    <string name="git_m3_review_folder" formatted="false">"Herstelde map controleren"</string>
+    <string name="git_m3_reviewed_plan" formatted="false">"Gecontroleerd plan"</string>
+    <string name="git_m3_saved" formatted="false">"is opgeslagen"</string>
+    <string name="git_m3_saved_in" formatted="false">"Bewaard in"</string>
+    <string name="git_m3_set_aside" formatted="false">"Opzij gezet"</string>
+    <string name="git_m3_set_upstream" formatted="false">"Upstream instellen"</string>
+    <string name="git_m3_show_more">"Toon %1$d meer"</string>
+    <string name="git_m3_skip_commit" formatted="false">"Commit overslaan"</string>
+    <string name="git_m3_skip_commit_ask" formatted="false">"Commit overslaan…"</string>
+    <string name="git_m3_staged" formatted="false">"klaargezet"</string>
+    <string name="git_m3_starts_from">"begint vanaf %1$s op %2$s · je blijft op %2$s"</string>
+    <string name="git_m3_stash_changes" formatted="false">"Wijzigingen stashen"</string>
+    <string name="git_m3_stash_explain">"Stashen legt ze weg en zet je bestanden terug naar %1$s. Haal ze op elk moment terug."</string>
+    <string name="git_m3_stash_local_note" formatted="false">"Stashes blijven op deze telefoon. Ze worden nooit naar GitHub gepusht."</string>
+    <string name="git_m3_stash_on">"Op %1$s"</string>
+    <string name="git_m3_stash_placeholder" formatted="false">"Waar was je mee bezig?"</string>
+    <string name="git_m3_stashed_older" formatted="false">"De oudere is nu stash@{1}."</string>
+    <string name="git_m3_stashes" formatted="false">"Stashes"</string>
+    <string name="git_m3_stay_on">"Blijf op %1$s"</string>
+    <string name="git_m3_stays_on_disk" formatted="false">"Blijft op schijf"</string>
+    <string name="git_m3_stop_tracking" formatted="false">"Tracking stoppen…"</string>
+    <string name="git_m3_strategy_always" formatted="false">"Altijd een merge-commit gebruiken"</string>
+    <string name="git_m3_strategy_always_help">"Maakt een samenvoegcommit zelfs wanneer %1$s gewoon kan doorgaan."</string>
+    <string name="git_m3_strategy_ff" formatted="false">"Alleen fast-forward"</string>
+    <string name="git_m3_strategy_ff_help">"Voegt alleen samen wanneer %1$s direct voor %2$s staat. Houdt de geschiedenis in een rechte lijn."</string>
+    <string name="git_m3_strategy_prefer" formatted="false">"Fast-forward indien mogelijk"</string>
+    <string name="git_m3_strategy_prefer_help">"Verplaatst %1$s vooruit wanneer dat kan. Anders wordt een samenvoegcommit gemaakt."</string>
+    <string name="git_m3_subtitle">"%1$s · %2$s"</string>
+    <string name="git_m3_switch" formatted="false">"Wissel"</string>
+    <string name="git_m3_tag_kind_help" formatted="false">"Met een bericht wordt het geannoteerd. Laat leeg voor een lichte tag."</string>
+    <string name="git_m3_tag_name" formatted="false">"Tagnaam"</string>
     <string name="git_m3_tag_name_invalid" formatted="false">"Voer een geldige Git-tagnaam in."</string>
+    <string name="git_m3_tag_pushed">"%1$s gepusht."</string>
+    <string name="git_m3_tag_target">"op %1$s · laatste op %2$s"</string>
+    <string name="git_m3_tags" formatted="false">"Tags"</string>
+    <string name="git_m3_tags_note" formatted="false">"Commit &amp; push stuurt geen tags. Push er één wanneer je het op GitHub wilt hebben. Verwijderen verwijdert een tag alleen van deze telefoon."</string>
+    <string name="git_m3_the_named_remote">"De %1$s remote"</string>
+    <string name="git_m3_the_remote" formatted="false">"de remote"</string>
+    <string name="git_m3_this_phone" formatted="false">"deze telefoon"</string>
+    <string name="git_m3_tracking">"volgt %1$s"</string>
+    <string name="git_m3_tracking_backup_body" formatted="false">"GitSync.md controleert een kopie en een ZIP van de Git-gegevens, en verbreekt dan de koppeling van deze map. Je werkbestanden blijven op hun plaats."</string>
+    <string name="git_m3_tracking_backup_title" formatted="false">"Tracking verwijderen en een back-up maken?"</string>
+    <string name="git_m3_tracking_cap">"Tracking %1$s"</string>
+    <string name="git_m3_tracking_permanent_body" formatted="false">"Alleen de beoordeelde .git-gegevens worden verwijderd. Je werkbestanden blijven op hun plaats, maar de Git-geschiedenis van deze telefoon kan niet worden hersteld zonder een andere kopie."</string>
+    <string name="git_m3_tracking_removed" formatted="false">"Tracking verwijderd"</string>
+    <string name="git_m3_tracking_removed_backup_toast" formatted="false">"Git-tracking verwijderd. Gecontroleerde back-up opgeslagen."</string>
+    <string name="git_m3_tracking_removed_kept" formatted="false">"Git-tracking verwijderd · werkbestanden behouden"</string>
+    <string name="git_m3_tracking_review_body" formatted="false">"Je bestanden blijven op hun plaats. Git’s kopie van hun geschiedenis wordt van deze map verwijderd."</string>
+    <string name="git_m3_tracking_stale" formatted="false">"De map is gewijzigd sinds je deze hebt beoordeeld. Annuleer en beoordeel opnieuw."</string>
+    <string name="git_m3_uncommitted_plain_any" formatted="false">"Niet-gecommitteerde bewerkingen, als gewone bestanden"</string>
+    <string name="git_m3_unresolved" formatted="false">"Onopgelost"</string>
+    <string name="git_m3_update" formatted="false">"bijwerken"</string>
+    <string name="git_m3_upstream_body">"Kies van waar %1$s haalt en waar het naar pusht. Bestanden, commits en opgeslagen verbindingen blijven hetzelfde."</string>
+    <string name="git_m3_upstream_help" formatted="false">"Zonder een upstream, weten pull en push niet waarheen te gaan."</string>
+    <string name="git_m3_use_branch">"Gebruik de %1$s versie"</string>
+    <string name="git_m3_use_edited" formatted="false">"Gebruik mijn bewerkte versie"</string>
+    <string name="git_m3_use_phone" formatted="false">"Gebruik de versie van deze telefoon"</string>
+    <string name="git_m3_use_remote">"Gebruik de versie van %1$s"</string>
+    <string name="git_m3_vault_settings" formatted="false">"Kluisinstellingen"</string>
+    <string name="git_m3_vs">"vs %1$s"</string>
+    <string name="git_m3_what_each_does" formatted="false">"Wat elk doet"</string>
+    <string name="git_m3_workspace" formatted="false">"Werkruimte"</string>
+    <string name="git_m3_yours">"↑%1$d van u"</string>
     <string name="git_native_public_only" formatted="false">"Het eigen Git-protocol ondersteunt alleen openbare toegang. Gebruik HTTPS of SSH voor authenticatie."</string>
     <string name="gitops_action_failed" formatted="false">"Git kon deze actie niet voltooien"</string>
     <string name="gitops_branch_action_failed" formatted="false">"Branchactie kon niet worden voltooid"</string>
@@ -375,11 +1071,27 @@
     <string name="guide_step">"Stap %1$d van 4"</string>
     <string name="help_copy_email" formatted="false">"E-mailadres van ondersteuning kopiëren"</string>
     <string name="help_email_copied" formatted="false">"E-mailadres van ondersteuning gekopieerd"</string>
-    <string name="help_feedback" formatted="false">"Feedback versturen"</string>
+    <string name="help_feedback" formatted="false">"Feedback sturen"</string>
     <string name="help_open_failed" formatted="false">"Geen app kon deze link openen. Je kunt het e-mailadres van de ondersteuning kopiëren."</string>
     <string name="help_title" formatted="false">"Hulp"</string>
     <string name="history_screen" formatted="false">"Geschiedenis"</string>
     <string name="http_transport_warning" formatted="false">"HTTP is niet versleuteld. Repositorygegevens en ingevoerde gebruikersnamen of tokens kunnen tijdens de overdracht worden gelezen. Gebruik HTTPS indien beschikbaar."</string>
+    <string name="l10n_a11y_pair">"%1$s, %2$s"</string>
+    <string name="l10n_added_count">"+%1$d"</string>
+    <string name="l10n_background_unavailable" formatted="false">"Background Sync is niet beschikbaar"</string>
+    <string name="l10n_clone_preview_error" formatted="false">"Authenticatie mislukt. Meld u opnieuw aan en probeer het opnieuw."</string>
+    <string name="l10n_count">"%1$d"</string>
+    <string name="l10n_meta_pair">"%1$s · %2$s"</string>
+    <string name="l10n_not_vault_file" formatted="false">"Geen bestand in deze kluis"</string>
+    <string name="l10n_push_local_branch" formatted="false">"Schakel over naar een lokale branch voordat u pusht"</string>
+    <string name="l10n_removed_count">"−%1$d"</string>
+    <string name="l10n_save_conditions" formatted="false">"Kon Background Sync voorwaarden niet opslaan"</string>
+    <string name="l10n_save_default_author" formatted="false">"Kon de standaardauteur niet opslaan"</string>
+    <string name="l10n_save_ssh_key" formatted="false">"Kon de SSH sleutel van deze telefoon niet opslaan"</string>
+    <string name="l10n_save_theme" formatted="false">"Kon het thema niet opslaan"</string>
+    <string name="l10n_save_vault_preferences" formatted="false">"Kon de kluisvoorkeuren niet opslaan"</string>
+    <string name="l10n_unsupported_vault_preference" formatted="false">"Niet-ondersteunde kluisvoorkeur"</string>
+    <string name="l10n_vault_settings_failed" formatted="false">"Kan kluisinstellingen niet bijwerken"</string>
     <string name="language_settings_legacy" formatted="false">"Vóór Android 13 gebruikt deze app de taal van het apparaat."</string>
     <string name="language_settings_title" formatted="false">"Taal"</string>
     <string name="language_settings_unavailable" formatted="false">"De taalinstellingen konden niet worden geopend."</string>
@@ -421,12 +1133,213 @@
     <string name="lfs_locks_server">"LFS-server: %1$s"</string>
     <string name="lfs_locks_title" formatted="false">"Serververgrendelingen"</string>
     <string name="lfs_locks_unsupported" formatted="false">"Deze server ondersteunt geen Git LFS-vergrendelingen."</string>
+    <string name="lfs_m3_allow_downloads" formatted="false">"Downloads toestaan"</string>
+    <string name="lfs_m3_allow_uploads" formatted="false">"Uploads toestaan"</string>
+    <string name="lfs_m3_apply_rules" formatted="false">"Regels toepassen"</string>
+    <string name="lfs_m3_apply_tracking" formatted="false">"Trackingkeuze toepassen"</string>
+    <string name="lfs_m3_approval_scope" formatted="false">"Controleer dit adres met de eigenaar van de repository. Goedkeuring geldt alleen voor deze repository, externe locatie, eindpunt en richting op deze telefoon."</string>
+    <string name="lfs_m3_approvals_title" formatted="false">"Goedkeuringen voor LFS-eindpunten"</string>
+    <string name="lfs_m3_attention" formatted="false">"Git LFS vereist aandacht"</string>
+    <string name="lfs_m3_auth_new" formatted="false">"Afzonderlijke gebruikersnaam en token"</string>
+    <string name="lfs_m3_auth_reuse" formatted="false">"Opgeslagen eindpuntaanmeldgegevens gebruiken"</string>
+    <string name="lfs_m3_branch_remote">"%1$s · remote %2$s"</string>
+    <string name="lfs_m3_cache_missing" formatted="false">"Niet in cache"</string>
+    <string name="lfs_m3_cache_verified" formatted="false">"Geverifieerde cache"</string>
+    <string name="lfs_m3_cancel" formatted="false">"Annuleren"</string>
+    <string name="lfs_m3_candidate_changed">"%1$s · gewijzigd, nog niet gevolgd"</string>
+    <string name="lfs_m3_candidate_new">"%1$s · nieuw, nog niet gevolgd"</string>
+    <string name="lfs_m3_check_ownership" formatted="false">"Controleer eigendom"</string>
+    <string name="lfs_m3_create_body" formatted="false">"Andere verbindingen zien het als vergrendeld totdat u het vrijgeeft. Niets verandert op deze telefoon."</string>
+    <string name="lfs_m3_download_body" formatted="false">"Deze repository wil bestandsinhoud downloaden van een aparte LFS-server."</string>
+    <string name="lfs_m3_download_missing" formatted="false">"Ontbrekende inhoud downloaden"</string>
+    <string name="lfs_m3_download_progress" formatted="false">"Downloadvoortgang"</string>
+    <string name="lfs_m3_download_title" formatted="false">"LFS-downloads toestaan?"</string>
+    <string name="lfs_m3_downloading_prepare" formatted="false">"Ontbrekende inhoud downloaden"</string>
+    <string name="lfs_m3_downloads" formatted="false">"Downloads"</string>
+    <string name="lfs_m3_endpoint_auth" formatted="false">"Eindpuntauthenticatie"</string>
+    <string name="lfs_m3_endpoints_empty" formatted="false">"Geen goedgekeurde aangepaste LFS-eindpunten"</string>
+    <string name="lfs_m3_endpoints_intro" formatted="false">"Gescheiden LFS-servers die je repositories kunnen gebruiken. Intrekken stopt toekomstige overdrachten in die richting; alles wat al bezig is kan worden afgerond."</string>
+    <string name="lfs_m3_endpoints_none" formatted="false">"Instellingen · geen goedgekeurd"</string>
+    <string name="lfs_m3_endpoints_title" formatted="false">"LFS-eindpunten"</string>
+    <string name="lfs_m3_error_changed" formatted="false">"Goedkeuringen gewijzigd tijdens beoordeling. Herlaad ze en beoordeel de overdracht opnieuw."</string>
+    <string name="lfs_m3_ext_note_existing" formatted="false">"Bestanden die al hun eigen trackingkeuze hebben behouden deze."</string>
+    <string name="lfs_m3_ext_note_limits" formatted="false">"Genegeerde bestanden blijven genegeerd. Opslaglimieten zijn afhankelijk van je Git-host."</string>
+    <string name="lfs_m3_ext_note_stage" formatted="false">"Alleen .gitattributes-wijzigingen. Stage de bestanden om ze in pointers om te zetten."</string>
+    <string name="lfs_m3_ext_scope" formatted="false">"Dekt huidige en toekomstige overeenkomende bestanden in elke map. Overeenstemming is hoofdlettergevoelig."</string>
+    <string name="lfs_m3_ext_title" formatted="false">"Overeenkomende extensies volgen?"</string>
+    <string name="lfs_m3_extensions_updated" formatted="false">"Extensieregels bijgewerkt. Stage .gitattributes en de bestanden, en commit dan."</string>
+    <string name="lfs_m3_fact_endpoint" formatted="false">"LFS-eindpunt"</string>
+    <string name="lfs_m3_fact_remote" formatted="false">"Git-remote"</string>
+    <string name="lfs_m3_fact_repository" formatted="false">"Repository"</string>
+    <string name="lfs_m3_force_ack" formatted="false">"Ik begrijp dat iemand dit bestand mogelijk nog aan het bewerken is."</string>
+    <string name="lfs_m3_force_title" formatted="false">"Vergrendeling van een andere eigenaar geforceerd vrijgeven?"</string>
+    <string name="lfs_m3_force_warning" formatted="false">"Dit verwijdert een vergrendeling die door een andere verbinding wordt gehouden. Controleer eerst bij de eigenaar."</string>
+    <string name="lfs_m3_http_warning" formatted="false">"HTTP is niet versleuteld. Repositorygegevens en elke gebruikersnaam of token kunnen tijdens transport worden gelezen. Gebruik HTTPS waar mogelijk."</string>
+    <string name="lfs_m3_keep_body" formatted="false">"Voeg expliciete reguliere-Git-regels toe. De inhoud gaat in je commits. Bestanden groter dan 100 MiB hebben nog steeds LFS nodig."</string>
+    <string name="lfs_m3_keep_git" formatted="false">"Bewaar in reguliere Git"</string>
+    <string name="lfs_m3_keep_title" formatted="false">"Deze in reguliere Git bewaren?"</string>
+    <string name="lfs_m3_list_read_only" formatted="false">"Alleen-lezen lijst"</string>
+    <string name="lfs_m3_lock_a_file" formatted="false">"Vergrendel een bestand"</string>
+    <string name="lfs_m3_lockable_caption" formatted="false">"Alleen bestanden die als vergrendelbaar gemarkeerd zijn in .gitattributes verschijnen hier."</string>
+    <string name="lfs_m3_locked" formatted="false">"vergrendeld"</string>
+    <string name="lfs_m3_locked_on_server" formatted="false">"Vergrendeld op de server"</string>
+    <string name="lfs_m3_locks_empty" formatted="false">"Er is niets vergrendeld op deze branch."</string>
+    <string name="lfs_m3_locks_intro" formatted="false">"Controleer het eigendom voordat je een vergrendeling wijzigt. Vergrendelingen bevinden zich op de server; jouw bestanden en commits blijven op hun plaats."</string>
+    <string name="lfs_m3_match_extensions" formatted="false">"Komt overeen met extensies…"</string>
+    <string name="lfs_m3_needs_choice" formatted="false">"Vereist een tracking-keuze"</string>
+    <string name="lfs_m3_no_lockable" formatted="false">"Geen ontgrendelde vergrendelbare bestanden."</string>
+    <string name="lfs_m3_no_tracked" formatted="false">"Er zijn nog geen bestanden opgeslagen in LFS op deze branch."</string>
+    <string name="lfs_m3_not_shared" formatted="false">"Je GitHub aanmelding wordt niet gedeeld met deze server. Gescheiden referenties zijn versleuteld op deze telefoon. Beheer ze in Instellingen › LFS-eindpunten."</string>
+    <string name="lfs_m3_ok" formatted="false">"OK"</string>
+    <string name="lfs_m3_owned_here" formatted="false">"Eigendom van deze verbinding"</string>
+    <string name="lfs_m3_owner">"Eigenaar: %1$s"</string>
+    <string name="lfs_m3_public_access" formatted="false">"Openbare toegang"</string>
+    <string name="lfs_m3_refresh_required" formatted="false">"Dat werkte, maar de nieuwe LFS-status werd niet geladen. Herlaad voordat je iets anders doet."</string>
+    <string name="lfs_m3_release_body" formatted="false">"Anderen kunnen het opnieuw vergrendelen en bewerken. Je lokale bestand en commits blijven zoals ze zijn."</string>
+    <string name="lfs_m3_release_review" formatted="false">"Vrijgeven…"</string>
+    <string name="lfs_m3_reload" formatted="false">"LFS-status opnieuw laden"</string>
+    <string name="lfs_m3_reset_all" formatted="false">"Alle LFS-eindpuntgoedkeuringen opnieuw instellen"</string>
+    <string name="lfs_m3_reset_body" formatted="false">"Verwijdert elke aangepaste goedkeuring van eindpunten en de opgeslagen inloggegevens op deze telefoon. Elk eindpunt en elke richting zal een nieuwe beoordeling nodig hebben."</string>
+    <string name="lfs_m3_reset_confirm" formatted="false">"Goedkeuringen opnieuw instellen"</string>
+    <string name="lfs_m3_reset_title" formatted="false">"Alle LFS-eindpuntgoedkeuringen opnieuw instellen?"</string>
+    <string name="lfs_m3_review_changed" formatted="false">"De vergrendelingen zijn gewijzigd sinds je dit hebt geopend. Annuleer en controleer opnieuw het eigendom."</string>
+    <string name="lfs_m3_revoke" formatted="false">"Intrekken"</string>
+    <string name="lfs_m3_revoke_download_body">"Toekomstige downloads van %1$s zullen een nieuwe beoordeling nodig hebben. De uploadgoedkeuring en de opgeslagen inloggegevens blijven."</string>
+    <string name="lfs_m3_revoke_download_title" formatted="false">"Downloadgoedkeuring intrekken?"</string>
+    <string name="lfs_m3_revoke_downloads" formatted="false">"Downloads intrekken"</string>
+    <string name="lfs_m3_revoke_upload_body">"Toekomstige uploads naar %1$s zullen een nieuwe beoordeling nodig hebben. De downloadgoedkeuring en de opgeslagen inloggegevens blijven."</string>
+    <string name="lfs_m3_revoke_upload_title" formatted="false">"Uploadgoedkeuring intrekken?"</string>
+    <string name="lfs_m3_revoke_uploads" formatted="false">"Uploads intrekken"</string>
+    <string name="lfs_m3_scope_read_only" formatted="false">"Alleen-lezen lijst · eigendom niet geverifieerd"</string>
+    <string name="lfs_m3_scope_verified" formatted="false">"Eigendom geverifieerd met deze verbinding"</string>
+    <string name="lfs_m3_secret" formatted="false">"-token of wachtwoord"</string>
+    <string name="lfs_m3_separate_credentials" formatted="false">"Gescheiden versleutelde referenties"</string>
+    <string name="lfs_m3_server">"LFS-server %1$s"</string>
+    <string name="lfs_m3_ssh_authorization" formatted="false">"Autorisatie via SSH"</string>
+    <string name="lfs_m3_ssh_review" formatted="false">"Dit HTTP-eindpunt krijgt tijdelijk geldige autorisatie van de geverifieerde SSH-server. Je SSH-sleutel blijft op deze telefoon. De autorisatie kan in transit worden gelezen en wordt nooit opgeslagen."</string>
+    <string name="lfs_m3_stale" formatted="false">"De bestanden zijn veranderd sinds je dit opende. Annuleer en bekijk opnieuw."</string>
+    <string name="lfs_m3_state_pointer" formatted="false">"Pointer · inhoud downloaden"</string>
+    <string name="lfs_m3_stored_body" formatted="false">"Commits houden kleine pointers. Pull downloadt de inhoud, push uploadt deze eerst."</string>
+    <string name="lfs_m3_stored_kicker" formatted="false">"Opgeslagen in LFS"</string>
+    <string name="lfs_m3_stored_locked">"%1$s · %2$d vergrendeld"</string>
+    <string name="lfs_m3_subtitle">"%1$s · %2$s · Git LFS"</string>
+    <string name="lfs_m3_tab_files" formatted="false">"Bestanden"</string>
+    <string name="lfs_m3_tab_locks" formatted="false">"Vergrendelingen"</string>
+    <string name="lfs_m3_title" formatted="false">"Grote bestanden"</string>
+    <string name="lfs_m3_track_body" formatted="false">"Voegt exact-pad LFS-regels toe voor de onderstaande bestanden. Opslag- en bandbreedtelimieten zijn afhankelijk van je Git host. Zet de wijzigingen klaar, en commit vervolgens."</string>
+    <string name="lfs_m3_track_title" formatted="false">"Gebruik LFS voor deze bestanden?"</string>
+    <string name="lfs_m3_tracked_files" formatted="false">"Gevolgde bestanden"</string>
+    <string name="lfs_m3_tracking_caption" formatted="false">"Alleen .gitattributes verandert. Je bestanden blijven op hun plek totdat je ze in de staging zet."</string>
+    <string name="lfs_m3_tracking_updated" formatted="false">"Volgregels bijgewerkt. Zet .gitattributes en de bestanden in de staging en commit daarna."</string>
+    <string name="lfs_m3_unsupported" formatted="false">"Deze server ondersteunt geen Git LFS-vergrendelingen."</string>
+    <string name="lfs_m3_upload_body" formatted="false">"Deze repository wil bestandsinhoud naar een aparte LFS-server sturen."</string>
+    <string name="lfs_m3_upload_title" formatted="false">"LFS-uploads toestaan?"</string>
+    <string name="lfs_m3_uploads" formatted="false">"Uploads"</string>
+    <string name="lfs_m3_username" formatted="false">"Gebruikersnaam voor LFS-eindpunt"</string>
     <string name="lfs_tracking_updated" formatted="false">"Trackingregels bijgewerkt. Controleer .gitattributes en de geselecteerde bestanden, voeg ze toe aan de index en maak daarna een commit."</string>
     <string name="m3_editor_preview" formatted="false">"Voorbeeld"</string>
     <string name="m3_editor_write" formatted="false">"Schrijven"</string>
     <string name="m3_open_in_editor" formatted="false">"Openen in editor"</string>
     <string name="m3_paywall_paid_with_play" formatted="false">"Betaald met je Google Play-account"</string>
     <string name="m3_pick_a_file" formatted="false">"Kies een bestand om de wijzigingen te zien."</string>
+    <string name="m3home_add_first" formatted="false">"Voeg uw eerste kluis toe"</string>
+    <string name="m3home_add_vault" formatted="false">"Kluis toevoegen"</string>
+    <string name="m3home_auth_body" formatted="false">"Je notities zijn veilig op deze telefoon. Er is niets verloren gegaan."</string>
+    <string name="m3home_auth_headline" formatted="false">"Synchronisatie is gepauzeerd."</string>
+    <string name="m3home_auth_held">"↑%1$d vastgehouden"</string>
+    <string name="m3home_auth_kicker">"GitHub-login verlopen · %1$s"</string>
+    <string name="m3home_auth_paused" formatted="false">"gepauzeerd"</string>
+    <string name="m3home_auth_row_meta">"%1$s · laatst gesynchroniseerd %2$s"</string>
+    <string name="m3home_auth_sign_in" formatted="false">"Inloggen met GitHub"</string>
+    <string name="m3home_auth_unaffected_label" formatted="false">"Niet beïnvloed"</string>
+    <string name="m3home_auth_waiting_label" formatted="false">"Wachten op login"</string>
+    <string name="m3home_badge_both">"↓%1$d ↑%2$d"</string>
+    <string name="m3home_badge_checking" formatted="false">"Controleren"</string>
+    <string name="m3home_badge_in_sync" formatted="false">"Gesynchroniseerd"</string>
+    <string name="m3home_badge_local_only" formatted="false">"alleen lokaal"</string>
+    <string name="m3home_badge_needs_you" formatted="false">"Heeft je nodig"</string>
+    <string name="m3home_badge_sync_failed" formatted="false">"Niet gesynchroniseerd"</string>
+    <string name="m3home_badge_syncing" formatted="false">"synchroniseert"</string>
+    <string name="m3home_badge_to_pull">"↓%1$d te pullen"</string>
+    <string name="m3home_badge_to_push">"↑%1$d te pushen"</string>
+    <string name="m3home_badge_unreadable" formatted="false">"Kan niet lezen"</string>
+    <string name="m3home_cred_github" formatted="false">"GitHub Rekening"</string>
+    <string name="m3home_cred_local" formatted="false">"op deze telefoon"</string>
+    <string name="m3home_cred_public" formatted="false">"openbaar"</string>
+    <string name="m3home_cred_ssh" formatted="false">"SSH sleutel\nDe verificatie van het TLS-certificaat voor"</string>
+    <string name="m3home_cred_token" formatted="false">"token"</string>
+    <string name="m3home_empty_rail_description" formatted="false">"Telefoon en GitHub, nog niets te synchroniseren"</string>
+    <string name="m3home_empty_rail_nothing" formatted="false">"niets te synchroniseren"</string>
+    <string name="m3home_empty_signed_in">"ingelogd als @%1$s"</string>
+    <string name="m3home_empty_title" formatted="false">"Nog geen kluizen."</string>
+    <string name="m3home_filter_all">"Alle %1$d"</string>
+    <string name="m3home_filter_attention">"Aandacht %1$d"</string>
+    <string name="m3home_filter_empty_attention" formatted="false">"Niets heeft je nodig. Elke kluis is in sync."</string>
+    <string name="m3home_filter_empty_pinned" formatted="false">"Nog geen vastgemaakte kluizen. Houd een kluis ingedrukt en kies \'Pin bovenaan\'."</string>
+    <string name="m3home_filter_pinned" formatted="false">"Vastgezet"</string>
+    <string name="m3home_headline_ready_accent" formatted="false">"in sync."</string>
+    <string name="m3home_how_title" formatted="false">"Hoe het werkt"</string>
+    <string name="m3home_meta_checked">"%1$s gecontroleerd"</string>
+    <string name="m3home_meta_checking">"controleren %1$d"</string>
+    <string name="m3home_meta_in_sync">"%1$d gesynchroniseerd"</string>
+    <string name="m3home_meta_lfs">"%1$s LFS"</string>
+    <string name="m3home_meta_loading" formatted="false">"Controleren…"</string>
+    <string name="m3home_meta_never_checked" formatted="false">"Nog niet gecontroleerd"</string>
+    <string name="m3home_meta_not_synced" formatted="false">"nog niet gesynchroniseerd"</string>
+    <string name="m3home_meta_unreadable" formatted="false">"kan deze map niet lezen"</string>
+    <string name="m3home_offline_accent" formatted="false">"We halen het in."</string>
+    <string name="m3home_offline_fab" formatted="false">"Synchroniseert wanneer online"</string>
+    <string name="m3home_offline_headline" formatted="false">"Blijf schrijven."</string>
+    <string name="m3home_offline_last_known" formatted="false">"laatst bekend: gesynchroniseerd"</string>
+    <string name="m3home_offline_last_known_behind">"laatst bekend: ↓%1$d"</string>
+    <string name="m3home_offline_meta">"geen verbinding · laatst gecontroleerd %1$s"</string>
+    <string name="m3home_offline_meta_never" formatted="false">"geen verbinding"</string>
+    <string name="m3home_offline_queued">"↑%1$d in wachtrij"</string>
+    <string name="m3home_offline_row_meta">"%1$s · gesynchroniseerd %2$s"</string>
+    <string name="m3home_onboarding_accent" formatted="false">"Altijd in de pas."</string>
+    <string name="m3home_onboarding_body" formatted="false">"Kloon een repository, schrijf in Obsidian of een andere app en synchroniseer met één tik."</string>
+    <string name="m3home_onboarding_demo" formatted="false">"Kijk rond met een demo kluis"</string>
+    <string name="m3home_onboarding_github" formatted="false">"Doorgaan met GitHub"</string>
+    <string name="m3home_onboarding_headline" formatted="false">"Je notities.\nEigenlijke git."</string>
+    <string name="m3home_onboarding_other" formatted="false">"SSH, token of andere host"</string>
+    <string name="m3home_onboarding_rail" formatted="false">"Notities op uw telefoon en commits op GitHub komen samen in één synchronisatiepunt"</string>
+    <string name="m3home_onboarding_save_error" formatted="false">"Kon je keuze niet opslaan. Probeer opnieuw."</string>
+    <string name="m3home_onboarding_this_phone" formatted="false">"deze telefoon"</string>
+    <string name="m3home_pin" formatted="false">"Bovenaan vastzetten"</string>
+    <string name="m3home_pin_failed" formatted="false">"Kon de pin niet opslaan. Probeer opnieuw."</string>
+    <string name="m3home_pinned" formatted="false">"Vastgezet"</string>
+    <string name="m3home_rail_github" formatted="false">"GitHub"</string>
+    <string name="m3home_rail_phone" formatted="false">"Telefoon"</string>
+    <string name="m3home_rail_remote" formatted="false">"Remote"</string>
+    <string name="m3home_remove" formatted="false">"Verwijderen uit GitSync.md"</string>
+    <string name="m3home_row_actions" formatted="false">"Kluishandelingen"</string>
+    <string name="m3home_session_dismiss" formatted="false">"Sluiten"</string>
+    <string name="m3home_settings" formatted="false">"Instellingen"</string>
+    <string name="m3home_settings_signed_in">"Instellingen, ingelogd als %1$s"</string>
+    <string name="m3home_start_github" formatted="false">"Klonen van GitHub"</string>
+    <string name="m3home_start_github_detail" formatted="false">"kies een van je repositories"</string>
+    <string name="m3home_start_local" formatted="false">"Vind clones op deze telefoon"</string>
+    <string name="m3home_start_local_detail" formatted="false">"Obsidian, MGit, Termux…"</string>
+    <string name="m3home_start_publish" formatted="false">"Een map publiceren"</string>
+    <string name="m3home_start_publish_detail" formatted="false">"maakt van een map een nieuwe repository"</string>
+    <string name="m3home_start_url" formatted="false">"Plak een URL"</string>
+    <string name="m3home_start_url_detail" formatted="false">"elke externe Git-repository, openbaar of privé"</string>
+    <string name="m3home_start_with" formatted="false">"Beginnen met"</string>
+    <string name="m3home_sync_all" formatted="false">"Alles synchroniseren"</string>
+    <string name="m3home_sync_all_meta">"↓%1$d ↑%2$d"</string>
+    <string name="m3home_sync_busy" formatted="false">"Alles ophalen is al bezig. Probeer het opnieuw als het klaar is."</string>
+    <string name="m3home_sync_done">"Gesynchroniseerd · opgehaald %1$d · gepusht %2$d"</string>
+    <string name="m3home_sync_failed">"Kon %1$s niet synchroniseren"</string>
+    <string name="m3home_sync_start_failed" formatted="false">"Alles synchroniseren kon niet starten. Controleer je kluislijst in Instellingen."</string>
+    <string name="m3home_syncing" formatted="false">"synchroniseert"</string>
+    <string name="m3home_syncing_meta">"%1$d van %2$d"</string>
+    <string name="m3home_time_days">"%1$d d geleden"</string>
+    <string name="m3home_time_hours">"%1$dvoor \'h\' dagen"</string>
+    <string name="m3home_time_minutes_long">"%1$d min geleden"</string>
+    <string name="m3home_time_minutes_short">"%1$dm geleden"</string>
+    <string name="m3home_time_now" formatted="false">"nu"</string>
+    <string name="m3home_time_yesterday" formatted="false">"gisteren"</string>
+    <string name="m3home_unpin" formatted="false">"Losmaken"</string>
     <string name="modified" formatted="false">"Gewijzigd"</string>
     <string name="move_cancelled" formatted="false">"Verplaatsing geannuleerd. De oorspronkelijke werkkopie is bewaard."</string>
     <string name="move_confirm_action" formatted="false">"Verplaatsen"</string>
@@ -450,6 +1363,22 @@
     <string name="move_recovery_done" formatted="false">"Herstel van verplaatsing voltooid"</string>
     <string name="move_recovery_removed" formatted="false">"Herstelkopie verwijderd"</string>
     <string name="move_title_restore" formatted="false">"Herstelkopie terugzetten"</string>
+    <string name="newfile_m3_blank" formatted="false">"Leeg"</string>
+    <string name="newfile_m3_builtin_idea" formatted="false">"idee"</string>
+    <string name="newfile_m3_create_open" formatted="false">"Aanmaken en openen"</string>
+    <string name="newfile_m3_exists">"%1$s bestaat al in %2$s. Probeer een andere naam."</string>
+    <string name="newfile_m3_file_name" formatted="false">"Bestandsnaam"</string>
+    <string name="newfile_m3_folder" formatted="false">"Map"</string>
+    <string name="newfile_m3_folder_name" formatted="false">"Mapnaam"</string>
+    <string name="newfile_m3_in">"in %1$s"</string>
+    <string name="newfile_m3_invalid" formatted="false">"Gebruik een naam zonder / of \\."</string>
+    <string name="newfile_m3_invalid_dots" formatted="false">"\".\" en \"..\" zijn gereserveerd. Probeer een andere naam."</string>
+    <string name="newfile_m3_note" formatted="false">"Notitie"</string>
+    <string name="newfile_m3_template">"Sjabloon · %1$s"</string>
+    <string name="newfile_m3_title_folder" formatted="false">"Nieuwe map"</string>
+    <string name="newfile_m3_title_note" formatted="false">"Nieuwe noot"</string>
+    <string name="newfile_m3_today" formatted="false">"Datum van vandaag"</string>
+    <string name="newfile_m3_too_long" formatted="false">"Die naam is te lang. Gebruik een kortere."</string>
     <string name="notes_acknowledge" formatted="false">"Begrepen"</string>
     <string name="notes_connections_body" formatted="false">"Beheer GitHub-accounts en de auteursidentiteit van repositories. Verbind via HTTPS of SSH, kies kloonopslag, verbind lokale kopieën opnieuw en beoordeel het verplaatsen of verwijderen van repositories."</string>
     <string name="notes_connections_title" formatted="false">"Verbindingen en opslag"</string>
@@ -458,6 +1387,10 @@
     <string name="notes_version">"Android %1$s · build %2$d"</string>
     <string name="notes_workflow_body" formatted="false">"Blader door bestanden en bewerk ze, beoordeel gestagede en ongestagede verschillen, commit lokaal, push bestaande commits en werk met branches, geschiedenis, tags en rebase."</string>
     <string name="notes_workflow_title" formatted="false">"Repositoryworkflow"</string>
+    <string name="notification_m3_open_obsidian" formatted="false">"Open in Obsidian"</string>
+    <string name="notification_m3_pulled" formatted="false">"Nieuwe veranderingen op de achtergrond."</string>
+    <string name="notification_m3_see_changes" formatted="false">"Zie veranderingen"</string>
+    <string name="notification_m3_updated">"%1$s is bijgewerkt"</string>
     <string name="obsidian_forgotten" formatted="false">"Toekomstige overdrachten zijn uitgeschakeld. Bereid een nieuwe verbinding voor om deze map opnieuw te verbinden."</string>
     <string name="obsidian_interrupted" formatted="false">"Verbinding gestopt. Geen enkel verzoek wordt automatisch herhaald. Bereid een nieuwe verbinding voor voordat je het opnieuw probeert in Obsidian."</string>
     <string name="obsidian_return" formatted="false">"Terug naar Obsidian"</string>
@@ -560,6 +1493,47 @@
     <string name="pull_all_widget_description" formatted="false">"Alle lokale repositories ophalen en via fast-forward bijwerken zonder GitSync.md te openen."</string>
     <string name="pull_all_widget_subtitle" formatted="false">"Alleen ophalen en fast-forward"</string>
     <string name="pull_screen" formatted="false">"Pullen"</string>
+    <string name="pullall_m3_again" formatted="false">"Alles opnieuw ophalen"</string>
+    <string name="pullall_m3_attention_blocked" formatted="false">"Ongewijzigd gelaten. Zet of stop eerst lokale wijzigingen."</string>
+    <string name="pullall_m3_attention_failed" formatted="false">"Kon niet veilig trekken. Controleer de verbinding en maptoegang."</string>
+    <string name="pullall_m3_attention_lfs" formatted="false">"Getrokken. Sommige Git LFS bestanden moeten nog gedownload worden."</string>
+    <string name="pullall_m3_background" formatted="false">"Alles op de achtergrond ophalen"</string>
+    <string name="pullall_m3_blocked" formatted="false">"Ongewijzigd gelaten. Commina of schuil lokale wijzigingen, of voltooi de open Git operatie en probeer het dan opnieuw."</string>
+    <string name="pullall_m3_clear" formatted="false">"Achtergrondoverzicht wissen"</string>
+    <string name="pullall_m3_clear_body" formatted="false">"Dit verwijdert de laatste achtergrondsamenvatting. Je kluizen en instellingen blijven zoals ze zijn. Onderbroken werk wordt niet automatisch hervat."</string>
+    <string name="pullall_m3_clear_confirm" formatted="false">"Samenvatting wissen"</string>
+    <string name="pullall_m3_clear_title" formatted="false">"Achtergrondsamenvatting wissen?"</string>
+    <string name="pullall_m3_complete" formatted="false">"Alles ophalen is voltooid. Bekijk het opgeslagen overzicht."</string>
+    <string name="pullall_m3_control_failed" formatted="false">"Dat is niet veranderd. Open dit scherm opnieuw en probeer het nogmaals."</string>
+    <string name="pullall_m3_counts">"Bijgewerkt %1$d · Huidig %2$d · LFS %3$d · Geblokkeerd %4$d · Mislukt %5$d"</string>
+    <string name="pullall_m3_current" formatted="false">"Geen inkomende wijzigingen"</string>
+    <string name="pullall_m3_empty" formatted="false">"Nog geen kluizen om te trekken. Cloneer er eerst een of voeg er een toe."</string>
+    <string name="pullall_m3_failed" formatted="false">"Alle pulls gestopt vanwege een fout. Sommige pulls zijn mogelijk voltooid. Controleer de samenvatting en elke kluis voordat je het opnieuw uitvoert."</string>
+    <string name="pullall_m3_help" formatted="false">"Voeg de Pull all-widget toe aan je startscherm, of het tegel aan Snelinstellingen. Beide worden één keer uitgevoerd zonder de app te openen. Kom hier terug om te zien wat er is gebeurd."</string>
+    <string name="pullall_m3_interrupted" formatted="false">"Pull all is onderbroken en zal niet vanzelf opnieuw starten. Een pull kan als eerste zijn voltooid. Controleer elke kluis voordat je het opnieuw uitvoert."</string>
+    <string name="pullall_m3_item_failed" formatted="false">"Kon niet veilig ophalen. Controleer de verbinding en toegang tot de map, en bekijk vervolgens Git voor afwijkingen."</string>
+    <string name="pullall_m3_lfs" formatted="false">"Gehaald. Sommige Git LFS-bestanden moeten nog worden gedownload. Open Git LFS om het opnieuw te proberen."</string>
+    <string name="pullall_m3_not_run" formatted="false">"Niet uitgevoerd"</string>
+    <string name="pullall_m3_progress_cd" formatted="false">"Voortgang van Pull all"</string>
+    <string name="pullall_m3_pulling" formatted="false">"Pullen…"</string>
+    <string name="pullall_m3_running" formatted="false">"Pull all wordt uitgevoerd zonder de app te openen. De rest stopt wanneer je op Stop tikt."</string>
+    <string name="pullall_m3_scope" formatted="false">"Haal op en spoel elke kluis op deze telefoon door. Haal alle niet-gestageerde, commits of push je wijzigingen."</string>
+    <string name="pullall_m3_source_shortcut" formatted="false">"snelkoppeling"</string>
+    <string name="pullall_m3_source_tile" formatted="false">"tegel"</string>
+    <string name="pullall_m3_source_widget" formatted="false">"widget"</string>
+    <string name="pullall_m3_start" formatted="false">"Alle selecteren"</string>
+    <string name="pullall_m3_start_failed" formatted="false">"Ophalen van alles kon niet starten. Controleer je kluisinstellingen en probeer het opnieuw."</string>
+    <string name="pullall_m3_stop" formatted="false">"Alles ophalen stoppen"</string>
+    <string name="pullall_m3_stopped" formatted="false">"Gestopt. Een kluis die al werd opgehaald, kan klaar zijn, controleer dus de status voordat je het opnieuw probeert. De rest is niet gestart."</string>
+    <string name="pullall_m3_stopping" formatted="false">"Stoppen na deze kluis…"</string>
+    <string name="pullall_m3_surfaces" formatted="false">"Widget en snelle instellingen-tegel"</string>
+    <string name="pullall_m3_tile_preview" formatted="false">"GitSync.md\nHaal alles op"</string>
+    <string name="pullall_m3_title" formatted="false">"Alle selecteren"</string>
+    <string name="pullall_m3_unreadable" formatted="false">"De opgeslagen achtergrondsamenvatting kan niet worden gelezen en is behouden. Maak deze leeg voordat je een andere achtergrondtaak start."</string>
+    <string name="pullall_m3_updated" formatted="false">"Bijgewerkt vanuit de remote"</string>
+    <string name="pullall_m3_when_source">"%1$s · van de %2$s"</string>
+    <string name="pullall_m3_widget_name" formatted="false">"Alle selecteren"</string>
+    <string name="pullall_m3_widget_sub" formatted="false">"Alleen ophalen en fast-forward"</string>
     <string name="push_all_repositories" formatted="false">"Alle repository’s, ook toekomstige"</string>
     <string name="push_cancelled" formatted="false">"De verbinding met GitHub is geannuleerd."</string>
     <string name="push_channel" formatted="false">"Repository-updates"</string>
@@ -617,6 +1591,7 @@
     <string name="repository_actions_changes">"Gewijzigde paden: %1$d"</string>
     <string name="repository_actions_confirm" formatted="false">"Eenmaal uitvoeren"</string>
     <string name="repository_actions_destination">"Upstream: %1$s / %2$s"</string>
+    <string name="repository_actions_destination_none" formatted="false">"Upstream: geen"</string>
     <string name="repository_actions_dirty" formatted="false">"Lokale wijzigingen verhinderen het ophalen van binnenkomende commits. Commit ze eerst of zet ze in de stash."</string>
     <string name="repository_actions_diverged" formatted="false">"De lokale en externe geschiedenis lopen uiteen. Kies uitdrukkelijk merge of rebase via de Git-bediening."</string>
     <string name="repository_actions_failed" formatted="false">"De actie kon niet worden voltooid. Controleer verbinding, account, vertrouwen en maptoegang en bekijk de huidige status voordat je het opnieuw probeert."</string>
@@ -681,6 +1656,325 @@
     <string name="resolve_local_superseded" formatted="false">"De geselecteerde repository is gewijzigd. Controleer de lokale wijzigingen opnieuw."</string>
     <string name="resolve_local_title" formatted="false">": Lokaal bewerken blokkeert deze pull."</string>
     <string name="settings_folder_unavailable" formatted="false">"Toegang tot de map vereist aandacht"</string>
+    <string name="settings_m3_account_meta">"@%1$s · GitHub"</string>
+    <string name="settings_m3_accounts" formatted="false">"GitHub-accounts"</string>
+    <string name="settings_m3_app_storage" formatted="false">"App-opslag"</string>
+    <string name="settings_m3_author_account_meta">"%1$s · nog niets opgeslagen in deze kluis"</string>
+    <string name="settings_m3_author_account_meta_global">"%1$s · nog geen standaard opgeslagen"</string>
+    <string name="settings_m3_author_changed" formatted="false">"Deze auteur is buiten GitSync.md gewijzigd, mogelijk door Git op je Mac. Herlaad om te zien wat er nu staat."</string>
+    <string name="settings_m3_author_default" formatted="false">"STANDAARD"</string>
+    <string name="settings_m3_author_email" formatted="false">"E-mailadres auteur"</string>
+    <string name="settings_m3_author_from_account" formatted="false">"Van je GitHub-account"</string>
+    <string name="settings_m3_author_global_subtitle" formatted="false">"Elke kluis zonder eigen auteur"</string>
+    <string name="settings_m3_author_help_changed" formatted="false">"Herlaad voordat je opslaat, anders vervang je de nieuwere auteur."</string>
+    <string name="settings_m3_author_help_match" formatted="false">"Stem het e-mailadres af dat Git op je Mac gebruikt, zodat beide als jij verschijnen."</string>
+    <string name="settings_m3_author_help_noreply" formatted="false">"GitHub’s privé-adres, zodat je echte e-mail verborgen blijft."</string>
+    <string name="settings_m3_author_intro" formatted="false">"Nieuwe commits in deze kluis gebruiken deze naam en e-mail. Commits die je al hebt gemaakt behouden hun auteur."</string>
+    <string name="settings_m3_author_intro_global" formatted="false">"Nieuwe commits in je kluizen gebruiken deze naam en e-mail, tenzij een kluis zijn eigen opslaat. Commits die je al hebt gemaakt behouden hun auteur."</string>
+    <string name="settings_m3_author_name" formatted="false">"Auteursnaam"</string>
+    <string name="settings_m3_author_override" formatted="false">"Overschrijven"</string>
+    <string name="settings_m3_author_preview_message" formatted="false">"Update vanuit GitSync.md"</string>
+    <string name="settings_m3_author_preview_meta">"%1$s &lt;%2$s&gt; · nu"</string>
+    <string name="settings_m3_author_preview_title" formatted="false">"Je volgende commit zal lezen"</string>
+    <string name="settings_m3_author_reading" formatted="false">"Deze kluis leest de Git configuratie…"</string>
+    <string name="settings_m3_author_save" formatted="false">"Auteur opslaan"</string>
+    <string name="settings_m3_author_save_note" formatted="false">"Opslaan sluit deze pagina. Er wordt niets gecommit."</string>
+    <string name="settings_m3_author_saved_global" formatted="false">"Opgeslagen voor alle kluizen"</string>
+    <string name="settings_m3_author_saved_global_meta">"op deze telefoon · overschrijft %1$s"</string>
+    <string name="settings_m3_author_saved_vault" formatted="false">"Opgeslagen in deze kluis"</string>
+    <string name="settings_m3_author_saved_vault_meta">".git/config · overschrijft %1$s"</string>
+    <string name="settings_m3_author_scope" formatted="false">"Alleen deze kluis verandert. Je andere kluizen behouden hun eigen auteur, of gebruiken het GitHub account waarmee ze synchroniseren."</string>
+    <string name="settings_m3_author_scope_global" formatted="false">"Kluizen met een auteur opgeslagen in hun eigen .git/config behouden deze. Je kunt nog steeds een enkele kluis wijzigen in de Kluisinstellingen."</string>
+    <string name="settings_m3_author_use_account" formatted="false">"Gebruik in plaats daarvan mijn GitHub account"</string>
+    <string name="settings_m3_author_your_account" formatted="false">"je GitHub account"</string>
+    <string name="settings_m3_background_on">"aan · %1$d kluizen"</string>
+    <string name="settings_m3_background_sync" formatted="false">"Background Sync"</string>
+    <string name="settings_m3_bg_attention_short" formatted="false">"Moet worden beoordeeld"</string>
+    <string name="settings_m3_bg_charging" formatted="false">"Laden"</string>
+    <string name="settings_m3_bg_cond_any" formatted="false">"bij elke verbinding"</string>
+    <string name="settings_m3_bg_cond_both" formatted="false">"alleen op Wi-Fi tijdens het opladen"</string>
+    <string name="settings_m3_bg_cond_charging" formatted="false">"alleen tijdens het opladen"</string>
+    <string name="settings_m3_bg_cond_wifi" formatted="false">"alleen op Wi-Fi"</string>
+    <string name="settings_m3_bg_conditions_apply">"Draait %1$s, zoals elke inbegrepen kluis."</string>
+    <string name="settings_m3_bg_connect" formatted="false">"Verbinden"</string>
+    <string name="settings_m3_bg_failed_short" formatted="false">"Kon niet synchroniseren"</string>
+    <string name="settings_m3_bg_include_cd">"Neem %1$s op in Background Sync"</string>
+    <string name="settings_m3_bg_intro" formatted="false">"Android plant controles ongeveer elke 15 minuten of later, afhankelijk van connectiviteit, batterij en systeembeperkingen. Zo goed mogelijk, nooit in real-time."</string>
+    <string name="settings_m3_bg_modes" formatted="false">"Modi"</string>
+    <string name="settings_m3_bg_never" formatted="false">"Het zal nooit"</string>
+    <string name="settings_m3_bg_no_runs" formatted="false">"Nog geen uitvoeringen. Android start de eerste controle binnen ongeveer 15 minuten."</string>
+    <string name="settings_m3_bg_nudge" formatted="false">"Krijg een seintje wanneer GitHub verandert"</string>
+    <string name="settings_m3_bg_nudge_sub" formatted="false">"Aanmelden. De ophaalactie kan meteen beginnen."</string>
+    <string name="settings_m3_bg_only_when" formatted="false">"Alleen wanneer"</string>
+    <string name="settings_m3_bg_pull_sub" formatted="false">"Alleen fast-forward"</string>
+    <string name="settings_m3_bg_push_sub" formatted="false">"Stoppen als de externe eerst is verplaatst"</string>
+    <string name="settings_m3_bg_recent" formatted="false">"Recente runs"</string>
+    <string name="settings_m3_bg_run_failed">"%1$s kon niet synchroniseren"</string>
+    <string name="settings_m3_bg_run_local_edits">"%1$s overgeslagen: lokale aanpassingen"</string>
+    <string name="settings_m3_bg_run_offline">"%1$s wacht op een verbinding"</string>
+    <string name="settings_m3_bg_run_power">"%1$s wacht op opladen"</string>
+    <string name="settings_m3_bg_run_pushed" formatted="false">"↑ gepusht"</string>
+    <string name="settings_m3_bg_run_review">"%1$s moet worden beoordeeld"</string>
+    <string name="settings_m3_bg_run_skipped">"%1$s overgeslagen: %2$s"</string>
+    <string name="settings_m3_bg_run_wifi">"%1$s wacht op Wi-Fi"</string>
+    <string name="settings_m3_bg_vault_missing" formatted="false">"Map niet langer toegevoegd. Verwijder het of voeg de kluis opnieuw toe."</string>
+    <string name="settings_m3_bg_vault_not_included" formatted="false">"Niet opgenomen"</string>
+    <string name="settings_m3_bg_vaults" formatted="false">"Kluizen"</string>
+    <string name="settings_m3_bg_wifi" formatted="false">"Op Wi-Fi"</string>
+    <string name="settings_m3_close" formatted="false">"Sluiten"</string>
+    <string name="settings_m3_commit_as" formatted="false">"Committen als"</string>
+    <string name="settings_m3_debug_app" formatted="false">"App"</string>
+    <string name="settings_m3_debug_background" formatted="false">"BACKGROUND"</string>
+    <string name="settings_m3_debug_bg" formatted="false">"BG"</string>
+    <string name="settings_m3_debug_clear" formatted="false">": Ongecompileerd"</string>
+    <string name="settings_m3_debug_copy" formatted="false">"Kopieer zichtbare items"</string>
+    <string name="settings_m3_debug_day_time">"%1$s %2$s"</string>
+    <string name="settings_m3_debug_error" formatted="false">"-fout"</string>
+    <string name="settings_m3_debug_errors_count">"Fouten %1$d"</string>
+    <string name="settings_m3_debug_info" formatted="false">"Toon debug-informatie"</string>
+    <string name="settings_m3_debug_info_tag" formatted="false">"Informatie"</string>
+    <string name="settings_m3_debug_log" formatted="false">"Debuglog"</string>
+    <string name="settings_m3_debug_removed_vault" formatted="false">"verwijderde kluis"</string>
+    <string name="settings_m3_debug_share" formatted="false">"Diagnostiek delen"</string>
+    <string name="settings_m3_debug_warn" formatted="false">"WAARSCHUWING"</string>
+    <string name="settings_m3_discord" formatted="false">"Word lid van de Discord"</string>
+    <string name="settings_m3_done" formatted="false">"Gereed"</string>
+    <string name="settings_m3_feedback_subtitle" formatted="false">"Opent je e-mailapp"</string>
+    <string name="settings_m3_forget" formatted="false">"Vergeten"</string>
+    <string name="settings_m3_full_access" formatted="false">"GitSync.md volledige toegang"</string>
+    <string name="settings_m3_group_app" formatted="false">"App"</string>
+    <string name="settings_m3_group_more" formatted="false">"Verbindingen &amp; hulp"</string>
+    <string name="settings_m3_group_new_vaults" formatted="false">"Nieuwe kluizen"</string>
+    <string name="settings_m3_group_purchase" formatted="false">"Aankoop"</string>
+    <string name="settings_m3_group_sync" formatted="false">"Synchroniseren"</string>
+    <string name="settings_m3_help" formatted="false">"Hulp &amp; over"</string>
+    <string name="settings_m3_how_clone_url" formatted="false">"Klonen vanaf URL"</string>
+    <string name="settings_m3_how_count" formatted="false">"4 dingen om te weten"</string>
+    <string name="settings_m3_how_github" formatted="false">"GitHub"</string>
+    <string name="settings_m3_how_it_works" formatted="false">"Hoe het werkt"</string>
+    <string name="settings_m3_how_sample" formatted="false">"Probeer het offlinevoorbeeld"</string>
+    <string name="settings_m3_how_start" formatted="false">"Begin hier"</string>
+    <string name="settings_m3_how_storage" formatted="false">"Opslag kiezen"</string>
+    <string name="settings_m3_how_subtitle" formatted="false">"Een kijkje van twee minuten bij de basis"</string>
+    <string name="settings_m3_how_title" formatted="false">"Hoe GitSync werkt"</string>
+    <string name="settings_m3_language" formatted="false">"Taal"</string>
+    <string name="settings_m3_lfs_endpoints" formatted="false">"LFS-eindpunten"</string>
+    <string name="settings_m3_license" formatted="false">"Licentie"</string>
+    <string name="settings_m3_license_subtitle" formatted="false">"Eenmalige aankoop via Google Play"</string>
+    <string name="settings_m3_move_action" formatted="false">"Kluis verplaatsen"</string>
+    <string name="settings_m3_move_cancel_meta" formatted="false">"Laat de kluis in zijn oude map"</string>
+    <string name="settings_m3_move_confirm_guidance" formatted="false">"Houd Obsidian en andere apps uit beide mappen totdat de verplaatsing is voltooid."</string>
+    <string name="settings_m3_move_confirm_retained" formatted="false">"Het origineel blijft als een herstelkopie."</string>
+    <string name="settings_m3_move_confirm_title" formatted="false">"Deze kluis verplaatsen?"</string>
+    <string name="settings_m3_move_copy_note" formatted="false">"Dit gaat over naar een ander opslagvolume, dus GitSync.md kopieert en controleert elk bestand, en bewaart het origineel onder Verplaats herstelkopieën totdat je het verwijdert."</string>
+    <string name="settings_m3_move_finish_meta" formatted="false">"Gaat verder waar het gestopt is"</string>
+    <string name="settings_m3_move_from" formatted="false">"Van"</string>
+    <string name="settings_m3_move_interrupted" formatted="false">"Een verplaatsing werd onderbroken. Elke kopie die we hebben gevonden wordt bewaard totdat u het voltooit."</string>
+    <string name="settings_m3_move_into" formatted="false">"Naar"</string>
+    <string name="settings_m3_move_intro" formatted="false">"Verplaatst de hele kluis: bestanden, Git-geschiedenis en voorbereide wijzigingen. Het account en de commit-auteur verplaatsen mee."</string>
+    <string name="settings_m3_move_moving_button" formatted="false">"Verplaatsen… houd GitSync.md open"</string>
+    <string name="settings_m3_move_progress" formatted="false">"Beursinstellingen verplaatsen en opslaan…"</string>
+    <string name="settings_m3_move_title" formatted="false">"Kluis verplaatsen"</string>
+    <string name="settings_m3_move_will_move_to" formatted="false">"Zal verplaatsen naar"</string>
+    <string name="settings_m3_never_force" formatted="false">"Force-push"</string>
+    <string name="settings_m3_never_overwrite" formatted="false">"Wijzigingen overschrijven"</string>
+    <string name="settings_m3_never_rebase" formatted="false">"Rebase of merge"</string>
+    <string name="settings_m3_never_resolve" formatted="false">"Conflicten oplossen"</string>
+    <string name="settings_m3_never_send" formatted="false">"Stuur ons uw bestanden"</string>
+    <string name="settings_m3_never_switch" formatted="false">"Branches wisselen"</string>
+    <string name="settings_m3_not_now" formatted="false">"Nog niet nu"</string>
+    <string name="settings_m3_obsidian" formatted="false">"Obsidian-verbindingen"</string>
+    <string name="settings_m3_obsidian_add_vault" formatted="false">"Kluis toevoegen"</string>
+    <string name="settings_m3_obsidian_before" formatted="false">"Voordat u begint"</string>
+    <string name="settings_m3_obsidian_command" formatted="false">"GitSync.md Connect: Verbind deze kluis"</string>
+    <string name="settings_m3_obsidian_connected" formatted="false">"verbonden"</string>
+    <string name="settings_m3_obsidian_empty" formatted="false">"Voeg eerst een kluis toe aan of kloon een kluis in een apparaatmap. Kluisbestanden in app-opslag kunnen niet door Obsidian worden geopend."</string>
+    <string name="settings_m3_obsidian_error" formatted="false">"Obsidian kon geen verbinding maken. Controleer de toegang tot de map, de GitHub HTTPS-remote en het account van de kluis, en bereid vervolgens een nieuwe verbinding voor."</string>
+    <string name="settings_m3_obsidian_failed" formatted="false">"Geen verbinding gemaakt"</string>
+    <string name="settings_m3_obsidian_forget_action" formatted="false">"Verbinding vergeten"</string>
+    <string name="settings_m3_obsidian_forget_body">"GitSync.md stopt met het doorgeven van referenties aan Obsidian voor %1$s. Referenties Obsidian die al zijn geïmporteerd blijven daar; intrek deze afzonderlijk. Uw bestanden blijven op hun plaats."</string>
+    <string name="settings_m3_obsidian_forget_title" formatted="false">"Deze verbinding vergeten?"</string>
+    <string name="settings_m3_obsidian_intro" formatted="false">"Laat de Obsidian Git plugin pushen en pullen met het GitHub account van deze kluis. Inloggegevens zijn versleuteld voor de begeleidende plugin en worden nooit in een link geplaatst."</string>
+    <string name="settings_m3_obsidian_prepare" formatted="false">"Bereid verbinding voor"</string>
+    <string name="settings_m3_obsidian_prepared_lead" formatted="false">"Verbinding voorbereid."</string>
+    <string name="settings_m3_obsidian_prepared_open">"Open %1$s in Obsidian en voer uit"</string>
+    <string name="settings_m3_obsidian_prepared_tail" formatted="false">". Een nieuwere aanvraag vervangt deze."</string>
+    <string name="settings_m3_obsidian_ready">"Versleutelde inloggegevens zijn gereed voor Obsidian. Obsidian Git kan nu %1$s synchroniseren."</string>
+    <string name="settings_m3_obsidian_req1_body" formatted="false">"Obsidian en GitSync.md moeten één apparaatmap delen."</string>
+    <string name="settings_m3_obsidian_req1_title" formatted="false">"Open dezelfde map in Obsidian"</string>
+    <string name="settings_m3_obsidian_req2_body" formatted="false">"Git en GitSync.md Connect, in Obsidian › Instellingen."</string>
+    <string name="settings_m3_obsidian_req2_title" formatted="false">"Zet twee community-plugins aan"</string>
+    <string name="settings_m3_obsidian_req3_body" formatted="false">"Met een GitHub account geselecteerd in de kluisverbinding."</string>
+    <string name="settings_m3_obsidian_req3_title" formatted="false">"Gebruik een HTTPS GitHub externe"</string>
+    <string name="settings_m3_obsidian_req4_body" formatted="false">"Voorbereiden geeft alleen inloggegevens door, geen bestanden of geschiedenis."</string>
+    <string name="settings_m3_obsidian_req4_title" formatted="false">"Niets in de kluis verandert"</string>
+    <string name="settings_m3_obsidian_return_failed" formatted="false">"Obsidian werd niet geopend. Zet GitSync.md Connect aan in Obsidian, en probeer daarna opnieuw te openen."</string>
+    <string name="settings_m3_obsidian_subtitle" formatted="false">"Obsidian Git + GitSync.md Connect"</string>
+    <string name="settings_m3_obsidian_this_vault" formatted="false">"Deze kluis"</string>
+    <string name="settings_m3_obsidian_vaults" formatted="false">"Kluisjes op deze telefoon"</string>
+    <string name="settings_m3_obsidian_waiting" formatted="false">"Wachten op Obsidian"</string>
+    <string name="settings_m3_off" formatted="false">"uit"</string>
+    <string name="settings_m3_on" formatted="false">"aan"</string>
+    <string name="settings_m3_perk_nudge_body" formatted="false">"Een GitHub push duwt de app binnen enkele seconden."</string>
+    <string name="settings_m3_perk_nudge_title" formatted="false">"Directe pulls met Push Sync"</string>
+    <string name="settings_m3_perk_pull_body" formatted="false">"Alleen fast-forward. Alles wat ongewoon is, wacht op u."</string>
+    <string name="settings_m3_perk_pull_title" formatted="false">"Pullen op de achtergrond"</string>
+    <string name="settings_m3_perk_push_body" formatted="false">"Standaard uit. U kiest welke kluizen publiceren."</string>
+    <string name="settings_m3_perk_push_title" formatted="false">"Wijzigingen committen en pushen"</string>
+    <string name="settings_m3_privacy" formatted="false">"Privacy"</string>
+    <string name="settings_m3_privacy_policy" formatted="false">"Privacybeleid"</string>
+    <string name="settings_m3_push_active" formatted="false">"Actief"</string>
+    <string name="settings_m3_push_all_repos" formatted="false">"Alle opslagplaatsen, inclusief nieuwe"</string>
+    <string name="settings_m3_push_channel_sub" formatted="false">"Gebruikt het notificatiekanaal voor repository-updates"</string>
+    <string name="settings_m3_push_checked">"Gecontroleerd %1$d · bijgewerkt %2$d · beoordeling nodig %3$d"</string>
+    <string name="settings_m3_push_connect_again" formatted="false">"Verbind opnieuw met GitHub"</string>
+    <string name="settings_m3_push_connect_sub" formatted="false">"Installeer de GitSync.md app en kies repositories"</string>
+    <string name="settings_m3_push_connected" formatted="false">"verbonden"</string>
+    <string name="settings_m3_push_connection" formatted="false">"GitHub verbinding"</string>
+    <string name="settings_m3_push_err_cancelled" formatted="false">"De GitHub verbinding is geannuleerd. Niets veranderd. Verbind opnieuw wanneer je klaar bent."</string>
+    <string name="settings_m3_push_err_cancelled_title" formatted="false">"Terug van GitHub"</string>
+    <string name="settings_m3_push_err_not_selected" formatted="false">"Geen kluis op deze telefoon komt overeen met deze GitHub repository en branch. Voeg de repository toe aan de toegang van de app op GitHub, of controleer de verbinding en branch van de kluis."</string>
+    <string name="settings_m3_push_err_not_selected_title" formatted="false">"Deze repository is niet gedeeld met de app"</string>
+    <string name="settings_m3_push_err_owner_title" formatted="false">"Aanmelding van eigenaar vereist"</string>
+    <string name="settings_m3_push_example_cd" formatted="false">"Voorbeeldmelding"</string>
+    <string name="settings_m3_push_example_meta" formatted="false">"GitSync.md · Repository-updates · nu"</string>
+    <string name="settings_m3_push_example_note" formatted="false">"Privé op het vergrendelscherm. Als de kluis schoon was, is deze al opgehaald tegen de tijd dat je dit ziet."</string>
+    <string name="settings_m3_push_example_repo" formatted="false">"eigenaar/kluis"</string>
+    <string name="settings_m3_push_example_title" formatted="false">"Een duwtje ziet er zo uit"</string>
+    <string name="settings_m3_push_existing_scope" formatted="false">"Meld je aan als de eigenaar van het account of een eigenaar van de organisatie. De app behoudt zijn huidige repositorytoegang."</string>
+    <string name="settings_m3_push_github_app" formatted="false">"GitHub App"</string>
+    <string name="settings_m3_push_handoff_body" formatted="false">"Een browsertabblad geopend. Kies het account en welke repositories de app kan zien, en kom vervolgens terug. Dit scherm controleert opnieuw wanneer je terugkomt."</string>
+    <string name="settings_m3_push_handoff_title" formatted="false">"Voltooi op GitHub"</string>
+    <string name="settings_m3_push_intro" formatted="false">"Verbind de GitSync.md GitHub App en een push naar GitHub en dit activeert dit telefoon binnen enkele seconden. Schone kluizen halen op en versnellen automatisch. Tik op de melding om opnieuw te controleren."</string>
+    <string name="settings_m3_push_never" formatted="false">"Push-synchronisatie nooit"</string>
+    <string name="settings_m3_push_never_commit" formatted="false">"Commits"</string>
+    <string name="settings_m3_push_never_hint" formatted="false">"Lokale wijzigingen en gesplitste geschiedenis wachten op je in de kluis."</string>
+    <string name="settings_m3_push_never_merge" formatted="false">"Merge gesplitste geschiedenis"</string>
+    <string name="settings_m3_push_never_switch" formatted="false">"Wissel van takken"</string>
+    <string name="settings_m3_push_never_upload" formatted="false">"Upload wijzigingen"</string>
+    <string name="settings_m3_push_no_connections" formatted="false">"Verbind een GitHub account of organisatie om te kiezen welke repositories updates kunnen versturen."</string>
+    <string name="settings_m3_push_open_vault" formatted="false">"Open kluis"</string>
+    <string name="settings_m3_push_permission" formatted="false">"Sta meldingen toe voor GitSync.md in de Android-instellingen en zet vervolgens Push Sync aan."</string>
+    <string name="settings_m3_push_registered" formatted="false">"Deze telefoon is geregistreerd voor meldingen"</string>
+    <string name="settings_m3_push_remove" formatted="false">"Verwijderen"</string>
+    <string name="settings_m3_push_remove_body">"Push Sync stopt met het doorsturen van updates van @%1$s naar deze telefoon. De GitHub App blijft geïnstalleerd. Gebruik Beheren op GitHub om de toegang te wijzigen of het te verwijderen."</string>
+    <string name="settings_m3_push_remove_title" formatted="false">"Deze verbinding verwijderen?"</string>
+    <string name="settings_m3_push_result_updated" formatted="false">"Bijgewerkt vanaf GitHub"</string>
+    <string name="settings_m3_push_stop" formatted="false">"Actie stoppen"</string>
+    <string name="settings_m3_push_suspended" formatted="false">"Opgeschort"</string>
+    <string name="settings_m3_push_sync" formatted="false">"Push Sync van GitHub"</string>
+    <string name="settings_m3_push_this_phone" formatted="false">"deze telefoon"</string>
+    <string name="settings_m3_push_title" formatted="false">"Push Sync"</string>
+    <string name="settings_m3_push_waiting" formatted="false">"Wachten op GitHub"</string>
+    <string name="settings_m3_save_clones_in" formatted="false">"Nieuwe klonen bewaren in"</string>
+    <string name="settings_m3_sc_action" formatted="false">"Actie"</string>
+    <string name="settings_m3_sc_authorized" formatted="false">"Geautoriseerd"</string>
+    <string name="settings_m3_sc_background_sub" formatted="false">"Resultaten komen hier en in een melding terecht"</string>
+    <string name="settings_m3_sc_branch">"Branch %1$s"</string>
+    <string name="settings_m3_sc_branch_reviewed">"Tak %1$s · beoordeeld %2$s"</string>
+    <string name="settings_m3_sc_clear" formatted="false">": Ongecompileerd"</string>
+    <string name="settings_m3_sc_clear_results" formatted="false">"Wis opgeslagen resultaten"</string>
+    <string name="settings_m3_sc_ff_only" formatted="false">"Alleen ophalen en fast-forward"</string>
+    <string name="settings_m3_sc_item_title">"%1$s: %2$s"</string>
+    <string name="settings_m3_sc_launcher" formatted="false">"Snelkoppelingen op startscherm"</string>
+    <string name="settings_m3_sc_link_identity">"Link %1$s · Gemaakt op %2$s"</string>
+    <string name="settings_m3_sc_link_private" formatted="false">"Iedereen met deze link kan het uitvoeren. Houd het privé."</string>
+    <string name="settings_m3_sc_links" formatted="false">"Geautoriseerde links"</string>
+    <string name="settings_m3_sc_new_title" formatted="false">"Nieuwe snelkoppeling voor één kluis"</string>
+    <string name="settings_m3_sc_no_links" formatted="false">"Geen geautoriseerde links. Apps zoals Obsidian of Snelkoppelingen kunnen erom vragen."</string>
+    <string name="settings_m3_sc_no_shortcuts" formatted="false">"Nog geen launcher-snelkoppelingen. Kies hierboven een kluis en een actie."</string>
+    <string name="settings_m3_sc_open_pull_all" formatted="false">"Open Alles Ophalen"</string>
+    <string name="settings_m3_sc_open_pull_all_sub" formatted="false">"Haal nu elke kluis op en bekijk elk resultaat"</string>
+    <string name="settings_m3_sc_pin_consent">"Elke tik voert dit één keer uit, zonder opnieuw te vragen. Het blijft gekoppeld aan %1$s, branch %2$s en dit account. Als een daarvan verandert, stopt de snelkoppeling en maak je een nieuwe. Intrekken kan hier altijd."</string>
+    <string name="settings_m3_sc_pin_writes">"Voert commits uit met “%1$s” en uploadt elke wijziging bij elke tik."</string>
+    <string name="settings_m3_sc_pinned" formatted="false">"Vastgezet"</string>
+    <string name="settings_m3_sc_pull" formatted="false">"Pullen"</string>
+    <string name="settings_m3_sc_pull_all" formatted="false">"Alle selecteren"</string>
+    <string name="settings_m3_sc_pull_all_note" formatted="false">"Elke tik haalt elke kluis één keer op. Niets wordt gecommit of gepusht. Resultaten wachten in Alles Ophalen."</string>
+    <string name="settings_m3_sc_pull_all_repos" formatted="false">"Alle repositories ophalen"</string>
+    <string name="settings_m3_sc_pull_all_title" formatted="false">"Alles Ophalen, zonder de app te openen"</string>
+    <string name="settings_m3_sc_pull_sub" formatted="false">"Alleen ophalen en fast-forward"</string>
+    <string name="settings_m3_sc_push" formatted="false">"Committen en pushen"</string>
+    <string name="settings_m3_sc_push_sub" formatted="false">"Commiteert elke wijziging en uploadt daarna"</string>
+    <string name="settings_m3_sc_refresh" formatted="false">"Vernieuwen"</string>
+    <string name="settings_m3_sc_requested" formatted="false">"Snelkoppeling aangevraagd. Keur het goed in je launcher en tik daarna op Vernieuwen hieronder om het te controleren."</string>
+    <string name="settings_m3_sc_returns_to">"keert terug naar %1$s"</string>
+    <string name="settings_m3_sc_review_again" formatted="false">"Beoordeel opnieuw"</string>
+    <string name="settings_m3_sc_revoke" formatted="false">"Intrekken"</string>
+    <string name="settings_m3_sc_revoke_body" formatted="false">"Het stopt met het uitvoeren van Git-acties. Het pictogram kan op je startscherm blijven staan, grijs weergegeven, totdat je het verwijdert. Een nieuwe snelkoppeling moet opnieuw worden goedgekeurd."</string>
+    <string name="settings_m3_sc_revoke_link" formatted="false">"Link intrekken"</string>
+    <string name="settings_m3_sc_revoke_title" formatted="false">"Deze snelkoppeling intrekken?"</string>
+    <string name="settings_m3_sc_revoked" formatted="false">"Ingetrokken"</string>
+    <string name="settings_m3_sc_run_once" formatted="false">"Nu eenmaal uitvoeren"</string>
+    <string name="settings_m3_sc_runs_closed" formatted="false">"Voert uit zonder GitSync.md te openen"</string>
+    <string name="settings_m3_sc_runs_open" formatted="false">"Opent GitSync.md, voert dan eenmaal uit"</string>
+    <string name="settings_m3_sc_status" formatted="false">"Status lezen"</string>
+    <string name="settings_m3_sc_status_sub" formatted="false">"Geen netwerk. Laat zien wat veranderd is."</string>
+    <string name="settings_m3_sc_sync" formatted="false">"Synchroniseren"</string>
+    <string name="settings_m3_sc_sync_sub" formatted="false">"Eerst ophalen, dan committen &amp; pushen"</string>
+    <string name="settings_m3_sc_tile_how" formatted="false">"Veeg omlaag Snelle instellingen › Bewerken › sleep alles ophalen erin."</string>
+    <string name="settings_m3_sc_tile_lead" formatted="false">"Tegel:"</string>
+    <string name="settings_m3_sc_title" formatted="false">"Widget &amp; snelkoppelingen"</string>
+    <string name="settings_m3_sc_upstream">"Upstream %1$s / %2$s"</string>
+    <string name="settings_m3_sc_waiting" formatted="false">"Wachten op launcher"</string>
+    <string name="settings_m3_sc_widget_how" formatted="false">"Houd je startscherm ingedrukt › Widgets › GitSync.md."</string>
+    <string name="settings_m3_sc_widget_lead" formatted="false">"Widget:"</string>
+    <string name="settings_m3_sc_writes" formatted="false">"Zet elke verandering in de staging, commit indien nodig, en upload dan. Conflicten, gesplitste geschiedenis of een remote die eerst is verplaatst stoppen het, en een mislukte upload houdt de nieuwe commit."</string>
+    <string name="settings_m3_shortcuts" formatted="false">"Widget- en launcher-snelkoppelingen"</string>
+    <string name="settings_m3_sign_out" formatted="false">"Uitloggen"</string>
+    <string name="settings_m3_ssh_hosts" formatted="false">"SSH servers"</string>
+    <string name="settings_m3_storage_hint" formatted="false">"Telefoonopslag en SD-kaarten werken. Cloudmappen zoals Google Drive kunnen geen Git-repository bevatten."</string>
+    <string name="settings_m3_storage_intro" formatted="false">"Kies de map waar nieuwe klonen naartoe gaan. Kluizen die je al hebt, blijven waar ze zijn."</string>
+    <string name="settings_m3_storage_move_title" formatted="false">"Verplaats een kluis die je al hebt"</string>
+    <string name="settings_m3_system_default" formatted="false">"Systeemstandaard"</string>
+    <string name="settings_m3_terms" formatted="false">"Voorwaarden"</string>
+    <string name="settings_m3_theme" formatted="false">"Thema"</string>
+    <string name="settings_m3_theme_dark" formatted="false">"Donker"</string>
+    <string name="settings_m3_theme_light" formatted="false">"Licht"</string>
+    <string name="settings_m3_title" formatted="false">"Instellingen"</string>
+    <string name="settings_m3_unlocked" formatted="false">"Ontgrendeld"</string>
+    <string name="settings_m3_upgrade_body" formatted="false">"Open Obsidian \'s ochtends en alles staat er al."</string>
+    <string name="settings_m3_upgrade_illustration" formatted="false">"Vergrendelde telefoon die \'s nachts met GitHub gegevens ophaalt en verzendt"</string>
+    <string name="settings_m3_upgrade_last_run">"%1$s · opgehaald %2$d · verzonden %3$d"</string>
+    <string name="settings_m3_upgrade_locked_phone" formatted="false">"vergrendelde telefoon"</string>
+    <string name="settings_m3_upgrade_note" formatted="false">"Wordt meegeleverd met GitSync.md. Android bepaalt wanneer achtergrondwerk wordt uitgevoerd; het is op best effort-basis. Energiebesparing kan dit vertragen."</string>
+    <string name="settings_m3_upgrade_pull" formatted="false">"Pullen op de achtergrond"</string>
+    <string name="settings_m3_upgrade_push" formatted="false">"Ook mijn wijzigingen committen en pushen"</string>
+    <string name="settings_m3_upgrade_title" formatted="false">"Synchroniseer\nterwijl u slaapt."</string>
+    <string name="settings_m3_upgrade_turn_on" formatted="false">"Background Sync inschakelen"</string>
+    <string name="settings_m3_vault_check_ok" formatted="false">"OK"</string>
+    <string name="settings_m3_vault_delete_action" formatted="false">"Verwijderen"</string>
+    <string name="settings_m3_vault_delete_body" formatted="false">"Verwijdert deze map, de bestanden en de Git geschiedenis van deze telefoon. Alles wat niet naar GitHub is gestuurd, gaat verloren."</string>
+    <string name="settings_m3_vault_delete_title" formatted="false">"Kluis verwijderen &amp; bestanden verwijderen?"</string>
+    <string name="settings_m3_vault_display_name" formatted="false">"Weergavenaam"</string>
+    <string name="settings_m3_vault_display_name_hint" formatted="false">"Laat leeg om de naam van de kluis zelf te gebruiken."</string>
+    <string name="settings_m3_vault_errors" formatted="false">"fouten · 7 d"</string>
+    <string name="settings_m3_vault_files" formatted="false">"bestanden"</string>
+    <string name="settings_m3_vault_folder" formatted="false">"Map"</string>
+    <string name="settings_m3_vault_group" formatted="false">"Deze kluis"</string>
+    <string name="settings_m3_vault_health" formatted="false">"Status"</string>
+    <string name="settings_m3_vault_health_attention" formatted="false">"Controle nodig"</string>
+    <string name="settings_m3_vault_health_good" formatted="false">"goed"</string>
+    <string name="settings_m3_vault_include" formatted="false">"Opnemen in Background Sync"</string>
+    <string name="settings_m3_vault_include_review" formatted="false">"Controleert eerst de branch en remote"</string>
+    <string name="settings_m3_vault_include_sub">"Alleen branch %1$s, volgt %2$s/%3$s"</string>
+    <string name="settings_m3_vault_include_title" formatted="false">"Opnemen in Background Sync?"</string>
+    <string name="settings_m3_vault_last_check">"laatste achtergrondcontrole %1$s · %2$s"</string>
+    <string name="settings_m3_vault_lfs" formatted="false">"LFS"</string>
+    <string name="settings_m3_vault_no_check" formatted="false">"nog geen achtergrondcontrole"</string>
+    <string name="settings_m3_vault_pin" formatted="false">"Bovenaan Home vastzetten"</string>
+    <string name="settings_m3_vault_remove" formatted="false">"Kluis verwijderen…"</string>
+    <string name="settings_m3_vault_remove_action" formatted="false">"Verwijderen"</string>
+    <string name="settings_m3_vault_remove_delete" formatted="false">"Kluis verwijderen &amp; bestanden verwijderen…"</string>
+    <string name="settings_m3_vault_remove_kept" formatted="false">"GitSync.md stopt met het weergeven ervan. De map wordt niet beheerd door GitSync.md, dus de bestanden en Git-geschiedenis blijven waar ze zijn."</string>
+    <string name="settings_m3_vault_remove_title" formatted="false">"Deze kluis verwijderen?"</string>
+    <string name="settings_m3_vault_shortcut" formatted="false">"Snelkoppeling aan startscherm toevoegen"</string>
+    <string name="settings_m3_vault_shortcut_sub" formatted="false">"Pull of commit &amp; push met één tik"</string>
+    <string name="settings_m3_vault_stop_tracking" formatted="false">"Tracking stoppen — bestanden behouden"</string>
+    <string name="settings_m3_vault_title" formatted="false">"Kluisinstellingen"</string>
+    <string name="settings_m3_whats_new" formatted="false">"Nieuw"</string>
+    <string name="settings_m3_whats_new_hint" formatted="false">"Dit verschijnt ook één keer na een update. Je kunt het altijd hier vinden."</string>
+    <string name="settings_m3_whats_new_subtitle">"Release-opmerkingen voor %1$s"</string>
     <string name="shortcut_background_attention" formatted="false">"Snelkoppeling vereist aandacht. Open de repositoryacties en controleer de status voordat je het opnieuw probeert."</string>
     <string name="shortcut_background_channel" formatted="false">"Acties van snelkoppelingen"</string>
     <string name="shortcut_background_complete" formatted="false">"Snelkoppelingsactie voltooid. Open de repositoryacties om het resultaat te bekijken."</string>
@@ -688,9 +1982,37 @@
     <string name="shortcut_background_interrupted" formatted="false">"De uitvoering is onderbroken. Deze wordt niet automatisch herhaald. Controleer de repository voordat je opnieuw tikt."</string>
     <string name="shortcut_background_option" formatted="false">"Uitvoeren zonder GitSync.md te openen"</string>
     <string name="shortcut_background_running" formatted="false">"Snelkoppelingsactie wordt uitgevoerd"</string>
+    <string name="shortcut_m3_add_vault" formatted="false">"Kluis toevoegen"</string>
+    <string name="shortcut_m3_commit_push">"%1$s: Commit &amp; push"</string>
+    <string name="shortcut_m3_commit_short" formatted="false">"Committen en pushen"</string>
+    <string name="shortcut_m3_pull">"%1$s: Pull"</string>
+    <string name="shortcut_m3_pull_short" formatted="false">"Pullen"</string>
     <string name="shortcut_results_clear_scope" formatted="false">"Verwijder opgeslagen uitvoeringsresultaten van snelkoppelingen en callbacks. Hun toestemmingen blijven ongewijzigd. Onderbroken acties worden niet automatisch herhaald."</string>
     <string name="shortcut_results_unavailable" formatted="false">"Opgeslagen snelkoppelingsresultaten kunnen niet worden gelezen. Toestemming wordt afzonderlijk beheerd."</string>
     <string name="ssh_hide_private_key" formatted="false">"Privésleutel verbergen"</string>
+    <string name="ssh_m3_changed_title" formatted="false">"SSH-serversleutel gewijzigd"</string>
+    <string name="ssh_m3_changed_warning" formatted="false">"Een veranderde sleutel kan betekenen dat iemand de server imiteert. Controleer de nieuwe vingerafdruk met de eigenaar voordat je vertrouwen vervangt."</string>
+    <string name="ssh_m3_compare" formatted="false">"Vergelijk het met de SSH hostkey die de servereigenaar publiceert voordat je vertrouwen geeft."</string>
+    <string name="ssh_m3_empty" formatted="false">"Geen vertrouwde SSH-servers"</string>
+    <string name="ssh_m3_error_save" formatted="false">"Kon SSH serververtrouwen niet opslaan. Controleer de vingerafdruk opnieuw voordat u het opnieuw probeert."</string>
+    <string name="ssh_m3_forget" formatted="false">"Vergeten"</string>
+    <string name="ssh_m3_forget_body">"%1$s heeft vingerafdrukverificatie nodig voordat u opnieuw verbinding maakt."</string>
+    <string name="ssh_m3_forget_cd">"Vergeet %1$s"</string>
+    <string name="ssh_m3_forget_server" formatted="false">"Server vergeten"</string>
+    <string name="ssh_m3_forget_title" formatted="false">"SSH-server vergeten?"</string>
+    <string name="ssh_m3_intro" formatted="false">"Vingerafdrukken die u vertrouwde, zijn opgeslagen op deze telefoon. Vergeet er een en u zult deze de volgende keer dat u verbinding maakt opnieuw verifiëren. Uw SSH-sleutels blijven bewaard."</string>
+    <string name="ssh_m3_none" formatted="false">"Instellingen · geen vertrouwd"</string>
+    <string name="ssh_m3_previous">"Eerder vertrouwd: %1$s"</string>
+    <string name="ssh_m3_replace" formatted="false">"Vertrouwen vervangen en verbinden"</string>
+    <string name="ssh_m3_reset_all" formatted="false">"Alle SSH-serververtrouwen opnieuw instellen"</string>
+    <string name="ssh_m3_reset_body" formatted="false">"Elke SSH-server heeft vingerafdrukverificatie nodig voordat u opnieuw verbinding maakt. Dit wist ook beschadigde vertrouwensvermeldingen."</string>
+    <string name="ssh_m3_reset_confirm" formatted="false">"Vertrouwen opnieuw instellen"</string>
+    <string name="ssh_m3_reset_title" formatted="false">"Alle SSH-serververtrouwen opnieuw instellen?"</string>
+    <string name="ssh_m3_saved" formatted="false">"Vertrouwen wordt op deze telefoon opgeslagen en de wachtende verbinding gaat door. Annuleren laat de server onbetrouwbaar."</string>
+    <string name="ssh_m3_title" formatted="false">"Vertrouwen in SSH-servers"</string>
+    <string name="ssh_m3_trust" formatted="false">"Vertrouwen en verbinden"</string>
+    <string name="ssh_m3_trusted" formatted="false">"Betrouwbare servers"</string>
+    <string name="ssh_m3_verify_title" formatted="false">"SSH-server verifiëren"</string>
     <string name="ssh_show_private_key" formatted="false">"Privésleutel tonen"</string>
     <string name="ssh_trust_error_changed" formatted="false">"Het SSH-vertrouwen is gewijzigd tijdens de controle. Controleer de huidige serververmelding en probeer opnieuw te verbinden."</string>
     <string name="ssh_trust_error_damaged" formatted="false">"Opgeslagen SSH-vertrouwen moet worden gecontroleerd. Stel het vertrouwen in SSH-servers opnieuw in via Instellingen voordat je het opnieuw probeert."</string>
@@ -710,7 +2032,7 @@
     <string name="tide_merge_conflict_headline" formatted="false">"Beide kanten hebben dit bestand bewerkt."</string>
     <string name="tide_merge_conflict_pick" formatted="false">"Kies de versie die je wilt behouden of bewerk het resultaat met de hand."</string>
     <string name="tide_merge_conflict_renamed_headline" formatted="false">"Op twee verschillende manieren hernoemd."</string>
-    <string name="tide_merge_conflict_result" formatted="false">"-resultaat"</string>
+    <string name="tide_merge_conflict_result" formatted="false">"Resultaat"</string>
     <string name="tide_merge_conflict_result_hint" formatted="false">": dit wordt op het podium gepresenteerd."</string>
     <string name="tide_merge_diff_added" formatted="false">"Toegevoegd"</string>
     <string name="tide_merge_diff_binary_body" formatted="false">"Binaire inhoud kan niet als tekst worden weergegeven."</string>
@@ -755,7 +2077,7 @@
     <string name="tide_vault_eyebrow_unreadable" formatted="false">"Lezen mislukt"</string>
     <string name="tide_vault_files_section" formatted="false">"Bestanden"</string>
     <string name="tide_vault_from_remote">"↓%1$d van de remote"</string>
-    <string name="tide_vault_git" formatted="false">"GIT"</string>
+    <string name="tide_vault_git" formatted="false">"Git"</string>
     <string name="tide_vault_headline_behind">"Nieuw op de remote: %1$d"</string>
     <string name="tide_vault_headline_unreadable" formatted="false">"Deze kluis kon niet worden gelezen."</string>
     <string name="tide_vault_more" formatted="false">"Meer kluisopties"</string>
@@ -768,6 +2090,13 @@
     <string name="tide_vault_sub_empty" formatted="false">"Voeg een notitie toe en commit die hier."</string>
     <string name="tide_vault_sub_in_sync" formatted="false">"Niets in afwachting op deze telefoon"</string>
     <string name="tide_vault_yours">"↑%1$d lokaal"</string>
+    <string name="tile_m3_background_sync" formatted="false">"Background Sync"</string>
+    <string name="tile_m3_modes">"%1$s · %2$s"</string>
+    <string name="tile_m3_pull_all" formatted="false">"Alle selecteren"</string>
+    <string name="tile_m3_pull_off" formatted="false">"Ophalen"</string>
+    <string name="tile_m3_pull_on" formatted="false">"Binnenhalen"</string>
+    <string name="tile_m3_push_off" formatted="false">"Uitschakelen"</string>
+    <string name="tile_m3_push_on" formatted="false">"Inschakelen"</string>
     <string name="tracking_metadata_size">"Git-metadata: %1$s"</string>
     <string name="tracking_remove_permanent_title" formatted="false">"Git-geschiedenis definitief verwijderen?"</string>
     <string name="tracking_removed_backup">"Git-tracking verwijderd. Gecontroleerde back-up: %1$s"</string>
@@ -778,14 +2107,23 @@
     <string name="ui_1_s_characters_bde60398">"Tekens: %1$s"</string>
     <string name="ui_1_s_lines_2_s_bytes_c30a0cd1">"Regels: %1$s, bytes: %2$s"</string>
     <string name="ui_1_s_local_commits_2_s_upstream_commits_77dc6fa8">"%1$s lokale commits · %2$s upstream-commits"</string>
+    <string name="ui_1_vault_c39776f1" formatted="false">"1 kluis"</string>
+    <string name="ui_2_of_3_commits_sent_5591e38a" formatted="false">"2 van de 3 commits verzonden"</string>
+    <string name="ui_3_changes_aren_t_committed_yet_commit_or_s_d878e782" formatted="false">"3 wijzigingen zijn nog niet gecommit. Commit of stash ze voordat je van branch wisselt."</string>
+    <string name="ui_3_held_f454ab2b" formatted="false">"↑3 vastgehouden"</string>
+    <string name="ui_3_to_push_ac87b7cb" formatted="false">"↑3 te pushen"</string>
+    <string name="ui_4_in_sync_checked_2_min_ago_a1f1ab5e" formatted="false">"4 gesynchroniseerd · 2 min geleden gecontroleerd"</string>
     <string name="ui_abort_rebase_fd5cfc32" formatted="false">"Rebase afbreken…"</string>
     <string name="ui_about_4efca0d1" formatted="false">"Over"</string>
+    <string name="ui_about_lfs_538b5b7e" formatted="false">"Over LFS"</string>
+    <string name="ui_all_5_8907f196" formatted="false">"Alle 5"</string>
     <string name="ui_all_conflicts_are_staged_continue_replayin_b86b2a5a" formatted="false">"Alle conflictoplossingen zijn klaargezet. Ga door met het opnieuw toepassen van commits. Als Git NOTHING_TO_COMMIT meldt, bekijk dan of je de lege commit moet overslaan."</string>
     <string name="ui_all_local_changes_to_this_file_will_be_per_0919f539" formatted="false">": Alle lokale wijzigingen in deze bestand worden permanent verwijderd."</string>
     <string name="ui_allow_local_folder_access_0b2888fb" formatted="false">"Toegang tot lokale mappen toestaan"</string>
     <string name="ui_app_0d04bfeb" formatted="false">"App"</string>
     <string name="ui_app_settings_da645334" formatted="false">"App-instellingen"</string>
     <string name="ui_apply_tracking_choice_47a2e187" formatted="false">"Trackingkeuze toepassen"</string>
+    <string name="ui_attention_1_fa1ea5dc" formatted="false">"Aandacht 1"</string>
     <string name="ui_authentication_66880d2d" formatted="false">"Authenticatie"</string>
     <string name="ui_back_639807a2" formatted="false">"TERUG"</string>
     <string name="ui_back_aceb696a" formatted="false">"← Terug"</string>
@@ -793,11 +2131,13 @@
     <string name="ui_backup_1_s_6ad01ca6">"Back-up: %1$s"</string>
     <string name="ui_base_7b47361a" formatted="false">"Basis"</string>
     <string name="ui_binary_large_or_lfs_file_choose_an_entire_52c3278a" formatted="false">"Binair, groot of LFS-bestand: kies een volledige kant."</string>
+    <string name="ui_both_sides_edited_step_3_077f9640" formatted="false">"Beide kanten hebben \"Stap 3\" bewerkt."</string>
     <string name="ui_branch_52656e81" formatted="false">"Branch"</string>
     <string name="ui_branch_optional_e9dedf99" formatted="false">"Branch (optioneel)"</string>
     <string name="ui_browsing_with_this_account_28a8b330" formatted="false">"Bladeren met dit account"</string>
     <string name="ui_cancel_pending_move_0858583b" formatted="false">"Wachtende verplaatsing annuleren"</string>
     <string name="ui_changes_bbd4b6a8" formatted="false">"Wijzigingen"</string>
+    <string name="ui_changes_on_this_phone_6359d3d5" formatted="false">"wijzigingen op deze telefoon"</string>
     <string name="ui_choose_a_connected_account_for_this_reposi_c4817ea9" formatted="false">"Kies een verbonden account voor deze repository."</string>
     <string name="ui_choose_a_device_folder_d00b7daf" formatted="false">"Map op het apparaat kiezen"</string>
     <string name="ui_choose_an_authentication_method_before_clo_c89124ba" formatted="false">"Kies een authenticatiemethode voordat je kloont."</string>
@@ -810,14 +2150,18 @@
     <string name="ui_clone_again_e05eb495" formatted="false">"Opnieuw klonen"</string>
     <string name="ui_clone_again_review_the_previous_branch_and_33cba147" formatted="false">"Opnieuw klonen · controleer de vorige branch en verbinding voordat je begint."</string>
     <string name="ui_clone_storage_47cafc8a" formatted="false">"Opslag voor klonen"</string>
+    <string name="ui_cloning_and_preparing_the_working_copy_6fe864ff" formatted="false">"Klonen en de werkende kopie voorbereiden"</string>
+    <string name="ui_commit_3_files_959a8528" formatted="false">"Commit 3 bestanden"</string>
     <string name="ui_commit_author_e9376b3a" formatted="false">"Auteur van commit"</string>
     <string name="ui_commit_message_a4b361b7" formatted="false">"Commitbericht…"</string>
     <string name="ui_commit_sha_d0bc6028" formatted="false">"Commit SHA"</string>
     <string name="ui_confirm_eebdd24a" formatted="false">"Bevestigen"</string>
+    <string name="ui_conflict_1_of_2_ideas_23283a20" formatted="false">"Conflict 1 van 2 · ideeën/"</string>
     <string name="ui_continue_rebase_7a14e965" formatted="false">": Verderrebaseeringsproces"</string>
     <string name="ui_create_a_file_or_folder_using_new_655c5596" formatted="false">"Maak een bestand of map met Nieuw."</string>
     <string name="ui_current_default_d914f86e" formatted="false">"Huidige standaardmap"</string>
     <string name="ui_current_separate_push_address_1_s_2a6ef8f9">"Huidig afzonderlijk pushadres: %1$s"</string>
+    <string name="ui_daily_new_file_42_31057cdf" formatted="false">"dagelijks · nieuw bestand · +42"</string>
     <string name="ui_debug_info_697b4941" formatted="false">"Foutopsporingsinformatie"</string>
     <string name="ui_delete_1_s_6474596f">"\"%1$s\" verwijderen?"</string>
     <string name="ui_delete_e2d0a549" formatted="false">"Verwijderen"</string>
@@ -826,6 +2170,10 @@
     <string name="ui_delete_local_files_20424441" formatted="false">": Lokale bestanden verwijderen"</string>
     <string name="ui_destination_1_s_0df94639">"Bestemming: %1$s"</string>
     <string name="ui_destination_parent_folder_c6c4f97e" formatted="false">"Bovenliggende doelmap"</string>
+    <string name="ui_disabled_75081b59" formatted="false">"Geblokkeerd"</string>
+    <string name="ui_discard_3_95e06aed" formatted="false">"Verwerp 3"</string>
+    <string name="ui_discard_3_changes_d2ad52aa" formatted="false">"3 wijzigingen verwerpen?"</string>
+    <string name="ui_discard_changes_85bcf416" formatted="false">"Wijzigingen verwerpen?"</string>
     <string name="ui_discard_draft_cb30147e" formatted="false">"Concept verwerpen"</string>
     <string name="ui_discard_eb1a70e3" formatted="false">"Verwerpen"</string>
     <string name="ui_discard_resolution_draft_47c16148" formatted="false">"Oplossingsconcept verwerpen?"</string>
@@ -846,6 +2194,8 @@
     <string name="ui_gitsync_md_needs_shared_storage_access_to_f1b339ea" formatted="false">"GitSync.md heeft toegang tot gedeelde opslag nodig om echte Git-werkkopieën in apparaatmappen te beheren. Kies de gewenste mappen nadat je toegang hebt ingeschakeld in de Android-instellingen."</string>
     <string name="ui_go_back_and_select_a_repository_c3eedd39" formatted="false">"Ga terug en selecteer een repository."</string>
     <string name="ui_hash_a9106914" formatted="false">"Hash"</string>
+    <string name="ui_health_md_f72119f5" formatted="false">"gezondheid-md"</string>
+    <string name="ui_https_ssh_git_or_file_e79ef5ea" formatted="false">"HTTPS, SSH, git:// of file://."</string>
     <string name="ui_i_understand_that_another_owner_may_still_b4a12b2d" formatted="false">"Ik begrijp dat een andere eigenaar dit bestand mogelijk nog bewerkt."</string>
     <string name="ui_include_the_ssh_username_in_the_address_gi_beb09b5a" formatted="false">"Neem de SSH-gebruikersnaam op in het adres: git@host:team/repo.git of ssh://git@host:2222/team/repo.git."</string>
     <string name="ui_keep_editing_e76fd2ad" formatted="false">"Verder bewerken"</string>
@@ -882,8 +2232,12 @@
     <string name="ui_owner_1_s_599ca9ce">"Eigenaar: %1$s"</string>
     <string name="ui_parents_1_s_914efbd0">"Ouders (%1$s)"</string>
     <string name="ui_path_62fa5a5b" formatted="false">"Pad"</string>
+    <string name="ui_plain_http_sends_credentials_unencrypted_c99e5672" formatted="false">"Gewone HTTP verzendt inloggegevens onversleuteld."</string>
     <string name="ui_platform_c78ffe19" formatted="false">"Platform"</string>
     <string name="ui_pull_with_rebase_6d25f1e0" formatted="false">"Draaien met rebase"</string>
+    <string name="ui_push_was_rejected_fbc19d01" formatted="false">"Push werd geweigerd"</string>
+    <string name="ui_pushed_579e8c6a" formatted="false">"Gepusht"</string>
+    <string name="ui_rebase_completed_successfully_53314c91" formatted="false">": Rebase is succesvol voltooid."</string>
     <string name="ui_rebase_in_progress_3ecd9c42" formatted="false">"Rebase wordt uitgevoerd"</string>
     <string name="ui_rebase_onto_reviewed_upstream_c3b8fb93" formatted="false">"Rebasen op gecontroleerde upstream"</string>
     <string name="ui_reconnect_bf8a9eab" formatted="false">"Opnieuw verbinden"</string>
@@ -893,6 +2247,7 @@
     <string name="ui_reload_author_18a711d8" formatted="false">"Auteur opnieuw laden"</string>
     <string name="ui_reload_connection_ceed2dae" formatted="false">"Verbinding opnieuw laden"</string>
     <string name="ui_reload_from_disk_d4288839" formatted="false">"Opnieuw laden vanaf schijf"</string>
+    <string name="ui_remote_has_no_new_commits_fetched_2m_ago_bdaa4b95" formatted="false">"Remote heeft geen nieuwe commits · 2m geleden opgehaald"</string>
     <string name="ui_remove_1_s_e4dd7c24">"%1$s verwijderen?"</string>
     <string name="ui_remove_1_s_this_removes_it_from_gitsync_md_0a6b198d">"‘%1$s’ verwijderen?\n\nDit verwijdert het uit GitSync.md. Alle lokale bestanden en de Git-geschiedenis blijven op dit apparaat en je kunt het later opnieuw verbinden. De externe repository wordt niet gewijzigd."</string>
     <string name="ui_remove_all_custom_endpoint_approvals_and_t_ffc30a9e" formatted="false">"Verwijder alle aangepaste eindpuntgoedkeuringen en hun opgeslagen aanmeldgegevens op dit apparaat. Elk eindpunt en elke overdrachtsrichting vereist een nieuwe controle."</string>
@@ -932,17 +2287,20 @@
     <string name="ui_save_1509f561" formatted="false">"Bewaren"</string>
     <string name="ui_save_author_1c24b32a" formatted="false">"Auteur opslaan"</string>
     <string name="ui_save_connection_df24ef12" formatted="false">"Verbinding opslaan"</string>
+    <string name="ui_saved_credentials_are_encrypted_on_this_de_9320d5e0" formatted="false">"Opgeslagen inloggegevens zijn versleuteld op dit apparaat."</string>
     <string name="ui_saving_uses_this_address_for_both_fetch_an_48c82edc" formatted="false">"Bij het opslaan wordt dit adres voor zowel fetch als push gebruikt. Voer daarna fetch uit om de externe status te vernieuwen."</string>
     <string name="ui_selected_folder_0cf59bef" formatted="false">"Geselecteerde map"</string>
     <string name="ui_share_backup_archive_ee4ba873" formatted="false">"Back-uparchief delen"</string>
     <string name="ui_some_diagnostics_could_not_be_read_or_save_19e3372d" formatted="false">"Sommige diagnostiek kon niet worden gelezen of opgeslagen. Bestaande gegevens zijn behouden. Wis het logboek om opnieuw te beginnen met registreren."</string>
     <string name="ui_ssh_private_key_0e92a613" formatted="false">"SSH Privé sleutel"</string>
     <string name="ui_stage_de838855" formatted="false">"Klaarzetten"</string>
+    <string name="ui_stay_on_main_915a176c" formatted="false">"Blijf op main"</string>
     <string name="ui_the_active_destination_stays_in_place_gits_a4f1f68a" formatted="false">"De actieve bestemming blijft bestaan. GitSync.md controleert of het bewaarde origineel geen latere wijzigingen bevat voordat de bestanden en Git-geschiedenis permanent worden verwijderd."</string>
     <string name="ui_the_folder_can_move_directly_on_this_stora_7b29fabb" formatted="false">"De map kan rechtstreeks op dit opslagvolume worden verplaatst."</string>
     <string name="ui_the_previous_github_account_is_disconnecte_628a1f8c" formatted="false">"Het vorige GitHub-account is niet verbonden. Kies een verbonden account of een andere authenticatiemethode."</string>
     <string name="ui_the_replayed_local_commit_deletes_this_fil_ab00656d" formatted="false">"De opnieuw toegepaste lokale commit verwijdert dit bestand."</string>
     <string name="ui_the_review_changed_cancel_and_refresh_serv_c7ee804c" formatted="false">"De beoordeelde gegevens zijn gewijzigd. Annuleer en vernieuw de serververgrendelingen."</string>
+    <string name="ui_these_files_go_back_to_how_they_were_in_a4_02e3cd66" formatted="false">"Deze bestanden gaan terug naar hoe ze waren in a41c9e2."</string>
     <string name="ui_this_history_entry_is_unavailable_c2c9f4e0" formatted="false">"Dit geschiedenisitem is niet beschikbaar."</string>
     <string name="ui_this_removes_another_connection_s_lock_coo_880defbf" formatted="false">"Dit verwijdert de vergrendeling van een andere verbinding. Stem dit af met de eigenaar voordat je doorgaat."</string>
     <string name="ui_this_repository_will_use_public_access_unt_c94fad61" formatted="false">"Deze repository gebruikt openbare toegang totdat je opnieuw authenticatie kiest. Je aangemelde GitHub-account wordt hiervoor niet gebruikt. De fetch- en pushadressen blijven ongewijzigd."</string>
@@ -955,6 +2313,7 @@
     <string name="ui_use_for_new_clones_be174c95" formatted="false">"Gebruiken voor nieuwe klonen"</string>
     <string name="ui_use_saved_default_3bb7260d" formatted="false">"Opgeslagen standaard gebruiken"</string>
     <string name="ui_username_e3b89e9d" formatted="false">"Gebruikersnaam"</string>
+    <string name="ui_working_5474eef8" formatted="false">"Bezig…"</string>
     <string name="ui_your_edits_have_not_been_saved_625899a4" formatted="false">"Je wijzigingen zijn niet opgeslagen."</string>
     <string name="ui_your_unsubmitted_text_will_be_discarded_th_15717285" formatted="false">"Je niet-ingediende tekst wordt verworpen. Het werkbestand blijft ongewijzigd."</string>
     <string name="untracked" formatted="false">"Niet gevolgd"</string>
@@ -1048,9 +2407,108 @@
     <string name="vault_l10n_tracking_review_changed" formatted="false">"De controle voor het stoppen met volgen is gewijzigd. Controleer de repository en de back-upkeuze opnieuw."</string>
     <string name="vault_l10n_volume_unavailable" formatted="false">"Dit opslagvolume is niet beschikbaar"</string>
     <string name="vault_l10n_volume_unavailable_reconnect" formatted="false">"Dit opslagvolume is niet beschikbaar. Sluit het opnieuw aan en kies de map opnieuw."</string>
+    <string name="vault_m3_as_author">"als %1$s · %2$s"</string>
+    <string name="vault_m3_branch_pushed">"Je hebt je commits naar de nieuwe branch %1$s gepusht"</string>
+    <string name="vault_m3_cancel" formatted="false">"Annuleren"</string>
+    <string name="vault_m3_check_for_changes" formatted="false">"Controleren op wijzigingen"</string>
+    <string name="vault_m3_checking" formatted="false">"Controleren…"</string>
+    <string name="vault_m3_checking_remote">"Controleren van %1$s op nieuwe commits"</string>
+    <string name="vault_m3_chip_theirs">"↓%1$d van %2$s · %3$s"</string>
+    <string name="vault_m3_chip_theirs_plain">"↓%1$d van de remote"</string>
+    <string name="vault_m3_chip_yours">"↑%1$d van u"</string>
+    <string name="vault_m3_commit_locally" formatted="false">"Lokaal committen"</string>
+    <string name="vault_m3_commit_push" formatted="false">"Committen en pushen"</string>
+    <string name="vault_m3_commits_sent">"%1$d van %2$d commits verzonden"</string>
+    <string name="vault_m3_committing" formatted="false">"Committen…"</string>
+    <string name="vault_m3_days_ago">"%1$d d geleden"</string>
+    <string name="vault_m3_deleted_path">"%1$s (verwijderd)"</string>
+    <string name="vault_m3_discard_body">"Deze bestanden gaan terug naar hoe ze waren in %1$s. Bewerking gemaakt op deze telefoon sinds toen zijn voorgoed verdwenen."</string>
+    <string name="vault_m3_dismiss" formatted="false">"Sluiten"</string>
+    <string name="vault_m3_download_progress" formatted="false">"Downloadvoortgang"</string>
+    <string name="vault_m3_effect_delete" formatted="false">"nieuw bestand verwijderen"</string>
+    <string name="vault_m3_effect_restore" formatted="false">"herstellen"</string>
+    <string name="vault_m3_effect_revert" formatted="false">"Ongedaan maken"</string>
+    <string name="vault_m3_effect_unstage" formatted="false">"Terugzetten"</string>
+    <string name="vault_m3_fetched_ago">"opgehaald %1$s"</string>
+    <string name="vault_m3_hours_ago">"%1$dvoor \'h\' dagen"</string>
+    <string name="vault_m3_included" formatted="false">"Opgenomen"</string>
+    <string name="vault_m3_just_now" formatted="false">"nu"</string>
+    <string name="vault_m3_keep_them" formatted="false">"Behouden"</string>
+    <string name="vault_m3_latest_commit" formatted="false">"Laatste commit"</string>
+    <string name="vault_m3_leave_note" formatted="false">"Je kunt dit scherm verlaten. De synchronisatie gaat door en toont de voortgang in een melding."</string>
+    <string name="vault_m3_merge" formatted="false">"merge"</string>
+    <string name="vault_m3_merge_conflicts" formatted="false">"Het ophalen heeft conflicten gevonden. Los ze op en push daarna."</string>
+    <string name="vault_m3_message" formatted="false">"Bericht"</string>
+    <string name="vault_m3_minutes">"%1$dm"</string>
+    <string name="vault_m3_minutes_ago">"%1$dm geleden"</string>
+    <string name="vault_m3_no_overlap_body" formatted="false">"Uw wijzigingen en die van hen raken verschillende bestanden, dus dit zou netjes moeten mergen."</string>
+    <string name="vault_m3_no_overlap_title" formatted="false">"Geen overlap gevonden"</string>
+    <string name="vault_m3_no_upstream" formatted="false">"Geen upstream-branch"</string>
+    <string name="vault_m3_notify_channel" formatted="false">"Kluis synchronisatie"</string>
+    <string name="vault_m3_notify_title">"%1$s · %2$s"</string>
+    <string name="vault_m3_objects_received">"%1$d van %2$d objecten ontvangen"</string>
+    <string name="vault_m3_objects_sent">"%1$d van %2$d objecten verzonden"</string>
+    <string name="vault_m3_only_on_phone" formatted="false">"Alleen op deze telefoon"</string>
+    <string name="vault_m3_overlap_body" formatted="false">"Beide partijen hebben dezelfde bestanden bewerkt. Het ophalen kan bij een conflict stoppen zodat je het kunt oplossen."</string>
+    <string name="vault_m3_preparing" formatted="false">"Voorbereiden…"</string>
+    <string name="vault_m3_pull" formatted="false">"Pullen"</string>
+    <string name="vault_m3_pull_then_push" formatted="false">"Haal die van hen op en push dan"</string>
+    <string name="vault_m3_pulled">"Up-to-date met %1$s"</string>
+    <string name="vault_m3_pulling" formatted="false">"Pullen…"</string>
+    <string name="vault_m3_push" formatted="false">"Pushen"</string>
+    <string name="vault_m3_push_branch" formatted="false">"Naar een branch pushen"</string>
+    <string name="vault_m3_push_right_after" formatted="false">"Direct daarna pushen"</string>
+    <string name="vault_m3_pushed_to">"Gepusht naar %1$s"</string>
+    <string name="vault_m3_pushing" formatted="false">"Pushen…"</string>
+    <string name="vault_m3_rejected_kicker" formatted="false">"Push is niet gelukt"</string>
+    <string name="vault_m3_remote_generic" formatted="false">"de remote"</string>
+    <string name="vault_m3_remote_is_here">"%1$s is er"</string>
+    <string name="vault_m3_remote_no_new" formatted="false">"De remote heeft geen nieuwe commits"</string>
+    <string name="vault_m3_remote_not_checked" formatted="false">"Externe nog niet gecontroleerd"</string>
+    <string name="vault_m3_review_first" formatted="false">"Eerst controleren"</string>
+    <string name="vault_m3_seconds">"%1$ds"</string>
+    <string name="vault_m3_stash_first" formatted="false">"Eerst voor de zekerheid een kopie stashen"</string>
+    <string name="vault_m3_step_branch">"Maak tak %1$s aan"</string>
+    <string name="vault_m3_step_check">"%1$s controleren op nieuwe commits"</string>
+    <string name="vault_m3_step_download">"Downloaden van %1$s"</string>
+    <string name="vault_m3_step_merge">"%1$s mergen"</string>
+    <string name="vault_m3_step_none" formatted="false">"geen"</string>
+    <string name="vault_m3_step_update" formatted="false">"Bestanden bijwerken"</string>
+    <string name="vault_m3_step_upload">"Upload naar %1$s"</string>
+    <string name="vault_m3_steps" formatted="false">"Stappen"</string>
+    <string name="vault_m3_suggest_add">"Voeg %1$s toe"</string>
+    <string name="vault_m3_suggest_backup">"kluisback-up: %1$s"</string>
+    <string name="vault_m3_suggest_delete">"%1$s verwijderen"</string>
+    <string name="vault_m3_suggest_update">"%1$s bijwerken"</string>
+    <string name="vault_m3_suggested" formatted="false">"Gesuggereerd vanuit het verschil"</string>
+    <string name="vault_m3_sync_cancelled" formatted="false">"Synchronisatie geannuleerd. Alles wat al is gecommit blijft op deze telefoon."</string>
+    <string name="vault_m3_sync_failed" formatted="false">"Synchronisatie gestopt"</string>
+    <string name="vault_m3_tap_for_diff" formatted="false">"tik op een bestand om het verschil te zien"</string>
+    <string name="vault_m3_time_left">"~%1$s vertrokken"</string>
+    <string name="vault_m3_today" formatted="false">"Vandaag"</string>
+    <string name="vault_m3_upload_progress" formatted="false">"Upload voortgang"</string>
+    <string name="vault_m3_vault_settings" formatted="false">"Kluisinstellingen"</string>
+    <string name="vault_m3_who_both" formatted="false">"beide"</string>
+    <string name="vault_m3_who_theirs" formatted="false">"van hen"</string>
+    <string name="vault_m3_who_yours" formatted="false">"van u"</string>
+    <string name="vault_m3_yesterday" formatted="false">"Gisteren"</string>
     <string name="vault_open_in_files_failed" formatted="false">"Kan deze map niet openen in Bestanden."</string>
     <string name="vault_repository_fallback" formatted="false">"Repository"</string>
     <string name="vault_url_copied" formatted="false">"Gekopieerd!"</string>
+    <string name="widget_m3_choose_vault" formatted="false">"Kies een kluis"</string>
+    <string name="widget_m3_days_ago">"%1$d d geleden"</string>
+    <string name="widget_m3_hours_ago">"%1$dvoor \'h\' dagen"</string>
+    <string name="widget_m3_in_sync" formatted="false">"Gesynchroniseerd"</string>
+    <string name="widget_m3_list_description" formatted="false">"Je kluizen met wat elk moet pushen, en een Alles ophalen-knop."</string>
+    <string name="widget_m3_list_name" formatted="false">"Kluizen"</string>
+    <string name="widget_m3_minutes_ago">"%1$dm geleden"</string>
+    <string name="widget_m3_no_vaults" formatted="false">"Nog geen kluizen. Open GitSync.md om er een toe te voegen."</string>
+    <string name="widget_m3_now" formatted="false">"nu"</string>
+    <string name="widget_m3_pull_all_repositories" formatted="false">"Alle repositories ophalen"</string>
+    <string name="widget_m3_vault_description" formatted="false">"Één kluis en hoeveel wijzigingen het moet pushen."</string>
+    <string name="widget_m3_vault_missing" formatted="false">"Deze kluis staat niet meer op deze telefoon."</string>
+    <string name="widget_m3_vault_name" formatted="false">"Kluis"</string>
+    <string name="widget_m3_vault_widget" formatted="false">"Kluis-widget"</string>
     <plurals name="account_updated_days">
         <item quantity="one">"%1$d d geleden"</item>
         <item quantity="other">"%1$d d geleden"</item>
@@ -1075,6 +2533,62 @@
         <item quantity="one">"%1$d jaar geleden"</item>
         <item quantity="other">"%1$d jaar geleden"</item>
     </plurals>
+    <plurals name="adaptive_changes_on_phone">
+        <item quantity="one">"%1$s wijziging op deze telefoon"</item>
+        <item quantity="other">"%1$s wijzigingen op deze telefoon"</item>
+    </plurals>
+    <plurals name="adaptive_changes_on_tablet">
+        <item quantity="one">"%1$s wijziging op deze tablet"</item>
+        <item quantity="other">"%1$s wijzigingen op deze tablet"</item>
+    </plurals>
+    <plurals name="adaptive_commit_changes">
+        <item quantity="one">"%1$d wijziging vastleggen"</item>
+        <item quantity="other">"%1$d wijzigingen vastleggen"</item>
+    </plurals>
+    <plurals name="adaptive_merging_left">
+        <item quantity="one">"%1$s samenvoegen · %2$d conflict over"</item>
+        <item quantity="other">"%1$s samenvoegen · %2$d conflicten over"</item>
+    </plurals>
+    <plurals name="adaptive_merging_left_plain">
+        <item quantity="one">"Samenvoegen · %1$d conflict over"</item>
+        <item quantity="other">"Samenvoegen · %1$d conflicten over"</item>
+    </plurals>
+    <plurals name="adaptive_split_editing">
+        <item quantity="one">"%1$d wordt bewerkt"</item>
+        <item quantity="other">"%1$d wordt bewerkt"</item>
+    </plurals>
+    <plurals name="adaptive_split_live">
+        <item quantity="one">"%1$s wijziging · live"</item>
+        <item quantity="other">"%1$s wijzigingen · live"</item>
+    </plurals>
+    <plurals name="adaptive_vaults_need_you">
+        <item quantity="one">"%1$d heeft jou nodig"</item>
+        <item quantity="other">"%1$d heeft jou nodig"</item>
+    </plurals>
+    <plurals name="add_accounts_signed_in">
+        <item quantity="one">"Instellingen · %1$d ingelogd"</item>
+        <item quantity="other">"Instellingen · %1$d ingelogd"</item>
+    </plurals>
+    <plurals name="add_clone_files">
+        <item quantity="one">"%1$d bestand"</item>
+        <item quantity="other">"%1$d bestanden"</item>
+    </plurals>
+    <plurals name="add_clone_lfs_files">
+        <item quantity="one">"%1$d bestand"</item>
+        <item quantity="other">"%1$d bestanden"</item>
+    </plurals>
+    <plurals name="add_local_folders">
+        <item quantity="one">"%1$d map"</item>
+        <item quantity="other">"%1$d mappen"</item>
+    </plurals>
+    <plurals name="add_way_github_repos">
+        <item quantity="one">"%1$d repository · privé inbegrepen"</item>
+        <item quantity="other">"%1$d repositories · privé inbegrepen"</item>
+    </plurals>
+    <plurals name="add_way_github_repos_public">
+        <item quantity="one">"%1$d repository"</item>
+        <item quantity="other">"%1$d repositories"</item>
+    </plurals>
     <plurals name="dialogs_error_merge_conflicts">
         <item quantity="one">"De merge heeft %1$d onopgelost conflict.\n\nLos het op voordat je de merge voltooit."</item>
         <item quantity="other">"De merge heeft %1$d onopgeloste conflicten.\n\nLos ze op voordat je de merge voltooit."</item>
@@ -1082,6 +2596,98 @@
     <plurals name="diff_changed_lines">
         <item quantity="one">"+%1$s -%2$s regel"</item>
         <item quantity="other">"+%1$s -%2$s regels"</item>
+    </plurals>
+    <plurals name="editor_m3_lines_changed">
+        <item quantity="one">"%1$d regel gewijzigd"</item>
+        <item quantity="other">"%1$d regels gewijzigd"</item>
+    </plurals>
+    <plurals name="files_m3_items">
+        <item quantity="one">"%1$d item"</item>
+        <item quantity="other">"%1$d items"</item>
+    </plurals>
+    <plurals name="files_m3_sync_diverged">
+        <item quantity="one">"%1$d nieuwe commit op %2$s, en deze telefoon heeft commits die nog niet zijn gepusht. Open het tabblad Wijzigingen om ze binnen te halen."</item>
+        <item quantity="other">"%1$d nieuwe commits op %2$s, en deze telefoon heeft commits die nog niet zijn gepusht. Open het tabblad Wijzigingen om ze binnen te halen."</item>
+    </plurals>
+    <plurals name="files_m3_sync_local_changes">
+        <item quantity="one">"%1$d nieuwe commit op %2$s. Commit of verwijder je lokale wijzigingen op het tabblad Wijzigingen en synchroniseer vervolgens opnieuw."</item>
+        <item quantity="other">"%1$d nieuwe commits op %2$s. Commit of verwijder je lokale wijzigingen op het tabblad Wijzigingen, en synchroniseer daarna opnieuw."</item>
+    </plurals>
+    <plurals name="git_m3_cant_switch_body">
+        <item quantity="one">"Schakelen naar %1$s zou de bestanden op deze telefoon vervangen. Je %2$d niet-gecomitte wijziging heeft eerst een veilige plek nodig."</item>
+        <item quantity="other">"Schakelen naar %1$s zou de bestanden op deze telefoon vervangen. Je %2$d niet-gecomitte wijzigingen hebben eerst een veilige plek nodig."</item>
+    </plurals>
+    <plurals name="git_m3_commits_missing">
+        <item quantity="one">"%1$d commit %2$s heeft niet"</item>
+        <item quantity="other">"%1$d commits %2$s heeft niet"</item>
+    </plurals>
+    <plurals name="git_m3_conflicts_left">
+        <item quantity="one">"%1$d conflict op te lossen."</item>
+        <item quantity="other">"%1$d conflicten op te lossen."</item>
+    </plurals>
+    <plurals name="git_m3_continue_resolve">
+        <item quantity="one">"Rebase voortzetten · los %1$d meer op"</item>
+        <item quantity="other">"Rebase voortzetten · %1$d meer oplossen"</item>
+    </plurals>
+    <plurals name="git_m3_dirty_note">
+        <item quantity="one">"%1$d wijziging is nog niet gecommit. Commit of stash dit voordat je van branch wisselt."</item>
+        <item quantity="other">"%1$d wijzigingen zijn nog niet gecommit. Commit of stash ze voordat je van branch wisselt."</item>
+    </plurals>
+    <plurals name="git_m3_files">
+        <item quantity="one">"%1$d bestand"</item>
+        <item quantity="other">"%1$d bestanden"</item>
+    </plurals>
+    <plurals name="git_m3_n_branches">
+        <item quantity="one">"%1$d branch"</item>
+        <item quantity="other">"%1$d branches"</item>
+    </plurals>
+    <plurals name="git_m3_n_commits_history">
+        <item quantity="one">"%1$d commit van geschiedenis"</item>
+        <item quantity="other">"%1$d commits van geschiedenis"</item>
+    </plurals>
+    <plurals name="git_m3_n_stashes">
+        <item quantity="one">"%1$d stash"</item>
+        <item quantity="other">"%1$d stashes"</item>
+    </plurals>
+    <plurals name="git_m3_n_tags">
+        <item quantity="one">"%1$d tag"</item>
+        <item quantity="other">"%1$d tags"</item>
+    </plurals>
+    <plurals name="git_m3_notes_attachments">
+        <item quantity="one">"%1$d notitie of bijlage"</item>
+        <item quantity="other">"%1$d notities en bijlagen"</item>
+    </plurals>
+    <plurals name="git_m3_push_commits">
+        <item quantity="one">"%1$d commit pushen"</item>
+        <item quantity="other">"%1$d commits pushen"</item>
+    </plurals>
+    <plurals name="git_m3_rebase_begin_body">
+        <item quantity="one">"Je %1$d lokale commit is opnieuw afgespeeld op de gereviewde upstream en kan een nieuwe ID krijgen. De rebase blijft op deze telefoon. Pushen is een aparte stap."</item>
+        <item quantity="other">"Je %1$d lokale commits zijn opnieuw afgespeeld op de gereviewde upstream en kunnen nieuwe ID\'s krijgen. De rebase blijft op deze telefoon. Pushen is een aparte stap."</item>
+    </plurals>
+    <plurals name="git_m3_rebase_done_meta">
+        <item quantity="one">"%1$d commit staat nu bovenop %2$s · nieuwe ID\'s · nog niet gepusht"</item>
+        <item quantity="other">"%1$d commits staan nu bovenop %2$s · nieuwe ID\'s · nog niet gepusht"</item>
+    </plurals>
+    <plurals name="git_m3_rebase_put_on_top">
+        <item quantity="one">"Zet je %1$d commit bovenop de remote."</item>
+        <item quantity="other">"Zet je %1$d commits bovenop de remote."</item>
+    </plurals>
+    <plurals name="git_m3_stash_n">
+        <item quantity="one">"Stash %1$d wijziging"</item>
+        <item quantity="other">"Stash %1$d wijzigingen"</item>
+    </plurals>
+    <plurals name="git_m3_stashed_toast">
+        <item quantity="one">"%1$d wijziging gestashed als stash@{0}."</item>
+        <item quantity="other">"%1$d wijzigingen gestashed als stash@{0}."</item>
+    </plurals>
+    <plurals name="git_m3_uncommitted_changes">
+        <item quantity="one">"%1$s niet-gecommitte wijziging"</item>
+        <item quantity="other">"%1$s niet-gecommitte wijzigingen"</item>
+    </plurals>
+    <plurals name="git_m3_uncommitted_plain">
+        <item quantity="one">"%1$d niet-gecommitte bewerking, als een gewoon bestand"</item>
+        <item quantity="other">"%1$d niet-gecommitte bewerkingen, als gewone bestanden"</item>
     </plurals>
     <plurals name="gitops_merge_stopped_conflicts">
         <item quantity="one">"Merge gestopt: %1$s (%2$d conflict)"</item>
@@ -1099,6 +2705,30 @@
         <item quantity="one">"%1$d huidig bestand behoudt zijn expliciete volgkeuze."</item>
         <item quantity="other">"%1$d huidige bestanden behouden hun expliciete volgkeuzes."</item>
     </plurals>
+    <plurals name="lfs_m3_downloading">
+        <item quantity="one">"%1$d bestand aan het downloaden"</item>
+        <item quantity="other">"%1$d bestanden aan het downloaden"</item>
+    </plurals>
+    <plurals name="lfs_m3_endpoints_subtitle">
+        <item quantity="one">"Instellingen · %1$d goedgekeurd"</item>
+        <item quantity="other">"Instellingen · %1$d goedgekeurd"</item>
+    </plurals>
+    <plurals name="lfs_m3_ext_affected">
+        <item quantity="one">"%1$d bestand verhuist naar LFS"</item>
+        <item quantity="other">"%1$d bestanden verhuizen naar LFS"</item>
+    </plurals>
+    <plurals name="lfs_m3_file_count">
+        <item quantity="one">"%1$d bestand"</item>
+        <item quantity="other">"%1$d bestanden"</item>
+    </plurals>
+    <plurals name="lfs_m3_stored_files">
+        <item quantity="one">"in %1$d bestand"</item>
+        <item quantity="other">"in %1$d bestanden"</item>
+    </plurals>
+    <plurals name="lfs_m3_track_files">
+        <item quantity="one">"Volg %1$d bestand met LFS"</item>
+        <item quantity="other">"Volg %1$d bestanden met LFS"</item>
+    </plurals>
     <plurals name="lfs_restored_files">
         <item quantity="one">"%1$d bestand hersteld."</item>
         <item quantity="other">"%1$d bestanden hersteld."</item>
@@ -1107,9 +2737,57 @@
         <item quantity="one">"%1$d bestand"</item>
         <item quantity="other">"%1$d bestanden"</item>
     </plurals>
+    <plurals name="m3home_auth_waiting">
+        <item quantity="one">"%1$d kluis wacht."</item>
+        <item quantity="other">"%1$d kluizen wachten."</item>
+    </plurals>
+    <plurals name="m3home_badge_edited">
+        <item quantity="one">"%1$d bewerkt"</item>
+        <item quantity="other">"%1$d bewerkt"</item>
+    </plurals>
+    <plurals name="m3home_headline_attention">
+        <item quantity="one">"%1$d kluis"</item>
+        <item quantity="other">"%1$d kluizen"</item>
+    </plurals>
+    <plurals name="m3home_headline_attention_accent">
+        <item quantity="one">"%1$s heeft je nodig."</item>
+        <item quantity="other">"%1$s hebben je nodig."</item>
+    </plurals>
+    <plurals name="m3home_headline_ready">
+        <item quantity="one">"%1$d kluis"</item>
+        <item quantity="other">"%1$d kluizen"</item>
+    </plurals>
+    <plurals name="m3home_sync_nothing_local">
+        <item quantity="other">"Niets te synchroniseren. Deze %1$d kluizen zijn alleen lokaal (geen externe)."</item>
+        <item quantity="one">"Niets om te synchroniseren. %1$d kluis is alleen lokaal (geen remote)."</item>
+    </plurals>
     <plurals name="move_plan_summary">
         <item quantity="one">"%1$s bestand inclusief Git-metadata · %2$s"</item>
         <item quantity="other">"%1$s bestanden inclusief Git-metadata · %2$s"</item>
+    </plurals>
+    <plurals name="notification_m3_commits">
+        <item quantity="one">"%1$d commit is op de achtergrond opgehaald."</item>
+        <item quantity="other">"%1$d commits zijn op de achtergrond opgehaald."</item>
+    </plurals>
+    <plurals name="notification_m3_commits_from">
+        <item quantity="one">"%1$d commit van %2$s is op de achtergrond opgehaald."</item>
+        <item quantity="other">"%1$d commits van %2$s op de achtergrond opgehaald."</item>
+    </plurals>
+    <plurals name="pullall_m3_checked_repositories">
+        <item quantity="one">"%1$d van %2$d repository gecontroleerd"</item>
+        <item quantity="other">"%1$d van %2$d repositories gecontroleerd"</item>
+    </plurals>
+    <plurals name="pullall_m3_checked_vaults">
+        <item quantity="one">"%1$d van %2$d kluis gecontroleerd"</item>
+        <item quantity="other">"%1$d van %2$d kluizen gecontroleerd"</item>
+    </plurals>
+    <plurals name="pullall_m3_updated_commits">
+        <item quantity="one">"Bijgewerkt vanaf remote · ↓%1$d commit"</item>
+        <item quantity="other">"Bijgewerkt vanaf remote · ↓%1$d commits"</item>
+    </plurals>
+    <plurals name="pullall_m3_vaults">
+        <item quantity="one">"%1$d kluis"</item>
+        <item quantity="other">"%1$d kluizen"</item>
     </plurals>
     <plurals name="rebase_additional_blocked_paths">
         <item quantity="one">"%1$d extra geblokkeerd pad wordt niet getoond."</item>
@@ -1131,12 +2809,92 @@
         <item quantity="one">"· %1$d repository"</item>
         <item quantity="other">"· %1$d repositories"</item>
     </plurals>
+    <plurals name="settings_m3_bg_included">
+        <item quantity="one">"%1$d kluis opgenomen"</item>
+        <item quantity="other">"%1$d kluizen opgenomen"</item>
+    </plurals>
+    <plurals name="settings_m3_bg_run_quiet">
+        <item quantity="one">"%1$d kluis, niets nieuws"</item>
+        <item quantity="other">"%1$d kluizen, niets nieuws"</item>
+    </plurals>
+    <plurals name="settings_m3_debug_errors_day">
+        <item quantity="one">"%1$d fout in 24u"</item>
+        <item quantity="other">"%1$d fouten in 24u"</item>
+    </plurals>
+    <plurals name="settings_m3_entries">
+        <item quantity="one">"%1$d invoer"</item>
+        <item quantity="other">"%1$d invoeren"</item>
+    </plurals>
+    <plurals name="settings_m3_push_connections">
+        <item quantity="one">"%1$d GitHub verbinding · aan"</item>
+        <item quantity="other">"%1$d GitHub verbindingen · aan"</item>
+    </plurals>
+    <plurals name="settings_m3_push_local_changes">
+        <item quantity="one">"%1$d lokale wijziging op deze telefoon"</item>
+        <item quantity="other">"%1$d lokale wijzigingen op deze telefoon"</item>
+    </plurals>
+    <plurals name="settings_m3_sc_subtitle">
+        <item quantity="one">"Pull All-widget · %1$d snelkoppeling"</item>
+        <item quantity="other">"Pull All-widget · %1$d snelkoppelingen"</item>
+    </plurals>
+    <plurals name="ssh_m3_subtitle">
+        <item quantity="one">"Instellingen · %1$d server"</item>
+        <item quantity="other">"Instellingen · %1$d servers"</item>
+    </plurals>
     <plurals name="tide_vault_changes_on_phone">
-        <item quantity="one">"wijziging op deze telefoon"</item>
-        <item quantity="other">"wijzigingen op deze telefoon"</item>
+        <item quantity="one">"%1$s wijziging op deze telefoon"</item>
+        <item quantity="other">"%1$s wijzigingen op deze telefoon"</item>
     </plurals>
     <plurals name="tide_vault_conflicts_to_resolve">
-        <item quantity="one">"op te lossen conflict"</item>
-        <item quantity="other">"op te lossen conflicten"</item>
+        <item quantity="one">"%1$s op te lossen conflict"</item>
+        <item quantity="other">"%1$s op te lossen conflicten"</item>
+    </plurals>
+    <plurals name="vault_m3_commit_title">
+        <item quantity="one">"Commit %1$d bestand"</item>
+        <item quantity="other">"Commit %1$d bestanden"</item>
+    </plurals>
+    <plurals name="vault_m3_discard_n">
+        <item quantity="one">"Verwijder %1$d"</item>
+        <item quantity="other">"Verwijder %1$d"</item>
+    </plurals>
+    <plurals name="vault_m3_discard_title">
+        <item quantity="one">"Wijzigingen van %1$d verwijderen?"</item>
+        <item quantity="other">"Wijzigingen van %1$d verwijderen?"</item>
+    </plurals>
+    <plurals name="vault_m3_effect_lines">
+        <item quantity="one">"−%1$d regel"</item>
+        <item quantity="other">"−%1$d regels"</item>
+    </plurals>
+    <plurals name="vault_m3_file_count">
+        <item quantity="one">"%1$d bestand"</item>
+        <item quantity="other">"%1$d bestanden"</item>
+    </plurals>
+    <plurals name="vault_m3_overlap_title">
+        <item quantity="one">"%1$d bestand aan beide zijden gewijzigd"</item>
+        <item quantity="other">"%1$d bestanden aan beide zijden gewijzigd"</item>
+    </plurals>
+    <plurals name="vault_m3_remote_new">
+        <item quantity="one">"Remote heeft %1$d nieuwe commit"</item>
+        <item quantity="other">"Remote heeft %1$d nieuwe commits"</item>
+    </plurals>
+    <plurals name="vault_m3_step_commit">
+        <item quantity="one">"Commit %1$d bestand"</item>
+        <item quantity="other">"Commit %1$d bestanden"</item>
+    </plurals>
+    <plurals name="vault_m3_step_lfs">
+        <item quantity="one">"Upload %1$d LFS-bestand · %2$s"</item>
+        <item quantity="other">"Upload %1$d LFS-bestanden · %2$s"</item>
+    </plurals>
+    <plurals name="vault_m3_suggest_files">
+        <item quantity="one">"Werk %1$d bestand bij"</item>
+        <item quantity="other">"Werk %1$d bestanden bij"</item>
+    </plurals>
+    <plurals name="vault_m3_uploading_lfs">
+        <item quantity="one">"%1$d LFS-bestand uploaden"</item>
+        <item quantity="other">"%1$d LFS-bestanden uploaden"</item>
+    </plurals>
+    <plurals name="widget_m3_changes_to_push">
+        <item quantity="one">"%1$s wijziging om te pushen"</item>
+        <item quantity="other">"%1$s wijzigingen om te pushen"</item>
     </plurals>
 </resources>

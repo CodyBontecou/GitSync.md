@@ -127,13 +127,13 @@ private val previewRepos = listOf(SavedRepository("VoxVault", "/storage/emulated
 @Preview(name = "Storage · storage", heightDp = 915)
 @Composable private fun StorageDefaultPreview() = SyncMdTheme(darkTheme = false) {
     StorageContent("/storage/emulated/0/Documents/Obsidian", null, false, null, null, previewRepos, {}, {}, {}, {}) {
-        M3Button("Choose a device folder", {}, it, style = M3ButtonStyle.Tonal, size = M3ButtonSize.Large, icon = R.drawable.ic_m3_folder)
+        M3Button(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_choose_a_device_folder_d00b7daf), {}, it, style = M3ButtonStyle.Tonal, size = M3ButtonSize.Large, icon = R.drawable.ic_m3_folder)
     }
 }
 
 @Preview(name = "Storage · chosen · dark", heightDp = 915)
 @Composable private fun StorageChosenDarkPreview() = SyncMdTheme(darkTheme = true) {
     StorageContent("/storage/emulated/0/Documents/Obsidian", "/storage/3A1F-0E22/Vaults", false, null, null, previewRepos, {}, {}, {}, {}) {
-        M3Button("Choose a device folder", {}, it, style = M3ButtonStyle.Tonal, size = M3ButtonSize.Large, icon = R.drawable.ic_m3_folder)
+        M3Button(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_choose_a_device_folder_d00b7daf), {}, it, style = M3ButtonStyle.Tonal, size = M3ButtonSize.Large, icon = R.drawable.ic_m3_folder)
     }
 }

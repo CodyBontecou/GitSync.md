@@ -1,5 +1,6 @@
 package com.bontecou.syncmd.ui.screens
 
+import com.bontecou.syncmd.ui.util.quantityPhrase
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.ui.draw.clip
@@ -372,8 +373,8 @@ private fun HomeHero(vaults: List<HomeVault>, now: Long) {
     val checked = lastChecked(vaults)
     M3Hero(Modifier.m3Gutter().testTag("home-hero"), style = M3HeroStyle.Inverse) {
         if (attention > 0) {
-            M3HeroHeadline(pluralStringResource(R.plurals.m3home_headline_attention, attention, attention),
-                accent = pluralStringResource(R.plurals.m3home_headline_attention_accent, attention))
+            M3HeroHeadline(quantityPhrase(R.plurals.m3home_headline_attention_accent, attention,
+                pluralStringResource(R.plurals.m3home_headline_attention, attention, attention)))
         } else {
             M3HeroHeadline(pluralStringResource(R.plurals.m3home_headline_ready, vaults.size, vaults.size),
                 accent = stringResource(R.string.m3home_headline_ready_accent), accentColor = M3.colors.invOk)

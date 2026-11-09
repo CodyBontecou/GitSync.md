@@ -1,5 +1,7 @@
 package com.bontecou.syncmd.ui.screens
 
+import com.bontecou.syncmd.ui.util.quantityPhrase
+import com.bontecou.syncmd.ui.util.SampleGitData
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -514,7 +516,7 @@ private fun VaultStateHero(ui: VaultUi, onOpenGit: () -> Unit, onPull: () -> Uni
             VaultHeroKind.CONFLICT -> {
                 val count = status!!.allChanges.count { it.isConflicted }
                 M3HeroKicker(stringResource(R.string.tide_vault_eyebrow_conflict), color = c.invDanger)
-                M3HeroCount("$count", pluralStringResource(R.plurals.tide_vault_conflicts_to_resolve, count))
+                M3HeroCount(quantityPhrase(R.plurals.tide_vault_conflicts_to_resolve, count))
                 M3HeroMeta(stringResource(R.string.tide_vault_conflict_detail), topPadding = 2.dp)
                 HeroActions {
                     M3Button(stringResource(R.string.tide_vault_resolve), onOpenConflicts, Modifier.weight(1f).testTag("vault-resolve"),
@@ -523,7 +525,7 @@ private fun VaultStateHero(ui: VaultUi, onOpenGit: () -> Unit, onPull: () -> Uni
             }
             VaultHeroKind.DIRTY -> {
                 M3HeroKicker(stringResource(R.string.tide_vault_eyebrow_ready_to_commit))
-                M3HeroCount("$changes", pluralStringResource(R.plurals.tide_vault_changes_on_phone, changes))
+                M3HeroCount(quantityPhrase(R.plurals.tide_vault_changes_on_phone, changes))
                 M3HeroMeta(remoteMeta(ui), Modifier.testTag("vault-remote-meta"), topPadding = 2.dp)
                 HeroActions {
                     M3Button(commitPush, onCommit, Modifier.weight(1f).testTag("vault-commit"), M3ButtonStyle.OnHero, M3ButtonSize.Large,
@@ -773,7 +775,7 @@ private fun previewStatus(changes: List<GitStatusEntry> = emptyList(), head: Str
 
 private fun previewOverview(behind: Int = 0) = VaultOverview(
     branch = "main", upstream = "origin/main", ahead = 0, behind = behind, lastFetchAt = System.currentTimeMillis() - 120_000,
-    head = com.bontecou.syncmd.data.models.Commit("a41c9e2b9c0", author = "Obsidian Git on Mac", message = "Capture morning voice notes",
+    head = com.bontecou.syncmd.data.models.Commit("a41c9e2b9c0", author = "Obsidian Git on Mac", message = SampleGitData.MORNING,
         timestamp = System.currentTimeMillis() - 6 * 3_600_000),
     lineCounts = previewCounts,
 )

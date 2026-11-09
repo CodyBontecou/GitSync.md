@@ -1,5 +1,7 @@
 package com.bontecou.syncmd.ui.viewmodels
 
+import com.bontecou.syncmd.R
+import com.bontecou.syncmd.ui.util.UiText
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -41,7 +43,7 @@ class VaultSettingsViewModel @Inject constructor(@ApplicationContext private val
     }
     /** [binding] is "branch main, tracking origin/main" for the Background Sync subtitle. */
     data class State(val path: String = "", val health: Health = Health(), val binding: Triple<String, String, String>? = null,
-        val review: RepositoryActionPlan? = null, val busy: Boolean = false, val error: String? = null)
+        val review: RepositoryActionPlan? = null, val busy: Boolean = false, val error: UiText? = null)
     private val mutable = MutableStateFlow(State())
     val state = mutable.asStateFlow()
     private var watcher: Job? = null
@@ -92,7 +94,7 @@ class VaultSettingsViewModel @Inject constructor(@ApplicationContext private val
         viewModelScope.launch {
             try { action() }
             catch (e: CancellationException) { throw e }
-            catch (e: Exception) { mutable.value = mutable.value.copy(error = e.message ?: e.javaClass.simpleName) }
+            catch (e: Exception) { mutable.value = mutable.value.copy(error = UiText.of(e, R.string.l10n_vault_settings_failed)) }
             finally { mutable.value = mutable.value.copy(busy = false) }
         }
     }

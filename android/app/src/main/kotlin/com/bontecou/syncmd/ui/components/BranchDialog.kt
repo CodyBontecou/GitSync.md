@@ -173,7 +173,7 @@ fun statusLetter(status: DiffStatus) = when (status) {
 private fun DeleteBranchPreview() = SyncMdTheme(darkTheme = false) {
     M3DialogSurface(stringResource(R.string.git_m3_delete_branch_title), icon = R.drawable.ic_m3_delete, iconTint = M3.colors.error,
         content = { DeleteBranchBody("draft/spring", false, false) {} }) {
-        M3DialogAction("Cancel", {}); M3DialogAction("Delete", {}, destructive = true, filled = true)
+        M3DialogAction(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.publication_cancel), {}); M3DialogAction(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.files_m3_delete), {}, destructive = true, filled = true)
     }
 }
 
@@ -183,9 +183,9 @@ private fun CantSwitchPreview() = SyncMdTheme(darkTheme = true) {
     M3DialogSurface(stringResource(R.string.git_m3_cant_switch_title), icon = R.drawable.ic_m3_branch, stackedActions = true,
         content = { CantSwitchBody("draft/pipeline", listOf(DirtyPath("daily/2026-11-01.md", DiffStatus.ADDED),
             DirtyPath("ideas/voice-memo-pipeline.md", DiffStatus.MODIFIED), DirtyPath("old-inbox.md", DiffStatus.DELETED))) }) {
-        M3Button("Stash changes", {}, Modifier.fillMaxWidth())
-        M3Button("Commit first", {}, Modifier.fillMaxWidth(), style = M3ButtonStyle.Outlined)
-        M3TextButton("Stay on main", {}, Modifier.fillMaxWidth())
+        M3Button(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.git_m3_stash_changes), {}, Modifier.fillMaxWidth())
+        M3Button(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.git_m3_commit_first), {}, Modifier.fillMaxWidth(), style = M3ButtonStyle.Outlined)
+        M3TextButton(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_stay_on_main_915a176c), {}, Modifier.fillMaxWidth())
     }
 }
 

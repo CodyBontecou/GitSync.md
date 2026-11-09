@@ -1,5 +1,6 @@
 package com.bontecou.syncmd.sync
 
+import com.bontecou.syncmd.ui.util.UiTextFailure
 import android.content.Context
 import android.content.Intent
 import androidx.core.content.ContextCompat
@@ -193,7 +194,7 @@ class VaultSyncRunner @Inject constructor(
     fun pushToBranch(path: String) = start(path, VaultSyncKind.PUSH_BRANCH, listOf(SyncStepId.BRANCH, SyncStepId.UPLOAD)) {
         begin(SyncStepId.BRANCH)
         val overview = VaultInsights.overview(path)
-        val branch = overview.branch ?: error("Switch to a local branch before pushing")
+        val branch = overview.branch ?: throw UiTextFailure(R.string.l10n_push_local_branch)
         val stamp = SimpleDateFormat("yyyyMMdd-HHmm", Locale.ROOT).format(Date())
         var name = "$branch-phone-$stamp"
         var suffix = 2
@@ -256,7 +257,7 @@ class VaultSyncRunner @Inject constructor(
 
         suspend fun pushSteps(): VaultSyncResult {
             val overview = VaultInsights.overview(path)
-            val branch = overview.branch ?: error("Switch to a local branch before pushing")
+            val branch = overview.branch ?: throw UiTextFailure(R.string.l10n_push_local_branch)
             val remote = overview.remote ?: "origin"
             val remoteBranch = overview.upstream?.takeIf { it.startsWith("$remote/") }?.substringAfter('/') ?: branch
             begin(SyncStepId.CHECK)

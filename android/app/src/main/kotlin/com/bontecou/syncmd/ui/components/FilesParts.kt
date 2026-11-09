@@ -160,7 +160,7 @@ suspend fun openFileInOtherApp(context: Context, repositoryPath: String, relativ
     val copy = withContext(Dispatchers.IO) {
         val root = File(repositoryPath).canonicalFile
         val source = File(root, relativePath).canonicalFile
-        require(source.isFile && source.path.startsWith(root.path + File.separator)) { "Not a file in this vault" }
+        require(source.isFile && source.path.startsWith(root.path + File.separator)) { context.getString(R.string.l10n_not_vault_file) }
         val folder = File(context.cacheDir, "open-in").apply { mkdirs() }
         folder.listFiles()?.forEach { it.deleteRecursively() }
         File(folder, source.name).also { source.copyTo(it, overwrite = true) }

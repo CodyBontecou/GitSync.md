@@ -1,4 +1,4 @@
-<!-- Generated from the sibling iOS catalog by tools/localization/import_ios_catalog.py. -->
+<!-- Generated from the canonical Apple catalog and Android overrides by tools/localization/import_ios_catalog.py. -->
 <resources>
     <string name="account_alternative_exists" formatted="false">"Başka bir alternatif bağlantı zaten kayıtlı. Daha fazla URL kimlik bilgisi taşımadan önce onu gözden geçirin."</string>
     <string name="account_api_error">"GitHub API hatası: HTTP %1$d"</string>
@@ -95,6 +95,342 @@
     <string name="account_token_invalid">"GitHub token\'ı geçersiz veya süresi dolmuş (HTTP %1$d)"</string>
     <string name="account_updated_just_now" formatted="false">"az önce"</string>
     <string name="account_valid_branch" formatted="false">"Geçerli bir dal adı girin"</string>
+    <string name="adaptive_abort_merge" formatted="false">"Birleştirmeyi durdur"</string>
+    <string name="adaptive_account" formatted="false">"Hesap ve ayarlar"</string>
+    <string name="adaptive_badge_ahead">"↑%1$d"</string>
+    <string name="adaptive_badge_attention" formatted="false">"!"</string>
+    <string name="adaptive_badge_behind">"↓%1$d"</string>
+    <string name="adaptive_badge_both">"↓%1$d ↑%2$d"</string>
+    <string name="adaptive_badge_checking" formatted="false">"…"</string>
+    <string name="adaptive_badge_edited">"%1$d düzenlendi"</string>
+    <string name="adaptive_badge_in_sync" formatted="false">"✓"</string>
+    <string name="adaptive_branch_local_only">"%1$s · uzak yok"</string>
+    <string name="adaptive_branch_to_remote">"%1$s → %2$s"</string>
+    <string name="adaptive_cancel" formatted="false">"Vazgeç"</string>
+    <string name="adaptive_commit_message" formatted="false">"Onay mesajı"</string>
+    <string name="adaptive_commit_only" formatted="false">"Sadece işle"</string>
+    <string name="adaptive_commit_this_file" formatted="false">"Bu dosyayı işle"</string>
+    <string name="adaptive_conflict" formatted="false">"çakışma"</string>
+    <string name="adaptive_conflict_position">"Çatışma %1$d ile %2$d · %3$s"</string>
+    <string name="adaptive_cover_unfold" formatted="false">"Değişiklik listesinin yanındaki farkı görmek için açın."</string>
+    <string name="adaptive_discard_all" formatted="false">"At"</string>
+    <string name="adaptive_edited" formatted="false">"düzenlendi"</string>
+    <string name="adaptive_include" formatted="false">"Dahil et"</string>
+    <string name="adaptive_keep_this_version" formatted="false">"Bu sürümü tut"</string>
+    <string name="adaptive_new_file" formatted="false">"yeni dosya"</string>
+    <string name="adaptive_no_changes" formatted="false">"Bu cihazda değişiklik yok. Bir not düzenleyin, burada görünür."</string>
+    <string name="adaptive_position">"%1$d / %2$d"</string>
+    <string name="adaptive_pull" formatted="false">"Pull"</string>
+    <string name="adaptive_pull_then_push" formatted="false">"Çek, sonra gönder"</string>
+    <string name="adaptive_push" formatted="false">"Gönder"</string>
+    <string name="adaptive_rejected" formatted="false">"Uzak ilerledi. Önce onun işlemlerini çek, sonra kendi işlemlerini gönder."</string>
+    <string name="adaptive_review_first" formatted="false">"Önce incele"</string>
+    <string name="adaptive_split_auto_commit" formatted="false">"2 dakika durakladığımda otomatik işle"</string>
+    <string name="adaptive_split_committed">"↑%1$d işlendi"</string>
+    <string name="adaptive_split_typing" formatted="false">"yazılıyor…"</string>
+    <string name="adaptive_split_watching">"%1$s izleniyor"</string>
+    <string name="adaptive_sync_all" formatted="false">"Tümünü eşzamanla"</string>
+    <string name="adaptive_sync_all_to_push">"Hepsini senkronize et, %1$d gönderilecek"</string>
+    <string name="adaptive_this_tablet" formatted="false">"Bu tablet"</string>
+    <string name="adaptive_vaults" formatted="false">"Kasalar"</string>
+    <string name="adaptive_view" formatted="false">"Görüntüle"</string>
+    <string name="adaptive_vs">"vs %1$s"</string>
+    <string name="add_access_body" formatted="false">"GitSync.md cihaz klasörlerindeki gerçek Git çalışma kopyalarını yönetmek için paylaşılan depolama erişimine ihtiyaç duyar. Bunu Android Ayarlarında açın, ardından kullanmak istediğiniz klasörleri seçin."</string>
+    <string name="add_access_cancel" formatted="false">"Vazgeç"</string>
+    <string name="add_access_enable" formatted="false">"Erişimi etkinleştir"</string>
+    <string name="add_access_note" formatted="false">"Şimdi değil mi? Uygulama depolamasını kullanmaya devam edebilirsiniz."</string>
+    <string name="add_access_title" formatted="false">"Yerel klasör erişimine izin ver"</string>
+    <string name="add_accounts_add" formatted="false">"Ekle GitHub Hesap"</string>
+    <string name="add_accounts_browsing" formatted="false">"Bu hesapla göz atılıyor"</string>
+    <string name="add_accounts_cancel" formatted="false">"Vazgeç"</string>
+    <string name="add_accounts_empty_body" formatted="false">"Yerel depolar kullanılabilir durumda kalır."</string>
+    <string name="add_accounts_empty_title" formatted="false">"Bağlı hesap yok"</string>
+    <string name="add_accounts_intro" formatted="false">"GitHub\'u gözatmak için kullanılan hesabı seçin. Her depo kendi hesabını tutar; bunu Depo bağlantısında değiştirin."</string>
+    <string name="add_accounts_none_signed_in" formatted="false">"Ayarlar · oturum açan yok"</string>
+    <string name="add_accounts_remove" formatted="false">"Oturum açma bilgilerini kaldır"</string>
+    <string name="add_accounts_remove_body" formatted="false">"Bu hesabı kullanan depolar, Depo bağlantısında tekrar oturum açmanızı veya başka bir hesap seçmenizi isteyecektir. Yerel dosyalarınız ve komitleriniz olduğu gibi kalır."</string>
+    <string name="add_accounts_remove_title">"%1$s kaldırılsın mı?"</string>
+    <string name="add_accounts_title" formatted="false">"GitHub hesapları"</string>
+    <string name="add_accounts_use" formatted="false">"Göz atmak için kullan"</string>
+    <string name="add_added" formatted="false">"Eklendi"</string>
+    <string name="add_ago_days">"%1$d g önce"</string>
+    <string name="add_ago_hours">"%1$dh önce"</string>
+    <string name="add_ago_minutes">"%1$dm önce"</string>
+    <string name="add_ago_months">"%1$d ay önce"</string>
+    <string name="add_ago_now" formatted="false">"– şu anda"</string>
+    <string name="add_ago_weeks">"%1$d hafta önce"</string>
+    <string name="add_ago_years">"%1$d yıl önce"</string>
+    <string name="add_auth_github" formatted="false">"GitHub"</string>
+    <string name="add_auth_none" formatted="false">"Yok"</string>
+    <string name="add_auth_saved" formatted="false">"kaydedildi"</string>
+    <string name="add_auth_ssh" formatted="false">"SSH anahtar"</string>
+    <string name="add_auth_token" formatted="false">"Token"</string>
+    <string name="add_check_access_ro" formatted="false">"salt okunur"</string>
+    <string name="add_check_access_rw" formatted="false">"okuma · yazma"</string>
+    <string name="add_check_add_on_github" formatted="false">"GitHub üzerine depo ekle"</string>
+    <string name="add_check_again" formatted="false">"Yeniden kontrol et"</string>
+    <string name="add_check_app_callout">"GitHub App %1$s üzerine yüklü ancak bu depo seçili değil. Bunu GitHub üzerinde ekle, sonra geri gel."</string>
+    <string name="add_check_app_missing">"GitSync.md’in GitHub App henüz %1$s üzerinde değil. Bunu bu depo ile GitHub üzerinde ekle, sonra geri gel."</string>
+    <string name="add_check_checking" formatted="false">"Kontrol ediliyor…"</string>
+    <string name="add_check_clone" formatted="false">"Kasayı klonla"</string>
+    <string name="add_check_clone_obsidian" formatted="false">"Obsidian içine kopyala"</string>
+    <string name="add_check_clones_to" formatted="false">"Klonlama Konumu"</string>
+    <string name="add_check_head_blocked" formatted="false">"Önce düzeltilmesi gereken bir şey var."</string>
+    <string name="add_check_head_checking" formatted="false">"Kasanız\ndenetleniyor."</string>
+    <string name="add_check_head_ready" formatted="false">"Kasanız hazır."</string>
+    <string name="add_check_lfs_none" formatted="false">"yok"</string>
+    <string name="add_check_lfs_used" formatted="false">"kullanımda"</string>
+    <string name="add_check_measuring" formatted="false">"ölçülüyor"</string>
+    <string name="add_check_no_obsidian" formatted="false">"Henüz .obsidian/ klasörü yok"</string>
+    <string name="add_check_note_blocked" formatted="false">"Hiçbir şey ödemediniz. Kilit açma yalnızca kasanız denetimi geçince görünür."</string>
+    <string name="add_check_note_checking" formatted="false">"Yalnızca meta veriler okunur. Kilidi açana kadar hiçbir not indirilmez."</string>
+    <string name="add_check_note_ready" formatted="false">"Google Play onaylamadan önce fiyatı kendi para biriminde gösterir."</string>
+    <string name="add_check_note_ready_unlocked" formatted="false">"Full Access kilidi açıldı. Ödenecek başka bir şey yok."</string>
+    <string name="add_check_obsidian_found" formatted="false">"Obsidian kasası bulundu"</string>
+    <string name="add_check_obsidian_git" formatted="false">"Obsidian Git eklentisi yapılandırıldı"</string>
+    <string name="add_check_ok" formatted="false">"Tamam"</string>
+    <string name="add_check_pick_another" formatted="false">"Başka bir depo seç"</string>
+    <string name="add_check_play_note" formatted="false">"Google Play üzerinden tek seferlik satın alma. Abonelik yok."</string>
+    <string name="add_check_price_once">"tek seferlik %1$s"</string>
+    <string name="add_check_size_files" formatted="false">"Boyut &amp; dosyalar"</string>
+    <string name="add_check_stat_access" formatted="false">"ERİŞİM"</string>
+    <string name="add_check_stat_files" formatted="false">"Dosyalar"</string>
+    <string name="add_check_stat_lfs" formatted="false">"Git LFS"</string>
+    <string name="add_check_stat_size" formatted="false">"BOYUT"</string>
+    <string name="add_check_step">"Adım %1$d / 3"</string>
+    <string name="add_check_sub_blocked" formatted="false">"GitSync.md bu depoyu okuyabilir ama üzerine yazamaz. Bunu GitHub üzerinde düzeltin, sonra tekrar kontrol edin."</string>
+    <string name="add_check_sub_checking" formatted="false">"Bir şey ödemeden önce GitSync.md’nin bu depoyu eşitleyebildiğinden emin oluyoruz."</string>
+    <string name="add_check_sub_ready" formatted="false">"Her şey yolunda. Tek bir klonla Obsidian onu geçmişiyle birlikte açar."</string>
+    <string name="add_check_title" formatted="false">"Kasa denetimi"</string>
+    <string name="add_check_unknown" formatted="false">"—"</string>
+    <string name="add_check_write_access" formatted="false">"Yazma erişimi"</string>
+    <string name="add_clone" formatted="false">"Klonla"</string>
+    <string name="add_clone_app_storage" formatted="false">"Uygulama depolamasını kullan"</string>
+    <string name="add_clone_busy" formatted="false">"Depo Klonlanıyor"</string>
+    <string name="add_clone_bytes">"%1$s · %2$s"</string>
+    <string name="add_clone_cancel" formatted="false">"Vazgeç"</string>
+    <string name="add_clone_checkout" formatted="false">"Dosyalar kontrol ediliyor"</string>
+    <string name="add_clone_choose_folder" formatted="false">"Başka bir klasör seç"</string>
+    <string name="add_clone_cloned" formatted="false">"Klonlanmış"</string>
+    <string name="add_clone_continue" formatted="false">"Devam"</string>
+    <string name="add_clone_finishing" formatted="false">"Tamamlanıyor"</string>
+    <string name="add_clone_finishing_body">"%1$s\'ı kasalarınıza ekliyor ve Git LFS dosyalarını kontrol ediyor."</string>
+    <string name="add_clone_lfs" formatted="false">"Klonlama tamamlandı. Bazı Git LFS dosyalarının hâlâ incelenmesi veya indirilmesi gerekiyor. Klonunuz ve yerel düzenlemeleriniz korundu."</string>
+    <string name="add_clone_lfs_review" formatted="false">"Git LFS dosyalarını incele"</string>
+    <string name="add_clone_location" formatted="false">"Klon konumu"</string>
+    <string name="add_clone_new_folder" formatted="false">"Yeni klasör"</string>
+    <string name="add_clone_nothing_yet" formatted="false">"Klonla\'ya dokunana kadar hiçbir şey indirilmeyecek."</string>
+    <string name="add_clone_percent">"%1$d%%"</string>
+    <string name="add_clone_preparing" formatted="false">"Bağlanıyor"</string>
+    <string name="add_clone_receiving" formatted="false">"Nesneler alınıyor"</string>
+    <string name="add_clone_register_failed" formatted="false">"Klonlanan depo eklenemedi. Dosyaları korundu. Yeniden eklemeyi deneyin veya Yerel depolar’dan klasörünü yeniden bağlayın."</string>
+    <string name="add_clone_register_retry" formatted="false">"Klonlanan depoyu ekle"</string>
+    <string name="add_clone_resolving" formatted="false">"Deltalar çözümleniyor"</string>
+    <string name="add_clone_retry" formatted="false">"Yeniden Deneyin"</string>
+    <string name="add_clone_saved_default" formatted="false">"Kayıtlı varsayılanı kullan"</string>
+    <string name="add_clone_start" formatted="false">"Depoyu Klonla"</string>
+    <string name="add_clone_title_cloning" formatted="false">"Depo Klonlanıyor"</string>
+    <string name="add_clone_title_done" formatted="false">"Klonlanmış"</string>
+    <string name="add_clone_title_failed" formatted="false">"Klonlama başarısız"</string>
+    <string name="add_clone_title_ready" formatted="false">"Depoyu Klonla"</string>
+    <string name="add_clone_to">"→ %1$s"</string>
+    <string name="add_cloning_name">"%1$s klonlanıyor"</string>
+    <string name="add_close" formatted="false">"Kapama"</string>
+    <string name="add_connected_added" formatted="false">"Hesaplarınıza eklendi"</string>
+    <string name="add_connected_title" formatted="false">"GitHub hesabı bağlandı"</string>
+    <string name="add_continue" formatted="false">"Devam"</string>
+    <string name="add_default_branch" formatted="false">"Varsayılan dal"</string>
+    <string name="add_done" formatted="false">"Bitti"</string>
+    <string name="add_github_hint" formatted="false">"github.com için GitHub hesabının girişini kullanır."</string>
+    <string name="add_group_notes" formatted="false">"Notlar gibi görünüyor"</string>
+    <string name="add_group_other" formatted="false">"Diğer her şey"</string>
+    <string name="add_group_other_matching" formatted="false">"Eşleşen diğer her şey"</string>
+    <string name="add_intro" formatted="false">"Zaten sahip olduğunuz bir depoyu getirin veya bir klasörü depoya dönüştürün."</string>
+    <string name="add_key_copied" formatted="false">"Genel anahtar kopyalandı"</string>
+    <string name="add_key_copy" formatted="false">"Ortak anahtarı kopyala"</string>
+    <string name="add_key_failed" formatted="false">"Bu telefonda bir anahtar oluşturulamadı. Bunun yerine başka bir anahtar kullanın."</string>
+    <string name="add_key_hint" formatted="false">"Genel anahtarı bir kez ana bilgisayarınıza ekleyin. Özel anahtar bu telefonda kalır."</string>
+    <string name="add_key_meta">"ed25519 · %1$s"</string>
+    <string name="add_key_other" formatted="false">"Başka birini kullan…"</string>
+    <string name="add_key_this_phone" formatted="false">"Bu telefonun anahtarını kullan"</string>
+    <string name="add_key_title" formatted="false">"Bu telefonun anahtarı"</string>
+    <string name="add_local_add_selected" formatted="false">"Seçili depoları ekle"</string>
+    <string name="add_local_added" formatted="false">"Eklenen depolar"</string>
+    <string name="add_local_already" formatted="false">"Zaten eklendi"</string>
+    <string name="add_local_clean" formatted="false">"temiz"</string>
+    <string name="add_local_clone_instead" formatted="false">"Bunun yerine GitHub’dan kopyala"</string>
+    <string name="add_local_destination">"Hedef: %1$s"</string>
+    <string name="add_local_detached" formatted="false">"Ayrık HEAD veya henüz ilk commit yok"</string>
+    <string name="add_local_dirty" formatted="false">"Yerel değişiklikler"</string>
+    <string name="add_local_discovered" formatted="false">"Bulunan depolar"</string>
+    <string name="add_local_files_deleted" formatted="false">"Yerel dosyalar silindi"</string>
+    <string name="add_local_files_kept" formatted="false">"Yerel dosyalar korundu"</string>
+    <string name="add_local_in">"%1$s içinde"</string>
+    <string name="add_local_interrupted" formatted="false">"Kesintiye uğrayan klonlar"</string>
+    <string name="add_local_interrupted_body" formatted="false">"Klasörünü ve bağlantısını inceledikten sonra bu klonu eklemeyi yeniden deneyin. Mevcut dosyalar korunur."</string>
+    <string name="add_local_intro" formatted="false">"Bu telefonda zaten çalışan Git kopyalarını, örneğin bir Obsidian kasa klasörünü bulun ve tekrar çoğaltmadan ekleyin. Daha sonra bir girişi kaldırmak dosyalarını silmez."</string>
+    <string name="add_local_none_added" formatted="false">"Henüz depo eklenmedi."</string>
+    <string name="add_local_none_body">"%1$s içinde .git klasörü yoktu. Notlar uygulamanızın kullandığı klasörü deneyin veya GitHub’den çoğaltın."</string>
+    <string name="add_local_none_title" formatted="false">"Çalışan kopya bulunamadı"</string>
+    <string name="add_local_previous" formatted="false">"Daha önce eklenenler"</string>
+    <string name="add_local_scan_app" formatted="false">"Uygulama klasörlerini tara"</string>
+    <string name="add_local_scan_app_label" formatted="false">"Uygulama klasörleri"</string>
+    <string name="add_local_scan_app_sub" formatted="false">"Klasörler GitSync.md zaten kayıtlı"</string>
+    <string name="add_local_scan_device" formatted="false">"Cihazdaki bir klasörü tara"</string>
+    <string name="add_local_scan_device_sub" formatted="false">"Belgeler veya Obsidian gibi bir klasör seçin"</string>
+    <string name="add_local_scanning">"%1$s taranıyor"</string>
+    <string name="add_local_staged">"Geçici kopya: %1$s"</string>
+    <string name="add_local_title" formatted="false">"Yerel depolar"</string>
+    <string name="add_local_tracking_removed" formatted="false">"Git takibi kaldırıldı · dosyalar saklandı"</string>
+    <string name="add_local_truncated" formatted="false">"Tarama, derinlik veya klasör sınırına ulaştı. Bazı klasörler taranmadı."</string>
+    <string name="add_location_body" formatted="false">"Klonlarken farklı bir klasör seçin veya ayarlardan varsayılan belirleyin."</string>
+    <string name="add_location_head" formatted="false">"Varsayılan kayıt"</string>
+    <string name="add_location_head_muted" formatted="false">"konum."</string>
+    <string name="add_location_label" formatted="false">"İndirme konumu"</string>
+    <string name="add_meta_lfs">"%1$s LFS"</string>
+    <string name="add_meta_private" formatted="false">"özel"</string>
+    <string name="add_meta_public" formatted="false">"– Genel"</string>
+    <string name="add_more_options" formatted="false">"İsim, dal ve klasör"</string>
+    <string name="add_more_options_meta">"%1$s · %2$s"</string>
+    <string name="add_none_hint" formatted="false">"Genel depolar için. GitSync.md hiçbir kimlik bilgisi göndermez."</string>
+    <string name="add_not_signed_in" formatted="false">"Oturum açılmadı"</string>
+    <string name="add_owner_orgs" formatted="false">"Kuruluşlar"</string>
+    <string name="add_owner_starred" formatted="false">"Yıldızlı"</string>
+    <string name="add_owner_yours" formatted="false">"Sizinki"</string>
+    <string name="add_picker_accounts" formatted="false">"GitHub hesapları"</string>
+    <string name="add_picker_empty_owner" formatted="false">"Henüz burada depo yok."</string>
+    <string name="add_picker_refresh" formatted="false">"Yenile"</string>
+    <string name="add_picker_search" formatted="false">"Depolarda ara"</string>
+    <string name="add_picker_starred_failed" formatted="false">"Yıldızlı depolarınız yüklenemedi."</string>
+    <string name="add_picker_title" formatted="false">"Bir depo seçin"</string>
+    <string name="add_publish_account" formatted="false">"GitHub Hesap"</string>
+    <string name="add_publish_author_email" formatted="false">"Yazar E-postası"</string>
+    <string name="add_publish_author_name" formatted="false">"Yazar Adı"</string>
+    <string name="add_publish_cancel" formatted="false">"Vazgeç"</string>
+    <string name="add_publish_check" formatted="false">"Özgün hedefi kontrol et"</string>
+    <string name="add_publish_choose" formatted="false">"Klasör seç"</string>
+    <string name="add_publish_confirm" formatted="false">"Yayınla"</string>
+    <string name="add_publish_confirm_body">"Bu, %1$s\'ı bir %2$s deposu yapar ve kaydedilen ilk commit\'i yükler. Uygulamayı açık tutun. Yeniden deneme, bu hedefi kontrol eder ve ikinci bir commit yapmaz."</string>
+    <string name="add_publish_confirm_dest">"%1$s · %2$s\n%3$s · %4$s · %5$s"</string>
+    <string name="add_publish_confirm_title" formatted="false">"Bu kayıtlı commit yayımlansın mı?"</string>
+    <string name="add_publish_continue" formatted="false">"Kaydedilen yayımlamaya devam et"</string>
+    <string name="add_publish_creating" formatted="false">"Depo oluşturuluyor…"</string>
+    <string name="add_publish_discard" formatted="false">"Kayıtlı incelemeyi at"</string>
+    <string name="add_publish_file_ignored">"%1$s · Yoksayıldı"</string>
+    <string name="add_publish_file_issue">"%1$s · %2$s"</string>
+    <string name="add_publish_file_large">"%1$s · 10 MiB\'den büyük"</string>
+    <string name="add_publish_file_regular">"%1$s · Normal dosya"</string>
+    <string name="add_publish_file_sensitive">"%1$s · Hassas dosya adı"</string>
+    <string name="add_publish_files" formatted="false">"Dosyalar"</string>
+    <string name="add_publish_intro" formatted="false">"Bu telefonda bir klasör seçin, dosyalarını gözden geçirin ve bir ilk commit kaydedin. Yayınlamak, ardından GitHub üzerinde yeni bir depo oluşturur ve yükler."</string>
+    <string name="add_publish_keep_note" formatted="false">"İlerleme, ayrıldığınızda kaydedilmiş kalır. Eğer Android erişimi kaldırırsa, aynı klasörü tekrar bağlayın."</string>
+    <string name="add_publish_limits" formatted="false">"Dosyalarınız olduğu yerde kalır. Dosya başına 10 MiB\'e kadar, toplam 10.000 dosya ve 256 MiB. Git boş klasörleri atlar."</string>
+    <string name="add_publish_manage_accounts" formatted="false">"Hesapları yönet"</string>
+    <string name="add_publish_message" formatted="false">"İlk commit mesajı"</string>
+    <string name="add_publish_no_account" formatted="false">"Yayınlamak için GitHub\'a giriş yapın."</string>
+    <string name="add_publish_open" formatted="false">"Depoyu aç"</string>
+    <string name="add_publish_original" formatted="false">"Özgün klasör"</string>
+    <string name="add_publish_phase_created" formatted="false">"Depo oluşturuldu; yükleme bekleniyor"</string>
+    <string name="add_publish_phase_done" formatted="false">"Yayımlandı"</string>
+    <string name="add_publish_phase_prepared" formatted="false">"Yerel commit hazırlandı"</string>
+    <string name="add_publish_phase_published" formatted="false">"Commit yayımlandı; kurulum bekleniyor"</string>
+    <string name="add_publish_phase_review" formatted="false">"Dosyaları ve hedefi incele"</string>
+    <string name="add_publish_phase_unknown" formatted="false">"Depo oluşturma incelenmeli"</string>
+    <string name="add_publish_prepare" formatted="false">"Yerel commit hazırla"</string>
+    <string name="add_publish_preparing" formatted="false">"Yerel commit hazırlanıyor…"</string>
+    <string name="add_publish_private" formatted="false">"Özel depo"</string>
+    <string name="add_publish_private_off" formatted="false">"Seçilen dosyaları ve geçmişi herkes okuyabilir."</string>
+    <string name="add_publish_private_on" formatted="false">"Yalnızca erişim verdiğiniz kişiler okuyabilir."</string>
+    <string name="add_publish_progress_bytes">"%1$s / %2$s · uygulamayı açık tut"</string>
+    <string name="add_publish_progress_keep">"%1$s · uygulamayı açık tut"</string>
+    <string name="add_publish_public_body" formatted="false">"Yayınladığınız dosyaları herkes okuyabilecektir. Seçiminizi gizli bilgiler, kişisel detaylar ve paylaşamayacağınız dosyalar için kontrol edin."</string>
+    <string name="add_publish_public_confirm" formatted="false">"Herkese açık seç"</string>
+    <string name="add_publish_public_title" formatted="false">"Bu depo herkese açık yapılsın mı?"</string>
+    <string name="add_publish_publish" formatted="false">"GitHub’da yayımla"</string>
+    <string name="add_publish_reconnect" formatted="false">"Özgün klasörü yeniden bağla"</string>
+    <string name="add_publish_refresh" formatted="false">"Dosyaları yenile"</string>
+    <string name="add_publish_registering" formatted="false">"Depo ekleniyor…"</string>
+    <string name="add_publish_reload" formatted="false">"Kaydedilen ilerlemeyi yeniden yükle"</string>
+    <string name="add_publish_repo_name" formatted="false">"Depo adı"</string>
+    <string name="add_publish_save_review" formatted="false">"İncelemeyi kaydet"</string>
+    <string name="add_publish_saved_commit">"Kayıtlı commit: %1$s"</string>
+    <string name="add_publish_saved_progress" formatted="false">"Kaydedilen ilerleme"</string>
+    <string name="add_publish_selected">"Seçilen: %1$d · %2$s"</string>
+    <string name="add_publish_step">"Adım %1$d / 3"</string>
+    <string name="add_publish_stop" formatted="false">"Durdur"</string>
+    <string name="add_publish_title" formatted="false">"Bir klasör yayımla"</string>
+    <string name="add_publish_unknown_note" formatted="false">"GitHub muhtemelen deposunu zaten oluşturmuştur. Orijinal hedefi kontrol edin. Eşleşen boş bir depo kullanmayı seçmediğiniz sürece ikinci bir depo oluşturulmaz."</string>
+    <string name="add_publish_uploading" formatted="false">"Kayıtlı commit yükleniyor…"</string>
+    <string name="add_rail_github" formatted="false">"GitHub"</string>
+    <string name="add_rail_phone" formatted="false">"bu telefon"</string>
+    <string name="add_remote_file" formatted="false">"yerel"</string>
+    <string name="add_remote_git" formatted="false">"git://"</string>
+    <string name="add_remote_http" formatted="false">"HTTP"</string>
+    <string name="add_remote_https" formatted="false">"HTTPS"</string>
+    <string name="add_remote_intro" formatted="false">"GitLab, Gitea, Codeberg, kendi sunucunuz."</string>
+    <string name="add_remote_label" formatted="false">"Uzaktan URL"</string>
+    <string name="add_remote_name_invalid" formatted="false">"/ veya \\ içermeyen ve “.” veya “..” olmayan bir isim kullanın."</string>
+    <string name="add_remote_placeholder" formatted="false">"ssh://git@host/owner/repo.git"</string>
+    <string name="add_remote_ssh" formatted="false">"SSH"</string>
+    <string name="add_remote_title" formatted="false">"Herhangi bir Git sunucusu"</string>
+    <string name="add_resume_meta">"%1$s · 3 adımın %2$d aşaması · kaydedildi"</string>
+    <string name="add_resume_title" formatted="false">"Yayınlamayı sürdür"</string>
+    <string name="add_saved_hint" formatted="false">"Bu depo için kaydedilen şifreli bağlantıyı tekrar kullanır."</string>
+    <string name="add_sign_in_with" formatted="false">"Oturum açma yöntemi"</string>
+    <string name="add_signed_in_as">"@%1$s olarak oturum açık"</string>
+    <string name="add_signin_back_accounts" formatted="false">"Hesaplara geri dön"</string>
+    <string name="add_signin_body" formatted="false">"İstediğiniz depoyu klonlayın, Obsidian veya başka bir uygulamada yazın ve tek dokunuşla eşitleyin."</string>
+    <string name="add_signin_busy" formatted="false">"Giriş yapılıyor…"</string>
+    <string name="add_signin_eyebrow" formatted="false">"HER DEPO. ANDROID İLE EŞİTLENİR."</string>
+    <string name="add_signin_github" formatted="false">"GitHub ile giriş yap"</string>
+    <string name="add_signin_head_1" formatted="false">"Notlarınız."</string>
+    <string name="add_signin_head_2" formatted="false">"Gerçek git."</string>
+    <string name="add_signin_head_3" formatted="false">"Her zaman uyumlu."</string>
+    <string name="add_signin_rail" formatted="false">"Bu telefon ve GitHub tek bir senkron noktasında buluşuyor"</string>
+    <string name="add_signin_sample" formatted="false">"Örnek depoyu dene"</string>
+    <string name="add_signin_sample_busy" formatted="false">"Örnek açılıyor…"</string>
+    <string name="add_signin_sample_hint" formatted="false">"Gerçek Git, çevrimdışı. Hesap gerekmez."</string>
+    <string name="add_signin_token" formatted="false">"Kişisel erişim token\'ı"</string>
+    <string name="add_signin_waiting" formatted="false">"Tarayıcı sekmesinde GitHub üzerinde bitir. Hemen geri geleceksin."</string>
+    <string name="add_ssh_import_failed" formatted="false">"O anahtar dosyası okunamadı."</string>
+    <string name="add_ssh_import_key" formatted="false">"Anahtar dosyasını içe aktar"</string>
+    <string name="add_test_clone" formatted="false">"Test et ve klonla"</string>
+    <string name="add_test_failed_auth" formatted="false">"Sunucu bu oturumu reddetti. Anahtarı veya token’ı ve repo erişimini kontrol et."</string>
+    <string name="add_test_failed_branch">"Sunucuda %1$s adlı bir dal yok."</string>
+    <string name="add_test_failed_missing" formatted="false">"Bu adreste sunucu yok."</string>
+    <string name="add_test_failed_network" formatted="false">"Sunucuya ulaşılamadı. Adresi ve bağlantını kontrol et."</string>
+    <string name="add_test_host_key" formatted="false">"Sunucunun SSH anahtarını doğrula, sonra Tekrar Test Et &amp; Klonla seçeneğine dokun."</string>
+    <string name="add_testing" formatted="false">"Giriş yapmayı test et…"</string>
+    <string name="add_title" formatted="false">"Kasa ekle"</string>
+    <string name="add_token_body" formatted="false">"Depo erişimi olan bir GitHub token’ı yapıştırın."</string>
+    <string name="add_token_create" formatted="false">"GitHub üzerinde bir token oluştur"</string>
+    <string name="add_token_hide" formatted="false">"Gizle"</string>
+    <string name="add_token_hint" formatted="false">"Token bu telefonda şifrelenir ve yalnızca bu sunucuya gönderilir."</string>
+    <string name="add_token_label" formatted="false">"Token"</string>
+    <string name="add_token_scopes" formatted="false">"Kapsamlar: repo ve user:email. Token bu telefonda şifrelenir."</string>
+    <string name="add_token_secret" formatted="false">"Token"</string>
+    <string name="add_token_show" formatted="false">"Göster"</string>
+    <string name="add_token_sign_in" formatted="false">"Giriş Yap"</string>
+    <string name="add_token_title" formatted="false">"Kişisel erişim token\'ı"</string>
+    <string name="add_token_user" formatted="false">"Kullanıcı Adı"</string>
+    <string name="add_unlock_rail">"%1$s · %2$s · işaretlendi, klonlamaya hazır"</string>
+    <string name="add_unlock_rail_cd">"%1$s, işaretlendi ve GitHub’den Obsidian’e klonlamaya hazır"</string>
+    <string name="add_unlock_rail_from" formatted="false">"GitHub"</string>
+    <string name="add_unlock_rail_plain">"%1$s · işaretlendi, klonlamaya hazır"</string>
+    <string name="add_unlock_rail_to" formatted="false">"Obsidian"</string>
+    <string name="add_url_hint" formatted="false">"HTTPS, SSH, git:// veya owner/repo. Kendi sunucunuz mu? Anahtara dokunun."</string>
+    <string name="add_url_key" formatted="false">"Diğer sunucular için giriş seçenekleri"</string>
+    <string name="add_url_label" formatted="false">"Depo URL\'si"</string>
+    <string name="add_url_placeholder" formatted="false">"https://github.com/owner/repo"</string>
+    <string name="add_url_section" formatted="false">"Veya bir URL yapıştırın"</string>
+    <string name="add_way_github" formatted="false">"GitHub\'dan klonla"</string>
+    <string name="add_way_github_sign_in" formatted="false">"Depolarını seçmek için giriş yap"</string>
+    <string name="add_way_local" formatted="false">"Bu telefonda klonları bul"</string>
+    <string name="add_way_local_sub" formatted="false">"Var olan .git klasörlerini kontrol etmek için paylaşılan depolamayı tara"</string>
+    <string name="add_way_open" formatted="false">"Bir depo klasörü aç"</string>
+    <string name="add_way_open_sub" formatted="false">"Sistem klasör seçici ile bir Git deposu seçin"</string>
+    <string name="add_way_publish" formatted="false">"Bir klasör yayımla"</string>
+    <string name="add_way_publish_sub" formatted="false">"Notlarınızdan yeni bir GitHub deposu oluşturun"</string>
     <string name="automation_shortcut_label">"%1$s: %2$s"</string>
     <string name="background_allow_push" formatted="false">"Otomatik yayımlamaya izin ver"</string>
     <string name="background_binding">"Yalnızca %2$s/%3$s izleyen %1$s dalı. Dal, klasör, bağlantı veya hesap değişikliği yeni inceleme gerektirir."</string>
@@ -261,12 +597,43 @@
     <string name="dialogs_success_title" formatted="false">"Başarılı"</string>
     <string name="dialogs_timestamp_unknown" formatted="false">"Bilinmiyor"</string>
     <string name="dialogs_warning_title" formatted="false">"Uyarı"</string>
+    <string name="diff_m3_binary" formatted="false">"Bu dosya metin değil, bu yüzden karşılaştırılacak satır yok."</string>
+    <string name="diff_m3_changes" formatted="false">"Değişiklikler"</string>
+    <string name="diff_m3_deleted" formatted="false">"Bu dosya silindi. Atmayı geri al, onu son commit\'ten geri getirir."</string>
+    <string name="diff_m3_discard" formatted="false">"At"</string>
+    <string name="diff_m3_hunk">"%1$s · satır %2$d"</string>
+    <string name="diff_m3_hunk_line">"satır %1$d"</string>
+    <string name="diff_m3_load_failed" formatted="false">"Bu dosyanın değişiklikleri okunamadı."</string>
+    <string name="diff_m3_next" formatted="false">"Sonraki dosya"</string>
+    <string name="diff_m3_no_changes" formatted="false">"Son commit\'ten bu yana değişiklik yok."</string>
+    <string name="diff_m3_position">"%1$s · %2$d / %3$d"</string>
+    <string name="diff_m3_preview" formatted="false">"Önizleme"</string>
+    <string name="diff_m3_previous" formatted="false">"Önceki dosya"</string>
+    <string name="diff_m3_stats_a11y">"%1$d satır eklendi, %2$d silindi"</string>
+    <string name="diff_m3_vs_last_commit">"son commit %1$s ile karşılaştır"</string>
+    <string name="diff_m3_vs_nothing" formatted="false">"yeni dosya · henüz commit yok"</string>
+    <string name="diff_m3_whole_file" formatted="false">"Tüm dosya"</string>
     <string name="discard_clear_staging" formatted="false">"Hazırlama alanını temizle"</string>
     <string name="discard_review_all" formatted="false">"Aşağıda listelenen izlenen değişiklikler ve yeni dosyalar kalıcı olarak silinecek. Yok sayılan dosyalar korunur."</string>
     <string name="discard_review_empty" formatted="false">"Vazgeçilecek değişiklik yok."</string>
     <string name="discard_review_operation" formatted="false">"Bu işlem, etkin Git işlemini de iptal eder."</string>
     <string name="discard_review_unborn" formatted="false">"Henüz commit yok. Bu işlem, listelenen dosyaları hazırlama alanından çıkarır ve içeriklerini korur."</string>
     <string name="discovery_scanned">"%1$s tarandı. Eklenecek çalışma kopyalarını seçin."</string>
+    <string name="editor_m3_commit" formatted="false">"Commit"</string>
+    <string name="editor_m3_markdown" formatted="false">"Markdown"</string>
+    <string name="editor_m3_md_bold" formatted="false">"Kalın"</string>
+    <string name="editor_m3_md_code" formatted="false">"Kod"</string>
+    <string name="editor_m3_md_heading" formatted="false">"Başlık"</string>
+    <string name="editor_m3_md_indent" formatted="false">"Girinti"</string>
+    <string name="editor_m3_md_link" formatted="false">"Bağlantı"</string>
+    <string name="editor_m3_md_task" formatted="false">"Görev"</string>
+    <string name="editor_m3_not_saved" formatted="false">"Kaydedilmedi"</string>
+    <string name="editor_m3_save_now" formatted="false">"Şimdi kaydet"</string>
+    <string name="editor_m3_saved" formatted="false">"kaydedildi"</string>
+    <string name="editor_m3_saved_changed">"Kaydedildi · %1$s"</string>
+    <string name="editor_m3_saving" formatted="false">"Kaydetme..."</string>
+    <string name="editor_m3_subtitle">"%1$s / %2$s"</string>
+    <string name="editor_m3_vault_ahead">"%1$s ↑%2$d"</string>
     <string name="file_clone_failure" formatted="false">"Yerel depo klonlanamadı. Kaynak klasörü, depolama erişimini ve dalı kontrol edin. Mevcut klasörler korundu."</string>
     <string name="file_clone_guidance" formatted="false">"Yerel erişimle cihazdaki bir depoyu klonlayın. Paylaşılan depolama için önce Ayarlar’dan klasör erişimi verin."</string>
     <string name="file_delete_body" formatted="false">"Dosya bu cihazdan kaldırılacak. Git tarafından izleniyorsa silinmiş olarak gösterilecek."</string>
@@ -289,15 +656,344 @@
     <string name="file_renamed" formatted="false">"Yeniden adlandırıldı"</string>
     <string name="file_save_title" formatted="false">"Değişiklikler kaydedilsin mi?"</string>
     <string name="file_saved" formatted="false">"Kaydedildi"</string>
+    <string name="filehistory_m3_commits" formatted="false">"Gönderimler"</string>
+    <string name="filehistory_m3_empty" formatted="false">"Henüz bu dosyayı içeren bir gönderim yok."</string>
+    <string name="filehistory_m3_load_failed" formatted="false">"Bu dosyanın geçmişi okunamadı."</string>
+    <string name="filehistory_m3_meta">"%1$s · %2$s · %3$s"</string>
+    <string name="filehistory_m3_subtitle">"Geçmiş · %1$s"</string>
     <string name="files_folder" formatted="false">"Klasör"</string>
     <string name="files_hide_hidden" formatted="false">"Gizli dosyaları gizle"</string>
+    <string name="files_m3_actions_for">"%1$s için eylemler"</string>
+    <string name="files_m3_age_days">"%1$d g önce"</string>
+    <string name="files_m3_age_hours">"%1$dh önce"</string>
+    <string name="files_m3_age_minutes">"%1$dm önce"</string>
+    <string name="files_m3_age_months">"%1$d ay önce"</string>
+    <string name="files_m3_age_now" formatted="false">"– şu anda"</string>
+    <string name="files_m3_age_weeks">"%1$d hafta önce"</string>
+    <string name="files_m3_age_years">"%1$d yıl önce"</string>
+    <string name="files_m3_check_for_changes" formatted="false">"Değişiklikleri denetle"</string>
+    <string name="files_m3_delete" formatted="false">"Sil"</string>
+    <string name="files_m3_delete_folder_body" formatted="false">"Burada sadece boş klasörler silinebilir."</string>
+    <string name="files_m3_delete_folder_title" formatted="false">"Klasör silinsin mi?"</string>
+    <string name="files_m3_fetch" formatted="false">"Al"</string>
+    <string name="files_m3_fetch_cd">"Uzaktaki %1$s al"</string>
+    <string name="files_m3_fetch_failed" formatted="false">"Bu dosya uzaktan alınamadı. Bağlantınızı ve girişinizi kontrol edin, sonra tekrar deneyin."</string>
+    <string name="files_m3_fetched">"%1$s alındı."</string>
+    <string name="files_m3_folder_path" formatted="false">"Klasör yolu"</string>
+    <string name="files_m3_footnote" formatted="false">"İşlemler için herhangi bir dosyaya uzun basın."</string>
+    <string name="files_m3_history" formatted="false">"Geçmiş"</string>
+    <string name="files_m3_lfs_pointer">"LFS işaretçisi · uzakta %1$s"</string>
+    <string name="files_m3_meta">"%1$s · %2$s"</string>
+    <string name="files_m3_meta_edited">"düzenlendi %1$s · %2$s"</string>
+    <string name="files_m3_new_file_cd" formatted="false">"Yeni Dosya"</string>
+    <string name="files_m3_open_in" formatted="false">"Şurada aç…"</string>
+    <string name="files_m3_open_in_chooser">"%1$s aç…"</string>
+    <string name="files_m3_open_in_failed" formatted="false">"Bu dosyayı açabilecek bir uygulama bu telefonda yok."</string>
+    <string name="files_m3_rename" formatted="false">"Adı Değiştirme"</string>
+    <string name="files_m3_rename_field" formatted="false">"Ad"</string>
+    <string name="files_m3_tag_added" formatted="false">"A"</string>
+    <string name="files_m3_tag_conflict" formatted="false">"!"</string>
+    <string name="files_m3_tag_lfs" formatted="false">"LFS"</string>
+    <string name="files_m3_tag_modified" formatted="false">"M"</string>
     <string name="files_show_hidden" formatted="false">"Gizli dosyaları göster"</string>
     <string name="folder_access_not_enabled" formatted="false">"Klasör erişimi etkinleştirilmedi. Uygulama depolamasını kullanmaya devam edebilirsiniz."</string>
     <string name="folder_picker_unavailable" formatted="false">"Bu cihazda klasör seçici yok"</string>
     <string name="folder_settings_unavailable" formatted="false">"Android depolama ayarları kullanılamıyor. Uygulama depolaması kullanılabilir durumda."</string>
     <string name="folder_unusable" formatted="false">"Bu klasör kullanılamadı"</string>
     <string name="git_fetch" formatted="false">"Al"</string>
+    <string name="git_m3_abort" formatted="false">"Durdur"</string>
+    <string name="git_m3_abort_merge" formatted="false">"Birleştirmeyi durdur"</string>
+    <string name="git_m3_abort_merge_body">"%1$s birleştirme öncesi yerine geri koyar. Şimdiye kadar yapılan seçimler atılır."</string>
+    <string name="git_m3_abort_merge_title" formatted="false">"Bu birleştirme iptal edilsin mi?"</string>
+    <string name="git_m3_abort_rebase_ask" formatted="false">"Rebase işlemini iptal et…"</string>
+    <string name="git_m3_access_github" formatted="false">"GitHub Giriş"</string>
+    <string name="git_m3_access_https" formatted="false">"HTTPS"</string>
+    <string name="git_m3_access_local" formatted="false">"yerel klasör"</string>
+    <string name="git_m3_access_ssh" formatted="false">"SSH anahtar"</string>
+    <string name="git_m3_age_days">"%1$dd"</string>
+    <string name="git_m3_age_hours">"%1$dh"</string>
+    <string name="git_m3_age_minutes">"%1$dm"</string>
+    <string name="git_m3_ago_days">"%1$d g önce"</string>
+    <string name="git_m3_ago_hours">"%1$dh önce"</string>
+    <string name="git_m3_ago_minutes">"%1$dm önce"</string>
+    <string name="git_m3_ago_now" formatted="false">"– şu anda"</string>
+    <string name="git_m3_ahead">"%1$d önde"</string>
+    <string name="git_m3_annotated" formatted="false">"açıklamalı"</string>
+    <string name="git_m3_applied_toast">"%1$s uygulandı. Stash hâlâ kaydedildi."</string>
+    <string name="git_m3_apply" formatted="false">"Uygula"</string>
+    <string name="git_m3_apply_help" formatted="false">"Değişiklikleri geri getirir ve stash’i korur."</string>
+    <string name="git_m3_back_to_remote" formatted="false">"Uzağa Dön"</string>
+    <string name="git_m3_backup_at">"Yedek: %1$s"</string>
+    <string name="git_m3_behind">"%1$d geride"</string>
+    <string name="git_m3_binary_side" formatted="false">"Bu dosya metin olarak gösterilemiyor. Tam bir sürüm seçin."</string>
+    <string name="git_m3_both_edited_file" formatted="false">"İki taraf da bu dosyayı düzenledi."</string>
+    <string name="git_m3_both_edited_section">"İki taraf da “%1$s” dosyasını düzenledi."</string>
+    <string name="git_m3_both_moved" formatted="false">"İki taraf da ilerledi"</string>
+    <string name="git_m3_both_moved_body">"Sadece fast-forward çekilir, bu yüzden bunları birleştiremez. Merge her iki geçmişi de korur. Rebase %1$d commitlerinizi üstüne koyar."</string>
+    <string name="git_m3_both_moved_headline" formatted="false">"Siz yazarken uzak depo ilerledi."</string>
+    <string name="git_m3_both_sides_edited" formatted="false">"İki taraf da bu dosyayı düzenledi."</string>
+    <string name="git_m3_branch_name" formatted="false">"Dal adı"</string>
+    <string name="git_m3_branch_placeholder" formatted="false">"örn. draft/winter"</string>
+    <string name="git_m3_branches" formatted="false">"Dallar"</string>
+    <string name="git_m3_branches_stashes_tags" formatted="false">"Dallar, stash’ler ve etiketler"</string>
+    <string name="git_m3_cancel" formatted="false">"Vazgeç"</string>
+    <string name="git_m3_cant_switch_note" formatted="false">"Diğer dalın üstüne yazacağı izlenmemiş dosyalar da geçişi engeller. Henüz hiçbir şey değişmedi."</string>
+    <string name="git_m3_cant_switch_title" formatted="false">"Henüz geçiş yapılamıyor"</string>
+    <string name="git_m3_check_changes" formatted="false">"Değişiklikleri denetle"</string>
+    <string name="git_m3_commit_as" formatted="false">"Şu kişi olarak commit"</string>
+    <string name="git_m3_commit_first" formatted="false">"Önce commit yapın"</string>
+    <string name="git_m3_commit_history" formatted="false">"Commit geçmişi"</string>
+    <string name="git_m3_commit_of">"%2$d içindeki %1$d commit"</string>
+    <string name="git_m3_conflict_body" formatted="false">"Tutulacak sürümü seçin ya da ikisini de tutup sonra düzenleyin."</string>
+    <string name="git_m3_conflict_progress">"Çatışma %1$d ile %2$d · %3$s"</string>
+    <string name="git_m3_connection" formatted="false">"Bağlantı"</string>
+    <string name="git_m3_continue_retry_first" formatted="false">"Rebase işlemine devam et · önce tekrar dene"</string>
+    <string name="git_m3_create" formatted="false">"Oluştur"</string>
+    <string name="git_m3_create_tag" formatted="false">"Etiket oluştur"</string>
+    <string name="git_m3_current" formatted="false">"Mevcut"</string>
+    <string name="git_m3_current_branch" formatted="false">"Geçerli dal"</string>
+    <string name="git_m3_delete" formatted="false">"Sil"</string>
+    <string name="git_m3_delete_branch_body">"Bu telefondaki %1$s silinir. GitHub dokunulmaz."</string>
+    <string name="git_m3_delete_branch_cd">"%1$s dalını sil"</string>
+    <string name="git_m3_delete_branch_title" formatted="false">"Dal silinsin mi?"</string>
+    <string name="git_m3_delete_files_sub" formatted="false">"Klasörü bu telefondan kaldırır"</string>
+    <string name="git_m3_delete_force" formatted="false">"Zorla"</string>
+    <string name="git_m3_delete_force_help" formatted="false">"Commit\'leri hiç birleştirilmemiş olsa bile dalı zorla siler. Kaybolabilirler."</string>
+    <string name="git_m3_delete_normal" formatted="false">"Normal"</string>
+    <string name="git_m3_delete_normal_help" formatted="false">"Sadece commit\'leri zaten birleştirilmişse dalı siler."</string>
+    <string name="git_m3_delete_tag" formatted="false">"Etiketi sil"</string>
+    <string name="git_m3_delete_tag_body">"Etiket bu telefondan kaybolur. Commit %1$s kalır ve GitHub\'e zaten gönderilmiş bir kopya dokunulmaz."</string>
+    <string name="git_m3_delete_tag_cd">"%1$s etiketini sil"</string>
+    <string name="git_m3_delete_tag_title">"\"%1$s\" silinsin mi?"</string>
+    <string name="git_m3_deleted_here_edited_there" formatted="false">"Bu telefon onu sildi. Diğer taraf düzenledi."</string>
+    <string name="git_m3_deleted_on_phone" formatted="false">"Bu telefonda silindi."</string>
+    <string name="git_m3_deleted_on_remote">"%1$s üzerinde silindi."</string>
+    <string name="git_m3_detached">"%1$s üzerinde ayrıldı"</string>
+    <string name="git_m3_discard" formatted="false">"Değişiklikleri at"</string>
+    <string name="git_m3_disconnected" formatted="false">"Bağlantı kesildi"</string>
+    <string name="git_m3_drop" formatted="false">"Bırak"</string>
+    <string name="git_m3_drop_cd">"%1$s düşürüldü"</string>
+    <string name="git_m3_drop_help" formatted="false">"Stash\'i uygulamadan siler."</string>
+    <string name="git_m3_dropped_toast">"%1$s düşürüldü."</string>
+    <string name="git_m3_edit_by_hand" formatted="false">"Elle düzenle"</string>
+    <string name="git_m3_edit_connection" formatted="false">"Bağlantıyı düzenle"</string>
+    <string name="git_m3_edited_ago">"%1$s düzenlendi"</string>
+    <string name="git_m3_edited_here_deleted_there" formatted="false">"Bu telefon düzenledi. Diğer taraf sildi."</string>
+    <string name="git_m3_fetch_again" formatted="false">"Tekrar al"</string>
+    <string name="git_m3_fetch_and_push">"Al ve gönder: %1$s"</string>
+    <string name="git_m3_fetch_hint" formatted="false">"Diğer cihazlarınızdan yeni dalların gönderilip gönderilmediğini görmek için."</string>
+    <string name="git_m3_fetch_review_again" formatted="false">"Tekrar al ve incele"</string>
+    <string name="git_m3_fetch_sub" formatted="false">"Yeni commitler için GitHub kontrol et"</string>
+    <string name="git_m3_fetched">"%1$s getirildi"</string>
+    <string name="git_m3_finishing_merge" formatted="false">"Birleştirme tamamlanıyor…"</string>
+    <string name="git_m3_folder_location" formatted="false">"Klasör ve konumu"</string>
+    <string name="git_m3_from" formatted="false">"Kimden"</string>
+    <string name="git_m3_from_remote">"↓%1$d uzaktan"</string>
+    <string name="git_m3_from_who">" %1$s kaynağından"</string>
+    <string name="git_m3_github" formatted="false">"GitHub"</string>
+    <string name="git_m3_hand_edited_markers" formatted="false">"Çatışma işaretleri hala dosyada. Bunları düzenleyicide kaldırın, sonra geri dönün."</string>
+    <string name="git_m3_hand_edited_ready" formatted="false">"Elle düzenlendi. Düzenlenmiş dosyanızı kullanın veya değiştirmek için bir tarafı seçin."</string>
+    <string name="git_m3_how" formatted="false">"Nasıl"</string>
+    <string name="git_m3_in_sync" formatted="false">"Eşzamanlı"</string>
+    <string name="git_m3_in_sync_headline" formatted="false">"Bu telefon uzakla eşleşiyor."</string>
+    <string name="git_m3_in_the_way" formatted="false">"Yolda"</string>
+    <string name="git_m3_in_this_vault" formatted="false">"Bu kasada"</string>
+    <string name="git_m3_its_remotes" formatted="false">"Onun uzakları"</string>
+    <string name="git_m3_keep_backup" formatted="false">"Doğrulanmış bir yedek tutun"</string>
+    <string name="git_m3_keep_backup_sub" formatted="false">".git klasörünün kopyası ve ZIP dosyası"</string>
+    <string name="git_m3_keep_both" formatted="false">"İkisini de tut"</string>
+    <string name="git_m3_kept_edit" formatted="false">"Elle çözüldü."</string>
+    <string name="git_m3_kept_local" formatted="false">"Tekrarlanan yerel commit korundu."</string>
+    <string name="git_m3_kept_upstream" formatted="false">"Üst akım sürümü korundu."</string>
+    <string name="git_m3_lfs" formatted="false">"Büyük dosyalar (LFS)"</string>
+    <string name="git_m3_lfs_none" formatted="false">"kullanılmıyor"</string>
+    <string name="git_m3_lfs_value">"%1$s · %2$d kilitlendi"</string>
+    <string name="git_m3_light" formatted="false">"hafif"</string>
+    <string name="git_m3_local_only" formatted="false">"yalnızca yerel"</string>
+    <string name="git_m3_manage_vault" formatted="false">"Kasayı yönet"</string>
+    <string name="git_m3_marker_end" formatted="false">"Her iki sürümün sonu"</string>
+    <string name="git_m3_marker_ours" formatted="false">"Bu telefonun sürümü"</string>
+    <string name="git_m3_marker_theirs">"%1$s’ın sürümü"</string>
+    <string name="git_m3_merge" formatted="false">"Birleştir"</string>
+    <string name="git_m3_merge_and_push" formatted="false">"Birleştir ve gönder"</string>
+    <string name="git_m3_merge_author">"Birleştirme yazarı: %1$s"</string>
+    <string name="git_m3_merge_both_body" formatted="false">"Commitleriniz ID’lerini korur. Her iki taraf da hareket ettiğinden, bu bir birleştirme commit’i oluşturur. Her iki tarafta değiştirilen dosyaları seçmeniz gerekebilir."</string>
+    <string name="git_m3_merge_current_body" formatted="false">"Her iki taraf eşleşiyor. Birleştirilecek bir şey yok."</string>
+    <string name="git_m3_merge_ff_body" formatted="false">"Sadece uzak taraf hareket etti, bu yüzden bu dalınızı hızlıca ilerletir. Yeni bir commit yapılmadı."</string>
+    <string name="git_m3_merge_in_progress" formatted="false">"Birleştirme devam ediyor"</string>
+    <string name="git_m3_merge_into">"%1$s içine birleştir"</string>
+    <string name="git_m3_merge_locally" formatted="false">"Yerel olarak birleştir"</string>
+    <string name="git_m3_merge_message">"%1$s birleştir"</string>
+    <string name="git_m3_merge_named">"%1$s birleştir"</string>
+    <string name="git_m3_merge_pause_note" formatted="false">"Her iki dal da aynı dosyayı değiştirdiyse, Git içinde hangisini tutacağını seçebilmen için birleştirme durur."</string>
+    <string name="git_m3_merge_push_body">"%1$s’i %2$s ile günceller, sonra %3$s’ye gönderir. Çakışmalar gönderimi durdurur. Uzak onaylamazsa, birleştirme bu telefonda kalır ve tekrar deneyebilirsin."</string>
+    <string name="git_m3_merge_push_only_body" formatted="false">"Uzakta yeni bir şey yok. Birleştir ve gönder, yaptığın commitleri gönderir."</string>
+    <string name="git_m3_merge_push_title" formatted="false">"Birleştir ve gönder?"</string>
+    <string name="git_m3_merge_ready" formatted="false">"Tüm çakışmalar çözüldü. Birleştirmeyi tamamla."</string>
+    <string name="git_m3_merge_reviewing" formatted="false">"Uzaktaki durum alınırken ve gözden geçirilirken…"</string>
+    <string name="git_m3_merge_sub" formatted="false">"Al, gözden geçir, sonra birleştir"</string>
+    <string name="git_m3_merging">"%1$s · %2$s ile birleştiriliyor"</string>
+    <string name="git_m3_message_optional" formatted="false">"Mesaj (isteğe bağlı)"</string>
+    <string name="git_m3_more_files">"%1$d daha fazla"</string>
+    <string name="git_m3_move_repository" formatted="false">"Depoyu taşı"</string>
+    <string name="git_m3_move_sub" formatted="false">"Yeni bir klasör seçin"</string>
+    <string name="git_m3_never_fetched" formatted="false">"henüz alınmadı"</string>
+    <string name="git_m3_new_branch" formatted="false">"Yeni dal"</string>
+    <string name="git_m3_new_on_remote" formatted="false">"Uzaktan yenisi"</string>
+    <string name="git_m3_new_on_remote_body">"Hızlı ileri alma %1$s ile eşleşiyor. Bu telefondaki hiçbir şey kaybolmaz."</string>
+    <string name="git_m3_new_on_remote_headline" formatted="false">"Uzak depoda sizde olmayan commit’ler var."</string>
+    <string name="git_m3_new_tag" formatted="false">"Yeni etiket"</string>
+    <string name="git_m3_no_backup_warning" formatted="false">"Yedek olmadan, bu telefonun Git geçmişi tamamen silinir. Zaten GitHub üzerindeki commitler güvendedir."</string>
+    <string name="git_m3_no_conflicts" formatted="false">"Çakışma kalmadı."</string>
+    <string name="git_m3_no_stashes" formatted="false">"Kaydedilmiş gizlemeler yok."</string>
+    <string name="git_m3_no_upstream" formatted="false">"sadece yerel · yukarı akış yok"</string>
+    <string name="git_m3_no_upstream_body" formatted="false">"Git ve push komutlarının nereye gideceğini bilmesi için bir yukarı akış seçin."</string>
+    <string name="git_m3_no_upstream_headline" formatted="false">"Bu dal henüz bir uzak dalı takip etmiyor."</string>
+    <string name="git_m3_no_upstream_kicker" formatted="false">"Üst akış yok"</string>
+    <string name="git_m3_none" formatted="false">"Yok"</string>
+    <string name="git_m3_not_set" formatted="false">"Ayarlanmadı"</string>
+    <string name="git_m3_not_tracked">"%1$s · takip edilmiyor"</string>
+    <string name="git_m3_notes_attachments_any" formatted="false">"Notlarınız ve ekleriniz"</string>
+    <string name="git_m3_nothing_new">"%1$s\'un sahip olmadığı hiçbir şey"</string>
+    <string name="git_m3_nothing_to_stash" formatted="false">"Saklanacak bir şey yok."</string>
+    <string name="git_m3_nothing_to_stash_body" formatted="false">"Bu telefonda yerel değişiklik yok. Bir notu düzenleyin ve ayırmak için geri gelin."</string>
+    <string name="git_m3_ok" formatted="false">"Tamam"</string>
+    <string name="git_m3_on_this_phone" formatted="false">"Bu telefonda"</string>
+    <string name="git_m3_only_on">"Sadece %1$s\'da"</string>
+    <string name="git_m3_open" formatted="false">"Aç"</string>
+    <string name="git_m3_open_rebase" formatted="false">"Açık rebase"</string>
+    <string name="git_m3_open_sub" formatted="false">"Kasaya geri dön"</string>
+    <string name="git_m3_plain_folder">"%1$s şimdi normal bir klasör."</string>
+    <string name="git_m3_plain_folder_body" formatted="false">"Notlarınız olduğu yerde duruyor. GitSync.md artık bu klasörü senkronize etmiyor."</string>
+    <string name="git_m3_pop" formatted="false">"Çıkar"</string>
+    <string name="git_m3_pop_help" formatted="false">"Değişiklikleri geri getirir ve saklamayı kaldırır."</string>
+    <string name="git_m3_popped_toast">"%1$s açıldı. Değişiklikleriniz geri geldi."</string>
+    <string name="git_m3_previously_added" formatted="false">"Daha önce eklenenler"</string>
+    <string name="git_m3_pull_n">"Çek ↓%1$d"</string>
+    <string name="git_m3_pull_sub" formatted="false">"Yalnızca fast-forward"</string>
+    <string name="git_m3_pull_sub_blocked" formatted="false">"Sadece hızlı ileri. Şimdi yapılamıyor: her iki taraf da hareket etti"</string>
+    <string name="git_m3_pulls_from">"%1$s çeker ve gönderir"</string>
+    <string name="git_m3_push" formatted="false">"Gönder"</string>
+    <string name="git_m3_push_n">"Gönder ↑%1$d"</string>
+    <string name="git_m3_push_tag_cd">"%1$s öğesini GitHub öğesine gönder"</string>
+    <string name="git_m3_push_to">"%1$s öğesine gönder"</string>
+    <string name="git_m3_ready_to_push" formatted="false">"Push\'a hazır"</string>
+    <string name="git_m3_ready_to_push_body">"Gönder, %1$d taahhütlerinizi yollar. Uzaktaki taraf kabul edene kadar hiçbir şey değişmez."</string>
+    <string name="git_m3_ready_to_push_headline" formatted="false">"Uzaktaki taraf taahhütlerinizi henüz görmedi."</string>
+    <string name="git_m3_rebase" formatted="false">"Rebase"</string>
+    <string name="git_m3_rebase_abort_body">"%1$s öğesini tekrar %2$s öğesine koyar. Bu yeniden temele alma sırasında yapılan düzenlemeler ve çatışma seçimleri atılır."</string>
+    <string name="git_m3_rebase_abort_title" formatted="false">"Bu rebase iptal edilsin mi?"</string>
+    <string name="git_m3_rebase_aborted" formatted="false">"Rebase iptal edildi"</string>
+    <string name="git_m3_rebase_aborted_headline" formatted="false">"Başlangıç noktasına dönüldü."</string>
+    <string name="git_m3_rebase_begin_title" formatted="false">"Yerel commit’ler yeniden yazılsın mı?"</string>
+    <string name="git_m3_rebase_blocked_body" formatted="false">"Git içinde olmayan dosyalar bir sonraki commit ile üzerine yazılacaktır. Bunları güvenli bir yere taşıyın, yenileyin ve sonra tekrar deneyin. Zaten tekrar oynatılmış commitler korunur."</string>
+    <string name="git_m3_rebase_blocked_headline" formatted="false">"Rebase, engellenmiş bir checkout işlemini bekliyor."</string>
+    <string name="git_m3_rebase_conflicts">"Çakışmalar · %1$d %2$d içinde çözüldü"</string>
+    <string name="git_m3_rebase_conflicts_headline" formatted="false">"Rebase, her iki tarafın da düzenlediği dosyalarda durdu."</string>
+    <string name="git_m3_rebase_done_headline" formatted="false">"Rebase tamamlandı."</string>
+    <string name="git_m3_rebase_in_progress" formatted="false">"Rebase sürüyor"</string>
+    <string name="git_m3_rebase_initial" formatted="false">"Rebase neyi taşıyacak görmek için önce fetch yapın."</string>
+    <string name="git_m3_rebase_restored">"%1$s %2$s olarak geri yüklendi · ↑%3$d ↓%4$d"</string>
+    <string name="git_m3_rebase_review_body">"Commitlerinizi %1$s üstüne tekrar oynatır. ID’leri değişebilir. Merge commit’leri şekillerini korur. Hiçbir şey push edilmez."</string>
+    <string name="git_m3_rebase_sides_note">"Bir rebase sırasında %1$s, Git için “bizim” ve sizin %2$s “onların”dır."</string>
+    <string name="git_m3_rebase_skip_body">"Tekrardan oynatmaktan %1$s çıkarılır. Önce değişikliklerini kontrol edin. Bu, çalışmanızı yeni geçmişten kaldırabilir."</string>
+    <string name="git_m3_rebase_skip_title" formatted="false">"Bu yerel commit atlansın mı?"</string>
+    <string name="git_m3_rebase_step">"%2$d üzerindeki %1$d ta commit\'te durduruldu."</string>
+    <string name="git_m3_rebase_stopped" formatted="false">"Rebase sizin için bekliyor."</string>
+    <string name="git_m3_rebase_sub" formatted="false">"Commit\'lerinizi yeniden oynatın · bir rebase\'i devam ettirin"</string>
+    <string name="git_m3_rebase_theirs">"%1$s üzerinde yeni · %2$d"</string>
+    <string name="git_m3_rebase_yours">"Yeniden oynatılacak commit\'leriniz · %1$d"</string>
+    <string name="git_m3_refresh_branches" formatted="false">"Dallarını yenile"</string>
+    <string name="git_m3_remote" formatted="false">"Uzak"</string>
+    <string name="git_m3_remote_access">"fetch ve push · %1$s"</string>
+    <string name="git_m3_remote_pill" formatted="false">"uzak"</string>
+    <string name="git_m3_remote_reading" formatted="false">"Bu kasanın uzaktan okuması…"</string>
+    <string name="git_m3_remove" formatted="false">"Kaldır"</string>
+    <string name="git_m3_remove_from_app" formatted="false">"Uygulamadan kaldır"</string>
+    <string name="git_m3_remove_from_app_body" formatted="false">"Klasör ve Git geçmişi bu telefonda kalır. İstediğiniz zaman geri ekleyin."</string>
+    <string name="git_m3_remove_from_app_sub" formatted="false">"Dosyaları ve Git korur. İstediğiniz zaman geri ekleyin."</string>
+    <string name="git_m3_remove_from_app_title">"%1$s uygulamadan kaldırılsın mı?"</string>
+    <string name="git_m3_remove_tracking_sub" formatted="false">"Dosyalarınızı korur. Bu klasörden Git kaldırır."</string>
+    <string name="git_m3_replayed_commit" formatted="false">"yeniden oynatılan commit"</string>
+    <string name="git_m3_replayed_label">"Yerel commit yeniden oynatıldı · %1$s"</string>
+    <string name="git_m3_resolve" formatted="false">"Çözüm"</string>
+    <string name="git_m3_resolve_conflict" formatted="false">"Çakışmayı çöz"</string>
+    <string name="git_m3_result_current" formatted="false">"Birleştirilecek yeni bir şey yok."</string>
+    <string name="git_m3_result_current_kicker" formatted="false">"Güncel"</string>
+    <string name="git_m3_result_local_only" formatted="false">"Sonuç yalnızca bu telefonda. Hazır olduğunuzda push yapın."</string>
+    <string name="git_m3_result_merged" formatted="false">"Diğer tarafın değişiklikleri dahil edildi."</string>
+    <string name="git_m3_result_merged_kicker" formatted="false">"Birleştirildi"</string>
+    <string name="git_m3_result_push_confirmed" formatted="false">"GitHub bu commit’i onayladı."</string>
+    <string name="git_m3_result_push_unconfirmed" formatted="false">"Uzak taraf push’ı doğrulamadı. Tekrar denemek, aynı commit’i tekrar birleştirmeden gönderir."</string>
+    <string name="git_m3_result_saved_locally" formatted="false">"Birleştirme commiti yerel olarak kaydedildi."</string>
+    <string name="git_m3_result_unconfirmed" formatted="false">"Burada kaydedildi. Push tamamlanmadı."</string>
+    <string name="git_m3_result_unconfirmed_kicker" formatted="false">"Birleştirildi · itilmeyen"</string>
+    <string name="git_m3_retry_blocked" formatted="false">"Engellenen commit’i yeniden dene"</string>
+    <string name="git_m3_retry_push" formatted="false">"Kaydedilen commiti göndermeyi yeniden dene"</string>
+    <string name="git_m3_return_to_git" formatted="false">"Git’e dön"</string>
+    <string name="git_m3_review_folder" formatted="false">"Geri yüklenen klasörü incele"</string>
+    <string name="git_m3_reviewed_plan" formatted="false">"Gözden geçirilen plan"</string>
+    <string name="git_m3_saved" formatted="false">"kaydedildi"</string>
+    <string name="git_m3_saved_in" formatted="false">"Kayıt yeri"</string>
+    <string name="git_m3_set_aside" formatted="false">"Bir kenara koy"</string>
+    <string name="git_m3_set_upstream" formatted="false">"Üst akışı ayarla"</string>
+    <string name="git_m3_show_more">"%1$d daha göster"</string>
+    <string name="git_m3_skip_commit" formatted="false">"Commit’i atla"</string>
+    <string name="git_m3_skip_commit_ask" formatted="false">"Commit’i atla…"</string>
+    <string name="git_m3_staged" formatted="false">"hazırlanmış"</string>
+    <string name="git_m3_starts_from">"%2$s üzerindeki %1$s’den başlar · sen %2$s’de kalırsın"</string>
+    <string name="git_m3_stash_changes" formatted="false">"Değişiklikleri sakla"</string>
+    <string name="git_m3_stash_explain">"Saklama, değişiklikleri kaldırır ve dosyalarını %1$s’a sıfırlar. İstediğin zaman geri alabilirsin."</string>
+    <string name="git_m3_stash_local_note" formatted="false">"Saklamalar bu telefonda kalır. Asla GitHub’a gönderilmez."</string>
+    <string name="git_m3_stash_on">"%1$s üzerinde"</string>
+    <string name="git_m3_stash_placeholder" formatted="false">"Neler yapıyordun?"</string>
+    <string name="git_m3_stashed_older" formatted="false">"Daha eski olan şimdi stash@{1}."</string>
+    <string name="git_m3_stashes" formatted="false">"Stash\'ler"</string>
+    <string name="git_m3_stay_on">"%1$s’de kal"</string>
+    <string name="git_m3_stays_on_disk" formatted="false">"Diskte kalır"</string>
+    <string name="git_m3_stop_tracking" formatted="false">"Takibi bırak…"</string>
+    <string name="git_m3_strategy_always" formatted="false">"Her zaman birleştirme commit’i kullan"</string>
+    <string name="git_m3_strategy_always_help">"%1$s sadece ilerleyebilecek olsa bile birleştirme commit’i oluşturur."</string>
+    <string name="git_m3_strategy_ff" formatted="false">"Yalnızca fast-forward"</string>
+    <string name="git_m3_strategy_ff_help">"Sadece %1$s doğrudan %2$s’in önünde olduğunda birleştirir. Geçmişi düz bir çizgide tutar."</string>
+    <string name="git_m3_strategy_prefer" formatted="false">"Mümkünse fast-forward"</string>
+    <string name="git_m3_strategy_prefer_help">"%1$s ilerleyebildiğinde ilerletir. Aksi takdirde birleştirme commit’i oluşturur."</string>
+    <string name="git_m3_subtitle">"%1$s · %2$s"</string>
+    <string name="git_m3_switch" formatted="false">"Geçiş"</string>
+    <string name="git_m3_tag_kind_help" formatted="false">"Bir mesaj ile not eklenir. Hafif bir etiket için boş bırakın."</string>
+    <string name="git_m3_tag_name" formatted="false">"Etiket adı"</string>
     <string name="git_m3_tag_name_invalid" formatted="false">"Geçerli bir Git etiketi adı girin."</string>
+    <string name="git_m3_tag_pushed">"%1$s gönderildi."</string>
+    <string name="git_m3_tag_target">"%1$s üzerinde · %2$s’de en son"</string>
+    <string name="git_m3_tags" formatted="false">"Etiketler"</string>
+    <string name="git_m3_tags_note" formatted="false">"Commit &amp; push etiketleri göndermez. Birini GitHub üzerinde istiyorsanız her birini ayrı gönderin. Silmek, etiketi yalnızca bu telefondan kaldırır."</string>
+    <string name="git_m3_the_named_remote">"%1$s uzak"</string>
+    <string name="git_m3_the_remote" formatted="false">"uzak depo"</string>
+    <string name="git_m3_this_phone" formatted="false">"bu telefon"</string>
+    <string name="git_m3_tracking">"%1$s’i takip ediyor"</string>
+    <string name="git_m3_tracking_backup_body" formatted="false">"GitSync.md Git verisinin bir kopyasını ve ZIP dosyasını kontrol eder, ardından bu klasörün bağlantısını keser. Çalışma dosyalarınız yerinde kalır."</string>
+    <string name="git_m3_tracking_backup_title" formatted="false">"Takibi kaldır ve yedek tut?"</string>
+    <string name="git_m3_tracking_cap">"%1$s izleniyor"</string>
+    <string name="git_m3_tracking_permanent_body" formatted="false">"Sadece incelenmiş .git verisi silinir. Çalışma dosyalarınız yerinde kalır, ancak bu telefonun Git geçmişi başka bir kopya olmadan geri alınamaz."</string>
+    <string name="git_m3_tracking_removed" formatted="false">"Takip kaldırıldı"</string>
+    <string name="git_m3_tracking_removed_backup_toast" formatted="false">"Git takibi kaldırıldı. Doğrulanmış yedek kaydedildi."</string>
+    <string name="git_m3_tracking_removed_kept" formatted="false">"Git izleme kaldırıldı · çalışma dosyaları korundu"</string>
+    <string name="git_m3_tracking_review_body" formatted="false">"Dosyalarınız oldukları yerde kalır. Git’ın geçmişlerinin kopyası bu klasörden kaldırıldı."</string>
+    <string name="git_m3_tracking_stale" formatted="false">"İncelediğinizden beri klasör değişti. İptal et ve tekrar incele."</string>
+    <string name="git_m3_uncommitted_plain_any" formatted="false">"Taahhüt edilmemiş düzenlemeler, basit dosyalar olarak"</string>
+    <string name="git_m3_unresolved" formatted="false">"Çözülmemiş"</string>
+    <string name="git_m3_update" formatted="false">"güncelle"</string>
+    <string name="git_m3_upstream_body">"%1$s’in nereden çekip nereye göndereceğini seçin. Dosyalar, taahhütler ve kaydedilmiş bağlantılar aynı kalır."</string>
+    <string name="git_m3_upstream_help" formatted="false">"Bir üst akış olmadan, çekme ve gönderme nereye gideceğini bilmez."</string>
+    <string name="git_m3_use_branch">"%1$s sürümünü kullan"</string>
+    <string name="git_m3_use_edited" formatted="false">"Düzenlenmiş sürümümü kullan"</string>
+    <string name="git_m3_use_phone" formatted="false">"Bu telefonun sürümünü kullan"</string>
+    <string name="git_m3_use_remote">"%1$s’in sürümünü kullan"</string>
+    <string name="git_m3_vault_settings" formatted="false">"Kasa ayarları"</string>
+    <string name="git_m3_vs">"vs %1$s"</string>
+    <string name="git_m3_what_each_does" formatted="false">"Her birinin yaptığı"</string>
+    <string name="git_m3_workspace" formatted="false">"Çalışma alanı"</string>
+    <string name="git_m3_yours">"↑%1$d sizin"</string>
     <string name="git_native_public_only" formatted="false">"Git’in yerel protokolü yalnızca herkese açık erişimi destekler. Kimlik doğrulama için HTTPS veya SSH kullanın."</string>
     <string name="gitops_action_failed" formatted="false">"Git bu işlemi tamamlayamadı"</string>
     <string name="gitops_branch_action_failed" formatted="false">"Dal işlemi tamamlanamadı"</string>
@@ -375,11 +1071,27 @@
     <string name="guide_step">"Adım %1$d / 4"</string>
     <string name="help_copy_email" formatted="false">"Destek e-postasını kopyala"</string>
     <string name="help_email_copied" formatted="false">"Destek e-postası kopyalandı"</string>
-    <string name="help_feedback" formatted="false">"Geri Bildirim Gönder"</string>
+    <string name="help_feedback" formatted="false">"Geri bildirim gönder"</string>
     <string name="help_open_failed" formatted="false">"Bu bağlantıyı açabilecek bir uygulama bulunamadı. Destek e-posta adresini kopyalayabilirsiniz."</string>
     <string name="help_title" formatted="false">"Yardım"</string>
     <string name="history_screen" formatted="false">"Geçmiş"</string>
     <string name="http_transport_warning" formatted="false">"HTTP şifrelenmez. Depo verileri ve girdiğiniz kullanıcı adı veya belirteç aktarım sırasında okunabilir. Mümkün olduğunda HTTPS kullanın."</string>
+    <string name="l10n_a11y_pair">"%1$s, %2$s"</string>
+    <string name="l10n_added_count">"+%1$d"</string>
+    <string name="l10n_background_unavailable" formatted="false">"Background Sync kullanılamıyor"</string>
+    <string name="l10n_clone_preview_error" formatted="false">"Kimlik doğrulama başarısız oldu. Tekrar giriş yapın ve tekrar deneyin."</string>
+    <string name="l10n_count">"%1$d"</string>
+    <string name="l10n_meta_pair">"%1$s · %2$s"</string>
+    <string name="l10n_not_vault_file" formatted="false">"Bu kasadaki bir dosya değil"</string>
+    <string name="l10n_push_local_branch" formatted="false">"Göndermeden önce yerel bir dala geçin"</string>
+    <string name="l10n_removed_count">"−%1$d"</string>
+    <string name="l10n_save_conditions" formatted="false">"Background Sync koşulları kaydedilemedi"</string>
+    <string name="l10n_save_default_author" formatted="false">"Varsayılan yazar kaydedilemedi"</string>
+    <string name="l10n_save_ssh_key" formatted="false">"Bu telefonun SSH anahtarı kaydedilemedi"</string>
+    <string name="l10n_save_theme" formatted="false">"Tema kaydedilemedi"</string>
+    <string name="l10n_save_vault_preferences" formatted="false">"Kasadaki tercihler kaydedilemedi"</string>
+    <string name="l10n_unsupported_vault_preference" formatted="false">"Desteklenmeyen kasa tercihi"</string>
+    <string name="l10n_vault_settings_failed" formatted="false">"Kasa ayarları güncellenemedi"</string>
     <string name="language_settings_legacy" formatted="false">"Android 13 öncesinde bu uygulama cihazın dilini kullanır."</string>
     <string name="language_settings_title" formatted="false">"Dil"</string>
     <string name="language_settings_unavailable" formatted="false">"Dil ayarları açılamadı."</string>
@@ -421,12 +1133,213 @@
     <string name="lfs_locks_server">"LFS sunucusu: %1$s"</string>
     <string name="lfs_locks_title" formatted="false">"Sunucu kilitleri"</string>
     <string name="lfs_locks_unsupported" formatted="false">"Bu sunucu Git LFS kilitlerini desteklemiyor."</string>
+    <string name="lfs_m3_allow_downloads" formatted="false">"İndirmelere izin ver"</string>
+    <string name="lfs_m3_allow_uploads" formatted="false">"Yüklemelere izin ver"</string>
+    <string name="lfs_m3_apply_rules" formatted="false">"Kuralları uygula"</string>
+    <string name="lfs_m3_apply_tracking" formatted="false">"İzleme seçimini uygula"</string>
+    <string name="lfs_m3_approval_scope" formatted="false">"Bu adresi depo sahibine kontrol ettirin. Onay yalnızca bu depo, uzak, uç nokta ve bu telefondaki yön için geçerlidir."</string>
+    <string name="lfs_m3_approvals_title" formatted="false">"LFS uç noktası onayları"</string>
+    <string name="lfs_m3_attention" formatted="false">"Git LFS ilgilenmenizi gerektiriyor"</string>
+    <string name="lfs_m3_auth_new" formatted="false">"Ayrı kullanıcı adı ve belirteç"</string>
+    <string name="lfs_m3_auth_reuse" formatted="false">"Kayıtlı uç nokta kimlik bilgilerini kullan"</string>
+    <string name="lfs_m3_branch_remote">"%1$s · uzak %2$s"</string>
+    <string name="lfs_m3_cache_missing" formatted="false">"Önbellekte yok"</string>
+    <string name="lfs_m3_cache_verified" formatted="false">"Doğrulanmış önbellek"</string>
+    <string name="lfs_m3_cancel" formatted="false">"Vazgeç"</string>
+    <string name="lfs_m3_candidate_changed">"%1$s · değiştirildi, henüz izlenmiyor"</string>
+    <string name="lfs_m3_candidate_new">"%1$s · yeni, henüz izlenmiyor"</string>
+    <string name="lfs_m3_check_ownership" formatted="false">"Sahipliği kontrol et"</string>
+    <string name="lfs_m3_create_body" formatted="false">"Diğer bağlantılar bunu siz serbest bırakana kadar kilitli olarak görür. Bu telefondaki hiçbir şey değişmez."</string>
+    <string name="lfs_m3_download_body" formatted="false">"Bu depo, dosya içeriklerini ayrı bir LFS sunucusundan indirmek istiyor."</string>
+    <string name="lfs_m3_download_missing" formatted="false">"Eksik içerikleri indir"</string>
+    <string name="lfs_m3_download_progress" formatted="false">"İndirme ilerlemesi"</string>
+    <string name="lfs_m3_download_title" formatted="false">"LFS indirmelerine izin verilsin mi?"</string>
+    <string name="lfs_m3_downloading_prepare" formatted="false">"Eksik içerikler indiriliyor"</string>
+    <string name="lfs_m3_downloads" formatted="false">"İndirmeler"</string>
+    <string name="lfs_m3_endpoint_auth" formatted="false">"Uç nokta kimlik doğrulaması"</string>
+    <string name="lfs_m3_endpoints_empty" formatted="false">"Onaylı özel LFS uç noktası yok"</string>
+    <string name="lfs_m3_endpoints_intro" formatted="false">"Depolarınızın kullanabileceği ayrı LFS sunucuları. İptal etmek, gelecekteki aktarımı durdurur; zaten çalışan her şey tamamlanabilir."</string>
+    <string name="lfs_m3_endpoints_none" formatted="false">"Ayarlar · onaylanmış yok"</string>
+    <string name="lfs_m3_endpoints_title" formatted="false">"LFS uç noktaları"</string>
+    <string name="lfs_m3_error_changed" formatted="false">"İnceleme sırasında onaylar değiştirildi. Yeniden yükleyin ve aktarımı tekrar gözden geçirin."</string>
+    <string name="lfs_m3_ext_note_existing" formatted="false">"Zaten kendi izleme seçeneğine sahip dosyalar bunu korur."</string>
+    <string name="lfs_m3_ext_note_limits" formatted="false">"Yoksayılan dosyalar yoksayılan halinde kalır. Depolama sınırları Git sunucunuza bağlıdır."</string>
+    <string name="lfs_m3_ext_note_stage" formatted="false">"Sadece .gitattributes değişir. Dosyaları pointer haline getirmek için sahneleyin."</string>
+    <string name="lfs_m3_ext_scope" formatted="false">"Her klasördeki mevcut ve gelecekteki eşleşen dosyaları kapsar. Eşleşme büyük/küçük harfe duyarlıdır."</string>
+    <string name="lfs_m3_ext_title" formatted="false">"Eşleşen uzantılar izlensin mi?"</string>
+    <string name="lfs_m3_extensions_updated" formatted="false">"Uzantı kuralları güncellendi. Dosyaları .gitattributes aşamasına getirin ve ardından commit yapın."</string>
+    <string name="lfs_m3_fact_endpoint" formatted="false">"LFS uç noktası"</string>
+    <string name="lfs_m3_fact_remote" formatted="false">"Git uzak deposu"</string>
+    <string name="lfs_m3_fact_repository" formatted="false">"Depo"</string>
+    <string name="lfs_m3_force_ack" formatted="false">"Birinin bu dosyayı hala düzenliyor olabileceğini anlıyorum."</string>
+    <string name="lfs_m3_force_title" formatted="false">"Başka bir sahibin kilidi zorla kaldırılsın mı?"</string>
+    <string name="lfs_m3_force_warning" formatted="false">"Bu, başka bir bağlantı tarafından tutulan kilidi kaldırır. Önce sahibine danışın."</string>
+    <string name="lfs_m3_http_warning" formatted="false">"HTTP şifrelenmemiştir. Depo verileri ve herhangi bir kullanıcı adı veya token transit sırasında okunabilir. Mümkün olduğunda HTTPS kullanın."</string>
+    <string name="lfs_m3_keep_body" formatted="false">"Açık regular Git kuralları ekler. İçerikler commitlerinize gider. 100 MiB üzerindeki dosyalar hâlâ LFS gerektirir."</string>
+    <string name="lfs_m3_keep_git" formatted="false">"Regular Git içinde tut."</string>
+    <string name="lfs_m3_keep_title" formatted="false">"Bunları regular Git içinde tutmalı mıyız?"</string>
+    <string name="lfs_m3_list_read_only" formatted="false">"Yalnızca okunur liste"</string>
+    <string name="lfs_m3_lock_a_file" formatted="false">"Bir dosyayı kilitle"</string>
+    <string name="lfs_m3_lockable_caption" formatted="false">"Sadece .gitattributes içinde kilitlenebilir olarak işaretlenmiş dosyalar burada görünür."</string>
+    <string name="lfs_m3_locked" formatted="false">"kilitli"</string>
+    <string name="lfs_m3_locked_on_server" formatted="false">"Sunucuda kilitlendi"</string>
+    <string name="lfs_m3_locks_empty" formatted="false">"Bu dalda hiçbir şey kilitli değil."</string>
+    <string name="lfs_m3_locks_intro" formatted="false">"Kilidi değiştirmeden önce sahipliği kontrol edin. Kilitler sunucuda bulunur; dosyalarınız ve gönderimleriniz yerinde kalır."</string>
+    <string name="lfs_m3_match_extensions" formatted="false">"Uzantıları eşleştir…"</string>
+    <string name="lfs_m3_needs_choice" formatted="false">"Takip seçimi gerekiyor"</string>
+    <string name="lfs_m3_no_lockable" formatted="false">"Kilidi açılmamış kilitlenebilir dosya yok."</string>
+    <string name="lfs_m3_no_tracked" formatted="false">"Bu dalda henüz LFS’de depolanan dosya yok."</string>
+    <string name="lfs_m3_not_shared" formatted="false">"GitHub oturum açmanız bu sunucu ile paylaşılmıyor. Ayrı kimlik bilgileri bu telefonda şifrelenir. Bunları Ayarlar › LFS uç noktalarında yönetin."</string>
+    <string name="lfs_m3_ok" formatted="false">"Tamam"</string>
+    <string name="lfs_m3_owned_here" formatted="false">"Bu bağlantının sahibi"</string>
+    <string name="lfs_m3_owner">"Sahip: %1$s"</string>
+    <string name="lfs_m3_public_access" formatted="false">"Herkese açık erişim"</string>
+    <string name="lfs_m3_refresh_required" formatted="false">"Bu işe yaradı, ancak yeni LFS durumu yüklenmedi. Başka bir şey yapmadan önce yeniden yükleyin."</string>
+    <string name="lfs_m3_release_body" formatted="false">"Başkaları tekrar kilitleyip düzenleyebilir. Yerel dosyanız ve commit’leriniz olduğu gibi kalır."</string>
+    <string name="lfs_m3_release_review" formatted="false">"Serbest bırak…"</string>
+    <string name="lfs_m3_reload" formatted="false">"LFS durumunu yeniden yükle"</string>
+    <string name="lfs_m3_reset_all" formatted="false">"Tüm LFS uç noktası onaylarını sıfırla"</string>
+    <string name="lfs_m3_reset_body" formatted="false">"Bu telefondaki her özel uç nokta onayını ve kaydedilmiş kimlik bilgilerini kaldırır. Her uç nokta ve yön yeni bir inceleme gerektirecek."</string>
+    <string name="lfs_m3_reset_confirm" formatted="false">"Onayları sıfırla"</string>
+    <string name="lfs_m3_reset_title" formatted="false">"Tüm LFS uç noktası onayları sıfırlansın mı?"</string>
+    <string name="lfs_m3_review_changed" formatted="false">"Bunu açtığınızdan beri kilitler değişti. İptal edin ve sahipliği tekrar kontrol edin."</string>
+    <string name="lfs_m3_revoke" formatted="false">"Onayı kaldır"</string>
+    <string name="lfs_m3_revoke_download_body">"%1$s’den gelecekte yapılacak indirmeler yeni bir inceleme gerektirecek. Yükleme onayı ve kaydedilmiş kimlik bilgileri kalır."</string>
+    <string name="lfs_m3_revoke_download_title" formatted="false">"İndirme onayı kaldırılsın mı?"</string>
+    <string name="lfs_m3_revoke_downloads" formatted="false">"İndirme iznini kaldır"</string>
+    <string name="lfs_m3_revoke_upload_body">"%1$s’e gelecekte yapılacak yüklemeler yeni bir inceleme gerektirecek. İndirme onayı ve kaydedilmiş kimlik bilgileri kalır."</string>
+    <string name="lfs_m3_revoke_upload_title" formatted="false">"Yükleme onayı kaldırılsın mı?"</string>
+    <string name="lfs_m3_revoke_uploads" formatted="false">"Yükleme iznini kaldır"</string>
+    <string name="lfs_m3_scope_read_only" formatted="false">"Salt okunur liste · sahiplik doğrulanmadı"</string>
+    <string name="lfs_m3_scope_verified" formatted="false">"Bu bağlantı ile sahiplik doğrulandı"</string>
+    <string name="lfs_m3_secret" formatted="false">"token veya şifre"</string>
+    <string name="lfs_m3_separate_credentials" formatted="false">"Ayrı şifrelenmiş kimlik bilgileri"</string>
+    <string name="lfs_m3_server">"LFS sunucusu %1$s"</string>
+    <string name="lfs_m3_ssh_authorization" formatted="false">"SSH üzerinden yetkilendirme"</string>
+    <string name="lfs_m3_ssh_review" formatted="false">"Bu HTTP uç noktası doğrulanmış SSH sunucusundan kısa süreli yetkilendirme alır. SSH anahtarınız bu telefonda kalır. Yetkilendirme iletim sırasında okunabilir ve asla kaydedilmez."</string>
+    <string name="lfs_m3_stale" formatted="false">"Bunu açtığınızdan beri dosyalar değişti. İptal edin ve tekrar gözden geçirin."</string>
+    <string name="lfs_m3_state_pointer" formatted="false">"İşaretçi · içeriği indir"</string>
+    <string name="lfs_m3_stored_body" formatted="false">"Commitler küçük işaretçileri tutar. Pull, içeriği indirir; push, önce onları yükler."</string>
+    <string name="lfs_m3_stored_kicker" formatted="false">"LFS’de saklanıyor"</string>
+    <string name="lfs_m3_stored_locked">"%1$s · %2$d kilitlendi"</string>
+    <string name="lfs_m3_subtitle">"%1$s · %2$s · Git LFS"</string>
+    <string name="lfs_m3_tab_files" formatted="false">"Dosyalar"</string>
+    <string name="lfs_m3_tab_locks" formatted="false">"Kilitler"</string>
+    <string name="lfs_m3_title" formatted="false">"Büyük dosyalar"</string>
+    <string name="lfs_m3_track_body" formatted="false">"Aşağıdaki dosyalar için tam yol LFS kuralları ekler. Depolama ve bant genişliği sınırları Git sunucunuza bağlıdır. Değişiklikleri hazırlayın, sonra commit yapın."</string>
+    <string name="lfs_m3_track_title" formatted="false">"Bu dosyalar için LFS kullanılsın mı?"</string>
+    <string name="lfs_m3_tracked_files" formatted="false">"Takip edilen dosyalar"</string>
+    <string name="lfs_m3_tracking_caption" formatted="false">"Sadece .gitattributes değişiyor. Dosyalarınız onları hazırlayana kadar yerinde kalır."</string>
+    <string name="lfs_m3_tracking_updated" formatted="false">"İzleme kuralları güncellendi. .gitattributes ve dosyaları hazırlayın, ardından gönderin."</string>
+    <string name="lfs_m3_unsupported" formatted="false">"Bu sunucu Git LFS kilitlerini desteklemiyor."</string>
+    <string name="lfs_m3_upload_body" formatted="false">"Bu depo dosya içeriklerini ayrı bir LFS sunucusuna göndermek istiyor."</string>
+    <string name="lfs_m3_upload_title" formatted="false">"LFS yüklemelerine izin verilsin mi?"</string>
+    <string name="lfs_m3_uploads" formatted="false">"Yüklemeler"</string>
+    <string name="lfs_m3_username" formatted="false">"LFS uç noktası kullanıcı adı"</string>
     <string name="lfs_tracking_updated" formatted="false">"İzleme kuralları güncellendi. .gitattributes ve seçili dosyaları inceleyip hazırlama alanına ekleyin, ardından commit oluşturun."</string>
     <string name="m3_editor_preview" formatted="false">"Önizleme"</string>
     <string name="m3_editor_write" formatted="false">"Yaz"</string>
     <string name="m3_open_in_editor" formatted="false">"Düzenleyicide aç"</string>
     <string name="m3_paywall_paid_with_play" formatted="false">"Google Play hesabınızla ödenir"</string>
     <string name="m3_pick_a_file" formatted="false">"Değişikliklerini görmek için bir dosya seçin."</string>
+    <string name="m3home_add_first" formatted="false">"İlk kasanızı ekleyin"</string>
+    <string name="m3home_add_vault" formatted="false">"Kasa ekle"</string>
+    <string name="m3home_auth_body" formatted="false">"Notlarınız bu telefonda güvende. Hiçbir şey kaybolmadı."</string>
+    <string name="m3home_auth_headline" formatted="false">"Eşzamanlama duraklatıldı."</string>
+    <string name="m3home_auth_held">"↑%1$d bekletiliyor"</string>
+    <string name="m3home_auth_kicker">"GitHub oturumunun süresi doldu · %1$s"</string>
+    <string name="m3home_auth_paused" formatted="false">"duraklatıldı"</string>
+    <string name="m3home_auth_row_meta">"%1$s · son senkronize edilen %2$s"</string>
+    <string name="m3home_auth_sign_in" formatted="false">"GitHub ile giriş yap"</string>
+    <string name="m3home_auth_unaffected_label" formatted="false">"Etkilenmedi"</string>
+    <string name="m3home_auth_waiting_label" formatted="false">"Oturum açma bekleniyor"</string>
+    <string name="m3home_badge_both">"↓%1$d ↑%2$d"</string>
+    <string name="m3home_badge_checking" formatted="false">"Kontrol ediliyor"</string>
+    <string name="m3home_badge_in_sync" formatted="false">"Eşzamanlı"</string>
+    <string name="m3home_badge_local_only" formatted="false">"yalnızca yerel"</string>
+    <string name="m3home_badge_needs_you" formatted="false">"Sizden gerekli"</string>
+    <string name="m3home_badge_sync_failed" formatted="false">"Senkronize edilmedi"</string>
+    <string name="m3home_badge_syncing" formatted="false">"senkronize ediliyor"</string>
+    <string name="m3home_badge_to_pull">"↓%1$d pull bekliyor"</string>
+    <string name="m3home_badge_to_push">"↑%1$d push bekliyor"</string>
+    <string name="m3home_badge_unreadable" formatted="false">"Okunamıyor"</string>
+    <string name="m3home_cred_github" formatted="false">"GitHub Hesap"</string>
+    <string name="m3home_cred_local" formatted="false">"bu telefonda"</string>
+    <string name="m3home_cred_public" formatted="false">"– Genel"</string>
+    <string name="m3home_cred_ssh" formatted="false">"SSH anahtar"</string>
+    <string name="m3home_cred_token" formatted="false">"token"</string>
+    <string name="m3home_empty_rail_description" formatted="false">"Telefon ve GitHub, henüz senkronize edilecek bir şey yok"</string>
+    <string name="m3home_empty_rail_nothing" formatted="false">"eşzamanlanacak bir şey yok"</string>
+    <string name="m3home_empty_signed_in">"@%1$s olarak oturum açık"</string>
+    <string name="m3home_empty_title" formatted="false">"Henüz kasa yok."</string>
+    <string name="m3home_filter_all">"Tümü (%1$d)"</string>
+    <string name="m3home_filter_attention">"Dikkat %1$d"</string>
+    <string name="m3home_filter_empty_attention" formatted="false">"Hiçbir şey sizden gerekli değil. Her kasa senkronize durumda."</string>
+    <string name="m3home_filter_empty_pinned" formatted="false">"Henüz sabitlenmiş kasa yok. Bir kasaya uzun basın ve Üste Sabitle\'yi seçin."</string>
+    <string name="m3home_filter_pinned" formatted="false">"Sabitlenenler"</string>
+    <string name="m3home_headline_ready_accent" formatted="false">"senkronize edildi."</string>
+    <string name="m3home_how_title" formatted="false">"Nasıl çalışır"</string>
+    <string name="m3home_meta_checked">"%1$s denetlendi"</string>
+    <string name="m3home_meta_checking">"%1$d kontrol ediliyor"</string>
+    <string name="m3home_meta_in_sync">"%1$d eşzamanlı"</string>
+    <string name="m3home_meta_lfs">"%1$s LFS"</string>
+    <string name="m3home_meta_loading" formatted="false">"Kontrol ediliyor…"</string>
+    <string name="m3home_meta_never_checked" formatted="false">"Henüz kontrol edilmedi"</string>
+    <string name="m3home_meta_not_synced" formatted="false">"henüz eşzamanlanmadı"</string>
+    <string name="m3home_meta_unreadable" formatted="false">"bu klasör okunamıyor"</string>
+    <string name="m3home_offline_accent" formatted="false">"Eksikleri kapatırız."</string>
+    <string name="m3home_offline_fab" formatted="false">"Çevrimiçiyken eşzamanlanır"</string>
+    <string name="m3home_offline_headline" formatted="false">"Yazmaya devam edin."</string>
+    <string name="m3home_offline_last_known" formatted="false">"son bilinen: eşzamanlı"</string>
+    <string name="m3home_offline_last_known_behind">"son bilinen: ↓%1$d"</string>
+    <string name="m3home_offline_meta">"bağlantı yok · son denetim %1$s"</string>
+    <string name="m3home_offline_meta_never" formatted="false">"bağlantı yok"</string>
+    <string name="m3home_offline_queued">"↑%1$d sıraya alındı"</string>
+    <string name="m3home_offline_row_meta">"%1$s · senkronize edildi %2$s"</string>
+    <string name="m3home_onboarding_accent" formatted="false">"Her zaman uyumlu."</string>
+    <string name="m3home_onboarding_body" formatted="false">"İstediğiniz depoyu klonlayın, Obsidian veya başka bir uygulamada yazın ve tek dokunuşla eşitleyin."</string>
+    <string name="m3home_onboarding_demo" formatted="false">"Bir demo kasayla etrafa göz atın"</string>
+    <string name="m3home_onboarding_github" formatted="false">"GitHub ile devam et"</string>
+    <string name="m3home_onboarding_headline" formatted="false">"Notlarınız.\nGerçek git."</string>
+    <string name="m3home_onboarding_other" formatted="false">"SSH, token veya başka bir sunucu"</string>
+    <string name="m3home_onboarding_rail" formatted="false">"Telefonunuzdaki notlar ve GitHub\'daki commit\'ler tek bir eşzamanlama noktasında buluşuyor"</string>
+    <string name="m3home_onboarding_save_error" formatted="false">"Seçiminiz kaydedilemedi. Tekrar deneyin."</string>
+    <string name="m3home_onboarding_this_phone" formatted="false">"bu telefon"</string>
+    <string name="m3home_pin" formatted="false">"En üste sabitle"</string>
+    <string name="m3home_pin_failed" formatted="false">"Sabitleme kaydedilemedi. Tekrar deneyin."</string>
+    <string name="m3home_pinned" formatted="false">"Sabitlenenler"</string>
+    <string name="m3home_rail_github" formatted="false">"GitHub"</string>
+    <string name="m3home_rail_phone" formatted="false">"Telefon"</string>
+    <string name="m3home_rail_remote" formatted="false">"Uzak"</string>
+    <string name="m3home_remove" formatted="false">": kaldır GitSync.md"</string>
+    <string name="m3home_row_actions" formatted="false">"Kasa işlemleri"</string>
+    <string name="m3home_session_dismiss" formatted="false">"Kapat"</string>
+    <string name="m3home_settings" formatted="false">"Ayarlar"</string>
+    <string name="m3home_settings_signed_in">"Ayarlar, şu kullanıcıyla giriş yapıldı %1$s"</string>
+    <string name="m3home_start_github" formatted="false">"GitHub\'dan klonla"</string>
+    <string name="m3home_start_github_detail" formatted="false">"depolarınızdan birini seçin"</string>
+    <string name="m3home_start_local" formatted="false">"Bu telefonda klonları bul"</string>
+    <string name="m3home_start_local_detail" formatted="false">"Obsidian, MGit, Termux…"</string>
+    <string name="m3home_start_publish" formatted="false">"Bir klasör yayımla"</string>
+    <string name="m3home_start_publish_detail" formatted="false">"bir klasörü yeni bir depoya dönüştürür"</string>
+    <string name="m3home_start_url" formatted="false">"Bir URL yapıştırın"</string>
+    <string name="m3home_start_url_detail" formatted="false">"genel veya özel herhangi bir uzak Git deposu"</string>
+    <string name="m3home_start_with" formatted="false">"Başlangıç"</string>
+    <string name="m3home_sync_all" formatted="false">"Tümünü eşzamanla"</string>
+    <string name="m3home_sync_all_meta">"↓%1$d ↑%2$d"</string>
+    <string name="m3home_sync_busy" formatted="false">"Tümünü çekme zaten çalışıyor. Bitirdiğinde tekrar deneyin."</string>
+    <string name="m3home_sync_done">"Senkronize edildi · %1$d çekildi · %2$d gönderildi"</string>
+    <string name="m3home_sync_failed">"%1$s senkronize edilemedi"</string>
+    <string name="m3home_sync_start_failed" formatted="false">"Tümünü senkronize etme başlatılamadı. Ayarlarda kasa listenizi kontrol edin."</string>
+    <string name="m3home_syncing" formatted="false">"senkronize ediliyor"</string>
+    <string name="m3home_syncing_meta">"%1$d / %2$d"</string>
+    <string name="m3home_time_days">"%1$d g önce"</string>
+    <string name="m3home_time_hours">"%1$dh önce"</string>
+    <string name="m3home_time_minutes_long">"%1$d dk önce"</string>
+    <string name="m3home_time_minutes_short">"%1$dm önce"</string>
+    <string name="m3home_time_now" formatted="false">"– şu anda"</string>
+    <string name="m3home_time_yesterday" formatted="false">"dün"</string>
+    <string name="m3home_unpin" formatted="false">"Sabitlemeyi kaldır"</string>
     <string name="modified" formatted="false">"Değiştirildi"</string>
     <string name="move_cancelled" formatted="false">"Taşıma iptal edildi. Orijinal çalışma kopyası korundu."</string>
     <string name="move_confirm_action" formatted="false">"Taşı"</string>
@@ -450,6 +1363,22 @@
     <string name="move_recovery_done" formatted="false">"Taşıma kurtarması tamamlandı"</string>
     <string name="move_recovery_removed" formatted="false">"Kurtarma kopyası kaldırıldı"</string>
     <string name="move_title_restore" formatted="false">"Kurtarma kopyasını geri yükle"</string>
+    <string name="newfile_m3_blank" formatted="false">"Boş"</string>
+    <string name="newfile_m3_builtin_idea" formatted="false">"fikir"</string>
+    <string name="newfile_m3_create_open" formatted="false">"Oluştur ve aç"</string>
+    <string name="newfile_m3_exists">"%1$s, %2$s içinde zaten var. Başka bir ad deneyin."</string>
+    <string name="newfile_m3_file_name" formatted="false">"Dosya adı"</string>
+    <string name="newfile_m3_folder" formatted="false">"Klasör"</string>
+    <string name="newfile_m3_folder_name" formatted="false">"Klasör adı"</string>
+    <string name="newfile_m3_in">"%1$s içinde"</string>
+    <string name="newfile_m3_invalid" formatted="false">"/ veya \\ içermeyen bir isim kullanın."</string>
+    <string name="newfile_m3_invalid_dots" formatted="false">"\".\" ve \"..\" ayrılmıştır. Başka bir isim deneyin."</string>
+    <string name="newfile_m3_note" formatted="false">"Not"</string>
+    <string name="newfile_m3_template">"Şablon · %1$s"</string>
+    <string name="newfile_m3_title_folder" formatted="false">"Yeni klasör"</string>
+    <string name="newfile_m3_title_note" formatted="false">"Yeni not"</string>
+    <string name="newfile_m3_today" formatted="false">"Bugünün tarihi"</string>
+    <string name="newfile_m3_too_long" formatted="false">"Bu isim çok uzun. Daha kısa bir isim kullanın."</string>
     <string name="notes_acknowledge" formatted="false">"Anladım"</string>
     <string name="notes_connections_body" formatted="false">"GitHub hesaplarını ve depo yazar kimliğini yönetin. HTTPS veya SSH ile bağlanın, klon depolamasını seçin, yerel kopyaları yeniden bağlayın ve depo taşıma ya da kaldırma işlemlerini inceleyin."</string>
     <string name="notes_connections_title" formatted="false">"Bağlantılar ve depolama"</string>
@@ -458,6 +1387,10 @@
     <string name="notes_version">"Android %1$s · derleme %2$d"</string>
     <string name="notes_workflow_body" formatted="false">"Dosyalara göz atıp düzenleyin, hazırlanan ve hazırlanmayan farkları inceleyin, yerel commit oluşturun, mevcut commitleri gönderin; dallar, geçmiş, etiketler ve rebase ile çalışın."</string>
     <string name="notes_workflow_title" formatted="false">"Depo iş akışı"</string>
+    <string name="notification_m3_open_obsidian" formatted="false">"Obsidian içinde aç"</string>
+    <string name="notification_m3_pulled" formatted="false">"Yeni değişiklikler arka planda çekildi."</string>
+    <string name="notification_m3_see_changes" formatted="false">"Değişikliklere bak"</string>
+    <string name="notification_m3_updated">"%1$s güncellendi"</string>
     <string name="obsidian_forgotten" formatted="false">"Gelecekteki aktarımlar devre dışı. Bu klasörü yeniden bağlamak için yeni bir bağlantı hazırlayın."</string>
     <string name="obsidian_interrupted" formatted="false">"Bağlantı durduruldu. Hiçbir istek otomatik olarak tekrarlanmaz. Obsidian’da yeniden denemeden önce yeni bir bağlantı hazırlayın."</string>
     <string name="obsidian_return" formatted="false">"Obsidian’a dön"</string>
@@ -560,6 +1493,47 @@
     <string name="pull_all_widget_description" formatted="false">"GitSync.md uygulamasını açmadan tüm yerel depolardan güncellemeleri alır ve fast-forward uygular."</string>
     <string name="pull_all_widget_subtitle" formatted="false">"Yalnızca alma ve fast-forward"</string>
     <string name="pull_screen" formatted="false">"Pull"</string>
+    <string name="pullall_m3_again" formatted="false">"Tümünü yeniden al"</string>
+    <string name="pullall_m3_attention_blocked" formatted="false">"Değişmeden bırakıldı. Önce yerel değişiklikleri işleyin veya saklayın."</string>
+    <string name="pullall_m3_attention_failed" formatted="false">"Güvenle çekilemedi. Bağlantıyı ve klasör erişimini kontrol edin."</string>
+    <string name="pullall_m3_attention_lfs" formatted="false">"Çekildi. Bazı Git LFS dosyalarının hâlâ indirilmesi gerekiyor."</string>
+    <string name="pullall_m3_background" formatted="false">"Arka planda tümünü al"</string>
+    <string name="pullall_m3_blocked" formatted="false">"Değişmeden bırakıldı. Yerel değişiklikleri işleyin veya saklayın ya da açık Git işlemini tamamlayın, sonra tekrar deneyin."</string>
+    <string name="pullall_m3_clear" formatted="false">"Arka plan özetini temizle"</string>
+    <string name="pullall_m3_clear_body" formatted="false">"Bu, en son arka plan özetini siler. Kasalarınız ve ayarlarınız olduğu gibi kalır. Kesintiye uğrayan iş kendi kendine yeniden başlamaz."</string>
+    <string name="pullall_m3_clear_confirm" formatted="false">"Özeti temizle"</string>
+    <string name="pullall_m3_clear_title" formatted="false">"Arka plan özeti temizlensin mi?"</string>
+    <string name="pullall_m3_complete" formatted="false">"Tümünü al tamamlandı. Kayıtlı özeti inceleyin."</string>
+    <string name="pullall_m3_control_failed" formatted="false">"Bu değişmedi. Bu ekranı tekrar açın ve tekrar deneyin."</string>
+    <string name="pullall_m3_counts">"Güncellendi %1$d · Mevcut %2$d · LFS %3$d · Engellendi %4$d · Başarısız %5$d"</string>
+    <string name="pullall_m3_current" formatted="false">"Gelen değişiklik yok"</string>
+    <string name="pullall_m3_empty" formatted="false">"Henüz çekilecek kasa yok. Önce birini kopyalayın veya ekleyin."</string>
+    <string name="pullall_m3_failed" formatted="false">"Tüm çekme işlemi bir hatayla durduruldu. Bazı çekmeler tamamlanmış olabilir. Yeniden çalıştırmadan önce özet ve her kasayı kontrol edin."</string>
+    <string name="pullall_m3_help" formatted="false">"Tüm çekme aracını ana ekranınıza veya Hızlı Ayarlar\'a ekleyin. Her ikisi de uygulamayı açmadan bir kez çalışır. Ne olduğunu görmek için buraya geri dönün."</string>
+    <string name="pullall_m3_interrupted" formatted="false">"Tüm çekme işlemi kesildi ve kendi kendine yeniden başlamaz. Bir çekme işlemi önce tamamlanmış olabilir. Tekrar çalıştırmadan önce her kasayı kontrol edin."</string>
+    <string name="pullall_m3_item_failed" formatted="false">"Güvenli bir şekilde çekilemedi. Bağlantıyı ve klasör erişimini kontrol edin, ardından Git dosyasındaki farklılıklara bakın."</string>
+    <string name="pullall_m3_lfs" formatted="false">"Çekildi. Bazı Git LFS dosyalarının hâlâ indirilmeye ihtiyacı var. Yeniden denemek için Git LFS dosyasını açın."</string>
+    <string name="pullall_m3_not_run" formatted="false">"Çalıştırılmadı"</string>
+    <string name="pullall_m3_progress_cd" formatted="false">"Tüm çekme işlemi ilerlemesi"</string>
+    <string name="pullall_m3_pulling" formatted="false">"Pull yapılıyor…"</string>
+    <string name="pullall_m3_running" formatted="false">"Uygulamayı açmadan tüm çekme işlemi çalışıyor. Durdur\'a dokunduğunuzda geri kalan durur."</string>
+    <string name="pullall_m3_scope" formatted="false">"Bu telefondaki her kasayı fetch ve fast-forward yap. Henüz stage edilmemiş, commit edilmemiş veya push yapılmamış değişikliklerini çek."</string>
+    <string name="pullall_m3_source_shortcut" formatted="false">"kısayol"</string>
+    <string name="pullall_m3_source_tile" formatted="false">"karo"</string>
+    <string name="pullall_m3_source_widget" formatted="false">"widget"</string>
+    <string name="pullall_m3_start" formatted="false">"Tümünü Çeken"</string>
+    <string name="pullall_m3_start_failed" formatted="false">"Tüm çekme işlemi başlatılamadı. Kasa ayarlarını kontrol edin ve tekrar deneyin."</string>
+    <string name="pullall_m3_stop" formatted="false">"Tümünü almayı durdur"</string>
+    <string name="pullall_m3_stopped" formatted="false">"Durduruldu. Çekilmekte olan bir kasa bitmiş olabilir, bu yüzden tekrar denemeden önce durumunu kontrol edin. Kalanlar başlatılmadı."</string>
+    <string name="pullall_m3_stopping" formatted="false">"Bu kasadan sonra durduruluyor..."</string>
+    <string name="pullall_m3_surfaces" formatted="false">"Widget ve Hızlı Ayarlar karosu"</string>
+    <string name="pullall_m3_tile_preview" formatted="false">"GitSync.md\nTümünü çek"</string>
+    <string name="pullall_m3_title" formatted="false">"Tümünü Çeken"</string>
+    <string name="pullall_m3_unreadable" formatted="false">"Kaydedilen arka plan özeti okunamıyor ve saklandı. Başka bir arka plan çalıştırmaya başlamadan önce temizleyin."</string>
+    <string name="pullall_m3_updated" formatted="false">"Uzak depodan güncellendi"</string>
+    <string name="pullall_m3_when_source">"%1$s · %2$s\'den"</string>
+    <string name="pullall_m3_widget_name" formatted="false">"Tümünü Çeken"</string>
+    <string name="pullall_m3_widget_sub" formatted="false">"Yalnızca alma ve fast-forward"</string>
     <string name="push_all_repositories" formatted="false">"Gelecekte oluşturulanlar dâhil tüm depolar"</string>
     <string name="push_cancelled" formatted="false">"GitHub bağlantısı iptal edildi."</string>
     <string name="push_channel" formatted="false">"Depo güncellemeleri"</string>
@@ -617,6 +1591,7 @@
     <string name="repository_actions_changes">"Değişen yollar: %1$d"</string>
     <string name="repository_actions_confirm" formatted="false">"Bir kez çalıştır"</string>
     <string name="repository_actions_destination">"İzlenen dal: %1$s / %2$s"</string>
+    <string name="repository_actions_destination_none" formatted="false">"Yukarı Akış: yok"</string>
     <string name="repository_actions_dirty" formatted="false">"Yerel değişiklikler gelen commitlerin alınmasını engelliyor. Önce commit veya stash yapın."</string>
     <string name="repository_actions_diverged" formatted="false">"Yerel ve uzak geçmiş ayrıştı. Git denetimlerinde açıkça merge veya rebase seçin."</string>
     <string name="repository_actions_failed" formatted="false">"İşlem tamamlanamadı. Bağlantıyı, hesabı, güveni ve klasör erişimini kontrol edin; yeniden denemeden önce geçerli durumu inceleyin."</string>
@@ -681,6 +1656,325 @@
     <string name="resolve_local_superseded" formatted="false">"Seçili depo değişti. Yerel değişiklikleri yeniden inceleyin."</string>
     <string name="resolve_local_title" formatted="false">": Yerel düzenlemeler bu çekme işlemini engeller."</string>
     <string name="settings_folder_unavailable" formatted="false">"Klasör erişimi ilgilenmenizi gerektiriyor"</string>
+    <string name="settings_m3_account_meta">"@%1$s · GitHub"</string>
+    <string name="settings_m3_accounts" formatted="false">"GitHub hesapları"</string>
+    <string name="settings_m3_app_storage" formatted="false">"Uygulama depolaması"</string>
+    <string name="settings_m3_author_account_meta">"%1$s · henüz bu kasada bir şey kaydedilmedi"</string>
+    <string name="settings_m3_author_account_meta_global">"%1$s · henüz varsayılan kaydedilmedi"</string>
+    <string name="settings_m3_author_changed" formatted="false">"Bu yazar GitSync.md dışında değiştirildi, belki Mac\'inizde Git tarafından. Şimdi ne dediğini görmek için yeniden yükleyin."</string>
+    <string name="settings_m3_author_default" formatted="false">"Mặcını"</string>
+    <string name="settings_m3_author_email" formatted="false">"Yazar E-postası"</string>
+    <string name="settings_m3_author_from_account" formatted="false">"GitHub hesabınızdan"</string>
+    <string name="settings_m3_author_global_subtitle" formatted="false">"Kendi yazarı olmayan her kasa"</string>
+    <string name="settings_m3_author_help_changed" formatted="false">"Kaydetmeden önce yeniden yükleyin, yoksa daha yeni yazarı değiştireceksiniz."</string>
+    <string name="settings_m3_author_help_match" formatted="false">"Hem sizin olarak görünmeleri için Mac\'inizde Git tarafından kullanılan e-postayla eşleştirin."</string>
+    <string name="settings_m3_author_help_noreply" formatted="false">"GitHub’un özel adresi, böylece gerçek e-postanız gizli kalır."</string>
+    <string name="settings_m3_author_intro" formatted="false">"Bu kasadaki yeni taahhütler bu ad ve e-posta kullanılarak yapılır. Zaten yaptığınız taahhütler kendi yazarını korur."</string>
+    <string name="settings_m3_author_intro_global" formatted="false">"Kasalarınızdaki yeni commitlemeler, bir kasa kendi bilgilerini kaydetmedikçe bu adı ve e-postayı kullanır. Zaten yaptığınız commitler yazarlarını korur."</string>
+    <string name="settings_m3_author_name" formatted="false">"Yazar Adı"</string>
+    <string name="settings_m3_author_override" formatted="false">"Geçersiz kıl"</string>
+    <string name="settings_m3_author_preview_message" formatted="false">"GitSync.md\'den güncelleme"</string>
+    <string name="settings_m3_author_preview_meta">"%1$s &lt;%2$s&gt; · şimdi"</string>
+    <string name="settings_m3_author_preview_title" formatted="false">"Bir sonraki kaydınız şöyle olacak"</string>
+    <string name="settings_m3_author_reading" formatted="false">"Bu kasanın Git yapılandırması okunuyor…"</string>
+    <string name="settings_m3_author_save" formatted="false">"Yazarı kaydet"</string>
+    <string name="settings_m3_author_save_note" formatted="false">"Kaydetmek bu sayfayı kapatır. Hiçbir şey kaydedilmez."</string>
+    <string name="settings_m3_author_saved_global" formatted="false">"Tüm kasalar için kaydedildi"</string>
+    <string name="settings_m3_author_saved_global_meta">"bu telefonda · %1$s üzerine yazıyor"</string>
+    <string name="settings_m3_author_saved_vault" formatted="false">"Bu kasada kaydedildi"</string>
+    <string name="settings_m3_author_saved_vault_meta">".git/config · %1$s üzerine yazıyor"</string>
+    <string name="settings_m3_author_scope" formatted="false">"Sadece bu kasa değişiyor. Diğer kasalarınız kendi yazarını korur veya senkronize oldukları GitHub hesabını kullanır."</string>
+    <string name="settings_m3_author_scope_global" formatted="false">"Kendi .git/config dosyasında yazar kaydedilmiş olan kasalar bunu korur. Hala tek bir kasayı onun Kasa ayarlarında değiştirebilirsiniz."</string>
+    <string name="settings_m3_author_use_account" formatted="false">"Bunun yerine GitHub hesabımı kullan"</string>
+    <string name="settings_m3_author_your_account" formatted="false">"sizin GitHub hesabınız"</string>
+    <string name="settings_m3_background_on">"açık · %1$d kasa"</string>
+    <string name="settings_m3_background_sync" formatted="false">"Background Sync"</string>
+    <string name="settings_m3_bg_attention_short" formatted="false">"İnceleme gerekli"</string>
+    <string name="settings_m3_bg_charging" formatted="false">"Şarj edilirken"</string>
+    <string name="settings_m3_bg_cond_any" formatted="false">"herhangi bir bağlantıda"</string>
+    <string name="settings_m3_bg_cond_both" formatted="false">"yalnızca Wi-Fi üzerindeyken ve şarj olurken"</string>
+    <string name="settings_m3_bg_cond_charging" formatted="false">"yalnızca şarj olurken"</string>
+    <string name="settings_m3_bg_cond_wifi" formatted="false">"yalnızca Wi-Fi üzerindeyken"</string>
+    <string name="settings_m3_bg_conditions_apply">"Her dahil edilen kasayla olduğu gibi %1$s çalıştırır."</string>
+    <string name="settings_m3_bg_connect" formatted="false">"Bağlan"</string>
+    <string name="settings_m3_bg_failed_short" formatted="false">"Senkronize edilemedi"</string>
+    <string name="settings_m3_bg_include_cd">"%1$s\'i Background Sync\'e dahil et"</string>
+    <string name="settings_m3_bg_intro" formatted="false">"Android her yaklaşık 15 dakikada bir veya daha sonra bağlantı, pil ve sistem kısıtlamalarına bağlı olarak kontrolleri planlar. En iyi çaba, asla gerçek zamanlı olmaz."</string>
+    <string name="settings_m3_bg_modes" formatted="false">"Modlar"</string>
+    <string name="settings_m3_bg_never" formatted="false">"Asla"</string>
+    <string name="settings_m3_bg_no_runs" formatted="false">"Henüz çalıştırma yok. Android ilk kontrolü yaklaşık 15 dakika içinde başlatır."</string>
+    <string name="settings_m3_bg_nudge" formatted="false">"GitHub değiştiğinde bir uyarı al"</string>
+    <string name="settings_m3_bg_nudge_sub" formatted="false">"Katıl. Çekme işlemi hemen başlayabilir."</string>
+    <string name="settings_m3_bg_only_when" formatted="false">"Sadece ne zaman"</string>
+    <string name="settings_m3_bg_pull_sub" formatted="false">"Yalnızca fast-forward"</string>
+    <string name="settings_m3_bg_push_sub" formatted="false">"Eğer uzaktan önce hareket ettiyse durur"</string>
+    <string name="settings_m3_bg_recent" formatted="false">"Son çalıştırmalar"</string>
+    <string name="settings_m3_bg_run_failed">"%1$s senkronize edilemedi"</string>
+    <string name="settings_m3_bg_run_local_edits">"%1$s atlandı: yerel düzenlemeler"</string>
+    <string name="settings_m3_bg_run_offline">"%1$s bağlantı bekliyor"</string>
+    <string name="settings_m3_bg_run_power">"%1$s şarj bekliyor"</string>
+    <string name="settings_m3_bg_run_pushed" formatted="false">"↑ gönderildi"</string>
+    <string name="settings_m3_bg_run_review">"%1$s inceleme gerekli"</string>
+    <string name="settings_m3_bg_run_skipped">"%1$s atlandı: %2$s"</string>
+    <string name="settings_m3_bg_run_wifi">"%1$s Wi-Fi bekliyor"</string>
+    <string name="settings_m3_bg_vault_missing" formatted="false">"Klasör artık eklenmedi. Unutun veya kasayı tekrar ekleyin."</string>
+    <string name="settings_m3_bg_vault_not_included" formatted="false">"Dahil değil"</string>
+    <string name="settings_m3_bg_vaults" formatted="false">"Kasalar"</string>
+    <string name="settings_m3_bg_wifi" formatted="false">"Wi-Fi üzerinde"</string>
+    <string name="settings_m3_close" formatted="false">"Kapama"</string>
+    <string name="settings_m3_commit_as" formatted="false">"Şu kişi olarak commit"</string>
+    <string name="settings_m3_debug_app" formatted="false">"Uygulama"</string>
+    <string name="settings_m3_debug_background" formatted="false">"BACKGROUND"</string>
+    <string name="settings_m3_debug_bg" formatted="false">"BG"</string>
+    <string name="settings_m3_debug_clear" formatted="false">": Açık"</string>
+    <string name="settings_m3_debug_copy" formatted="false">"Görünür girişleri kopyala"</string>
+    <string name="settings_m3_debug_day_time">"%1$s %2$s"</string>
+    <string name="settings_m3_debug_error" formatted="false">"Hata"</string>
+    <string name="settings_m3_debug_errors_count">"Hatalar %1$d"</string>
+    <string name="settings_m3_debug_info" formatted="false">"Hata ayıklama bilgilerini göster"</string>
+    <string name="settings_m3_debug_info_tag" formatted="false">"Bilgi"</string>
+    <string name="settings_m3_debug_log" formatted="false">"Hata ayıklama günlüğü"</string>
+    <string name="settings_m3_debug_removed_vault" formatted="false">"kasa kaldırıldı"</string>
+    <string name="settings_m3_debug_share" formatted="false">"Tanılamayı paylaş"</string>
+    <string name="settings_m3_debug_warn" formatted="false">"UYARI"</string>
+    <string name="settings_m3_discord" formatted="false">"Discord\'a katıl"</string>
+    <string name="settings_m3_done" formatted="false">"Bitti"</string>
+    <string name="settings_m3_feedback_subtitle" formatted="false">"E-posta uygulamanızı açar"</string>
+    <string name="settings_m3_forget" formatted="false">"Unut"</string>
+    <string name="settings_m3_full_access" formatted="false">"GitSync.md Tam Erişim"</string>
+    <string name="settings_m3_group_app" formatted="false">"Uygulama"</string>
+    <string name="settings_m3_group_more" formatted="false">"Bağlantılar ve yardım"</string>
+    <string name="settings_m3_group_new_vaults" formatted="false">"Yeni kasalar"</string>
+    <string name="settings_m3_group_purchase" formatted="false">"Satın alma"</string>
+    <string name="settings_m3_group_sync" formatted="false">"Eşzamanla"</string>
+    <string name="settings_m3_help" formatted="false">"Yardım ve hakkında"</string>
+    <string name="settings_m3_how_clone_url" formatted="false">"URL’den klonla"</string>
+    <string name="settings_m3_how_count" formatted="false">"Bilmeniz gereken 4 şey"</string>
+    <string name="settings_m3_how_github" formatted="false">"GitHub"</string>
+    <string name="settings_m3_how_it_works" formatted="false">"Nasıl çalışır"</string>
+    <string name="settings_m3_how_sample" formatted="false">"Çevrimdışı örneği dene"</string>
+    <string name="settings_m3_how_start" formatted="false">"Buradan başla"</string>
+    <string name="settings_m3_how_storage" formatted="false">"Depolama konumu seç"</string>
+    <string name="settings_m3_how_subtitle" formatted="false">"Temel bilgiler için iki dakikalık bakış"</string>
+    <string name="settings_m3_how_title" formatted="false">"GitSync nasıl çalışır"</string>
+    <string name="settings_m3_language" formatted="false">"Dil"</string>
+    <string name="settings_m3_lfs_endpoints" formatted="false">"LFS uç noktaları"</string>
+    <string name="settings_m3_license" formatted="false">"Lisans"</string>
+    <string name="settings_m3_license_subtitle" formatted="false">"Google Play üzerinden tek seferlik satın alma"</string>
+    <string name="settings_m3_move_action" formatted="false">"Kasayı taşı"</string>
+    <string name="settings_m3_move_cancel_meta" formatted="false">"Kasayı eski klasöründe bırakır"</string>
+    <string name="settings_m3_move_confirm_guidance" formatted="false">"Taşıma bitene kadar Obsidian ve diğer uygulamaları her iki klasörden de uzak tutun."</string>
+    <string name="settings_m3_move_confirm_retained" formatted="false">"Orijinali bir kurtarma kopyası olarak kalır."</string>
+    <string name="settings_m3_move_confirm_title" formatted="false">"Bu kasayı taşımak ister misiniz?"</string>
+    <string name="settings_m3_move_copy_note" formatted="false">"Bu başka bir depolama birimine geçer, bu yüzden GitSync.md her dosyayı kopyalar ve kontrol eder, ardından orijinali, kaldırana kadar Move kurtarmalarının altında tutar."</string>
+    <string name="settings_m3_move_finish_meta" formatted="false">"Durduğu yerden devam eder"</string>
+    <string name="settings_m3_move_from" formatted="false">"Kimden"</string>
+    <string name="settings_m3_move_interrupted" formatted="false">"Bir taşıma işlemi kesintiye uğradı. Bulduğumuz her kopya, işlemi bitirene kadar saklanır."</string>
+    <string name="settings_m3_move_into" formatted="false">"İçine"</string>
+    <string name="settings_m3_move_intro" formatted="false">"Tüm kasayı taşır: dosyalar, Git geçmişi ve sahnelenmiş değişiklikler. Hesabı ve commit yazarı da onunla birlikte taşınır."</string>
+    <string name="settings_m3_move_moving_button" formatted="false">"Taşınıyor… GitSync.md açık tutun"</string>
+    <string name="settings_m3_move_progress" formatted="false">"Güvenlik kasası ayarları taşınıyor ve kaydediliyor…"</string>
+    <string name="settings_m3_move_title" formatted="false">"Kasayı taşı"</string>
+    <string name="settings_m3_move_will_move_to" formatted="false">"Şuraya taşınacak"</string>
+    <string name="settings_m3_never_force" formatted="false">"Force-push"</string>
+    <string name="settings_m3_never_overwrite" formatted="false">"Düzenlemelerin üzerine yaz"</string>
+    <string name="settings_m3_never_rebase" formatted="false">"Rebase veya birleştirme"</string>
+    <string name="settings_m3_never_resolve" formatted="false">"Çakışmaları çöz"</string>
+    <string name="settings_m3_never_send" formatted="false">"Dosyalarınızı bize gönderin"</string>
+    <string name="settings_m3_never_switch" formatted="false">"Dalları değiştir"</string>
+    <string name="settings_m3_not_now" formatted="false">"Şu an değil"</string>
+    <string name="settings_m3_obsidian" formatted="false">"Obsidian bağlantıları"</string>
+    <string name="settings_m3_obsidian_add_vault" formatted="false">"Kasa ekle"</string>
+    <string name="settings_m3_obsidian_before" formatted="false">"Başlamadan önce"</string>
+    <string name="settings_m3_obsidian_command" formatted="false">"GitSync.md Connect: Bu kasayı bağlayın"</string>
+    <string name="settings_m3_obsidian_connected" formatted="false">"bağlı"</string>
+    <string name="settings_m3_obsidian_empty" formatted="false">"Önce bir cihaz klasörüne kasa ekleyin veya çoğaltın. Uygulama depolamasındaki kasalar Obsidian tarafından açılamaz."</string>
+    <string name="settings_m3_obsidian_error" formatted="false">"Obsidian bağlanamadı. Klasör erişimini, GitHub HTTPS uzaktan bağlantısını ve kasanın hesabını kontrol edin, ardından yeni bir bağlantı hazırlayın."</string>
+    <string name="settings_m3_obsidian_failed" formatted="false">"Bağlanamadı"</string>
+    <string name="settings_m3_obsidian_forget_action" formatted="false">"Bağlantıyı unut"</string>
+    <string name="settings_m3_obsidian_forget_body">"GitSync.md, %1$s için kimlik bilgilerini Obsidian\'ye iletmeyi durduruyor. Zaten içe aktarılan Obsidian kimlik bilgileri orada kalır; bunları ayrı olarak iptal edin. Dosyalarınız yerinde kalır."</string>
+    <string name="settings_m3_obsidian_forget_title" formatted="false">"Bu bağlantıyı unutmak mı istiyorsunuz?"</string>
+    <string name="settings_m3_obsidian_intro" formatted="false">"Obsidian Git eklentisinin bu kasanın GitHub hesabıyla itip çekmesine izin verin. Kimlik bilgileri eşlik eden eklenti için şifrelenir ve asla bir bağlantıya konmaz."</string>
+    <string name="settings_m3_obsidian_prepare" formatted="false">"Bağlantıyı hazırlayın"</string>
+    <string name="settings_m3_obsidian_prepared_lead" formatted="false">"Bağlantı hazır."</string>
+    <string name="settings_m3_obsidian_prepared_open">"Obsidian içinde %1$s açın ve çalıştırın"</string>
+    <string name="settings_m3_obsidian_prepared_tail" formatted="false">". Daha yeni bir istek bu isteğin yerine geçer."</string>
+    <string name="settings_m3_obsidian_ready">"Şifrelenmiş kimlik bilgileri Obsidian için hazır. Obsidian Git artık %1$s ile senkronize olabilir."</string>
+    <string name="settings_m3_obsidian_req1_body" formatted="false">"Obsidian ve GitSync.md aynı cihaz klasörünü paylaşmalıdır."</string>
+    <string name="settings_m3_obsidian_req1_title" formatted="false">"Aynı klasörü Obsidian içinde açın"</string>
+    <string name="settings_m3_obsidian_req2_body" formatted="false">"Git ve GitSync.md Connect, Obsidian › Ayarlar."</string>
+    <string name="settings_m3_obsidian_req2_title" formatted="false">"İki topluluk eklentisini açın"</string>
+    <string name="settings_m3_obsidian_req3_body" formatted="false">"Kasadaki bağlantıda GitHub hesabı seçilmiş olarak."</string>
+    <string name="settings_m3_obsidian_req3_title" formatted="false">"HTTPS GitHub uzak kullanın"</string>
+    <string name="settings_m3_obsidian_req4_body" formatted="false">"Sadece kimlik bilgilerini verir, dosya veya geçmişi vermez."</string>
+    <string name="settings_m3_obsidian_req4_title" formatted="false">"Kasanın içeriğinde hiçbir şey değişmez"</string>
+    <string name="settings_m3_obsidian_return_failed" formatted="false">"Obsidian açılmadı. Obsidian içindeki GitSync.md Connect’ı açın, sonra tekrar denemeyi deneyin."</string>
+    <string name="settings_m3_obsidian_subtitle" formatted="false">"Obsidian Git + GitSync.md Connect"</string>
+    <string name="settings_m3_obsidian_this_vault" formatted="false">"Bu kasa"</string>
+    <string name="settings_m3_obsidian_vaults" formatted="false">"Bu telefondaki kasalar"</string>
+    <string name="settings_m3_obsidian_waiting" formatted="false">"Obsidian bekleniyor"</string>
+    <string name="settings_m3_off" formatted="false">"kapalı"</string>
+    <string name="settings_m3_on" formatted="false">"açık"</string>
+    <string name="settings_m3_perk_nudge_body" formatted="false">"Bir GitHub itmesi uygulamayı saniyeler içinde uyarır."</string>
+    <string name="settings_m3_perk_nudge_title" formatted="false">"Push Senkronizasyon ile anlık çekmeler"</string>
+    <string name="settings_m3_perk_pull_body" formatted="false">"Yalnızca fast-forward. Olağan dışı her şey sizi bekler."</string>
+    <string name="settings_m3_perk_pull_title" formatted="false">"Arka planda pull"</string>
+    <string name="settings_m3_perk_push_body" formatted="false">"Varsayılan olarak kapalı. Hangi kasaların yayımlayacağını siz seçersiniz."</string>
+    <string name="settings_m3_perk_push_title" formatted="false">"Düzenlemeleri commit ve push et"</string>
+    <string name="settings_m3_privacy" formatted="false">"Gizlilik"</string>
+    <string name="settings_m3_privacy_policy" formatted="false">"Gizlilik Politikası"</string>
+    <string name="settings_m3_push_active" formatted="false">"Aktif"</string>
+    <string name="settings_m3_push_all_repos" formatted="false">"Yeni olanlar dahil tüm depolar"</string>
+    <string name="settings_m3_push_channel_sub" formatted="false">"Depo güncellemeleri bildirim kanalını kullanır"</string>
+    <string name="settings_m3_push_checked">"Kontrol edildi %1$d · güncellendi %2$d · inceleme gerekli %3$d"</string>
+    <string name="settings_m3_push_connect_again" formatted="false">"GitHub yeniden bağlan"</string>
+    <string name="settings_m3_push_connect_sub" formatted="false">"GitSync.md uygulamasını yükle ve depoları seç"</string>
+    <string name="settings_m3_push_connected" formatted="false">"bağlı"</string>
+    <string name="settings_m3_push_connection" formatted="false">"GitHub bağlantısı"</string>
+    <string name="settings_m3_push_err_cancelled" formatted="false">"GitHub bağlantısı iptal edildi. Hiçbir şey değişmedi. Hazır olduğunda tekrar bağlan."</string>
+    <string name="settings_m3_push_err_cancelled_title" formatted="false">"GitHub tarafından geri dönüldü"</string>
+    <string name="settings_m3_push_err_not_selected" formatted="false">"Bu telefondaki hiçbiri GitHub deposu ve dalıyla eşleşmiyor. Depoyu GitHub üzerindeki uygulama erişimine ekleyin veya kasanın bağlantısını ve dalını kontrol edin."</string>
+    <string name="settings_m3_push_err_not_selected_title" formatted="false">"Bu depo uygulama ile paylaşılmamış"</string>
+    <string name="settings_m3_push_err_owner_title" formatted="false">"Sahip girişi gerekli"</string>
+    <string name="settings_m3_push_example_cd" formatted="false">"Örnek bildirim"</string>
+    <string name="settings_m3_push_example_meta" formatted="false">"GitSync.md · Depo güncellemeleri · şimdi"</string>
+    <string name="settings_m3_push_example_note" formatted="false">"Kilit ekranında gizli. Eğer kasa temizse, bunu gördüğünüzde zaten çekilmiş olur."</string>
+    <string name="settings_m3_push_example_repo" formatted="false">"sahibi/kasa"</string>
+    <string name="settings_m3_push_example_title" formatted="false">"Bir dürtü böyle görünür"</string>
+    <string name="settings_m3_push_existing_scope" formatted="false">"Hesap sahibi olarak veya organizasyonun sahibi olarak giriş yapın. Uygulama mevcut depo erişimini korur."</string>
+    <string name="settings_m3_push_github_app" formatted="false">"GitHub App"</string>
+    <string name="settings_m3_push_handoff_body" formatted="false">"Bir tarayıcı sekmesi açıldı. Hesabı ve uygulamanın hangi depoları görebileceğini seçin, sonra geri dönün. Bu ekran, döndüğünüzde tekrar kontrol eder."</string>
+    <string name="settings_m3_push_handoff_title" formatted="false">"GitHub üzerinde bitir"</string>
+    <string name="settings_m3_push_intro" formatted="false">"GitSync.md GitHub App bağlayın ve GitHub\'ye bir gönderme, bu telefonu saniyeler içinde uyarır. Temiz kasalar kendi kendine verileri çeker ve ileri sarar. Tekrar kontrol etmek için bildirime dokunun."</string>
+    <string name="settings_m3_push_never" formatted="false">"Push Senkronizasyonu asla"</string>
+    <string name="settings_m3_push_never_commit" formatted="false">"Gönderimler"</string>
+    <string name="settings_m3_push_never_hint" formatted="false">"Yerel değişiklikler ve bölünmüş geçmişler kasada sizin için bekliyor."</string>
+    <string name="settings_m3_push_never_merge" formatted="false">"Bölünmüş geçmişleri birleştirir"</string>
+    <string name="settings_m3_push_never_switch" formatted="false">"Dalları değiştirir"</string>
+    <string name="settings_m3_push_never_upload" formatted="false">"Değişiklikleri yükler"</string>
+    <string name="settings_m3_push_no_connections" formatted="false">"Hangi depoların güncellemeleri gönderebileceğini seçmek için bir GitHub hesabı veya organizasyonu bağlayın."</string>
+    <string name="settings_m3_push_open_vault" formatted="false">"Kasayı aç"</string>
+    <string name="settings_m3_push_permission" formatted="false">"Android ayarlarında GitSync.md için bildirimlere izin verin, ardından Push Senkronizasyonu açın."</string>
+    <string name="settings_m3_push_registered" formatted="false">"Bu telefon bildirimler için kaydedildi"</string>
+    <string name="settings_m3_push_remove" formatted="false">"Kaldır"</string>
+    <string name="settings_m3_push_remove_body">"Push Senkronizasyonu, @%1$s\'dan bu telefona yönlendirilen güncellemeleri durdurur. GitHub App yüklü kalır. Erişimini değiştirmek veya kaldırmak için GitHub\'de Yönet\'i kullanın."</string>
+    <string name="settings_m3_push_remove_title" formatted="false">"Bu bağlantı kaldırılsın mı?"</string>
+    <string name="settings_m3_push_result_updated" formatted="false">"GitHub\'dan güncellendi"</string>
+    <string name="settings_m3_push_stop" formatted="false">"İşlemi durdur"</string>
+    <string name="settings_m3_push_suspended" formatted="false">"Askıya alındı"</string>
+    <string name="settings_m3_push_sync" formatted="false">"GitHub\'dan Push Senkronizasyonu"</string>
+    <string name="settings_m3_push_this_phone" formatted="false">"bu telefon"</string>
+    <string name="settings_m3_push_title" formatted="false">"Push Sync"</string>
+    <string name="settings_m3_push_waiting" formatted="false">"GitHub bekleniyor"</string>
+    <string name="settings_m3_save_clones_in" formatted="false">"Yeni klonları şuraya kaydet"</string>
+    <string name="settings_m3_sc_action" formatted="false">"İşlem"</string>
+    <string name="settings_m3_sc_authorized" formatted="false">"Yetkili"</string>
+    <string name="settings_m3_sc_background_sub" formatted="false">"Sonuçlar burada ve bir bildirimde görünür"</string>
+    <string name="settings_m3_sc_branch">"Dal %1$s"</string>
+    <string name="settings_m3_sc_branch_reviewed">"%1$s Şubesi · %2$s gözden geçirildi"</string>
+    <string name="settings_m3_sc_clear" formatted="false">": Açık"</string>
+    <string name="settings_m3_sc_clear_results" formatted="false">"Kaydedilmiş sonuçları temizle"</string>
+    <string name="settings_m3_sc_ff_only" formatted="false">"Yalnızca alma ve fast-forward"</string>
+    <string name="settings_m3_sc_item_title">"%1$s: %2$s"</string>
+    <string name="settings_m3_sc_launcher" formatted="false">"Ana ekran kısayolları"</string>
+    <string name="settings_m3_sc_link_identity">"Bağlantı %1$s · Oluşturulma: %2$s"</string>
+    <string name="settings_m3_sc_link_private" formatted="false">"Bu linke sahip olan herkes çalıştırabilir. Gizli tutun."</string>
+    <string name="settings_m3_sc_links" formatted="false">"Yetkilendirilmiş bağlantılar"</string>
+    <string name="settings_m3_sc_new_title" formatted="false">"Bir kasa için yeni kısayol"</string>
+    <string name="settings_m3_sc_no_links" formatted="false">"Yetkili link yok. Obsidian veya Kısayollar gibi uygulamalar bir link isteyebilir."</string>
+    <string name="settings_m3_sc_no_shortcuts" formatted="false">"Henüz başlatıcı kısayolu yok. Yukarıdan bir kasa ve bir işlem seçin."</string>
+    <string name="settings_m3_sc_open_pull_all" formatted="false">"Tümünü Çek\'i Aç"</string>
+    <string name="settings_m3_sc_open_pull_all_sub" formatted="false">"Şimdi her kasayı çek ve her sonucu gör"</string>
+    <string name="settings_m3_sc_pin_consent">"Her dokunuş bunu bir kez çalıştırır, tekrar sormadan. Bu, %1$s, %2$s dalı ve bu hesap ile bağlı kalır. Bunlardan herhangi biri değişirse, kısayol durur ve yenisini oluşturmanız gerekir. Her zaman buradan iptal edebilirsiniz."</string>
+    <string name="settings_m3_sc_pin_writes">"\"%1$s\" ile işlemleri yapar ve her dokunuşta her değişikliği yükler."</string>
+    <string name="settings_m3_sc_pinned" formatted="false">"Sabitlenenler"</string>
+    <string name="settings_m3_sc_pull" formatted="false">"Pull"</string>
+    <string name="settings_m3_sc_pull_all" formatted="false">"Tümünü Çeken"</string>
+    <string name="settings_m3_sc_pull_all_note" formatted="false">"Her dokunuş, her kasayı bir kez çeker. Hiçbir şey kaydedilmez veya yüklenmez. Sonuçlar Tümünü Çek\'te bekler."</string>
+    <string name="settings_m3_sc_pull_all_repos" formatted="false">": Tüm depoları çekin"</string>
+    <string name="settings_m3_sc_pull_all_title" formatted="false">"Uygulamayı açmadan Tümünü Çek"</string>
+    <string name="settings_m3_sc_pull_sub" formatted="false">"Yalnızca alma ve fast-forward"</string>
+    <string name="settings_m3_sc_push" formatted="false">"Commit ve push"</string>
+    <string name="settings_m3_sc_push_sub" formatted="false">"Her değişikliği kaydeder, sonra yükler"</string>
+    <string name="settings_m3_sc_refresh" formatted="false">"Yenile"</string>
+    <string name="settings_m3_sc_requested" formatted="false">"Kısayol istendi. Başlatıcınızda onaylayın, sonra kontrol etmek için aşağıda Yenile\'ye dokunun."</string>
+    <string name="settings_m3_sc_returns_to">"%1$s\'e geri döner"</string>
+    <string name="settings_m3_sc_review_again" formatted="false">"Tekrar inceleyin"</string>
+    <string name="settings_m3_sc_revoke" formatted="false">"Onayı kaldır"</string>
+    <string name="settings_m3_sc_revoke_body" formatted="false">"Git işlemlerini çalıştırmayı durdurur. Simgesi, kaldırana kadar ana ekranınızda gri renkte kalabilir. Yeni bir kısayol tekrar onay gerektirir."</string>
+    <string name="settings_m3_sc_revoke_link" formatted="false">"Bağlantının yetkisini iptal et"</string>
+    <string name="settings_m3_sc_revoke_title" formatted="false">"Bu kısayolu iptal etmek ister misiniz?"</string>
+    <string name="settings_m3_sc_revoked" formatted="false">"Yetkisi iptal edildi"</string>
+    <string name="settings_m3_sc_run_once" formatted="false">"Şimdi bir kez çalıştır"</string>
+    <string name="settings_m3_sc_runs_closed" formatted="false">"GitSync.md açılmadan çalışır"</string>
+    <string name="settings_m3_sc_runs_open" formatted="false">"Önce GitSync.md açar, sonra bir kez çalışır"</string>
+    <string name="settings_m3_sc_status" formatted="false">"Durumu oku"</string>
+    <string name="settings_m3_sc_status_sub" formatted="false">"Ağ yok. Ne değiştiğini gösterir."</string>
+    <string name="settings_m3_sc_sync" formatted="false">"Eşzamanla"</string>
+    <string name="settings_m3_sc_sync_sub" formatted="false">"Önce çek, sonra commit &amp; push yap"</string>
+    <string name="settings_m3_sc_tile_how" formatted="false">"Hızlı Ayarları aşağı çek › Düzenle › Hepsini Çek\'i sürükle."</string>
+    <string name="settings_m3_sc_tile_lead" formatted="false">"Karo:"</string>
+    <string name="settings_m3_sc_title" formatted="false">"Widget ve kısayollar"</string>
+    <string name="settings_m3_sc_upstream">"Yukarı Akış %1$s / %2$s"</string>
+    <string name="settings_m3_sc_waiting" formatted="false">"Başlatıcı bekleniyor"</string>
+    <string name="settings_m3_sc_widget_how" formatted="false">"Ana ekranınıza uzun bas › Widgetlar › GitSync.md."</string>
+    <string name="settings_m3_sc_widget_lead" formatted="false">"Widget:"</string>
+    <string name="settings_m3_sc_writes" formatted="false">"Her değişikliği sahneye alır, gerekirse commit yapar, sonra yükler. Çakışmalar, bölünmüş geçmiş veya ilk hareket eden bir uzak depolama durdurur ve başarısız bir yükleme yeni commit\'i tutar."</string>
+    <string name="settings_m3_shortcuts" formatted="false">"Widget ve başlatıcı kısayolları"</string>
+    <string name="settings_m3_sign_out" formatted="false">"Oturumu kapat"</string>
+    <string name="settings_m3_ssh_hosts" formatted="false">"SSH sunucuları"</string>
+    <string name="settings_m3_storage_hint" formatted="false">"Telefon depolaması ve SD kartları çalışır. Google Drive gibi bulut klasörleri bir Git deposunu tutamaz."</string>
+    <string name="settings_m3_storage_intro" formatted="false">"Yeni klonların gideceği klasörü seçin. Zaten sahip olduğunuz kasalar bulundukları yerde kalır."</string>
+    <string name="settings_m3_storage_move_title" formatted="false">"Zaten sahip olduğunuz bir kasayı taşı"</string>
+    <string name="settings_m3_system_default" formatted="false">"Sistem varsayılanı"</string>
+    <string name="settings_m3_terms" formatted="false">"Koşullar"</string>
+    <string name="settings_m3_theme" formatted="false">"Tema"</string>
+    <string name="settings_m3_theme_dark" formatted="false">"Koyu"</string>
+    <string name="settings_m3_theme_light" formatted="false">"Açık"</string>
+    <string name="settings_m3_title" formatted="false">"Ayarlar"</string>
+    <string name="settings_m3_unlocked" formatted="false">"Kilidi açık"</string>
+    <string name="settings_m3_upgrade_body" formatted="false">"Sabah Obsidian\'ı açın, her şey zaten orada."</string>
+    <string name="settings_m3_upgrade_illustration" formatted="false">"Kilitli telefonda gece boyunca GitHub ile çekme ve gönderme"</string>
+    <string name="settings_m3_upgrade_last_run">"%1$s · çekildi %2$d · gönderildi %3$d"</string>
+    <string name="settings_m3_upgrade_locked_phone" formatted="false">"kilitli telefon"</string>
+    <string name="settings_m3_upgrade_note" formatted="false">"GitSync.md ile dahil edilmiştir. Android arka plan çalışmasının ne zaman çalışacağını belirler; bu en iyi çabadır. Pil tasarrufu bunu geciktirebilir."</string>
+    <string name="settings_m3_upgrade_pull" formatted="false">"Arka planda pull"</string>
+    <string name="settings_m3_upgrade_push" formatted="false">"Düzenlemelerimi de commit ve push et"</string>
+    <string name="settings_m3_upgrade_title" formatted="false">"Siz uyurken\neşzamanlama."</string>
+    <string name="settings_m3_upgrade_turn_on" formatted="false">"Background Sync\'i aç"</string>
+    <string name="settings_m3_vault_check_ok" formatted="false">"Tamam"</string>
+    <string name="settings_m3_vault_delete_action" formatted="false">"Sil"</string>
+    <string name="settings_m3_vault_delete_body" formatted="false">"Bu klasörü, içindeki dosyaları ve Git geçmişini bu telefondan siler. GitHub\'a aktarılmamış olan her şey kaybolur."</string>
+    <string name="settings_m3_vault_delete_title" formatted="false">"Kasayı kaldır ve dosyaları sil?"</string>
+    <string name="settings_m3_vault_display_name" formatted="false">"Görünen ad"</string>
+    <string name="settings_m3_vault_display_name_hint" formatted="false">"Kasayı kendi adıyla kullanmak için boş bırakın."</string>
+    <string name="settings_m3_vault_errors" formatted="false">"hatalar · 7 g"</string>
+    <string name="settings_m3_vault_files" formatted="false">"dosya"</string>
+    <string name="settings_m3_vault_folder" formatted="false">"Klasör"</string>
+    <string name="settings_m3_vault_group" formatted="false">"Bu kasa"</string>
+    <string name="settings_m3_vault_health" formatted="false">"Durum"</string>
+    <string name="settings_m3_vault_health_attention" formatted="false">"İnceleme gerekiyor"</string>
+    <string name="settings_m3_vault_health_good" formatted="false">"iyi"</string>
+    <string name="settings_m3_vault_include" formatted="false">"Background Sync kapsamına al"</string>
+    <string name="settings_m3_vault_include_review" formatted="false">"Önce dalı ve uzaktaki sunucuyu inceler"</string>
+    <string name="settings_m3_vault_include_sub">"Sadece %1$s dalı, %2$s/%3$s izleniyor"</string>
+    <string name="settings_m3_vault_include_title" formatted="false">"Background Sync\'a dahil edilsin mi?"</string>
+    <string name="settings_m3_vault_last_check">"Son arka plan kontrolü %1$s · %2$s"</string>
+    <string name="settings_m3_vault_lfs" formatted="false">"LFS"</string>
+    <string name="settings_m3_vault_no_check" formatted="false">"Henüz arka plan kontrolü yok"</string>
+    <string name="settings_m3_vault_pin" formatted="false">"Ana sayfanın en üstüne sabitle"</string>
+    <string name="settings_m3_vault_remove" formatted="false">"Kasayı kaldır…"</string>
+    <string name="settings_m3_vault_remove_action" formatted="false">"Kaldır"</string>
+    <string name="settings_m3_vault_remove_delete" formatted="false">"Kasayı kaldır ve dosyaları sil…"</string>
+    <string name="settings_m3_vault_remove_kept" formatted="false">"GitSync.md artık göstermeyi bırakıyor. Klasör GitSync.md tarafından yönetilmiyor, bu yüzden dosyaları ve Git geçmişi bulundukları yerde kalır."</string>
+    <string name="settings_m3_vault_remove_title" formatted="false">"Bu kasayı kaldırmak ister misiniz?"</string>
+    <string name="settings_m3_vault_shortcut" formatted="false">"Ana ekrana kısayol ekle"</string>
+    <string name="settings_m3_vault_shortcut_sub" formatted="false">"Tek dokunuşla çek veya gönder &amp; it"</string>
+    <string name="settings_m3_vault_stop_tracking" formatted="false">"Takibi bırak — dosyaları koru"</string>
+    <string name="settings_m3_vault_title" formatted="false">"Kasa ayarları"</string>
+    <string name="settings_m3_whats_new" formatted="false">"Yenilikler"</string>
+    <string name="settings_m3_whats_new_hint" formatted="false">"Bu aynı zamanda bir güncellemeden sonra bir kez ortaya çıkar. Her zaman buradan bulabilirsiniz."</string>
+    <string name="settings_m3_whats_new_subtitle">"%1$s için sürüm notları"</string>
     <string name="shortcut_background_attention" formatted="false">"Kısayol ilgilenmenizi gerektiriyor. Yeniden denemeden önce depo işlemlerini açıp durumunu inceleyin."</string>
     <string name="shortcut_background_channel" formatted="false">"Kısayol işlemleri"</string>
     <string name="shortcut_background_complete" formatted="false">"Kısayol işlemi tamamlandı. Sonucu incelemek için depo işlemlerini açın."</string>
@@ -688,9 +1982,37 @@
     <string name="shortcut_background_interrupted" formatted="false">"Çalıştırma kesildi. Otomatik olarak yeniden çalışmaz. Yeniden dokunmadan önce depoyu inceleyin."</string>
     <string name="shortcut_background_option" formatted="false">"GitSync.md açılmadan çalıştır"</string>
     <string name="shortcut_background_running" formatted="false">"Kısayol işlemi çalışıyor"</string>
+    <string name="shortcut_m3_add_vault" formatted="false">"Kasa ekle"</string>
+    <string name="shortcut_m3_commit_push">"%1$s: Gönder &amp; it"</string>
+    <string name="shortcut_m3_commit_short" formatted="false">"Commit ve push"</string>
+    <string name="shortcut_m3_pull">"%1$s: Çek"</string>
+    <string name="shortcut_m3_pull_short" formatted="false">"Pull"</string>
     <string name="shortcut_results_clear_scope" formatted="false">"Kaydedilmiş kısayol ve callback çalıştırma sonuçlarını silin. Yetkileri değişmez. Kesilen işlemler otomatik olarak yeniden çalışmaz."</string>
     <string name="shortcut_results_unavailable" formatted="false">"Kaydedilmiş kısayol sonuçları okunamıyor. Yetkilendirme ayrı tutulur."</string>
     <string name="ssh_hide_private_key" formatted="false">"Özel anahtarı gizle"</string>
+    <string name="ssh_m3_changed_title" formatted="false">"SSH sunucusu anahtarı değişti"</string>
+    <string name="ssh_m3_changed_warning" formatted="false">"Değişmiş bir anahtar, birisinin sunucuyu taklit ediyor olabileceği anlamına gelebilir. Güveni değiştirmeden önce yeni parmak izini sahibiyle kontrol edin."</string>
+    <string name="ssh_m3_compare" formatted="false">"Güvenmeden önce sunucu sahibinin yayınladığı SSH anahtarını bununla karşılaştırın."</string>
+    <string name="ssh_m3_empty" formatted="false">"Güvenilen SSH sunucusu yok"</string>
+    <string name="ssh_m3_error_save" formatted="false">"SSH sunucu güveni kaydedilemedi. Tekrar denemeden önce parmak izini yeniden doğrulayın."</string>
+    <string name="ssh_m3_forget" formatted="false">"Unut"</string>
+    <string name="ssh_m3_forget_body">"%1$s ile tekrar bağlanmadan önce parmak izi doğrulaması gerekecek."</string>
+    <string name="ssh_m3_forget_cd">"%1$s öğesini unut"</string>
+    <string name="ssh_m3_forget_server" formatted="false">"Sunucuyu unut"</string>
+    <string name="ssh_m3_forget_title" formatted="false">"SSH sunucusu unutulsun mu?"</string>
+    <string name="ssh_m3_intro" formatted="false">"Güvendiğiniz parmak izleri bu telefonda kaydedildi. Birini unuttuğunuzda, bir dahaki bağlanışınızda tekrar doğrulamanız gerekecek. SSH anahtarlarınız kaydedilmeye devam eder."</string>
+    <string name="ssh_m3_none" formatted="false">"Ayarlar · güvenilen yok"</string>
+    <string name="ssh_m3_previous">"Önceden güvenilen: %1$s"</string>
+    <string name="ssh_m3_replace" formatted="false">"Güveni değiştir ve bağlan"</string>
+    <string name="ssh_m3_reset_all" formatted="false">"Tüm SSH sunucusu güvenini sıfırla"</string>
+    <string name="ssh_m3_reset_body" formatted="false">"Her SSH sunucusu, tekrar bağlanmadan önce parmak izi doğrulaması gerektirir. Bu aynı zamanda bozuk güven girişlerini de temizler."</string>
+    <string name="ssh_m3_reset_confirm" formatted="false">"Güveni sıfırla"</string>
+    <string name="ssh_m3_reset_title" formatted="false">"Tüm SSH sunucusu güveni sıfırlansın mı?"</string>
+    <string name="ssh_m3_saved" formatted="false">"Güven bu telefonda kaydedildi ve bekleyen bağlantı devam ediyor. İptal, sunucuyu güvensiz bırakır."</string>
+    <string name="ssh_m3_title" formatted="false">"SSH sunucularına güven"</string>
+    <string name="ssh_m3_trust" formatted="false">"Güven ve bağlan"</string>
+    <string name="ssh_m3_trusted" formatted="false">"Güvenilen sunucular"</string>
+    <string name="ssh_m3_verify_title" formatted="false">"SSH sunucusunu doğrula"</string>
     <string name="ssh_show_private_key" formatted="false">"Özel anahtarı göster"</string>
     <string name="ssh_trust_error_changed" formatted="false">"İnceleme sırasında SSH güveni değişti. Geçerli sunucu kaydını inceleyip bağlantıyı yeniden deneyin."</string>
     <string name="ssh_trust_error_damaged" formatted="false">"Kayıtlı SSH güveninin incelenmesi gerekiyor. Yeniden denemeden önce Ayarlar’dan SSH sunucusu güvenini sıfırlayın."</string>
@@ -755,7 +2077,7 @@
     <string name="tide_vault_eyebrow_unreadable" formatted="false">"Okunamadı"</string>
     <string name="tide_vault_files_section" formatted="false">"Dosyalar"</string>
     <string name="tide_vault_from_remote">"↓%1$d uzaktan"</string>
-    <string name="tide_vault_git" formatted="false">"GIT"</string>
+    <string name="tide_vault_git" formatted="false">"Git"</string>
     <string name="tide_vault_headline_behind">"Uzakta yeni: %1$d"</string>
     <string name="tide_vault_headline_unreadable" formatted="false">"Bu kasa okunamadı."</string>
     <string name="tide_vault_more" formatted="false">"Diğer kasa seçenekleri"</string>
@@ -768,6 +2090,13 @@
     <string name="tide_vault_sub_empty" formatted="false">"Bir not ekleyin, ardından buradan commit edin."</string>
     <string name="tide_vault_sub_in_sync" formatted="false">"Bu telefonda bekleyen bir şey yok"</string>
     <string name="tide_vault_yours">"↑%1$d yerel"</string>
+    <string name="tile_m3_background_sync" formatted="false">"Background Sync"</string>
+    <string name="tile_m3_modes">"%1$s · %2$s"</string>
+    <string name="tile_m3_pull_all" formatted="false">"Tümünü Çeken"</string>
+    <string name="tile_m3_pull_off" formatted="false">"Çek"</string>
+    <string name="tile_m3_pull_on" formatted="false">"Kok"</string>
+    <string name="tile_m3_push_off" formatted="false">"İt kapalı"</string>
+    <string name="tile_m3_push_on" formatted="false">"İt açık"</string>
     <string name="tracking_metadata_size">"Git meta verileri: %1$s"</string>
     <string name="tracking_remove_permanent_title" formatted="false">"Git geçmişi kalıcı olarak kaldırılsın mı?"</string>
     <string name="tracking_removed_backup">"Git izlemesi kaldırıldı. Doğrulanmış yedek: %1$s"</string>
@@ -778,14 +2107,23 @@
     <string name="ui_1_s_characters_bde60398">"Karakter: %1$s"</string>
     <string name="ui_1_s_lines_2_s_bytes_c30a0cd1">"Satır: %1$s, bayt: %2$s"</string>
     <string name="ui_1_s_local_commits_2_s_upstream_commits_77dc6fa8">"%1$s yerel commit · %2$s upstream commit"</string>
+    <string name="ui_1_vault_c39776f1" formatted="false">"1 kasa"</string>
+    <string name="ui_2_of_3_commits_sent_5591e38a" formatted="false">"3 işlemin 2\'si gönderildi"</string>
+    <string name="ui_3_changes_aren_t_committed_yet_commit_or_s_d878e782" formatted="false">"3 değişiklik henüz işlenmedi. Şubeler arasında geçiş yapmadan önce bunları işleyin veya saklayın."</string>
+    <string name="ui_3_held_f454ab2b" formatted="false">"↑3 beklemede"</string>
+    <string name="ui_3_to_push_ac87b7cb" formatted="false">"↑3 gönderilecek"</string>
+    <string name="ui_4_in_sync_checked_2_min_ago_a1f1ab5e" formatted="false">"4 senkronize · 2 dakika önce kontrol edildi"</string>
     <string name="ui_abort_rebase_fd5cfc32" formatted="false">"Rebase işlemini iptal et…"</string>
     <string name="ui_about_4efca0d1" formatted="false">"Hakkında"</string>
+    <string name="ui_about_lfs_538b5b7e" formatted="false">"LFS hakkında"</string>
+    <string name="ui_all_5_8907f196" formatted="false">"Hepsi 5"</string>
     <string name="ui_all_conflicts_are_staged_continue_replayin_b86b2a5a" formatted="false">"Tüm çakışma çözümleri hazırlama alanında. Commit’leri yeniden uygulamaya devam edin. Git NOTHING_TO_COMMIT bildirirse boş commit’in atlanıp atlanmayacağını inceleyin."</string>
     <string name="ui_all_local_changes_to_this_file_will_be_per_0919f539" formatted="false">": Bu dosyaya ilişkin tüm yerel değişiklikler sonsuza kadar silinecektir."</string>
     <string name="ui_allow_local_folder_access_0b2888fb" formatted="false">"Yerel klasör erişimine izin ver"</string>
     <string name="ui_app_0d04bfeb" formatted="false">"Uygulama"</string>
     <string name="ui_app_settings_da645334" formatted="false">"Uygulama Ayarları"</string>
     <string name="ui_apply_tracking_choice_47a2e187" formatted="false">"İzleme seçimini uygula"</string>
+    <string name="ui_attention_1_fa1ea5dc" formatted="false">"Dikkat 1"</string>
     <string name="ui_authentication_66880d2d" formatted="false">"Kimlik Doğrulaması"</string>
     <string name="ui_back_639807a2" formatted="false">"GERİ"</string>
     <string name="ui_back_aceb696a" formatted="false">"← Geri"</string>
@@ -793,11 +2131,13 @@
     <string name="ui_backup_1_s_6ad01ca6">"Yedek: %1$s"</string>
     <string name="ui_base_7b47361a" formatted="false">"Taban"</string>
     <string name="ui_binary_large_or_lfs_file_choose_an_entire_52c3278a" formatted="false">"İkili, büyük veya LFS dosyası: bir tarafın tamamını seçin."</string>
+    <string name="ui_both_sides_edited_step_3_077f9640" formatted="false">"Her iki tarafta da “Adım 3” düzenlendi."</string>
     <string name="ui_branch_52656e81" formatted="false">"Dal"</string>
     <string name="ui_branch_optional_e9dedf99" formatted="false">"Dal (isteğe bağlı)"</string>
     <string name="ui_browsing_with_this_account_28a8b330" formatted="false">"Bu hesapla göz atılıyor"</string>
     <string name="ui_cancel_pending_move_0858583b" formatted="false">"Bekleyen taşımayı iptal et"</string>
     <string name="ui_changes_bbd4b6a8" formatted="false">"Değişiklikler"</string>
+    <string name="ui_changes_on_this_phone_6359d3d5" formatted="false">"Bu telefondaki değişiklikler"</string>
     <string name="ui_choose_a_connected_account_for_this_reposi_c4817ea9" formatted="false">"Bu depo için bağlı bir hesap seçin."</string>
     <string name="ui_choose_a_device_folder_d00b7daf" formatted="false">"Cihazdan bir klasör seç"</string>
     <string name="ui_choose_an_authentication_method_before_clo_c89124ba" formatted="false">"Klonlamadan önce bir kimlik doğrulama yöntemi seçin."</string>
@@ -810,14 +2150,18 @@
     <string name="ui_clone_again_e05eb495" formatted="false">"Yeniden klonla"</string>
     <string name="ui_clone_again_review_the_previous_branch_and_33cba147" formatted="false">"Yeniden klonla · başlamadan önce önceki dalı ve bağlantıyı gözden geçirin."</string>
     <string name="ui_clone_storage_47cafc8a" formatted="false">"Klon depolama alanı"</string>
+    <string name="ui_cloning_and_preparing_the_working_copy_6fe864ff" formatted="false">"Çoğaltma ve çalışma kopyasını hazırlama"</string>
+    <string name="ui_commit_3_files_959a8528" formatted="false">"3 dosyayı işleme gönder"</string>
     <string name="ui_commit_author_e9376b3a" formatted="false">"Commit Yazarı"</string>
     <string name="ui_commit_message_a4b361b7" formatted="false">"Commit mesajı…"</string>
     <string name="ui_commit_sha_d0bc6028" formatted="false">"Commit SHA"</string>
     <string name="ui_confirm_eebdd24a" formatted="false">"Onayla"</string>
+    <string name="ui_conflict_1_of_2_ideas_23283a20" formatted="false">"Çatışma 1/2 · ideas/"</string>
     <string name="ui_continue_rebase_7a14e965" formatted="false">": Devam edilen Rebase"</string>
     <string name="ui_create_a_file_or_folder_using_new_655c5596" formatted="false">"Yeni ile bir dosya veya klasör oluşturun."</string>
     <string name="ui_current_default_d914f86e" formatted="false">"Geçerli varsayılan"</string>
     <string name="ui_current_separate_push_address_1_s_2a6ef8f9">"Geçerli ayrı push adresi: %1$s"</string>
+    <string name="ui_daily_new_file_42_31057cdf" formatted="false">"günlük · yeni dosya · +42"</string>
     <string name="ui_debug_info_697b4941" formatted="false">"Hata ayıklama bilgileri"</string>
     <string name="ui_delete_1_s_6474596f">"\"%1$s\" silinsin mi?"</string>
     <string name="ui_delete_e2d0a549" formatted="false">"Sil"</string>
@@ -826,6 +2170,10 @@
     <string name="ui_delete_local_files_20424441" formatted="false">": Yerel Dosyaları Silmek"</string>
     <string name="ui_destination_1_s_0df94639">"Hedef: %1$s"</string>
     <string name="ui_destination_parent_folder_c6c4f97e" formatted="false">"Hedef üst klasör"</string>
+    <string name="ui_disabled_75081b59" formatted="false">"Engelli"</string>
+    <string name="ui_discard_3_95e06aed" formatted="false">"3\'ünü iptal et"</string>
+    <string name="ui_discard_3_changes_d2ad52aa" formatted="false">"3 değişiklik iptal edilsin mi?"</string>
+    <string name="ui_discard_changes_85bcf416" formatted="false">"Değişiklikler iptal edilsin mi?"</string>
     <string name="ui_discard_draft_cb30147e" formatted="false">"Taslağı sil"</string>
     <string name="ui_discard_eb1a70e3" formatted="false">"Vazgeç"</string>
     <string name="ui_discard_resolution_draft_47c16148" formatted="false">"Çözüm taslağı silinsin mi?"</string>
@@ -846,6 +2194,8 @@
     <string name="ui_gitsync_md_needs_shared_storage_access_to_f1b339ea" formatted="false">"GitSync.md, cihaz klasörlerinde gerçek Git çalışma kopyalarını yönetmek için paylaşılan depolama erişimine ihtiyaç duyar. Android Ayarları’nda erişimi etkinleştirdikten sonra kullanmak istediğiniz klasörleri seçin."</string>
     <string name="ui_go_back_and_select_a_repository_c3eedd39" formatted="false">"Geri dönüp bir depo seçin."</string>
     <string name="ui_hash_a9106914" formatted="false">"Hash"</string>
+    <string name="ui_health_md_f72119f5" formatted="false">"sağlık-md"</string>
+    <string name="ui_https_ssh_git_or_file_e79ef5ea" formatted="false">"HTTPS, SSH, git:// veya file://."</string>
     <string name="ui_i_understand_that_another_owner_may_still_b4a12b2d" formatted="false">"Başka bir sahibin bu dosyayı hâlâ düzenliyor olabileceğini anlıyorum."</string>
     <string name="ui_include_the_ssh_username_in_the_address_gi_beb09b5a" formatted="false">"Adrese SSH kullanıcı adını ekleyin: git@host:team/repo.git veya ssh://git@host:2222/team/repo.git."</string>
     <string name="ui_keep_editing_e76fd2ad" formatted="false">"Düzenlemeye devam et"</string>
@@ -882,8 +2232,12 @@
     <string name="ui_owner_1_s_599ca9ce">"Sahip: %1$s"</string>
     <string name="ui_parents_1_s_914efbd0">"Ebeveynler (%1$s)"</string>
     <string name="ui_path_62fa5a5b" formatted="false">"Yol"</string>
+    <string name="ui_plain_http_sends_credentials_unencrypted_c99e5672" formatted="false">"Düz HTTP kimlik bilgilerini şifrelemeden gönderir."</string>
     <string name="ui_platform_c78ffe19" formatted="false">"Platform"</string>
     <string name="ui_pull_with_rebase_6d25f1e0" formatted="false">": Rebase ile çekme"</string>
+    <string name="ui_push_was_rejected_fbc19d01" formatted="false">"Gönderim reddedildi"</string>
+    <string name="ui_pushed_579e8c6a" formatted="false">"Push edildi"</string>
+    <string name="ui_rebase_completed_successfully_53314c91" formatted="false">"Rebase işlemi başarıyla tamamlandı."</string>
     <string name="ui_rebase_in_progress_3ecd9c42" formatted="false">"Rebase sürüyor"</string>
     <string name="ui_rebase_onto_reviewed_upstream_c3b8fb93" formatted="false">"İncelenen upstream üzerine rebase yap"</string>
     <string name="ui_reconnect_bf8a9eab" formatted="false">"Yeniden bağla"</string>
@@ -893,6 +2247,7 @@
     <string name="ui_reload_author_18a711d8" formatted="false">"Yazarı yeniden yükle"</string>
     <string name="ui_reload_connection_ceed2dae" formatted="false">"Bağlantıyı yeniden yükle"</string>
     <string name="ui_reload_from_disk_d4288839" formatted="false">"Diskten yeniden yükle"</string>
+    <string name="ui_remote_has_no_new_commits_fetched_2m_ago_bdaa4b95" formatted="false">"Uzaktaki depo yeni hiçbir taahhüt (commit) içermiyor · 2 dk önce alındı"</string>
     <string name="ui_remove_1_s_e4dd7c24">"%1$s kaldırılsın mı?"</string>
     <string name="ui_remove_1_s_this_removes_it_from_gitsync_md_0a6b198d">"“%1$s” kaldırılsın mı?\n\nBu işlem onu GitSync.md uygulamasından kaldırır. Tüm yerel dosyalar ve Git geçmişi bu cihazda kalır; daha sonra yeniden bağlayabilirsiniz. Uzak deponuz etkilenmez."</string>
     <string name="ui_remove_all_custom_endpoint_approvals_and_t_ffc30a9e" formatted="false">"Bu cihazdaki tüm özel uç nokta onaylarını ve kayıtlı kimlik bilgilerini kaldırın. Her uç nokta ve aktarım yönü için yeni inceleme gerekecek."</string>
@@ -932,17 +2287,20 @@
     <string name="ui_save_1509f561" formatted="false">"Kaydet"</string>
     <string name="ui_save_author_1c24b32a" formatted="false">"Yazarı kaydet"</string>
     <string name="ui_save_connection_df24ef12" formatted="false">"Bağlantıyı kaydet"</string>
+    <string name="ui_saved_credentials_are_encrypted_on_this_de_9320d5e0" formatted="false">"Kaydedilen kimlik bilgileri bu cihazda şifrelenmiştir."</string>
     <string name="ui_saving_uses_this_address_for_both_fetch_an_48c82edc" formatted="false">"Kaydederken bu adres hem fetch hem de push için kullanılır. Ardından uzak durumu yenilemek için fetch çalıştırın."</string>
     <string name="ui_selected_folder_0cf59bef" formatted="false">"Seçilen klasör"</string>
     <string name="ui_share_backup_archive_ee4ba873" formatted="false">"Yedek arşivini paylaş"</string>
     <string name="ui_some_diagnostics_could_not_be_read_or_save_19e3372d" formatted="false">"Bazı tanılama verileri okunamadı veya kaydedilemedi. Mevcut veriler korundu. Yeniden kayıt başlatmak için günlüğü temizleyin."</string>
     <string name="ui_ssh_private_key_0e92a613" formatted="false">"SSH Özel Anahtar"</string>
     <string name="ui_stage_de838855" formatted="false">"Hazırla"</string>
+    <string name="ui_stay_on_main_915a176c" formatted="false">"Ana daldan ayrılma"</string>
     <string name="ui_the_active_destination_stays_in_place_gits_a4f1f68a" formatted="false">"Etkin hedef yerinde kalır. GitSync.md, saklanan özgün kopyanın dosyalarını ve Git geçmişini kalıcı olarak kaldırmadan önce sonradan yapılan düzenlemeler içermediğini denetler."</string>
     <string name="ui_the_folder_can_move_directly_on_this_stora_7b29fabb" formatted="false">"Klasör bu depolama biriminde doğrudan taşınabilir."</string>
     <string name="ui_the_previous_github_account_is_disconnecte_628a1f8c" formatted="false">"Önceki GitHub hesabının bağlantısı kesilmiş. Bağlı bir hesap veya başka bir kimlik doğrulama yöntemi seçin."</string>
     <string name="ui_the_replayed_local_commit_deletes_this_fil_ab00656d" formatted="false">"Yeniden uygulanan yerel commit bu dosyayı siler."</string>
     <string name="ui_the_review_changed_cancel_and_refresh_serv_c7ee804c" formatted="false">"İncelenen bilgiler değişti. İptal edip sunucu kilitlerini yenileyin."</string>
+    <string name="ui_these_files_go_back_to_how_they_were_in_a4_02e3cd66" formatted="false">"Bu dosyalar a41c9e2\'de oldukları hale geri dönüyor."</string>
     <string name="ui_this_history_entry_is_unavailable_c2c9f4e0" formatted="false">"Bu geçmiş kaydı kullanılamıyor."</string>
     <string name="ui_this_removes_another_connection_s_lock_coo_880defbf" formatted="false">"Bu işlem başka bir bağlantının kilidini kaldırır. Devam etmeden önce sahibiyle görüşün."</string>
     <string name="ui_this_repository_will_use_public_access_unt_c94fad61" formatted="false">"Yeniden kimlik doğrulama seçeneği belirleyene kadar bu depo genel erişim kullanır. Oturum açtığınız GitHub hesabı bu depo için kullanılmaz. Fetch ve push adresleri değişmez."</string>
@@ -955,6 +2313,7 @@
     <string name="ui_use_for_new_clones_be174c95" formatted="false">"Yeni klonlar için kullan"</string>
     <string name="ui_use_saved_default_3bb7260d" formatted="false">"Kayıtlı varsayılanı kullan"</string>
     <string name="ui_username_e3b89e9d" formatted="false">"Kullanıcı Adı"</string>
+    <string name="ui_working_5474eef8" formatted="false">"Çalışıyor…"</string>
     <string name="ui_your_edits_have_not_been_saved_625899a4" formatted="false">"Düzenlemeleriniz kaydedilmedi."</string>
     <string name="ui_your_unsubmitted_text_will_be_discarded_th_15717285" formatted="false">"Göndermediğiniz metin silinir. Çalışma dosyası değişmeden kalır."</string>
     <string name="untracked" formatted="false">"İzlenmeyen"</string>
@@ -1048,9 +2407,108 @@
     <string name="vault_l10n_tracking_review_changed" formatted="false">"İzlemeyi kaldırma incelemesi değişti. Depoyu ve yedekleme seçimini yeniden inceleyin."</string>
     <string name="vault_l10n_volume_unavailable" formatted="false">"Bu depolama birimi kullanılamıyor"</string>
     <string name="vault_l10n_volume_unavailable_reconnect" formatted="false">"Bu depolama birimi kullanılamıyor. Yeniden bağlayın ve klasörü tekrar seçin."</string>
+    <string name="vault_m3_as_author">"%1$s · %2$s olarak"</string>
+    <string name="vault_m3_branch_pushed">"Commits\'lerinizi yeni %1$s dalına gönderdiniz"</string>
+    <string name="vault_m3_cancel" formatted="false">"Vazgeç"</string>
+    <string name="vault_m3_check_for_changes" formatted="false">"Değişiklikleri denetle"</string>
+    <string name="vault_m3_checking" formatted="false">"Kontrol ediliyor…"</string>
+    <string name="vault_m3_checking_remote">"Yeni commitler için %1$s kontrol ediliyor"</string>
+    <string name="vault_m3_chip_theirs">"↓%1$d, %2$s kaynağından · %3$s"</string>
+    <string name="vault_m3_chip_theirs_plain">"Uzaktan ↓%1$d"</string>
+    <string name="vault_m3_chip_yours">"↑%1$d sizin"</string>
+    <string name="vault_m3_commit_locally" formatted="false">"Yerel commit oluştur"</string>
+    <string name="vault_m3_commit_push" formatted="false">"Commit ve push"</string>
+    <string name="vault_m3_commits_sent">"%1$d / %2$d commit gönderildi"</string>
+    <string name="vault_m3_committing" formatted="false">"Commit ediliyor…"</string>
+    <string name="vault_m3_days_ago">"%1$d g önce"</string>
+    <string name="vault_m3_deleted_path">"%1$s (silindi)"</string>
+    <string name="vault_m3_discard_body">"Bu dosyalar %1$s\'de oldukları hale geri dönüyor. O zamandan beri bu telefonda yapılan düzenlemeler tamamen kaybolacak."</string>
+    <string name="vault_m3_dismiss" formatted="false">"Kapat"</string>
+    <string name="vault_m3_download_progress" formatted="false">"İndirme ilerlemesi"</string>
+    <string name="vault_m3_effect_delete" formatted="false">"yeni dosyayı sil"</string>
+    <string name="vault_m3_effect_restore" formatted="false">"geri yükle"</string>
+    <string name="vault_m3_effect_revert" formatted="false">"Geri al"</string>
+    <string name="vault_m3_effect_unstage" formatted="false">"Hazırlığı geri al"</string>
+    <string name="vault_m3_fetched_ago">"%1$s getirildi"</string>
+    <string name="vault_m3_hours_ago">"%1$dh önce"</string>
+    <string name="vault_m3_included" formatted="false">"Dahil"</string>
+    <string name="vault_m3_just_now" formatted="false">"– şu anda"</string>
+    <string name="vault_m3_keep_them" formatted="false">"Onları tut"</string>
+    <string name="vault_m3_latest_commit" formatted="false">"Son commit"</string>
+    <string name="vault_m3_leave_note" formatted="false">"Bu ekranı kapatabilirsiniz. Senkronizasyon devam eder ve ilerlemesini bir bildirimde gösterir."</string>
+    <string name="vault_m3_merge" formatted="false">"birleştirme"</string>
+    <string name="vault_m3_merge_conflicts" formatted="false">"Çekme sırasında çakışmalar bulundu. Önce çözün, sonra gönderin."</string>
+    <string name="vault_m3_message" formatted="false">"Mesaj"</string>
+    <string name="vault_m3_minutes">"%1$dm"</string>
+    <string name="vault_m3_minutes_ago">"%1$dm önce"</string>
+    <string name="vault_m3_no_overlap_body" formatted="false">"Sizin ve onların düzenlemeleri farklı dosyalara dokunuyor, bu yüzden sorunsuz birleşmeli."</string>
+    <string name="vault_m3_no_overlap_title" formatted="false">"Çakışma alanı bulunamadı"</string>
+    <string name="vault_m3_no_upstream" formatted="false">"Upstream dal yok"</string>
+    <string name="vault_m3_notify_channel" formatted="false">"Vault senkronizasyonu"</string>
+    <string name="vault_m3_notify_title">"%1$s · %2$s"</string>
+    <string name="vault_m3_objects_received">"%1$d / %2$d nesne alındı"</string>
+    <string name="vault_m3_objects_sent">"%1$d / %2$d nesne gönderildi"</string>
+    <string name="vault_m3_only_on_phone" formatted="false">"Sadece bu telefonda"</string>
+    <string name="vault_m3_overlap_body" formatted="false">"Her iki taraf da aynı dosyaları düzenledi. Çekme işlemi, çözmeniz için bir çatışmada durabilir."</string>
+    <string name="vault_m3_preparing" formatted="false">"Hazırlanıyor…"</string>
+    <string name="vault_m3_pull" formatted="false">"Pull"</string>
+    <string name="vault_m3_pull_then_push" formatted="false">"Onlarınkini çekin, sonra gönderin"</string>
+    <string name="vault_m3_pulled">"%1$s ile güncel"</string>
+    <string name="vault_m3_pulling" formatted="false">"Pull yapılıyor…"</string>
+    <string name="vault_m3_push" formatted="false">"Gönder"</string>
+    <string name="vault_m3_push_branch" formatted="false">"Bir dala push et"</string>
+    <string name="vault_m3_push_right_after" formatted="false">"Hemen ardından push et"</string>
+    <string name="vault_m3_pushed_to">"%1$s hedefine push edildi"</string>
+    <string name="vault_m3_pushing" formatted="false">"Push ediliyor…"</string>
+    <string name="vault_m3_rejected_kicker" formatted="false">"Push başarısız oldu"</string>
+    <string name="vault_m3_remote_generic" formatted="false">"uzak depo"</string>
+    <string name="vault_m3_remote_is_here">"%1$s burada"</string>
+    <string name="vault_m3_remote_no_new" formatted="false">"Uzak depoda yeni commit yok"</string>
+    <string name="vault_m3_remote_not_checked" formatted="false">"Uzaktan henüz kontrol edilmedi"</string>
+    <string name="vault_m3_review_first" formatted="false">"Önce incele"</string>
+    <string name="vault_m3_seconds">"%1$ds"</string>
+    <string name="vault_m3_stash_first" formatted="false">"Ne olur ne olmaz, önce bir kopyayı stash\'e al"</string>
+    <string name="vault_m3_step_branch">"%1$s dalını oluştur"</string>
+    <string name="vault_m3_step_check">"%1$s için yeni commit\'leri denetle"</string>
+    <string name="vault_m3_step_download">"%1$s kaynağından indir"</string>
+    <string name="vault_m3_step_merge">"%1$s birleştir"</string>
+    <string name="vault_m3_step_none" formatted="false">"yok"</string>
+    <string name="vault_m3_step_update" formatted="false">"Dosyaları güncelle"</string>
+    <string name="vault_m3_step_upload">"%1$s üzerine yükle"</string>
+    <string name="vault_m3_steps" formatted="false">"Adımlar"</string>
+    <string name="vault_m3_suggest_add">"%1$s ekle"</string>
+    <string name="vault_m3_suggest_backup">"kasa yedeği: %1$s"</string>
+    <string name="vault_m3_suggest_delete">"%1$s sil"</string>
+    <string name="vault_m3_suggest_update">"%1$s güncelle"</string>
+    <string name="vault_m3_suggested" formatted="false">"Diff\'ten önerildi"</string>
+    <string name="vault_m3_sync_cancelled" formatted="false">"Senkronizasyon iptal edildi. Zaten gönderilmiş olanlar bu telefonda kalır."</string>
+    <string name="vault_m3_sync_failed" formatted="false">"Senkronizasyon durduruldu"</string>
+    <string name="vault_m3_tap_for_diff" formatted="false">"Farkı görmek için bir dosyaya dokunun"</string>
+    <string name="vault_m3_time_left">"~%1$s kaldı"</string>
+    <string name="vault_m3_today" formatted="false">"Bugün"</string>
+    <string name="vault_m3_upload_progress" formatted="false">"Yükleme ilerlemesi"</string>
+    <string name="vault_m3_vault_settings" formatted="false">"Kasa ayarları"</string>
+    <string name="vault_m3_who_both" formatted="false">"ikisi de"</string>
+    <string name="vault_m3_who_theirs" formatted="false">"onlarınki"</string>
+    <string name="vault_m3_who_yours" formatted="false">"sizinki"</string>
+    <string name="vault_m3_yesterday" formatted="false">"Dün"</string>
     <string name="vault_open_in_files_failed" formatted="false">"Bu klasör Dosyalar’da açılamadı."</string>
     <string name="vault_repository_fallback" formatted="false">"Depo"</string>
     <string name="vault_url_copied" formatted="false">"Kopyalandı!"</string>
+    <string name="widget_m3_choose_vault" formatted="false">"Bir kasa seçin"</string>
+    <string name="widget_m3_days_ago">"%1$d g önce"</string>
+    <string name="widget_m3_hours_ago">"%1$dh önce"</string>
+    <string name="widget_m3_in_sync" formatted="false">"Eşzamanlı"</string>
+    <string name="widget_m3_list_description" formatted="false">"Her birinin göndereceği ile birlikte kasalarınız ve Tümünü Çek düğmesi."</string>
+    <string name="widget_m3_list_name" formatted="false">"Kasalar"</string>
+    <string name="widget_m3_minutes_ago">"%1$dm önce"</string>
+    <string name="widget_m3_no_vaults" formatted="false">"Henüz kasa yok. Eklemek için GitSync.md açın."</string>
+    <string name="widget_m3_now" formatted="false">"şimdi"</string>
+    <string name="widget_m3_pull_all_repositories" formatted="false">": Tüm depoları çekin"</string>
+    <string name="widget_m3_vault_description" formatted="false">"Bir kasa ve göndermesi gereken değişiklik sayısı."</string>
+    <string name="widget_m3_vault_missing" formatted="false">"Bu kasa artık bu telefonda değil."</string>
+    <string name="widget_m3_vault_name" formatted="false">"Kasa"</string>
+    <string name="widget_m3_vault_widget" formatted="false">"Kasa widget\'ı"</string>
     <plurals name="account_updated_days">
         <item quantity="one">"%1$d g önce"</item>
         <item quantity="other">"%1$d g önce"</item>
@@ -1075,6 +2533,62 @@
         <item quantity="one">"%1$d yıl önce"</item>
         <item quantity="other">"%1$d yıl önce"</item>
     </plurals>
+    <plurals name="adaptive_changes_on_phone">
+        <item quantity="one">"%1$s bu telefonda değişiklik"</item>
+        <item quantity="other">"%1$s Bu telefondaki değişiklikler"</item>
+    </plurals>
+    <plurals name="adaptive_changes_on_tablet">
+        <item quantity="one">"%1$s bu tablette değişiklik"</item>
+        <item quantity="other">"%1$s bu tablette değişiklikler"</item>
+    </plurals>
+    <plurals name="adaptive_commit_changes">
+        <item quantity="one">"%1$d değişikliğini işle"</item>
+        <item quantity="other">"%1$d değişikliklerini işle"</item>
+    </plurals>
+    <plurals name="adaptive_merging_left">
+        <item quantity="one">"%1$s · %2$d birleştiriliyor, kalan çakışma"</item>
+        <item quantity="other">"%1$s · %2$d birleştiriliyor, kalan çakışmalar"</item>
+    </plurals>
+    <plurals name="adaptive_merging_left_plain">
+        <item quantity="one">"%1$d birleştiriliyor, kalan çakışma"</item>
+        <item quantity="other">"%1$d birleştiriliyor, kalan çakışmalar"</item>
+    </plurals>
+    <plurals name="adaptive_split_editing">
+        <item quantity="one">"%1$d düzenleniyor"</item>
+        <item quantity="other">"%1$d düzenleniyor"</item>
+    </plurals>
+    <plurals name="adaptive_split_live">
+        <item quantity="one">"%1$s değişiklik · canlı"</item>
+        <item quantity="other">"%1$s değişiklikler · canlı"</item>
+    </plurals>
+    <plurals name="adaptive_vaults_need_you">
+        <item quantity="one">"%1$d sana ihtiyaç duyuyor"</item>
+        <item quantity="other">"%1$d sana ihtiyaç duyuyor"</item>
+    </plurals>
+    <plurals name="add_accounts_signed_in">
+        <item quantity="one">"Ayarlar · %1$d giriş yaptı"</item>
+        <item quantity="other">"Ayarlar · %1$d giriş yaptı"</item>
+    </plurals>
+    <plurals name="add_clone_files">
+        <item quantity="one">"%1$d dosya"</item>
+        <item quantity="other">"%1$d dosyalar"</item>
+    </plurals>
+    <plurals name="add_clone_lfs_files">
+        <item quantity="one">"%1$d dosya"</item>
+        <item quantity="other">"%1$d dosyalar"</item>
+    </plurals>
+    <plurals name="add_local_folders">
+        <item quantity="one">"%1$d klasör"</item>
+        <item quantity="other">"%1$d klasörler"</item>
+    </plurals>
+    <plurals name="add_way_github_repos">
+        <item quantity="one">"%1$d depo · özel dahil"</item>
+        <item quantity="other">"%1$d depolar · özel dahil"</item>
+    </plurals>
+    <plurals name="add_way_github_repos_public">
+        <item quantity="one">"%1$d depo"</item>
+        <item quantity="other">"%1$d depolar"</item>
+    </plurals>
     <plurals name="dialogs_error_merge_conflicts">
         <item quantity="one">"Birleştirmede %1$d çözülmemiş çakışma var.\n\nBirleştirmeyi tamamlamadan önce bunu çözün."</item>
         <item quantity="other">"Birleştirmede %1$d çözülmemiş çakışma var.\n\nBirleştirmeyi tamamlamadan önce bunları çözün."</item>
@@ -1082,6 +2596,98 @@
     <plurals name="diff_changed_lines">
         <item quantity="one">"+%1$s -%2$s satır"</item>
         <item quantity="other">"+%1$s -%2$s satır"</item>
+    </plurals>
+    <plurals name="editor_m3_lines_changed">
+        <item quantity="one">"%1$d satır değişti"</item>
+        <item quantity="other">"%1$d satırlar değişti"</item>
+    </plurals>
+    <plurals name="files_m3_items">
+        <item quantity="one">"%1$d öğe"</item>
+        <item quantity="other">"%1$d öğeler"</item>
+    </plurals>
+    <plurals name="files_m3_sync_diverged">
+        <item quantity="one">"%1$d %2$s üzerinde yeni bir commit yaptı ve bu telefonun henüz göndermediği commitleri var. Onları almak için Değişiklikler sekmesini açın."</item>
+        <item quantity="other">"%1$d %2$s üzerinde yeni commitler yaptı ve bu telefonun henüz göndermediği commitleri var. Onları almak için Değişiklikler sekmesini açın."</item>
+    </plurals>
+    <plurals name="files_m3_sync_local_changes">
+        <item quantity="one">"%1$d %2$s üzerinde yeni bir commit yaptı. Local değişikliklerinizi Değişiklikler sekmesinde commitleyin veya iptal edin, sonra tekrar senkronize edin."</item>
+        <item quantity="other">"%1$d üzerinde %2$s yeni commit var. Değişiklikler sekmesinde yerel değişikliklerinizi commit edin veya iptal edin, sonra yeniden senkronize edin."</item>
+    </plurals>
+    <plurals name="git_m3_cant_switch_body">
+        <item quantity="one">"%1$s’a geçiş yapmak bu telefondaki dosyaları değiştirecektir. %2$d’deki commit edilmemiş değişikliğiniz için önce güvenli bir yer gerekiyor."</item>
+        <item quantity="other">"%1$s’a geçiş yapmak bu telefondaki dosyaları değiştirecektir. %2$d’deki commit edilmemiş değişiklikleriniz için önce güvenli bir yer gerekiyor."</item>
+    </plurals>
+    <plurals name="git_m3_commits_missing">
+        <item quantity="one">"%1$d commit %2$s yok."</item>
+        <item quantity="other">"%1$d commits %2$s yok."</item>
+    </plurals>
+    <plurals name="git_m3_conflicts_left">
+        <item quantity="one">"Çözülmesi gereken %1$d çakışma var."</item>
+        <item quantity="other">"Çözülmesi gereken %1$d çakışma var."</item>
+    </plurals>
+    <plurals name="git_m3_continue_resolve">
+        <item quantity="one">"Rebase işlemine devam et · %1$d tane daha çöz."</item>
+        <item quantity="other">"Rebase işlemine devam et · %1$d öğesini çöz"</item>
+    </plurals>
+    <plurals name="git_m3_dirty_note">
+        <item quantity="one">"%1$d değişikliği henüz kaydedilmedi. Dalları değiştirmeden önce kaydedin veya saklayın."</item>
+        <item quantity="other">"%1$d değişiklikleri henüz kaydedilmedi. Dalları değiştirmeden önce kaydedin veya saklayın."</item>
+    </plurals>
+    <plurals name="git_m3_files">
+        <item quantity="one">"%1$d dosya"</item>
+        <item quantity="other">"%1$d dosyalar"</item>
+    </plurals>
+    <plurals name="git_m3_n_branches">
+        <item quantity="one">"%1$d dalı"</item>
+        <item quantity="other">"%1$d dalları"</item>
+    </plurals>
+    <plurals name="git_m3_n_commits_history">
+        <item quantity="one">"%1$d geçmiş kaydı"</item>
+        <item quantity="other">"%1$d geçmiş kayıtları"</item>
+    </plurals>
+    <plurals name="git_m3_n_stashes">
+        <item quantity="one">"%1$d yedek"</item>
+        <item quantity="other">"%1$d yedekler"</item>
+    </plurals>
+    <plurals name="git_m3_n_tags">
+        <item quantity="one">"%1$d etiket"</item>
+        <item quantity="other">"%1$d etiketler"</item>
+    </plurals>
+    <plurals name="git_m3_notes_attachments">
+        <item quantity="one">"%1$d not veya ek"</item>
+        <item quantity="other">"%1$d notlar ve ekler"</item>
+    </plurals>
+    <plurals name="git_m3_push_commits">
+        <item quantity="one">"%1$d commit\'ini gönder"</item>
+        <item quantity="other">"%1$d commit\'lerini gönder"</item>
+    </plurals>
+    <plurals name="git_m3_rebase_begin_body">
+        <item quantity="one">"Senin %1$d yerel commit\'in incelenmiş üst akışa yeniden oynatıldı ve yeni bir kimlik alabilir. Rebase bu telefonda kalır. Gönderme ayrı bir adımdır."</item>
+        <item quantity="other">"Senin %1$d yerel commit\'lerin incelenmiş üst akışa yeniden oynatıldı ve yeni kimlikler alabilir. Rebase bu telefonda kalır. Gönderme ayrı bir adımdır."</item>
+    </plurals>
+    <plurals name="git_m3_rebase_done_meta">
+        <item quantity="one">"%1$d commit şimdi %2$s üstünde · yeni kimlikler · gönderilmedi"</item>
+        <item quantity="other">"%1$d commit\'leri şimdi %2$s üstünde · yeni kimlikler · gönderilmedi"</item>
+    </plurals>
+    <plurals name="git_m3_rebase_put_on_top">
+        <item quantity="one">"%1$d commit\'ini uzaktakinin üstüne koy"</item>
+        <item quantity="other">"%1$d commit\'lerini uzaktakinin üstüne koy"</item>
+    </plurals>
+    <plurals name="git_m3_stash_n">
+        <item quantity="one">"%1$d değişikliğini sakla"</item>
+        <item quantity="other">"%1$d değişikliklerini sakla"</item>
+    </plurals>
+    <plurals name="git_m3_stashed_toast">
+        <item quantity="one">"%1$d değişikliği stash@{0} olarak saklandı."</item>
+        <item quantity="other">"%1$d değişiklikleri stash@{0} olarak saklandı."</item>
+    </plurals>
+    <plurals name="git_m3_uncommitted_changes">
+        <item quantity="one">"%1$s işlenmemiş değişiklik"</item>
+        <item quantity="other">"%1$s işlenmemiş değişiklikler"</item>
+    </plurals>
+    <plurals name="git_m3_uncommitted_plain">
+        <item quantity="one">"%1$d işlenmemiş düzenleme, düz dosya olarak"</item>
+        <item quantity="other">"%1$d işlenmemiş düzenlemeler, düz dosyalar olarak"</item>
     </plurals>
     <plurals name="gitops_merge_stopped_conflicts">
         <item quantity="one">"Merge durdu: %1$s (%2$d çakışma)"</item>
@@ -1099,6 +2705,30 @@
         <item quantity="one">"Mevcut %1$d dosya açıkça belirlenmiş izleme seçimini korur."</item>
         <item quantity="other">"Mevcut %1$d dosya açıkça belirlenmiş izleme seçimini korur."</item>
     </plurals>
+    <plurals name="lfs_m3_downloading">
+        <item quantity="one">"%1$d dosyası indiriliyor"</item>
+        <item quantity="other">"%1$d dosyaları indiriliyor"</item>
+    </plurals>
+    <plurals name="lfs_m3_endpoints_subtitle">
+        <item quantity="one">"Ayarlar · %1$d onaylandı"</item>
+        <item quantity="other">"Ayarlar · %1$d onaylandı"</item>
+    </plurals>
+    <plurals name="lfs_m3_ext_affected">
+        <item quantity="one">"%1$d dosyası LFS\'ye taşınıyor"</item>
+        <item quantity="other">"%1$d dosyaları LFS\'ye taşınıyor"</item>
+    </plurals>
+    <plurals name="lfs_m3_file_count">
+        <item quantity="one">"%1$d dosyası"</item>
+        <item quantity="other">"%1$d dosyaları"</item>
+    </plurals>
+    <plurals name="lfs_m3_stored_files">
+        <item quantity="one">"%1$d dosyasında"</item>
+        <item quantity="other">"%1$d dosyalarında"</item>
+    </plurals>
+    <plurals name="lfs_m3_track_files">
+        <item quantity="one">"%1$d dosyasını LFS ile takip et"</item>
+        <item quantity="other">"%1$d dosyalarını LFS ile takip et"</item>
+    </plurals>
     <plurals name="lfs_restored_files">
         <item quantity="one">"%1$d dosya geri yüklendi."</item>
         <item quantity="other">"%1$d dosya geri yüklendi."</item>
@@ -1107,9 +2737,57 @@
         <item quantity="one">"%1$d dosya"</item>
         <item quantity="other">"%1$d dosya"</item>
     </plurals>
+    <plurals name="m3home_auth_waiting">
+        <item quantity="one">"%1$d kasası bekliyor."</item>
+        <item quantity="other">"%1$d kasaları bekliyor."</item>
+    </plurals>
+    <plurals name="m3home_badge_edited">
+        <item quantity="one">"%1$d düzenlendi"</item>
+        <item quantity="other">"%1$d düzenlendi"</item>
+    </plurals>
+    <plurals name="m3home_headline_attention">
+        <item quantity="one">"%1$d kasa"</item>
+        <item quantity="other">"%1$d kasalar"</item>
+    </plurals>
+    <plurals name="m3home_headline_attention_accent">
+        <item quantity="one">"%1$s sana ihtiyaç duyuyor."</item>
+        <item quantity="other">"%1$s sana ihtiyaç duyuyorlar."</item>
+    </plurals>
+    <plurals name="m3home_headline_ready">
+        <item quantity="one">"%1$d kasa"</item>
+        <item quantity="other">"%1$d kasalar"</item>
+    </plurals>
+    <plurals name="m3home_sync_nothing_local">
+        <item quantity="other">"Senkronize edilecek bir şey yok. Bu %1$d kasalar sadece yerel (uzak yok)."</item>
+        <item quantity="one">"Eşlenecek bir şey yok. %1$d kasası yalnızca yerel (uzaktan değil)."</item>
+    </plurals>
     <plurals name="move_plan_summary">
         <item quantity="one">"Git meta verileri dahil %1$s dosya · %2$s"</item>
         <item quantity="other">"Git meta verileri dahil %1$s dosya · %2$s"</item>
+    </plurals>
+    <plurals name="notification_m3_commits">
+        <item quantity="one">"%1$d değişikliği arka planda çekildi."</item>
+        <item quantity="other">"%1$d değişiklikleri arka planda çekildi."</item>
+    </plurals>
+    <plurals name="notification_m3_commits_from">
+        <item quantity="one">"%1$d değişikliği %2$s\'den arka planda çekildi."</item>
+        <item quantity="other">"%1$d yaptığı %2$s tekrarları arka planda çekildi."</item>
+    </plurals>
+    <plurals name="pullall_m3_checked_repositories">
+        <item quantity="one">"%2$d deposunun %1$d kontrol edildi"</item>
+        <item quantity="other">"%2$d depolarının %1$d kontrol edildi"</item>
+    </plurals>
+    <plurals name="pullall_m3_checked_vaults">
+        <item quantity="one">"%2$d kasasının %1$d kontrol edildi"</item>
+        <item quantity="other">"%2$d kasalarının %1$d kontrol edildi"</item>
+    </plurals>
+    <plurals name="pullall_m3_updated_commits">
+        <item quantity="one">"Uzak sunucudan güncellendi · ↓%1$d tekrar"</item>
+        <item quantity="other">"Uzak sunucudan güncellendi · ↓%1$d tekrarlar"</item>
+    </plurals>
+    <plurals name="pullall_m3_vaults">
+        <item quantity="one">"%1$d kasa"</item>
+        <item quantity="other">"%1$d kasalar"</item>
     </plurals>
     <plurals name="rebase_additional_blocked_paths">
         <item quantity="one">"%1$d ek engellenen yol gösterilmiyor."</item>
@@ -1131,12 +2809,92 @@
         <item quantity="one">"· %1$d depo"</item>
         <item quantity="other">"· %1$d depo"</item>
     </plurals>
+    <plurals name="settings_m3_bg_included">
+        <item quantity="one">"%1$d kasa dahil"</item>
+        <item quantity="other">"%1$d kasalar dahil"</item>
+    </plurals>
+    <plurals name="settings_m3_bg_run_quiet">
+        <item quantity="one">"%1$d kasa, yeni bir şey yok"</item>
+        <item quantity="other">"%1$d kasalar, yeni bir şey yok"</item>
+    </plurals>
+    <plurals name="settings_m3_debug_errors_day">
+        <item quantity="one">"24 saatte %1$d hata"</item>
+        <item quantity="other">"24 saatte %1$d hatalar"</item>
+    </plurals>
+    <plurals name="settings_m3_entries">
+        <item quantity="one">"%1$d girişi"</item>
+        <item quantity="other">"%1$d girişleri"</item>
+    </plurals>
+    <plurals name="settings_m3_push_connections">
+        <item quantity="one">"%1$d GitHub bağlantısı · açık"</item>
+        <item quantity="other">"%1$d GitHub bağlantıları · açık"</item>
+    </plurals>
+    <plurals name="settings_m3_push_local_changes">
+        <item quantity="one">"Bu telefonda %1$d yerel değişiklik"</item>
+        <item quantity="other">"Bu telefonda %1$d yerel değişiklikler"</item>
+    </plurals>
+    <plurals name="settings_m3_sc_subtitle">
+        <item quantity="one">"Tümünü Çek widget · %1$d kısayol"</item>
+        <item quantity="other">"Tümünü Çek widget · %1$d kısayollar"</item>
+    </plurals>
+    <plurals name="ssh_m3_subtitle">
+        <item quantity="one">"Ayarlar · %1$d sunucu"</item>
+        <item quantity="other">"Ayarlar · %1$d sunucular"</item>
+    </plurals>
     <plurals name="tide_vault_changes_on_phone">
-        <item quantity="one">"bu telefondaki değişiklik"</item>
-        <item quantity="other">"bu telefondaki değişiklik"</item>
+        <item quantity="one">"%1$s bu telefondaki değişiklik"</item>
+        <item quantity="other">"%1$s bu telefondaki değişiklik"</item>
     </plurals>
     <plurals name="tide_vault_conflicts_to_resolve">
-        <item quantity="one">"çözülecek çakışma"</item>
-        <item quantity="other">"çözülecek çakışma"</item>
+        <item quantity="one">"%1$s çözülecek çakışma"</item>
+        <item quantity="other">"%1$s çözülecek çakışma"</item>
+    </plurals>
+    <plurals name="vault_m3_commit_title">
+        <item quantity="one">"%1$d dosyayı işleme al"</item>
+        <item quantity="other">"%1$d dosyaları işleme al"</item>
+    </plurals>
+    <plurals name="vault_m3_discard_n">
+        <item quantity="one">"%1$d iptal et"</item>
+        <item quantity="other">"%1$d iptal et"</item>
+    </plurals>
+    <plurals name="vault_m3_discard_title">
+        <item quantity="one">"%1$d değişikliği iptal et?"</item>
+        <item quantity="other">"%1$d değişiklikleri iptal et?"</item>
+    </plurals>
+    <plurals name="vault_m3_effect_lines">
+        <item quantity="one">"−%1$d satır"</item>
+        <item quantity="other">"−%1$d satırlar"</item>
+    </plurals>
+    <plurals name="vault_m3_file_count">
+        <item quantity="one">"%1$d dosyası"</item>
+        <item quantity="other">"%1$d dosyaları"</item>
+    </plurals>
+    <plurals name="vault_m3_overlap_title">
+        <item quantity="one">"%1$d dosyası her iki tarafta değiştirildi"</item>
+        <item quantity="other">"%1$d dosyaları her iki tarafta değiştirildi"</item>
+    </plurals>
+    <plurals name="vault_m3_remote_new">
+        <item quantity="one">"Uzakta %1$d yeni commit var"</item>
+        <item quantity="other">"Uzakta %1$d yeni commitler var"</item>
+    </plurals>
+    <plurals name="vault_m3_step_commit">
+        <item quantity="one">"%1$d dosyayı işleme al"</item>
+        <item quantity="other">"%1$d dosyaları işleme al"</item>
+    </plurals>
+    <plurals name="vault_m3_step_lfs">
+        <item quantity="one">"%1$d LFS dosyasını yükle · %2$s"</item>
+        <item quantity="other">"%1$d LFS dosyalarını yükle · %2$s"</item>
+    </plurals>
+    <plurals name="vault_m3_suggest_files">
+        <item quantity="one">"%1$d dosyasını güncelle"</item>
+        <item quantity="other">"%1$d dosyalarını güncelle"</item>
+    </plurals>
+    <plurals name="vault_m3_uploading_lfs">
+        <item quantity="one">"%1$d LFS dosyası yükleniyor"</item>
+        <item quantity="other">"%1$d LFS dosyaları yükleniyor"</item>
+    </plurals>
+    <plurals name="widget_m3_changes_to_push">
+        <item quantity="one">"%1$s itmek için değişiklik"</item>
+        <item quantity="other">"%1$s itmek için değişiklikler"</item>
     </plurals>
 </resources>

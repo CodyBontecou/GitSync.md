@@ -1,5 +1,6 @@
 package com.bontecou.syncmd.background
 
+import com.bontecou.syncmd.R
 import android.content.Context
 import com.bontecou.syncmd.services.automation.RepositoryActionOutcome
 import com.bontecou.syncmd.services.automation.RepositoryActionProblem
@@ -94,14 +95,15 @@ class BackgroundRunHistory(context: Context) {
  * included vault waited for Wi-Fi (or charging), the global switch starts on.
  */
 class BackgroundConditionDefaults(context: Context) {
-    private val prefs = context.applicationContext.getSharedPreferences("background_sync_globals", Context.MODE_PRIVATE)
+    private val app = context.applicationContext
+    private val prefs = app.getSharedPreferences("background_sync_globals", Context.MODE_PRIVATE)
     data class Values(val wifiOnly: Boolean, val chargingOnly: Boolean)
 
     /** Null until set or migrated. */
     fun stored(): Values? = if (prefs.contains("wifi")) Values(prefs.getBoolean("wifi", false), prefs.getBoolean("power", false)) else null
 
     fun save(values: Values) {
-        check(prefs.edit().putBoolean("wifi", values.wifiOnly).putBoolean("power", values.chargingOnly).commit()) { "Could not save Background Sync conditions" }
+        check(prefs.edit().putBoolean("wifi", values.wifiOnly).putBoolean("power", values.chargingOnly).commit()) { app.getString(R.string.l10n_save_conditions) }
     }
 
     /** The current global conditions; migrates from [store]'s per-vault policies the first time. */

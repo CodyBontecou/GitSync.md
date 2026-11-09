@@ -7,14 +7,28 @@ Use `--catalog /absolute/path/to/Localizable.xcstrings` to select another source
 The catalog lists English plus 25 other locales. Generated Android resources are
 checked in; compiling the Android app does not run these Python tools.
 
-The [2026-11-08 readiness audit](../testing/redesign-finish-20261108/README.md)
-found 2,464 translatable base strings and 97 plural resources. Each non-English
-locale lacks 1,413 string definitions and 75 plural definitions, which fall back
-to base English. The checked coverage manifest describes an older subset of
-1,051 strings and 31 plurals; it is not a complete current inventory. The importer
-check detects generated XML drift, and the literal guard reports 45 unreviewed
-occurrences. These checks must be reconciled before claiming complete coverage.
-The following dated sections retain the history of earlier localization passes.
+The local completion pass now covers all **2,509 translatable strings and 97 plural
+resources** in every non-English locale. The importer and actual-XML audit enforce
+resource identities and argument contracts; the literal guard has zero new
+findings without expanding its baseline. Missing definitions no longer cause
+English fallback. This does not certify linguistic quality or runtime layout.
+
+`android_completion_overrides.json` owns the unmatched Android wording. It records
+exact-source historical reuse, machine-generated drafts and a targeted assistant
+correction separately. Human linguistic review remains pending. Git messages and
+repository identities remain data; literal `.obsidian` is not translated. Native
+English format contracts are pinned independently of generated locale XML.
+
+Plural requirements include Hebrew `many` for the older ICU/CLDR versions still
+supported by minSdk 28, alongside modern categories. See the official
+[CLDR 32 data](https://raw.githubusercontent.com/unicode-org/cldr/release-32-0-1/common/supplemental/plurals.xml)
+and [CLDR 46 data](https://raw.githubusercontent.com/unicode-org/cldr/release-46/common/supplemental/plurals.xml).
+Hebrew `many` retains the existing ordinary plural phrase; linguistic review is
+still required. Formatter/category checks prove structure, not morphology.
+
+The following dated sections retain the history of earlier localization passes;
+the current completion evidence is in
+[`redesign-completion-local-20261108`](../testing/redesign-completion-local-20261108/README.md).
 
 The 2026-11-03 literal pass moved remaining user-visible
 Kotlin copy into five `values/l10n_*_strings.xml` files (276 strings, 8 plurals;
@@ -73,7 +87,8 @@ the generated locale XML.
 ```sh
 python3 tools/localization/import_ios_catalog.py
 python3 tools/localization/import_ios_catalog.py --apply
-python3 tools/localization/import_ios_catalog.py --check
+python3 tools/localization/import_ios_catalog.py --check --require-complete
+python3 tools/localization/audit_resources.py
 python3 tools/localization/native_expectations.py
 python3 tools/localization/native_expectations.py --check
 python3 -m unittest discover -s tools/localization -p 'test_*.py'
@@ -582,3 +597,23 @@ not, because the count is a separate UI element. Source/formatter and line-break
 checks pass. The existing `LocalizationTest` loops over the complete expected
 plural matrix and will include these additions at runtime; those new native
 quantity cases have not executed. Human linguistic and layout review remains open.
+
+
+## Local-only completion authoring
+
+Ordinary import, audit, tests and native builds are offline. The optional
+`fill_completion_drafts.py` command uses the existing shared translation helpers
+and `translators==6.0.4` in a temporary environment to resume only missing draft
+cells. Its cache is ignored. Public-copy batches stay within the provider’s
+1,000-character limit, use exact identity markers, preserve syntax multiplicity,
+and reject ambiguous or challenge responses. Protected identifiers are matched at
+word boundaries, so `origin` cannot mask part of `original`. Outputs remain drafts.
+
+```sh
+python3 tools/localization/fill_completion_drafts.py --workers 1
+```
+
+Never overwrite established translations or use English copies to make a coverage
+check pass. Review source ownership and formatter types before adding an override.
+Locale definitions, Play text and version fields in this checkout do not prove a
+published or reviewed store build. Publication requires separate authorization.

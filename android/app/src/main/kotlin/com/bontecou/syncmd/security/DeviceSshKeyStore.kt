@@ -1,5 +1,6 @@
 package com.bontecou.syncmd.security
 
+import com.bontecou.syncmd.R
 import android.content.Context
 import android.os.Build
 import android.security.keystore.KeyGenParameterSpec
@@ -69,7 +70,7 @@ class DeviceSshKeyStore @Inject constructor(@ApplicationContext private val cont
         val cipher = Cipher.getInstance("AES/GCM/NoPadding").apply { init(Cipher.ENCRYPT_MODE, key()); updateAAD(AAD) }
         val encrypted = cipher.doFinal(json.toString().toByteArray(Charsets.UTF_8))
         val record = Base64.encodeToString(cipher.iv, Base64.NO_WRAP) + ":" + Base64.encodeToString(encrypted, Base64.NO_WRAP)
-        check(prefs.edit().putString(RECORD, record).commit()) { "Could not save this phone's SSH key" }
+        check(prefs.edit().putString(RECORD, record).commit()) { context.getString(R.string.l10n_save_ssh_key) }
     }
 
     /** `gitsync@pixel-8`: identifies the device in the host's key list. */
