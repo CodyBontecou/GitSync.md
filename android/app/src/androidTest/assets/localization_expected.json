@@ -3844,7 +3844,7 @@
     },
     {
       "name": "gitops_lfs_extensions_review_failed",
-      "source": "Could not review extension tracking. Reload and check existing attributes, conflicts and file access before trying again.",
+      "source": "Couldn’t review extension tracking. Reload, then check existing attributes, conflicts and file access before trying again.",
       "arguments": 0
     },
     {
@@ -3959,7 +3959,7 @@
     },
     {
       "name": "account_sign_in_unverified",
-      "source": "GitHub sign-in could not be verified. Start sign-in again.",
+      "source": "GitHub sign-in couldn’t be verified. Start sign-in again.",
       "arguments": 0
     },
     {
@@ -4009,7 +4009,7 @@
     },
     {
       "name": "account_browser_failed",
-      "source": "Could not open the browser. Retry or use a Personal Access Token.",
+      "source": "Couldn’t open the browser. Retry, or use a personal access token.",
       "arguments": 0
     },
     {

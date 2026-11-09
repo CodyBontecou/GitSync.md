@@ -42,7 +42,7 @@ class ResourceDiscoveryTest(unittest.TestCase):
         self.catalog.write_text(json.dumps({'strings': {
             key: {'localizations': {'en': {'stringUnit': {'value': key}}, 'es': {'stringUnit': {'value': value, 'state': 'translated'}}}}
             for key, value in [('Read %@', 'Leer %@'), ('Ready', 'Listo')]} }))
-        native_catalog = self.root.parent / 'gitsync.md/Sync.md/Localizable.xcstrings'
+        native_catalog = self.root.parent / 'Sync.md/Localizable.xcstrings'
         native_catalog.parent.mkdir(parents=True)
         native_catalog.write_bytes(self.catalog.read_bytes())
         (self.root / 'app/src/androidTest/assets').mkdir(parents=True)
@@ -65,6 +65,12 @@ class ResourceDiscoveryTest(unittest.TestCase):
         (self.values / 'strings_feature.xml').write_text('<resources><string name="read">Changed %1$s</string><string name="alternate_ready">Ready</string></resources>')
         with patch.object(extractor, 'ROOT', self.root), patch.object(importer, 'ROOT', self.root), patch.object(sys, 'argv', ['native']), self.assertRaisesRegex(AssertionError, 'English source changed.*read'):
             runpy.run_path(str(pathlib.Path(__file__).with_name('native_expectations.py')), run_name='__main__')
+
+    def test_import_defaults_to_catalog_in_same_repository(self):
+        with patch.object(importer, 'ROOT', self.root), patch.object(sys, 'argv', ['import', '--apply']), contextlib.redirect_stdout(io.StringIO()):
+            importer.main()
+        coverage = json.loads((self.tools / 'coverage.json').read_text())
+        self.assertEqual({'read', 'ready', 'alternate_ready'}, set(coverage['mapped']))
 
     def test_extractor_reuses_existing_key_from_arbitrary_xml_filename(self):
         source = self.root / 'app/src/main/kotlin/Fixture.kt'

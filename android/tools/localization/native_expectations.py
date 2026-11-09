@@ -8,7 +8,7 @@ import argparse,json,pathlib,xml.etree.ElementTree as ET
 from extract_compose import ROOT,android_text,base_resource_files
 from import_ios_catalog import load_overrides,signature
 parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--check',action='store_true')
-parser.add_argument('--catalog',type=pathlib.Path,default=ROOT.parent/'gitsync.md/Sync.md/Localizable.xcstrings')
+parser.add_argument('--catalog',type=pathlib.Path,default=ROOT.parent/'Sync.md/Localizable.xcstrings')
 options=parser.parse_args()
 base_sources={}
 for p in base_resource_files(ROOT):

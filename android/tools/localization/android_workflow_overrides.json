@@ -21665,7 +21665,7 @@
       }
     },
     "gitops_lfs_extensions_review_failed": {
-      "source": "Could not review extension tracking. Reload and check existing attributes, conflicts and file access before trying again.",
+      "source": "Couldn’t review extension tracking. Reload, then check existing attributes, conflicts and file access before trying again.",
       "localizations": {
         "ar": "تعذّرت مراجعة تتبّع الامتدادات. أعد التحميل وتحقق من السمات الحالية والتعارضات والوصول إلى الملفات قبل المحاولة مرة أخرى.",
         "da": "Kunne ikke gennemgå sporing af filtypenavne. Genindlæs, og kontrollér eksisterende attributter, konflikter og filadgang, før du prøver igen.",
@@ -22355,7 +22355,7 @@
       }
     },
     "account_sign_in_unverified": {
-      "source": "GitHub sign-in could not be verified. Start sign-in again.",
+      "source": "GitHub sign-in couldn’t be verified. Start sign-in again.",
       "localizations": {
         "ar": "تعذر التحقق من تسجيل الدخول إلى GitHub. ابدأ تسجيل الدخول من جديد.",
         "da": "GitHub-login kunne ikke bekræftes. Start login igen.",
@@ -22655,7 +22655,7 @@
       }
     },
     "account_browser_failed": {
-      "source": "Could not open the browser. Retry or use a Personal Access Token.",
+      "source": "Couldn’t open the browser. Retry, or use a personal access token.",
       "localizations": {
         "ar": "تعذر فتح المتصفح. أعد المحاولة أو استخدم رمز الوصول الشخصي.",
         "da": "Kunne ikke åbne browseren. Prøv igen, eller brug et Personal Access Token.",

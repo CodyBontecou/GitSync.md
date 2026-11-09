@@ -112,7 +112,7 @@ def checked_plurals(item, source, languages):
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--catalog',type=pathlib.Path,default=ROOT.parent/'gitsync.md/Sync.md/Localizable.xcstrings')
+    parser.add_argument('--catalog',type=pathlib.Path,default=ROOT.parent/'Sync.md/Localizable.xcstrings')
     parser.add_argument('--allow-translation-loss',action='store_true',
         help='With --apply only: allow an intentional loss of translated labels, locales or plural forms after inspecting the preview.')
     mode=parser.add_mutually_exclusive_group();mode.add_argument('--apply',action='store_true');mode.add_argument('--check',action='store_true');options=parser.parse_args()

@@ -1,13 +1,22 @@
 # Android localization pipeline
 
-The source baseline is the sibling iOS `Sync.md/Localizable.xcstrings`. It lists
-English plus 25 other locales. Generated Android resources are checked in;
-compiling the Android app does not require that sibling checkout or Python tools.
+The source baseline is `Sync.md/Localizable.xcstrings` in this repository, next to
+`android/`. Both catalog tools resolve this path from their own location, so
+they also work in isolated worktrees without the historical Android checkout.
+Use `--catalog /absolute/path/to/Localizable.xcstrings` to select another source.
+The catalog lists English plus 25 other locales. Generated Android resources are
+checked in; compiling the Android app does not run these Python tools.
 
-Coverage is intentionally explicit: the complete current base inventory contains
-1,597 translatable string keys and 30 plural resources. Each non-English
-locale has all 1,597 string keys and all 30 plural resources; no base resource
-falls back to English. The 2026-11-03 literal pass moved remaining user-visible
+The [2026-11-08 readiness audit](../testing/redesign-finish-20261108/README.md)
+found 2,464 translatable base strings and 97 plural resources. Each non-English
+locale lacks 1,413 string definitions and 75 plural definitions, which fall back
+to base English. The checked coverage manifest describes an older subset of
+1,051 strings and 31 plurals; it is not a complete current inventory. The importer
+check detects generated XML drift, and the literal guard reports 45 unreviewed
+occurrences. These checks must be reconciled before claiming complete coverage.
+The following dated sections retain the history of earlier localization passes.
+
+The 2026-11-03 literal pass moved remaining user-visible
 Kotlin copy into five `values/l10n_*_strings.xml` files (276 strings, 8 plurals;
 translations in `android_workflow_overrides.json`). ViewModels without a Context
 expose `ui.util.UiText` (resource id + arguments, or raw Git/server text) and
