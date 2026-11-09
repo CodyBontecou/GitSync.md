@@ -1,0 +1,3254 @@
+[
+  {
+    "path": "app/build.gradle.kts",
+    "sha256": "cce45e44b1ed642ecfb9a1a3423dbbf9f9b5cff6aaa3734ea00dd63754482cae"
+  },
+  {
+    "path": "app/src/androidTest/AndroidManifest.xml",
+    "sha256": "ee3ab3be4796d059e6f2a4d611f9c1a6e331774ee1af3f3e38bb1d64620cc9d7"
+  },
+  {
+    "path": "app/src/androidTest/assets/localization_expected.json",
+    "sha256": "4ef0a994019bd7e552f0ae108032f644b07ef219ca55a666138df05027054343"
+  },
+  {
+    "path": "app/src/androidTest/assets/ssh-fixture/identity",
+    "sha256": "3d0ebd39515f315c6a3b486dd63fba4f3912f811ebce9a8884d30c2bba531971"
+  },
+  {
+    "path": "app/src/androidTest/assets/ssh-fixture/identity.pub",
+    "sha256": "90399793b7766d02796503f1533bfcce3d2cc9803f6b1eb3aa3c18759a7b909b"
+  },
+  {
+    "path": "app/src/androidTest/java/com/bontecou/syncmd/CallbackResultFixtureActivity.java",
+    "sha256": "dc5670a0ac8efe9165cdabd15cfffe31d8e268ce7b8b5baed89db7fb443f2b75"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/AccountLanguageTest.kt",
+    "sha256": "ceb8a7071ab01ab4ff69d82974e2e141a0e7951e5e3a2c5016fad75dcedc926d"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/AppGuideNavigationTest.kt",
+    "sha256": "94cb2e7a50855eb7dbe2696fb329e42a9763b8921a9420d3f93805bca9283bc2"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/AppGuideStoreTest.kt",
+    "sha256": "e6f9bb0b2c1790e4cb542ab9caacf9f90add8db205e1341508c92a0cc4dd40c8"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/AppTourLanguageTest.kt",
+    "sha256": "ef744db5bcec38c353cc899dfc5a6f7610df88e29f3763b579f645ff02216a48"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/AuthorRequestOwnershipTest.kt",
+    "sha256": "c761eda8f26040ad6051c73ef7de06fd77c9a546550ead8503769111dede9fb6"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/BackgroundSyncLanguageTest.kt",
+    "sha256": "684a236de9927b97e4e0ecab0aba3afa4bdac7406f38be7ceaaf74a8e187ee4c"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/BackgroundSyncSchedulerTest.kt",
+    "sha256": "50d7b49778fad889fbc07c61486764a2da3a1932db26cc3b47b8c9e43d881930"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/BackgroundSyncTest.kt",
+    "sha256": "1b3893161c05f705163117c508b41d6acf3d9d9f9ef082a42b11247cd20f3fe6"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/BranchCheckoutDeviceTest.kt",
+    "sha256": "c3bd5c31a099e919359475451c7d4acb905150710dfe2ee76c6ec581657205d6"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/BranchViewModelTest.kt",
+    "sha256": "84df4869699f0e302495d44056224b5d8b8465a7ceb5ee1d17ff93481d046cb7"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/CallbackGrantLanguageTest.kt",
+    "sha256": "f52ff5cb16263ac6c02425cc3d2affce2c7b67ba256bb3226e25372e978490b5"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/CloneCatalogColdStartTest.kt",
+    "sha256": "2e460e141f283b5b1d1c21f0a91b7a2d5ea2f5394b9395123e7d45f0bfafef79"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/CloneCatalogFixture.kt",
+    "sha256": "3acab04dc8b2ace8cdfaf8e32c856ad533dc9b0151f86da791593a684a0f01ba"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/CloneCatalogProvenanceDeviceTest.kt",
+    "sha256": "0e69b694301451f5ce51c4899d7470a53221a448c4a75403c23e40aa991f3b29"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/CloneCompletionTest.kt",
+    "sha256": "2dbb486b18dbe10bce990570e1e55684014a45f06091c724d19291c6b7b04e39"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/CloneLanguageTest.kt",
+    "sha256": "617de5506502ae42f15ab13a01a2508a15a8efadf22e2837be80707871eeffc8"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/ClonePublicationColdStartTest.kt",
+    "sha256": "e207f1a8adc30f105ef556eb05ac73fde1dab2ae50b14b60f8dce152bf7a9e8f"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/CloneRecoveryManagementTest.kt",
+    "sha256": "6e417c8caff3a4f569d70e23439745763084020ccddd0ed53c7135b1a1747881"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/CommittedScreenshot.kt",
+    "sha256": "bdd946b4044a6c59a1ed6b8a7b6f5e2db71804e42057336e1ca69665e288cd72"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/ConflictViewerLayoutTest.kt",
+    "sha256": "8255d3ed1934f5ffe37c1530d79decfe7a99d61018249def6bf4abbc0bfa5a98"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/DiagnosticsColdStartTest.kt",
+    "sha256": "ec83293a2ab7b4b029ed86b188f8c2e25c8ba3983a48576d9336b48918f5e45e"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/DiagnosticsScreenTest.kt",
+    "sha256": "e4ec4c7eb6ae81140ef9594bc4b50846ed21a6d07e28a3d1686b935b0b6b533f"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/DiffViewModelTest.kt",
+    "sha256": "6ccf378c4fa9ffaa8f26bbf8ad73cb25d31466ad0732363d45f0a99ca9620776"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/DiscardReviewDialogTest.kt",
+    "sha256": "c8b6624e225facb261f8aa0ad505f68988de52af86fbea2f19426e35c705e51f"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/FileErrorLanguageTest.kt",
+    "sha256": "90d2755bf6b6151485b6fa444377f7ea61be861ecc5c718cd260e7a00d4697cc"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/FileNavigationTest.kt",
+    "sha256": "d936a0777f0d6f0f8105f4a1953199cd1cf12c39432eec11f647ef4e76399c96"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/FilesLanguageTest.kt",
+    "sha256": "34650cc377e40f2e03a738ed575ec7426df975799482be2573d09bd569b05fcd"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/FilesScreenTest.kt",
+    "sha256": "6b9f285e481f4915357f2eaf8169e9cac2e608f0ec9c8457940ac27318b9787f"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/FirebasePushRegistrationTest.kt",
+    "sha256": "214098dbe9dd77ba37d630983debb6c4a6c4e8324fb954dd7c734b949c4f2de1"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/FixtureFolderPicker.kt",
+    "sha256": "2bec9f5d6502642283aa8cbacccfad839151092561bd1fb5aeea990bd52caf8b"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/FixtureSafetyTest.kt",
+    "sha256": "9ef79ec6b36fd49307b56cd296365f2a4b9c56112839c98b78b4dc991b4868e1"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/FixtureStateAuditTest.kt",
+    "sha256": "3fff04f055fe7f1290c004dd49ae9606fccf41a80c3b8a7669914672a51e854f"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/FolderPublicationDeviceTest.kt",
+    "sha256": "a1e0fc5c639274558a5f508a0121d2c6f18bff6eab6ee64e0b05a15deb5a36b3"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/FolderPublicationJournalDeviceTest.kt",
+    "sha256": "5b0baf78b98f4c1af72d615b37b5b4c3d6f7cf5c2ea3f5b26fe5b681a1c41eb2"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/FolderPublicationScreenTest.kt",
+    "sha256": "a2cd0ff052954d4a32cf6d624be28df9c2a43e17ee5404e9784bacb09cee1250"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/GitHubAccountsTest.kt",
+    "sha256": "7e02f6618101671368a7f6dd099f41fc77fa93e49195723216bf2d739d464db4"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/GitHubSessionTest.kt",
+    "sha256": "54a17e43fced144497cf1832e76e5ce75f3878d6f0be4f513d7cd91a3a888155"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/GitHubViewModelTest.kt",
+    "sha256": "97cb6c3cc7c793212b928d493b7698066884641d858ed534e65cbad3cc0dd970"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/HistoryCloneTest.kt",
+    "sha256": "19ffa469fa79cfd4faca705b80e175feb4a4ceb0dc11cbc3c80064c03015a4c7"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/HistoryViewModelTest.kt",
+    "sha256": "1cab4422aad3dab824253338d8fe8f45b031778bcbe17ee5d697bff5d25a53a7"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/LfsCheckoutDeviceTest.kt",
+    "sha256": "e097cc46c31c85e6de1eaa1cf5af0771886f4e0afec70708e4c5a3d1e85c0bac"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/LfsEndpointFlowTest.kt",
+    "sha256": "8160884cc3dec4e2a5c113236ca6827d468b8d039ea51195cdd18a67413c6c05"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/LfsEndpointStoreTest.kt",
+    "sha256": "3e8388ab88aa29d1b2d10ea9f0d3c66117b6d2f00259eaefda3709e9335812fd"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/LfsFileSummaryLanguageTest.kt",
+    "sha256": "62b3f7f3093cac43a047c0273411697f9e59890dc83f46f7f5e2ca25d4cf7e8a"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/LfsHttpSequenceDeviceTest.kt",
+    "sha256": "2dd3e17e38e7258cfbb7fe02ebc8b551ae141898ad526c3d7e8b60727fec0a56"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/LfsLockConsentLanguageTest.kt",
+    "sha256": "0ab864f296f2ee215dc2225a27e01c3a9ded57f62b6769b82581aff6dafa8723"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/LfsLockDeviceTest.kt",
+    "sha256": "e91677d5ffa89e0b6abd9f24e62250f342de4346a07afeecc9f4ff7e78fe8ce4"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/LfsLockListLanguageTest.kt",
+    "sha256": "9df4a9e5dcc70b09ea975d09846492c189fbfd2cb84eabc60669acef75574971"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/LfsLockManagementDeviceTest.kt",
+    "sha256": "c51b83ccaa7cf012a0d3236b776d9168c6cad17dc7ad565aa1fd101e1b553385"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/LfsOperationNoticeLanguageTest.kt",
+    "sha256": "6a4761952562d04beac6a777173954d218c8b48a9ecdca2ecbf6cefeae9b533f"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/LfsScreenTest.kt",
+    "sha256": "f5a558c4206254273fa6daa9f64d9a5924674c30ab206b784122756718e15639"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/LfsSshHttpDeviceTest.kt",
+    "sha256": "87de31475b5c2fe1fb9f20b63ce57a90409330e2bb3d73bc08a01bcbacc466f4"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/LfsTrackingConfirmationLanguageTest.kt",
+    "sha256": "4f14020b947c85964a983924bf70019dbfd43557e6d43520e1a96696f3a5f58b"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/LfsTransportDeviceTest.kt",
+    "sha256": "8e227b42ef0517c9fc259fafdafecd32ee70837e5c39b27f47c2cd664f4750db"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/LocalizationTest.kt",
+    "sha256": "041be75fdfbdf450d7602c9edf389354d125e02267c37497607f0ac826be9dd3"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/LoopbackHttpGitFixture.kt",
+    "sha256": "40f61fa1e75733274db826f4e4e98c0c7b1ab76483d766892adee9cadeb66ac0"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/NavigationLifecycleTest.kt",
+    "sha256": "14421816316182039dc78b168b783c0750206570620f9daaaec9b445fd408bac"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/ObsidianConnectionTest.kt",
+    "sha256": "4f3e42c587dfa943a1968ec10e5f2721a093c9f81b46ba7636d2b5df11eac903"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/ObsidianPreparationColdStartTest.kt",
+    "sha256": "9eede976653cf0edd9addec6e2d0521ee700def7c8941f1d996cabd3aa396ff5"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/ObsidianPreparationFixtures.kt",
+    "sha256": "a5f6350c21b10ce104a7414113602e12de9a74cc3e2ff0962aa4598d23a19501"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/PaywallFlowDeviceTest.kt",
+    "sha256": "72bade92a0317cb3d0613da28184a14c9ae4900d934e5e3de5a4f2d0c27c03d6"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/PrivateFixtureSnapshot.kt",
+    "sha256": "df6e48f126069ee5fdc7b012daf636034a956192f6e7ea077c859c3ac5e1e604"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/PullAllBackgroundColdStartTest.kt",
+    "sha256": "5a7466fb5c2f0dc1be0859aeb4220d3647356b6342db5ad891ef6c49c1cf7391"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/PullAllBackgroundStoreTest.kt",
+    "sha256": "671d0030f2286353eacff4846200a80aa3ecb4fbaeae74a915be5da72c5ef11f"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/PullAllBackgroundTransportTest.kt",
+    "sha256": "c9a386dd280d5d9821097894c8723aa8ae27e16242b8648ec97d98f45da2c794"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/PullAllLanguageTest.kt",
+    "sha256": "d350115ad9ea142dd1ea6948507fca6637af1a08c589c91e5f8b17392cd513b7"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/PullAllScreenTest.kt",
+    "sha256": "25571511f8094e9042fecb3477aa5220b7f6243893cc83446d09c6ff0be8543b"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/PullAllWidgetLanguageTest.kt",
+    "sha256": "82530737209451ce70849a340bed78be2abb90801b425db1d06928af5d9b491f"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/PushSyncColdLiveTest.kt",
+    "sha256": "661a5bb407e30a051fd2d9bd3e2a5fbffda6436f20697acbc4f43ff720739cfa"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/PushSyncLanguageTest.kt",
+    "sha256": "d6bf68c038bff95539e147c0d7565bacd9488dc99e60c68fd43f4cdeb758d01f"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/PushSyncLinkLiveTest.kt",
+    "sha256": "3bf2a9e9efbbc9e90e25ca1d93a0c28b42aa74fe3af4f0738e5945cbe84b1fe4"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/PushSyncLiveDeliveryTest.kt",
+    "sha256": "bd5df52068918627fd7f701b89ae33411c5e061128d4768e14ebd5721b36ffed"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/PushSyncTest.kt",
+    "sha256": "fad21554ea5ce468bca3634240f26c9f1b98d960fa72520dd763d9abaf6fcefa"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/RebaseColdStartTest.kt",
+    "sha256": "85297d0386a16f47a897c747661f5561c456dffaf15fad208d3634998bbd0a45"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/RebaseLanguageTest.kt",
+    "sha256": "93c3ac3d136922ba533a4fb2f2cd055c6862c533aa026e578f2efe71dd515ca3"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/RebaseQuantityTest.kt",
+    "sha256": "90feb6d355e62f01f5331e4d9769846d0ae8be9dfbfdba3e5c756507049236fd"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/RebaseScreenTest.kt",
+    "sha256": "81393caad5dc92b6129e3c5ed3aacddfe5820545c26379fda912236fce87b9f2"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/RecursiveRenameFixture.kt",
+    "sha256": "13bbf72e7cfbbc98763a61960085cb48024bab123a7de8947634a2fd6a2859ef"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/RemoteConnectionTest.kt",
+    "sha256": "9d226c85b9d06bd8e8a7399c4444b8eb858e875ebaa9f24d8e0bf9612fc56afe"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/RemoteCredentialMigrationDeviceTest.kt",
+    "sha256": "04c0413aafe9399a959f35a37e8b40ff90addea7479688d4899302e13b8c29d0"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/RemoteMergeScreenTest.kt",
+    "sha256": "6f0a323b18eb0c8f6d6a3e5a0b07bd67174d5835e646b6e8bfd3ad077860cffd"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/RenameConflictFixture.kt",
+    "sha256": "c60a31cccba2531bae7e55b7e410ae2bf4a72a2acf8e494cf19a2af2468b7291"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/RenameDeleteFixture.kt",
+    "sha256": "c30eeed4ab6afb8420aba6c3f3028e8f1f044d16bcaa39df8b6100684dfef51b"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/RenameModifyFixture.kt",
+    "sha256": "4875b9f234a0890394c477607e2bb75d98cdd405b4c79d323a91f2d2240a779a"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/RenameStorageDeviceTest.kt",
+    "sha256": "d665074a5f513cdce705a1691608b331c34d536fe9c93f121b5d313a4d9d145c"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/ReplayCheckoutColdStartTest.kt",
+    "sha256": "3a9e51dd5ff0246e5636a5f1fa5fad01401f1e7d33a562328f2f4eb4c4b1b27a"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/ReplayCheckoutDeviceTest.kt",
+    "sha256": "6b3685fff08dc47836634fa5822cee65e2c0e349e4e23941d6e13768a8933ecb"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/ReplayCheckoutFixture.kt",
+    "sha256": "a246c7da00e8b05143f303d99091637798da422103ee61a0341bafb772ec7b86"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryActionsLanguageTest.kt",
+    "sha256": "9c8f5a35510b180f569de747c41b5db0f0a8d84eac2e48484999a7dee888b4e6"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryActionsScreenTest.kt",
+    "sha256": "ee646cc6b14c52d630bb26fb1854e7a3034276d530ada7445e87ed512f28fb54"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryCallbackColdStartTest.kt",
+    "sha256": "12b7f824e8a261fe3da48d76864c8d919999c79b6a3517bfef2c08f724fd311a"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryCallbackGrantTest.kt",
+    "sha256": "d3c5f83dfd16701a64ee7e6f7c5139e52fa3cb045607adc886c82de354344442"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryCallbackInterruptionTest.kt",
+    "sha256": "eb6118c99f9d97349201dd9588c416a53442e638b375dd7499137f012510b99c"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryCallbackScreenTest.kt",
+    "sha256": "ec4569b832e31dce3d4fd8419c3dfbdcff0605917ad75e5bf9c70328dc51868d"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryCallbackTransportTest.kt",
+    "sha256": "02af7543b95b2f7641378dfa681081c980760dc64a87b095d76bc4509c23d610"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryLifecycleSummaryLanguageTest.kt",
+    "sha256": "8358bbb067bed4ce00e2da5502321e9233a9408efd04286913f32c0cdfca7567"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryLocationsTest.kt",
+    "sha256": "642a4ae4bd7a361f959dd75235595c0911a969cf08471ae5659826019bc92651"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryManagementTest.kt",
+    "sha256": "489479e59eaa9bf5c84d310a8eaa7bdfb528569f4465ba0b9b0c4158fd8df75f"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryMoveColdStartTest.kt",
+    "sha256": "d8aec118cd0e25c527184f8f8c8c87bef1974bc27e1aa57ab8bfc62e79c5783f"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryMoveTest.kt",
+    "sha256": "c6547f83a32608fcf7044666054b5e7d77f1e616dc5d1ea5b111c30e2bc041cb"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryObservationDeviceTest.kt",
+    "sha256": "89a3158561c15ef14786bf1e522c61ac274dd46d2b69688f63e79b8d89d5c71d"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryOperationScreenTest.kt",
+    "sha256": "0886a4a7b6cad363e67957e65ab65a636942b76f7c60944c433843de6091c134"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryOverviewUiTest.kt",
+    "sha256": "85d6e8a289ecdd979cf4b2c02ae9a403c0141b08afefe1fd3d666e7f828cfa5f"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryPickerIdentityLanguageTest.kt",
+    "sha256": "d44b640e68adf59b200a23c85321bdd8b5cf986f2002e2652e0bc1c80e7217ed"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryShortcutDeviceTest.kt",
+    "sha256": "1e2e41c8cb1e8258286cd70252d46b470eba2a6a54d91cd0e3a0cd7051b8fcf4"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryShortcutLabelsTest.kt",
+    "sha256": "1b64f273ec8e1bdfe9cc59d7aaa198506d2c9afbe32a1678546474a4ab28780c"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryShortcutLanguageTest.kt",
+    "sha256": "519b04234e736735d9507e96495b9291ead80d2eb6c8e5acf36771724215a389"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryShortcutLauncherTest.kt",
+    "sha256": "dcb3094e6f0c59b4e1c3cb0f11632c1060cb0f311d2411e8507152f1dae7e796"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryShortcutRunColdStartTest.kt",
+    "sha256": "76cc752ae204797b6e785d60d4fec5516671750add181b0a77a0b8079cc83ad1"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryShortcutRunStoreTest.kt",
+    "sha256": "acb47cf88a18d900cc7a9cd7c912e2a9faa44dadcf96850254c558b41876885d"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryStatusDeviceTest.kt",
+    "sha256": "45f82b20115bf9c6a1dea710219bfead8fd13fe637f708eda5bbb64528e39207"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryStorageDeniedTest.kt",
+    "sha256": "5e557e7c192251d5ad79a5adb84471833c46665fa38d1b459beb131212ca749f"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryViewModelTest.kt",
+    "sha256": "06b46da584f07d6394df6e6c4046ec0622487958b24c515b15590e8a7ba69cb9"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/RevertPreflightDeviceTest.kt",
+    "sha256": "778e0ab0ad772649e1ece40873531205c9e05a91af74c1407f11614aab9d444d"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/SafePullDeviceTest.kt",
+    "sha256": "4ab00f3c974c754dfdc72661b53142a96673f532e30ab546d2dd1e5a7ee2e6b9"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/SshTransportDeviceTest.kt",
+    "sha256": "576c145928e18e7b9da831bf267c3245d8f21fdf16e6f3a99587b48e80a8309e"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/SshTrustTest.kt",
+    "sha256": "040f2f23a94d70e0edd8adf5205d92ddf6a96c2dc7cd935beded218055ca81f4"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/StorageLanguageTest.kt",
+    "sha256": "144f61edb79f9f0cde37504be8e2e9c6bab718e5b8be00d0f3b3c80d790e56b6"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/TrackingRemovalConsentLanguageTest.kt",
+    "sha256": "f1805bafd0ad2e5003f660cbd5cdd72f89c3831a029e00831de11b72d9e93709"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/TrackingRemovalReviewLanguageTest.kt",
+    "sha256": "020aca26a938137e4eb5b8078a3d74a63b9be2d730303be81881ef97f762708f"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/UpstreamScreenTest.kt",
+    "sha256": "473af35ac17fa5aad4ad33776739460769e57c8a31b6589a085104023d193a62"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/com/bontecou/syncmd/VaultResolveDeviceTest.kt",
+    "sha256": "f8cceb16fffee7668b55f30762276f5e1d5dd2e0cf1e574d2a09ad1249056d5d"
+  },
+  {
+    "path": "app/src/debug/AndroidManifest.xml",
+    "sha256": "88bb10eea283e8718a2dec9482d845fd4779d36d96679cd53f718c4768695d66"
+  },
+  {
+    "path": "app/src/debug/res/values/firebase.xml",
+    "sha256": "f2712593eb08c8ebd25c36cd5336da5ff36f30285d8b9fe9ba1a90d825930151"
+  },
+  {
+    "path": "app/src/debug/res/xml/debug_network_security_config.xml",
+    "sha256": "993f29d6314b7b318719e9d4df6167118f1fb0f77e527bca8b297c551d7b10fa"
+  },
+  {
+    "path": "app/src/debug/res/xml/shortcuts.xml",
+    "sha256": "be6a76ef81fb1ddde0a4b6ea5e3bb22c0d6eba8a82870939c39326642b5019ad"
+  },
+  {
+    "path": "app/src/main/AndroidManifest.xml",
+    "sha256": "d51adff6ee7d3798fbbda00707e26d4746e738713f9e6cb094988fcd4a9596e0"
+  },
+  {
+    "path": "app/src/main/assets/licenses/roboto-mono-OFL.txt",
+    "sha256": "50ab8dd54680d3473f649c9db86fece88434d097c7834475c1c72d2f8c429215"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/MainActivity.kt",
+    "sha256": "d824614f49dadf5569a78d8d05cdd34ad27870e9dd7452fcdcd8e7a6da543cad"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/SyncMdApp.kt",
+    "sha256": "50476a814f4464a99548b42fe19410c6c1c171f3a95dd80a985a5175dfdf8561"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/SyncMdApplication.kt",
+    "sha256": "5e51d28d3dde68859fec079ecea3de6cd66999e4a85e0f2ddd2b58b3bb9eadd1"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/automation/BackgroundCallbackDelivery.kt",
+    "sha256": "a3b33f48372faffb1c779561c872b601f3d709bdb7f92d64c5c0eed0b1e17390"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/automation/BackgroundSyncTile.kt",
+    "sha256": "37c65d5af482dd3d797e630da2c58e1e3ee2ce46c711bebca4e4cba88631074b"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/automation/PullAllBackgroundRuns.kt",
+    "sha256": "a6fdd19f32f0950625c094777c81daf9a2b690908f5505679ff2f59e09c9acdc"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/automation/PullAllCatalog.kt",
+    "sha256": "af6198eb9840f030ade840bb3ae4dea1cd0cdc87d2d065ea4c5988f812dd044c"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/automation/PullAllRunService.kt",
+    "sha256": "819689b62c6d5759a546edd0fbac145e19d14dcefb34b718adc19929d1ca2565"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/automation/PullAllSystemActions.kt",
+    "sha256": "4a472773b2d7ebf6ef34bbbdd3cd85328cf0de35902e290204e7ee7118d6146b"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/automation/RepositoryCallbackGrants.kt",
+    "sha256": "94f87a044ddddbc20b569509ac17f7addb901d740d8172784b684cc09c36a0ba"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/automation/RepositoryCallbackRequests.kt",
+    "sha256": "7be0048b32cdb1b450fef7bc1b53154077eacac894daec21baa7901a9fa7e84f"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/automation/RepositoryShortcutLabels.kt",
+    "sha256": "a5bf5f99dc8b74b3b3316eb48e0d44a9102cb14079f54b011da7a43c060f8a53"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/automation/RepositoryShortcutRunService.kt",
+    "sha256": "f3cc7f4b425d8b428d2a54d332ebd4eab1a99d3dd9f9e528b10c06eab081bdb9"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/automation/RepositoryShortcutRuns.kt",
+    "sha256": "f1539f561deb43fe97ab77a6c88000b864ce6c0d7ba8772235e9f09d2b01e2c9"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/automation/RepositoryShortcutService.kt",
+    "sha256": "7907cfb2fde4b0b174d9fb93bdf618d728851e2c93ea7af62e1acaa079397648"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/automation/RepositoryShortcutStore.kt",
+    "sha256": "f4b14f4ed0629409ea7cb0e3221d93c41151699331a047b5d36b14f2f490a01f"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/automation/VaultLauncherShortcuts.kt",
+    "sha256": "0294c361c499dd73933e992e64b7f20be6250fa19bf24c5ba952bd1365c56415"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/automation/VaultWidgetConfigureActivity.kt",
+    "sha256": "ec60cfb7d2f713b6d51d02a1770c891d446c76d28e2d1df6ffad499bfa5d3641"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/automation/VaultWidgets.kt",
+    "sha256": "fec53fcbc144358de6723f50c1294ea9b4f5da1f5830b6e95820fd802991ddcc"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/background/BackgroundRunHistory.kt",
+    "sha256": "03a5473b8ec2b898dda553029d5cee29bbec6f6d222b26be29f1b6b821b47102"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/background/BackgroundSyncBackend.kt",
+    "sha256": "742ad42293e60f9285ffcba92875f06f1bc8c771df32d19254ceb41c3e31583e"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/background/BackgroundSyncJobs.kt",
+    "sha256": "46e856d2c02ba04f84be4a3bceb14f1fab5650403aedf7ba8b6b5c3bf4f2480c"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/background/BackgroundSyncStore.kt",
+    "sha256": "5ed211a72199c41b6d9870907bce51a6e2f1faf22ed7f0995be5984bea0162cd"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/billing/AppUnlock.kt",
+    "sha256": "bae49959352ef50dbd3e9f64a28b9eadaf0c5222920a9f075f4a1130108cdfd4"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/billing/BillingGateway.kt",
+    "sha256": "d3d9a4a5e91830a03c8f0a6bdafc12f15ee8d801f5c18cb3daaf89d1f119d0fc"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/billing/UnlockPolicy.kt",
+    "sha256": "b0820ab282756f4325b3561dcb29e80c328422bf70e2c20b4a7bbe433215f080"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/billing/VaultPreflight.kt",
+    "sha256": "51fb85a1f3dc5353e79439704b5bc5eab08da7e48f5257cc214320f64e7f043a"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/di/BillingModule.kt",
+    "sha256": "fdce7f79648c75e4c1902aa09d4f34ac42ff647d4472764d904981bbbd9487ef"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/di/RepositoryModule.kt",
+    "sha256": "c01c4fe2957f7a3d57752fe0abe6d3140cd7fcf52fe8fefa9adf34a0af323f21"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/di/ServiceModule.kt",
+    "sha256": "b6a8c2bd4fa5edad53f2baa954d781a76818fabcd77e5d38ed23b777b61d128c"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/diagnostics/AppDiagnostics.kt",
+    "sha256": "5cd434df1f262e6860327bcccaf0d43eff6a54fd2c5244a954c177b0f5731ce6"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/localization/AppLanguages.kt",
+    "sha256": "7e63c888c21fc2bb4155b02310e332a18d11b96805c3084cc5acc34626ae114d"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/localization/AppLocales.kt",
+    "sha256": "ec1de0670a6da17993af28493c6ecb7b69b1ab245215278f81ed85f77a9d0418"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/localization/FileIssues.kt",
+    "sha256": "5bd27d1962cd1dec057f48587e513b1087cfacbd6be98ccdaf7fdb41421e7931"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/observation/RepositoryObservations.kt",
+    "sha256": "80a0d99c57da7be28491d788fff34126551dccf99ded899c7389fdcc46f5eec1"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/obsidian/ObsidianConnections.kt",
+    "sha256": "6640191fcfee10e6af74a9e1bd0a37431c179691e1a2825b48f28e74d591e5e4"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/onboarding/AppGuideStore.kt",
+    "sha256": "b09a64af704adb43e32cf171920075ecc8ec868fb05006c1f574496d91f8230f"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/onboarding/SupportLinks.kt",
+    "sha256": "646c8b768fa206b13fc7171878b11a831d658ad7e58da1a2c740ee6e6952a1a4"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/push/BackgroundPullNotifications.kt",
+    "sha256": "11967a9e329ea95a08e012732e5f5abf003477f16e0e3c06aa89ebf089afd5a4"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/push/FirebasePushPlatform.kt",
+    "sha256": "e2f6d997f6562344de0778f726162d96af5fbe8b344976dd0f7bc95d57fac0f9"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/push/PushRelayClient.kt",
+    "sha256": "a0e9a0c63e133aa09e16f053a3759a33e71dff372aad9d7ece8b8a6d89da1875"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/push/PushStateStore.kt",
+    "sha256": "219a29b3cc6ff5b80486f9caa5d0c5157d83d03aa58f8114ba55211c02b70f2c"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/push/PushSyncBackend.kt",
+    "sha256": "6f9f0196b3b2a171d1772d3bfb2fc718bee0ef7e53e187fd49123bb12071c71a"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/push/PushSyncJobs.kt",
+    "sha256": "b07dcf50e252da7f8dfd2d667fb251b8ae8b7af4105ed9196a510c444dbc18b8"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/security/DefaultAuthorStore.kt",
+    "sha256": "6f910e8c3bfd41c0e97d9c69bd15b49334b2f64143350c8c7cec5194188bb18b"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/security/DeviceSshKeyStore.kt",
+    "sha256": "f4e253db1f3e2976c6d1f23c65821d8e8514402bf58e1f8f2800c4480ebf0efd"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/security/GitHubAccounts.kt",
+    "sha256": "7c0ead9d8d34fb91978b920d949258bc40bff8c4f9b12c5cf3cc05f564c62ff1"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/security/GitHubSessionStore.kt",
+    "sha256": "f48f0251465ca35701d1de14d4410bbdd212bb69ac4b2c129f774730da6921c2"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/security/LfsEndpointStore.kt",
+    "sha256": "4f07b99b635fc99395bf9cb80aed8b320676f26c112ead00f7d55ad83d63fa6c"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/security/RepositoryAuthors.kt",
+    "sha256": "ccfc4d2199cc6571ce302e7023cffabab685cc071f3bd516f4e5041cd5d5a710"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/security/RepositoryCredentialStore.kt",
+    "sha256": "ff41a196a7d5b399e8cf2bcdc712281e02a64e0e3c5e39bfb32660ef682e8e78"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/security/SshHostKeyStore.kt",
+    "sha256": "7e5fb46f7d90833f20f939c2da4159155d8b75301f88f4009f8c8866d2146a44"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/services/ConnectivityMonitor.kt",
+    "sha256": "c5ab0b7efd0a905d2b981bd4823fd91fdb4ae2f9f2b017928c96abded6c75dec"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/services/github/GitHubApiService.kt",
+    "sha256": "7132e3c5244f60cf75e537a09610192770d35481cd3cce4c8b4af4f3b2411832"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/services/github/GitHubAuthManager.kt",
+    "sha256": "d637b0ce321d7bda8a56366c576eea9b41e827cb69669f5d4372059a09684bff"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/services/github/GitHubRepoInsights.kt",
+    "sha256": "af77788281530fb5ec1fbbbd3d484b69e0db9ca54fb4c518e56540403a175139"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/services/github/GitHubSignInStatus.kt",
+    "sha256": "826a299e7dea53e300ca7fb6fcb7bd280d1caa95422fe51892c28fb31bf87e4c"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/storage/AndroidFolderPublications.kt",
+    "sha256": "7dcbe3cbc59128a160b4c657e04cb5c7380ed3e7e3666043be1a85470c5b1b45"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/storage/AndroidRepositoryServices.kt",
+    "sha256": "7b61b4c0995f3e4cf4f4feebf5f7c50adf7544c49ab3646b3a0ef4c970d2adad"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/storage/AutoCommitPreferences.kt",
+    "sha256": "3de96189ff2832a89f9cc8f5a0af8a0f13c9736d7041781a6efc84c0ad7556ee"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/storage/ClonePublications.kt",
+    "sha256": "578feebd08df86d4fa15a22eeac8df340b4ae5e332beb8a2d8c3a9294076650b"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/storage/CloneStorage.kt",
+    "sha256": "ab5b502986befe3c7a7867fcca2f068ae5d63aca3fc8f836126a64c39127685c"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/storage/NativeFileMoves.kt",
+    "sha256": "f2488fc3e974ed8428b834aaa477764b257ad9f0dc34b34115f53d8fccc3ea54"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/storage/RepositoryLocations.kt",
+    "sha256": "9268233834e62c0c01c7a2961b3019686edf1269149e031b860b127841b6c9db"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/storage/RepositoryMoveMetadata.kt",
+    "sha256": "bddad3c6dfeeade17282e12b48a0bdce165de8bd5c8c8b3b6c07413b287e5532"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/storage/VaultPreferences.kt",
+    "sha256": "01f9ec52afb3007c767822a64562906c415c07d521caa2d03f3f1adb97b3ec53"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/sync/VaultSyncRunner.kt",
+    "sha256": "90b7abcdf3df88eb1ca227d2d602e6a907a5c9599e9514314bfc04784b1203ff"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/sync/VaultSyncService.kt",
+    "sha256": "8b36333a0fbf55f37b0f764ffdcc9faef728ed3d574be199fe38f9fb45bb8e42"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/AppShell.kt",
+    "sha256": "4b3afd1eeadfd4d83db3b5f38257b0f581bfd4ea514e767349aadfa5526a3f1d"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/GitRoutes.kt",
+    "sha256": "9f886ecc85adebba9f86cc8c66a388332813e09aac832b23d1902a5a86d83049"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/adaptive/AdaptiveConflictPane.kt",
+    "sha256": "be903a5e98dae139b667e8882bbe6769470d9840d2a76a0cce2a07c14d39a405"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/adaptive/AdaptiveCover.kt",
+    "sha256": "f1ae42809694a33d9ab84d28ecf06bd504b54712a889db0581a1bac0ddcc2d9e"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/adaptive/AdaptiveData.kt",
+    "sha256": "852f37f9b4f815651604af09da9fc7b31bbc918d4f8e4f531ee58a8c2c7b4f06"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/adaptive/AdaptiveDiffPane.kt",
+    "sha256": "83961e86fb57a609c4b679aad81ffd3fe975d78e46cb2faa551455bbb08eda0c"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/adaptive/AdaptiveEditorPane.kt",
+    "sha256": "de07bd2ac77f80466f4102ab8081c897b9c434d19a3ae7b30fabcd2d9905a6e5"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/adaptive/AdaptivePanes.kt",
+    "sha256": "14b4982da19979532f66081328d92b48a267c32534270f4e4a0c76b892d10744"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/adaptive/AdaptivePreviews.kt",
+    "sha256": "2063d1ee489223fd4d96a37a27bdd74f73c599901ac4e9772b3658b3e948a54d"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/adaptive/AdaptiveSplit.kt",
+    "sha256": "259989f0b85c9f1f4b1510f4f223998c530b642da1bdc71c33998c1d80cb6d3f"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/adaptive/AdaptiveTabletop.kt",
+    "sha256": "98d7886ecacd11acc8f32872d91df325f344911f6a1fcc8a737ed5c07f1558b9"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/adaptive/AdaptiveVaultHost.kt",
+    "sha256": "9b952b8762146da0adb7796449f7273a33c68cd96730bdc39c343d247a4ac947"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/adaptive/SplitWatchViewModel.kt",
+    "sha256": "15ec25fe82e8a184e76406c63cded23fa658309e8462071ca71b22747dad18a0"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/components/AdaptiveVault.kt",
+    "sha256": "6e6e43ecebd72924c5b08d7ebb4e7b15ee70f2a4ff739f42dfd25e0825587556"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/components/AddVaultParts.kt",
+    "sha256": "223574c546c870b1c71e9878af2ae9bd2a585b75c1fc7c6dd111d633eccf9add"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/components/BranchDialog.kt",
+    "sha256": "9b19161af2555b85d9ed89fc3999f11d61797fe596360a298e3133b1b3659aa5"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/components/BranchList.kt",
+    "sha256": "d155ca96e94947970adb6744d65aff11d8187cd0c21e20e95531634ccb634400"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/components/CloneCompletion.kt",
+    "sha256": "a8e119aeeb3aee4ffaab3e0b5f2578cfad0ea20a0abbf767b64d183e380c685e"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/components/CommitItem.kt",
+    "sha256": "87ba2c7a75f5cd3ed00536614b38d0cf3f4cf5dc06d966a705776778b2778792"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/components/CommitList.kt",
+    "sha256": "2bc4728e1ed7c9f8fb754312da50f3f5d4840096b79f43f6ca3f3721698005d1"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/components/CommitSheet.kt",
+    "sha256": "3447457983892a159be3a9079c85397954c1831fe914573572dd82ad0c71e6e7"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/components/ConflictFilenameChoices.kt",
+    "sha256": "7f106e35f5d91584056497af818d2029a995bbe3439831c7668727b5f58706d0"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/components/ConflictList.kt",
+    "sha256": "64e428dbec8094d05b55ef2730a8a76eedbfb116e34cbe49bcbcafe9fb5ed094"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/components/ConflictResolutionDialog.kt",
+    "sha256": "786e7cd9e47625ff9c61576cbeb3e622aa1cd3b3d3047ad1b9bb4e28321512e9"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/components/ConflictViewer.kt",
+    "sha256": "8609b43f7e6876cab549c81bb349eb1306e450eb0ffa2b3206d75e6c35fb849e"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/components/DiffViewer.kt",
+    "sha256": "4c131b9f88bf50e40970242df90d18e0f6d49f5489292ccedadffc24bc19b040"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/components/ErrorDialogs.kt",
+    "sha256": "f259ea35a53965dada88f4da5a27b9cfa48a0cce548f20896cca18c92c59e849"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/components/FileList.kt",
+    "sha256": "3ae650f45754ce4c3ba1ef17d4b3b18ec1574d444cb7a0efeb9a0e794f6e93df"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/components/FilesParts.kt",
+    "sha256": "3a986e152f8585e6c9ff34921f981073dc0734970b98978a306e8014a9a58767"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/components/FilesSyncParts.kt",
+    "sha256": "b81e744bbb72b121e60466e4bdf4d7f7d1b91fbbe1590040dfbf105e4263e459"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/components/FolderLocationField.kt",
+    "sha256": "87cd3894bebd771e57d34582a9091bf5f33b2c484a151b3a1a4561bd73577372"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/components/GitParts.kt",
+    "sha256": "c6c28cb1a2a9cae2c7094945a2d49ddcfe379c883964b92d38060c5470d64ee7"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/components/LfsEndpointGate.kt",
+    "sha256": "8588100bf2a49d0cddc1986f6d5f9081833f034e6198147d2b1147c2aea2e970"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/components/LfsParts.kt",
+    "sha256": "331da23e3a62870ce91690dca32e2cee7e3559e7a8cdb260432f640bd298a522"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/components/RebaseQuantities.kt",
+    "sha256": "56b832b92f639b3c7a9684f9c05da01f7bbc4c296c3bd6ee58631d2b2d04bed8"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/components/RepositoryOverviewRow.kt",
+    "sha256": "7dfe9ff736c7ce24c26968e4efc0458ab8e817277f633d42f2077803475913cd"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/components/RevertConfirmDialog.kt",
+    "sha256": "cfc877356c44e5807bcc428df3bec5ea0d04825b2c84f93045e979c0841efc98"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/components/SettingsParts.kt",
+    "sha256": "9575187479cf165e9c50e82a9f6c9961ec280006326c46a6eb28574a555de307"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/components/SshKeyFields.kt",
+    "sha256": "cb32952929ec30846490c2b4d10362ae64bd8c3150850a66442c6638f704b06c"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/components/SshTrustGate.kt",
+    "sha256": "c7289f086821eaf36fffd72565351f3db3df0231ac73f4228d1a167ac999cc68"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/components/StashList.kt",
+    "sha256": "c12431c5d311a4b105cc3b8dfb39ae63fa0e971d945db3e5abb9d71f2b1e5865"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/components/TagList.kt",
+    "sha256": "527582485ada68ed3604791a53e54c3d5159f2f8f67f4b8d456eac95e30af0b5"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/components/VaultNavigation.kt",
+    "sha256": "05d20023c66223600dbbfd87924f7a43439f94fae391f7cb563898b0cf07721e"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/components/VaultSyncParts.kt",
+    "sha256": "7e57aa9b21323bcedf5f5ae7ab9eb3fcfd5fcd2895d7228426ce3a93268439d6"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/components/WrappingTopBar.kt",
+    "sha256": "94f229c0207c7796ab0e083891198f99611fdd25c41316b9edf52139ff062603"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/AboutHelpScreen.kt",
+    "sha256": "fe51ef6114aacc77a284cfe185f64557f5bfe19a24a234387c878b8cef14c769"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/AccountsScreen.kt",
+    "sha256": "37444a04a932632a83df799f68ff991222c574f81feb798c772b94ffd1499229"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/AddVaultScreen.kt",
+    "sha256": "06eec5d946fdfd005b97cc76d0845b5dd333563363e01a1ab4a8659e4f16c47c"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/AppTourScreen.kt",
+    "sha256": "f4cd9a11a3a2dbfeca36299773e077d2863e4c7bfddefe6fef8f9b4127025b16"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/AuthorScreen.kt",
+    "sha256": "203fde203153d147b3b006dcb7bb473f351da60ad354476202ede0a076bac146"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/BackgroundSyncScreen.kt",
+    "sha256": "03cb8004082ea6f79e0962c6792927c9588b9262118419a95070223299f90e78"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/CloneScreen.kt",
+    "sha256": "674a9c46edcab3f2fb4225e7386b7fb6ffbc31b26d8738e43f6c1865101604b6"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/ConflictScreen.kt",
+    "sha256": "50677b24ff410367a31ed493135d3e6bc34c5bd3f4097c7c0280eaf23fa335b1"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/ConnectionScreen.kt",
+    "sha256": "882b5241a06b2f0731e9436ed0818ca0399a949d78fbb7a2fb4f8d21477fac34"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/DiagnosticsScreen.kt",
+    "sha256": "4cb552c35f3024a3525674f5b5298ab9204983fb1556734de2090760f99ffa87"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/DiffScreen.kt",
+    "sha256": "3729e08877cc83f7ceb32cecfbb6e433fc3e05c039683d4fc2541807e9935cf5"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/FileHistoryScreen.kt",
+    "sha256": "59391a1d4a979c61ee27f15d4df744fb8ea0bb57238a87a19e3de2c5e1856f89"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/FilesScreen.kt",
+    "sha256": "c6cc51ec17910c546315ef1323797de28b7b846b9d67948ed191a8da74fca460"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/FolderPublicationScreen.kt",
+    "sha256": "330f073a0339562f5fe52c8f1affbe4c50e15bdd70c030c386fa29ab58b28473"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/GitBranchesScreen.kt",
+    "sha256": "b24c0ff88207d3d1ff71fd4ca593f2f5fb8808bbb7bd15b4016278d4c7856294"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/GitManageVaultScreen.kt",
+    "sha256": "56a73627f5c6111b7ae31dddea3f12abed5333acb36d3c685d04f5f326ad5117"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/GitRemoteScreen.kt",
+    "sha256": "75cf8c19f86e619d475be0571780320ae4fddb454fcdeba8ceb373eccbb759be"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/GitScreen.kt",
+    "sha256": "13a5d50a72ffcfefd61c8a3dcbeace444c53bfcc5c91fae3869d370d4e5b70d5"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/GitStashesScreen.kt",
+    "sha256": "7ed6f6e016bcfe8f7e7d67f00019d8408971c249d2c4237bc80e0f74f66111a3"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/GitTagsScreen.kt",
+    "sha256": "aefc8918d1a104450c16ca68002cfd10804ff2f2fdb0d6876b69207857710bdd"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/HistoryScreen.kt",
+    "sha256": "57b6cb78fec9bcd0e477fd38daf1537903ecedfa2010f63aad479e4e3a3483a1"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/HowItWorks.kt",
+    "sha256": "7f2d3e334d272c4141fec2b92093a718a3f81306fdbb3816e730302ee14b89f9"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/LfsEndpointsScreen.kt",
+    "sha256": "8e49c4b487bc109755eabde4f6e23f299defb5e5aef2d4c25fff523cd60881df"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/LfsExtensionControls.kt",
+    "sha256": "ec5d1db651882756dc63a3a8e0da7fbbb19b961e9565ef4b16c0f0a92c842384"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/LfsFileSummary.kt",
+    "sha256": "043ba02267a20141404ffe6ce1058f82d5dbb9e082e106bc745361f247dcb5a5"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/LfsLockControls.kt",
+    "sha256": "f327d21d7d340aef16ecb7a67b247bcf915c07f841d9a60e9e390f06b88feed6"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/LfsOperationNotice.kt",
+    "sha256": "07542c3476b8e258e3d8915b40fb3cf1bdc6daac144c4eef5215ea9538930d02"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/LfsScreen.kt",
+    "sha256": "fb9a3ab4ea76ae5438b1e1477457cbfdf544b869790ef25b2dd43bdd02be941d"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/LfsTrackingConfirmation.kt",
+    "sha256": "d46f46a16270f992cb1c3a8522b230d59cba78072bb28325394057983f2ff255"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/LoginScreen.kt",
+    "sha256": "5a12e4f3b8776f9793382f2bea326213ada6e6344cd16f1d96bf44a513538e71"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/MoveRepositoryScreen.kt",
+    "sha256": "4bed799c6ea1d08a6f4d44cc473f24cc3a4c2a4cff692ed87e778244224f32be"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/ObsidianScreen.kt",
+    "sha256": "25fa59528d2abe4a548675606090d1fa6bc934f68b78af109186f96ef789d3e3"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/OnboardingScreen.kt",
+    "sha256": "c0be4372601ad9d11b2930118360ce47b0fd8a0dee5d74ec5a030ceb9e9f2964"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/PullAllScreen.kt",
+    "sha256": "4dd9758434b8bbaa38ad085f9ae5c1271bf5e41c8e1801c9a58da26a667ccc0e"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/PushSyncScreen.kt",
+    "sha256": "eee882ea112303a95cbf5210a0b7d8db937a27b14eb3d66abcfcab32b5a820e6"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/RebaseScreen.kt",
+    "sha256": "1f0adb261bc46a2d7d01927ef3b3727da6fc8137374fbb50f6c8d9aa7ddad17b"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/ReleaseNotesScreen.kt",
+    "sha256": "1f9652470f7009401d8bc3300773918e6b1660ed87bf13a27ee24f4e3363c745"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/RemoteCloneScreen.kt",
+    "sha256": "23f3e6461fada5ddaab7357ff4ae7cc9d354a396f9a88791aca1358340011d71"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/RemoteMergeScreen.kt",
+    "sha256": "0fcb777650a4c0532c67656d7110096511e21725618bcb57c96e46b3e4653922"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/RepoPickerScreen.kt",
+    "sha256": "0d98da7eaba5753880f02ae3193df0002fb5cbc1a4fe915c2dfd9aff148ced08"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/ReposScreen.kt",
+    "sha256": "5ff076fa5ca3d10ec1ea59b9fc58db1f55d11aa8480b27a1d0833a66007c1504"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/RepositoryActionsScreen.kt",
+    "sha256": "8c5d9efd40938c81d0157db3c9efd6e9b3691c1eb486656f2f2a6a7404095a7e"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/RepositoryCallbackScreen.kt",
+    "sha256": "08539dc73e4ecb1279419b6f69f16263a67e8b7f3ddad1bdf68e765da63055ef"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/RepositoryLifecycleSummary.kt",
+    "sha256": "68fef5df64b9648bb3d4a4018343d6190853e263f7b38de559fc64fb9ee56663"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/RepositoryManagementScreen.kt",
+    "sha256": "aa8747756c5d6120c3272396921b88fc499078c76917bc6d43300818505460f7"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/RepositoryPickerIdentity.kt",
+    "sha256": "8cae53b2b565202e8780a80e29c53779f765d27297dc7c64aebdcdecaafa2439"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/SettingsScreen.kt",
+    "sha256": "4edc3e22414f7f8d47ad2034707c167f164124dc62baf4254e6dec9ebab8c471"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/SshTrustScreen.kt",
+    "sha256": "e0792e3d1aae5097dfd39630d5cc9ee7cf638ae936495e88476780056b19078e"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/StorageScreen.kt",
+    "sha256": "9d1b7217179e9ba8b1a416cc408232e4c8e0e0e4f17d8cb88149d85e64f8e34d"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/TrackingRemovalConfirmation.kt",
+    "sha256": "d33279e228b7e08a3163a6e1c1062d1ba995559cc5292eaca1393a96b91c5b76"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/TrackingRemovalReview.kt",
+    "sha256": "4d77b89c893745587eeb01cbdda0a41c63aede61aea020781a161ecbad9be5db"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/UnlockSheet.kt",
+    "sha256": "037fcc36dfd5825ef2e6cc3fbbd530a8b9cdbaba4dbc1ec3fadd45ba19421f4a"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/UpgradeScreen.kt",
+    "sha256": "8cd181b086cf607833a54bdd1373d22635351a1ed0b349fb388657b44932848b"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/UpstreamScreen.kt",
+    "sha256": "226ee12e1e1e0bad87836b4511150929f31cd7e71c3b597ad6dfd75b05f33fee"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/VaultCheckScreen.kt",
+    "sha256": "305b493cfd702477d6296a67c5e57bb69b130c3340e73938b815f965d93624bc"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/VaultScreen.kt",
+    "sha256": "a4c37b8c42b24f3289a0cdbb08b94c9162a1d00d48377da0cdebf28df0697583"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/VaultSettingsScreen.kt",
+    "sha256": "bf8c2312f41b2f94410571577734a8ad4eb68ecbee56d4f02063efb154fcfc50"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/theme/AppAppearance.kt",
+    "sha256": "71f9585de309105e663b58ecf13fe1b639d2f0caf2c5bdbfd80d26795e27102d"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/theme/BrutalDesignSystem.kt",
+    "sha256": "a684065a1e608f368292db99cd044176d43f0a83e24137f2f8855cebcbdba20b"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/theme/Color.kt",
+    "sha256": "c2a05e8f8bfc022cb964358a7b9dc2e008e19c9ff2226aae872edf876fbee7d6"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/theme/M3Kit.kt",
+    "sha256": "073ceef8ceb877a918d6a617ed13818662fe7252fdcc5f0f1b7ac3e348565428"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/theme/Theme.kt",
+    "sha256": "76bb1fc268794beb0b4ea6f42572fec01ca6ed6f2a3c7e2bb4c02be9d6eeb5a7"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/theme/Tide.kt",
+    "sha256": "70df7db118eb025e27970dc41c8095c3c28e8a6e5f648601fefb16aeb619f5c8"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/theme/TideOverlays.kt",
+    "sha256": "3f012bb45e005879a7ba2991b0abf3c7a6d6280a5193f0a7481819046fef1656"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/theme/Type.kt",
+    "sha256": "5d87d7c1e9216296262d44e491b145d92bc4c3eea7a510393ea9157f7d9e830e"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/util/Adaptive.kt",
+    "sha256": "9f865ccf5ead1e15723c7c3e2d833d21cea0d1b72064854d11e78ddd12aefa18"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/util/CountedPhrase.kt",
+    "sha256": "f0017c14debd1a0ca1e7a86c70a06acb5a7ab26a42a7df9b5483be50bea3b4d9"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/util/FilesAppLauncher.kt",
+    "sha256": "2149b933119bc62bebe2d94d95b30b47e8d850b94afcd8eefa1c1328b4aae7c1"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/util/HistoryCloneReview.kt",
+    "sha256": "ab8983d72ed6344e70b8e323916878009a2fbdacd452b280bf9186bd3ce5de89"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/util/NameInput.kt",
+    "sha256": "e2a96fb63b0103b708c5a8278407047702c3da9671bc37bd6928e831e05fa91c"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/util/NavigationArrow.kt",
+    "sha256": "f9d60cb750168085fde9c5f23503ff9ac57c207e804883f97a5687a2f767f4f3"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/util/RepositoryDisplayIdentity.kt",
+    "sha256": "44ae523134b0b3a0f0936aafc5f07bd7335ecc265b9c9cb5e99ab7180f89b3f5"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/util/RepositoryResumeEffect.kt",
+    "sha256": "0ad921ae51a80ddf650b5ea4e33a10a17eb9364ec173ab0663016d2fef9756db"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/util/RepositorySelection.kt",
+    "sha256": "08177ea961d1c76f4de9c7636eb5692b2184efaf0706a981460aae2803b4cf22"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/util/RepositoryUpdatesEffect.kt",
+    "sha256": "2ccd5ab547a2dc2a360c46e628191f97b9c3c0a714a480b56e01108f3fbc2e61"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/util/ResumedNavigation.kt",
+    "sha256": "164ee2ac4657a51768c2efde49892d29ec6c999f94eba916357670c6e4160a53"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/util/SampleGitData.kt",
+    "sha256": "0fd524a0a4d3934c50e7eab2b0115de235bd889aecae6023c34302f17a8b6809"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/util/SecretDrafts.kt",
+    "sha256": "0bf1a1c3d6ce9961069b83f5042e61987936a91501f9cee0584c39453ecc6a02"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/util/TextMetrics.kt",
+    "sha256": "a49c678201a6af667bf756ae3ee38867f17f943c6101fb734e8c81e86587a2a8"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/util/UiText.kt",
+    "sha256": "58cf97fa06894d89de6bade7ae77bfd45e7e048858412ff939b8ffb76e895f52"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/util/UnlockGate.kt",
+    "sha256": "5ea136b424ac27b10aa7ad46f93e9f68d18f09e41975e070122da88694d1869b"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/AppGuideViewModel.kt",
+    "sha256": "3401302fd66863254e61f00a12452764a14194b988add855eedaa775bb13dc68"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/AuthorViewModel.kt",
+    "sha256": "5e33faa1327b18072a2b785578d41c3d72911c44ee3b862db70d80dc1e742570"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/BackgroundSyncViewModel.kt",
+    "sha256": "956b4a4f24e1d2ee044bc5577537172ae52214d0841511cfec6b2aeacd9aae4a"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/BranchViewModel.kt",
+    "sha256": "04b80448baed04dc9e1f653a0604063c1d8df1453a8d12a46c2a2ac9c56c6fb0"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/CloneViewModel.kt",
+    "sha256": "922d58e28e5b214e770d05394b4cdf69036ee9a4b6ee470973818589c2caef83"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/ConflictViewModel.kt",
+    "sha256": "8bf12d88f9cd570b3dfbe9535f2f3a5e83d80132c2fdf839696c1365afb4eb4d"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/ConnectionViewModel.kt",
+    "sha256": "52141d054f320e165f98dff1e9e03c05044236899eac0a66315aec617ef9b423"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/DiagnosticsViewModel.kt",
+    "sha256": "4b96501f853212aafd3f2876dfecfc1af8185f518d346ac63e6456a3d07bb7a5"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/DiffViewModel.kt",
+    "sha256": "b5aa58298ce554884a01e0d2dd0efd597d29991e0043a1f2edc944011bf903df"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/FilesViewModel.kt",
+    "sha256": "f565a375af29e6a4e3bb92c20fd0944b5851fba1fed5176689fc244fb6bb5996"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/FolderPublicationViewModel.kt",
+    "sha256": "4f9934b689f9b4ea0cc706f614a0f389ef37100ced679fab375c3e0808dde55e"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/GitHubViewModel.kt",
+    "sha256": "ae8615954fc495e904a91308d7934addf55b16144dc6bb8f5546418fa84b18b8"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/GitWorkspaceViewModel.kt",
+    "sha256": "c0b3876e1681d6eaa536be3e92dbf28fe4c116cd993c6a4c164aab0d8c57d631"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/HistoryViewModel.kt",
+    "sha256": "817dbe55704c48f2600293f7884e423693400004ac3c3f29b30f5379b4323573"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/HomeViewModel.kt",
+    "sha256": "8e347c8344f58ab6aca494c926638345bd173440b52eac281576d709aae84b1c"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/LfsEndpointViewModel.kt",
+    "sha256": "4d73faa5b1582bf8fd3d07be0422f852a6077f8da138a7f0d0ca847c8693d6dc"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/LfsNotice.kt",
+    "sha256": "f2bbe0c17889e2388de3e416216a7cb2fb1f1210e31275a6980f3ab6dc7c76c1"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/LfsViewModel.kt",
+    "sha256": "363b8a33c1f15355173fd7d6c852d07c9e8fd192ddf21d82b40445a9253e8c32"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/MoveReviewState.kt",
+    "sha256": "ee720c048dd2c9f1eb2f8fa2e18ca6d05817ad196abb77df24f2667f5483731d"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/ObsidianViewModel.kt",
+    "sha256": "84e8a8b15020bfa963e6e486ae1be431eaf4c9a6b243c629eb67ce61bb3deba4"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/PullAllViewModel.kt",
+    "sha256": "ed09cfa9425634c42d05b64108e8b3e2526473816455fac1557e1ae76db4f365"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/PullViewModel.kt",
+    "sha256": "da4764e8c8c6f17d3f36839e5a90c2a137302acd4d07ea0c18e546ccea879984"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/PushSyncViewModel.kt",
+    "sha256": "c88d1cb002e3f564b26b57a93f10bb1aafdd18ded5a17c91bd902401c5bd49a5"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/RebaseViewModel.kt",
+    "sha256": "4d7c43337652d33d7640067d6aa11b8a6cc1bb8f4714881acf005a4e1dec5b0e"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/RemoteCloneViewModel.kt",
+    "sha256": "65f1613aaf50f5cde294dda03851661f6d433f6e4a1a4c33ff29f15c19e048bb"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/RemoteMergeViewModel.kt",
+    "sha256": "b73547c849af00b2b0ad0c2767f777a134cb0b87848fc70622b7919eb3afdfdb"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/RepoPickerViewModel.kt",
+    "sha256": "445c77e0e3825d6f5ef7e90cf57fc354045f82653d6a6db4241142f943ad0508"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/RepositoryActionsViewModel.kt",
+    "sha256": "d835f68f091b965e373863b5aaddc301b24dc421ebdfca1a69e7e22a37e5075e"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/RepositoryCallbackViewModel.kt",
+    "sha256": "bfafa62eec2af2cc7d47808d20dac29d5b7cbfa8cc36b4b689c1650876ae24a1"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/RepositoryDeletionReview.kt",
+    "sha256": "fab285c4a467263dc44dd9b9b45b6a26b3262c538200e6f940db619da1c0f777"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/ResolveLocalChangesViewModel.kt",
+    "sha256": "d53690036d974b8dd408282dbac99f84fd42b8069c176f70f2b8e0b3044fe45f"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/SettingsViewModel.kt",
+    "sha256": "57a2b1deefd39e0f1508aa5c39e830ff22b9b665bfac2552fc20759e0c11a664"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/SshTrustViewModel.kt",
+    "sha256": "b9a9e23de71d496b27d8d5629c540718c2614d3f66a6b1a4f09adcd4c572c907"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/StorageViewModel.kt",
+    "sha256": "68d7371bd7abbf3542bf5fc3eac7ee6121499fdb157a4850b211d1d5ffb3a2eb"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/TrackingRemovalRequest.kt",
+    "sha256": "415cac56373b5aa3d6d73f9a3b6f09060ba27af217774df5f87fb19d9894e854"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/UpstreamViewModel.kt",
+    "sha256": "6029ec9a27ab1061574ee9016a524913dd395922c4051cdce55bfcbe31681473"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/VaultSettingsViewModel.kt",
+    "sha256": "2497deaba36ff1e27a6a1feff8caa6807d2641597a892ccc56f547cdb2f42362"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/VaultSyncViewModel.kt",
+    "sha256": "4ba03a8eb9da35f9c3e967a3ffec85093c5a5c8f84484e5099e78a5a3e1b6c85"
+  },
+  {
+    "path": "app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/WorkingDiffViewModel.kt",
+    "sha256": "ecc3f907e58b2287f117bd314e5735ec675d273e38dc9eb29b770e70fd7d47a7"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_arrow_back.xml",
+    "sha256": "8b1486d0b0d069737894e58a872cd5da343dfc0d17f2784e5c047eec731985e3"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_github.xml",
+    "sha256": "8b65d33a65d5848ccee2ebf402696a6a5d33203d115bdfff64018aa03437b3ad"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_add.xml",
+    "sha256": "07a24429267cfc0336cfa5e0c8179bd4a8dafb6be8238e70f3a7316c4c2ebf0a"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_archive.xml",
+    "sha256": "d5b7939dc95e97a07715aa484389a6bc67a93aef6ee6272d2cecfdb326acb090"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_arrow_downward.xml",
+    "sha256": "e23aa3db1faf94d87cba43b301beb5e6cfe4b5d740b808fb869b854b329d0bc1"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_arrow_forward.xml",
+    "sha256": "8a8dce75b6fdd9d2c18218ba51c38c5ab369b9cabf6e667cbdc8ea89fa3e5cc0"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_arrow_upward.xml",
+    "sha256": "26ef62f4176b3756c5e2ae77fa8b0dafa7a7ab32e0b101b15b001f9dbe0d049e"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_audio_file.xml",
+    "sha256": "2972609defc4123ea94c8c132f6004df4822770e745946445b38e3a1b05ac33a"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_battery.xml",
+    "sha256": "c56cf1462a538401b31205ed1107c9ec23fa26d49c42963aa6508a7d030ab09a"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_branch.xml",
+    "sha256": "b9995f291922b01b18e371de73c0e0e68619adce2bee0863dea43b67987b1baa"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_bug_report.xml",
+    "sha256": "4d1f2e4d1bc28a32a02839bdc8a130d8c44055d5465925cb03974d6e6ff04b94"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_changes.xml",
+    "sha256": "66dcd1e12287f04653a542657db1e50c40de28e197f3e66ff4aa3e6a9738b231"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_chat.xml",
+    "sha256": "33575878c02a10fd8e4a3e5311f133e79fae45a5ba28ab8bd2f47149910af246"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_check.xml",
+    "sha256": "229dcd83721fad22136c03bb23dd8e28c458945148a85cec58e36ac3c385cc64"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_chevron_left.xml",
+    "sha256": "d701d862d284cce82118d5237762e4f3b1c5dc4f96d14a0dd881f57b2ac1eec0"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_chevron_right.xml",
+    "sha256": "8c383f523b8d6134d429164e70dd5358d6fd5ad99869fc67c57c337edf181b93"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_close.xml",
+    "sha256": "987e7fdd0f75b82c80e1bad1511769efe6155387ccb51a3534b9358fdd61de9f"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_cloud_download.xml",
+    "sha256": "c4daa30e21cbc6d7229163e63dcbed78c2b2fc9156554f0e607ce6f77f18df84"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_cloud_off.xml",
+    "sha256": "1dea97403aa9bab85032fa3a85604792aa521192f1db9606ae06db6ae83872d3"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_cloud_sync.xml",
+    "sha256": "97cb5c0185bfdd73c53371e8d3da547ad3efbde3111898aca632ff35ed1d9152"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_content_copy.xml",
+    "sha256": "c84b0822d8ccd85b3b5a1d57d6cc77f798791089a0b29e77922ed8e00b2563cb"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_delete.xml",
+    "sha256": "2ca89ca895da99dc3f75f35ae47f71edf58c025697c7b7419a7d3f94d1be9d12"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_diamond.xml",
+    "sha256": "cc32970a4c6e369640176ff1b4b7d09103e57086214ef5cfcf9bb832ce751aa4"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_dns.xml",
+    "sha256": "02103d66cf749b4ec3a95ae200e6193b5ce96ab10bcf5f472d26fbe7e28e9a35"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_edit.xml",
+    "sha256": "ebc6c500af252410fe43304b38669a00b60ea8f85145aecac47decda3743b0f2"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_error.xml",
+    "sha256": "0c3775a0015bb162a485f896e9de80ab960d5e876ae473b831ced0f5bb7a3ed3"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_file.xml",
+    "sha256": "7cbdac9e1e93be8798e9a36ff7aadcca94642f16538890fd22b9bcb2f039c904"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_folder.xml",
+    "sha256": "7bb45e03c62c9503e53b6a1759cc2730d57f586dc093b0d88ae4d3a2cb6351d7"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_help.xml",
+    "sha256": "0971b908046ee06c37e78a6fcad0a96f6930495739c0a8f97a6f924293fd57bc"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_history.xml",
+    "sha256": "d7f316d83e033cd2f3d2f33ab89a2b5d70ef4c24bd2650c181b22768d9c048f6"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_image.xml",
+    "sha256": "e3ad56924f515ae282d2f4f847615dba74ef1e64bf1bf2ae59b6be1f3ac7f753"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_info.xml",
+    "sha256": "1a7a7d8cbe1f9a31ef9dcc153a32163456d67ed146d62d5da26207d5c598d059"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_key.xml",
+    "sha256": "0140070f8b7a965237c58f0c916c73191cb2ccb69b947b605116699e81f37464"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_language.xml",
+    "sha256": "768620122b75dd49e1d2b2e59ff17916e813b8acb998d2296ec8453d5ac1c08b"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_link.xml",
+    "sha256": "0c589e6d35a12f39c6ab6440f1642de455379745685b1073b1036bd354dee924"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_link_off.xml",
+    "sha256": "1cb9d869a73ec7c94c7640aa63cd3fed492883bc7beeb914c699d2c058eb60d5"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_lock.xml",
+    "sha256": "6fc94e088fee925cb1192a201720e6838a6d3a781c90fa2687e66f0b036795d0"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_lock_open.xml",
+    "sha256": "dbce026f54e5d1eab86fb9f07e773056f0f790bd76c1a5b6be1b86c74608ea8f"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_mail.xml",
+    "sha256": "c5d2f82a78a5a4c25fb04d3e326aa64d4f013d70d7e53e0d76f6f2b65fd54a7f"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_merge.xml",
+    "sha256": "9d23c50b52825f8131dd411e3ae09d9a26bcb3c2b8f6c1db045d5ed5185bb1ca"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_more_vert.xml",
+    "sha256": "53d1751654387e9cabfd4035ec2972fcc52243dd8c71e348ca6a303a109bdc84"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_notifications.xml",
+    "sha256": "2f9a548085baab0cb6dea3f20fa27b709eef3073f765626fa37108aca1cb7fba"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_open_in_new.xml",
+    "sha256": "5808d3b2d73a5a70dff99dabef7ee24dac9fc8469e4ba0ca0b134299e3f79926"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_palette.xml",
+    "sha256": "7a8515d70e83297e0bd70f02c61ba57d8bb35c7bb890084345e952b45b416147"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_person.xml",
+    "sha256": "c9692bdcfe78bfc0f6b08ce06399ca730a1712b6fbfaee06130e578d604ddff2"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_phone.xml",
+    "sha256": "58a260b3fdf442a4082e2ab64e4718d9623ef0bb4e911ba40f04043ba49d58dc"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_pin.xml",
+    "sha256": "26ffd7a370c29b09498a7dfc54add2e459ac9a0554fda0ae186814550c271f63"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_publish.xml",
+    "sha256": "69b9cab558c6720e3b8cb33b387370fea2266c533f70ad8902027cfb0767ef27"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_refresh.xml",
+    "sha256": "24aaa7d68c76c9fb6c3c24139e304be10590921f3aea34c33a2cc054f449126a"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_sd_card.xml",
+    "sha256": "a8df33dd200a0605f5ecf269e856bc34bbecae8b4e0ad614d4e857f53fa4d65e"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_search.xml",
+    "sha256": "fdb7f9593d78d8eadea58b755bf134c5799d77f2ae8c93408fac7cc7cb4e2758"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_settings.xml",
+    "sha256": "ecdd8c9a657069c987d93d57ab7ff9ff55dc8aeb0dd45ccc51167985470ab62e"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_share.xml",
+    "sha256": "9fc946038d0ea78efb900722ab885f00603f8172c4839f307e2a3727dde8176a"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_shield.xml",
+    "sha256": "0f1596203062e54a178b95e26b5e344a9edf99a4d5874241474b47de3ffc1d97"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_shortcut.xml",
+    "sha256": "eb9e96fc1a86e953ca44f1d656cfe52e2e887615cfba046b6b4a11d98c88b6f3"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_skip_next.xml",
+    "sha256": "74834b4f33b686de0be38c30b83b7e210887158d7584aa099fbef44af3c3a82d"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_star.xml",
+    "sha256": "e7acb03d2eca8ea389486cd0cf8129e05ac75eb062948d5e9c8c2b7f21754424"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_stash.xml",
+    "sha256": "c4d8049fb1ce3337ee30257e8f507e5dd8fd64b02049bf46aceea779e0200cb4"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_stop.xml",
+    "sha256": "459da13994588443a037b37d94da90dfce8f3ed1914af9826fed55b03bffc743"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_storage.xml",
+    "sha256": "2153c66ad5f3dc0615123624cd8766e8fa95b61d661d4b8092ab23943d210835"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_sync.xml",
+    "sha256": "b9cd2e648ba4e760046e9db787215e8fd4b86c84a7e5892d3362e60f23718083"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_tag.xml",
+    "sha256": "a621d2125317101efa28c8d59f6dd35e59b95838c1705840c2aa7652fc841626"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_vertical_split.xml",
+    "sha256": "6a2fb1b23e98a77c86444845fa378a9b3ac671aa1811e5da03ddc4c02b7c62d2"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_visibility.xml",
+    "sha256": "1d3ccca50da4c6457ef4b4d083e8c3462a9e9eca6e1ec0ca33977f9f60763a41"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_warning.xml",
+    "sha256": "3c6f20ff207db579523472a6f03c9ee44e6073b0c48a796ea95686ecc623e0a5"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_widgets.xml",
+    "sha256": "ba47fb4d3d5e956132823efc1dd79ec0594cd5339726bba79892e1c2dfedc7b4"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_m3_wifi.xml",
+    "sha256": "992d1e4e98d0037ab791ce5a082429c938c057c3953a3e9c76e669703cd9bc80"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_pull_all.xml",
+    "sha256": "2496cd69950333e65fa5e6e7d324c0252fe13420987998620fc07f8a96941221"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_shortcut_m3_add.xml",
+    "sha256": "b01312f288f5761de54277e3431b258fe7d4bd8f8ef166ba89337a6422043f56"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_shortcut_m3_pull.xml",
+    "sha256": "41d86b1bb590cca5f97e9bdfbd3190f62c87adfd5f01a4524a3a3974bf6cf81c"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_shortcut_m3_push.xml",
+    "sha256": "daf4374b0e8848e4607462768b3f7b952129621948f7936132a3017832294ea0"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_widget_m3_down.xml",
+    "sha256": "08187b66a6b7d2ae51b92738adfb29322c52541bcc8352f167b3fac760ebac43"
+  },
+  {
+    "path": "app/src/main/res/drawable/ic_widget_pull.xml",
+    "sha256": "1a497c78f01b1e050933898e69fc8843c65df9fe3946e8349a0f912a335d99c5"
+  },
+  {
+    "path": "app/src/main/res/drawable/pull_all_widget_background.xml",
+    "sha256": "b095c1a89808d6b27af3096cc7de8fadd4e3efbd97c0c2d06a93b420de438f67"
+  },
+  {
+    "path": "app/src/main/res/drawable/pull_all_widget_tonal.xml",
+    "sha256": "db4c8758ce0cde2a8261ea89df67c4d290920985ddee059e559bdda2a4e9f6ff"
+  },
+  {
+    "path": "app/src/main/res/drawable/widget_m3_badge_ahead.xml",
+    "sha256": "49af61afdbb1fb7ddf96345271d3fc35025ce4d8bd0fb5caedc4cb509402227e"
+  },
+  {
+    "path": "app/src/main/res/drawable/widget_m3_badge_behind.xml",
+    "sha256": "54cf2d6b5c0b40d73c657ed371a9b4eba36098c5910a36735bfbc41712efc969"
+  },
+  {
+    "path": "app/src/main/res/drawable/widget_m3_badge_ok.xml",
+    "sha256": "c091548431d2bcd4a378991fa1ad17762a90777ca110d8eddaa9e027682086a0"
+  },
+  {
+    "path": "app/src/main/res/drawable/widget_m3_button.xml",
+    "sha256": "c8e95468d718d5aa1b59ecde0ac9a3d7517e0e75c155ed03af5f1e86ffad5580"
+  },
+  {
+    "path": "app/src/main/res/drawable/widget_m3_divider.xml",
+    "sha256": "49a2462d70dc07205a7a1ad1bad8eaad751acc202c1696e47989f3bc876a6b04"
+  },
+  {
+    "path": "app/src/main/res/drawable/widget_m3_inverse.xml",
+    "sha256": "7e7823aa209668150e350719a36d2e1e45e1d21217adba1e92a053ef14867076"
+  },
+  {
+    "path": "app/src/main/res/drawable/widget_m3_surface.xml",
+    "sha256": "5d403f9168d2ae00251a5dad8bc015cec73654dadd198f83faf1ee8499fea6be"
+  },
+  {
+    "path": "app/src/main/res/font/roboto_mono_medium.ttf",
+    "sha256": "2282775340e9d42f5c686b79c116daa4074a5637962790bf81c75ff85a72723f"
+  },
+  {
+    "path": "app/src/main/res/font/roboto_mono_regular.ttf",
+    "sha256": "7900f2f6aed6e2f3094c09d75a7401844a8ed450d477ec6153a4785cfb56bb74"
+  },
+  {
+    "path": "app/src/main/res/font/roboto_mono_semibold.ttf",
+    "sha256": "fd52e7e3d6bc4ab4f60544c2a0270a89e3ae7143ce3a6bf273a6038fb3d036a3"
+  },
+  {
+    "path": "app/src/main/res/layout/pull_all_widget.xml",
+    "sha256": "5439b3a388758da02ae9937c52faa1db83f23248149d7698900f37c08d5f39da"
+  },
+  {
+    "path": "app/src/main/res/layout/pull_all_widget_expanded.xml",
+    "sha256": "ab16b337c07ecd275ad8991d52eb6fbad475ccbb9d018c01284cd08f4f5dbae2"
+  },
+  {
+    "path": "app/src/main/res/layout/vault_list_widget.xml",
+    "sha256": "4bbf861f72c96483124c0f97bb55c2e4de1fb959e3f85d6261eb8774832d1a39"
+  },
+  {
+    "path": "app/src/main/res/layout/vault_widget.xml",
+    "sha256": "3435480bb870d8ebd19bd8f8df3b5e4baeb46eaf65631ad6f20b8ea283a0e232"
+  },
+  {
+    "path": "app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml",
+    "sha256": "5056b7226b3f58e65a61739e8ab6f5c52099fccee3ae9aad0e8856f31709e3fa"
+  },
+  {
+    "path": "app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml",
+    "sha256": "5056b7226b3f58e65a61739e8ab6f5c52099fccee3ae9aad0e8856f31709e3fa"
+  },
+  {
+    "path": "app/src/main/res/mipmap-hdpi/ic_launcher.png",
+    "sha256": "8f9fcc62ec0ea54d7f3b98286288a983ad8f17a9fd1966d0724d722ec8900ffa"
+  },
+  {
+    "path": "app/src/main/res/mipmap-hdpi/ic_launcher_foreground.png",
+    "sha256": "eff2ecef065d395d6d4943d529822fa4131073b153b7c616ec4e5c1b50c10320"
+  },
+  {
+    "path": "app/src/main/res/mipmap-ldpi/ic_launcher.png",
+    "sha256": "19c1060c9778d4c05f7f4c138945a86bfc3af99e58fb2bcac1fe0f15b0f0d1a2"
+  },
+  {
+    "path": "app/src/main/res/mipmap-ldpi/ic_launcher_foreground.png",
+    "sha256": "ee284bd5256f33577efb09aaf11cc5feb226683b7484d5bba2ef9cecc5582f99"
+  },
+  {
+    "path": "app/src/main/res/mipmap-mdpi/ic_launcher.png",
+    "sha256": "92028d093c79c0348ec3f9707d4744df44cea6fca9652477a91fa1ec0a294793"
+  },
+  {
+    "path": "app/src/main/res/mipmap-mdpi/ic_launcher_foreground.png",
+    "sha256": "86f75372d8140c7a8d3960970e73a1cf3e1aa30d6d5224f3590af195be4c85ee"
+  },
+  {
+    "path": "app/src/main/res/mipmap-xhdpi/ic_launcher.png",
+    "sha256": "b57e5afea859bb023f0bbc786f655063f8f44bcbdbfc8e76a1b49ca2669203f0"
+  },
+  {
+    "path": "app/src/main/res/mipmap-xhdpi/ic_launcher_foreground.png",
+    "sha256": "3972fa0ba13788cd6c40df7efab7ff4e2443c7257bcc041133ade9ad6f4d7ef9"
+  },
+  {
+    "path": "app/src/main/res/mipmap-xxhdpi/ic_launcher.png",
+    "sha256": "1326ac90675e2e8acc2d3a6aba97a7a15f2b8b17743c0d60642054b800b0126a"
+  },
+  {
+    "path": "app/src/main/res/mipmap-xxhdpi/ic_launcher_foreground.png",
+    "sha256": "2070acc2f1d88f9599a722ddb5b8b640f0ce149ac473d7c3e2a45f7d46735081"
+  },
+  {
+    "path": "app/src/main/res/mipmap-xxxhdpi/ic_launcher.png",
+    "sha256": "9ba4264113e6686d7e854ca393cbc9e4c103d513728f6b21e9012941959aec9b"
+  },
+  {
+    "path": "app/src/main/res/mipmap-xxxhdpi/ic_launcher_foreground.png",
+    "sha256": "c1dc13b624947a202a6bfe4e6f57f0d77aa464477bb8a2e4ef4e0519caa5e77f"
+  },
+  {
+    "path": "app/src/main/res/values/account_strings.xml",
+    "sha256": "0ccb047380f75bd5e42771985bbab8246829e3e4c71193913a72718d7af923f2"
+  },
+  {
+    "path": "app/src/main/res/values/background_strings.xml",
+    "sha256": "59db71aeb27835f36973d778c60034b2b5ad5e937b371545fbc05b31cccac28a"
+  },
+  {
+    "path": "app/src/main/res/values/callback_background_strings.xml",
+    "sha256": "c02693053ad5d4bfef89e2909c3b4174a0cd8965f16bf5aea2e83b1330a94edd"
+  },
+  {
+    "path": "app/src/main/res/values/callback_strings.xml",
+    "sha256": "716c44aeceb0aedb328d75e4e707873878c9febacb342aba256098236a4967fd"
+  },
+  {
+    "path": "app/src/main/res/values/catalog_quantity_strings.xml",
+    "sha256": "817701a1d20e6bcc23726dc8b30af45a7f6745410516efa6cd3676e8c75cc6a0"
+  },
+  {
+    "path": "app/src/main/res/values/clone_recovery_strings.xml",
+    "sha256": "229fcc15b8e0fd376fa8d1cbc9865d61afab8d903420c2fd1461ed51a4ea23b9"
+  },
+  {
+    "path": "app/src/main/res/values/clone_strings.xml",
+    "sha256": "c1bba58364c1b9869cdf3db151256fc3f72bc14bbd78477bdadab4a427853dbe"
+  },
+  {
+    "path": "app/src/main/res/values/clone_workflow_strings.xml",
+    "sha256": "9c62c30c9e136082c00227efbcb885ca23b43ff9f209c6ffc78365d9425c8c08"
+  },
+  {
+    "path": "app/src/main/res/values/colors.xml",
+    "sha256": "aff696d8aafc04c61fb4cfd69bcee5ebb0d7e728f06c54174d603f6e28a320e6"
+  },
+  {
+    "path": "app/src/main/res/values/connection_choice_strings.xml",
+    "sha256": "8e093134a7abb82abf967f3e0b5b12bfc7ecbcbc7b1f2af7e4782b6ea7b926fb"
+  },
+  {
+    "path": "app/src/main/res/values/credential_migration_strings.xml",
+    "sha256": "ca5685c82d130cfdf21bdd9ada90b06aba4860b55feeb2b9345cfd37e5d2cda8"
+  },
+  {
+    "path": "app/src/main/res/values/deletion_conflict_strings.xml",
+    "sha256": "038d358ce7fdcfc71e3e2aea382391d025305eaec61b6f36902854e8d4d653ae"
+  },
+  {
+    "path": "app/src/main/res/values/diagnostics_strings.xml",
+    "sha256": "b78410889a9d08b186cbe249f4efd761ac1b6fa6fd3409dc38f4e5ebb1ea593f"
+  },
+  {
+    "path": "app/src/main/res/values/discard_review_strings.xml",
+    "sha256": "96964efc6eb7694370a1ac1a0a653e4e40961777d3b481eca8ed2eb1bcc17e8c"
+  },
+  {
+    "path": "app/src/main/res/values/file_clone_strings.xml",
+    "sha256": "57acdb4b08de64e0e930db5b1b6b5de7fad8b1f3a078d1cf44731e071ff280f2"
+  },
+  {
+    "path": "app/src/main/res/values/file_workflow_strings.xml",
+    "sha256": "7b95d4934dfee3443c44efb9a33b056e2aab04282e8e7e397d1ad4819b37f398"
+  },
+  {
+    "path": "app/src/main/res/values/http_transport_strings.xml",
+    "sha256": "343d2ba4669e38ce6c75d714905676e57b99bed055b09cbc7ee4350b57855d1e"
+  },
+  {
+    "path": "app/src/main/res/values/l10n_account_strings.xml",
+    "sha256": "093b5d9c126e13bee777962b7faf87e3258f2c2df01c276274baa659fe4d9f88"
+  },
+  {
+    "path": "app/src/main/res/values/l10n_automation_strings.xml",
+    "sha256": "f603d91ed1f69531e7a370c7e43dc9144f3a43fc653031a68734924eb3093046"
+  },
+  {
+    "path": "app/src/main/res/values/l10n_dialogs_strings.xml",
+    "sha256": "f1830c5ac96fc1bb553f9e13fc462a925c2a1d6baed74213501084500d40710b"
+  },
+  {
+    "path": "app/src/main/res/values/l10n_gitops_strings.xml",
+    "sha256": "c8b22d37f948639a93a038661c8f0a8e6245324fcb6ae3f73ec5644ea767f5ba"
+  },
+  {
+    "path": "app/src/main/res/values/l10n_m3_strings.xml",
+    "sha256": "88456da1622ba8bf8cabbea0daf191824c952bdf2eb0f7dcf116aa5b269cdf06"
+  },
+  {
+    "path": "app/src/main/res/values/l10n_paywall_strings.xml",
+    "sha256": "ee317ecae7dfea6fd5d9f5fe119de3cc5b2045a952700f9357c422a73fe865b6"
+  },
+  {
+    "path": "app/src/main/res/values/l10n_vault_strings.xml",
+    "sha256": "1105b0b71388a96f9eeee33c052e12df69199d1d20bcf9c4019f70c61184c21d"
+  },
+  {
+    "path": "app/src/main/res/values/language_strings.xml",
+    "sha256": "43567220028b5cce8a4e5a805ecb8ca0c8664480e0db9c4d4e90ce982bde77b7"
+  },
+  {
+    "path": "app/src/main/res/values/lfs_failure_strings.xml",
+    "sha256": "364443104e2f9d18742aa82c87938ac11c70e79c189d51d50c9618a589188f2f"
+  },
+  {
+    "path": "app/src/main/res/values/lfs_file_state_strings.xml",
+    "sha256": "676d07dec6927a9c682b415ecb10d5821c77d4f19f0460bf25d567326838278b"
+  },
+  {
+    "path": "app/src/main/res/values/lfs_lock_consent_strings.xml",
+    "sha256": "d9e707997166418f8385c7b7fb9483d2f0fb0c8bf26c4d19a216e06a266c72b5"
+  },
+  {
+    "path": "app/src/main/res/values/lfs_lock_screen_strings.xml",
+    "sha256": "c9ad93602c52de2f9b0f1d9918f3e32f2c77e064d9a3410b118c7955d9c2b208"
+  },
+  {
+    "path": "app/src/main/res/values/lfs_operation_notice_strings.xml",
+    "sha256": "3dc73343363c15492f546d3806a880bafc38ed623b18b40ab354eb20ee0300ac"
+  },
+  {
+    "path": "app/src/main/res/values/lfs_tracking_strings.xml",
+    "sha256": "b9a3237f0bbb888c9d0bc7dee7da0ca9946d1bfb7ea7df2fcc8c555de2f86d3b"
+  },
+  {
+    "path": "app/src/main/res/values/localization_completion_strings.xml",
+    "sha256": "7e7273d07ab900d1b94e75992b6a34c7a97d109cd5a4f1a444132c0375932dd8"
+  },
+  {
+    "path": "app/src/main/res/values/move_strings.xml",
+    "sha256": "55b7c0089f1c1b883d9f7c44d132b775af23b71527deaba77362ed4f3848e665"
+  },
+  {
+    "path": "app/src/main/res/values/native_git_strings.xml",
+    "sha256": "b6c8a720bb2fbeb04455def3c66cb2c93289598443e1e89f470ec7f2a39d5c0a"
+  },
+  {
+    "path": "app/src/main/res/values/obsidian_strings.xml",
+    "sha256": "e7a688e037cede46d5517783049016dea293275231bdcc263630874fb1d9ce38"
+  },
+  {
+    "path": "app/src/main/res/values/publication_strings.xml",
+    "sha256": "7b88a31aa6264a52fe6072b368c3968311df89d1512d9246f72c22d7dbcc3131"
+  },
+  {
+    "path": "app/src/main/res/values/pull_all_background_strings.xml",
+    "sha256": "2387fb753d936722379d2c1d67623f653fec4ecdb7fa84f4151603c452f8942c"
+  },
+  {
+    "path": "app/src/main/res/values/pull_all_strings.xml",
+    "sha256": "3698a6018fc4844476dcb940ebb72b8f50ad376191bf08c74760d361604460bb"
+  },
+  {
+    "path": "app/src/main/res/values/push_strings.xml",
+    "sha256": "95f0df1f1486ba9d7c585d4159ffb3e5690cd86d368165f7d29247b0d38d7eca"
+  },
+  {
+    "path": "app/src/main/res/values/rebase_checkout_strings.xml",
+    "sha256": "dc62fe4f2b2846e5b9e208c7131bd199696c212b48601d38477131526e9671e3"
+  },
+  {
+    "path": "app/src/main/res/values/rebase_problem_strings.xml",
+    "sha256": "6471778657bebd12e78cae1de5349ed90a8e75379020ba2dc93c6335141674d0"
+  },
+  {
+    "path": "app/src/main/res/values/rebase_quantity_strings.xml",
+    "sha256": "2679a5d6f9a825bb7917bac9f694e5c8e685967797acc710387c97b8d4cac553"
+  },
+  {
+    "path": "app/src/main/res/values/rebase_workflow_strings.xml",
+    "sha256": "b3d367d73abc7db30bc44ac3311499ecf97df789293f33ed3292b0eb133fefab"
+  },
+  {
+    "path": "app/src/main/res/values/remote_address_strings.xml",
+    "sha256": "22c7af6ce3e3ccd4d2715f1faef8cd58460ee9854cc52ffc801c235c4ce76b3e"
+  },
+  {
+    "path": "app/src/main/res/values/remote_merge_strings.xml",
+    "sha256": "46a6cb3d80fe9cd23820919bf25e0fbd7b7ff6ecd5d89a2cf5007cdc13d797d7"
+  },
+  {
+    "path": "app/src/main/res/values/rename_conflict_strings.xml",
+    "sha256": "88bad2afa77fb2e5174e76fa4569859ca5d6c59ae577c8b78ef57a10a1093398"
+  },
+  {
+    "path": "app/src/main/res/values/repository_action_strings.xml",
+    "sha256": "72b2b3e62ff3f575955cb240c2f2769738b0020de0fe25ea339d47eee2fb6373"
+  },
+  {
+    "path": "app/src/main/res/values/repository_discovery_strings.xml",
+    "sha256": "b92e6b08d9a98d00595f1717641018188b4d53afaa3d6bdfb0832e58b8d80bd0"
+  },
+  {
+    "path": "app/src/main/res/values/repository_shortcut_strings.xml",
+    "sha256": "38dae9d1cef5b6126dedaf7fcc1ca30119948276a62c9806dfe4d7c04272d169"
+  },
+  {
+    "path": "app/src/main/res/values/repository_status_strings.xml",
+    "sha256": "92535bce5f9eb28a1fc3874c8d5c7abbbed8b5c13c610a64b343d205fc013a50"
+  },
+  {
+    "path": "app/src/main/res/values/settings_localization_strings.xml",
+    "sha256": "7fd8003c3466d08095bdb46491b0da122a959c2facc53e754ca2d30cdafeb0ef"
+  },
+  {
+    "path": "app/src/main/res/values/shortcut_background_strings.xml",
+    "sha256": "beed8d35f4b5b98c9518acf64870b6be56ea4571bf3184e8eeaa0413f0321cc7"
+  },
+  {
+    "path": "app/src/main/res/values/ssh_trust_strings.xml",
+    "sha256": "16a93976e8d6c1e699011b25273d98047456787766e4a3e5ce320bb301885fa9"
+  },
+  {
+    "path": "app/src/main/res/values/storage_workflow_strings.xml",
+    "sha256": "b3603dd64dee72dff87eb242eb8a69bdbada04b36b61e9b5f3c30b295f6f3f20"
+  },
+  {
+    "path": "app/src/main/res/values/strings.xml",
+    "sha256": "a0dba45a888e474e8ff60f8c7e9fd5695857798dc49e882409d36b0fbede3165"
+  },
+  {
+    "path": "app/src/main/res/values/strings_m3_adaptive.xml",
+    "sha256": "2215797d01c2dad9dfd8449a36dede0590b1837cb802efb4e2e97f0632432318"
+  },
+  {
+    "path": "app/src/main/res/values/strings_m3_add.xml",
+    "sha256": "b1b588571f33b7995f41a97c962d3a66d1807fc805c796c094ef3d37cbea24e2"
+  },
+  {
+    "path": "app/src/main/res/values/strings_m3_files.xml",
+    "sha256": "c33b6561ade163f4cc5cd016c53639dfd6661c1b02a719ba8d11e6b329cc9eeb"
+  },
+  {
+    "path": "app/src/main/res/values/strings_m3_followups.xml",
+    "sha256": "94072d9dfd9ed98543eac767335bdfb04877e22d682628075097cffc232abf17"
+  },
+  {
+    "path": "app/src/main/res/values/strings_m3_git.xml",
+    "sha256": "f881e318eb9916627adc24840584dc61aeeb319e8f3779bad0238b044af38afb"
+  },
+  {
+    "path": "app/src/main/res/values/strings_m3_home.xml",
+    "sha256": "573aa51fa420121d631ccee6842877483fee73b4de9c9b9edc6f3f61c891d92e"
+  },
+  {
+    "path": "app/src/main/res/values/strings_m3_lfs.xml",
+    "sha256": "50a5459ce8c587b9d0cf89d8cf0212366d2f5de5e7af183de4603177fc2f96e4"
+  },
+  {
+    "path": "app/src/main/res/values/strings_m3_settings.xml",
+    "sha256": "bb9d6f8982ad4452b3759c14dde35d6b83b26de1d50e2aa20c9874fbb839b47f"
+  },
+  {
+    "path": "app/src/main/res/values/strings_m3_vault.xml",
+    "sha256": "25167f142d32e0665c438b32364fc497cb7dcb78de815b137c066d5968049c6e"
+  },
+  {
+    "path": "app/src/main/res/values/strings_tide_git.xml",
+    "sha256": "e9dea0118199bd600a1737bef8802aa3688aa6becfaeba33795d2efd10a6a6f3"
+  },
+  {
+    "path": "app/src/main/res/values/strings_tide_home.xml",
+    "sha256": "683bfa2bb479d9983a8424c3ab5ce25752bf68d4e8e5acd494f8f08fe93d2504"
+  },
+  {
+    "path": "app/src/main/res/values/strings_tide_merge.xml",
+    "sha256": "1393c943c1e7272d03839bb30357bfa75e147908b0aee9cef85514ac62fbab5e"
+  },
+  {
+    "path": "app/src/main/res/values/strings_tide_onboarding.xml",
+    "sha256": "e4c8078bdae363087f853bca2948cdc7f670172b763d6aae8733cecdd5e5081a"
+  },
+  {
+    "path": "app/src/main/res/values/strings_tide_settings.xml",
+    "sha256": "1005a58ff542f09a260a36065d3a17031874e61422fab6ea140d0c651b635e8f"
+  },
+  {
+    "path": "app/src/main/res/values/strings_tide_vault.xml",
+    "sha256": "1d979daa3cff6732efe927db61eeed5475130036bc7099480beefd969c6ba684"
+  },
+  {
+    "path": "app/src/main/res/values/themes.xml",
+    "sha256": "5926a5ade59085877830325d0cdc992256c33ad90826749012c41cc116922652"
+  },
+  {
+    "path": "app/src/main/res/values/tracking_final_strings.xml",
+    "sha256": "509694986612383739f46b24314f6e085ebc9f0db7a23347133fc39571862e9d"
+  },
+  {
+    "path": "app/src/main/res/values/tracking_review_strings.xml",
+    "sha256": "169ee622463554dba1e80992f2fc611c083ee5aae156dd1ee13bc7997b0291e2"
+  },
+  {
+    "path": "app/src/main/res/values/ui_strings.xml",
+    "sha256": "e2ea801456437941ab13c410c1526748dec268fa5959b12329e8275e892804e5"
+  },
+  {
+    "path": "app/src/main/res/values/upstream_strings.xml",
+    "sha256": "c856651129352fe1c577a55ef27919da7306c222fb1b1e0b6f482dc5aa4e4031"
+  },
+  {
+    "path": "app/src/main/res/values/vault_action_strings.xml",
+    "sha256": "52329b8a24e8807f2be75028ff62cc39a8a29d00aef5284873f4fa20a540bd21"
+  },
+  {
+    "path": "app/src/main/res/values/widget_m3_colors.xml",
+    "sha256": "6c828e6b7fa860990e032ca8734ad576b1b1dfce09b0fbf8ad08ec9ffefc0f9a"
+  },
+  {
+    "path": "app/src/main/res/values-ar/ios_catalog_strings.xml",
+    "sha256": "ee7709fda3d32ae10e36af16d0b5c4f5fb378a47ae9df8e6686c899630089c2e"
+  },
+  {
+    "path": "app/src/main/res/values-b+zh+Hans/ios_catalog_strings.xml",
+    "sha256": "a2bc7c2c5a120b09813501138d2882dcda54bd51077e5bcc8594af022c322fda"
+  },
+  {
+    "path": "app/src/main/res/values-b+zh+Hant/ios_catalog_strings.xml",
+    "sha256": "d7e4e68510bec66262186f96847d9944115675d223c7b0effe8259b0a9bce6b3"
+  },
+  {
+    "path": "app/src/main/res/values-da/ios_catalog_strings.xml",
+    "sha256": "4ab28feabe98e1ab408308932612660322257732c5c8063e3318de4db3ada741"
+  },
+  {
+    "path": "app/src/main/res/values-de/ios_catalog_strings.xml",
+    "sha256": "90e23cc6a2e7cc77d2bc1a4cd277791dda0caf15c9c5c5d9c98335abf36a3b63"
+  },
+  {
+    "path": "app/src/main/res/values-es/ios_catalog_strings.xml",
+    "sha256": "3227164d58099d1bacb1f6de5713129ee4db97687dffc8e719e814e84c6ea192"
+  },
+  {
+    "path": "app/src/main/res/values-fi/ios_catalog_strings.xml",
+    "sha256": "6fae29492562a53a862f2791d4add6157824478fe870b304b86678bb85282a98"
+  },
+  {
+    "path": "app/src/main/res/values-fr/ios_catalog_strings.xml",
+    "sha256": "8755781eabda8c920973370d4c7d6c14f83db06c5a5251422629d97c000a06bc"
+  },
+  {
+    "path": "app/src/main/res/values-hi/ios_catalog_strings.xml",
+    "sha256": "ee71ef77a3dee73572185d60880d4400c0c982331592d8fa0792f6e1d9d21f02"
+  },
+  {
+    "path": "app/src/main/res/values-hu/ios_catalog_strings.xml",
+    "sha256": "f18cfccef0403ac1fa931d84eb0a878d2e035fb14f22c7522106ac4bc2aef469"
+  },
+  {
+    "path": "app/src/main/res/values-in/ios_catalog_strings.xml",
+    "sha256": "bfb041b2e3c7e3a3a7bd0a59fdfacc21151aa249edebde957bad805b0fe2ba3e"
+  },
+  {
+    "path": "app/src/main/res/values-it/ios_catalog_strings.xml",
+    "sha256": "b6b9129a8dab44fb8ddcdf2bbc71ab2235b24302764d0f50daef11a5552f5568"
+  },
+  {
+    "path": "app/src/main/res/values-iw/ios_catalog_strings.xml",
+    "sha256": "614ada904547d76563f1cde4e94b8f8861127eab10a9dc8d6d0130709270f257"
+  },
+  {
+    "path": "app/src/main/res/values-ja/ios_catalog_strings.xml",
+    "sha256": "d381a45f591d6fe0384ce70c89a6703d38f676f0e6fd38d36f118798f94666d1"
+  },
+  {
+    "path": "app/src/main/res/values-ko/ios_catalog_strings.xml",
+    "sha256": "154eae3305637e6467aa1f028163eafa150513444fb35565f6fbb59f2b0afc08"
+  },
+  {
+    "path": "app/src/main/res/values-nb/ios_catalog_strings.xml",
+    "sha256": "82b5fbd24f7414d47113fdc91e27113e1cbdb18d39999c7ba28972bd4f30cbc0"
+  },
+  {
+    "path": "app/src/main/res/values-night/pull_all_colors.xml",
+    "sha256": "d775711d37b9f022f6110ca12921659da88187b196cfb15f18afbdd62c5f99c8"
+  },
+  {
+    "path": "app/src/main/res/values-night/widget_m3_colors.xml",
+    "sha256": "37b11a2712f9eff23dfd8169ccc4e1b81f108beaf68e5c7d495a7e8f82d1b49d"
+  },
+  {
+    "path": "app/src/main/res/values-nl/ios_catalog_strings.xml",
+    "sha256": "1936ff408d6ee803d04585b2a73163ccf36c8e6d59cbe06cc5563be0ebc39b25"
+  },
+  {
+    "path": "app/src/main/res/values-pl/ios_catalog_strings.xml",
+    "sha256": "70633ed461226eacf18448711e582702088a8bcd6fd2355bfddd6bce47556c3a"
+  },
+  {
+    "path": "app/src/main/res/values-pt-rBR/ios_catalog_strings.xml",
+    "sha256": "71755737e55a657dcea36c1e30124b4f7c4013620ff65f35fed42d82494d9677"
+  },
+  {
+    "path": "app/src/main/res/values-ru/ios_catalog_strings.xml",
+    "sha256": "b70c7d4079776732379f55c40a807f27d3aa40fed467675aefd947bf927c6c9c"
+  },
+  {
+    "path": "app/src/main/res/values-sv/ios_catalog_strings.xml",
+    "sha256": "84705b95c50d169291e0c3af49f3b4b6ad0e2ae9147db3cd2bcb69553b808d1b"
+  },
+  {
+    "path": "app/src/main/res/values-th/ios_catalog_strings.xml",
+    "sha256": "8184d06c69881128bbff0b0dc3d920ea5b4dc7b2fd10021162c04d139e9e1b5e"
+  },
+  {
+    "path": "app/src/main/res/values-tr/ios_catalog_strings.xml",
+    "sha256": "b898d2c45f5d5bd843626077f0187de0ce1d8925aea08d08da03de1aac098dc2"
+  },
+  {
+    "path": "app/src/main/res/values-uk/ios_catalog_strings.xml",
+    "sha256": "7813079f0ba6a975eebec731447df575ad5f8869e09e61a9d656c7ea61e305fc"
+  },
+  {
+    "path": "app/src/main/res/values-vi/ios_catalog_strings.xml",
+    "sha256": "462439bb886d24a891d18ec179aea0f2b4d978dedd1b833bdcfc33cfba1c66eb"
+  },
+  {
+    "path": "app/src/main/res/xml/backup_rules.xml",
+    "sha256": "6f0badc35a00574179c29f6770bf5d0dca1eef47cc8c9d0ef3050905678193bc"
+  },
+  {
+    "path": "app/src/main/res/xml/data_extraction_rules.xml",
+    "sha256": "87c936f0f1398e5431140288d1f1939499f7fd0b4191d654cbea8be241440cbe"
+  },
+  {
+    "path": "app/src/main/res/xml/file_provider_paths.xml",
+    "sha256": "7620a51f817ccb4eb8d0bc8b9ae53ed8fbe5688651a4b8eae0d22235aa357953"
+  },
+  {
+    "path": "app/src/main/res/xml/locales_config.xml",
+    "sha256": "61408cf3385658b9cafa8068226391c2333a12c54f891d81361f7307fd1a3082"
+  },
+  {
+    "path": "app/src/main/res/xml/pull_all_widget_info.xml",
+    "sha256": "72ff8765346656d75c0015cc31dfa7054529ec3053b8e70dc8da9c1adb835816"
+  },
+  {
+    "path": "app/src/main/res/xml/shortcuts.xml",
+    "sha256": "a5d8cea4a2e01a94d15e5072795244dd291576270d6eb2212b9ab305bc5373aa"
+  },
+  {
+    "path": "app/src/main/res/xml/vault_list_widget_info.xml",
+    "sha256": "44357a7cdd89bffde14eed7f23db5efa46162465ac36aefcff1fcc8e34ee61b6"
+  },
+  {
+    "path": "app/src/main/res/xml/vault_widget_info.xml",
+    "sha256": "03d2b231985c5d52ef97c10396b91a725857bf1a0b4295202af403e825c07768"
+  },
+  {
+    "path": "app/src/test/kotlin/com/bontecou/syncmd/billing/AppUnlockTest.kt",
+    "sha256": "8a30eb702575bd0de2f9aea48fbd9e386b5a8f76a7d682d525deab256c8d32e3"
+  },
+  {
+    "path": "app/src/test/kotlin/com/bontecou/syncmd/billing/VaultPreflightTest.kt",
+    "sha256": "a12afd43bbedd910d2252e30e7302563cb74229a3559f956b58f9c6ae202f1d5"
+  },
+  {
+    "path": "app/src/test/kotlin/com/bontecou/syncmd/services/github/SignOutConsentTest.kt",
+    "sha256": "5993a8b9c3a6df012565598cee9c1df1f804ba3b779e4c28a8816a9a0a8fe66b"
+  },
+  {
+    "path": "app/src/test/kotlin/com/bontecou/syncmd/storage/VaultPreferencesTest.kt",
+    "sha256": "a4ac142657e8bd05cb7e9cb01d323253932672faadbdd0d6e8164b0d9613c2e3"
+  },
+  {
+    "path": "app/src/test/kotlin/com/bontecou/syncmd/ui/AddVaultLogicTest.kt",
+    "sha256": "fd48c36dd689ba80e4f836d8fd38cf48c40cf68c91660ddace282930eeb09bcd"
+  },
+  {
+    "path": "app/src/test/kotlin/com/bontecou/syncmd/ui/adaptive/AdaptiveLayoutTest.kt",
+    "sha256": "99131f29b4bfa9ea876bfff8b50d6d0a4767e502fef61b6ad5b4d17036eb0812"
+  },
+  {
+    "path": "app/src/test/kotlin/com/bontecou/syncmd/ui/adaptive/AutoCommitPolicyTest.kt",
+    "sha256": "bc3509920de2fba0af78b6fd82d910e2ad1810d7dee13a1029366b2855f5a18c"
+  },
+  {
+    "path": "app/src/test/kotlin/com/bontecou/syncmd/ui/screens/NameValidationTest.kt",
+    "sha256": "f2e01fce3a816db547546b99a054dda66732ceb11c9807e84a574d59889433f8"
+  },
+  {
+    "path": "app/src/test/kotlin/com/bontecou/syncmd/ui/util/CountedPhraseTest.kt",
+    "sha256": "65cbab6dbb3095545507bc2e0b336756d671346ef164fdf50a4f26b671199869"
+  },
+  {
+    "path": "app/src/test/kotlin/com/bontecou/syncmd/ui/util/NameInputTest.kt",
+    "sha256": "bc34ba5d7fd5b3b1516efe298f23944461090e56be6b2155ec3f27803812d8f1"
+  },
+  {
+    "path": "app/src/test/kotlin/com/bontecou/syncmd/ui/util/UiTextFailureTest.kt",
+    "sha256": "69154713c75b6eb274edc5819cbeba50d3bb40adc17792d3e256fd1d0c6e721b"
+  },
+  {
+    "path": "app/src/test/kotlin/com/bontecou/syncmd/ui/viewmodels/ConnectionConsentOwnershipTest.kt",
+    "sha256": "5b14fbf9217304ec27be373e948d74ddb63b9d07b63e32d4ecc39f89d2499294"
+  },
+  {
+    "path": "app/src/test/kotlin/com/bontecou/syncmd/ui/viewmodels/HomeSyncAllTest.kt",
+    "sha256": "b2275a259dd1ab7bff9b25266b4b8a73147787484354e9dbf7a8b2c461ffaa8f"
+  },
+  {
+    "path": "app/src/test/kotlin/com/bontecou/syncmd/ui/viewmodels/LfsRequestOwnershipTest.kt",
+    "sha256": "b16d4780d7a09ce4418d49704e69a8bf0212a65b9af42ad6ff7d0848cf7d8a2f"
+  },
+  {
+    "path": "app/src/test/kotlin/com/bontecou/syncmd/ui/viewmodels/MoveCompletionDeliveryTest.kt",
+    "sha256": "5d363f929760d7dfe9c5ec0e35d6c59fbd27ab7a50e7bbc1e3ae5f0cbc13e91d"
+  },
+  {
+    "path": "app/src/test/kotlin/com/bontecou/syncmd/ui/viewmodels/MoveReviewLifecycleTest.kt",
+    "sha256": "88b1ce93d9403d223f5e6d4482322c68dd21da6eb7210717267933f546ad5f4c"
+  },
+  {
+    "path": "app/src/test/kotlin/com/bontecou/syncmd/ui/viewmodels/RepositoryDeletionReviewTest.kt",
+    "sha256": "a8fc21cf28bf29b382d9b1cf7d6a1ed83b221fb0ea312890fdfc3d03b68516da"
+  },
+  {
+    "path": "app/src/test/kotlin/com/bontecou/syncmd/ui/viewmodels/RepositoryMoveConsentTest.kt",
+    "sha256": "cbdc45630c9b313c1cc9df14585a3841d73016e25a458d63428b2f4be4c625a2"
+  },
+  {
+    "path": "app/src/test/kotlin/com/bontecou/syncmd/ui/viewmodels/RepositorySettingsConsentTest.kt",
+    "sha256": "07b44c0aa1f5219d6919774859795bc1b540c80b956fdf59dde18a2a39701d0b"
+  },
+  {
+    "path": "app/src/test/kotlin/com/bontecou/syncmd/ui/viewmodels/ResolveLocalChangesTest.kt",
+    "sha256": "41a3c14240f0e065877bcda05dde55ce618b86821d42c8fb772273455a15d3fe"
+  },
+  {
+    "path": "app/src/test/kotlin/com/bontecou/syncmd/ui/viewmodels/TrackingRemovalRequestTest.kt",
+    "sha256": "4319578599d1bc3542775839273b2ccec04fb72e2a67e43266604ecf06844d7e"
+  },
+  {
+    "path": "build.gradle.kts",
+    "sha256": "1f79445e365cb25d9c83b840dec3ad9515783d158013614c03d70c2946efa943"
+  },
+  {
+    "path": "core/build.gradle.kts",
+    "sha256": "5ffad3d894a96afc0bc3dc929c5c944efbba082f51e56c5f4822aa437a289af7"
+  },
+  {
+    "path": "core/src/main/java/org/eclipse/jgit/attributes/AttributesNode.java",
+    "sha256": "69c94cf92ee5d97fa30c106a0ac240dff3774ffa3f800af10e5be922c4eddfe6"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/Version.kt",
+    "sha256": "4477ba1435fcb715fb5a3803a0c29c5601586131b4eb5a827a3baabee66d2cf1"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/data/models/GitBranchModels.kt",
+    "sha256": "d3e60c5e8599e508f6e20ee58d2a73b00a53b3a68b540d9ae41bb0b9bc54a57d"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/data/models/GitConflictModels.kt",
+    "sha256": "8355c8eea65139dc1e73e415850cdac5cd1013c14a114ec46aa055cef83270d7"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/data/models/GitDiffModels.kt",
+    "sha256": "455f200a9719f03cf1b35be3c665551823351f01d90803e34235e109cd8fce9e"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/data/models/GitHistoryModels.kt",
+    "sha256": "6e0abd186007b4b711b683e5020b04b8b4f73d923c366f1bd82753f27cab3994"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/data/models/GitModels.kt",
+    "sha256": "85a047a9cb56062a8548d24690ffd8fd3704ce81108cca856e62c11f4718be0c"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/data/models/GitPullModels.kt",
+    "sha256": "2503896c99ac1b7666dbc37824e9123750cd2bf92938e04228be70993d8ffa42"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/data/models/GitRemoteModels.kt",
+    "sha256": "447b5cb3101b076d6c9f658a51ae3242f6ff5c3eaf32a849239fb082c44ada30"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/domain/repository/BranchRepository.kt",
+    "sha256": "6dc57c77ffae17859f7bac971d17e3f471233d8497996021d2f0699c2024afde"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/domain/repository/ConflictRepository.kt",
+    "sha256": "5dcbf6e88c5d4b1dc0867b9433a7978e786289fc82fca4b2bb2347b1745d087c"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/domain/repository/DiffRepository.kt",
+    "sha256": "22ae8ef580e4c8ab2483dc020c6528fa89cdda273f51edd4585ac079c8fbd014"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/domain/repository/GitRepository.kt",
+    "sha256": "5379cfc7b2718a4a6479fc58d93d3c55012f6807744484bfec8fb1f93281528d"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/domain/repository/HistoryRepository.kt",
+    "sha256": "a810a87bc243c7e31a983b85650af95b75e23d675a6b59601095ce6eb664c6ee"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/domain/repository/PullRepository.kt",
+    "sha256": "831833cf940879ec9f760e8736944055e7f7c8c609c27ca074731f90dcb46f66"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/domain/repository/RemoteRepository.kt",
+    "sha256": "26738ab2161bfd5f88212878f375a4c82707073f562d26396dab8bfe90234511"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/automation/PullAllRunner.kt",
+    "sha256": "7990872e62712ea4a68eac68ddb0576c6674ec2ef04abd27477c28076c154377"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/automation/RepositoryActionRunner.kt",
+    "sha256": "06f8e1401c8de71a8a3d0bf8b09a15b1468779516b9d27b8288e15da6b3cb247"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/automation/RepositoryCallback.kt",
+    "sha256": "efbcd2e26d419d9dc05dee12b421e696f54181473f9af5e4e7ebfc4a12b5d050"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/automation/VaultStatusReader.kt",
+    "sha256": "827494a49078f4c3d7adf34af962dd60d32dfb35c18d83232df1247999f40c9e"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/background/BackgroundSyncRunner.kt",
+    "sha256": "a10913ada335335def8b7f0a2fdfb7fa42c09669d51979a287ba00d786da7f87"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/diagnostics/DiagnosticStore.kt",
+    "sha256": "3e3cccfd46ae2b663370b0c89ac8d1c3941e82dbf6401b56d9d900c962bf7319"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/diagnostics/Diagnostics.kt",
+    "sha256": "282987a2ffeb11fb01d395391a89d6062842b8e0c550b30379c1daf7c2c3af20"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/files/FileInsights.kt",
+    "sha256": "53b32ff88e002677f895deec7848d7bd0dcee90d14af6da3643ce453ad2a10fa"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/files/RepositoryFiles.kt",
+    "sha256": "8bb2cb33387e17ccf770f310b152594690f90b2215b2aca2ea3983874e9da8c1"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/files/SyntaxHighlighter.kt",
+    "sha256": "713b67598bb66ecad39954e91140b0a9e55290eed81f9514a9dcea56a15af349"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/BranchService.kt",
+    "sha256": "d62ef7072bd424931e9718fe227cc3624a81c0c27df696cdd6914ee7d59cfb75"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/CheckoutProtection.kt",
+    "sha256": "6087e735ea5118d06b4b8e0085e88838f188f8258a2cfc7a67683bb6f530ec93"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/CloneTransferProgress.kt",
+    "sha256": "72e28aedf34abcb1a1c30860ce3812235edaca0b83fc3a0424d0ab8048948c25"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/CommitCount.kt",
+    "sha256": "d9c4213240a2922f1714f991324e1f27a29c9f63e29b9749d779a27d60cbd3f7"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/ConflictIndex.kt",
+    "sha256": "6ba26162c24c9627e8edcc259f8016283f561a3996b3ba389d65a047742f4bdc"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/ConflictService.kt",
+    "sha256": "9b614558dcd367be219e6a804f68393986dbb1debcaa8c076ddcb3c8748fd6e2"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/DiffService.kt",
+    "sha256": "12208743641a875e2eebfc0e54f1f8246814d87021c45a8f6ffe14644764cb40"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/DiscardReview.kt",
+    "sha256": "205fde2df3bd1d5e53621057bf1aedbd4ae04731a64560598e723a36abf1bc58"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/FileRemote.kt",
+    "sha256": "fda2e6c18a2ea574edd029e39faf8d600d12a41aeaf1ac8107c5d5a261e8ac07"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/GitStatusMapper.kt",
+    "sha256": "642b7e59e18757b2be45d28ea412e489f4cdea28a2880379ab1d237c4063d1d5"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/GitWorkspaceDetails.kt",
+    "sha256": "191945f223709b63829de20dd5caaf6698573d949e4de8bf70308f2cf708b005"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/HistoryService.kt",
+    "sha256": "958218c6e0befac14ed39bb7aa9e7e11250c038be244dd6eecb7168bf0dbddc2"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/LocalBranchRepository.kt",
+    "sha256": "44598d376dbf46a1929a11e78b8ed1818bdd8ee2101f919ca0ca8fad1556cf77"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/LocalConflictRepository.kt",
+    "sha256": "25e678af3a82482e9e30c4d8bfb7f77371a32f08a6eda3c75b47e6274e439110"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/LocalDiffRepository.kt",
+    "sha256": "3604c1631dd0f82acb6cdbfe73510bc7e0411334efd514541de9cd7019785cb4"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/LocalGitRepository.kt",
+    "sha256": "a139ccf38dff6f5841149c84b7b3ed09266254680455736234b4e9885064548d"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/LocalHistoryRepository.kt",
+    "sha256": "ba5997f4bb29a20e75603f49f97f23abc735cdf766313fbfafca83f5dd915c58"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/LocalPullRepository.kt",
+    "sha256": "e18821cb7660614f364ee48527f18a6c98adf44666d9ba36a5de1a356a9cb1d3"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/LocalRemoteRepository.kt",
+    "sha256": "d24f518670c09f34221e2821af0da27a110f0255c97db0330af8b72e7fd57676"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/NativeGitRemote.kt",
+    "sha256": "2363eb75417a08997c5f9086e4a5d4ac1ff181a4ffbf95c8ea641b561eb70c94"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/PullService.kt",
+    "sha256": "1caf1598a3641052d2667fe9328264129699fe96dfd721f70d45abf9e737c0e9"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/PushService.kt",
+    "sha256": "40299be5366c1c24914ebe196089d8825f6dc5f36f7f760f7c7b8e68ffda76c4"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/RebaseCheckoutJournal.kt",
+    "sha256": "0e3fc695224dd5ebe162202878ebf287d901250cfc7dd1d0334bafe45fc8afb8"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/RebaseParentCheckouts.kt",
+    "sha256": "8e83fb77b56731e5f05e5a80e2960e019ed2a7858ca53aee8381f620169a60a0"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/RebaseProblem.kt",
+    "sha256": "0e8ea8350452fdcbbbf9254b2a06e5b0c142bf1a41452a4ecc88c7fe0a9b502b"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/RecursiveMergeBase.kt",
+    "sha256": "70429e698aafd99ad55b64d629d313e6af06a36728323e414a085c90c7ddd553"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/RefService.kt",
+    "sha256": "0650cfe59f59e297876385596790c9642344bbfd0edd3e52a4ae8a3c9378dd0b"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/RemoteAuthentication.kt",
+    "sha256": "e651f631b434c746cfa7b927c7d1b098f310e2c328c0a03612788bf7833d176f"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/RemoteRefs.kt",
+    "sha256": "371bd69200df24cc4570b63286b12c707afe159a746a00ffcf93ceba923767f3"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/RemoteService.kt",
+    "sha256": "6181dda0b1baa932324974171a1ef4bc4f4109f4d392bb26648bd27dd6e3f75c"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/RenameAwareMergeStrategy.kt",
+    "sha256": "0da58d1e623d54215bae24e0e8a936ca7263011320ae3005b2c3c4ccc2313c2a"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/RenameConflictResolution.kt",
+    "sha256": "6dab9714af0611b2743cbce75935c319846bbe95a013dc82ace68f7dc0cc0b61"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/RenameEditMerge.kt",
+    "sha256": "af9f50754addffb972e45b77833af9139f12857b678e9e3c25351d70412e8543"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/RepositoryActivity.kt",
+    "sha256": "4d24240bb25b7204399826928d00c3884bd8645724c015c81c7c79ae438c795d"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/RepositoryAuthor.kt",
+    "sha256": "287d2002c2a0cfa4a4c5276013cba05d702ab427649a3d465252414a374bfce7"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/RepositoryOperationCoordinator.kt",
+    "sha256": "90a507a81a7cf1a771de2f2bcc1b97081ee8e6dcd6aed0746adadc02a4a13182"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/RepositoryOverview.kt",
+    "sha256": "a253e0b75a067083d992289664fe7cd90845c8d367c2768d93846c7d255c7627"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/RepositoryRebase.kt",
+    "sha256": "47a7bf7ed88000608b8aa08b9ef1c5bc8f7a1039719e12d917c69bec0a6ac64d"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/RepositoryRemoteMerge.kt",
+    "sha256": "d9dedc36646850b7c80a0b11fd704e32bd031e71f6a1798335909c374d63f652"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/RepositorySshSessionFactory.kt",
+    "sha256": "8f0fb11b5afac0eeed20a8a2b85c4599e10ba18d6aea454ebb9dddb090bd4275"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/RepositorySyncStatus.kt",
+    "sha256": "0f17ae8dc724db3efb25ea71b039135c19630e85e85357d2b3851a4d4aade4ce"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/RepositoryUpdates.kt",
+    "sha256": "7d94a68b0855377d24104579bbef366ed50c80db556992a808d2bc4112b58a3a"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/SampleRepository.kt",
+    "sha256": "4097daae84fdc2f283b8ad3d1941aa95e830cbc860b123724d0ad808761ed760"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/SshKeyGenerator.kt",
+    "sha256": "d1167456cac2682bf7ad0cd155accba1e59533f7aa0cdf03cd5eda42221c76bc"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/SshRemote.kt",
+    "sha256": "68a2f4ae7876bdaf5f5c286af7533308007477984d481d532f805b6565fd8ac2"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/TransferProgress.kt",
+    "sha256": "0b80425927d8dad2a63ef257bd67e980749fd91a3008181ccc940662beff54a0"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/VaultInsights.kt",
+    "sha256": "91db381137dd00099a4deb56004394062c51b8dfd150b7abddec1da66e07b5bd"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/lfs/GitLfs.kt",
+    "sha256": "d8503ece0893b5bc6b601e856ad562edcc7953f72ec7c44a9ec25f834060625e"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/lfs/LfsAccess.kt",
+    "sha256": "3ffd19e33c5e2080bfa02281bad97ef4e1c1a36fb62188df9052fd372da147df"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/lfs/LfsCheckout.kt",
+    "sha256": "02d6e7f341e5ab7352fc3d91cb309ab3706e93c84c48ca8baf28994e9ba75e5b"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/lfs/LfsEndpointTrust.kt",
+    "sha256": "a3c3f9d8ec13fbfa374968ee6d7d083a9831a4cd54c0b8562c457b4aa2d7a3d6"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/lfs/LfsExtensionTracking.kt",
+    "sha256": "246d5d075d81bf380ed285ef029d13860e218ce78ec29ea50f92fa870912f24c"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/lfs/LfsHttp.kt",
+    "sha256": "c64f7144073a0a457d0e0177b6d32d8419db764f646ac1252f592fbe54cd793b"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/lfs/LfsLockManager.kt",
+    "sha256": "1b9318fd47de95563e0d47fb2a1a9cd41f43a6ed2d1dcbfb2f684d0405219697"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/lfs/LfsLocks.kt",
+    "sha256": "39b0ad3e2bddf528ff92700dd59ed898ca7be68b182361d989c59ec04c043ea4"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/lfs/LfsObjectStore.kt",
+    "sha256": "0842299ef8f683419d8924eabb75a9be46a0deb43724ddde709fe6b554d792d1"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/lfs/LfsPointer.kt",
+    "sha256": "f9b4fd708b82edb45df1868fda6c329790656644aceec2cbfcd54874d010c4e5"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/lfs/LfsPushLocks.kt",
+    "sha256": "1c134c402eb22c2934e2fec8aafd8962afab2750a92d855024c6a4fd447395ee"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/lfs/LfsRepository.kt",
+    "sha256": "3229e28a515746516e5b55ae3abb046aa52d1a175b2324b8ae54cea63a1b2093"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/lfs/LfsTracking.kt",
+    "sha256": "fa5888583439d1af24c80b350bb684bff72cd2e2b4699c0acca87d745a485810"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/git/lfs/LfsTransfers.kt",
+    "sha256": "8e3a42041b309fa29a2ff250745ca374ffbfe22ab291a9c857e922d86790475b"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/obsidian/ObsidianHandoff.kt",
+    "sha256": "97becb4d51695c0d8ced087db663cdfff6b4b1031ad17d51871a354a85f94baf"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/publication/FolderPublicationCoordinator.kt",
+    "sha256": "2b11140c09396dc56c58a6dd325a15df473060acd089390776b283b7f4a8670b"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/publication/FolderPublicationFiles.kt",
+    "sha256": "626ebc94e2f1d5a81c625e9fc25643f6333c9f8758af37b756de5ad551bdced7"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/publication/FolderPublicationGate.kt",
+    "sha256": "bd68f625a86c431508906c7831299bbf69549ca32ecfaf866db696f346e23dbc"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/publication/FolderPublicationGit.kt",
+    "sha256": "bc923af823cf80bd62d3039b97764b9bb35cc83b826dd446a7947b96f1e043b4"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/publication/FolderPublicationModels.kt",
+    "sha256": "c9efdc09c2ad852fd581e245dc1d2b3cdcb69a33285f32d15577e024738249e1"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/publication/FolderPublicationStore.kt",
+    "sha256": "260528bf60dd1487933217a6ae0d8a72fba8255d16d682c9a0b6239970a5db1e"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/publication/GitHubFolderPublisher.kt",
+    "sha256": "e18911cafd42307dc449bb03b2825972bf8babaf2b7d843d90780330191733be"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/publication/PublicationJson.kt",
+    "sha256": "686955308332cc7bf1328e4e9c40f7ef51478ef56670d6e166fb28e1a39f8540"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/push/PushHintRunner.kt",
+    "sha256": "30c0736af9373cb3e24e85e07c6cf312dcaa28e64407847ece63ea6bf6da6a19"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/push/PushRepositoryInventory.kt",
+    "sha256": "7ec9f9add7307fd80f0c15fafdc88c5195bbad92940ddaf960a56bdf97a4369f"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/push/PushSyncProtocol.kt",
+    "sha256": "66249fc5def7250b11b876e4f6cd71ae21755a0ea3773a23a66f821b0889defe"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/repositories/CloneCatalogProvenance.kt",
+    "sha256": "f12de54d4e00c050edf5400bdb552c786671dd48ddbfdce4097ac9c923d67b58"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/repositories/ClonePublicationLedger.kt",
+    "sha256": "1204ab80212d0f0b4a1aecc3ff6b393128e950065e8e96ec86d7de05edac22db"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/repositories/CompletedClone.kt",
+    "sha256": "c27f19421bef093e2c7a9f015a04271a48c881a28bc76a5668f1786c7fe53be0"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/repositories/GitTrackingRemoval.kt",
+    "sha256": "d72cb7cecbd9ff3e3c54cf2be36e042041ef3e46f5052a334cd85d5c9a0d1949"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/repositories/ManagedRepositoryDeletion.kt",
+    "sha256": "b52302a64e1ec0aef06798d5c91ca1fc57ecaa3d046eeb767e2ad402c41d9e67"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/repositories/RemoteCredentialMigration.kt",
+    "sha256": "29af53e70279c3f4c6c2da899221fd96276f661e06b065679740a4100f5b1358"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/repositories/RepositoryConnection.kt",
+    "sha256": "a1ebdedce62aca2394f348332bc78131907409185f5ed0a3239dfaf7af39a9c4"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/repositories/RepositoryDiscovery.kt",
+    "sha256": "179ca673709adc7e7bb60f9d6961ba80b44b499f05e6ae1c7b648d194f390b7e"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/repositories/RepositoryIdentity.kt",
+    "sha256": "b240ad7dcc025c1787b152d10b215953dcceedf917772bc6db91de2c91fc4e83"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/repositories/RepositoryMove.kt",
+    "sha256": "41263ce3e0f3ea0772b28445f77a37df540dbc3bee19235ca84eff30fdbd8e52"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/repositories/RepositoryUpstream.kt",
+    "sha256": "3e909e59ec90a9351724a19a5c165842a2ebf16900aee0c4d6ea8b24259a6d27"
+  },
+  {
+    "path": "core/src/main/kotlin/com/bontecou/syncmd/services/repositories/SafeCloneService.kt",
+    "sha256": "c8c095fe84c75c3eec4a1ea869233a9439731850fc1a68d52170ba24f2dd07db"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/FakeBranchRepository.kt",
+    "sha256": "4bba480e2fd4c30d9814a0aeaac890895467b140b46551a0c1c30eed4783f640"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/FakeConflictRepository.kt",
+    "sha256": "cdbaca39ae5c67c85665ba89ed471a0a370699e7edc6da53b8a3fe23c58efebc"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/FakeDiffRepository.kt",
+    "sha256": "396381dc91c39c627d7a2b177beb30188fcc10e22115ca806f54386af8790345"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/FakeGitRepository.kt",
+    "sha256": "be094656c69de14c94e0ef15e2e445f0bcc0a4dd90b31bc2a0c7d472f737fe3e"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/FakeHistoryRepository.kt",
+    "sha256": "44631eb4d6dce63471160f0b8883d2d9d9ab622fd8660ccd15e4aef9d337f95e"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/FakePullRepository.kt",
+    "sha256": "b17b64109ea395a0644f5a2f6724db64617094597924c5c8472c5e10b6d86c14"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/ProjectSetupTest.kt",
+    "sha256": "0afb50a5953a3c04610fe277a67c7a5a91ca2bde91a719db768cfa4127e3ca23"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/domain/repository/BranchRepositoryTest.kt",
+    "sha256": "1cf5450e39ee3e564bb98fe596c64a7ffe99e19a13a8a41f07553ccea88fff91"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/domain/repository/ConflictRepositoryTest.kt",
+    "sha256": "8caad5ddfb30d00cb8be832a3aa7ecb7ea9ed44f3c019d0b74d5ccf8fa5ad7c1"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/domain/repository/DiffRepositoryTest.kt",
+    "sha256": "8aca35e167ea409dadc3f299197c0f355c37c7e52e14aec28c43e50a465c0010"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/domain/repository/GitRepositoryTest.kt",
+    "sha256": "b501994b1f62d13c821e02880bbc9c270c4616e66fe2152d39cfec7ae2a5257b"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/domain/repository/HistoryRepositoryTest.kt",
+    "sha256": "ea705fc468870c9a4cda467e775009fbe12c393413eefb801448b0df56943b98"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/domain/repository/PullRepositoryTest.kt",
+    "sha256": "1677010a8673ad89393dcfc1e8bb21352186b48032b8c436873612b0b2e99513"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/fixtures/GitFixtureFactory.kt",
+    "sha256": "75430f120575a841ccaaacef20debd7563a528d8f686997bb1d23537ace29ae8"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/fixtures/GitFixtureFactoryTest.kt",
+    "sha256": "a7b22bca1c5c214542cec6f0ea6aaf8a6ff03cba34880c99ec729cec2e030c99"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/automation/PullAllRunnerTest.kt",
+    "sha256": "31d557946f39b77bfd9cf2290d1a90845c837e584f3ca7866982c320b4ff7467"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/automation/RepositoryActionRunnerTest.kt",
+    "sha256": "ef88570cf9952dd457a6b44b2938aa4df26f574025b816b39cb71f53519457bd"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/automation/RepositoryCallbackProtocolTest.kt",
+    "sha256": "d07b653baa45e1b412f1249c597b4c01c27e53a9c8a177e954e2e72ec338bb90"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/automation/RepositoryCallbackRunnerTest.kt",
+    "sha256": "fcdb925bc9e74aef3b4392c57ba518fa34dea29e4e51f590b3dc0ceaefc1b9ac"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/background/BackgroundSyncRunnerTest.kt",
+    "sha256": "a6c41e2267d1f72e85511a1d7042516e7c4b913e20b4338ff9cafb8ac01fb243"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/diagnostics/DiagnosticStoreTest.kt",
+    "sha256": "c0d24db7cd56f5346f16c13875824778d5252fd2e801864ead1c8b0cae1c6ccf"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/files/FileInsightsTest.kt",
+    "sha256": "b49d280a9d84202df836553d20ecbb97a6f1fbb5a91354ca789b9137c7306241"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/files/RepositoryFileIssueTest.kt",
+    "sha256": "5cae91dd103f29671871d6584bb8df399cc6166d7a598ceec7a8cf49a20a928c"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/files/RepositoryFilesTest.kt",
+    "sha256": "352742ad011adb7893c77a6bb097f57ef27da7c5fff58fcd91e0daa2dbb31680"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/files/SyntaxHighlighterTest.kt",
+    "sha256": "28dc5736eb0d41b5b6916db1b35f1b2f994286c1e634f265a20d88dbff984c0a"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/git/BranchCheckoutProtectionTest.kt",
+    "sha256": "4ef2bab149a6301b69f4b974c9cd1cd6df1f616c14f7c49c898f1d9701f270b9"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/git/BranchIdentityTest.kt",
+    "sha256": "e41a54bf1f65d4097f819a78dcbcdb0c975c96740831a42498376082f6c50204"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/git/BranchServiceTest.kt",
+    "sha256": "5840a6967ec762542d0b79cf2e021d86778652a49d49fc0281608aa35385c35b"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/git/ConflictByteCountTest.kt",
+    "sha256": "eb305fb8cc2c56ed15b4ff79c4a72ce074841b7c3d2e523069fa709f622f2db4"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/git/ConflictParityIntegrationTest.kt",
+    "sha256": "8081041d38b82e01908b0eaf0a3f994a575d311e2ee5f2219119c50e1ec1a468"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/git/ConflictServiceTest.kt",
+    "sha256": "262948acbc9c58e5b677147d7050280515c0c9efb67ecf8885f2aa2f505a4b7a"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/git/DiffServiceTest.kt",
+    "sha256": "e6a4557aab518c0f20d68db781f4aab31c6028d1728e033bf327adf8a93d58a7"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/git/DiscardReviewTest.kt",
+    "sha256": "8fa4015236fb57ed17cc0c65b6040f97b1d02a0fb8a3d254720099a207bb2c30"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/git/FileRemoteTest.kt",
+    "sha256": "4fa55fe5ce953be57a700c6cebfb9def6230e72e9405ce3688a1dfa564808943"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/git/GitRemoteInputTest.kt",
+    "sha256": "b4811fdca62bdb4db2bb08deef54a30c69897489b9f3f3f90179e61c856f8ea6"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/git/GitWorkspaceDetailsTest.kt",
+    "sha256": "7d197b09231ac42bc711c672afed761d098ccb8b7c69e735c23b584e81116b40"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/git/HistoryIdentityTest.kt",
+    "sha256": "603a1b206b45b890650f7de44b5c4ad20caaff68cbc3efee18ae5c77e31f630c"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/git/HistoryServiceTest.kt",
+    "sha256": "f9e1590826a077e87e42a5c70d1ddced9e2acfb668c7808504700b97a8d86ad9"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/git/HttpTransportTest.kt",
+    "sha256": "9af23c25bcb81b61458650bb4dc849aefdbce3a946408f2e0985b9ae75270464"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/git/HttpsRemoteIntegrationTest.kt",
+    "sha256": "424aaadad002108066d2b09bf6a7feefd9d389163e42ac5b9acaa2dbb9ad518b"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/git/NativeGitTransportTest.kt",
+    "sha256": "54f4006da27ba4005acc1e9e824af025b24b666756721e4c5da46bd771c07e2d"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/git/PullServiceTest.kt",
+    "sha256": "bcaca9a47e954d9d9ecc4f3d3b0213e737441c9530223f99da250faec94201a5"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/git/RebaseRenameTest.kt",
+    "sha256": "1a79529763abef673194004a8ca2d2c914615cb81872a71f3c223029f7d71fc3"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/git/RecursiveRenameMergeTest.kt",
+    "sha256": "1a56be44680258716fa1bf946a82350612b39e4dea46fb431b8ba388a6019ec3"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/git/RemoteAuthenticationTest.kt",
+    "sha256": "6e50c9c7402fbc6c4b8a50d6e31262d51b4bcbf3eb298f2b467d4a9d86e243c6"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/git/RemoteParityIntegrationTest.kt",
+    "sha256": "c53ac1984d133e14ee4d8660db20c24d2964ff5f0fa56bde0f720c6b84b71d1e"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/git/RemoteRefsTest.kt",
+    "sha256": "9ac3d32d8868085d49661def285006c02e6b3a725a802bf28d0317bc6de11bca"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/git/RenameConflictTest.kt",
+    "sha256": "1bb9202b5e99d8af673eec36616c564055836bcfbd1dc98efb7a28c2d42e067d"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/git/RenameDeleteConflictTest.kt",
+    "sha256": "781960a9bafeb92e948463bb0eb45750c97a4f0c4e0ba577691a2e09c301aede"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/git/RenameModifyConflictTest.kt",
+    "sha256": "effb91a085d3fdc4839d4d71978f4f9780b6089706ac6457aa59d17072e69b76"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/git/ReplayCheckoutProtectionTest.kt",
+    "sha256": "c547ea4f7b0f87953eab3af5b96c9a9b2538b84944fdc3cf526d97ae5e87ebff"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/git/RepositoryActivityTest.kt",
+    "sha256": "28c875ae92f84c817d49a2f73a1517189979c49e1aad73c430043ec395150597"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/git/RepositoryAuthorTest.kt",
+    "sha256": "b84d5cb714c94b74aae1441b2eda5d032d519250e1a4b2da580dfb7754bb3129"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/git/RepositoryOperationCoordinatorTest.kt",
+    "sha256": "fa39c5764c509d40ecbda6c8c962b75d1a6f577eb37dafbba5875397607c43ec"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/git/RepositoryOverviewTest.kt",
+    "sha256": "755ff614debd6024511cddb31bd75a422345129562add8f6ace556d2d39e0cda"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/git/RepositoryRebaseTest.kt",
+    "sha256": "5f77523228847452aca2d84d556185716039c33338825853afa247c2be3389b9"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/git/RepositoryRemoteMergeTest.kt",
+    "sha256": "3a1d1d63f891a5504695a88b2bd31dd37c475d89f69c11cbad05a440a6e28fb6"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/git/RepositorySyncStatusTest.kt",
+    "sha256": "0df6cdf5ba4816e2891a8fa9ef17aa432726bb67492cdf37f2a2e4c7bdc02193"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/git/RepositoryUpdatesTest.kt",
+    "sha256": "e3cb3e7a0bbd82b7356140f5daa26d9feb8cb835dbef2afcf5138cfe9c6e32ea"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/git/RevertPreflightTest.kt",
+    "sha256": "880a47a651849948aea66e607aeff7c0fcc1ba7cd868d8c34af487d49cefe7ea"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/git/SafePullIntegrationTest.kt",
+    "sha256": "4eb8707f91df8a7457cbed2fd775b2391dacc6a524d394e89b380dbfac97b621"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/git/SampleRepositoryTest.kt",
+    "sha256": "0c4fb1efaa1de498755cdf64818e12b45d30a5ef65f597ed3b82bfa12fdd2c47"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/git/SshAuthenticationTest.kt",
+    "sha256": "fd60d612249d6cfbfc65a60ac2753a9e40858fb92f2594a43efe253365161915"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/git/SshKeyGeneratorTest.kt",
+    "sha256": "0c8695d099c25df6d0bbc7578d6445b1f4cb7114649d60678f0c284ae2aa4cf0"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/git/SshTransportIntegrationTest.kt",
+    "sha256": "06bf2c042811c2c6891079c2487eb557f5cbfd06b003b53f376b2a11f68932d1"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/git/StagingParityIntegrationTest.kt",
+    "sha256": "d6e05ff00a8d67f596093c63c12a55dcc3dfc9dad6fc5b7bd824c2e05dc36f29"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/git/lfs/AttributesCompatibilityTest.kt",
+    "sha256": "212a9c94e01a2e4145083db392855ee761bc8fd5f50ad52bb4aad413989128c5"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/git/lfs/LfsAuthorizationTest.kt",
+    "sha256": "99e9e30bdf33d53bf62ca3bc6270bec3fbd7c638dc53a06192bc72d721ee18eb"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/git/lfs/LfsExtensionTrackingTest.kt",
+    "sha256": "baa5002453ab18f7f669b3c2995712382a1886e018ba32567f4fd60a60f9fa02"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/git/lfs/LfsFiltersTest.kt",
+    "sha256": "5fb6b9961299931fb336e7e60a4b2f5ca4a1232c7fb2dc95cb9f4697c8876547"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/git/lfs/LfsNetworkIntegrationTest.kt",
+    "sha256": "d00947627928fcad17e520b286c7cf993e3af76c5613dc6a94ec5a184e049b5e"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/git/lfs/LfsPushLocksTest.kt",
+    "sha256": "f274ffbfdb24a455e45ba2ed4c26fc71695a9a7ae8a873f19e287cd771f6d8a3"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/git/lfs/LfsTrackingIdentityTest.kt",
+    "sha256": "a7cd32c806063cfa7f021eef296358d56444a1102e9f13bd781de4e2b637b36e"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/git/lfs/LfsTrackingTest.kt",
+    "sha256": "1f404c8ddea070e138599dcf7c12c84635b82bc0fdab858c76c5b887601b57a9"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/obsidian/ObsidianHandoffTest.kt",
+    "sha256": "02c47afce51634b6da1864511eb964f379a24dade24e8a21f9ae2ec8c6c136a5"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/publication/FolderPublicationCoordinatorTest.kt",
+    "sha256": "dba6f9e47067216b20e501603c0d6a49c607c0ff067ee7b27c7ee099ee9dcb39"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/publication/FolderPublicationGateTest.kt",
+    "sha256": "4348b4b492719d3ccb8b0a6f5437f3592d6c7e9132a0663a323f5071c0c4f450"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/publication/FolderPublicationGitTest.kt",
+    "sha256": "c91f4e2e4a2d3368f409df89ccee26d6045adaa47a88c9f202696b7bd9a006a9"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/publication/FolderPublicationPushTest.kt",
+    "sha256": "71052317db6cad6d11f764c4f8f3d2982f1f149c04c1fc9e932e535d6119dba8"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/publication/FolderPublicationReconnectTest.kt",
+    "sha256": "c8650d1da8970c4796a14e262722fa59299d3ec9857bdf5511b35e8725f53c48"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/publication/FolderPublicationStoreTest.kt",
+    "sha256": "467fc6d3900b69e07ee2d860d19a3c4067a01abf68399f18529fb932d4ba0f91"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/publication/GitHubFolderPublisherTest.kt",
+    "sha256": "80e64187fb026607b8c594f0668479bb61c42a72ed3ea697441ed045729dce87"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/push/PushHintRunnerTest.kt",
+    "sha256": "64675bb8bb4dd3351cfa0e557d833f95f4438a9d6be397861dff58e6a03c0b66"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/push/PushSyncProtocolTest.kt",
+    "sha256": "a97629bf2f6e98069941a741633561b64cceb4eb9406355068f2f40268d280e9"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/repositories/CloneCatalogProvenanceTest.kt",
+    "sha256": "167342d575f483e632e55a02fcab572b60515ae28f9f52d9a6ac642c66a51956"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/repositories/ClonePublicationLedgerTest.kt",
+    "sha256": "5e2b8ba2fcf4a23cc7920cd49a15e6e946b992f748c79b99b32d9f0c8928e50d"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/repositories/ManagedRepositoryDeletionReviewTest.kt",
+    "sha256": "7cb2e6feb3f4c9fec447eb2929f88f9d83192c488c8074977cd9384eb0623eaa"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/repositories/RemoteCredentialMigrationTest.kt",
+    "sha256": "6283c7a544641647f533020f0523c6fdf3796d0032e430d729bad82ed136efe9"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/repositories/RepositoryConnectionTest.kt",
+    "sha256": "9ba0da97aef8edc4bc3f24173e578ca8c7a6fd46784127a3d7504a007f327a06"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/repositories/RepositoryIdentityTest.kt",
+    "sha256": "905d237d84d80a2ebebce39ad8b9d6bbe23cafb00dedf4d01d1e1089b715af35"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/repositories/RepositoryLifecycleTest.kt",
+    "sha256": "ab2dafe0abd68485ce50fc11aa189f692f10fd272797401d4ec272cf2f5a9a96"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/repositories/RepositoryMoveTest.kt",
+    "sha256": "cc363cab2d11cde1a87f0992065bb782e248784c8a8c31a1171db0b55f3c1242"
+  },
+  {
+    "path": "core/src/test/kotlin/com/bontecou/syncmd/services/repositories/RepositoryUpstreamTest.kt",
+    "sha256": "81f2212f59a180f0bc93ff8ddf573b66ef13a057e7410bd39c0874c3c419ba75"
+  },
+  {
+    "path": "gradle/libs.versions.toml",
+    "sha256": "d7eeb25cc4c1df512dd9a94eb5bc93e85aa69373d95d84ace8f49be7fa2f12d1"
+  },
+  {
+    "path": "gradle/wrapper/gradle-wrapper.properties",
+    "sha256": "d7010368a34c1c06df2bae1a85d8b24c39b2499c74ac892fc7e66d005dbd7b8a"
+  },
+  {
+    "path": "gradle.properties",
+    "sha256": "05c84e44436bc496463cf569ac13160cbd5c91406486847b5a10ba5dd1b179ce"
+  },
+  {
+    "path": "settings.gradle.kts",
+    "sha256": "4f064d05e7f37498aa580f606a2fab8ffe3cec2a8ffe4c8ce87a89aa6dadb967"
+  }
+]

@@ -26,6 +26,12 @@ and [CLDR 46 data](https://raw.githubusercontent.com/unicode-org/cldr/release-46
 Hebrew `many` retains the existing ordinary plural phrase; linguistic review is
 still required. Formatter/category checks prove structure, not morphology.
 
+Counted metric labels now use complete templates rather than count-free plural
+fragments. `CountedPhrase` binds the already-visible value/subject to the label
+without losing the large-number styling. This prevents a CLDR `one` category
+(sometimes 0 or 21) from being mistaken for a fixed numeral. The source and native
+format fixtures change together; the count is never replaced with an empty value.
+
 The following dated sections retain the history of earlier localization passes;
 the current completion evidence is in
 [`redesign-completion-local-20261108`](../testing/redesign-completion-local-20261108/README.md).
