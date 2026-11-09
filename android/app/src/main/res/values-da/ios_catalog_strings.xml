@@ -407,7 +407,7 @@
     <string name="add_token_hide" formatted="false">"Skjul"</string>
     <string name="add_token_hint" formatted="false">"Tokenet er krypteret på denne telefon og sendes kun til denne vært."</string>
     <string name="add_token_label" formatted="false">"Token"</string>
-    <string name="add_token_scopes" formatted="false">"Omfang: repo og bruger:e-mail. Tokenet er krypteret på denne telefon."</string>
+    <string name="add_token_scopes" formatted="false">"Omfang: repo og user:email. Tokenet er krypteret på denne telefon."</string>
     <string name="add_token_secret" formatted="false">"Token"</string>
     <string name="add_token_show" formatted="false">"Vis"</string>
     <string name="add_token_sign_in" formatted="false">"Log ind"</string>

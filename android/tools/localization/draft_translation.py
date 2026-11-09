@@ -9,6 +9,21 @@ import re
 MARKER = re.compile(r'ZXQITEM(\d{6})QXZ\s*[:：]\s*', re.IGNORECASE)
 
 
+def scope_identifiers(text):
+    """GitHub PAT scope names are identifiers, not translatable prose."""
+    if 'user:email' not in text:
+        return ()
+    return tuple(term for term in ('repo', 'user:email')
+                 if re.search(r'(?<![A-Za-z0-9_:])' + re.escape(term) + r'(?![A-Za-z0-9_:])', text))
+
+
+def validate_scope_identifiers(source, value):
+    for term in scope_identifiers(source):
+        pattern = r'(?<![A-Za-z0-9_:])' + re.escape(term) + r'(?![A-Za-z0-9_:])'
+        if len(re.findall(pattern, source)) != len(re.findall(pattern, value)):
+            raise ValueError('GitHub scope identifier changed: ' + term)
+
+
 def parse_batch(text, expected):
     matches = list(MARKER.finditer(text))
     ids = [int(match[1]) for match in matches]
@@ -35,7 +50,7 @@ def mask_text(text, token_pattern, protected_terms):
         return key
 
     masked = token_pattern.sub(lambda match: token(match.group()), text)
-    for term in sorted(protected_terms, key=len, reverse=True):
+    for term in sorted(set(protected_terms) | set(scope_identifiers(text)), key=len, reverse=True):
         masked = re.sub(r'(?<![A-Za-z0-9_])' + re.escape(term) + r'(?![A-Za-z0-9_])',
                         lambda match: token(match.group()), masked)
     if '\n' in masked:

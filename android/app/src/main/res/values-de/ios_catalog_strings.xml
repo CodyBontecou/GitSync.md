@@ -407,7 +407,7 @@
     <string name="add_token_hide" formatted="false">"Ausblenden"</string>
     <string name="add_token_hint" formatted="false">"Das Token wird auf diesem Telefon verschlüsselt und nur an diesen Host gesendet."</string>
     <string name="add_token_label" formatted="false">"-Token"</string>
-    <string name="add_token_scopes" formatted="false">"Bereiche: Repo und Benutzer:E-Mail. Der Token ist auf diesem Telefon verschlüsselt."</string>
+    <string name="add_token_scopes" formatted="false">"Berechtigungen: repo und user:email. Der Token ist auf diesem Telefon verschlüsselt."</string>
     <string name="add_token_secret" formatted="false">"-Token"</string>
     <string name="add_token_show" formatted="false">"Anzeigen"</string>
     <string name="add_token_sign_in" formatted="false">"Anmelden"</string>

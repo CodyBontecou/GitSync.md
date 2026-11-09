@@ -407,7 +407,7 @@
     <string name="add_token_hide" formatted="false">"إخفاء"</string>
     <string name="add_token_hint" formatted="false">"تم تشفير الرمز المميز على هذا الهاتف وإرساله فقط إلى هذا المضيف."</string>
     <string name="add_token_label" formatted="false">": الرمز"</string>
-    <string name="add_token_scopes" formatted="false">"النطاقات: الريبو والمستخدم: البريد الإلكتروني. الرمز مشفر على هذا الهاتف."</string>
+    <string name="add_token_scopes" formatted="false">"النطاقات: repo و user:email. الرمز مشفر على هذا الهاتف."</string>
     <string name="add_token_secret" formatted="false">": الرمز"</string>
     <string name="add_token_show" formatted="false">"إظهار"</string>
     <string name="add_token_sign_in" formatted="false">"تسجيل الدخول"</string>

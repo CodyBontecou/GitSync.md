@@ -6,6 +6,7 @@ and falls back to English until a reviewed Android-specific translation is suppl
 """
 import argparse, collections, hashlib, json, pathlib, re, xml.etree.ElementTree as ET
 from extract_compose import ROOT, android_text, xml_text, base_resource_files
+from draft_translation import validate_scope_identifiers
 SPEC=re.compile(r'%%|%(?:(\d+)\$)?(lld|ld|@|s|d|f)')
 PREVIEW_PATH=pathlib.Path('/tmp/syncmd-localization-import-preview.json')
 
@@ -72,6 +73,7 @@ def load_overrides():
 def checked_translations(item, source, languages):
     if item['source']!=source: raise ValueError('Android translation source changed')
     if set(item['localizations'])!=set(languages): raise ValueError('Android translation locales differ')
+    for value in item['localizations'].values(): validate_scope_identifiers(source, value)
     return {locale:adapt(value,source,source) for locale,value in item['localizations'].items()}
 
 def alias_translations(item, source, catalog, languages):

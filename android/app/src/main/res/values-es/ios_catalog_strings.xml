@@ -407,7 +407,7 @@
     <string name="add_token_hide" formatted="false">"Ocultar"</string>
     <string name="add_token_hint" formatted="false">"El token está cifrado en este teléfono y se envía únicamente a este host."</string>
     <string name="add_token_label" formatted="false">"Ficha"</string>
-    <string name="add_token_scopes" formatted="false">"Ámbitos: repositorio y usuario: correo electrónico. El token está cifrado en este teléfono."</string>
+    <string name="add_token_scopes" formatted="false">"Ámbitos: repo y user:email. El token está cifrado en este teléfono."</string>
     <string name="add_token_secret" formatted="false">"Ficha"</string>
     <string name="add_token_show" formatted="false">"Mostrar"</string>
     <string name="add_token_sign_in" formatted="false">"Iniciar sesión"</string>
@@ -2093,10 +2093,10 @@
     <string name="tile_m3_background_sync" formatted="false">"Background Sync"</string>
     <string name="tile_m3_modes">"%1$s · %2$s"</string>
     <string name="tile_m3_pull_all" formatted="false">"Extraer todo"</string>
-    <string name="tile_m3_pull_off" formatted="false">"Sacar"</string>
-    <string name="tile_m3_pull_on" formatted="false">"Tirar"</string>
-    <string name="tile_m3_push_off" formatted="false">"Empuje"</string>
-    <string name="tile_m3_push_on" formatted="false">"Empujar"</string>
+    <string name="tile_m3_pull_off" formatted="false">"Pull desactivado"</string>
+    <string name="tile_m3_pull_on" formatted="false">"Pull activado"</string>
+    <string name="tile_m3_push_off" formatted="false">"Push desactivado"</string>
+    <string name="tile_m3_push_on" formatted="false">"Push activado"</string>
     <string name="tracking_metadata_size">"Metadatos de Git: %1$s"</string>
     <string name="tracking_remove_permanent_title" formatted="false">"¿Eliminar el historial de Git permanentemente?"</string>
     <string name="tracking_removed_backup">"Seguimiento de Git eliminado. Copia de seguridad verificada: %1$s"</string>

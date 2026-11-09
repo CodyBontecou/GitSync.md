@@ -4,6 +4,12 @@ from extract_compose import xml_text, android_text
 import xml.etree.ElementTree as ET
 
 class CatalogTest(unittest.TestCase):
+    def test_override_cannot_translate_literal_pat_scopes(self):
+        source = 'Scopes: repo and user:email.'
+        row = {'source': source, 'localizations': {'es': 'Ámbitos: repositorio y usuario: correo electrónico.'}}
+        with self.assertRaisesRegex(ValueError, 'GitHub scope identifier changed'):
+            checked_translations(row, source, ['es'])
+
     def test_reordered_swift_arguments_keep_android_argument_types(self):
         self.assertEqual('%2$s / %1$s',adapt('%2$lld / %1$@','%@ : %lld','%1$s : %2$s'))
         self.assertEqual('%1$d',adapt('%lld','%lld','%1$d'))

@@ -407,7 +407,7 @@
     <string name="add_token_hide" formatted="false">"הסתרה"</string>
     <string name="add_token_hint" formatted="false">"האסימון מוצפן בטלפון זה ונשלח רק למארח זה."</string>
     <string name="add_token_label" formatted="false">"טוקן"</string>
-    <string name="add_token_scopes" formatted="false">"היקפים: ריפו ומשתמש:אימייל. האסימון מוצפן בטלפון זה."</string>
+    <string name="add_token_scopes" formatted="false">"הרשאות: repo ו-user:email. האסימון מוצפן בטלפון זה."</string>
     <string name="add_token_secret" formatted="false">"טוקן"</string>
     <string name="add_token_show" formatted="false">"הצגה"</string>
     <string name="add_token_sign_in" formatted="false">"התחברות"</string>

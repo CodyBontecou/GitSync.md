@@ -2602,7 +2602,7 @@
         <item quantity="other">"%1$d 커밋 중 %2$s에 없는 것"</item>
     </plurals>
     <plurals name="git_m3_conflicts_left">
-        <item quantity="other">"해결할 %1$d 충돌 없음"</item>
+        <item quantity="other">"해결해야 할 충돌 %1$d개"</item>
     </plurals>
     <plurals name="git_m3_continue_resolve">
         <item quantity="other">"리베이스 계속 · %1$d 더 해결"</item>

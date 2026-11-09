@@ -407,7 +407,7 @@
     <string name="add_token_hide" formatted="false">"Piilota"</string>
     <string name="add_token_hint" formatted="false">"Tunnus on salattu tässä puhelimessa ja lähetetään vain tälle isännälle."</string>
     <string name="add_token_label" formatted="false">"merkki"</string>
-    <string name="add_token_scopes" formatted="false">"Soveltamisalat: repo ja käyttäjä:sähköposti. Tunnus on salattu tässä puhelimessa."</string>
+    <string name="add_token_scopes" formatted="false">"Käyttöoikeudet: repo ja user:email. Tunnus on salattu tässä puhelimessa."</string>
     <string name="add_token_secret" formatted="false">"merkki"</string>
     <string name="add_token_show" formatted="false">"Näytä"</string>
     <string name="add_token_sign_in" formatted="false">"Kirjaudu sisään"</string>

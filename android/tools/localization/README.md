@@ -19,6 +19,12 @@ correction separately. Human linguistic review remains pending. Git messages and
 repository identities remain data; literal `.obsidian` is not translated. Native
 English format contracts are pinned independently of generated locale XML.
 
+GitHub PAT guidance preserves the literal `repo` and `user:email` scope names.
+Draft generation masks these identifiers; import and actual-XML audits reject
+translations that drop, change or duplicate them. Review corrections also restore
+the Japanese/Korean remaining-conflict meaning and explicit Spanish Pull/Push on/off
+states. These corrections do not constitute full human linguistic acceptance.
+
 Plural requirements include Hebrew `many` for the older ICU/CLDR versions still
 supported by minSdk 28, alongside modern categories. See the official
 [CLDR 32 data](https://raw.githubusercontent.com/unicode-org/cldr/release-32-0-1/common/supplemental/plurals.xml)

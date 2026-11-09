@@ -9,6 +9,7 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 from extract_compose import ROOT, android_text
 from import_ios_catalog import signature, qualifier, REQUIRED_PLURAL_CATEGORIES
+from draft_translation import validate_scope_identifiers
 
 
 def resources(directory):
@@ -28,6 +29,10 @@ def resources(directory):
 
 def translation_errors(source, value):
     problems = []
+    try:
+        validate_scope_identifiers(source, value)
+    except ValueError as error:
+        problems.append(str(error))
     if source.strip() and not value.strip():
         problems.append('empty translation')
     if re.search(r'__GSPH\d+__|ZXQITEM\d+QXZ', value):

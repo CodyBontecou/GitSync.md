@@ -2602,7 +2602,7 @@
         <item quantity="other">"%1$d のコミットは %2$s にはありません"</item>
     </plurals>
     <plurals name="git_m3_conflicts_left">
-        <item quantity="other">"%1$d に解決する競合はありません。"</item>
+        <item quantity="other">"解決が必要な競合が %1$d 件あります。"</item>
     </plurals>
     <plurals name="git_m3_continue_resolve">
         <item quantity="other">"リベースを続行 · あと %1$d を解決"</item>

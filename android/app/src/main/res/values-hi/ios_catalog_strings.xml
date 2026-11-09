@@ -407,7 +407,7 @@
     <string name="add_token_hide" formatted="false">"छिपाएँ"</string>
     <string name="add_token_hint" formatted="false">"टोकन इस फोन पर एन्क्रिप्ट किया गया है और केवल इस होस्ट को भेजा गया है।"</string>
     <string name="add_token_label" formatted="false">"टोकन"</string>
-    <string name="add_token_scopes" formatted="false">"कार्यक्षेत्र: रेपो और उपयोगकर्ता:ईमेल। इस फ़ोन पर टोकन एन्क्रिप्ट किया गया है."</string>
+    <string name="add_token_scopes" formatted="false">"अनुमतियाँ: repo और user:email। इस फ़ोन पर टोकन एन्क्रिप्ट किया गया है."</string>
     <string name="add_token_secret" formatted="false">"टोकन"</string>
     <string name="add_token_show" formatted="false">"दिखाएँ"</string>
     <string name="add_token_sign_in" formatted="false">"साइन इन"</string>

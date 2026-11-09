@@ -2,10 +2,16 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
-from audit_resources import audit
+from audit_resources import audit, translation_errors
 
 
 class ResourceAuditTest(unittest.TestCase):
+    def test_xml_audit_rejects_translated_pat_scope_identifiers(self):
+        self.assertEqual(['GitHub scope identifier changed: repo'], translation_errors(
+            'Scopes: repo and user:email.', 'Ámbitos: repositorio y usuario: correo electrónico.'))
+        self.assertEqual([], translation_errors(
+            'Scopes: repo and user:email.', 'Ámbitos: repo y user:email.'))
+
     def setUp(self):
         self.directory = tempfile.TemporaryDirectory()
         self.addCleanup(self.directory.cleanup)

@@ -407,7 +407,7 @@
     <string name="add_token_hide" formatted="false">"Masquer"</string>
     <string name="add_token_hint" formatted="false">"Le jeton est chiffré sur ce téléphone et n\'est transmis qu\'à cet hôte."</string>
     <string name="add_token_label" formatted="false">"Token"</string>
-    <string name="add_token_scopes" formatted="false">"Portées d\'accès : dépôt et utilisateur : adresse e-mail. Le jeton est chiffré sur ce téléphone."</string>
+    <string name="add_token_scopes" formatted="false">"Portées d’accès : repo et user:email. Le jeton est chiffré sur ce téléphone."</string>
     <string name="add_token_secret" formatted="false">"Token"</string>
     <string name="add_token_show" formatted="false">"Afficher"</string>
     <string name="add_token_sign_in" formatted="false">"Se connecter"</string>

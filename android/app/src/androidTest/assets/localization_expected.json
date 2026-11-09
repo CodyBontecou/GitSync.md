@@ -12295,7 +12295,7 @@
       },
       {
         "name": "add_token_scopes",
-        "source": "النطاقات: الريبو والمستخدم: البريد الإلكتروني. الرمز مشفر على هذا الهاتف."
+        "source": "النطاقات: repo و user:email. الرمز مشفر على هذا الهاتف."
       },
       {
         "name": "add_token_secret",
@@ -22333,7 +22333,7 @@
       },
       {
         "name": "add_token_scopes",
-        "source": "Omfang: repo og bruger:e-mail. Tokenet er krypteret på denne telefon."
+        "source": "Omfang: repo og user:email. Tokenet er krypteret på denne telefon."
       },
       {
         "name": "add_token_secret",
@@ -32371,7 +32371,7 @@
       },
       {
         "name": "add_token_scopes",
-        "source": "Bereiche: Repo und Benutzer:E-Mail. Der Token ist auf diesem Telefon verschlüsselt."
+        "source": "Berechtigungen: repo und user:email. Der Token ist auf diesem Telefon verschlüsselt."
       },
       {
         "name": "add_token_secret",
@@ -42409,7 +42409,7 @@
       },
       {
         "name": "add_token_scopes",
-        "source": "Ámbitos: repositorio y usuario: correo electrónico. El token está cifrado en este teléfono."
+        "source": "Ámbitos: repo y user:email. El token está cifrado en este teléfono."
       },
       {
         "name": "add_token_secret",
@@ -49153,19 +49153,19 @@
       },
       {
         "name": "tile_m3_pull_off",
-        "source": "Sacar"
+        "source": "Pull desactivado"
       },
       {
         "name": "tile_m3_pull_on",
-        "source": "Tirar"
+        "source": "Pull activado"
       },
       {
         "name": "tile_m3_push_off",
-        "source": "Empuje"
+        "source": "Push desactivado"
       },
       {
         "name": "tile_m3_push_on",
-        "source": "Empujar"
+        "source": "Push activado"
       },
       {
         "name": "tracking_metadata_size",
@@ -52447,7 +52447,7 @@
       },
       {
         "name": "add_token_scopes",
-        "source": "Soveltamisalat: repo ja käyttäjä:sähköposti. Tunnus on salattu tässä puhelimessa."
+        "source": "Käyttöoikeudet: repo ja user:email. Tunnus on salattu tässä puhelimessa."
       },
       {
         "name": "add_token_secret",
@@ -62485,7 +62485,7 @@
       },
       {
         "name": "add_token_scopes",
-        "source": "Portées d'accès : dépôt et utilisateur : adresse e-mail. Le jeton est chiffré sur ce téléphone."
+        "source": "Portées d’accès : repo et user:email. Le jeton est chiffré sur ce téléphone."
       },
       {
         "name": "add_token_secret",
@@ -72523,7 +72523,7 @@
       },
       {
         "name": "add_token_scopes",
-        "source": "היקפים: ריפו ומשתמש:אימייל. האסימון מוצפן בטלפון זה."
+        "source": "הרשאות: repo ו-user:email. האסימון מוצפן בטלפון זה."
       },
       {
         "name": "add_token_secret",
@@ -82561,7 +82561,7 @@
       },
       {
         "name": "add_token_scopes",
-        "source": "कार्यक्षेत्र: रेपो और उपयोगकर्ता:ईमेल। इस फ़ोन पर टोकन एन्क्रिप्ट किया गया है."
+        "source": "अनुमतियाँ: repo और user:email। इस फ़ोन पर टोकन एन्क्रिप्ट किया गया है."
       },
       {
         "name": "add_token_secret",
@@ -267246,7 +267246,7 @@
           "other": "%1$d のコミットは %2$s にはありません"
         },
         "git_m3_conflicts_left": {
-          "other": "%1$d に解決する競合はありません。"
+          "other": "解決が必要な競合が %1$d 件あります。"
         },
         "git_m3_continue_resolve": {
           "other": "リベースを続行 · あと %1$d を解決"
@@ -267561,7 +267561,7 @@
           "other": "%1$d 커밋 중 %2$s에 없는 것"
         },
         "git_m3_conflicts_left": {
-          "other": "해결할 %1$d 충돌 없음"
+          "other": "해결해야 할 충돌 %1$d개"
         },
         "git_m3_continue_resolve": {
           "other": "리베이스 계속 · %1$d 더 해결"
