@@ -1,0 +1,56 @@
+Prerequisite: English Android phone in portrait. Sample repository open on Stashes, main branch, original modified notes.md, no stashes, no keyboard. Creates one stash, reviews and cancels its deletion after backgrounding, then pops it to restore the original edit. No remote operation.
+Running e2e test "android-stash-review-interruption-20261107" on emulator-5560 (17 steps)
+[1] ✓ tap role=TextField after ("Set aside") (1.4s)
+[2] ✓ keyboard (0.4s)
+{
+  "typed": "QA interruption review",
+  "keys": 22
+}
+[3] ✓ tap "Stash 1 change" (1.5s)
+[4] ✓ await-ui-element (0.8s)
+{
+  "success": true,
+  "elapsed": 753
+}
+[5] ✓ tap "Drop stash@{0}" (0.4s)
+[6] ✓ await-ui-element (1.0s)
+{
+  "success": true,
+  "elapsed": 927
+}
+[7] ✓ idle (1.0s)
+[8] ✓ button (0.0s)
+{
+  "pressed": "home"
+}
+[9] ✓ launch-app (0.2s)
+{
+  "launched": true,
+  "bundleId": "com.bontecou.syncmd.debug"
+}
+[10] ✓ await-ui-element (0.9s)
+{
+  "success": true,
+  "elapsed": 870
+}
+[11] ✓ idle (0.5s)
+[12] ✓ tap "Cancel" (0.8s)
+[13] ✓ await-ui-element (0.6s)
+{
+  "success": true,
+  "elapsed": 522,
+  "note": "condition met immediately — the selector never matched any element, so it may have already been hidden before the wait, or the selector is wrong"
+}
+[14] ✓ await-ui-element (0.1s)
+{
+  "success": true,
+  "elapsed": 6
+}
+[15] ✓ tap "Pop" next ("QA interruption review") (0.4s)
+[16] ✓ idle (0.8s)
+[17] ✓ await-ui-element (0.1s)
+{
+  "success": true,
+  "elapsed": 47
+}
+PASS — 17 passed, 0 failed, 0 errored, 0 skipped (11.2s)

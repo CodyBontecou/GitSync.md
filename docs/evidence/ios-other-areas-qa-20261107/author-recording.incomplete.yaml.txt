@@ -1,0 +1,11 @@
+steps:
+  - tap:
+      role: AXScrollArea
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Commit as
+        role: AXHeading
+executionPrerequisite: Signed-out iOS app in English, App Settings sheet open in
+  portrait at its top, default author not set. No production account connected.

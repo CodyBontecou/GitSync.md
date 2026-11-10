@@ -1,0 +1,13 @@
+Test Case '-[SyncMDTests.SyncMDTests testCallbackPullMappingPreservesEveryTypedOutcome]' started.
+Test Case '-[SyncMDTests.SyncMDTests testCallbackPullMappingPreservesEveryTypedOutcome]' passed (0.052 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testCallbackPushAndSyncMappingsPreserveStatusesAndCompletedWork]' started.
+Test Case '-[SyncMDTests.SyncMDTests testCallbackPushAndSyncMappingsPreserveStatusesAndCompletedWork]' passed (0.005 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testCallbackRejectsAmbiguousVaultNameBeforeNavigationOrWork]' started.
+Test Case '-[SyncMDTests.SyncMDTests testCallbackRejectsAmbiguousVaultNameBeforeNavigationOrWork]' passed (0.011 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testCallbackRoutingAcceptsCaseInsensitiveSchemeAndHost]' started.
+Test Case '-[SyncMDTests.SyncMDTests testCallbackRoutingAcceptsCaseInsensitiveSchemeAndHost]' passed (0.002 seconds).
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.070 (0.086) seconds
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.070 (0.087) seconds
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.070 (0.088) seconds
+	/tmp/gitsync-ios-navigation-fixes/Logs/Test/Test-Sync.md-2026.11.08_09-03-28--0400.xcresult
+** TEST SUCCEEDED **

@@ -1,0 +1,56 @@
+Test Case '-[SyncMDTests.SyncMDTests testAppStateCloneHonorsConfiguredNonDefaultBranchAndContents]' started.
+Test Case '-[SyncMDTests.SyncMDTests testAppStateCloneHonorsConfiguredNonDefaultBranchAndContents]' passed (1.289 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testAppStateRejectsTagControlsBeforeDelegation]' started.
+Test Case '-[SyncMDTests.SyncMDTests testAppStateRejectsTagControlsBeforeDelegation]' passed (0.017 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testCallbackRejectsAmbiguousVaultNameBeforeNavigationOrWork]' started.
+Test Case '-[SyncMDTests.SyncMDTests testCallbackRejectsAmbiguousVaultNameBeforeNavigationOrWork]' passed (0.007 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testCallbackRoutingAcceptsCaseInsensitiveSchemeAndHost]' started.
+Test Case '-[SyncMDTests.SyncMDTests testCallbackRoutingAcceptsCaseInsensitiveSchemeAndHost]' passed (0.001 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testDiscoveryReadsOriginFromLinkedWorktreeCommonConfig]' started.
+Test Case '-[SyncMDTests.SyncMDTests testDiscoveryReadsOriginFromLinkedWorktreeCommonConfig]' passed (0.047 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testEditorRenameMutationRejectsCollisionAndStaleBytesThenAcceptsUnicode]' started.
+Test Case '-[SyncMDTests.SyncMDTests testEditorRenameMutationRejectsCollisionAndStaleBytesThenAcceptsUnicode]' passed (0.017 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testEditorRenameMutationRejectsSourceReachedThroughEscapingSymlink]' started.
+Test Case '-[SyncMDTests.SyncMDTests testEditorRenameMutationRejectsSourceReachedThroughEscapingSymlink]' passed (0.003 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testEditorRenameMutationRejectsTraversalAndInvalidNamesWithoutChangingBytes]' started.
+Test Case '-[SyncMDTests.SyncMDTests testEditorRenameMutationRejectsTraversalAndInvalidNamesWithoutChangingBytes]' passed (0.003 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testFileHistoryIncludesModeOnlyChanges]' started.
+Test Case '-[SyncMDTests.SyncMDTests testFileHistoryIncludesModeOnlyChanges]' passed (0.057 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testFileHistoryPreservesDecomposedUnicodePath]' started.
+Test Case '-[SyncMDTests.SyncMDTests testFileHistoryPreservesDecomposedUnicodePath]' passed (0.048 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testLocalGitServiceStashSaveAndApplyRoundtrip]' started.
+Test Case '-[SyncMDTests.SyncMDTests testLocalGitServiceStashSaveAndApplyRoundtrip]' passed (0.069 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testLocalGitServiceTagAnnotatedCreateListDelete]' started.
+Test Case '-[SyncMDTests.SyncMDTests testLocalGitServiceTagAnnotatedCreateListDelete]' passed (0.045 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testLocalGitServiceTagDuplicateThrows]' started.
+Test Case '-[SyncMDTests.SyncMDTests testLocalGitServiceTagDuplicateThrows]' passed (0.038 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testLocalGitServiceTagLightweightCreateListDelete]' started.
+Test Case '-[SyncMDTests.SyncMDTests testLocalGitServiceTagLightweightCreateListDelete]' passed (0.040 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testMissingDisplayedStashCannotMutateReplacement]' started.
+Test Case '-[SyncMDTests.SyncMDTests testMissingDisplayedStashCannotMutateReplacement]' passed (0.024 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testStashActionsFollowDisplayedIdentityAfterExternalInsertion]' started.
+Test Case '-[SyncMDTests.SyncMDTests testStashActionsFollowDisplayedIdentityAfterExternalInsertion]' passed (0.015 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testTagNamesRejectControlsBeforeNativeMutation]' started.
+Test Case '-[SyncMDTests.SyncMDTests testTagNamesRejectControlsBeforeNativeMutation]' passed (0.029 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testTagNameValidationSupportsUnicodeAndRejectsMalformedRefs]' started.
+Test Case '-[SyncMDTests.SyncMDTests testTagNameValidationSupportsUnicodeAndRejectsMalformedRefs]' passed (0.001 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testVaultPreflightRejectsMissingBranchInsteadOfPassingIt]' started.
+Test Case '-[SyncMDTests.SyncMDTests testVaultPreflightRejectsMissingBranchInsteadOfPassingIt]' passed (0.030 seconds).
+	 Executed 19 tests, with 0 failures (0 unexpected) in 1.779 (1.790) seconds
+Test Case '-[SyncMDTests.VaultWatchTests testAutoCommitNeedsChangesAndFiresOncePerPause]' started.
+Test Case '-[SyncMDTests.VaultWatchTests testAutoCommitNeedsChangesAndFiresOncePerPause]' passed (0.001 seconds).
+Test Case '-[SyncMDTests.VaultWatchTests testAutoCommitSettingIsPerVault]' started.
+Test Case '-[SyncMDTests.VaultWatchTests testAutoCommitSettingIsPerVault]' passed (0.005 seconds).
+Test Case '-[SyncMDTests.VaultWatchTests testAutoCommitWaitsForTwoMinutePause]' started.
+Test Case '-[SyncMDTests.VaultWatchTests testAutoCommitWaitsForTwoMinutePause]' passed (0.001 seconds).
+Test Case '-[SyncMDTests.VaultWatchTests testFutureFileDateBecomesIdleAndEligibleAfterObservedPause]' started.
+Test Case '-[SyncMDTests.VaultWatchTests testFutureFileDateBecomesIdleAndEligibleAfterObservedPause]' passed (0.001 seconds).
+Test Case '-[SyncMDTests.VaultWatchTests testHistoricalFileDatesKeepTheirExistingAge]' started.
+Test Case '-[SyncMDTests.VaultWatchTests testHistoricalFileDatesKeepTheirExistingAge]' passed (0.001 seconds).
+Test Case '-[SyncMDTests.VaultWatchTests testWatchedFoldersSkipHiddenFolders]' started.
+Test Case '-[SyncMDTests.VaultWatchTests testWatchedFoldersSkipHiddenFolders]' passed (0.004 seconds).
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.013 (0.015) seconds
+	 Executed 25 tests, with 0 failures (0 unexpected) in 1.792 (1.807) seconds
+	 Executed 25 tests, with 0 failures (0 unexpected) in 1.792 (1.809) seconds
+	/tmp/gitsync-ios-navigation-fixes/Logs/Test/Test-Sync.md-2026.11.08_14-54-27--0400.xcresult
+** TEST EXECUTE SUCCEEDED **

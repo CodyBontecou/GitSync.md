@@ -1,0 +1,13 @@
+steps:
+  - launch:
+      native: bontecou.Sync-md
+      ios:
+        app: bontecou.Sync-md
+        args:
+          - -SignedOutUITest
+          - -UITestGitToolsFixture
+          - dirty
+          - -AppleLanguages
+          - (en)
+          - -AppleLocale
+          - en_US

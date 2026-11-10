@@ -1,0 +1,41 @@
+
+com.bontecou.syncmd.FilesScreenTest:
+Error in failedCreationCanRetryAfterEditingTheName(com.bontecou.syncmd.FilesScreenTest):
+java.lang.AssertionError: Failed to assert the following: (is enabled)
+Semantics of the node:
+Node #94 at (l=663.0, t=1572.0, r=953.0, b=1677.0)px, Tag: 'filename-confirm'
+Role = 'Button'
+Text = '[Create & open]'
+[Disabled]
+Actions = [OnClick, GetTextLayoutResult]
+MergeDescendants = 'true'
+Has 2 siblings
+Selector used: (TestTag = 'filename-confirm')
+
+	at androidx.compose.ui.test.AssertionsKt.assert(Assertions.kt:270)
+	at androidx.compose.ui.test.AssertionsKt.assert$default(Assertions.kt:260)
+	at androidx.compose.ui.test.AssertionsKt.assertIsEnabled(Assertions.kt:61)
+	at com.bontecou.syncmd.FilesScreenTest.failedCreationCanRetryAfterEditingTheName(FilesScreenTest.kt:113)
+
+
+Time: 1.936
+There was 1 failure:
+1) failedCreationCanRetryAfterEditingTheName(com.bontecou.syncmd.FilesScreenTest)
+java.lang.AssertionError: Failed to assert the following: (is enabled)
+Semantics of the node:
+Node #94 at (l=663.0, t=1572.0, r=953.0, b=1677.0)px, Tag: 'filename-confirm'
+Role = 'Button'
+Text = '[Create & open]'
+[Disabled]
+Actions = [OnClick, GetTextLayoutResult]
+MergeDescendants = 'true'
+Has 2 siblings
+Selector used: (TestTag = 'filename-confirm')
+
+	at androidx.compose.ui.test.AssertionsKt.assert(Assertions.kt:270)
+	at androidx.compose.ui.test.AssertionsKt.assert$default(Assertions.kt:260)
+	at androidx.compose.ui.test.AssertionsKt.assertIsEnabled(Assertions.kt:61)
+	at com.bontecou.syncmd.FilesScreenTest.failedCreationCanRetryAfterEditingTheName(FilesScreenTest.kt:113)
+
+FAILURES!!!
+Tests run: 1,  Failures: 1

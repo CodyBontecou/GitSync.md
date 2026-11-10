@@ -1,0 +1,19 @@
+steps:
+  - launch:
+      native: bontecou.Sync-md
+      ios:
+        app: bontecou.Sync-md
+        args:
+          - -SignedOutUITest
+          - -UITestGitToolsFixture
+          - dirty
+          - -AppleLanguages
+          - (en)
+          - -AppleLocale
+          - en_US
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: home.addRepository
+      timeoutMs: 5000

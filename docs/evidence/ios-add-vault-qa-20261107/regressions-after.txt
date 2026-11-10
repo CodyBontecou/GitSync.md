@@ -1,0 +1,23 @@
+Full log: /tmp/gitsync-add-vault-after.log
+
+Test Case '-[SyncMDTests.SyncMDTests testAppStateCloneHonorsConfiguredNonDefaultBranchAndContents]' passed (1.230 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testAppStateCloneUnknownSSHHostKeyPromptsInsteadOfShowingGenericError]' passed (1.057 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testCloneUsesRemoteDefaultAndMissingBranchNeverFallsBack]' passed (0.098 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testInvalidCloneBranchIsRejectedBeforeAccessOrDestinationMutation]' passed (0.007 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testLocalGitServiceCloneSucceedsWithWarningWhenLFSHydrationFails]' passed (0.066 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testTrustingPendingSSHHostKeyPersistsFingerprintAndRetriesClone]' passed (2.091 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testVaultPreflightRejectsMissingBranchInsteadOfPassingIt]' passed (0.025 seconds).
+	 Executed 7 tests, with 0 failures (0 unexpected) in 4.573 (4.578) seconds
+Test Case '-[SyncMDTests.VaultPreflightTests testReadOnlyBlocksUntilAccepted]' passed (0.001 seconds).
+Test Case '-[SyncMDTests.VaultPreflightTests testUnknownPermissionAndEmptyRepoStillReady]' passed (0.001 seconds).
+Test Case '-[SyncMDTests.VaultPreflightTests testWritableVaultIsReadyWithEveryFact]' passed (0.010 seconds).
+	 Executed 3 tests, with 0 failures (0 unexpected) in 0.012 (0.013) seconds
+	 Executed 10 tests, with 0 failures (0 unexpected) in 4.585 (4.592) seconds
+	 Executed 10 tests, with 0 failures (0 unexpected) in 4.585 (4.593) seconds
+Test Case '-[SyncMDUITests.SyncMDUITests testCloneFlowAddsRepositoryFromLocalFileRemote]' passed (34.211 seconds).
+Test Case '-[SyncMDUITests.SyncMDUITests testCloneFormRejectsInvalidBranchThenClonesSelectedBranch]' passed (32.695 seconds).
+	 Executed 2 tests, with 0 failures (0 unexpected) in 66.906 (66.914) seconds
+	 Executed 2 tests, with 0 failures (0 unexpected) in 66.906 (66.915) seconds
+	 Executed 2 tests, with 0 failures (0 unexpected) in 66.906 (66.916) seconds
+	/tmp/gitsync-ios-navigation-fixes/Logs/Test/Test-Sync.md-2026.11.07_21-36-19--0400.xcresult
+** TEST SUCCEEDED **
