@@ -362,7 +362,7 @@ private fun PullAllCard(onPullAll: () -> Unit) {
                 M3Icon(R.drawable.ic_m3_cloud_sync, tint = c.onPc)
                 Column {
                     Text(stringResource(R.string.settings_m3_sc_pull_all), style = M3Type.bodyStrong, color = c.onPc)
-                    Text("GitSync.md", style = M3Type.caption, color = c.onPc)
+                    Text(stringResource(R.string.app_name), style = M3Type.caption, color = c.onPc)
                 }
             }
         }

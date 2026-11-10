@@ -9,8 +9,8 @@
         <item quantity="other">%1$d vaults</item>
     </plurals>
     <plurals name="m3home_headline_attention_accent">
-        <item quantity="one">needs you.</item>
-        <item quantity="other">need you.</item>
+        <item quantity="one">%1$s needs you.</item>
+        <item quantity="other">%1$s need you.</item>
     </plurals>
     <plurals name="m3home_headline_ready">
         <item quantity="one">%1$d vault</item>
@@ -75,7 +75,7 @@
     <string name="m3home_syncing_meta">%1$d of %2$d</string>
     <string name="m3home_sync_done">Synced · pulled %1$d · pushed %2$d</string>
     <plurals name="m3home_sync_nothing_local">
-        <item quantity="one">Nothing to sync. This vault is local-only (no remote).</item>
+        <item quantity="one">Nothing to sync. %1$d vault is local-only (no remote).</item>
         <item quantity="other">Nothing to sync. These %1$d vaults are local-only (no remote).</item>
     </plurals>
     <string name="m3home_sync_failed">Couldn’t sync %1$s</string>

@@ -325,16 +325,16 @@ internal val AddVaultMonoLtr get() = TideType.mono(12.5.sp).copy(textDirection =
 @Composable
 private fun AddVaultBlocksPreviewContent() {
     Column(Modifier.background(Tide.colors.paper).padding(16.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
-        AddVaultHeadline("Clone from URL", muted = "any host.", subtitle = "HTTPS, SSH, git:// or file://.")
-        AddVaultSectionLabel("Authentication")
+        AddVaultHeadline(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.settings_m3_how_clone_url), muted = "any host.", subtitle = androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_https_ssh_git_or_file_e79ef5ea))
+        AddVaultSectionLabel(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_authentication_66880d2d))
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            AddVaultChoiceChip("Public access", true, {})
-            AddVaultChoiceChip("SSH private key", false, {}, enabled = false)
+            AddVaultChoiceChip(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.lfs_m3_public_access), true, {})
+            AddVaultChoiceChip(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_ssh_private_key_0e92a613), false, {}, enabled = false)
         }
-        AddVaultNote("Plain HTTP sends credentials unencrypted.", TideBannerTone.DANGER)
-        AddVaultBusyLine("Cloning and preparing the working copy")
+        AddVaultNote(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_plain_http_sends_credentials_unencrypted_c99e5672), TideBannerTone.DANGER)
+        AddVaultBusyLine(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_cloning_and_preparing_the_working_copy_6fe864ff))
         AddVaultProgress()
-        AddVaultFootnote("Saved credentials are encrypted on this device.")
+        AddVaultFootnote(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_saved_credentials_are_encrypted_on_this_de_9320d5e0))
     }
 }
 

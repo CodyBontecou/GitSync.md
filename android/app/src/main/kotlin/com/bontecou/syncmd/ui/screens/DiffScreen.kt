@@ -199,14 +199,15 @@ private fun DiffContent(
         if (diff != null && !diff.binary) {
             val a11y = stringResource(R.string.diff_m3_stats_a11y, diff.added, diff.removed)
             val against = diff.headShortHash?.let { stringResource(R.string.diff_m3_vs_last_commit, it) } ?: stringResource(R.string.diff_m3_vs_nothing)
+            val statsDescription = stringResource(R.string.l10n_a11y_pair, a11y, against)
             Row(
-                Modifier.padding(start = 20.dp, end = 20.dp, top = 4.dp).clearAndSetSemantics { contentDescription = "$a11y, $against" }.testTag("diff-stats"),
+                Modifier.padding(start = 20.dp, end = 20.dp, top = 4.dp).clearAndSetSemantics { contentDescription = statsDescription }.testTag("diff-stats"),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 val style = M3Type.code.copy(textDirection = TextDirection.Ltr)
-                Text("+${diff.added}", style = style.copy(fontWeight = FontWeight.SemiBold), color = c.addInk)
-                Text("−${diff.removed}", style = style.copy(fontWeight = FontWeight.SemiBold), color = c.delInk)
+                Text(stringResource(R.string.l10n_added_count, diff.added), style = style.copy(fontWeight = FontWeight.SemiBold), color = c.addInk)
+                Text(stringResource(R.string.l10n_removed_count, diff.removed), style = style.copy(fontWeight = FontWeight.SemiBold), color = c.delInk)
                 Text(against, style = style, color = c.onVar)
             }
         }

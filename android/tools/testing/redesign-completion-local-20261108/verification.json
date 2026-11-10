@@ -1,0 +1,114 @@
+{
+  "recorded_at_utc": "2026-11-09T10:40:45.552634+00:00",
+  "branch": "codex/gitsync-android-finish-20261108",
+  "worktree": "/private/tmp/gitsync-android-finish-20261108",
+  "implementation_commit": "9817d72dc711502e4daad861f4677b3adfa6ab45",
+  "build_launch_head": "2904e8c",
+  "build_launch_worktree": "Android completion changes were uncommitted at launch; identical compiled inputs frozen into implementation_commit after success.",
+  "compiled_inputs_manifest_sha256": "f4212c4e47c35aac4b6a8ba9d9ca669ef7e7ebd1ce0121fab3ad26399fb116fc",
+  "compiled_input_files": 813,
+  "canonical_apple_catalog": {
+    "owner_commit": "4cd6610",
+    "integrated_local_commit": "2904e8c",
+    "sha256": "e89476fd0327dd55ab84ddd68b3325cf53b2168e3dda2408bbe94cdc0920f657",
+    "manually_edited_by_android": false
+  },
+  "resources": {
+    "strings_per_locale": 2509,
+    "plurals_per_locale": 97,
+    "translated_locales": 25,
+    "missing_or_contract_errors": 0
+  },
+  "literal_guard": {
+    "new_findings": 0,
+    "existing_baseline_entries": 145,
+    "baseline_expanded": false
+  },
+  "python_tests": {
+    "localization": 40,
+    "testing_tools": 4,
+    "failures": 0
+  },
+  "app_jvm_tests": {
+    "tests": 192,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "app_jvm_suites": 21,
+  "lint": {
+    "errors": 0,
+    "warnings": 573,
+    "information": 7,
+    "issue_counts": {
+      "ScopedStorage": 1,
+      "ApplySharedPref": 1,
+      "InlinedApi": 1,
+      "SdCardPath": 6,
+      "UnusedAttribute": 10,
+      "GradleDependency": 68,
+      "ComposableModifierFactory": 4,
+      "ModifierParameter": 15,
+      "UseCompatTextViewDrawableXml": 1,
+      "Typos": 8,
+      "PluralsCandidate": 32,
+      "UnusedQuantity": 251,
+      "UnusedTranslation": 2,
+      "TrustAllX509TrustManager": 2,
+      "ObsoleteSdkInt": 2,
+      "VectorPath": 1,
+      "AutoboxingStateCreation": 6,
+      "UnusedResources": 40,
+      "UselessLeaf": 1,
+      "UselessParent": 1,
+      "TypographyEllipsis": 104,
+      "TypographyFractions": 6,
+      "IconLauncherShape": 6,
+      "SmallSp": 1,
+      "ButtonCase": 2,
+      "ReportShortcutUsage": 1,
+      "UseTomlInstead": 5,
+      "HardcodedText": 2
+    }
+  },
+  "native_tasks": [
+    ":app:testDebugUnitTest",
+    ":app:compileDebugAndroidTestKotlin",
+    ":app:lintDebug",
+    ":app:assembleDebug"
+  ],
+  "native_execution": "Gradle8.11.1, Java17, --offline --max-workers=1; dedicated Herdr queue; no device launch",
+  "artifact": {
+    "path": "/private/tmp/gitsync-android-finish-20261108/android/app/build/outputs/apk/debug/app-debug.apk",
+    "sha256": "8a38397092b0d9ef4dbcc1517891c096d30fc034855ffa20c9dc6fe97050dd24",
+    "bytes": 66161359,
+    "application_id": "com.bontecou.syncmd.debug",
+    "version_name": "1.1.0-debug",
+    "version_code": 11,
+    "variant": "debug"
+  },
+  "release_source_version": {
+    "version_name": "1.1.0",
+    "version_code": 11,
+    "changed_in_this_round": false
+  },
+  "listing_text": {
+    "en_US_short_characters": 72,
+    "en_US_full_characters": 2432
+  },
+  "limitations": [
+    "Human linguistic review pending for machine/assistant drafts",
+    "No simulator/emulator/Argent/physical-device QA authorized or performed",
+    "No release AAB, Play language split or signed release verification",
+    "No current Google Play listing/track state established",
+    "Existing 573 lint warnings remain"
+  ],
+  "remote_actions": {
+    "push": false,
+    "pr_mutation": false,
+    "hosted_CI": false,
+    "store_or_production_write": false
+  },
+  "cleanup": "Native slot released; task translators and builds exited; isolated worktree, APK, evidence and temporary authoring environment retained; Herdr tabs left open.",
+  "source_inventory_scope": "Relevant project compilation source/configuration files only; dependency/toolchain binaries are not included in this fingerprint."
+}

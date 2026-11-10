@@ -71,7 +71,7 @@ fun SshKeyFields(privateKey: String, onPrivateKey: (String) -> Unit,
         runCatching {
             context.contentResolver.openInputStream(uri)?.use { input ->
                 val bytes = input.readNBytesCompat(262145)
-                require(bytes.size <= 262144) { "too large" }
+                require(bytes.size <= 262144) { context.getString(R.string.add_ssh_import_failed) }
                 String(bytes, Charsets.UTF_8)
             } ?: error("unreadable")
         }.onSuccess { onPrivateKey(it.trim() + "\n") }.onFailure { importError = context.getString(R.string.add_ssh_import_failed) }

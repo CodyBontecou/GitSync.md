@@ -1,5 +1,7 @@
 package com.bontecou.syncmd.security
 
+import com.bontecou.syncmd.ui.util.UiTextFailure
+import com.bontecou.syncmd.R
 import android.content.Context
 import com.bontecou.syncmd.services.repositories.RepositoryIdentity
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -33,13 +35,13 @@ class DefaultAuthorStore internal constructor(private val storage: Storage) : De
     /** Validates like a repository author; throws IllegalArgumentException with a user-facing message. */
     fun save(name: String, email: String) {
         val (n, e) = RepositoryIdentity.validated(name, email)
-        check(storage.write(n, e)) { "Could not save the default author" }
+        if (!storage.write(n, e)) throw UiTextFailure(R.string.l10n_save_default_author)
         mutable.value = DefaultAuthor(n, e)
     }
 
     /** Back to "From your GitHub account". */
     fun clear() {
-        check(storage.write(null, null)) { "Could not save the default author" }
+        if (!storage.write(null, null)) throw UiTextFailure(R.string.l10n_save_default_author)
         mutable.value = null
     }
 

@@ -29,7 +29,7 @@ class ResourceDiscoveryTest(unittest.TestCase):
         (self.root / 'app/src/main/res/xml').mkdir()
         self.tools = self.root / 'tools/localization'
         self.tools.mkdir(parents=True)
-        for name in ('android_overrides.json', 'android_workflow_overrides.json'):
+        for name in ('android_overrides.json', 'android_workflow_overrides.json', 'android_completion_overrides.json'):
             (self.tools / name).write_text(json.dumps({'strings': {}, 'plurals': {}}))
         (self.tools / 'ios_aliases.json').write_text(json.dumps({'strings': {}}))
         (self.tools / 'reviewed_native_sources.json').write_text('{}')
@@ -42,7 +42,7 @@ class ResourceDiscoveryTest(unittest.TestCase):
         self.catalog.write_text(json.dumps({'strings': {
             key: {'localizations': {'en': {'stringUnit': {'value': key}}, 'es': {'stringUnit': {'value': value, 'state': 'translated'}}}}
             for key, value in [('Read %@', 'Leer %@'), ('Ready', 'Listo')]} }))
-        native_catalog = self.root.parent / 'gitsync.md/Sync.md/Localizable.xcstrings'
+        native_catalog = self.root.parent / 'Sync.md/Localizable.xcstrings'
         native_catalog.parent.mkdir(parents=True)
         native_catalog.write_bytes(self.catalog.read_bytes())
         (self.root / 'app/src/androidTest/assets').mkdir(parents=True)
@@ -65,6 +65,31 @@ class ResourceDiscoveryTest(unittest.TestCase):
         (self.values / 'strings_feature.xml').write_text('<resources><string name="read">Changed %1$s</string><string name="alternate_ready">Ready</string></resources>')
         with patch.object(extractor, 'ROOT', self.root), patch.object(importer, 'ROOT', self.root), patch.object(sys, 'argv', ['native']), self.assertRaisesRegex(AssertionError, 'English source changed.*read'):
             runpy.run_path(str(pathlib.Path(__file__).with_name('native_expectations.py')), run_name='__main__')
+
+    def test_import_defaults_to_catalog_in_same_repository(self):
+        with patch.object(importer, 'ROOT', self.root), patch.object(sys, 'argv', ['import', '--apply']), contextlib.redirect_stdout(io.StringIO()):
+            importer.main()
+        coverage = json.loads((self.tools / 'coverage.json').read_text())
+        self.assertEqual({'read', 'ready', 'alternate_ready'}, set(coverage['mapped']))
+
+    def test_complete_check_rejects_untranslated_resources_before_writing(self):
+        with patch.object(importer, 'ROOT', self.root), patch.object(sys, 'argv', ['import', '--apply', '--require-complete']), contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+            importer.main()
+        self.assertFalse((self.tools / 'coverage.json').exists())
+        self.assertFalse((self.root / 'app/src/main/res/values-es').exists())
+
+    def test_completion_overrides_provide_strings_and_required_plural_forms(self):
+        completion = {'strings': {'fallback': {'source': 'Unmatched fixture', 'localizations': {'es': 'Texto de prueba'}}},
+                      'plurals': {'items': {'source': {'other': '%d items'}, 'localizations': {'es': {
+                          'one': '%1$d elemento', 'many': '%1$d elementos', 'other': '%1$d elementos'}}}}}
+        (self.tools / 'android_completion_overrides.json').write_text(json.dumps(completion))
+        with patch.object(importer, 'ROOT', self.root), patch.object(sys, 'argv', ['import', '--apply', '--require-complete']), contextlib.redirect_stdout(io.StringIO()):
+            importer.main()
+        coverage = json.loads((self.tools / 'coverage.json').read_text())
+        self.assertEqual([], coverage['missing'])
+        self.assertEqual([], coverage['unmatched_plurals'])
+        translated = ET.parse(self.root / 'app/src/main/res/values-es/ios_catalog_strings.xml').getroot()
+        self.assertEqual({'one', 'many', 'other'}, {e.attrib['quantity'] for e in translated.find('plurals')})
 
     def test_extractor_reuses_existing_key_from_arbitrary_xml_filename(self):
         source = self.root / 'app/src/main/kotlin/Fixture.kt'

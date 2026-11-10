@@ -1,4 +1,4 @@
-<!-- Generated from the sibling iOS catalog by tools/localization/import_ios_catalog.py. -->
+<!-- Generated from the canonical Apple catalog and Android overrides by tools/localization/import_ios_catalog.py. -->
 <resources>
     <string name="account_alternative_exists" formatted="false">"Koneksi alternatif lain sudah tersimpan. Tinjau koneksi itu sebelum memigrasikan kredensial URL lainnya."</string>
     <string name="account_api_error">"Kesalahan API GitHub: HTTP %1$d"</string>
@@ -95,6 +95,342 @@
     <string name="account_token_invalid">"Token GitHub tidak valid atau kedaluwarsa (HTTP %1$d)"</string>
     <string name="account_updated_just_now" formatted="false">"baru saja"</string>
     <string name="account_valid_branch" formatted="false">"Masukkan nama cabang yang valid"</string>
+    <string name="adaptive_abort_merge" formatted="false">"Batalkan merge"</string>
+    <string name="adaptive_account" formatted="false">"Akun dan pengaturan"</string>
+    <string name="adaptive_badge_ahead">"↑%1$d"</string>
+    <string name="adaptive_badge_attention" formatted="false">"!"</string>
+    <string name="adaptive_badge_behind">"↓%1$d"</string>
+    <string name="adaptive_badge_both">"↓%1$d ↑%2$d"</string>
+    <string name="adaptive_badge_checking" formatted="false">"…"</string>
+    <string name="adaptive_badge_edited">"%1$d diedit"</string>
+    <string name="adaptive_badge_in_sync" formatted="false">"✓"</string>
+    <string name="adaptive_branch_local_only">"%1$s · tidak ada remote"</string>
+    <string name="adaptive_branch_to_remote">"%1$s → %2$s"</string>
+    <string name="adaptive_cancel" formatted="false">"Batal"</string>
+    <string name="adaptive_commit_message" formatted="false">"Pesan komitmen"</string>
+    <string name="adaptive_commit_only" formatted="false">"Hanya commit"</string>
+    <string name="adaptive_commit_this_file" formatted="false">"Commit file ini"</string>
+    <string name="adaptive_conflict" formatted="false">"konflik"</string>
+    <string name="adaptive_conflict_position">"Konflik %1$d dari %2$d · %3$s"</string>
+    <string name="adaptive_cover_unfold" formatted="false">"Buka untuk membaca perbedaan di samping daftar perubahan."</string>
+    <string name="adaptive_discard_all" formatted="false">"Buang"</string>
+    <string name="adaptive_edited" formatted="false">"diedit"</string>
+    <string name="adaptive_include" formatted="false">"Sertakan"</string>
+    <string name="adaptive_keep_this_version" formatted="false">"Simpan versi ini"</string>
+    <string name="adaptive_new_file" formatted="false">"file baru"</string>
+    <string name="adaptive_no_changes" formatted="false">"Tidak ada perubahan di perangkat ini. Edit catatan dan akan muncul di sini."</string>
+    <string name="adaptive_position">"%1$d dari %2$d"</string>
+    <string name="adaptive_pull" formatted="false">"Pull"</string>
+    <string name="adaptive_pull_then_push" formatted="false">"Tarik, lalu dorong"</string>
+    <string name="adaptive_push" formatted="false">"Dorong"</string>
+    <string name="adaptive_rejected" formatted="false">"Remote telah bergerak. Tarik commmit-nya terlebih dahulu, lalu dorong milikmu."</string>
+    <string name="adaptive_review_first" formatted="false">"Tinjau dulu"</string>
+    <string name="adaptive_split_auto_commit" formatted="false">"Commit otomatis ketika saya berhenti selama 2 menit"</string>
+    <string name="adaptive_split_committed">"↑%1$d telah commit"</string>
+    <string name="adaptive_split_typing" formatted="false">"mengetik…"</string>
+    <string name="adaptive_split_watching">"memantau %1$s"</string>
+    <string name="adaptive_sync_all" formatted="false">"Sinkronkan semua"</string>
+    <string name="adaptive_sync_all_to_push">"Sinkronkan semua, %1$d untuk dorong"</string>
+    <string name="adaptive_this_tablet" formatted="false">"Tablet ini"</string>
+    <string name="adaptive_vaults" formatted="false">"Vault"</string>
+    <string name="adaptive_view" formatted="false">"Lihat"</string>
+    <string name="adaptive_vs">"vs %1$s"</string>
+    <string name="add_access_body" formatted="false">"GitSync.md membutuhkan akses penyimpanan bersama untuk mengelola salinan kerja Git nyata di folder perangkat. Aktifkan di Pengaturan Android, lalu pilih folder yang ingin Anda gunakan."</string>
+    <string name="add_access_cancel" formatted="false">"Batal"</string>
+    <string name="add_access_enable" formatted="false">"Aktifkan akses"</string>
+    <string name="add_access_note" formatted="false">"Tidak sekarang? Anda bisa terus menggunakan penyimpanan aplikasi."</string>
+    <string name="add_access_title" formatted="false">"Izinkan akses folder lokal"</string>
+    <string name="add_accounts_add" formatted="false">"Tambahkan GitHub Akun"</string>
+    <string name="add_accounts_browsing" formatted="false">"Menjelajah dengan akun ini"</string>
+    <string name="add_accounts_cancel" formatted="false">"Batal"</string>
+    <string name="add_accounts_empty_body" formatted="false">"Repositori lokal tetap tersedia."</string>
+    <string name="add_accounts_empty_title" formatted="false">"Tidak ada akun yang terhubung"</string>
+    <string name="add_accounts_intro" formatted="false">"Pilih akun yang digunakan untuk menjelajahi GitHub. Setiap repositori menyimpan akun sendiri; ubah di koneksi Repositori."</string>
+    <string name="add_accounts_none_signed_in" formatted="false">"Pengaturan · tidak ada yang masuk"</string>
+    <string name="add_accounts_remove" formatted="false">"Hapus akses masuk"</string>
+    <string name="add_accounts_remove_body" formatted="false">"Repositori yang menggunakan akun ini akan meminta Anda masuk lagi atau memilih akun lain di koneksi Repositori. File dan commit lokal Anda tetap ada."</string>
+    <string name="add_accounts_remove_title">"Hapus %1$s?"</string>
+    <string name="add_accounts_title" formatted="false">"Akun GitHub"</string>
+    <string name="add_accounts_use" formatted="false">"Gunakan untuk menjelajah"</string>
+    <string name="add_added" formatted="false">"Ditambahkan"</string>
+    <string name="add_ago_days">"%1$d hr lalu"</string>
+    <string name="add_ago_hours">"%1$dh yang lalu"</string>
+    <string name="add_ago_minutes">"%1$dm lalu"</string>
+    <string name="add_ago_months">"%1$d yang lalu"</string>
+    <string name="add_ago_now" formatted="false">"baru saja"</string>
+    <string name="add_ago_weeks">"%1$d minggu lalu"</string>
+    <string name="add_ago_years">"%1$d tahun lalu"</string>
+    <string name="add_auth_github" formatted="false">"GitHub"</string>
+    <string name="add_auth_none" formatted="false">"Tidak ada"</string>
+    <string name="add_auth_saved" formatted="false">"telah disimpan"</string>
+    <string name="add_auth_ssh" formatted="false">"SSH Verifikasi sertifikat TLS"</string>
+    <string name="add_auth_token" formatted="false">"Token"</string>
+    <string name="add_check_access_ro" formatted="false">"hanya baca"</string>
+    <string name="add_check_access_rw" formatted="false">"baca · tulis"</string>
+    <string name="add_check_add_on_github" formatted="false">"Tambahkan repo di GitHub"</string>
+    <string name="add_check_again" formatted="false">"Periksa lagi"</string>
+    <string name="add_check_app_callout">"GitHub App sudah terpasang di %1$s tetapi repo ini belum dipilih. Tambahkan di GitHub, lalu kembali."</string>
+    <string name="add_check_app_missing">"GitHub App dari GitSync.md belum ada di %1$s. Tambahkan di GitHub dengan repo ini, lalu kembali."</string>
+    <string name="add_check_checking" formatted="false">"Memeriksa…"</string>
+    <string name="add_check_clone" formatted="false">"Klon vault"</string>
+    <string name="add_check_clone_obsidian" formatted="false">"Gandakan ke Obsidian"</string>
+    <string name="add_check_clones_to" formatted="false">"Clone Ke"</string>
+    <string name="add_check_head_blocked" formatted="false">"Ada satu hal yang perlu diperbaiki terlebih dahulu."</string>
+    <string name="add_check_head_checking" formatted="false">"Memeriksa\nvault Anda."</string>
+    <string name="add_check_head_ready" formatted="false">"Vault Anda siap."</string>
+    <string name="add_check_lfs_none" formatted="false">"tidak ada"</string>
+    <string name="add_check_lfs_used" formatted="false">"sedang digunakan"</string>
+    <string name="add_check_measuring" formatted="false">"sedang mengukur"</string>
+    <string name="add_check_no_obsidian" formatted="false">"Belum ada folder .obsidian/"</string>
+    <string name="add_check_note_blocked" formatted="false">"Anda belum membayar apa pun. Opsi buka kunci baru muncul setelah vault Anda lolos pemeriksaan."</string>
+    <string name="add_check_note_checking" formatted="false">"Hanya metadata yang dibaca. Tidak ada catatan yang diunduh sampai Anda membuka kunci."</string>
+    <string name="add_check_note_ready" formatted="false">"Google Play menampilkan harga akhir dalam mata uang Anda sebelum dikonfirmasi."</string>
+    <string name="add_check_note_ready_unlocked" formatted="false">"Full Access dibuka. Tidak ada lagi yang harus dibayar."</string>
+    <string name="add_check_obsidian_found" formatted="false">"Vault Obsidian ditemukan"</string>
+    <string name="add_check_obsidian_git" formatted="false">"Plugin Obsidian Git terkonfigurasi"</string>
+    <string name="add_check_ok" formatted="false">"Oke"</string>
+    <string name="add_check_pick_another" formatted="false">"Pilih repositori lain"</string>
+    <string name="add_check_play_note" formatted="false">"Pembelian satu kali melalui Google Play. Tanpa langganan."</string>
+    <string name="add_check_price_once">"%1$s sekali bayar"</string>
+    <string name="add_check_size_files" formatted="false">"Ukuran &amp; file"</string>
+    <string name="add_check_stat_access" formatted="false">"AKSES"</string>
+    <string name="add_check_stat_files" formatted="false">"File"</string>
+    <string name="add_check_stat_lfs" formatted="false">"Git LFS"</string>
+    <string name="add_check_stat_size" formatted="false">"UKURAN"</string>
+    <string name="add_check_step">"Langkah %1$d dari 3"</string>
+    <string name="add_check_sub_blocked" formatted="false">"GitSync.md dapat membaca repo ini tetapi tidak dapat melakukan push. Perbaiki di GitHub, lalu periksa lagi."</string>
+    <string name="add_check_sub_checking" formatted="false">"Memastikan GitSync.md bisa menyinkronkan repositori ini sebelum Anda membayar apa pun."</string>
+    <string name="add_check_sub_ready" formatted="false">"Semuanya beres. Sekali klon, Obsidian membukanya dengan riwayat utuh."</string>
+    <string name="add_check_title" formatted="false">"Pemeriksaan vault"</string>
+    <string name="add_check_unknown" formatted="false">"—"</string>
+    <string name="add_check_write_access" formatted="false">"Akses tulis"</string>
+    <string name="add_clone" formatted="false">"Clone"</string>
+    <string name="add_clone_app_storage" formatted="false">"Gunakan penyimpanan aplikasi"</string>
+    <string name="add_clone_busy" formatted="false">"Meng-clone Repositori"</string>
+    <string name="add_clone_bytes">"%1$s · %2$s"</string>
+    <string name="add_clone_cancel" formatted="false">"Batal"</string>
+    <string name="add_clone_checkout" formatted="false">"Memeriksa file"</string>
+    <string name="add_clone_choose_folder" formatted="false">"Pilih folder lain"</string>
+    <string name="add_clone_cloned" formatted="false">"telah dikloning"</string>
+    <string name="add_clone_continue" formatted="false">"Lanjutkan"</string>
+    <string name="add_clone_finishing" formatted="false">"Menyelesaikan"</string>
+    <string name="add_clone_finishing_body">"Menambahkan %1$s ke laci Anda dan memeriksa file Git LFS."</string>
+    <string name="add_clone_lfs" formatted="false">"Klon selesai. Beberapa file Git LFS masih perlu ditinjau atau diunduh. Klon dan perubahan lokal Anda tetap tersimpan."</string>
+    <string name="add_clone_lfs_review" formatted="false">"Tinjau Git LFS"</string>
+    <string name="add_clone_location" formatted="false">"Lokasi klon"</string>
+    <string name="add_clone_new_folder" formatted="false">"Folder baru"</string>
+    <string name="add_clone_nothing_yet" formatted="false">"Tidak ada yang diunduh sampai Anda mengetuk Clone."</string>
+    <string name="add_clone_percent">"%1$d%%"</string>
+    <string name="add_clone_preparing" formatted="false">"Menghubungkan"</string>
+    <string name="add_clone_receiving" formatted="false">"Menerima objek"</string>
+    <string name="add_clone_register_failed" formatted="false">"Repositori yang diklon tidak dapat ditambahkan. File-nya tetap disimpan. Coba tambahkan lagi, atau hubungkan kembali foldernya dari Repositori lokal."</string>
+    <string name="add_clone_register_retry" formatted="false">"Tambahkan repositori yang diklon"</string>
+    <string name="add_clone_resolving" formatted="false">"Menyelesaikan delta"</string>
+    <string name="add_clone_retry" formatted="false">"Coba lagi"</string>
+    <string name="add_clone_saved_default" formatted="false">"Gunakan default tersimpan"</string>
+    <string name="add_clone_start" formatted="false">"Clone Repositori"</string>
+    <string name="add_clone_title_cloning" formatted="false">"Meng-clone Repositori"</string>
+    <string name="add_clone_title_done" formatted="false">"telah dikloning"</string>
+    <string name="add_clone_title_failed" formatted="false">"Clone gagal"</string>
+    <string name="add_clone_title_ready" formatted="false">"Clone Repositori"</string>
+    <string name="add_clone_to">"→ %1$s"</string>
+    <string name="add_cloning_name">"Meng-clone %1$s"</string>
+    <string name="add_close" formatted="false">"Tutup"</string>
+    <string name="add_connected_added" formatted="false">"Ditambahkan ke akun Anda"</string>
+    <string name="add_connected_title" formatted="false">"Akun GitHub terhubung"</string>
+    <string name="add_continue" formatted="false">"Lanjutkan"</string>
+    <string name="add_default_branch" formatted="false">"Cabang default"</string>
+    <string name="add_done" formatted="false">"Selesai"</string>
+    <string name="add_github_hint" formatted="false">"Menggunakan masuk akun GitHub untuk github.com."</string>
+    <string name="add_group_notes" formatted="false">"Sepertinya catatan"</string>
+    <string name="add_group_other" formatted="false">"Lainnya"</string>
+    <string name="add_group_other_matching" formatted="false">"Lainnya yang cocok"</string>
+    <string name="add_intro" formatted="false">"Masukkan repo yang sudah Anda miliki, atau ubah folder menjadi repo."</string>
+    <string name="add_key_copied" formatted="false">"Kunci publik disalin"</string>
+    <string name="add_key_copy" formatted="false">"Salin kunci publik"</string>
+    <string name="add_key_failed" formatted="false">"Tidak dapat membuat kunci di ponsel ini. Gunakan kunci lain."</string>
+    <string name="add_key_hint" formatted="false">"Tambahkan kunci publik ke host Anda sekali saja. Kunci privat tetap di ponsel ini."</string>
+    <string name="add_key_meta">"ed25519 · %1$s"</string>
+    <string name="add_key_other" formatted="false">"Gunakan yang lain…"</string>
+    <string name="add_key_this_phone" formatted="false">"Gunakan kunci ponsel ini"</string>
+    <string name="add_key_title" formatted="false">"Kunci ponsel ini"</string>
+    <string name="add_local_add_selected" formatted="false">"Tambahkan repositori yang dipilih"</string>
+    <string name="add_local_added" formatted="false">"Repositori yang ditambahkan"</string>
+    <string name="add_local_already" formatted="false">"Sudah ditambahkan"</string>
+    <string name="add_local_clean" formatted="false">"bersih"</string>
+    <string name="add_local_clone_instead" formatted="false">"Kloning dari GitHub sebagai gantinya"</string>
+    <string name="add_local_destination">"Tujuan: %1$s"</string>
+    <string name="add_local_detached" formatted="false">"HEAD terlepas atau belum ada commit pertama"</string>
+    <string name="add_local_dirty" formatted="false">"Perubahan lokal"</string>
+    <string name="add_local_discovered" formatted="false">"Repositori ditemukan"</string>
+    <string name="add_local_files_deleted" formatted="false">"File lokal dihapus"</string>
+    <string name="add_local_files_kept" formatted="false">"File lokal tetap disimpan"</string>
+    <string name="add_local_in">"di %1$s"</string>
+    <string name="add_local_interrupted" formatted="false">"Klon yang terhenti"</string>
+    <string name="add_local_interrupted_body" formatted="false">"Coba tambahkan klon ini lagi setelah meninjau folder dan koneksinya. File yang ada tetap dipertahankan."</string>
+    <string name="add_local_intro" formatted="false">"Temukan salinan kerja Git yang sudah ada di ponsel ini, seperti folder brankas Obsidian, dan tambahkan tanpa mengkloning lagi. Menghapus entri nanti tetap menyimpan file-nya."</string>
+    <string name="add_local_none_added" formatted="false">"Belum ada repositori yang ditambahkan."</string>
+    <string name="add_local_none_body">"Tidak ada yang di %1$s memiliki folder .git. Coba folder yang digunakan aplikasi catatan Anda, atau kloning dari GitHub."</string>
+    <string name="add_local_none_title" formatted="false">"Tidak ada salinan kerja yang ditemukan"</string>
+    <string name="add_local_previous" formatted="false">"Pernah ditambahkan"</string>
+    <string name="add_local_scan_app" formatted="false">"Pindai folder aplikasi"</string>
+    <string name="add_local_scan_app_label" formatted="false">"folder aplikasi"</string>
+    <string name="add_local_scan_app_sub" formatted="false">"Folder GitSync.md sudah menyimpan"</string>
+    <string name="add_local_scan_device" formatted="false">"Pindai folder perangkat"</string>
+    <string name="add_local_scan_device_sub" formatted="false">"Pilih folder, seperti Dokumen atau Obsidian"</string>
+    <string name="add_local_scanning">"Memindai %1$s"</string>
+    <string name="add_local_staged">"Salinan sementara: %1$s"</string>
+    <string name="add_local_title" formatted="false">"Repositori lokal"</string>
+    <string name="add_local_tracking_removed" formatted="false">"Pelacakan Git dihapus · file tetap disimpan"</string>
+    <string name="add_local_truncated" formatted="false">"Pemindaian mencapai batas kedalaman atau jumlah folder. Sebagian folder tidak dipindai."</string>
+    <string name="add_location_body" formatted="false">"Pilih folder lain saat menggandakan, atau atur default di Pengaturan."</string>
+    <string name="add_location_head" formatted="false">"Simpan default"</string>
+    <string name="add_location_head_muted" formatted="false">"lokasi."</string>
+    <string name="add_location_label" formatted="false">"Lokasi unduhan"</string>
+    <string name="add_meta_lfs">"%1$s LFS"</string>
+    <string name="add_meta_private" formatted="false">"pribadi"</string>
+    <string name="add_meta_public" formatted="false">"publik"</string>
+    <string name="add_more_options" formatted="false">"Nama, cabang, dan folder"</string>
+    <string name="add_more_options_meta">"%1$s · %2$s"</string>
+    <string name="add_none_hint" formatted="false">"Untuk repos publik. GitSync.md tidak mengirim kredensial."</string>
+    <string name="add_not_signed_in" formatted="false">"Belum masuk"</string>
+    <string name="add_owner_orgs" formatted="false">"Organisasi"</string>
+    <string name="add_owner_starred" formatted="false">"Berbintang"</string>
+    <string name="add_owner_yours" formatted="false">"Milik saya"</string>
+    <string name="add_picker_accounts" formatted="false">"Akun GitHub"</string>
+    <string name="add_picker_empty_owner" formatted="false">"Belum ada repos di sini."</string>
+    <string name="add_picker_refresh" formatted="false">"Muat ulang"</string>
+    <string name="add_picker_search" formatted="false">"Cari repositori"</string>
+    <string name="add_picker_starred_failed" formatted="false">"Tidak dapat memuat repos yang ditandai bintang."</string>
+    <string name="add_picker_title" formatted="false">"Pilih repo"</string>
+    <string name="add_publish_account" formatted="false">"GitHub Akun"</string>
+    <string name="add_publish_author_email" formatted="false">"Email Penulis"</string>
+    <string name="add_publish_author_name" formatted="false">"Nama Penulis"</string>
+    <string name="add_publish_cancel" formatted="false">"Batal"</string>
+    <string name="add_publish_check" formatted="false">"Periksa tujuan asli"</string>
+    <string name="add_publish_choose" formatted="false">"Pilih Folder"</string>
+    <string name="add_publish_confirm" formatted="false">"Terbitkan"</string>
+    <string name="add_publish_confirm_body">"Ini menjadikan %1$s sebagai repositori %2$s dan mengunggah commit pertama yang disimpan. Biarkan aplikasi tetap terbuka. Coba ulang akan memeriksa tujuan ini dan tidak akan membuat commit kedua."</string>
+    <string name="add_publish_confirm_dest">"%1$s · %2$s\n%3$s · %4$s · %5$s"</string>
+    <string name="add_publish_confirm_title" formatted="false">"Publikasikan commit tersimpan ini?"</string>
+    <string name="add_publish_continue" formatted="false">"Lanjutkan publikasi tersimpan"</string>
+    <string name="add_publish_creating" formatted="false">"Membuat repositori…"</string>
+    <string name="add_publish_discard" formatted="false">"Buang tinjauan tersimpan"</string>
+    <string name="add_publish_file_ignored">"%1$s · Diabaikan"</string>
+    <string name="add_publish_file_issue">"%1$s · %2$s"</string>
+    <string name="add_publish_file_large">"%1$s · Lebih dari 10 MiB"</string>
+    <string name="add_publish_file_regular">"%1$s · File biasa"</string>
+    <string name="add_publish_file_sensitive">"%1$s · Nama file sensitif"</string>
+    <string name="add_publish_files" formatted="false">"File"</string>
+    <string name="add_publish_intro" formatted="false">"Pilih folder di ponsel ini, tinjau file-file di dalamnya dan simpan commit pertama. Menerbitkan kemudian membuat repositori baru di GitHub Anda dan mengunggahnya."</string>
+    <string name="add_publish_keep_note" formatted="false">"Kemajuan tetap tersimpan saat Anda meninggalkan. Jika Android menghapus akses, sambungkan kembali folder yang sama."</string>
+    <string name="add_publish_limits" formatted="false">"File Anda tetap di tempatnya. Hingga 10 MiB per file, 10.000 file dan 256 MiB secara keseluruhan. Git melewati folder kosong."</string>
+    <string name="add_publish_manage_accounts" formatted="false">"Kelola akun"</string>
+    <string name="add_publish_message" formatted="false">"Pesan commit awal"</string>
+    <string name="add_publish_no_account" formatted="false">"Masuk ke GitHub untuk mempublikasikan."</string>
+    <string name="add_publish_open" formatted="false">"Buka Repositori"</string>
+    <string name="add_publish_original" formatted="false">"Folder asli"</string>
+    <string name="add_publish_phase_created" formatted="false">"Repositori dibuat; unggahan tertunda"</string>
+    <string name="add_publish_phase_done" formatted="false">"Dipublikasikan"</string>
+    <string name="add_publish_phase_prepared" formatted="false">"Commit lokal disiapkan"</string>
+    <string name="add_publish_phase_published" formatted="false">"Commit dipublikasikan; penyiapan tertunda"</string>
+    <string name="add_publish_phase_review" formatted="false">"Tinjau file dan tujuan"</string>
+    <string name="add_publish_phase_unknown" formatted="false">"Pembuatan repositori perlu ditinjau"</string>
+    <string name="add_publish_prepare" formatted="false">"Siapkan commit lokal"</string>
+    <string name="add_publish_preparing" formatted="false">"Menyiapkan commit lokal…"</string>
+    <string name="add_publish_private" formatted="false">"Repositori privat"</string>
+    <string name="add_publish_private_off" formatted="false">"Siapa pun dapat membaca file terpilih dan riwayatnya."</string>
+    <string name="add_publish_private_on" formatted="false">"Hanya orang yang Anda beri akses yang dapat membacanya."</string>
+    <string name="add_publish_progress_bytes">"%1$s / %2$s · tetap buka aplikasinya"</string>
+    <string name="add_publish_progress_keep">"%1$s · tetap buka aplikasinya"</string>
+    <string name="add_publish_public_body" formatted="false">"Siapa pun akan dapat membaca file yang Anda publikasikan. Periksa pilihan Anda untuk rahasia, detail pribadi, dan file yang tidak bisa Anda bagikan."</string>
+    <string name="add_publish_public_confirm" formatted="false">"Pilih publik"</string>
+    <string name="add_publish_public_title" formatted="false">"Jadikan repositori ini publik?"</string>
+    <string name="add_publish_publish" formatted="false">"Publikasikan ke GitHub"</string>
+    <string name="add_publish_reconnect" formatted="false">"Hubungkan kembali folder asli"</string>
+    <string name="add_publish_refresh" formatted="false">"Segarkan file"</string>
+    <string name="add_publish_registering" formatted="false">"Menambahkan repositori…"</string>
+    <string name="add_publish_reload" formatted="false">"Muat ulang progres tersimpan"</string>
+    <string name="add_publish_repo_name" formatted="false">"Nama Repositori"</string>
+    <string name="add_publish_save_review" formatted="false">"Simpan tinjauan"</string>
+    <string name="add_publish_saved_commit">"Commit tersimpan: %1$s"</string>
+    <string name="add_publish_saved_progress" formatted="false">"Progres Tersimpan"</string>
+    <string name="add_publish_selected">"Dipilih: %1$d · %2$s"</string>
+    <string name="add_publish_step">"Langkah %1$d dari 3"</string>
+    <string name="add_publish_stop" formatted="false">"Hentikan"</string>
+    <string name="add_publish_title" formatted="false">"Publikasikan folder"</string>
+    <string name="add_publish_unknown_note" formatted="false">"GitHub mungkin sudah membuat repositori. Periksa tujuan asli. Tidak ada repositori kedua yang dibuat kecuali Anda memilih untuk menggunakan repositori kosong yang cocok."</string>
+    <string name="add_publish_uploading" formatted="false">"Mengunggah commit tersimpan…"</string>
+    <string name="add_rail_github" formatted="false">"GitHub"</string>
+    <string name="add_rail_phone" formatted="false">"ponsel ini"</string>
+    <string name="add_remote_file" formatted="false">"lokal"</string>
+    <string name="add_remote_git" formatted="false">"git://"</string>
+    <string name="add_remote_http" formatted="false">"HTTP"</string>
+    <string name="add_remote_https" formatted="false">"HTTPS"</string>
+    <string name="add_remote_intro" formatted="false">"GitLab, Gitea, Codeberg, server Anda sendiri."</string>
+    <string name="add_remote_label" formatted="false">"URL Jarak Jauh"</string>
+    <string name="add_remote_name_invalid" formatted="false">"Gunakan nama tanpa / atau \\, dan bukan “.” atau “..”."</string>
+    <string name="add_remote_placeholder" formatted="false">"ssh://git@host/owner/repo.git"</string>
+    <string name="add_remote_ssh" formatted="false">"SSH"</string>
+    <string name="add_remote_title" formatted="false">"Host Git apa pun"</string>
+    <string name="add_resume_meta">"%1$s · langkah %2$d dari 3 · disimpan"</string>
+    <string name="add_resume_title" formatted="false">"Lanjutkan publikasi"</string>
+    <string name="add_saved_hint" formatted="false">"Menggunakan kembali koneksi terenkripsi yang disimpan untuk repositori ini."</string>
+    <string name="add_sign_in_with" formatted="false">"Masuk dengan"</string>
+    <string name="add_signed_in_as">"masuk sebagai @%1$s"</string>
+    <string name="add_signin_back_accounts" formatted="false">"Kembali ke akun"</string>
+    <string name="add_signin_body" formatted="false">"Klon repositori apa pun, tulis di Obsidian atau aplikasi lain, lalu sinkronkan dengan satu ketukan."</string>
+    <string name="add_signin_busy" formatted="false">"Sedang masuk…"</string>
+    <string name="add_signin_eyebrow" formatted="false">"REPO APA PUN. TERSINKRON KE ANDROID."</string>
+    <string name="add_signin_github" formatted="false">"Masuk dengan GitHub"</string>
+    <string name="add_signin_head_1" formatted="false">"Catatan Anda."</string>
+    <string name="add_signin_head_2" formatted="false">"Git sungguhan."</string>
+    <string name="add_signin_head_3" formatted="false">"Selalu selaras."</string>
+    <string name="add_signin_rail" formatted="false">"Ponsel ini dan pertemuan GitHub pada satu titik sinkronisasi"</string>
+    <string name="add_signin_sample" formatted="false">"Coba repositori contoh"</string>
+    <string name="add_signin_sample_busy" formatted="false">"Membuka contoh…"</string>
+    <string name="add_signin_sample_hint" formatted="false">"Git nyata, offline. Tidak perlu akun."</string>
+    <string name="add_signin_token" formatted="false">"Token akses pribadi"</string>
+    <string name="add_signin_waiting" formatted="false">"Selesaikan di GitHub di tab browser. Anda akan kembali lagi."</string>
+    <string name="add_ssh_import_failed" formatted="false">"Tidak dapat membaca file kunci itu."</string>
+    <string name="add_ssh_import_key" formatted="false">"Impor file kunci"</string>
+    <string name="add_test_clone" formatted="false">"Uji &amp; clone"</string>
+    <string name="add_test_failed_auth" formatted="false">"Host menolak masuk ini. Periksa kunci atau token dan aksesnya ke repo."</string>
+    <string name="add_test_failed_branch">"Host tidak memiliki cabang bernama %1$s."</string>
+    <string name="add_test_failed_missing" formatted="false">"Host tidak memiliki repo di alamat ini."</string>
+    <string name="add_test_failed_network" formatted="false">"Tidak dapat menghubungi host. Periksa alamat dan koneksi Anda."</string>
+    <string name="add_test_host_key" formatted="false">"Konfirmasi kunci SSH host, lalu ketuk Uji &amp; kloning lagi."</string>
+    <string name="add_testing" formatted="false">"Menguji masuk…"</string>
+    <string name="add_title" formatted="false">"Tambah vault"</string>
+    <string name="add_token_body" formatted="false">"Tempel token GitHub dengan akses repositori."</string>
+    <string name="add_token_create" formatted="false">"Buat token di GitHub"</string>
+    <string name="add_token_hide" formatted="false">"Sembunyikan"</string>
+    <string name="add_token_hint" formatted="false">"Token dienkripsi di ponsel ini dan hanya dikirim ke host ini."</string>
+    <string name="add_token_label" formatted="false">"Token"</string>
+    <string name="add_token_scopes" formatted="false">"Ruang lingkup: repo dan user:email. Token dienkripsi di ponsel ini."</string>
+    <string name="add_token_secret" formatted="false">"Token"</string>
+    <string name="add_token_show" formatted="false">"Tampilkan"</string>
+    <string name="add_token_sign_in" formatted="false">"Masuk"</string>
+    <string name="add_token_title" formatted="false">"Token akses pribadi"</string>
+    <string name="add_token_user" formatted="false">"Nama Pengguna"</string>
+    <string name="add_unlock_rail">"%1$s · %2$s · dicentang, siap untuk dikloning"</string>
+    <string name="add_unlock_rail_cd">"%1$s, dicentang dan siap untuk dikloning dari GitHub ke Obsidian"</string>
+    <string name="add_unlock_rail_from" formatted="false">"GitHub"</string>
+    <string name="add_unlock_rail_plain">"%1$s · dicentang, siap untuk dikloning"</string>
+    <string name="add_unlock_rail_to" formatted="false">"Obsidian"</string>
+    <string name="add_url_hint" formatted="false">"HTTPS, SSH, git:// atau owner/repo. Self-hosted? Ketuk ikon kunci."</string>
+    <string name="add_url_key" formatted="false">"Opsi masuk untuk host lain"</string>
+    <string name="add_url_label" formatted="false">"URL Repositori"</string>
+    <string name="add_url_placeholder" formatted="false">"https://github.com/owner/repo"</string>
+    <string name="add_url_section" formatted="false">"Atau tempel URL"</string>
+    <string name="add_way_github" formatted="false">"Clone dari GitHub"</string>
+    <string name="add_way_github_sign_in" formatted="false">"Masuk untuk memilih dari repositori Anda"</string>
+    <string name="add_way_local" formatted="false">"Temukan kloning di ponsel ini"</string>
+    <string name="add_way_local_sub" formatted="false">"Pindai penyimpanan bersama untuk folder .git yang ada"</string>
+    <string name="add_way_open" formatted="false">"Buka folder repo"</string>
+    <string name="add_way_open_sub" formatted="false">"Pilih repositori Git dengan pemilih folder sistem"</string>
+    <string name="add_way_publish" formatted="false">"Publikasikan folder"</string>
+    <string name="add_way_publish_sub" formatted="false">"Buat repo GitHub baru dari catatan Anda"</string>
     <string name="automation_shortcut_label">"%1$s: %2$s"</string>
     <string name="background_allow_push" formatted="false">"Izinkan publikasi otomatis"</string>
     <string name="background_binding">"Hanya branch %1$s, yang melacak %2$s/%3$s. Perubahan branch, folder, koneksi, atau akun memerlukan peninjauan baru."</string>
@@ -261,12 +597,43 @@
     <string name="dialogs_success_title" formatted="false">"Berhasil"</string>
     <string name="dialogs_timestamp_unknown" formatted="false">"Tidak diketahui"</string>
     <string name="dialogs_warning_title" formatted="false">"Peringatan"</string>
+    <string name="diff_m3_binary" formatted="false">"File ini bukan teks, jadi tidak ada baris untuk dibandingkan."</string>
+    <string name="diff_m3_changes" formatted="false">"Perubahan"</string>
+    <string name="diff_m3_deleted" formatted="false">"File ini telah dihapus. Buang untuk memulihkannya dari commit terakhir."</string>
+    <string name="diff_m3_discard" formatted="false">"Buang"</string>
+    <string name="diff_m3_hunk">"%1$s · baris %2$d"</string>
+    <string name="diff_m3_hunk_line">"baris %1$d"</string>
+    <string name="diff_m3_load_failed" formatted="false">"Tidak dapat membaca perubahan file ini."</string>
+    <string name="diff_m3_next" formatted="false">"File berikutnya"</string>
+    <string name="diff_m3_no_changes" formatted="false">"Tidak ada perubahan sejak commit terakhir."</string>
+    <string name="diff_m3_position">"%1$s · %2$d dari %3$d"</string>
+    <string name="diff_m3_preview" formatted="false">"Pratinjau"</string>
+    <string name="diff_m3_previous" formatted="false">"File sebelumnya"</string>
+    <string name="diff_m3_stats_a11y">"%1$d baris ditambahkan, %2$d dihapus"</string>
+    <string name="diff_m3_vs_last_commit">"vs commit terakhir %1$s"</string>
+    <string name="diff_m3_vs_nothing" formatted="false">"file baru · belum ada commit"</string>
+    <string name="diff_m3_whole_file" formatted="false">"Seluruh file"</string>
     <string name="discard_clear_staging" formatted="false">"Hapus penyiapan"</string>
     <string name="discard_review_all" formatted="false">"Perubahan terlacak dan berkas baru yang tercantum di bawah akan dibuang secara permanen. Berkas yang diabaikan tetap disimpan."</string>
     <string name="discard_review_empty" formatted="false">"Tidak ada perubahan untuk dibuang."</string>
     <string name="discard_review_operation" formatted="false">"Ini juga membatalkan operasi Git yang aktif."</string>
     <string name="discard_review_unborn" formatted="false">"Belum ada commit. Ini menghapus penyiapan berkas yang tercantum dan mempertahankan isinya."</string>
     <string name="discovery_scanned">"%1$s telah dipindai. Pilih salinan kerja yang akan ditambahkan."</string>
+    <string name="editor_m3_commit" formatted="false">"Commit"</string>
+    <string name="editor_m3_markdown" formatted="false">"Markdown"</string>
+    <string name="editor_m3_md_bold" formatted="false">"Tebal"</string>
+    <string name="editor_m3_md_code" formatted="false">"Kode"</string>
+    <string name="editor_m3_md_heading" formatted="false">"Judul"</string>
+    <string name="editor_m3_md_indent" formatted="false">"Indentasi"</string>
+    <string name="editor_m3_md_link" formatted="false">"Tautan"</string>
+    <string name="editor_m3_md_task" formatted="false">"Tugas"</string>
+    <string name="editor_m3_not_saved" formatted="false">"Belum disimpan"</string>
+    <string name="editor_m3_save_now" formatted="false">"Simpan sekarang"</string>
+    <string name="editor_m3_saved" formatted="false">"telah disimpan"</string>
+    <string name="editor_m3_saved_changed">"Disimpan · %1$s"</string>
+    <string name="editor_m3_saving" formatted="false">"Menyimpan ..."</string>
+    <string name="editor_m3_subtitle">"%1$s / %2$s"</string>
+    <string name="editor_m3_vault_ahead">"%1$s ↑%2$d"</string>
     <string name="file_clone_failure" formatted="false">"Tidak dapat mengklon repositori lokal. Periksa folder sumber, akses penyimpanan, dan cabang. Folder yang ada tetap disimpan."</string>
     <string name="file_clone_guidance" formatted="false">"Klon repositori di perangkat menggunakan akses lokal. Untuk penyimpanan bersama, berikan akses folder di Setelan terlebih dahulu."</string>
     <string name="file_delete_body" formatted="false">"Berkas akan dihapus dari perangkat ini. Git akan menampilkannya sebagai berkas yang dihapus jika sebelumnya dilacak."</string>
@@ -289,15 +656,344 @@
     <string name="file_renamed" formatted="false">"Nama diubah"</string>
     <string name="file_save_title" formatted="false">"Simpan perubahan?"</string>
     <string name="file_saved" formatted="false">"Disimpan"</string>
+    <string name="filehistory_m3_commits" formatted="false">"Komit"</string>
+    <string name="filehistory_m3_empty" formatted="false">"Belum ada komit yang menyertakan file ini."</string>
+    <string name="filehistory_m3_load_failed" formatted="false">"Tidak dapat membaca riwayat file ini."</string>
+    <string name="filehistory_m3_meta">"%1$s · %2$s · %3$s"</string>
+    <string name="filehistory_m3_subtitle">"Riwayat · %1$s"</string>
     <string name="files_folder" formatted="false">"Folder"</string>
     <string name="files_hide_hidden" formatted="false">"Sembunyikan berkas tersembunyi"</string>
+    <string name="files_m3_actions_for">"Tindakan untuk %1$s"</string>
+    <string name="files_m3_age_days">"%1$d hr lalu"</string>
+    <string name="files_m3_age_hours">"%1$dh yang lalu"</string>
+    <string name="files_m3_age_minutes">"%1$dm lalu"</string>
+    <string name="files_m3_age_months">"%1$d yang lalu"</string>
+    <string name="files_m3_age_now" formatted="false">"baru saja"</string>
+    <string name="files_m3_age_weeks">"%1$d minggu lalu"</string>
+    <string name="files_m3_age_years">"%1$d tahun lalu"</string>
+    <string name="files_m3_check_for_changes" formatted="false">"Periksa perubahan"</string>
+    <string name="files_m3_delete" formatted="false">"Hapus"</string>
+    <string name="files_m3_delete_folder_body" formatted="false">"Hanya folder kosong yang bisa dihapus di sini."</string>
+    <string name="files_m3_delete_folder_title" formatted="false">"Hapus folder?"</string>
+    <string name="files_m3_fetch" formatted="false">"Fetch"</string>
+    <string name="files_m3_fetch_cd">"Ambil %1$s dari jarak jauh"</string>
+    <string name="files_m3_fetch_failed" formatted="false">"Tidak bisa mengambil file ini dari jarak jauh. Periksa koneksi dan masuk, lalu coba lagi."</string>
+    <string name="files_m3_fetched">"%1$s berhasil diambil."</string>
+    <string name="files_m3_folder_path" formatted="false">"Jalur folder"</string>
+    <string name="files_m3_footnote" formatted="false">"Tekan lama file apa pun untuk aksi."</string>
+    <string name="files_m3_history" formatted="false">"Riwayat"</string>
+    <string name="files_m3_lfs_pointer">"Pointer LFS · %1$s di remote"</string>
+    <string name="files_m3_meta">"%1$s · %2$s"</string>
+    <string name="files_m3_meta_edited">"diedit %1$s · %2$s"</string>
+    <string name="files_m3_new_file_cd" formatted="false">"Berkas Baru"</string>
+    <string name="files_m3_open_in" formatted="false">"Buka di…"</string>
+    <string name="files_m3_open_in_chooser">"Buka %1$s di…"</string>
+    <string name="files_m3_open_in_failed" formatted="false">"Tidak ada aplikasi di ponsel ini yang bisa membuka file ini."</string>
+    <string name="files_m3_rename" formatted="false">"Renam"</string>
+    <string name="files_m3_rename_field" formatted="false">"Nama"</string>
+    <string name="files_m3_tag_added" formatted="false">"A"</string>
+    <string name="files_m3_tag_conflict" formatted="false">"!"</string>
+    <string name="files_m3_tag_lfs" formatted="false">"LFS"</string>
+    <string name="files_m3_tag_modified" formatted="false">"M"</string>
     <string name="files_show_hidden" formatted="false">"Tampilkan berkas tersembunyi"</string>
     <string name="folder_access_not_enabled" formatted="false">"Akses folder belum diaktifkan. Anda dapat terus menggunakan penyimpanan aplikasi."</string>
     <string name="folder_picker_unavailable" formatted="false">"Pemilih folder tidak tersedia di perangkat ini"</string>
     <string name="folder_settings_unavailable" formatted="false">"Setelan penyimpanan Android tidak tersedia. Penyimpanan aplikasi tetap tersedia."</string>
     <string name="folder_unusable" formatted="false">"Folder ini tidak dapat digunakan"</string>
     <string name="git_fetch" formatted="false">"Fetch"</string>
+    <string name="git_m3_abort" formatted="false">"Batalkan"</string>
+    <string name="git_m3_abort_merge" formatted="false">"Batalkan merge"</string>
+    <string name="git_m3_abort_merge_body">"Mengembalikan %1$s ke tempat semula sebelum penggabungan. Pilihan yang sudah dibuat dibuang."</string>
+    <string name="git_m3_abort_merge_title" formatted="false">"Batalkan penggabungan ini?"</string>
+    <string name="git_m3_abort_rebase_ask" formatted="false">"Batalkan rebase…"</string>
+    <string name="git_m3_access_github" formatted="false">"GitHub – Masuk"</string>
+    <string name="git_m3_access_https" formatted="false">"HTTPS"</string>
+    <string name="git_m3_access_local" formatted="false">"folder lokal"</string>
+    <string name="git_m3_access_ssh" formatted="false">"SSH Verifikasi sertifikat TLS"</string>
+    <string name="git_m3_age_days">"%1$dd"</string>
+    <string name="git_m3_age_hours">"%1$dh"</string>
+    <string name="git_m3_age_minutes">"%1$dm"</string>
+    <string name="git_m3_ago_days">"%1$d hr lalu"</string>
+    <string name="git_m3_ago_hours">"%1$dh yang lalu"</string>
+    <string name="git_m3_ago_minutes">"%1$dm lalu"</string>
+    <string name="git_m3_ago_now" formatted="false">"baru saja"</string>
+    <string name="git_m3_ahead">"%1$d di depan"</string>
+    <string name="git_m3_annotated" formatted="false">"beranotasi"</string>
+    <string name="git_m3_applied_toast">"Telah diterapkan %1$s. Simpanan masih tersimpan."</string>
+    <string name="git_m3_apply" formatted="false">"Terapkan"</string>
+    <string name="git_m3_apply_help" formatted="false">"Mengembalikan perubahan dan tetap menyimpan stash."</string>
+    <string name="git_m3_back_to_remote" formatted="false">"Kembali ke Remote"</string>
+    <string name="git_m3_backup_at">"Cadangan: %1$s"</string>
+    <string name="git_m3_behind">"%1$d di belakang"</string>
+    <string name="git_m3_binary_side" formatted="false">"Berkas ini tidak bisa ditampilkan sebagai teks. Pilih seluruh versi."</string>
+    <string name="git_m3_both_edited_file" formatted="false">"Kedua sisi mengedit file ini."</string>
+    <string name="git_m3_both_edited_section">"Kedua sisi mengedit “%1$s”."</string>
+    <string name="git_m3_both_moved" formatted="false">"Kedua sisi berubah"</string>
+    <string name="git_m3_both_moved_body">"Tarik hanya fast-forward, jadi tidak bisa menggabungkan ini. Merge mempertahankan kedua riwayat. Rebase meletakkan commit %1$d Anda di atas."</string>
+    <string name="git_m3_both_moved_headline" formatted="false">"Remote berubah saat Anda menulis."</string>
+    <string name="git_m3_both_sides_edited" formatted="false">"Kedua sisi mengedit file ini."</string>
+    <string name="git_m3_branch_name" formatted="false">"Nama cabang"</string>
+    <string name="git_m3_branch_placeholder" formatted="false">"mis. draft/winter"</string>
+    <string name="git_m3_branches" formatted="false">"Cabang"</string>
+    <string name="git_m3_branches_stashes_tags" formatted="false">"Cabang, stash, dan tag"</string>
+    <string name="git_m3_cancel" formatted="false">"Batal"</string>
+    <string name="git_m3_cant_switch_note" formatted="false">"Berkas yang tidak terlacak yang akan ditimpa cabang lain juga menghambat pergantian. Belum ada yang berubah."</string>
+    <string name="git_m3_cant_switch_title" formatted="false">"Belum bisa beralih"</string>
+    <string name="git_m3_check_changes" formatted="false">"Periksa perubahan"</string>
+    <string name="git_m3_commit_as" formatted="false">"Commit sebagai"</string>
+    <string name="git_m3_commit_first" formatted="false">"Commit terlebih dahulu"</string>
+    <string name="git_m3_commit_history" formatted="false">"Riwayat commit"</string>
+    <string name="git_m3_commit_of">"commit %1$d dari %2$d"</string>
+    <string name="git_m3_conflict_body" formatted="false">"Pilih versi yang disimpan, atau simpan keduanya dan rapikan nanti."</string>
+    <string name="git_m3_conflict_progress">"Konflik %1$d dari %2$d · %3$s"</string>
+    <string name="git_m3_connection" formatted="false">"Koneksi"</string>
+    <string name="git_m3_continue_retry_first" formatted="false">"Lanjutkan rebase · coba lagi pertama"</string>
+    <string name="git_m3_create" formatted="false">"Buat"</string>
+    <string name="git_m3_create_tag" formatted="false">"Buat tag"</string>
+    <string name="git_m3_current" formatted="false">"Saat ini"</string>
+    <string name="git_m3_current_branch" formatted="false">"Branch saat ini"</string>
+    <string name="git_m3_delete" formatted="false">"Hapus"</string>
+    <string name="git_m3_delete_branch_body">"Menghapus %1$s di ponsel ini. GitHub tidak tersentuh."</string>
+    <string name="git_m3_delete_branch_cd">"Hapus branch %1$s"</string>
+    <string name="git_m3_delete_branch_title" formatted="false">"Hapus branch?"</string>
+    <string name="git_m3_delete_files_sub" formatted="false">"Menghapus folder dari ponsel ini"</string>
+    <string name="git_m3_delete_force" formatted="false">"Paksa"</string>
+    <string name="git_m3_delete_force_help" formatted="false">"Memaksa menghapus cabang meskipun komit-nya belum digabung. Mereka bisa hilang."</string>
+    <string name="git_m3_delete_normal" formatted="false">"Normal"</string>
+    <string name="git_m3_delete_normal_help" formatted="false">"Hanya menghapus cabang jika komit-nya sudah digabung."</string>
+    <string name="git_m3_delete_tag" formatted="false">"Hapus tag"</string>
+    <string name="git_m3_delete_tag_body">"Tag hilang di ponsel ini. Komit %1$s tetap ada, dan salinan yang sudah didorong ke GitHub tidak tersentuh."</string>
+    <string name="git_m3_delete_tag_cd">"Hapus tag %1$s"</string>
+    <string name="git_m3_delete_tag_title">"Hapus \"%1$s\"?"</string>
+    <string name="git_m3_deleted_here_edited_there" formatted="false">"Ponsel ini menghapusnya. Pihak lain mengeditnya."</string>
+    <string name="git_m3_deleted_on_phone" formatted="false">"Dihapus di ponsel ini."</string>
+    <string name="git_m3_deleted_on_remote">"Dihapus di %1$s."</string>
+    <string name="git_m3_detached">"Terlepas di %1$s"</string>
+    <string name="git_m3_discard" formatted="false">"Buang perubahan"</string>
+    <string name="git_m3_disconnected" formatted="false">"Terputus"</string>
+    <string name="git_m3_drop" formatted="false">"Hapus"</string>
+    <string name="git_m3_drop_cd">"Jatuhkan %1$s"</string>
+    <string name="git_m3_drop_help" formatted="false">"Menghapus stash tanpa menerapkannya."</string>
+    <string name="git_m3_dropped_toast">"%1$s telah dijatuhkan."</string>
+    <string name="git_m3_edit_by_hand" formatted="false">"Edit manual"</string>
+    <string name="git_m3_edit_connection" formatted="false">"Edit koneksi"</string>
+    <string name="git_m3_edited_ago">"diedit %1$s"</string>
+    <string name="git_m3_edited_here_deleted_there" formatted="false">"Ponsel ini mengeditnya. Sisi lain menghapusnya."</string>
+    <string name="git_m3_fetch_again" formatted="false">"Ambil lagi"</string>
+    <string name="git_m3_fetch_and_push">"Ambil dan dorong: %1$s"</string>
+    <string name="git_m3_fetch_hint" formatted="false">"untuk melihat cabang baru yang didorong dari perangkat Anda yang lain."</string>
+    <string name="git_m3_fetch_review_again" formatted="false">"Ambil dan tinjau lagi"</string>
+    <string name="git_m3_fetch_sub" formatted="false">"Periksa GitHub untuk komit baru"</string>
+    <string name="git_m3_fetched">"di-fetch %1$s"</string>
+    <string name="git_m3_finishing_merge" formatted="false">"Menyelesaikan penggabungan…"</string>
+    <string name="git_m3_folder_location" formatted="false">"Folder dan lokasinya"</string>
+    <string name="git_m3_from" formatted="false">"Dari"</string>
+    <string name="git_m3_from_remote">"↓%1$d dari remote"</string>
+    <string name="git_m3_from_who">" dari %1$s"</string>
+    <string name="git_m3_github" formatted="false">"GitHub"</string>
+    <string name="git_m3_hand_edited_markers" formatted="false">"Penanda konflik masih ada di file. Hapus di editor, lalu kembali lagi."</string>
+    <string name="git_m3_hand_edited_ready" formatted="false">"Diedit secara manual. Gunakan file yang Anda edit, atau pilih salah satu sisi untuk menggantinya."</string>
+    <string name="git_m3_how" formatted="false">"Bagaimana"</string>
+    <string name="git_m3_in_sync" formatted="false">"Tersinkron"</string>
+    <string name="git_m3_in_sync_headline" formatted="false">"Ponsel ini cocok dengan remote."</string>
+    <string name="git_m3_in_the_way" formatted="false">"Di jalan"</string>
+    <string name="git_m3_in_this_vault" formatted="false">"Di brankas ini"</string>
+    <string name="git_m3_its_remotes" formatted="false">"Remote-nya"</string>
+    <string name="git_m3_keep_backup" formatted="false">"Simpan cadangan yang terverifikasi"</string>
+    <string name="git_m3_keep_backup_sub" formatted="false">"salinan dan ZIP dari folder .git"</string>
+    <string name="git_m3_keep_both" formatted="false">"Simpan keduanya"</string>
+    <string name="git_m3_kept_edit" formatted="false">"Diselesaikan secara manual."</string>
+    <string name="git_m3_kept_local" formatted="false">"Menjaga commit lokal yang diputar ulang."</string>
+    <string name="git_m3_kept_upstream" formatted="false">"Menjaga versi hulu."</string>
+    <string name="git_m3_lfs" formatted="false">"File besar (LFS)"</string>
+    <string name="git_m3_lfs_none" formatted="false">"tidak digunakan"</string>
+    <string name="git_m3_lfs_value">"%1$s · %2$d terkunci"</string>
+    <string name="git_m3_light" formatted="false">"ringan"</string>
+    <string name="git_m3_local_only" formatted="false">"hanya lokal"</string>
+    <string name="git_m3_manage_vault" formatted="false">"Kelola vault"</string>
+    <string name="git_m3_marker_end" formatted="false">"Akhir dari kedua versi"</string>
+    <string name="git_m3_marker_ours" formatted="false">"Versi ponsel ini"</string>
+    <string name="git_m3_marker_theirs">"Versi %1$s"</string>
+    <string name="git_m3_merge" formatted="false">"Gabungkan"</string>
+    <string name="git_m3_merge_and_push" formatted="false">"Gabungkan dan kirim"</string>
+    <string name="git_m3_merge_author">"Penulis merge: %1$s"</string>
+    <string name="git_m3_merge_both_body" formatted="false">"Commit Anda tetap memiliki ID mereka. Karena kedua sisi bergerak, ini membuat commit merge. File yang diedit di kedua sisi mungkin memerlukan Anda untuk memilih."</string>
+    <string name="git_m3_merge_current_body" formatted="false">"Kedua sisi cocok. Tidak ada yang perlu digabungkan."</string>
+    <string name="git_m3_merge_ff_body" formatted="false">"Hanya sisi remote yang bergerak, jadi ini mempercepat branch Anda. Tidak ada yang baru di-commit."</string>
+    <string name="git_m3_merge_in_progress" formatted="false">"Merge sedang berlangsung"</string>
+    <string name="git_m3_merge_into">"Gabungkan ke %1$s"</string>
+    <string name="git_m3_merge_locally" formatted="false">"Gabungkan secara lokal"</string>
+    <string name="git_m3_merge_message">"Merge %1$s"</string>
+    <string name="git_m3_merge_named">"Merge %1$s"</string>
+    <string name="git_m3_merge_pause_note" formatted="false">"Jika kedua cabang mengubah berkas yang sama, penggabungan berhenti sehingga Anda bisa memilih apa yang disimpan di Git."</string>
+    <string name="git_m3_merge_push_body">"Memperbarui %1$s dengan %2$s, lalu mendorong ke %3$s. Konflik menghentikan dorongan. Jika remote tidak mengonfirmasi, penggabungan tetap di ponsel ini dan Anda bisa mencoba lagi."</string>
+    <string name="git_m3_merge_push_only_body" formatted="false">"Tidak ada yang baru di remote. Menggabungkan dan mendorong mengirimkan komit Anda."</string>
+    <string name="git_m3_merge_push_title" formatted="false">"Gabungkan dan dorong?"</string>
+    <string name="git_m3_merge_ready" formatted="false">"Semua konflik diselesaikan. Selesaikan penggabungan."</string>
+    <string name="git_m3_merge_reviewing" formatted="false">"Mengambil dan meninjau apa yang ada di remote…"</string>
+    <string name="git_m3_merge_sub" formatted="false">"Ambil, tinjau, lalu gabungkan"</string>
+    <string name="git_m3_merging">"%1$s · menggabungkan %2$s"</string>
+    <string name="git_m3_message_optional" formatted="false">"Pesan (opsional)"</string>
+    <string name="git_m3_more_files">"%1$d lebih"</string>
+    <string name="git_m3_move_repository" formatted="false">"Pindahkan repositori"</string>
+    <string name="git_m3_move_sub" formatted="false">"Pilih folder baru"</string>
+    <string name="git_m3_never_fetched" formatted="false">"belum diambil"</string>
+    <string name="git_m3_new_branch" formatted="false">"Cabang baru"</string>
+    <string name="git_m3_new_on_remote" formatted="false">"Baru di remote"</string>
+    <string name="git_m3_new_on_remote_body">"Tarik fast-forward %1$s agar sesuai. Tidak ada yang hilang di ponsel ini."</string>
+    <string name="git_m3_new_on_remote_headline" formatted="false">"Remote memiliki commit yang belum Anda miliki."</string>
+    <string name="git_m3_new_tag" formatted="false">"Tag baru"</string>
+    <string name="git_m3_no_backup_warning" formatted="false">"Tanpa cadangan, riwayat Git ponsel ini akan dihapus selamanya. Komit yang sudah ada di GitHub aman."</string>
+    <string name="git_m3_no_conflicts" formatted="false">"Tidak ada konflik yang tersisa."</string>
+    <string name="git_m3_no_stashes" formatted="false">"Tidak ada stash yang disimpan."</string>
+    <string name="git_m3_no_upstream" formatted="false">"hanya lokal · tanpa upstream"</string>
+    <string name="git_m3_no_upstream_body" formatted="false">"Pilih upstream agar tarik dan dorong tahu kemana harus pergi."</string>
+    <string name="git_m3_no_upstream_headline" formatted="false">"Cabang ini belum melacak cabang jarak jauh."</string>
+    <string name="git_m3_no_upstream_kicker" formatted="false">"Tidak ada upstream"</string>
+    <string name="git_m3_none" formatted="false">"Tidak ada"</string>
+    <string name="git_m3_not_set" formatted="false">"Belum diatur"</string>
+    <string name="git_m3_not_tracked">"%1$s · tidak terlacak"</string>
+    <string name="git_m3_notes_attachments_any" formatted="false">"Catatan dan lampiran Anda"</string>
+    <string name="git_m3_nothing_new">"tidak ada yang %1$s miliki"</string>
+    <string name="git_m3_nothing_to_stash" formatted="false">"Tidak ada yang disimpan sementara."</string>
+    <string name="git_m3_nothing_to_stash_body" formatted="false">"Tidak ada perubahan lokal di ponsel ini. Edit sebuah catatan dan kembali lagi untuk menyimpannya sementara."</string>
+    <string name="git_m3_ok" formatted="false">"OK"</string>
+    <string name="git_m3_on_this_phone" formatted="false">"Di ponsel ini"</string>
+    <string name="git_m3_only_on">"Hanya di %1$s"</string>
+    <string name="git_m3_open" formatted="false">"Buka"</string>
+    <string name="git_m3_open_rebase" formatted="false">"Buka rebase"</string>
+    <string name="git_m3_open_sub" formatted="false">"Kembali ke brankas"</string>
+    <string name="git_m3_plain_folder">"%1$s sekarang adalah folder biasa."</string>
+    <string name="git_m3_plain_folder_body" formatted="false">"Catatan Anda tetap di tempatnya. GitSync.md tidak lagi menyinkronkan folder ini."</string>
+    <string name="git_m3_pop" formatted="false">"Keluarkan"</string>
+    <string name="git_m3_pop_help" formatted="false">"Mengembalikan perubahan dan menghapus simpanan sementara."</string>
+    <string name="git_m3_popped_toast">"Melompat %1$s. Perubahan Anda kembali."</string>
+    <string name="git_m3_previously_added" formatted="false">"Pernah ditambahkan"</string>
+    <string name="git_m3_pull_n">"Tarik ↓%1$d"</string>
+    <string name="git_m3_pull_sub" formatted="false">"Hanya fast-forward"</string>
+    <string name="git_m3_pull_sub_blocked" formatted="false">"Hanya maju cepat. Tidak bisa sekarang: kedua sisi bergerak"</string>
+    <string name="git_m3_pulls_from">"%1$s menarik dari dan mendorong ke"</string>
+    <string name="git_m3_push" formatted="false">"Dorong"</string>
+    <string name="git_m3_push_n">"Dorong ↑%1$d"</string>
+    <string name="git_m3_push_tag_cd">"Dorong %1$s ke GitHub"</string>
+    <string name="git_m3_push_to">"dorong ke %1$s"</string>
+    <string name="git_m3_ready_to_push" formatted="false">"Siap di-push"</string>
+    <string name="git_m3_ready_to_push_body">"Dorong mengirimkan %1$d commit Anda. Tidak ada yang berubah di remote sampai diterima."</string>
+    <string name="git_m3_ready_to_push_headline" formatted="false">"Remote belum melihat commit Anda."</string>
+    <string name="git_m3_rebase" formatted="false">"Rebase"</string>
+    <string name="git_m3_rebase_abort_body">"Mengembalikan %1$s ke %2$s. Edit dan pilihan konflik yang dibuat selama rebase ini dibuang."</string>
+    <string name="git_m3_rebase_abort_title" formatted="false">"Batalkan rebase ini?"</string>
+    <string name="git_m3_rebase_aborted" formatted="false">"Rebase dibatalkan"</string>
+    <string name="git_m3_rebase_aborted_headline" formatted="false">"Kembali ke titik awal."</string>
+    <string name="git_m3_rebase_begin_title" formatted="false">"Tulis ulang commit lokal?"</string>
+    <string name="git_m3_rebase_blocked_body" formatted="false">"File yang tidak ada di Git akan ditimpa oleh commit berikutnya. Pindahkan ke tempat yang aman, segarkan, lalu coba lagi. Commit yang sudah diputar ulang tetap disimpan."</string>
+    <string name="git_m3_rebase_blocked_headline" formatted="false">"Rebase menunggu checkout yang terblokir."</string>
+    <string name="git_m3_rebase_conflicts">"Konflik · %1$d dari %2$d diselesaikan"</string>
+    <string name="git_m3_rebase_conflicts_headline" formatted="false">"Rebase berhenti pada berkas yang diedit kedua sisi."</string>
+    <string name="git_m3_rebase_done_headline" formatted="false">"Rebase selesai."</string>
+    <string name="git_m3_rebase_in_progress" formatted="false">"Rebase berlangsung"</string>
+    <string name="git_m3_rebase_initial" formatted="false">"Ambil dulu untuk melihat apa yang akan dipindahkan oleh rebase."</string>
+    <string name="git_m3_rebase_restored">"%1$s dipulihkan ke %2$s · ↑%3$d ↓%4$d"</string>
+    <string name="git_m3_rebase_review_body">"Memutar ulang commit Anda di atas %1$s. ID mereka bisa berubah. Commit merge mempertahankan bentuknya. Tidak ada yang didorong."</string>
+    <string name="git_m3_rebase_sides_note">"Dalam rebase, %1$s adalah “milik kami” dari Git dan %2$s Anda adalah “milik mereka”."</string>
+    <string name="git_m3_rebase_skip_body">"Menghapus %1$s dari pemutaran ulang. Periksa perubahannya terlebih dahulu. Ini dapat menghapus pekerjaan Anda dari sejarah baru."</string>
+    <string name="git_m3_rebase_skip_title" formatted="false">"Lewati commit lokal ini?"</string>
+    <string name="git_m3_rebase_step">"Dihentikan pada commit %1$d dari %2$d."</string>
+    <string name="git_m3_rebase_stopped" formatted="false">"Rebase sedang menunggu Anda."</string>
+    <string name="git_m3_rebase_sub" formatted="false">"Putar ulang commit Anda di atas · lanjutkan rebase"</string>
+    <string name="git_m3_rebase_theirs">"Baru di %1$s · %2$d"</string>
+    <string name="git_m3_rebase_yours">"Commit Anda untuk diputar ulang · %1$d"</string>
+    <string name="git_m3_refresh_branches" formatted="false">"Segarkan cabang"</string>
+    <string name="git_m3_remote" formatted="false">"Remote"</string>
+    <string name="git_m3_remote_access">"ambil dan dorong · %1$s"</string>
+    <string name="git_m3_remote_pill" formatted="false">"remote"</string>
+    <string name="git_m3_remote_reading" formatted="false">"Membaca remote dari brankas ini…"</string>
+    <string name="git_m3_remove" formatted="false">"Hapus"</string>
+    <string name="git_m3_remove_from_app" formatted="false">"Hapus dari aplikasi"</string>
+    <string name="git_m3_remove_from_app_body" formatted="false">"Folder dan sejarah Git tetap di ponsel ini. Tambahkan kembali kapan saja."</string>
+    <string name="git_m3_remove_from_app_sub" formatted="false">"Menyimpan file dan Git. Tambahkan kembali kapan saja."</string>
+    <string name="git_m3_remove_from_app_title">"Hapus %1$s dari aplikasi?"</string>
+    <string name="git_m3_remove_tracking_sub" formatted="false">"Menyimpan file Anda. Menghapus Git dari folder ini."</string>
+    <string name="git_m3_replayed_commit" formatted="false">"commit yang diputar ulang"</string>
+    <string name="git_m3_replayed_label">"Commit lokal diputar ulang · %1$s"</string>
+    <string name="git_m3_resolve" formatted="false">"Selesaikan"</string>
+    <string name="git_m3_resolve_conflict" formatted="false">"Selesaikan konflik"</string>
+    <string name="git_m3_result_current" formatted="false">"Tidak ada yang baru untuk digabung."</string>
+    <string name="git_m3_result_current_kicker" formatted="false">"Terbaru"</string>
+    <string name="git_m3_result_local_only" formatted="false">"Hasilnya hanya ada di ponsel ini. Dorong ketika kamu siap."</string>
+    <string name="git_m3_result_merged" formatted="false">"Perubahan sisi lain sudah disertakan."</string>
+    <string name="git_m3_result_merged_kicker" formatted="false">"Digabungkan"</string>
+    <string name="git_m3_result_push_confirmed" formatted="false">"GitHub mengakui commit ini."</string>
+    <string name="git_m3_result_push_unconfirmed" formatted="false">"Remote tidak mengonfirmasi dorongan. Coba lagi mengirim commit yang sama tanpa menggabungkan lagi."</string>
+    <string name="git_m3_result_saved_locally" formatted="false">"Commit gabungan disimpan secara lokal."</string>
+    <string name="git_m3_result_unconfirmed" formatted="false">"Disimpan di sini. Dorongan tidak selesai."</string>
+    <string name="git_m3_result_unconfirmed_kicker" formatted="false">"Digabung · belum didorong"</string>
+    <string name="git_m3_retry_blocked" formatted="false">"Coba lagi commit yang terhalang"</string>
+    <string name="git_m3_retry_push" formatted="false">"Coba kirim commit tersimpan lagi"</string>
+    <string name="git_m3_return_to_git" formatted="false">"Kembali ke Git"</string>
+    <string name="git_m3_review_folder" formatted="false">"Tinjau folder yang dipulihkan"</string>
+    <string name="git_m3_reviewed_plan" formatted="false">"Rencana yang ditinjau"</string>
+    <string name="git_m3_saved" formatted="false">"telah disimpan"</string>
+    <string name="git_m3_saved_in" formatted="false">"Disimpan di"</string>
+    <string name="git_m3_set_aside" formatted="false">"Disisihkan"</string>
+    <string name="git_m3_set_upstream" formatted="false">"Atur upstream"</string>
+    <string name="git_m3_show_more">"Tampilkan %1$d lagi"</string>
+    <string name="git_m3_skip_commit" formatted="false">"Lewati commit"</string>
+    <string name="git_m3_skip_commit_ask" formatted="false">"Lewati commit…"</string>
+    <string name="git_m3_staged" formatted="false">"disiapkan"</string>
+    <string name="git_m3_starts_from">"mulai dari %1$s pada %2$s · kamu tetap di %2$s"</string>
+    <string name="git_m3_stash_changes" formatted="false">"Simpan perubahan"</string>
+    <string name="git_m3_stash_explain">"Menyimpan perubahan menyimpannya dan mengatur ulang file kamu ke %1$s. Bisa dibawa kembali kapan saja."</string>
+    <string name="git_m3_stash_local_note" formatted="false">"Simpanan tetap di ponsel ini. Mereka tidak pernah didorong ke GitHub."</string>
+    <string name="git_m3_stash_on">"Di %1$s"</string>
+    <string name="git_m3_stash_placeholder" formatted="false">"Apa yang sedang kamu kerjakan?"</string>
+    <string name="git_m3_stashed_older" formatted="false">"Yang lebih lama sekarang menjadi stash@{1}."</string>
+    <string name="git_m3_stashes" formatted="false">"Stash"</string>
+    <string name="git_m3_stay_on">"Tetap di %1$s"</string>
+    <string name="git_m3_stays_on_disk" formatted="false">"Tetap di disk"</string>
+    <string name="git_m3_stop_tracking" formatted="false">"Berhenti melacak…"</string>
+    <string name="git_m3_strategy_always" formatted="false">"Selalu gunakan merge commit"</string>
+    <string name="git_m3_strategy_always_help">"Membuat commit merge bahkan ketika %1$s bisa langsung maju."</string>
+    <string name="git_m3_strategy_ff" formatted="false">"Hanya fast-forward"</string>
+    <string name="git_m3_strategy_ff_help">"Hanya menggabungkan ketika %1$s berada tepat di depan %2$s. Menjaga riwayat dalam garis lurus."</string>
+    <string name="git_m3_strategy_prefer" formatted="false">"Fast-forward jika memungkinkan"</string>
+    <string name="git_m3_strategy_prefer_help">"Mendorong %1$s maju ketika memungkinkan. Jika tidak, membuat commit merge."</string>
+    <string name="git_m3_subtitle">"%1$s · %2$s"</string>
+    <string name="git_m3_switch" formatted="false">"Pindah"</string>
+    <string name="git_m3_tag_kind_help" formatted="false">"Dengan pesan, itu diberi anotasi. Biarkan kosong untuk tag ringan."</string>
+    <string name="git_m3_tag_name" formatted="false">"Nama tag"</string>
     <string name="git_m3_tag_name_invalid" formatted="false">"Masukkan nama tag Git yang valid."</string>
+    <string name="git_m3_tag_pushed">"%1$s telah didorong."</string>
+    <string name="git_m3_tag_target">"pada %1$s · terbaru di %2$s"</string>
+    <string name="git_m3_tags" formatted="false">"Tag"</string>
+    <string name="git_m3_tags_note" formatted="false">"Commit &amp; push tidak mengirim tag. Dorong setiap tag ketika Anda menginginkannya di GitHub. Hapus hanya menghapus tag dari ponsel ini."</string>
+    <string name="git_m3_the_named_remote">"Remote %1$s"</string>
+    <string name="git_m3_the_remote" formatted="false">"remote"</string>
+    <string name="git_m3_this_phone" formatted="false">"ponsel ini"</string>
+    <string name="git_m3_tracking">"melacak %1$s"</string>
+    <string name="git_m3_tracking_backup_body" formatted="false">"GitSync.md memeriksa salinan dan ZIP dari data Git, lalu memutuskan folder ini. File kerja Anda tetap di tempatnya."</string>
+    <string name="git_m3_tracking_backup_title" formatted="false">"Hapus pelacakan dan simpan cadangan?"</string>
+    <string name="git_m3_tracking_cap">"Melacak %1$s"</string>
+    <string name="git_m3_tracking_permanent_body" formatted="false">"Hanya data .git yang telah ditinjau yang dihapus. File kerja Anda tetap di tempatnya, tetapi riwayat Git ponsel ini tidak dapat dipulihkan tanpa salinan lain."</string>
+    <string name="git_m3_tracking_removed" formatted="false">"Pelacakan dihapus"</string>
+    <string name="git_m3_tracking_removed_backup_toast" formatted="false">"Pelacakan Git dihapus. Cadangan yang diverifikasi tersimpan."</string>
+    <string name="git_m3_tracking_removed_kept" formatted="false">"Pelacakan Git dihapus · file kerja tetap disimpan"</string>
+    <string name="git_m3_tracking_review_body" formatted="false">"File Anda tetap di tempatnya. Salinan riwayat Git dihapus dari folder ini."</string>
+    <string name="git_m3_tracking_stale" formatted="false">"Folder berubah sejak Anda meninjaunya. Batalkan dan tinjau lagi."</string>
+    <string name="git_m3_uncommitted_plain_any" formatted="false">"Suntingan yang belum dikomit, sebagai file biasa"</string>
+    <string name="git_m3_unresolved" formatted="false">"Belum diselesaikan"</string>
+    <string name="git_m3_update" formatted="false">"perbarui"</string>
+    <string name="git_m3_upstream_body">"Pilih dari mana %1$s menarik dan mendorong. File, komit, dan koneksi yang tersimpan tetap sama."</string>
+    <string name="git_m3_upstream_help" formatted="false">"Tanpa upstream, tarik dan dorong tidak akan tahu kemana harus pergi."</string>
+    <string name="git_m3_use_branch">"Gunakan versi %1$s"</string>
+    <string name="git_m3_use_edited" formatted="false">"Gunakan versi yang saya sunting"</string>
+    <string name="git_m3_use_phone" formatted="false">"Gunakan versi telepon ini"</string>
+    <string name="git_m3_use_remote">"Gunakan versi %1$s"</string>
+    <string name="git_m3_vault_settings" formatted="false">"Pengaturan vault"</string>
+    <string name="git_m3_vs">"vs %1$s"</string>
+    <string name="git_m3_what_each_does" formatted="false">"Apa yang dilakukan masing-masing"</string>
+    <string name="git_m3_workspace" formatted="false">"Ruang kerja"</string>
+    <string name="git_m3_yours">"↑%1$d milik saya"</string>
     <string name="git_native_public_only" formatted="false">"Protokol asli Git hanya mendukung akses publik. Gunakan HTTPS atau SSH untuk autentikasi."</string>
     <string name="gitops_action_failed" formatted="false">"Git tidak dapat menyelesaikan tindakan ini"</string>
     <string name="gitops_branch_action_failed" formatted="false">"Tindakan branch tidak dapat diselesaikan"</string>
@@ -375,11 +1071,27 @@
     <string name="guide_step">"Langkah %1$d dari 4"</string>
     <string name="help_copy_email" formatted="false">"Salin email dukungan"</string>
     <string name="help_email_copied" formatted="false">"Email dukungan disalin"</string>
-    <string name="help_feedback" formatted="false">"Kirim Masukan"</string>
+    <string name="help_feedback" formatted="false">"Kirim masukan"</string>
     <string name="help_open_failed" formatted="false">"Tidak ada aplikasi yang dapat membuka tautan ini. Anda dapat menyalin alamat email dukungan."</string>
     <string name="help_title" formatted="false">"Bantuan"</string>
     <string name="history_screen" formatted="false">"Riwayat"</string>
     <string name="http_transport_warning" formatted="false">"HTTP tidak dienkripsi. Data repositori serta nama pengguna atau token yang Anda masukkan dapat dibaca saat dikirim. Gunakan HTTPS jika tersedia."</string>
+    <string name="l10n_a11y_pair">"%1$s, %2$s"</string>
+    <string name="l10n_added_count">"+%1$d"</string>
+    <string name="l10n_background_unavailable" formatted="false">"Background Sync tidak tersedia"</string>
+    <string name="l10n_clone_preview_error" formatted="false">"Otentikasi gagal. Masuk lagi dan coba kembali."</string>
+    <string name="l10n_count">"%1$d"</string>
+    <string name="l10n_meta_pair">"%1$s · %2$s"</string>
+    <string name="l10n_not_vault_file" formatted="false">"Bukan file di brankas ini"</string>
+    <string name="l10n_push_local_branch" formatted="false">"Beralih ke cabang lokal sebelum mendorong"</string>
+    <string name="l10n_removed_count">"−%1$d"</string>
+    <string name="l10n_save_conditions" formatted="false">"Tidak dapat menyimpan kondisi Background Sync"</string>
+    <string name="l10n_save_default_author" formatted="false">"Tidak dapat menyimpan penulis default"</string>
+    <string name="l10n_save_ssh_key" formatted="false">"Tidak dapat menyimpan kunci SSH ponsel ini"</string>
+    <string name="l10n_save_theme" formatted="false">"Tidak dapat menyimpan tema"</string>
+    <string name="l10n_save_vault_preferences" formatted="false">"Tidak dapat menyimpan preferensi brankas"</string>
+    <string name="l10n_unsupported_vault_preference" formatted="false">"Preferensi vault tidak didukung"</string>
+    <string name="l10n_vault_settings_failed" formatted="false">"Tidak dapat memperbarui pengaturan vault"</string>
     <string name="language_settings_legacy" formatted="false">"Sebelum Android 13, aplikasi ini mengikuti bahasa perangkat."</string>
     <string name="language_settings_title" formatted="false">"Bahasa"</string>
     <string name="language_settings_unavailable" formatted="false">"Setelan bahasa tidak dapat dibuka."</string>
@@ -421,12 +1133,213 @@
     <string name="lfs_locks_server">"Server LFS: %1$s"</string>
     <string name="lfs_locks_title" formatted="false">"Kunci server"</string>
     <string name="lfs_locks_unsupported" formatted="false">"Server ini tidak mendukung kunci Git LFS."</string>
+    <string name="lfs_m3_allow_downloads" formatted="false">"Izinkan unduhan"</string>
+    <string name="lfs_m3_allow_uploads" formatted="false">"Izinkan unggahan"</string>
+    <string name="lfs_m3_apply_rules" formatted="false">"Terapkan aturan"</string>
+    <string name="lfs_m3_apply_tracking" formatted="false">"Terapkan pilihan pelacakan"</string>
+    <string name="lfs_m3_approval_scope" formatted="false">"Periksa alamat ini dengan pemilik repositori. Persetujuan hanya mencakup repositori, remote, endpoint, dan arah ini di ponsel ini."</string>
+    <string name="lfs_m3_approvals_title" formatted="false">"Persetujuan endpoint LFS"</string>
+    <string name="lfs_m3_attention" formatted="false">"Git LFS perlu perhatian"</string>
+    <string name="lfs_m3_auth_new" formatted="false">"Nama pengguna dan token terpisah"</string>
+    <string name="lfs_m3_auth_reuse" formatted="false">"Gunakan kredensial endpoint tersimpan"</string>
+    <string name="lfs_m3_branch_remote">"%1$s · remote %2$s"</string>
+    <string name="lfs_m3_cache_missing" formatted="false">"Tidak ada di cache"</string>
+    <string name="lfs_m3_cache_verified" formatted="false">"Cache terverifikasi"</string>
+    <string name="lfs_m3_cancel" formatted="false">"Batal"</string>
+    <string name="lfs_m3_candidate_changed">"%1$s · diubah, belum dilacak"</string>
+    <string name="lfs_m3_candidate_new">"%1$s · baru, belum dilacak"</string>
+    <string name="lfs_m3_check_ownership" formatted="false">"Periksa kepemilikan"</string>
+    <string name="lfs_m3_create_body" formatted="false">"Koneksi lain melihatnya sebagai terkunci sampai Anda melepaskannya. Tidak ada yang berubah di ponsel ini."</string>
+    <string name="lfs_m3_download_body" formatted="false">"Repositori ini ingin mengunduh konten file dari server LFS terpisah."</string>
+    <string name="lfs_m3_download_missing" formatted="false">"Unduh konten yang hilang"</string>
+    <string name="lfs_m3_download_progress" formatted="false">"Progres unduhan"</string>
+    <string name="lfs_m3_download_title" formatted="false">"Izinkan unduhan LFS?"</string>
+    <string name="lfs_m3_downloading_prepare" formatted="false">"Mengunduh konten yang hilang"</string>
+    <string name="lfs_m3_downloads" formatted="false">"Unduhan"</string>
+    <string name="lfs_m3_endpoint_auth" formatted="false">"Autentikasi endpoint"</string>
+    <string name="lfs_m3_endpoints_empty" formatted="false">"Tidak ada endpoint LFS khusus yang disetujui"</string>
+    <string name="lfs_m3_endpoints_intro" formatted="false">"Server LFS terpisah yang dapat digunakan repositori Anda. Mencabut menghentikan transfer di masa depan ke arah itu; apa pun yang sudah berjalan dapat selesai."</string>
+    <string name="lfs_m3_endpoints_none" formatted="false">"Pengaturan · tidak ada yang disetujui"</string>
+    <string name="lfs_m3_endpoints_title" formatted="false">"Endpoint LFS"</string>
+    <string name="lfs_m3_error_changed" formatted="false">"Persetujuan berubah selama peninjauan. Muat ulang dan tinjau kembali transfernya."</string>
+    <string name="lfs_m3_ext_note_existing" formatted="false">"File yang sudah memiliki pilihan pelacakan sendiri tetap mempertahankannya."</string>
+    <string name="lfs_m3_ext_note_limits" formatted="false">"File yang diabaikan tetap diabaikan. Batas penyimpanan tergantung pada host Git Anda."</string>
+    <string name="lfs_m3_ext_note_stage" formatted="false">"Hanya perubahan .gitattributes. Tahapkan file untuk mengubahnya menjadi pointer."</string>
+    <string name="lfs_m3_ext_scope" formatted="false">"Menutupi file yang cocok saat ini dan di masa depan di setiap folder. Pencocokan bersifat case-sensitive."</string>
+    <string name="lfs_m3_ext_title" formatted="false">"Lacak ekstensi yang cocok?"</string>
+    <string name="lfs_m3_extensions_updated" formatted="false">"Aturan ekstensi diperbarui. Tahap .gitattributes dan file-filenya, kemudian commit."</string>
+    <string name="lfs_m3_fact_endpoint" formatted="false">"Endpoint LFS"</string>
+    <string name="lfs_m3_fact_remote" formatted="false">"Remote Git"</string>
+    <string name="lfs_m3_fact_repository" formatted="false">"Repositori"</string>
+    <string name="lfs_m3_force_ack" formatted="false">"Saya mengerti seseorang mungkin masih mengedit file ini."</string>
+    <string name="lfs_m3_force_title" formatted="false">"Paksa lepaskan kunci milik pemilik lain?"</string>
+    <string name="lfs_m3_force_warning" formatted="false">"Ini menghapus kunci yang dipegang oleh koneksi lain. Periksa terlebih dahulu dengan pemiliknya."</string>
+    <string name="lfs_m3_http_warning" formatted="false">"HTTP tidak terenkripsi. Data repositori dan nama pengguna atau token dapat dibaca saat transit. Gunakan HTTPS bila memungkinkan."</string>
+    <string name="lfs_m3_keep_body" formatted="false">"Menambahkan aturan regular-Git secara eksplisit. Isinya dimasukkan ke dalam commit Anda. File di atas 100 MiB masih memerlukan LFS."</string>
+    <string name="lfs_m3_keep_git" formatted="false">"Pertahankan dalam Git reguler"</string>
+    <string name="lfs_m3_keep_title" formatted="false">"Pertahankan ini dalam Git reguler?"</string>
+    <string name="lfs_m3_list_read_only" formatted="false">"Daftar hanya-baca"</string>
+    <string name="lfs_m3_lock_a_file" formatted="false">"Kunci sebuah file"</string>
+    <string name="lfs_m3_lockable_caption" formatted="false">"Hanya file yang ditandai dapat dikunci di .gitattributes yang muncul di sini."</string>
+    <string name="lfs_m3_locked" formatted="false">"terkunci"</string>
+    <string name="lfs_m3_locked_on_server" formatted="false">"Terkunci di server"</string>
+    <string name="lfs_m3_locks_empty" formatted="false">"Tidak ada yang terkunci di cabang ini."</string>
+    <string name="lfs_m3_locks_intro" formatted="false">"Periksa kepemilikan sebelum Anda mengubah kunci. Kunci berada di server; file dan commit Anda tetap di tempat."</string>
+    <string name="lfs_m3_match_extensions" formatted="false">"Cocokkan ekstensi…"</string>
+    <string name="lfs_m3_needs_choice" formatted="false">"Membutuhkan pilihan pelacakan"</string>
+    <string name="lfs_m3_no_lockable" formatted="false">"Tidak ada file yang dapat dikunci yang tidak terkunci."</string>
+    <string name="lfs_m3_no_tracked" formatted="false">"Belum ada file yang disimpan di LFS pada cabang ini."</string>
+    <string name="lfs_m3_not_shared" formatted="false">"Masuk GitHub Anda tidak dibagikan dengan server ini. Kredensial terpisah dienkripsi di ponsel ini. Kelola di Pengaturan › titik akhir LFS."</string>
+    <string name="lfs_m3_ok" formatted="false">"OK"</string>
+    <string name="lfs_m3_owned_here" formatted="false">"Dimiliki oleh koneksi ini"</string>
+    <string name="lfs_m3_owner">"Pemilik: %1$s"</string>
+    <string name="lfs_m3_public_access" formatted="false">"Akses publik"</string>
+    <string name="lfs_m3_refresh_required" formatted="false">"Itu berhasil, tetapi status LFS yang baru tidak dimuat. Muat ulang sebelum melakukan hal lain."</string>
+    <string name="lfs_m3_release_body" formatted="false">"Orang lain dapat menguncinya dan mengeditnya lagi. File lokal dan komit Anda tetap seperti semula."</string>
+    <string name="lfs_m3_release_review" formatted="false">"Lepaskan…"</string>
+    <string name="lfs_m3_reload" formatted="false">"Muat ulang status LFS"</string>
+    <string name="lfs_m3_reset_all" formatted="false">"Setel ulang semua persetujuan endpoint LFS"</string>
+    <string name="lfs_m3_reset_body" formatted="false">"Menghapus setiap persetujuan endpoint kustom dan kredensial yang disimpan di ponsel ini. Setiap endpoint dan arah akan memerlukan tinjauan baru."</string>
+    <string name="lfs_m3_reset_confirm" formatted="false">"Setel ulang persetujuan"</string>
+    <string name="lfs_m3_reset_title" formatted="false">"Setel ulang semua persetujuan endpoint LFS?"</string>
+    <string name="lfs_m3_review_changed" formatted="false">"Kunci telah berubah sejak Anda membukanya. Batalkan dan periksa kepemilikan lagi."</string>
+    <string name="lfs_m3_revoke" formatted="false">"Cabut"</string>
+    <string name="lfs_m3_revoke_download_body">"Unduhan mendatang dari %1$s akan memerlukan tinjauan baru. Persetujuan unggah dan kredensial yang disimpan tetap ada."</string>
+    <string name="lfs_m3_revoke_download_title" formatted="false">"Cabut persetujuan unduhan?"</string>
+    <string name="lfs_m3_revoke_downloads" formatted="false">"Cabut izin unduhan"</string>
+    <string name="lfs_m3_revoke_upload_body">"Unggahan mendatang ke %1$s akan memerlukan tinjauan baru. Persetujuan unduh dan kredensial yang disimpan tetap ada."</string>
+    <string name="lfs_m3_revoke_upload_title" formatted="false">"Cabut persetujuan unggahan?"</string>
+    <string name="lfs_m3_revoke_uploads" formatted="false">"Cabut izin unggahan"</string>
+    <string name="lfs_m3_scope_read_only" formatted="false">"Daftar hanya-baca · kepemilikan tidak diverifikasi"</string>
+    <string name="lfs_m3_scope_verified" formatted="false">"Kepemilikan diverifikasi dengan koneksi ini"</string>
+    <string name="lfs_m3_secret" formatted="false">"token atau kata sandi"</string>
+    <string name="lfs_m3_separate_credentials" formatted="false">"Kredensial terenkripsi terpisah"</string>
+    <string name="lfs_m3_server">"Server LFS %1$s"</string>
+    <string name="lfs_m3_ssh_authorization" formatted="false">"Otorisasi dari SSH"</string>
+    <string name="lfs_m3_ssh_review" formatted="false">"Endpoint HTTP ini mendapatkan otorisasi jangka pendek dari server SSH yang terverifikasi. Kunci SSH Anda tetap berada di ponsel ini. Otorisasi dapat dibaca saat transit dan tidak pernah disimpan."</string>
+    <string name="lfs_m3_stale" formatted="false">"File telah berubah sejak Anda membuka ini. Batalkan dan tinjau lagi."</string>
+    <string name="lfs_m3_state_pointer" formatted="false">"Pointer · unduh konten"</string>
+    <string name="lfs_m3_stored_body" formatted="false">"Commit menyimpan pointer kecil. Pull mengunduh konten, push mengunggahnya terlebih dahulu."</string>
+    <string name="lfs_m3_stored_kicker" formatted="false">"Disimpan di LFS"</string>
+    <string name="lfs_m3_stored_locked">"%1$s · %2$d terkunci"</string>
+    <string name="lfs_m3_subtitle">"%1$s · %2$s · Git LFS"</string>
+    <string name="lfs_m3_tab_files" formatted="false">"File"</string>
+    <string name="lfs_m3_tab_locks" formatted="false">"Kunci"</string>
+    <string name="lfs_m3_title" formatted="false">"File besar"</string>
+    <string name="lfs_m3_track_body" formatted="false">"Menambahkan aturan LFS dengan jalur tepat untuk file di bawah ini. Batas penyimpanan dan bandwidth tergantung pada host Git Anda. Tahap perubahan, lalu commit."</string>
+    <string name="lfs_m3_track_title" formatted="false">"Gunakan LFS untuk file-file ini?"</string>
+    <string name="lfs_m3_tracked_files" formatted="false">"File terlacak"</string>
+    <string name="lfs_m3_tracking_caption" formatted="false">"Hanya .gitattributes yang berubah. File Anda tetap di tempat sampai Anda menempatkannya."</string>
+    <string name="lfs_m3_tracking_updated" formatted="false">"Aturan pelacakan diperbarui. Tempatkan .gitattributes dan file-filenya, lalu lakukan commit."</string>
+    <string name="lfs_m3_unsupported" formatted="false">"Server ini tidak mendukung kunci Git LFS."</string>
+    <string name="lfs_m3_upload_body" formatted="false">"Repositori ini ingin mengirim konten file ke server LFS terpisah."</string>
+    <string name="lfs_m3_upload_title" formatted="false">"Izinkan unggahan LFS?"</string>
+    <string name="lfs_m3_uploads" formatted="false">"Unggahan"</string>
+    <string name="lfs_m3_username" formatted="false">"Nama pengguna endpoint LFS"</string>
     <string name="lfs_tracking_updated" formatted="false">"Aturan pelacakan diperbarui. Tinjau dan masukkan .gitattributes serta file yang dipilih ke staging, lalu lakukan commit."</string>
     <string name="m3_editor_preview" formatted="false">"Pratinjau"</string>
     <string name="m3_editor_write" formatted="false">"Tulis"</string>
     <string name="m3_open_in_editor" formatted="false">"Buka di editor"</string>
     <string name="m3_paywall_paid_with_play" formatted="false">"Dibayar dengan akun Google Play Anda"</string>
     <string name="m3_pick_a_file" formatted="false">"Pilih file untuk melihat perubahannya."</string>
+    <string name="m3home_add_first" formatted="false">"Tambahkan vault pertama Anda"</string>
+    <string name="m3home_add_vault" formatted="false">"Tambah vault"</string>
+    <string name="m3home_auth_body" formatted="false">"Catatan Anda aman di ponsel ini. Tidak ada yang hilang."</string>
+    <string name="m3home_auth_headline" formatted="false">"Sinkronisasi dijeda."</string>
+    <string name="m3home_auth_held">"↑%1$d ditahan"</string>
+    <string name="m3home_auth_kicker">"Sesi GitHub kedaluwarsa · %1$s"</string>
+    <string name="m3home_auth_paused" formatted="false">"dijeda"</string>
+    <string name="m3home_auth_row_meta">"%1$s · terakhir disinkronkan %2$s"</string>
+    <string name="m3home_auth_sign_in" formatted="false">"Masuk dengan GitHub"</string>
+    <string name="m3home_auth_unaffected_label" formatted="false">"Tidak terpengaruh"</string>
+    <string name="m3home_auth_waiting_label" formatted="false">"Menunggu masuk"</string>
+    <string name="m3home_badge_both">"↓%1$d ↑%2$d"</string>
+    <string name="m3home_badge_checking" formatted="false">"Memeriksa"</string>
+    <string name="m3home_badge_in_sync" formatted="false">"Tersinkron"</string>
+    <string name="m3home_badge_local_only" formatted="false">"hanya lokal"</string>
+    <string name="m3home_badge_needs_you" formatted="false">"Membutuhkan Anda"</string>
+    <string name="m3home_badge_sync_failed" formatted="false">"Tidak disinkronkan"</string>
+    <string name="m3home_badge_syncing" formatted="false">"menyinkronkan"</string>
+    <string name="m3home_badge_to_pull">"↓%1$d untuk di-pull"</string>
+    <string name="m3home_badge_to_push">"↑%1$d untuk di-push"</string>
+    <string name="m3home_badge_unreadable" formatted="false">"Tidak bisa dibaca"</string>
+    <string name="m3home_cred_github" formatted="false">"GitHub Akun"</string>
+    <string name="m3home_cred_local" formatted="false">"di ponsel ini"</string>
+    <string name="m3home_cred_public" formatted="false">"publik"</string>
+    <string name="m3home_cred_ssh" formatted="false">"SSH Verifikasi sertifikat TLS"</string>
+    <string name="m3home_cred_token" formatted="false">"token"</string>
+    <string name="m3home_empty_rail_description" formatted="false">"Ponsel dan GitHub, belum ada yang perlu disinkronkan"</string>
+    <string name="m3home_empty_rail_nothing" formatted="false">"tidak ada yang perlu disinkronkan"</string>
+    <string name="m3home_empty_signed_in">"masuk sebagai @%1$s"</string>
+    <string name="m3home_empty_title" formatted="false">"Belum ada vault."</string>
+    <string name="m3home_filter_all">"Semua %1$d"</string>
+    <string name="m3home_filter_attention">"Perhatian %1$d"</string>
+    <string name="m3home_filter_empty_attention" formatted="false">"Tidak ada yang membutuhkan Anda. Setiap brankas sudah sinkron."</string>
+    <string name="m3home_filter_empty_pinned" formatted="false">"Belum ada brankas yang disematkan. Tekan lama sebuah brankas dan pilih Sematkan ke atas."</string>
+    <string name="m3home_filter_pinned" formatted="false">"Disematkan"</string>
+    <string name="m3home_headline_ready_accent" formatted="false">"tersinkronisasi."</string>
+    <string name="m3home_how_title" formatted="false">"Cara kerjanya"</string>
+    <string name="m3home_meta_checked">"diperiksa %1$s"</string>
+    <string name="m3home_meta_checking">"memeriksa %1$d"</string>
+    <string name="m3home_meta_in_sync">"%1$d tersinkron"</string>
+    <string name="m3home_meta_lfs">"%1$s LFS"</string>
+    <string name="m3home_meta_loading" formatted="false">"Memeriksa…"</string>
+    <string name="m3home_meta_never_checked" formatted="false">"Belum diperiksa"</string>
+    <string name="m3home_meta_not_synced" formatted="false">"belum disinkronkan"</string>
+    <string name="m3home_meta_unreadable" formatted="false">"tidak bisa membaca folder ini"</string>
+    <string name="m3home_offline_accent" formatted="false">"Kami akan menyusul."</string>
+    <string name="m3home_offline_fab" formatted="false">"Sinkron saat online"</string>
+    <string name="m3home_offline_headline" formatted="false">"Terus menulis."</string>
+    <string name="m3home_offline_last_known" formatted="false">"terakhir diketahui: tersinkron"</string>
+    <string name="m3home_offline_last_known_behind">"terakhir diketahui: ↓%1$d"</string>
+    <string name="m3home_offline_meta">"tidak ada koneksi · terakhir diperiksa %1$s"</string>
+    <string name="m3home_offline_meta_never" formatted="false">"tidak ada koneksi"</string>
+    <string name="m3home_offline_queued">"↑%1$d dalam antrean"</string>
+    <string name="m3home_offline_row_meta">"%1$s · tersinkronisasi %2$s"</string>
+    <string name="m3home_onboarding_accent" formatted="false">"Selalu selaras."</string>
+    <string name="m3home_onboarding_body" formatted="false">"Klon repositori apa pun, tulis di Obsidian atau aplikasi lain, lalu sinkronkan dengan satu ketukan."</string>
+    <string name="m3home_onboarding_demo" formatted="false">"Jelajahi dengan brankas demo"</string>
+    <string name="m3home_onboarding_github" formatted="false">"Lanjutkan dengan GitHub"</string>
+    <string name="m3home_onboarding_headline" formatted="false">"Catatanmu.\nRepository git nyata."</string>
+    <string name="m3home_onboarding_other" formatted="false">"SSH, token, atau host lain"</string>
+    <string name="m3home_onboarding_rail" formatted="false">"Catatan di ponsel Anda dan commit di GitHub bertemu di satu titik sinkronisasi"</string>
+    <string name="m3home_onboarding_save_error" formatted="false">"Tidak bisa menyimpan pilihanmu. Coba lagi."</string>
+    <string name="m3home_onboarding_this_phone" formatted="false">"ponsel ini"</string>
+    <string name="m3home_pin" formatted="false">"Sematkan di atas"</string>
+    <string name="m3home_pin_failed" formatted="false">"Tidak bisa menyimpan sematan. Coba lagi."</string>
+    <string name="m3home_pinned" formatted="false">"Disematkan"</string>
+    <string name="m3home_rail_github" formatted="false">"GitHub"</string>
+    <string name="m3home_rail_phone" formatted="false">"Ponsel"</string>
+    <string name="m3home_rail_remote" formatted="false">"Remote"</string>
+    <string name="m3home_remove" formatted="false">"Hapus dari GitSync.md"</string>
+    <string name="m3home_row_actions" formatted="false">"Aksi brankas"</string>
+    <string name="m3home_session_dismiss" formatted="false">"Tutup"</string>
+    <string name="m3home_settings" formatted="false">"Pengaturan"</string>
+    <string name="m3home_settings_signed_in">"Pengaturan, masuk sebagai %1$s"</string>
+    <string name="m3home_start_github" formatted="false">"Clone dari GitHub"</string>
+    <string name="m3home_start_github_detail" formatted="false">"pilih salah satu repositori Anda"</string>
+    <string name="m3home_start_local" formatted="false">"Temukan kloning di ponsel ini"</string>
+    <string name="m3home_start_local_detail" formatted="false">"Obsidian, MGit, Termux…"</string>
+    <string name="m3home_start_publish" formatted="false">"Publikasikan folder"</string>
+    <string name="m3home_start_publish_detail" formatted="false">"mengubah folder menjadi repositori baru"</string>
+    <string name="m3home_start_url" formatted="false">"Tempelkan URL"</string>
+    <string name="m3home_start_url_detail" formatted="false">"repositori Git jarak jauh apa pun, publik atau privat"</string>
+    <string name="m3home_start_with" formatted="false">"Mulai dengan"</string>
+    <string name="m3home_sync_all" formatted="false">"Sinkronkan semua"</string>
+    <string name="m3home_sync_all_meta">"↓%1$d ↑%2$d"</string>
+    <string name="m3home_sync_busy" formatted="false">"Tarik semua sudah berjalan. Coba lagi ketika selesai."</string>
+    <string name="m3home_sync_done">"Tersinkronisasi · ditarik %1$d · didorong %2$d"</string>
+    <string name="m3home_sync_failed">"Tidak bisa menyinkronkan %1$s"</string>
+    <string name="m3home_sync_start_failed" formatted="false">"Sinkronisasi semua tidak bisa dimulai. Periksa daftar brankas Anda di Pengaturan."</string>
+    <string name="m3home_syncing" formatted="false">"menyinkronkan"</string>
+    <string name="m3home_syncing_meta">"%1$d dari %2$d"</string>
+    <string name="m3home_time_days">"%1$d hr lalu"</string>
+    <string name="m3home_time_hours">"%1$dh yang lalu"</string>
+    <string name="m3home_time_minutes_long">"%1$d mnt lalu"</string>
+    <string name="m3home_time_minutes_short">"%1$dm lalu"</string>
+    <string name="m3home_time_now" formatted="false">"baru saja"</string>
+    <string name="m3home_time_yesterday" formatted="false">"kemarin"</string>
+    <string name="m3home_unpin" formatted="false">"Lepas sematan"</string>
     <string name="modified" formatted="false">"Diubah"</string>
     <string name="move_cancelled" formatted="false">"Pemindahan dibatalkan. Salinan kerja asli tetap disimpan."</string>
     <string name="move_confirm_action" formatted="false">"Pindahkan"</string>
@@ -450,6 +1363,22 @@
     <string name="move_recovery_done" formatted="false">"Pemulihan pemindahan selesai"</string>
     <string name="move_recovery_removed" formatted="false">"Salinan pemulihan dihapus"</string>
     <string name="move_title_restore" formatted="false">"Pulihkan salinan pemulihan"</string>
+    <string name="newfile_m3_blank" formatted="false">"Kosong"</string>
+    <string name="newfile_m3_builtin_idea" formatted="false">"ide"</string>
+    <string name="newfile_m3_create_open" formatted="false">"Buat &amp; buka"</string>
+    <string name="newfile_m3_exists">"%1$s sudah ada di %2$s. Coba nama lain."</string>
+    <string name="newfile_m3_file_name" formatted="false">"Nama file"</string>
+    <string name="newfile_m3_folder" formatted="false">"Folder"</string>
+    <string name="newfile_m3_folder_name" formatted="false">"Nama folder"</string>
+    <string name="newfile_m3_in">"di %1$s"</string>
+    <string name="newfile_m3_invalid" formatted="false">"Gunakan nama tanpa / atau \\."</string>
+    <string name="newfile_m3_invalid_dots" formatted="false">"“.” dan “..” dicadangkan. Coba nama lain."</string>
+    <string name="newfile_m3_note" formatted="false">"Catatan"</string>
+    <string name="newfile_m3_template">"Template · %1$s"</string>
+    <string name="newfile_m3_title_folder" formatted="false">"Folder baru"</string>
+    <string name="newfile_m3_title_note" formatted="false">"Catatan baru"</string>
+    <string name="newfile_m3_today" formatted="false">"Tanggal hari ini"</string>
+    <string name="newfile_m3_too_long" formatted="false">"Nama itu terlalu panjang. Gunakan yang lebih pendek."</string>
     <string name="notes_acknowledge" formatted="false">"Mengerti"</string>
     <string name="notes_connections_body" formatted="false">"Kelola akun GitHub dan identitas penulis repositori. Hubungkan melalui HTTPS atau SSH, pilih penyimpanan klon, hubungkan kembali salinan lokal, dan tinjau pemindahan atau penghapusan repositori."</string>
     <string name="notes_connections_title" formatted="false">"Koneksi dan penyimpanan"</string>
@@ -458,6 +1387,10 @@
     <string name="notes_version">"Android %1$s · build %2$d"</string>
     <string name="notes_workflow_body" formatted="false">"Jelajahi dan edit file, tinjau diff yang sudah dan belum dimasukkan ke staging, buat commit lokal, kirim commit yang ada, serta gunakan cabang, riwayat, tag, dan rebase."</string>
     <string name="notes_workflow_title" formatted="false">"Alur kerja repositori"</string>
+    <string name="notification_m3_open_obsidian" formatted="false">"Buka di Obsidian"</string>
+    <string name="notification_m3_pulled" formatted="false">"Perubahan baru ditarik di latar belakang."</string>
+    <string name="notification_m3_see_changes" formatted="false">"Lihat perubahan"</string>
+    <string name="notification_m3_updated">"%1$s diperbarui"</string>
     <string name="obsidian_forgotten" formatted="false">"Penyerahan mendatang dinonaktifkan. Siapkan koneksi baru untuk menghubungkan kembali folder ini."</string>
     <string name="obsidian_interrupted" formatted="false">"Koneksi dihentikan. Tidak ada permintaan yang akan diputar ulang secara otomatis. Siapkan koneksi baru sebelum mencoba lagi di Obsidian."</string>
     <string name="obsidian_return" formatted="false">"Kembali ke Obsidian"</string>
@@ -560,6 +1493,47 @@
     <string name="pull_all_widget_description" formatted="false">"Ambil pembaruan dan lakukan fast-forward pada semua repositori lokal tanpa membuka GitSync.md."</string>
     <string name="pull_all_widget_subtitle" formatted="false">"Hanya pengambilan dan fast-forward"</string>
     <string name="pull_screen" formatted="false">"Pull"</string>
+    <string name="pullall_m3_again" formatted="false">"Tarik semua lagi"</string>
+    <string name="pullall_m3_attention_blocked" formatted="false">"Tetap tidak berubah. Commit atau simpan perubahan lokal terlebih dahulu."</string>
+    <string name="pullall_m3_attention_failed" formatted="false">"Tidak bisa menarik dengan aman. Periksa koneksi dan akses folder."</string>
+    <string name="pullall_m3_attention_lfs" formatted="false">"Telah ditarik. Beberapa file Git LFS masih perlu diunduh."</string>
+    <string name="pullall_m3_background" formatted="false">"Tarik semua di latar belakang"</string>
+    <string name="pullall_m3_blocked" formatted="false">"Tetap tidak berubah. Commit atau simpan perubahan lokal, atau selesaikan operasi Git yang terbuka, lalu coba lagi."</string>
+    <string name="pullall_m3_clear" formatted="false">"Hapus ringkasan latar belakang"</string>
+    <string name="pullall_m3_clear_body" formatted="false">"Ini menghapus ringkasan latar belakang terbaru. Brankas dan pengaturan Anda tetap seperti semula. Pekerjaan yang terhenti tidak akan dimulai ulang secara otomatis."</string>
+    <string name="pullall_m3_clear_confirm" formatted="false">"Hapus ringkasan"</string>
+    <string name="pullall_m3_clear_title" formatted="false">"Hapus ringkasan latar belakang?"</string>
+    <string name="pullall_m3_complete" formatted="false">"Tarik semua selesai. Tinjau ringkasan tersimpan."</string>
+    <string name="pullall_m3_control_failed" formatted="false">"Itu tidak berubah. Buka kembali layar ini dan coba lagi."</string>
+    <string name="pullall_m3_counts">"Diperbarui %1$d · Saat ini %2$d · LFS %3$d · Diblokir %4$d · Gagal %5$d"</string>
+    <string name="pullall_m3_current" formatted="false">"Tidak ada perubahan masuk"</string>
+    <string name="pullall_m3_empty" formatted="false">"Belum ada brankas untuk ditarik. Kloning atau tambahkan satu terlebih dahulu."</string>
+    <string name="pullall_m3_failed" formatted="false">"Tarik semua dihentikan karena terjadi kesalahan. Beberapa tarik mungkin sudah selesai. Periksa ringkasan dan setiap brankas sebelum menjalankannya lagi."</string>
+    <string name="pullall_m3_help" formatted="false">"Tambahkan widget Tarik semua ke layar beranda Anda, atau ubin ke Pengaturan Cepat. Keduanya dijalankan sekali tanpa membuka aplikasi. Kembali ke sini untuk melihat apa yang terjadi."</string>
+    <string name="pullall_m3_interrupted" formatted="false">"Tarik semua terhenti dan tidak akan memulai ulang sendiri. Satu tarik mungkin telah selesai terlebih dahulu. Periksa setiap brankas sebelum menjalankannya lagi."</string>
+    <string name="pullall_m3_item_failed" formatted="false">"Tidak bisa menarik dengan aman. Periksa koneksi dan akses folder, lalu lihat Git untuk perbedaan."</string>
+    <string name="pullall_m3_lfs" formatted="false">"Telah ditarik. Beberapa file Git LFS masih perlu diunduh. Buka Git LFS untuk mencoba lagi."</string>
+    <string name="pullall_m3_not_run" formatted="false">"Tidak dijalankan"</string>
+    <string name="pullall_m3_progress_cd" formatted="false">"Progres tarik semua"</string>
+    <string name="pullall_m3_pulling" formatted="false">"Melakukan pull…"</string>
+    <string name="pullall_m3_running" formatted="false">"Tarik semua sedang berjalan tanpa membuka aplikasi. Sisanya berhenti ketika Anda mengetuk Berhenti."</string>
+    <string name="pullall_m3_scope" formatted="false">"Ambil dan percepat setiap penyimpanan di ponsel ini. Tarik semua tahap, comit, atau dorong perubahan Anda yang belum pernah dilakukan."</string>
+    <string name="pullall_m3_source_shortcut" formatted="false">"pintasan"</string>
+    <string name="pullall_m3_source_tile" formatted="false">"ubin"</string>
+    <string name="pullall_m3_source_widget" formatted="false">"widget"</string>
+    <string name="pullall_m3_start" formatted="false">"Pull All"</string>
+    <string name="pullall_m3_start_failed" formatted="false">"Tarik semua tidak dapat dimulai. Periksa pengaturan penyimpanan Anda dan coba lagi."</string>
+    <string name="pullall_m3_stop" formatted="false">"Hentikan penarikan semua"</string>
+    <string name="pullall_m3_stopped" formatted="false">"Berhenti. Penyimpanan yang sedang ditarik mungkin telah selesai, jadi periksa statusnya sebelum mencoba lagi. Sisanya belum dimulai."</string>
+    <string name="pullall_m3_stopping" formatted="false">"Berhenti setelah penyimpanan ini…"</string>
+    <string name="pullall_m3_surfaces" formatted="false">"Widget dan ubin Pengaturan Cepat"</string>
+    <string name="pullall_m3_tile_preview" formatted="false">"GitSync.md\nTarik semua"</string>
+    <string name="pullall_m3_title" formatted="false">"Pull All"</string>
+    <string name="pullall_m3_unreadable" formatted="false">"Ringkasan latar belakang yang disimpan tidak dapat dibaca dan tetap disimpan. Hapus sebelum memulai proses latar belakang lain."</string>
+    <string name="pullall_m3_updated" formatted="false">"Diperbarui dari remote"</string>
+    <string name="pullall_m3_when_source">"%1$s · dari %2$s"</string>
+    <string name="pullall_m3_widget_name" formatted="false">"Pull All"</string>
+    <string name="pullall_m3_widget_sub" formatted="false">"Hanya pengambilan dan fast-forward"</string>
     <string name="push_all_repositories" formatted="false">"Semua repositori, termasuk yang dibuat nanti"</string>
     <string name="push_cancelled" formatted="false">"Koneksi GitHub dibatalkan."</string>
     <string name="push_channel" formatted="false">"Pembaruan repositori"</string>
@@ -617,6 +1591,7 @@
     <string name="repository_actions_changes">"Jalur yang berubah: %1$d"</string>
     <string name="repository_actions_confirm" formatted="false">"Jalankan sekali"</string>
     <string name="repository_actions_destination">"Upstream: %1$s / %2$s"</string>
+    <string name="repository_actions_destination_none" formatted="false">"Hulu: tidak ada"</string>
     <string name="repository_actions_dirty" formatted="false">"Perubahan lokal mencegah penarikan commit masuk. Commit atau stash perubahan tersebut terlebih dahulu."</string>
     <string name="repository_actions_diverged" formatted="false">"Riwayat lokal dan remote telah menyimpang. Pilih merge atau rebase secara eksplisit di kontrol Git."</string>
     <string name="repository_actions_failed" formatted="false">"Tidak dapat menyelesaikan tindakan. Periksa koneksi, akun, kepercayaan, dan akses folder, lalu tinjau status saat ini sebelum mencoba lagi."</string>
@@ -681,6 +1656,325 @@
     <string name="resolve_local_superseded" formatted="false">"Repositori yang dipilih berubah. Tinjau kembali perubahan lokal."</string>
     <string name="resolve_local_title" formatted="false">": Edisi lokal menghambat operasi pull ini."</string>
     <string name="settings_folder_unavailable" formatted="false">"Akses folder memerlukan perhatian"</string>
+    <string name="settings_m3_account_meta">"@%1$s · GitHub"</string>
+    <string name="settings_m3_accounts" formatted="false">"Akun GitHub"</string>
+    <string name="settings_m3_app_storage" formatted="false">"Penyimpanan aplikasi"</string>
+    <string name="settings_m3_author_account_meta">"%1$s · belum ada yang disimpan di laci ini"</string>
+    <string name="settings_m3_author_account_meta_global">"%1$s · belum ada default yang disimpan"</string>
+    <string name="settings_m3_author_changed" formatted="false">"Penulis ini diubah di luar GitSync.md, mungkin oleh Git di Mac Anda. Muat ulang untuk melihat apa yang dikatakannya sekarang."</string>
+    <string name="settings_m3_author_default" formatted="false">"Nilai Defaun"</string>
+    <string name="settings_m3_author_email" formatted="false">"Email Penulis"</string>
+    <string name="settings_m3_author_from_account" formatted="false">"Dari akun GitHub Anda"</string>
+    <string name="settings_m3_author_global_subtitle" formatted="false">"Setiap laci tanpa penulisnya sendiri"</string>
+    <string name="settings_m3_author_help_changed" formatted="false">"Muat ulang sebelum menyimpan, atau Anda akan mengganti penulis yang lebih baru."</string>
+    <string name="settings_m3_author_help_match" formatted="false">"Cocokkan email yang digunakan Git di Mac Anda agar keduanya muncul sebagai Anda."</string>
+    <string name="settings_m3_author_help_noreply" formatted="false">"Alamat pribadi GitHub, sehingga email asli Anda tetap tersembunyi."</string>
+    <string name="settings_m3_author_intro" formatted="false">"Commit baru di laci ini menggunakan nama dan email ini. Commit yang sudah Anda buat tetap mempertahankan penulisnya."</string>
+    <string name="settings_m3_author_intro_global" formatted="false">"Komit baru di brankas Anda menggunakan nama dan email ini, kecuali brankas menyimpan miliknya sendiri. Komit yang sudah Anda buat tetap mempertahankan penulisnya."</string>
+    <string name="settings_m3_author_name" formatted="false">"Nama Penulis"</string>
+    <string name="settings_m3_author_override" formatted="false">"Timpa"</string>
+    <string name="settings_m3_author_preview_message" formatted="false">"Pembaruan dari GitSync.md"</string>
+    <string name="settings_m3_author_preview_meta">"%1$s &lt;%2$s&gt; · sekarang"</string>
+    <string name="settings_m3_author_preview_title" formatted="false">"Komit berikutnya Anda akan membaca"</string>
+    <string name="settings_m3_author_reading" formatted="false">"Membaca konfigurasi Git vault ini…"</string>
+    <string name="settings_m3_author_save" formatted="false">"Simpan penulis"</string>
+    <string name="settings_m3_author_save_note" formatted="false">"Menyimpan menutup halaman ini. Tidak ada yang dikomit."</string>
+    <string name="settings_m3_author_saved_global" formatted="false">"Disimpan untuk semua vault"</string>
+    <string name="settings_m3_author_saved_global_meta">"di ponsel ini · menggantikan %1$s"</string>
+    <string name="settings_m3_author_saved_vault" formatted="false">"Disimpan di vault ini"</string>
+    <string name="settings_m3_author_saved_vault_meta">".git/config · menggantikan %1$s"</string>
+    <string name="settings_m3_author_scope" formatted="false">"Hanya vault ini yang berubah. Vault lain mempertahankan penulisnya sendiri, atau menggunakan akun GitHub yang mereka sinkronkan."</string>
+    <string name="settings_m3_author_scope_global" formatted="false">"Vault dengan penulis yang disimpan di .git/config mereka sendiri mempertahankannya. Anda masih bisa mengubah satu vault di Pengaturan Vaultnya."</string>
+    <string name="settings_m3_author_use_account" formatted="false">"Gunakan akun GitHub saya sebagai gantinya"</string>
+    <string name="settings_m3_author_your_account" formatted="false">"akun GitHub Anda"</string>
+    <string name="settings_m3_background_on">"aktif · %1$d vault"</string>
+    <string name="settings_m3_background_sync" formatted="false">"Background Sync"</string>
+    <string name="settings_m3_bg_attention_short" formatted="false">"Perlu ditinjau"</string>
+    <string name="settings_m3_bg_charging" formatted="false">"Sedang mengisi"</string>
+    <string name="settings_m3_bg_cond_any" formatted="false">"pada koneksi apa pun"</string>
+    <string name="settings_m3_bg_cond_both" formatted="false">"hanya melalui Wi-Fi saat mengisi daya"</string>
+    <string name="settings_m3_bg_cond_charging" formatted="false">"hanya saat mengisi daya"</string>
+    <string name="settings_m3_bg_cond_wifi" formatted="false">"hanya melalui Wi-Fi"</string>
+    <string name="settings_m3_bg_conditions_apply">"Menjalankan %1$s, seperti setiap brankas yang disertakan."</string>
+    <string name="settings_m3_bg_connect" formatted="false">"Hubungkan"</string>
+    <string name="settings_m3_bg_failed_short" formatted="false">"Tidak dapat menyinkronkan"</string>
+    <string name="settings_m3_bg_include_cd">"Sertakan %1$s dalam Background Sync"</string>
+    <string name="settings_m3_bg_intro" formatted="false">"Android menjadwalkan pemeriksaan kira-kira setiap 15 menit atau lebih lambat, tergantung pada konektivitas, baterai, dan pembatasan sistem. Upaya terbaik, tidak pernah waktu nyata."</string>
+    <string name="settings_m3_bg_modes" formatted="false">"Mode"</string>
+    <string name="settings_m3_bg_never" formatted="false">"Tidak akan pernah"</string>
+    <string name="settings_m3_bg_no_runs" formatted="false">"Belum ada jalankan. Android memulai pemeriksaan pertama dalam sekitar 15 menit."</string>
+    <string name="settings_m3_bg_nudge" formatted="false">"Dapatkan pemberitahuan saat GitHub berubah"</string>
+    <string name="settings_m3_bg_nudge_sub" formatted="false">"Ikut. Penarikan bisa dimulai segera."</string>
+    <string name="settings_m3_bg_only_when" formatted="false">"Hanya saat"</string>
+    <string name="settings_m3_bg_pull_sub" formatted="false">"Hanya fast-forward"</string>
+    <string name="settings_m3_bg_push_sub" formatted="false">"Berhenti jika jarak jauh bergerak lebih dulu"</string>
+    <string name="settings_m3_bg_recent" formatted="false">"Proses terbaru"</string>
+    <string name="settings_m3_bg_run_failed">"%1$s tidak bisa sinkron"</string>
+    <string name="settings_m3_bg_run_local_edits">"%1$s dilewati: suntingan lokal"</string>
+    <string name="settings_m3_bg_run_offline">"%1$s menunggu koneksi"</string>
+    <string name="settings_m3_bg_run_power">"%1$s menunggu pengisian daya"</string>
+    <string name="settings_m3_bg_run_pushed" formatted="false">"↑ didorong"</string>
+    <string name="settings_m3_bg_run_review">"%1$s perlu ditinjau"</string>
+    <string name="settings_m3_bg_run_skipped">"%1$s dilewati: %2$s"</string>
+    <string name="settings_m3_bg_run_wifi">"%1$s menunggu Wi-Fi"</string>
+    <string name="settings_m3_bg_vault_missing" formatted="false">"Folder tidak lagi ditambahkan. Lupakan atau tambahkan brankas lagi."</string>
+    <string name="settings_m3_bg_vault_not_included" formatted="false">"Tidak disertakan"</string>
+    <string name="settings_m3_bg_vaults" formatted="false">"Vault"</string>
+    <string name="settings_m3_bg_wifi" formatted="false">"Saat menggunakan Wi-Fi"</string>
+    <string name="settings_m3_close" formatted="false">"Tutup"</string>
+    <string name="settings_m3_commit_as" formatted="false">"Commit sebagai"</string>
+    <string name="settings_m3_debug_app" formatted="false">"App"</string>
+    <string name="settings_m3_debug_background" formatted="false">"BACKGROUND"</string>
+    <string name="settings_m3_debug_bg" formatted="false">"BG"</string>
+    <string name="settings_m3_debug_clear" formatted="false">"Bersih"</string>
+    <string name="settings_m3_debug_copy" formatted="false">"Salin entri yang terlihat"</string>
+    <string name="settings_m3_debug_day_time">"%1$s %2$s"</string>
+    <string name="settings_m3_debug_error" formatted="false">"EROR"</string>
+    <string name="settings_m3_debug_errors_count">"Error %1$d"</string>
+    <string name="settings_m3_debug_info" formatted="false">"Tampilkan info debug"</string>
+    <string name="settings_m3_debug_info_tag" formatted="false">"Informasi\nJalur"</string>
+    <string name="settings_m3_debug_log" formatted="false">"Log debug"</string>
+    <string name="settings_m3_debug_removed_vault" formatted="false">"brankas dihapus"</string>
+    <string name="settings_m3_debug_share" formatted="false">"Bagikan diagnostik"</string>
+    <string name="settings_m3_debug_warn" formatted="false">"PERINGATAN"</string>
+    <string name="settings_m3_discord" formatted="false">"Gabung ke Discord"</string>
+    <string name="settings_m3_done" formatted="false">"Selesai"</string>
+    <string name="settings_m3_feedback_subtitle" formatted="false">"Membuka aplikasi email Anda"</string>
+    <string name="settings_m3_forget" formatted="false">"Lupakan"</string>
+    <string name="settings_m3_full_access" formatted="false">"Akses Penuh GitSync.md"</string>
+    <string name="settings_m3_group_app" formatted="false">"App"</string>
+    <string name="settings_m3_group_more" formatted="false">"Koneksi &amp; bantuan"</string>
+    <string name="settings_m3_group_new_vaults" formatted="false">"Vault baru"</string>
+    <string name="settings_m3_group_purchase" formatted="false">"Pembelian"</string>
+    <string name="settings_m3_group_sync" formatted="false">"Sinkronkan"</string>
+    <string name="settings_m3_help" formatted="false">"Bantuan &amp; tentang"</string>
+    <string name="settings_m3_how_clone_url" formatted="false">"Klon dari URL"</string>
+    <string name="settings_m3_how_count" formatted="false">"4 hal yang perlu diketahui"</string>
+    <string name="settings_m3_how_github" formatted="false">"GitHub"</string>
+    <string name="settings_m3_how_it_works" formatted="false">"Cara kerjanya"</string>
+    <string name="settings_m3_how_sample" formatted="false">"Coba contoh offline"</string>
+    <string name="settings_m3_how_start" formatted="false">"Mulai dari sini"</string>
+    <string name="settings_m3_how_storage" formatted="false">"Pilih penyimpanan"</string>
+    <string name="settings_m3_how_subtitle" formatted="false">"Tinjauan dua menit tentang dasar-dasarnya"</string>
+    <string name="settings_m3_how_title" formatted="false">"Cara kerja GitSync"</string>
+    <string name="settings_m3_language" formatted="false">"Bahasa"</string>
+    <string name="settings_m3_lfs_endpoints" formatted="false">"Endpoint LFS"</string>
+    <string name="settings_m3_license" formatted="false">"Lisensi"</string>
+    <string name="settings_m3_license_subtitle" formatted="false">"Pembelian satu kali melalui Google Play"</string>
+    <string name="settings_m3_move_action" formatted="false">"Pindahkan vault"</string>
+    <string name="settings_m3_move_cancel_meta" formatted="false">"Membiarkan brankas di folder lamanya"</string>
+    <string name="settings_m3_move_confirm_guidance" formatted="false">"Jaga Obsidian dan aplikasi lain keluar dari kedua folder sampai pemindahan selesai."</string>
+    <string name="settings_m3_move_confirm_retained" formatted="false">"Yang asli tetap sebagai salinan pemulihan."</string>
+    <string name="settings_m3_move_confirm_title" formatted="false">"Memindahkan brankas ini?"</string>
+    <string name="settings_m3_move_copy_note" formatted="false">"Ini berpindah ke volume penyimpanan lain, jadi GitSync.md menyalin dan memeriksa setiap file, kemudian menyimpan yang asli di bawah Pemulihan Pindah sampai Anda menghapusnya."</string>
+    <string name="settings_m3_move_finish_meta" formatted="false">"Melanjutkan dari tempat terakhir berhenti"</string>
+    <string name="settings_m3_move_from" formatted="false">"Dari"</string>
+    <string name="settings_m3_move_interrupted" formatted="false">"Pemindahan terhenti. Setiap salinan yang kami temukan disimpan sampai Anda menyelesaikannya."</string>
+    <string name="settings_m3_move_into" formatted="false">"Ke"</string>
+    <string name="settings_m3_move_intro" formatted="false">"Memindahkan seluruh brankas: file, riwayat Git dan perubahan yang ditandai. Akun dan penulis komitnya ikut berpindah."</string>
+    <string name="settings_m3_move_moving_button" formatted="false">"Memindahkan… tetap buka GitSync.md"</string>
+    <string name="settings_m3_move_progress" formatted="false">"Memindahkan dan menyimpan pengaturan brankas…"</string>
+    <string name="settings_m3_move_title" formatted="false">"Pindahkan vault"</string>
+    <string name="settings_m3_move_will_move_to" formatted="false">"Akan dipindahkan ke"</string>
+    <string name="settings_m3_never_force" formatted="false">"Force-push"</string>
+    <string name="settings_m3_never_overwrite" formatted="false">"Timpa editan"</string>
+    <string name="settings_m3_never_rebase" formatted="false">"Rebase atau merge"</string>
+    <string name="settings_m3_never_resolve" formatted="false">"Selesaikan konflik"</string>
+    <string name="settings_m3_never_send" formatted="false">"Kirim file Anda ke kami"</string>
+    <string name="settings_m3_never_switch" formatted="false">"Ganti branch"</string>
+    <string name="settings_m3_not_now" formatted="false">"Tidak sekarang"</string>
+    <string name="settings_m3_obsidian" formatted="false">"Koneksi Obsidian"</string>
+    <string name="settings_m3_obsidian_add_vault" formatted="false">"Tambah vault"</string>
+    <string name="settings_m3_obsidian_before" formatted="false">"Sebelum Anda memulai"</string>
+    <string name="settings_m3_obsidian_command" formatted="false">"GitSync.md Connect: Sambungkan brankas ini"</string>
+    <string name="settings_m3_obsidian_connected" formatted="false">"terhubung"</string>
+    <string name="settings_m3_obsidian_empty" formatted="false">"Tambahkan atau gandakan brankas ke folder perangkat terlebih dahulu. Brankas di penyimpanan aplikasi tidak bisa dibuka oleh Obsidian."</string>
+    <string name="settings_m3_obsidian_error" formatted="false">"Obsidian tidak bisa terhubung. Periksa akses folder, remote HTTPS GitHub dan akun brankas, lalu siapkan koneksi baru."</string>
+    <string name="settings_m3_obsidian_failed" formatted="false">"Tidak terhubung"</string>
+    <string name="settings_m3_obsidian_forget_action" formatted="false">"Lupakan koneksi"</string>
+    <string name="settings_m3_obsidian_forget_body">"GitSync.md berhenti memberikan kredensial ke Obsidian untuk %1$s. Kredensial Obsidian yang sudah diimpor tetap ada; cabut secara terpisah. File Anda tetap di tempatnya."</string>
+    <string name="settings_m3_obsidian_forget_title" formatted="false">"Lupakan koneksi ini?"</string>
+    <string name="settings_m3_obsidian_intro" formatted="false">"Biarkan plugin Obsidian Git mendorong dan menarik dengan akun GitHub vault ini. Kredensial dienkripsi untuk plugin pendamping dan tidak pernah dimasukkan dalam tautan."</string>
+    <string name="settings_m3_obsidian_prepare" formatted="false">"Siapkan koneksi"</string>
+    <string name="settings_m3_obsidian_prepared_lead" formatted="false">"Koneksi siap."</string>
+    <string name="settings_m3_obsidian_prepared_open">"Buka %1$s di Obsidian dan jalankan"</string>
+    <string name="settings_m3_obsidian_prepared_tail" formatted="false">". Permintaan yang lebih baru menggantikan ini."</string>
+    <string name="settings_m3_obsidian_ready">"Kredensial terenkripsi siap untuk Obsidian. Obsidian Git sekarang dapat menyinkronkan %1$s."</string>
+    <string name="settings_m3_obsidian_req1_body" formatted="false">"Obsidian dan GitSync.md harus berbagi satu folder perangkat."</string>
+    <string name="settings_m3_obsidian_req1_title" formatted="false">"Buka folder yang sama di Obsidian"</string>
+    <string name="settings_m3_obsidian_req2_body" formatted="false">"Git dan GitSync.md Connect, di Obsidian › Pengaturan."</string>
+    <string name="settings_m3_obsidian_req2_title" formatted="false">"Nyalakan dua plugin komunitas"</string>
+    <string name="settings_m3_obsidian_req3_body" formatted="false">"Dengan akun GitHub yang dipilih di koneksi brankas."</string>
+    <string name="settings_m3_obsidian_req3_title" formatted="false">"Gunakan remote GitHub HTTPS"</string>
+    <string name="settings_m3_obsidian_req4_body" formatted="false">"Persiapan hanya menyerahkan kredensial, bukan file atau riwayat."</string>
+    <string name="settings_m3_obsidian_req4_title" formatted="false">"Tidak ada yang berubah dalam brankas"</string>
+    <string name="settings_m3_obsidian_return_failed" formatted="false">"Obsidian tidak terbuka. Nyalakan GitSync.md Connect di Obsidian, lalu coba kembali."</string>
+    <string name="settings_m3_obsidian_subtitle" formatted="false">"Obsidian Git + GitSync.md Connect"</string>
+    <string name="settings_m3_obsidian_this_vault" formatted="false">"Vault ini"</string>
+    <string name="settings_m3_obsidian_vaults" formatted="false">"Brankas di ponsel ini"</string>
+    <string name="settings_m3_obsidian_waiting" formatted="false">"Menunggu Obsidian"</string>
+    <string name="settings_m3_off" formatted="false">"nonaktif"</string>
+    <string name="settings_m3_on" formatted="false">"aktif"</string>
+    <string name="settings_m3_perk_nudge_body" formatted="false">"Push GitHub mendorong aplikasi dalam hitungan detik."</string>
+    <string name="settings_m3_perk_nudge_title" formatted="false">"Tarik instan dengan Push Sync"</string>
+    <string name="settings_m3_perk_pull_body" formatted="false">"Hanya fast-forward. Hal yang tidak biasa menunggu Anda."</string>
+    <string name="settings_m3_perk_pull_title" formatted="false">"Pull di latar belakang"</string>
+    <string name="settings_m3_perk_push_body" formatted="false">"Nonaktif secara default. Anda memilih vault mana yang dipublikasikan."</string>
+    <string name="settings_m3_perk_push_title" formatted="false">"Commit &amp; push editan"</string>
+    <string name="settings_m3_privacy" formatted="false">"Privasi"</string>
+    <string name="settings_m3_privacy_policy" formatted="false">"Kebijakan Privasi"</string>
+    <string name="settings_m3_push_active" formatted="false">"Aktif"</string>
+    <string name="settings_m3_push_all_repos" formatted="false">"Semua repositori, termasuk yang baru"</string>
+    <string name="settings_m3_push_channel_sub" formatted="false">"Menggunakan saluran notifikasi pembaruan Repositori"</string>
+    <string name="settings_m3_push_checked">"Diperiksa %1$d · diperbarui %2$d · perlu ditinjau %3$d"</string>
+    <string name="settings_m3_push_connect_again" formatted="false">"Sambungkan GitHub lagi"</string>
+    <string name="settings_m3_push_connect_sub" formatted="false">"Pasang aplikasi GitSync.md dan pilih repositori"</string>
+    <string name="settings_m3_push_connected" formatted="false">"terhubung"</string>
+    <string name="settings_m3_push_connection" formatted="false">"Koneksi GitHub"</string>
+    <string name="settings_m3_push_err_cancelled" formatted="false">"Koneksi GitHub dibatalkan. Tidak ada yang berubah. Sambungkan lagi saat Anda siap."</string>
+    <string name="settings_m3_push_err_cancelled_title" formatted="false">"Kembali dari GitHub"</string>
+    <string name="settings_m3_push_err_not_selected" formatted="false">"Tidak ada vault di ponsel ini yang cocok dengan repo dan cabang GitHub. Tambahkan repo ke akses aplikasi di GitHub, atau periksa koneksi dan cabang vault."</string>
+    <string name="settings_m3_push_err_not_selected_title" formatted="false">"Repo ini tidak dibagikan dengan aplikasi"</string>
+    <string name="settings_m3_push_err_owner_title" formatted="false">"Perlu masuk sebagai pemilik"</string>
+    <string name="settings_m3_push_example_cd" formatted="false">"Contoh notifikasi"</string>
+    <string name="settings_m3_push_example_meta" formatted="false">"GitSync.md · Pembaruan repositori · sekarang"</string>
+    <string name="settings_m3_push_example_note" formatted="false">"Pribadi di layar kunci. Jika vault sudah bersih, itu sudah ditarik saat Anda melihat ini."</string>
+    <string name="settings_m3_push_example_repo" formatted="false">"pemilik/vault"</string>
+    <string name="settings_m3_push_example_title" formatted="false">"Dorongan terlihat seperti ini"</string>
+    <string name="settings_m3_push_existing_scope" formatted="false">"Masuk sebagai pemilik akun, atau pemilik organisasi. Aplikasi mempertahankan akses repositori saat ini."</string>
+    <string name="settings_m3_push_github_app" formatted="false">"GitHub App"</string>
+    <string name="settings_m3_push_handoff_body" formatted="false">"Sebuah tab browser terbuka. Pilih akun dan repositori mana yang dapat dilihat aplikasi, lalu kembali. Layar ini memeriksa lagi saat Anda kembali."</string>
+    <string name="settings_m3_push_handoff_title" formatted="false">"Selesaikan di GitHub"</string>
+    <string name="settings_m3_push_intro" formatted="false">"Hubungkan GitSync.md GitHub App dan sebuah push ke GitHub mendorong telepon ini dalam hitungan detik. Brankas bersih mengambil dan memajukan sendiri. Ketuk notifikasi untuk memeriksa lagi."</string>
+    <string name="settings_m3_push_never" formatted="false">"Sinkronisasi Push tidak pernah"</string>
+    <string name="settings_m3_push_never_commit" formatted="false">"Komit"</string>
+    <string name="settings_m3_push_never_hint" formatted="false">"Perubahan lokal dan riwayat terpisah menunggu Anda di brankas."</string>
+    <string name="settings_m3_push_never_merge" formatted="false">"Menggabungkan riwayat terpisah"</string>
+    <string name="settings_m3_push_never_switch" formatted="false">"Beralih cabang"</string>
+    <string name="settings_m3_push_never_upload" formatted="false">"Mengunggah perubahan"</string>
+    <string name="settings_m3_push_no_connections" formatted="false">"Hubungkan akun atau organisasi GitHub untuk memilih repositori mana yang dapat mengirim pembaruan."</string>
+    <string name="settings_m3_push_open_vault" formatted="false">"Buka brankas"</string>
+    <string name="settings_m3_push_permission" formatted="false">"Izinkan notifikasi untuk GitSync.md dalam pengaturan Android, kemudian aktifkan Push Sync."</string>
+    <string name="settings_m3_push_registered" formatted="false">"Ponsel ini terdaftar untuk notifikasi"</string>
+    <string name="settings_m3_push_remove" formatted="false">"Hapus"</string>
+    <string name="settings_m3_push_remove_body">"Push Sync menghentikan pengiriman pembaruan dari @%1$s ke ponsel ini. GitHub App tetap terpasang. Gunakan Kelola di GitHub untuk mengubah akses atau mencopotnya."</string>
+    <string name="settings_m3_push_remove_title" formatted="false">"Hapus koneksi ini?"</string>
+    <string name="settings_m3_push_result_updated" formatted="false">"Diperbarui dari GitHub"</string>
+    <string name="settings_m3_push_stop" formatted="false">"Hentikan tindakan"</string>
+    <string name="settings_m3_push_suspended" formatted="false">"Ditangguhkan"</string>
+    <string name="settings_m3_push_sync" formatted="false">"Push Sync dari GitHub"</string>
+    <string name="settings_m3_push_this_phone" formatted="false">"ponsel ini"</string>
+    <string name="settings_m3_push_title" formatted="false">"Push Sync"</string>
+    <string name="settings_m3_push_waiting" formatted="false">"Menunggu GitHub"</string>
+    <string name="settings_m3_save_clones_in" formatted="false">"Simpan clone baru di"</string>
+    <string name="settings_m3_sc_action" formatted="false">"Tindakan"</string>
+    <string name="settings_m3_sc_authorized" formatted="false">"Diizinkan"</string>
+    <string name="settings_m3_sc_background_sub" formatted="false">"Hasil mendarat di sini dan dalam notifikasi"</string>
+    <string name="settings_m3_sc_branch">"Branch %1$s"</string>
+    <string name="settings_m3_sc_branch_reviewed">"Cabang %1$s · ditinjau %2$s"</string>
+    <string name="settings_m3_sc_clear" formatted="false">"Bersih"</string>
+    <string name="settings_m3_sc_clear_results" formatted="false">"Bersihkan hasil yang tersimpan"</string>
+    <string name="settings_m3_sc_ff_only" formatted="false">"Hanya pengambilan dan fast-forward"</string>
+    <string name="settings_m3_sc_item_title">"%1$s: %2$s"</string>
+    <string name="settings_m3_sc_launcher" formatted="false">"Pintasan layar utama"</string>
+    <string name="settings_m3_sc_link_identity">"Tautan %1$s · Dibuat %2$s"</string>
+    <string name="settings_m3_sc_link_private" formatted="false">"Siapa pun yang memiliki tautan ini dapat menjalankannya. Jaga tetap pribadi."</string>
+    <string name="settings_m3_sc_links" formatted="false">"Tautan berizin"</string>
+    <string name="settings_m3_sc_new_title" formatted="false">"Pintasan baru untuk satu brankas"</string>
+    <string name="settings_m3_sc_no_links" formatted="false">"Tidak ada tautan yang diberi otorisasi. Aplikasi seperti Obsidian atau Shortcuts dapat memintanya."</string>
+    <string name="settings_m3_sc_no_shortcuts" formatted="false">"Belum ada pintasan peluncur. Pilih brankas dan tindakan di atas."</string>
+    <string name="settings_m3_sc_open_pull_all" formatted="false">"Buka Tarik Semua"</string>
+    <string name="settings_m3_sc_open_pull_all_sub" formatted="false">"Tarik setiap brankas sekarang dan lihat setiap hasil"</string>
+    <string name="settings_m3_sc_pin_consent">"Setiap ketukan menjalankan ini sekali, tanpa bertanya lagi. Ini tetap terikat pada %1$s, cabang %2$s, dan akun ini. Jika salah satu dari itu berubah, pintasan berhenti dan Anda membuat yang baru. Cabut kapan saja di sini."</string>
+    <string name="settings_m3_sc_pin_writes">"Commit dengan “%1$s” dan unggah setiap perubahan setiap ketukan."</string>
+    <string name="settings_m3_sc_pinned" formatted="false">"Disematkan"</string>
+    <string name="settings_m3_sc_pull" formatted="false">"Pull"</string>
+    <string name="settings_m3_sc_pull_all" formatted="false">"Pull All"</string>
+    <string name="settings_m3_sc_pull_all_note" formatted="false">"Setiap ketukan menarik setiap brankas sekali. Tidak ada yang dikomit atau diunggah. Hasil menunggu di Tarik Semua."</string>
+    <string name="settings_m3_sc_pull_all_repos" formatted="false">"Tarik Semua Repositori"</string>
+    <string name="settings_m3_sc_pull_all_title" formatted="false">"Tarik Semua, tanpa membuka aplikasi"</string>
+    <string name="settings_m3_sc_pull_sub" formatted="false">"Hanya pengambilan dan fast-forward"</string>
+    <string name="settings_m3_sc_push" formatted="false">"Commit &amp; push"</string>
+    <string name="settings_m3_sc_push_sub" formatted="false">"Mengkomit setiap perubahan, kemudian mengunggah"</string>
+    <string name="settings_m3_sc_refresh" formatted="false">"Muat ulang"</string>
+    <string name="settings_m3_sc_requested" formatted="false">"Pintasan diminta. Setujui di peluncur Anda, lalu ketuk Segarkan di bawah untuk memeriksanya."</string>
+    <string name="settings_m3_sc_returns_to">"kembali ke %1$s"</string>
+    <string name="settings_m3_sc_review_again" formatted="false">"Tinjau lagi"</string>
+    <string name="settings_m3_sc_revoke" formatted="false">"Cabut"</string>
+    <string name="settings_m3_sc_revoke_body" formatted="false">"Menghentikan aksi Git. Ikonnya mungkin tetap ada di layar beranda Anda, berwarna abu-abu, hingga Anda menghapusnya. Pintasan baru perlu disetujui lagi."</string>
+    <string name="settings_m3_sc_revoke_link" formatted="false">"Cabut izin tautan"</string>
+    <string name="settings_m3_sc_revoke_title" formatted="false">"Batalkan pintasan ini?"</string>
+    <string name="settings_m3_sc_revoked" formatted="false">"Izin dicabut"</string>
+    <string name="settings_m3_sc_run_once" formatted="false">"Jalankan sekali sekarang"</string>
+    <string name="settings_m3_sc_runs_closed" formatted="false">"Berjalan tanpa membuka GitSync.md"</string>
+    <string name="settings_m3_sc_runs_open" formatted="false">"Membuka GitSync.md, lalu berjalan sekali"</string>
+    <string name="settings_m3_sc_status" formatted="false">"Baca status"</string>
+    <string name="settings_m3_sc_status_sub" formatted="false">"Tidak ada jaringan. Menunjukkan apa yang berubah."</string>
+    <string name="settings_m3_sc_sync" formatted="false">"Sinkronkan"</string>
+    <string name="settings_m3_sc_sync_sub" formatted="false">"Tarik dulu, lalu komit &amp; dorong"</string>
+    <string name="settings_m3_sc_tile_how" formatted="false">"tarik turun Pengaturan Cepat › Edit › seret masuk Tarik Semua."</string>
+    <string name="settings_m3_sc_tile_lead" formatted="false">"Ubahan:"</string>
+    <string name="settings_m3_sc_title" formatted="false">"Widget &amp; pintasan"</string>
+    <string name="settings_m3_sc_upstream">"Hulu %1$s / %2$s"</string>
+    <string name="settings_m3_sc_waiting" formatted="false">"Menunggu peluncur"</string>
+    <string name="settings_m3_sc_widget_how" formatted="false">"tekan lama layar beranda Anda › Widget › GitSync.md."</string>
+    <string name="settings_m3_sc_widget_lead" formatted="false">"Widget:"</string>
+    <string name="settings_m3_sc_writes" formatted="false">"Menyusun setiap perubahan, mengkomit jika diperlukan, lalu mengunggah. Konflik, riwayat terbagi atau remote yang bergerak terlebih dahulu menghentikannya, dan unggahan yang gagal mempertahankan komit baru."</string>
+    <string name="settings_m3_shortcuts" formatted="false">"Pintasan widget &amp; peluncur"</string>
+    <string name="settings_m3_sign_out" formatted="false">"Keluar"</string>
+    <string name="settings_m3_ssh_hosts" formatted="false">"Server SSH"</string>
+    <string name="settings_m3_storage_hint" formatted="false">"Penyimpanan telepon dan kartu SD berfungsi. Folder cloud seperti Google Drive tidak dapat menampung repositori Git."</string>
+    <string name="settings_m3_storage_intro" formatted="false">"Pilih folder tempat klon baru masuk. Brankas yang sudah Anda miliki tetap di tempatnya."</string>
+    <string name="settings_m3_storage_move_title" formatted="false">"Pindahkan brankas yang sudah Anda miliki"</string>
+    <string name="settings_m3_system_default" formatted="false">"Default sistem"</string>
+    <string name="settings_m3_terms" formatted="false">"Ketentuan"</string>
+    <string name="settings_m3_theme" formatted="false">"Tema"</string>
+    <string name="settings_m3_theme_dark" formatted="false">"Gelap"</string>
+    <string name="settings_m3_theme_light" formatted="false">"Terang"</string>
+    <string name="settings_m3_title" formatted="false">"Pengaturan"</string>
+    <string name="settings_m3_unlocked" formatted="false">"Terbuka"</string>
+    <string name="settings_m3_upgrade_body" formatted="false">"Buka Obsidian di pagi hari dan semuanya sudah ada."</string>
+    <string name="settings_m3_upgrade_illustration" formatted="false">"Telepon terkunci menarik dan mendorong dengan GitHub semalaman"</string>
+    <string name="settings_m3_upgrade_last_run">"%1$s · ditarik %2$d · didorong %3$d"</string>
+    <string name="settings_m3_upgrade_locked_phone" formatted="false">"telepon terkunci"</string>
+    <string name="settings_m3_upgrade_note" formatted="false">"Termasuk dengan GitSync.md. Android menentukan kapan pekerjaan latar belakang berjalan; ini hanya upaya terbaik. Penghemat baterai dapat menunda pekerjaan tersebut."</string>
+    <string name="settings_m3_upgrade_pull" formatted="false">"Pull di latar belakang"</string>
+    <string name="settings_m3_upgrade_push" formatted="false">"Juga commit &amp; push editan saya"</string>
+    <string name="settings_m3_upgrade_title" formatted="false">"Sinkron saat\nAnda tidur."</string>
+    <string name="settings_m3_upgrade_turn_on" formatted="false">"Aktifkan Background Sync"</string>
+    <string name="settings_m3_vault_check_ok" formatted="false">"Oke"</string>
+    <string name="settings_m3_vault_delete_action" formatted="false">"Hapus"</string>
+    <string name="settings_m3_vault_delete_body" formatted="false">"Menghapus folder ini, file-nya, dan riwayat Git dari ponsel ini. Apa pun yang tidak didorong ke GitHub akan hilang."</string>
+    <string name="settings_m3_vault_delete_title" formatted="false">"Hapus brankas &amp; hapus file?"</string>
+    <string name="settings_m3_vault_display_name" formatted="false">"Nama tampilan"</string>
+    <string name="settings_m3_vault_display_name_hint" formatted="false">"Biarkan kosong untuk menggunakan nama brankas itu sendiri."</string>
+    <string name="settings_m3_vault_errors" formatted="false">"error · 7h"</string>
+    <string name="settings_m3_vault_files" formatted="false">"file"</string>
+    <string name="settings_m3_vault_folder" formatted="false">"Folder"</string>
+    <string name="settings_m3_vault_group" formatted="false">"Vault ini"</string>
+    <string name="settings_m3_vault_health" formatted="false">"Kesehatan"</string>
+    <string name="settings_m3_vault_health_attention" formatted="false">"Perlu diperiksa"</string>
+    <string name="settings_m3_vault_health_good" formatted="false">"bagus"</string>
+    <string name="settings_m3_vault_include" formatted="false">"Sertakan dalam Background Sync"</string>
+    <string name="settings_m3_vault_include_review" formatted="false">"Meninjau cabang dan jarak jauh terlebih dahulu"</string>
+    <string name="settings_m3_vault_include_sub">"Hanya cabang %1$s, mengikuti %2$s/%3$s"</string>
+    <string name="settings_m3_vault_include_title" formatted="false">"Sertakan di Background Sync?"</string>
+    <string name="settings_m3_vault_last_check">"pemeriksaan latar belakang terakhir %1$s · %2$s"</string>
+    <string name="settings_m3_vault_lfs" formatted="false">"LFS"</string>
+    <string name="settings_m3_vault_no_check" formatted="false">"belum ada pemeriksaan latar belakang"</string>
+    <string name="settings_m3_vault_pin" formatted="false">"Sematkan di atas Beranda"</string>
+    <string name="settings_m3_vault_remove" formatted="false">"Hapus brankas…"</string>
+    <string name="settings_m3_vault_remove_action" formatted="false">"Hapus"</string>
+    <string name="settings_m3_vault_remove_delete" formatted="false">"Hapus brankas &amp; hapus file…"</string>
+    <string name="settings_m3_vault_remove_kept" formatted="false">"GitSync.md berhenti menampilkannya. Folder ini tidak dikelola oleh GitSync.md, jadi file dan riwayat Git tetap berada di tempatnya."</string>
+    <string name="settings_m3_vault_remove_title" formatted="false">"Hapus brankas ini?"</string>
+    <string name="settings_m3_vault_shortcut" formatted="false">"Tambahkan pintasan ke layar utama"</string>
+    <string name="settings_m3_vault_shortcut_sub" formatted="false">"Tarik atau komit &amp; dorong dalam satu ketukan"</string>
+    <string name="settings_m3_vault_stop_tracking" formatted="false">"Berhenti melacak — simpan file"</string>
+    <string name="settings_m3_vault_title" formatted="false">"Pengaturan vault"</string>
+    <string name="settings_m3_whats_new" formatted="false">"Yang baru"</string>
+    <string name="settings_m3_whats_new_hint" formatted="false">"Ini juga muncul sekali setelah pembaruan. Kamu selalu bisa menemukannya di sini."</string>
+    <string name="settings_m3_whats_new_subtitle">"Catatan rilis untuk %1$s"</string>
     <string name="shortcut_background_attention" formatted="false">"Pintasan memerlukan perhatian. Buka tindakan repositori dan tinjau statusnya sebelum mencoba lagi."</string>
     <string name="shortcut_background_channel" formatted="false">"Tindakan pintasan"</string>
     <string name="shortcut_background_complete" formatted="false">"Tindakan pintasan selesai. Buka tindakan repositori untuk meninjau hasilnya."</string>
@@ -688,9 +1982,37 @@
     <string name="shortcut_background_interrupted" formatted="false">"Eksekusi terputus. Eksekusi tidak akan diulang otomatis. Tinjau repositori sebelum mengetuk lagi."</string>
     <string name="shortcut_background_option" formatted="false">"Jalankan tanpa membuka GitSync.md"</string>
     <string name="shortcut_background_running" formatted="false">"Tindakan pintasan berjalan"</string>
+    <string name="shortcut_m3_add_vault" formatted="false">"Tambah vault"</string>
+    <string name="shortcut_m3_commit_push">"%1$s: Komit &amp; dorong"</string>
+    <string name="shortcut_m3_commit_short" formatted="false">"Commit &amp; push"</string>
+    <string name="shortcut_m3_pull">"%1$s: Tarik"</string>
+    <string name="shortcut_m3_pull_short" formatted="false">"Pull"</string>
     <string name="shortcut_results_clear_scope" formatted="false">"Hapus hasil eksekusi pintasan dan callback yang disimpan. Otorisasinya tidak berubah. Tindakan yang terputus tidak akan dijalankan ulang otomatis."</string>
     <string name="shortcut_results_unavailable" formatted="false">"Hasil pintasan tersimpan tidak dapat dibaca. Otorisasi tetap terpisah."</string>
     <string name="ssh_hide_private_key" formatted="false">"Sembunyikan kunci privat"</string>
+    <string name="ssh_m3_changed_title" formatted="false">"Kunci server SSH berubah"</string>
+    <string name="ssh_m3_changed_warning" formatted="false">"Kunci yang berubah dapat berarti seseorang menyamar sebagai server. Periksa sidik jari baru dengan pemiliknya sebelum kamu mengganti kepercayaan."</string>
+    <string name="ssh_m3_compare" formatted="false">"Bandingkan dengan kunci host SSH yang diterbitkan pemilik server sebelum kamu mempercayainya."</string>
+    <string name="ssh_m3_empty" formatted="false">"Tidak ada server SSH tepercaya"</string>
+    <string name="ssh_m3_error_save" formatted="false">"Tidak dapat menyimpan kepercayaan server SSH. Periksa sidik jari lagi sebelum Anda mencoba lagi."</string>
+    <string name="ssh_m3_forget" formatted="false">"Lupakan"</string>
+    <string name="ssh_m3_forget_body">"%1$s akan memerlukan verifikasi sidik jari sebelum Anda terhubung kembali."</string>
+    <string name="ssh_m3_forget_cd">"Lupakan %1$s"</string>
+    <string name="ssh_m3_forget_server" formatted="false">"Lupakan server"</string>
+    <string name="ssh_m3_forget_title" formatted="false">"Lupakan server SSH?"</string>
+    <string name="ssh_m3_intro" formatted="false">"Sidik jari yang Anda percayai disimpan di ponsel ini. Lupakan satu dan Anda akan memverifikasinya lagi saat terhubung berikutnya. Kunci SSH Anda tetap tersimpan."</string>
+    <string name="ssh_m3_none" formatted="false">"Pengaturan · tidak ada yang dipercaya"</string>
+    <string name="ssh_m3_previous">"Sebelumnya dipercaya: %1$s"</string>
+    <string name="ssh_m3_replace" formatted="false">"Ganti kepercayaan dan hubungkan"</string>
+    <string name="ssh_m3_reset_all" formatted="false">"Setel ulang semua kepercayaan server SSH"</string>
+    <string name="ssh_m3_reset_body" formatted="false">"Setiap server SSH akan memerlukan verifikasi sidik jari sebelum Anda terhubung lagi. Ini juga menghapus entri kepercayaan yang rusak."</string>
+    <string name="ssh_m3_reset_confirm" formatted="false">"Setel ulang kepercayaan"</string>
+    <string name="ssh_m3_reset_title" formatted="false">"Setel ulang semua kepercayaan server SSH?"</string>
+    <string name="ssh_m3_saved" formatted="false">"Kepercayaan disimpan di ponsel ini dan koneksi yang menunggu berlanjut. Batal membuat server tidak dipercaya."</string>
+    <string name="ssh_m3_title" formatted="false">"Kepercayaan server SSH"</string>
+    <string name="ssh_m3_trust" formatted="false">"Percayai dan hubungkan"</string>
+    <string name="ssh_m3_trusted" formatted="false">"Server tepercaya"</string>
+    <string name="ssh_m3_verify_title" formatted="false">"Verifikasi server SSH"</string>
     <string name="ssh_show_private_key" formatted="false">"Tampilkan kunci privat"</string>
     <string name="ssh_trust_error_changed" formatted="false">"Kepercayaan SSH berubah selama peninjauan. Tinjau entri server saat ini dan coba hubungkan lagi."</string>
     <string name="ssh_trust_error_damaged" formatted="false">"Kepercayaan SSH tersimpan perlu ditinjau. Setel ulang kepercayaan server SSH di Pengaturan sebelum mencoba lagi."</string>
@@ -710,7 +2032,7 @@
     <string name="tide_merge_conflict_headline" formatted="false">"Kedua sisi mengedit berkas ini."</string>
     <string name="tide_merge_conflict_pick" formatted="false">"Pilih versi yang ingin disimpan, atau edit hasilnya secara manual."</string>
     <string name="tide_merge_conflict_renamed_headline" formatted="false">"Diganti nama dengan dua cara berbeda."</string>
-    <string name="tide_merge_conflict_result" formatted="false">"HASIL"</string>
+    <string name="tide_merge_conflict_result" formatted="false">"Hasil"</string>
     <string name="tide_merge_conflict_result_hint" formatted="false">": ini adalah yang diproses dalam proses staging."</string>
     <string name="tide_merge_diff_added" formatted="false">"Ditambahkan"</string>
     <string name="tide_merge_diff_binary_body" formatted="false">"Konten biner tidak dapat ditampilkan sebagai teks."</string>
@@ -755,7 +2077,7 @@
     <string name="tide_vault_eyebrow_unreadable" formatted="false">"Tidak dapat membaca"</string>
     <string name="tide_vault_files_section" formatted="false">"File"</string>
     <string name="tide_vault_from_remote">"↓%1$d dari jarak jauh"</string>
-    <string name="tide_vault_git" formatted="false">"GIT"</string>
+    <string name="tide_vault_git" formatted="false">"Git"</string>
     <string name="tide_vault_headline_behind">"Baru di jarak jauh: %1$d"</string>
     <string name="tide_vault_headline_unreadable" formatted="false">"Tidak dapat membaca vault ini."</string>
     <string name="tide_vault_more" formatted="false">"Opsi vault lainnya"</string>
@@ -768,6 +2090,13 @@
     <string name="tide_vault_sub_empty" formatted="false">"Tambahkan catatan, lalu buat commit dari sini."</string>
     <string name="tide_vault_sub_in_sync" formatted="false">"Tidak ada yang menunggu di ponsel ini"</string>
     <string name="tide_vault_yours">"↑%1$d lokal"</string>
+    <string name="tile_m3_background_sync" formatted="false">"Background Sync"</string>
+    <string name="tile_m3_modes">"%1$s · %2$s"</string>
+    <string name="tile_m3_pull_all" formatted="false">"Pull All"</string>
+    <string name="tile_m3_pull_off" formatted="false">"Tarik keluar"</string>
+    <string name="tile_m3_pull_on" formatted="false">"Tarik masuk"</string>
+    <string name="tile_m3_push_off" formatted="false">"Dorong keluar"</string>
+    <string name="tile_m3_push_on" formatted="false">"Dorong masuk"</string>
     <string name="tracking_metadata_size">"Metadata Git: %1$s"</string>
     <string name="tracking_remove_permanent_title" formatted="false">"Hapus riwayat Git secara permanen?"</string>
     <string name="tracking_removed_backup">"Pelacakan Git dihapus. Cadangan terverifikasi: %1$s"</string>
@@ -778,14 +2107,23 @@
     <string name="ui_1_s_characters_bde60398">"Karakter: %1$s"</string>
     <string name="ui_1_s_lines_2_s_bytes_c30a0cd1">"Baris: %1$s, byte: %2$s"</string>
     <string name="ui_1_s_local_commits_2_s_upstream_commits_77dc6fa8">"%1$s commit lokal · %2$s commit upstream"</string>
+    <string name="ui_1_vault_c39776f1" formatted="false">"1 vault"</string>
+    <string name="ui_2_of_3_commits_sent_5591e38a" formatted="false">"2 dari 3 commit telah dikirim"</string>
+    <string name="ui_3_changes_aren_t_committed_yet_commit_or_s_d878e782" formatted="false">"3 perubahan belum di-commit. Commit atau simpan terlebih dahulu sebelum Anda beralih cabang."</string>
+    <string name="ui_3_held_f454ab2b" formatted="false">"↑3 ditahan"</string>
+    <string name="ui_3_to_push_ac87b7cb" formatted="false">"↑3 untuk didorong"</string>
+    <string name="ui_4_in_sync_checked_2_min_ago_a1f1ab5e" formatted="false">"4 sinkron · diperiksa 2 menit lalu"</string>
     <string name="ui_abort_rebase_fd5cfc32" formatted="false">"Batalkan rebase…"</string>
     <string name="ui_about_4efca0d1" formatted="false">"Tentang"</string>
+    <string name="ui_about_lfs_538b5b7e" formatted="false">"Tentang LFS"</string>
+    <string name="ui_all_5_8907f196" formatted="false">"Semua 5"</string>
     <string name="ui_all_conflicts_are_staged_continue_replayin_b86b2a5a" formatted="false">"Semua penyelesaian konflik sudah di-stage. Lanjutkan menerapkan ulang commit. Jika Git melaporkan NOTHING_TO_COMMIT, tinjau apakah commit kosong perlu dilewati."</string>
     <string name="ui_all_local_changes_to_this_file_will_be_per_0919f539" formatted="false">": Semua perubahan lokal pada file ini akan dihapus secara permanen."</string>
     <string name="ui_allow_local_folder_access_0b2888fb" formatted="false">"Izinkan akses folder lokal"</string>
     <string name="ui_app_0d04bfeb" formatted="false">"Aplikasi"</string>
     <string name="ui_app_settings_da645334" formatted="false">"Pengaturan Aplikasi"</string>
     <string name="ui_apply_tracking_choice_47a2e187" formatted="false">"Terapkan pilihan pelacakan"</string>
+    <string name="ui_attention_1_fa1ea5dc" formatted="false">"Perhatian 1"</string>
     <string name="ui_authentication_66880d2d" formatted="false">"Autentikasi"</string>
     <string name="ui_back_639807a2" formatted="false">"KEMBALI"</string>
     <string name="ui_back_aceb696a" formatted="false">"← Kembali"</string>
@@ -793,11 +2131,13 @@
     <string name="ui_backup_1_s_6ad01ca6">"Cadangan: %1$s"</string>
     <string name="ui_base_7b47361a" formatted="false">"Dasar"</string>
     <string name="ui_binary_large_or_lfs_file_choose_an_entire_52c3278a" formatted="false">"File biner, besar, atau LFS: pilih satu sisi secara utuh."</string>
+    <string name="ui_both_sides_edited_step_3_077f9640" formatted="false">"Kedua sisi mengedit “Langkah 3”."</string>
     <string name="ui_branch_52656e81" formatted="false">"Cabang"</string>
     <string name="ui_branch_optional_e9dedf99" formatted="false">"Branch (opsional)"</string>
     <string name="ui_browsing_with_this_account_28a8b330" formatted="false">"Menjelajah dengan akun ini"</string>
     <string name="ui_cancel_pending_move_0858583b" formatted="false">"Batalkan pemindahan tertunda"</string>
     <string name="ui_changes_bbd4b6a8" formatted="false">"Perubahan"</string>
+    <string name="ui_changes_on_this_phone_6359d3d5" formatted="false">"perubahan di ponsel ini"</string>
     <string name="ui_choose_a_connected_account_for_this_reposi_c4817ea9" formatted="false">"Pilih akun yang terhubung untuk repositori ini."</string>
     <string name="ui_choose_a_device_folder_d00b7daf" formatted="false">"Pilih folder di perangkat"</string>
     <string name="ui_choose_an_authentication_method_before_clo_c89124ba" formatted="false">"Pilih metode autentikasi sebelum mengklon."</string>
@@ -810,14 +2150,18 @@
     <string name="ui_clone_again_e05eb495" formatted="false">"Klon lagi"</string>
     <string name="ui_clone_again_review_the_previous_branch_and_33cba147" formatted="false">"Klon lagi · tinjau branch dan koneksi sebelumnya sebelum memulai."</string>
     <string name="ui_clone_storage_47cafc8a" formatted="false">"Penyimpanan klon"</string>
+    <string name="ui_cloning_and_preparing_the_working_copy_6fe864ff" formatted="false">"Menyalin dan menyiapkan salinan kerja"</string>
+    <string name="ui_commit_3_files_959a8528" formatted="false">"Commit 3 file"</string>
     <string name="ui_commit_author_e9376b3a" formatted="false">"Pembuat Commit"</string>
     <string name="ui_commit_message_a4b361b7" formatted="false">"Pesan commit…"</string>
     <string name="ui_commit_sha_d0bc6028" formatted="false">"Commit SHA"</string>
     <string name="ui_confirm_eebdd24a" formatted="false">"Konfirmasi"</string>
+    <string name="ui_conflict_1_of_2_ideas_23283a20" formatted="false">"Konflik 1 dari 2 · ide/"</string>
     <string name="ui_continue_rebase_7a14e965" formatted="false">"Lanjutkan Rebase"</string>
     <string name="ui_create_a_file_or_folder_using_new_655c5596" formatted="false">"Buat berkas atau folder menggunakan Baru."</string>
     <string name="ui_current_default_d914f86e" formatted="false">"Default saat ini"</string>
     <string name="ui_current_separate_push_address_1_s_2a6ef8f9">"Alamat push terpisah saat ini: %1$s"</string>
+    <string name="ui_daily_new_file_42_31057cdf" formatted="false">"harian · file baru · +42"</string>
     <string name="ui_debug_info_697b4941" formatted="false">"Info debug"</string>
     <string name="ui_delete_1_s_6474596f">"Hapus \"%1$s\"?"</string>
     <string name="ui_delete_e2d0a549" formatted="false">"Hapus"</string>
@@ -826,6 +2170,10 @@
     <string name="ui_delete_local_files_20424441" formatted="false">"Hapus File Lokal"</string>
     <string name="ui_destination_1_s_0df94639">"Tujuan: %1$s"</string>
     <string name="ui_destination_parent_folder_c6c4f97e" formatted="false">"Folder induk tujuan"</string>
+    <string name="ui_disabled_75081b59" formatted="false">"Tidak dapat digunakan"</string>
+    <string name="ui_discard_3_95e06aed" formatted="false">"Buang 3"</string>
+    <string name="ui_discard_3_changes_d2ad52aa" formatted="false">"Buang 3 perubahan?"</string>
+    <string name="ui_discard_changes_85bcf416" formatted="false">"Buang perubahan?"</string>
     <string name="ui_discard_draft_cb30147e" formatted="false">"Buang draf"</string>
     <string name="ui_discard_eb1a70e3" formatted="false">"Buang"</string>
     <string name="ui_discard_resolution_draft_47c16148" formatted="false">"Buang draf penyelesaian?"</string>
@@ -846,6 +2194,8 @@
     <string name="ui_gitsync_md_needs_shared_storage_access_to_f1b339ea" formatted="false">"GitSync.md memerlukan akses penyimpanan bersama untuk mengelola salinan kerja Git asli di folder perangkat. Pilih folder yang ingin digunakan setelah mengaktifkan akses di Setelan Android."</string>
     <string name="ui_go_back_and_select_a_repository_c3eedd39" formatted="false">"Kembali dan pilih repositori."</string>
     <string name="ui_hash_a9106914" formatted="false">"Hash"</string>
+    <string name="ui_health_md_f72119f5" formatted="false">"kesehatan-md"</string>
+    <string name="ui_https_ssh_git_or_file_e79ef5ea" formatted="false">"HTTPS, SSH, git:// atau file://."</string>
     <string name="ui_i_understand_that_another_owner_may_still_b4a12b2d" formatted="false">"Saya memahami bahwa pemilik lain mungkin masih mengedit file ini."</string>
     <string name="ui_include_the_ssh_username_in_the_address_gi_beb09b5a" formatted="false">"Sertakan nama pengguna SSH dalam alamat: git@host:team/repo.git atau ssh://git@host:2222/team/repo.git."</string>
     <string name="ui_keep_editing_e76fd2ad" formatted="false">"Lanjutkan mengedit"</string>
@@ -882,8 +2232,12 @@
     <string name="ui_owner_1_s_599ca9ce">"Pemilik: %1$s"</string>
     <string name="ui_parents_1_s_914efbd0">"Induk (%1$s)"</string>
     <string name="ui_path_62fa5a5b" formatted="false">"Jalur"</string>
+    <string name="ui_plain_http_sends_credentials_unencrypted_c99e5672" formatted="false">"HTTP biasa mengirim kredensial tanpa enkripsi."</string>
     <string name="ui_platform_c78ffe19" formatted="false">"Platform"</string>
     <string name="ui_pull_with_rebase_6d25f1e0" formatted="false">"Pull dengan rebase"</string>
+    <string name="ui_push_was_rejected_fbc19d01" formatted="false">"Push ditolak"</string>
+    <string name="ui_pushed_579e8c6a" formatted="false">"Di-push"</string>
+    <string name="ui_rebase_completed_successfully_53314c91" formatted="false">": Rebase telah berhasil dilakukan."</string>
     <string name="ui_rebase_in_progress_3ecd9c42" formatted="false">"Rebase berlangsung"</string>
     <string name="ui_rebase_onto_reviewed_upstream_c3b8fb93" formatted="false">"Rebase ke upstream yang ditinjau"</string>
     <string name="ui_reconnect_bf8a9eab" formatted="false">"Hubungkan ulang"</string>
@@ -893,6 +2247,7 @@
     <string name="ui_reload_author_18a711d8" formatted="false">"Muat ulang penulis"</string>
     <string name="ui_reload_connection_ceed2dae" formatted="false">"Muat ulang koneksi"</string>
     <string name="ui_reload_from_disk_d4288839" formatted="false">"Muat ulang dari disk"</string>
+    <string name="ui_remote_has_no_new_commits_fetched_2m_ago_bdaa4b95" formatted="false">"Remote tidak memiliki commit baru · diambil 2 menit lalu"</string>
     <string name="ui_remove_1_s_e4dd7c24">"Hapus %1$s?"</string>
     <string name="ui_remove_1_s_this_removes_it_from_gitsync_md_0a6b198d">"Hapus \"%1$s\"?\n\nIni menghapusnya dari GitSync.md. Semua file lokal dan riwayat Git tetap ada di perangkat ini, dan Anda dapat menghubungkannya kembali nanti. Repositori jarak jauh tidak terpengaruh."</string>
     <string name="ui_remove_all_custom_endpoint_approvals_and_t_ffc30a9e" formatted="false">"Hapus semua persetujuan endpoint khusus dan kredensial tersimpannya di perangkat ini. Setiap endpoint dan arah transfer memerlukan tinjauan baru."</string>
@@ -932,17 +2287,20 @@
     <string name="ui_save_1509f561" formatted="false">"Simpan"</string>
     <string name="ui_save_author_1c24b32a" formatted="false">"Simpan penulis"</string>
     <string name="ui_save_connection_df24ef12" formatted="false">"Simpan koneksi"</string>
+    <string name="ui_saved_credentials_are_encrypted_on_this_de_9320d5e0" formatted="false">"Kredensial yang disimpan dienkripsi di perangkat ini."</string>
     <string name="ui_saving_uses_this_address_for_both_fetch_an_48c82edc" formatted="false">"Saat disimpan, alamat ini digunakan untuk fetch dan push. Jalankan fetch setelahnya untuk memperbarui status jarak jauh."</string>
     <string name="ui_selected_folder_0cf59bef" formatted="false">"Folder terpilih"</string>
     <string name="ui_share_backup_archive_ee4ba873" formatted="false">"Bagikan arsip cadangan"</string>
     <string name="ui_some_diagnostics_could_not_be_read_or_save_19e3372d" formatted="false">"Sebagian diagnostik tidak dapat dibaca atau disimpan. Data yang ada dipertahankan. Hapus log untuk memulai pencatatan lagi."</string>
     <string name="ui_ssh_private_key_0e92a613" formatted="false">"SSH Kunci Privat"</string>
     <string name="ui_stage_de838855" formatted="false">"Siapkan"</string>
+    <string name="ui_stay_on_main_915a176c" formatted="false">"Tetap di main"</string>
     <string name="ui_the_active_destination_stays_in_place_gits_a4f1f68a" formatted="false">"Tujuan aktif tetap berada di tempatnya. GitSync.md memeriksa bahwa sumber asli yang dipertahankan tidak memiliki suntingan setelahnya sebelum menghapus berkas dan riwayat Git-nya secara permanen."</string>
     <string name="ui_the_folder_can_move_directly_on_this_stora_7b29fabb" formatted="false">"Folder dapat dipindahkan langsung di volume penyimpanan ini."</string>
     <string name="ui_the_previous_github_account_is_disconnecte_628a1f8c" formatted="false">"Akun GitHub sebelumnya terputus. Pilih akun yang terhubung atau metode autentikasi lain."</string>
     <string name="ui_the_replayed_local_commit_deletes_this_fil_ab00656d" formatted="false">"Commit lokal yang diterapkan ulang menghapus file ini."</string>
     <string name="ui_the_review_changed_cancel_and_refresh_serv_c7ee804c" formatted="false">"Informasi tinjauan berubah. Batalkan dan muat ulang kunci server."</string>
+    <string name="ui_these_files_go_back_to_how_they_were_in_a4_02e3cd66" formatted="false">"File-file ini kembali ke kondisi semula di a41c9e2."</string>
     <string name="ui_this_history_entry_is_unavailable_c2c9f4e0" formatted="false">"Entri riwayat ini tidak tersedia."</string>
     <string name="ui_this_removes_another_connection_s_lock_coo_880defbf" formatted="false">"Ini menghapus kunci koneksi lain. Koordinasikan dengan pemiliknya sebelum melanjutkan."</string>
     <string name="ui_this_repository_will_use_public_access_unt_c94fad61" formatted="false">"Repositori ini akan menggunakan akses publik sampai Anda memilih autentikasi lagi. Akun GitHub yang Anda masuki tidak akan digunakan untuk repositori ini. Alamat fetch dan push tetap sama."</string>
@@ -955,6 +2313,7 @@
     <string name="ui_use_for_new_clones_be174c95" formatted="false">"Gunakan untuk klon baru"</string>
     <string name="ui_use_saved_default_3bb7260d" formatted="false">"Gunakan default tersimpan"</string>
     <string name="ui_username_e3b89e9d" formatted="false">"Nama Pengguna"</string>
+    <string name="ui_working_5474eef8" formatted="false">"Memproses…"</string>
     <string name="ui_your_edits_have_not_been_saved_625899a4" formatted="false">"Perubahan Anda belum disimpan."</string>
     <string name="ui_your_unsubmitted_text_will_be_discarded_th_15717285" formatted="false">"Teks yang belum dikirim akan dibuang. File kerja tetap tidak berubah."</string>
     <string name="untracked" formatted="false">"Tidak terlacak"</string>
@@ -1048,9 +2407,108 @@
     <string name="vault_l10n_tracking_review_changed" formatted="false">"Tinjauan penghapusan pelacakan berubah. Tinjau kembali repositori dan pilihan cadangan."</string>
     <string name="vault_l10n_volume_unavailable" formatted="false">"Volume penyimpanan ini tidak tersedia"</string>
     <string name="vault_l10n_volume_unavailable_reconnect" formatted="false">"Volume penyimpanan ini tidak tersedia. Sambungkan kembali lalu pilih folder lagi."</string>
+    <string name="vault_m3_as_author">"sebagai %1$s · %2$s"</string>
+    <string name="vault_m3_branch_pushed">"Mendorong commit Anda ke cabang baru %1$s"</string>
+    <string name="vault_m3_cancel" formatted="false">"Batal"</string>
+    <string name="vault_m3_check_for_changes" formatted="false">"Periksa perubahan"</string>
+    <string name="vault_m3_checking" formatted="false">"Memeriksa…"</string>
+    <string name="vault_m3_checking_remote">"Memeriksa %1$s untuk commit baru"</string>
+    <string name="vault_m3_chip_theirs">"↓%1$d dari %2$s · %3$s"</string>
+    <string name="vault_m3_chip_theirs_plain">"↓%1$d dari remote"</string>
+    <string name="vault_m3_chip_yours">"↑%1$d milik saya"</string>
+    <string name="vault_m3_commit_locally" formatted="false">"Commit secara lokal"</string>
+    <string name="vault_m3_commit_push" formatted="false">"Commit &amp; push"</string>
+    <string name="vault_m3_commits_sent">"%1$d dari %2$d commit terkirim"</string>
+    <string name="vault_m3_committing" formatted="false">"Melakukan commit…"</string>
+    <string name="vault_m3_days_ago">"%1$d hr lalu"</string>
+    <string name="vault_m3_deleted_path">"%1$s (dihapus)"</string>
+    <string name="vault_m3_discard_body">"File-file ini kembali ke kondisi semula di %1$s. Edit yang dibuat di ponsel ini sejak saat itu hilang selamanya."</string>
+    <string name="vault_m3_dismiss" formatted="false">"Tutup"</string>
+    <string name="vault_m3_download_progress" formatted="false">"Progres unduhan"</string>
+    <string name="vault_m3_effect_delete" formatted="false">"hapus file baru"</string>
+    <string name="vault_m3_effect_restore" formatted="false">"pulihkan"</string>
+    <string name="vault_m3_effect_revert" formatted="false">"Kembalikan"</string>
+    <string name="vault_m3_effect_unstage" formatted="false">"Batalkan persiapan"</string>
+    <string name="vault_m3_fetched_ago">"di-fetch %1$s"</string>
+    <string name="vault_m3_hours_ago">"%1$dh yang lalu"</string>
+    <string name="vault_m3_included" formatted="false">"Disertakan"</string>
+    <string name="vault_m3_just_now" formatted="false">"baru saja"</string>
+    <string name="vault_m3_keep_them" formatted="false">"Simpan"</string>
+    <string name="vault_m3_latest_commit" formatted="false">"Commit terbaru"</string>
+    <string name="vault_m3_leave_note" formatted="false">"Anda dapat meninggalkan layar ini. Sinkronisasi tetap berjalan dan menunjukkan kemajuannya dalam notifikasi."</string>
+    <string name="vault_m3_merge" formatted="false">"merge"</string>
+    <string name="vault_m3_merge_conflicts" formatted="false">"Menarik menemukan konflik. Selesaikan, lalu dorong."</string>
+    <string name="vault_m3_message" formatted="false">"Pesan"</string>
+    <string name="vault_m3_minutes">"%1$dm"</string>
+    <string name="vault_m3_minutes_ago">"%1$dm lalu"</string>
+    <string name="vault_m3_no_overlap_body" formatted="false">"Editan Anda dan milik mereka menyentuh file berbeda, jadi seharusnya merge dengan bersih."</string>
+    <string name="vault_m3_no_overlap_title" formatted="false">"Tidak ada tumpang tindih"</string>
+    <string name="vault_m3_no_upstream" formatted="false">"Tidak ada branch upstream"</string>
+    <string name="vault_m3_notify_channel" formatted="false">"Sinkronisasi Vault"</string>
+    <string name="vault_m3_notify_title">"%1$s · %2$s"</string>
+    <string name="vault_m3_objects_received">"%1$d dari %2$d objek diterima"</string>
+    <string name="vault_m3_objects_sent">"%1$d dari %2$d objek terkirim"</string>
+    <string name="vault_m3_only_on_phone" formatted="false">"Hanya di ponsel ini"</string>
+    <string name="vault_m3_overlap_body" formatted="false">"Kedua pihak mengedit file yang sama. Penarikan mungkin berhenti pada konflik agar Anda menyelesaikannya."</string>
+    <string name="vault_m3_preparing" formatted="false">"Menyiapkan…"</string>
+    <string name="vault_m3_pull" formatted="false">"Pull"</string>
+    <string name="vault_m3_pull_then_push" formatted="false">"Tarik milik mereka, lalu dorong"</string>
+    <string name="vault_m3_pulled">"Tersinkronisasi dengan %1$s"</string>
+    <string name="vault_m3_pulling" formatted="false">"Melakukan pull…"</string>
+    <string name="vault_m3_push" formatted="false">"Dorong"</string>
+    <string name="vault_m3_push_branch" formatted="false">"Push ke branch"</string>
+    <string name="vault_m3_push_right_after" formatted="false">"Push sesudahnya"</string>
+    <string name="vault_m3_pushed_to">"Di-push ke %1$s"</string>
+    <string name="vault_m3_pushing" formatted="false">"Melakukan push…"</string>
+    <string name="vault_m3_rejected_kicker" formatted="false">"Push tidak berhasil"</string>
+    <string name="vault_m3_remote_generic" formatted="false">"remote"</string>
+    <string name="vault_m3_remote_is_here">"%1$s sudah hadir"</string>
+    <string name="vault_m3_remote_no_new" formatted="false">"Tidak ada commit baru di jarak jauh"</string>
+    <string name="vault_m3_remote_not_checked" formatted="false">"Remote belum diperiksa"</string>
+    <string name="vault_m3_review_first" formatted="false">"Tinjau dulu"</string>
+    <string name="vault_m3_seconds">"%1$ds"</string>
+    <string name="vault_m3_stash_first" formatted="false">"Stash salinan dulu, untuk berjaga-jaga"</string>
+    <string name="vault_m3_step_branch">"Buat cabang %1$s"</string>
+    <string name="vault_m3_step_check">"Periksa commit baru di %1$s"</string>
+    <string name="vault_m3_step_download">"Unduh dari %1$s"</string>
+    <string name="vault_m3_step_merge">"Merge %1$s"</string>
+    <string name="vault_m3_step_none" formatted="false">"tidak ada"</string>
+    <string name="vault_m3_step_update" formatted="false">"Perbarui file"</string>
+    <string name="vault_m3_step_upload">"Unggah ke %1$s"</string>
+    <string name="vault_m3_steps" formatted="false">"Langkah"</string>
+    <string name="vault_m3_suggest_add">"Tambahkan %1$s"</string>
+    <string name="vault_m3_suggest_backup">"cadangan vault: %1$s"</string>
+    <string name="vault_m3_suggest_delete">"Hapus %1$s"</string>
+    <string name="vault_m3_suggest_update">"Perbarui %1$s"</string>
+    <string name="vault_m3_suggested" formatted="false">"Disarankan dari perbedaan"</string>
+    <string name="vault_m3_sync_cancelled" formatted="false">"Sinkronisasi dibatalkan. Apa pun yang sudah dikomit tetap berada di ponsel ini."</string>
+    <string name="vault_m3_sync_failed" formatted="false">"Sinkronisasi dihentikan"</string>
+    <string name="vault_m3_tap_for_diff" formatted="false">"ketuk file untuk melihat perbedaannya"</string>
+    <string name="vault_m3_time_left">"~%1$s tersisa"</string>
+    <string name="vault_m3_today" formatted="false">"Hari ini"</string>
+    <string name="vault_m3_upload_progress" formatted="false">"Progres unggah"</string>
+    <string name="vault_m3_vault_settings" formatted="false">"Pengaturan vault"</string>
+    <string name="vault_m3_who_both" formatted="false">"keduanya"</string>
+    <string name="vault_m3_who_theirs" formatted="false">"milik mereka"</string>
+    <string name="vault_m3_who_yours" formatted="false">"milik saya"</string>
+    <string name="vault_m3_yesterday" formatted="false">"Kemarin"</string>
     <string name="vault_open_in_files_failed" formatted="false">"Folder ini tidak dapat dibuka di File."</string>
     <string name="vault_repository_fallback" formatted="false">"Repositori"</string>
     <string name="vault_url_copied" formatted="false">"Disalin!"</string>
+    <string name="widget_m3_choose_vault" formatted="false">"Pilih brankas"</string>
+    <string name="widget_m3_days_ago">"%1$d hr lalu"</string>
+    <string name="widget_m3_hours_ago">"%1$dh yang lalu"</string>
+    <string name="widget_m3_in_sync" formatted="false">"Tersinkron"</string>
+    <string name="widget_m3_list_description" formatted="false">"Brankas Anda dengan apa yang masing-masing harus didorong, dan tombol Tarik semua."</string>
+    <string name="widget_m3_list_name" formatted="false">"Vault"</string>
+    <string name="widget_m3_minutes_ago">"%1$dm lalu"</string>
+    <string name="widget_m3_no_vaults" formatted="false">"Belum ada brankas. Buka GitSync.md untuk menambahkan satu."</string>
+    <string name="widget_m3_now" formatted="false">"sekarang"</string>
+    <string name="widget_m3_pull_all_repositories" formatted="false">"Tarik Semua Repositori"</string>
+    <string name="widget_m3_vault_description" formatted="false">"Satu brankas dan berapa banyak perubahan yang harus didorong."</string>
+    <string name="widget_m3_vault_missing" formatted="false">"Brankas ini tidak ada lagi di ponsel ini."</string>
+    <string name="widget_m3_vault_name" formatted="false">"Vault"</string>
+    <string name="widget_m3_vault_widget" formatted="false">"Widget brankas"</string>
     <plurals name="account_updated_days">
         <item quantity="one">"%1$d hr lalu"</item>
         <item quantity="other">"%1$d hr lalu"</item>
@@ -1075,6 +2533,48 @@
         <item quantity="one">"%1$d thn lalu"</item>
         <item quantity="other">"%1$d thn lalu"</item>
     </plurals>
+    <plurals name="adaptive_changes_on_phone">
+        <item quantity="other">"%1$s perubahan di ponsel ini"</item>
+    </plurals>
+    <plurals name="adaptive_changes_on_tablet">
+        <item quantity="other">"%1$s perubahan pada tablet ini"</item>
+    </plurals>
+    <plurals name="adaptive_commit_changes">
+        <item quantity="other">"Komit %1$d perubahan"</item>
+    </plurals>
+    <plurals name="adaptive_merging_left">
+        <item quantity="other">"Menggabungkan %1$s · %2$d konflik tersisa"</item>
+    </plurals>
+    <plurals name="adaptive_merging_left_plain">
+        <item quantity="other">"Menggabungkan · %1$d konflik tersisa"</item>
+    </plurals>
+    <plurals name="adaptive_split_editing">
+        <item quantity="other">"%1$d sedang diedit"</item>
+    </plurals>
+    <plurals name="adaptive_split_live">
+        <item quantity="other">"%1$s perubahan · langsung"</item>
+    </plurals>
+    <plurals name="adaptive_vaults_need_you">
+        <item quantity="other">"%1$d membutuhkanmu"</item>
+    </plurals>
+    <plurals name="add_accounts_signed_in">
+        <item quantity="other">"Pengaturan · %1$d masuk"</item>
+    </plurals>
+    <plurals name="add_clone_files">
+        <item quantity="other">"file %1$d"</item>
+    </plurals>
+    <plurals name="add_clone_lfs_files">
+        <item quantity="other">"file %1$d"</item>
+    </plurals>
+    <plurals name="add_local_folders">
+        <item quantity="other">"folder %1$d"</item>
+    </plurals>
+    <plurals name="add_way_github_repos">
+        <item quantity="other">"repositori %1$d · termasuk pribadi"</item>
+    </plurals>
+    <plurals name="add_way_github_repos_public">
+        <item quantity="other">"repositori %1$d"</item>
+    </plurals>
     <plurals name="dialogs_error_merge_conflicts">
         <item quantity="one">"Merge memiliki %1$d konflik yang belum diselesaikan.\n\nSelesaikan konflik tersebut sebelum merge dirampungkan."</item>
         <item quantity="other">"Merge memiliki %1$d konflik yang belum diselesaikan.\n\nSelesaikan konflik tersebut sebelum merge dirampungkan."</item>
@@ -1082,6 +2582,75 @@
     <plurals name="diff_changed_lines">
         <item quantity="one">"+%1$s -%2$s baris"</item>
         <item quantity="other">"+%1$s -%2$s baris"</item>
+    </plurals>
+    <plurals name="editor_m3_lines_changed">
+        <item quantity="other">"baris %1$d diubah"</item>
+    </plurals>
+    <plurals name="files_m3_items">
+        <item quantity="other">"item %1$d"</item>
+    </plurals>
+    <plurals name="files_m3_sync_diverged">
+        <item quantity="other">"%1$d commit baru di %2$s, dan ponsel ini memiliki commit yang belum dipush. Buka tab Perubahan untuk menariknya."</item>
+    </plurals>
+    <plurals name="files_m3_sync_local_changes">
+        <item quantity="other">"%1$d commit baru di %2$s. Commit atau buang perubahan lokal Anda di tab Perubahan, lalu sinkronkan lagi."</item>
+    </plurals>
+    <plurals name="git_m3_cant_switch_body">
+        <item quantity="other">"Beralih ke %1$s akan menggantikan file di ponsel ini. Perubahan %2$d Anda yang belum di-commit perlu tempat aman dulu."</item>
+    </plurals>
+    <plurals name="git_m3_commits_missing">
+        <item quantity="other">"%1$d commit yang %2$s tidak punya"</item>
+    </plurals>
+    <plurals name="git_m3_conflicts_left">
+        <item quantity="other">"%1$d konflik untuk diselesaikan."</item>
+    </plurals>
+    <plurals name="git_m3_continue_resolve">
+        <item quantity="other">"Lanjutkan rebase · selesaikan %1$d lagi"</item>
+    </plurals>
+    <plurals name="git_m3_dirty_note">
+        <item quantity="other">"%1$d perubahan belum di-commit. Commit atau simpan terlebih dahulu sebelum Anda berpindah cabang."</item>
+    </plurals>
+    <plurals name="git_m3_files">
+        <item quantity="other">"%1$d file"</item>
+    </plurals>
+    <plurals name="git_m3_n_branches">
+        <item quantity="other">"%1$d cabang"</item>
+    </plurals>
+    <plurals name="git_m3_n_commits_history">
+        <item quantity="other">"%1$d komit sejarah"</item>
+    </plurals>
+    <plurals name="git_m3_n_stashes">
+        <item quantity="other">"%1$d tumpukan sementara"</item>
+    </plurals>
+    <plurals name="git_m3_n_tags">
+        <item quantity="other">"%1$d tag"</item>
+    </plurals>
+    <plurals name="git_m3_notes_attachments">
+        <item quantity="other">"%1$d catatan dan lampiran"</item>
+    </plurals>
+    <plurals name="git_m3_push_commits">
+        <item quantity="other">"Dorong %1$d komit"</item>
+    </plurals>
+    <plurals name="git_m3_rebase_begin_body">
+        <item quantity="other">"Komit lokal %1$d Anda diputar ulang di atas upstream yang direview dan bisa mendapatkan ID baru. Rebase tetap di ponsel ini. Dorong adalah langkah terpisah."</item>
+    </plurals>
+    <plurals name="git_m3_rebase_done_meta">
+        <item quantity="other">"%1$d komit sekarang di atas %2$s · ID baru · belum didorong"</item>
+    </plurals>
+    <plurals name="git_m3_rebase_put_on_top">
+        <item quantity="other">"Letakkan komit %1$d Anda di atas jarak jauh."</item>
+    </plurals>
+    <plurals name="git_m3_stash_n">
+        <item quantity="other">"Simpan sementara perubahan %1$d"</item>
+    </plurals>
+    <plurals name="git_m3_stashed_toast">
+        <item quantity="other">"Perubahan %1$d yang disimpan sementara sebagai stash@{0}."</item>
+    </plurals>
+    <plurals name="git_m3_uncommitted_changes">
+        <item quantity="other">"%1$s perubahan yang belum dikomit"</item>
+    </plurals>
+    <plurals name="git_m3_uncommitted_plain">
+        <item quantity="other">"%1$d edit yang belum dikomit, sebagai file biasa"</item>
     </plurals>
     <plurals name="gitops_merge_stopped_conflicts">
         <item quantity="one">"Merge dihentikan: %1$s (%2$d konflik)"</item>
@@ -1099,6 +2668,24 @@
         <item quantity="one">"%1$d berkas saat ini tetap mempertahankan pilihan pelacakan eksplisitnya."</item>
         <item quantity="other">"%1$d berkas saat ini tetap mempertahankan pilihan pelacakan eksplisitnya."</item>
     </plurals>
+    <plurals name="lfs_m3_downloading">
+        <item quantity="other">"Mengunduh file %1$d"</item>
+    </plurals>
+    <plurals name="lfs_m3_endpoints_subtitle">
+        <item quantity="other">"Pengaturan · %1$d disetujui"</item>
+    </plurals>
+    <plurals name="lfs_m3_ext_affected">
+        <item quantity="other">"memindahkan file %1$d ke LFS"</item>
+    </plurals>
+    <plurals name="lfs_m3_file_count">
+        <item quantity="other">"file %1$d"</item>
+    </plurals>
+    <plurals name="lfs_m3_stored_files">
+        <item quantity="other">"dalam file %1$d"</item>
+    </plurals>
+    <plurals name="lfs_m3_track_files">
+        <item quantity="other">"Lacak file %1$d dengan LFS"</item>
+    </plurals>
     <plurals name="lfs_restored_files">
         <item quantity="one">"%1$d file dipulihkan."</item>
         <item quantity="other">"%1$d file dipulihkan."</item>
@@ -1107,9 +2694,45 @@
         <item quantity="one">"%1$d berkas"</item>
         <item quantity="other">"%1$d berkas"</item>
     </plurals>
+    <plurals name="m3home_auth_waiting">
+        <item quantity="other">"brankas %1$d sedang menunggu."</item>
+    </plurals>
+    <plurals name="m3home_badge_edited">
+        <item quantity="other">"%1$d diedit"</item>
+    </plurals>
+    <plurals name="m3home_headline_attention">
+        <item quantity="other">"brankas %1$d"</item>
+    </plurals>
+    <plurals name="m3home_headline_attention_accent">
+        <item quantity="other">"%1$s membutuhkan Anda."</item>
+    </plurals>
+    <plurals name="m3home_headline_ready">
+        <item quantity="other">"brankas %1$d"</item>
+    </plurals>
+    <plurals name="m3home_sync_nothing_local">
+        <item quantity="other">"Tidak ada yang perlu disinkronkan. Brankas %1$d ini hanya lokal (tidak ada jarak jauh)."</item>
+    </plurals>
     <plurals name="move_plan_summary">
         <item quantity="one">"%1$s file termasuk metadata Git · %2$s"</item>
         <item quantity="other">"%1$s file termasuk metadata Git · %2$s"</item>
+    </plurals>
+    <plurals name="notification_m3_commits">
+        <item quantity="other">"komit %1$d diambil di latar belakang."</item>
+    </plurals>
+    <plurals name="notification_m3_commits_from">
+        <item quantity="other">"%1$d komit dari %2$s ditarik di latar belakang."</item>
+    </plurals>
+    <plurals name="pullall_m3_checked_repositories">
+        <item quantity="other">"%1$d dari %2$d repositori diperiksa"</item>
+    </plurals>
+    <plurals name="pullall_m3_checked_vaults">
+        <item quantity="other">"%1$d dari %2$d gudang diperiksa"</item>
+    </plurals>
+    <plurals name="pullall_m3_updated_commits">
+        <item quantity="other">"Diperbarui dari jarak jauh · ↓%1$d komit"</item>
+    </plurals>
+    <plurals name="pullall_m3_vaults">
+        <item quantity="other">"%1$d gudang"</item>
     </plurals>
     <plurals name="rebase_additional_blocked_paths">
         <item quantity="one">"%1$d jalur terhalang lainnya tidak ditampilkan."</item>
@@ -1131,12 +2754,72 @@
         <item quantity="one">"· %1$d repositori"</item>
         <item quantity="other">"· %1$d repositori"</item>
     </plurals>
+    <plurals name="settings_m3_bg_included">
+        <item quantity="other">"%1$d gudang disertakan"</item>
+    </plurals>
+    <plurals name="settings_m3_bg_run_quiet">
+        <item quantity="other">"%1$d gudang, tidak ada yang baru"</item>
+    </plurals>
+    <plurals name="settings_m3_debug_errors_day">
+        <item quantity="other">"%1$d kesalahan dalam 24 jam"</item>
+    </plurals>
+    <plurals name="settings_m3_entries">
+        <item quantity="other">"%1$d entri"</item>
+    </plurals>
+    <plurals name="settings_m3_push_connections">
+        <item quantity="other">"%1$d GitHub koneksi · aktif"</item>
+    </plurals>
+    <plurals name="settings_m3_push_local_changes">
+        <item quantity="other">"%1$d perubahan lokal di telepon ini"</item>
+    </plurals>
+    <plurals name="settings_m3_sc_subtitle">
+        <item quantity="other">"Widget Tarik Semua · %1$d pintasan"</item>
+    </plurals>
+    <plurals name="ssh_m3_subtitle">
+        <item quantity="other">"Pengaturan · %1$d server"</item>
+    </plurals>
     <plurals name="tide_vault_changes_on_phone">
-        <item quantity="one">"perubahan di ponsel ini"</item>
-        <item quantity="other">"perubahan di ponsel ini"</item>
+        <item quantity="one">"%1$s perubahan di ponsel ini"</item>
+        <item quantity="other">"%1$s perubahan di ponsel ini"</item>
     </plurals>
     <plurals name="tide_vault_conflicts_to_resolve">
-        <item quantity="one">"konflik yang perlu diselesaikan"</item>
-        <item quantity="other">"konflik yang perlu diselesaikan"</item>
+        <item quantity="one">"%1$s konflik yang perlu diselesaikan"</item>
+        <item quantity="other">"%1$s konflik yang perlu diselesaikan"</item>
+    </plurals>
+    <plurals name="vault_m3_commit_title">
+        <item quantity="other">"Komit %1$d file"</item>
+    </plurals>
+    <plurals name="vault_m3_discard_n">
+        <item quantity="other">"Buang %1$d"</item>
+    </plurals>
+    <plurals name="vault_m3_discard_title">
+        <item quantity="other">"Buang perubahan %1$d?"</item>
+    </plurals>
+    <plurals name="vault_m3_effect_lines">
+        <item quantity="other">"−%1$d baris"</item>
+    </plurals>
+    <plurals name="vault_m3_file_count">
+        <item quantity="other">"%1$d file"</item>
+    </plurals>
+    <plurals name="vault_m3_overlap_title">
+        <item quantity="other">"%1$d file berubah di kedua sisi"</item>
+    </plurals>
+    <plurals name="vault_m3_remote_new">
+        <item quantity="other">"Remote memiliki %1$d komit baru"</item>
+    </plurals>
+    <plurals name="vault_m3_step_commit">
+        <item quantity="other">"Komit %1$d file"</item>
+    </plurals>
+    <plurals name="vault_m3_step_lfs">
+        <item quantity="other">"Unggah %1$d file LFS · %2$s"</item>
+    </plurals>
+    <plurals name="vault_m3_suggest_files">
+        <item quantity="other">"Perbarui %1$d file"</item>
+    </plurals>
+    <plurals name="vault_m3_uploading_lfs">
+        <item quantity="other">"Mengunggah %1$d file LFS"</item>
+    </plurals>
+    <plurals name="widget_m3_changes_to_push">
+        <item quantity="other">"%1$s perubahan untuk didorong"</item>
     </plurals>
 </resources>

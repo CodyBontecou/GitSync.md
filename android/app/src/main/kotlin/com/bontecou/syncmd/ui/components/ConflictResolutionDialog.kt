@@ -28,6 +28,6 @@ fun AbortMergeDialog(branch: String, busy: Boolean, onAbort: () -> Unit, onDismi
 private fun AbortMergePreview() = SyncMdTheme(darkTheme = false) {
     M3DialogSurface(stringResource(R.string.git_m3_abort_merge_title), icon = R.drawable.ic_m3_warning, iconTint = M3.colors.error,
         text = stringResource(R.string.git_m3_abort_merge_body, "main")) {
-        M3DialogAction("Cancel", {}); M3DialogAction("Abort merge", {}, destructive = true, filled = true)
+        M3DialogAction(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.publication_cancel), {}); M3DialogAction(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.adaptive_abort_merge), {}, destructive = true, filled = true)
     }
 }

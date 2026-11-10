@@ -1,4 +1,4 @@
-<!-- Generated from the sibling iOS catalog by tools/localization/import_ios_catalog.py. -->
+<!-- Generated from the canonical Apple catalog and Android overrides by tools/localization/import_ios_catalog.py. -->
 <resources>
     <string name="account_alternative_exists" formatted="false">"มีการเชื่อมต่อสำรองอื่นบันทึกไว้แล้ว ตรวจสอบก่อนย้ายข้อมูลรับรองจาก URL เพิ่มเติม"</string>
     <string name="account_api_error">"ข้อผิดพลาด API ของ GitHub: HTTP %1$d"</string>
@@ -95,6 +95,342 @@
     <string name="account_token_invalid">"โทเค็น GitHub ไม่ถูกต้องหรือหมดอายุแล้ว (HTTP %1$d)"</string>
     <string name="account_updated_just_now" formatted="false">"เมื่อสักครู่"</string>
     <string name="account_valid_branch" formatted="false">"ป้อนชื่อสาขาที่ถูกต้อง"</string>
+    <string name="adaptive_abort_merge" formatted="false">"ยกเลิก merge"</string>
+    <string name="adaptive_account" formatted="false">"บัญชีและการตั้งค่า"</string>
+    <string name="adaptive_badge_ahead">"↑%1$d"</string>
+    <string name="adaptive_badge_attention" formatted="false">"!"</string>
+    <string name="adaptive_badge_behind">"↓%1$d"</string>
+    <string name="adaptive_badge_both">"↓%1$d ↑%2$d"</string>
+    <string name="adaptive_badge_checking" formatted="false">"…"</string>
+    <string name="adaptive_badge_edited">"%1$d แก้ไขแล้ว"</string>
+    <string name="adaptive_badge_in_sync" formatted="false">"✓"</string>
+    <string name="adaptive_branch_local_only">"%1$s · ไม่มีรีโมท"</string>
+    <string name="adaptive_branch_to_remote">"%1$s → %2$s"</string>
+    <string name="adaptive_cancel" formatted="false">"ยกเลิก"</string>
+    <string name="adaptive_commit_message" formatted="false">"ข้อความการยืนยัน"</string>
+    <string name="adaptive_commit_only" formatted="false">"คอมมิตเฉพาะ"</string>
+    <string name="adaptive_commit_this_file" formatted="false">"คอมมิตไฟล์นี้"</string>
+    <string name="adaptive_conflict" formatted="false">"ความขัดแย้ง"</string>
+    <string name="adaptive_conflict_position">"ความขัดแย้ง %1$d ของ %2$d · %3$s"</string>
+    <string name="adaptive_cover_unfold" formatted="false">"คลายเพื่ออ่านความแตกต่างข้างรายการเปลี่ยนแปลง"</string>
+    <string name="adaptive_discard_all" formatted="false">"ละทิ้ง"</string>
+    <string name="adaptive_edited" formatted="false">"แก้ไขแล้ว"</string>
+    <string name="adaptive_include" formatted="false">"รวม"</string>
+    <string name="adaptive_keep_this_version" formatted="false">"เก็บเวอร์ชันนี้"</string>
+    <string name="adaptive_new_file" formatted="false">"ไฟล์ใหม่"</string>
+    <string name="adaptive_no_changes" formatted="false">"ไม่มีการเปลี่ยนแปลงบนอุปกรณ์นี้ แก้ไขโน้ตและจะแสดงที่นี่"</string>
+    <string name="adaptive_position">"%1$d จาก %2$d"</string>
+    <string name="adaptive_pull" formatted="false">"Pull"</string>
+    <string name="adaptive_pull_then_push" formatted="false">"ดึงข้อมูลแล้วจึงผลักข้อมูล"</string>
+    <string name="adaptive_push" formatted="false">"พุช"</string>
+    <string name="adaptive_rejected" formatted="false">"รีโมทมีการเคลื่อนไหว ดึงคอมมิตของมันก่อน แล้วจึงผลักของคุณ"</string>
+    <string name="adaptive_review_first" formatted="false">"ตรวจสอบก่อน"</string>
+    <string name="adaptive_split_auto_commit" formatted="false">"คอมมิตอัตโนมัติเมื่อฉันหยุด 2 นาที"</string>
+    <string name="adaptive_split_committed">"↑%1$d คอมมิตแล้ว"</string>
+    <string name="adaptive_split_typing" formatted="false">"กำลังพิมพ์…"</string>
+    <string name="adaptive_split_watching">"กำลังติดตาม %1$s"</string>
+    <string name="adaptive_sync_all" formatted="false">"ซิงค์ทั้งหมด"</string>
+    <string name="adaptive_sync_all_to_push">"ซิงค์ทั้งหมด, %1$d เพื่อผลัก"</string>
+    <string name="adaptive_this_tablet" formatted="false">"แท็บเล็ตนี้"</string>
+    <string name="adaptive_vaults" formatted="false">"Vault"</string>
+    <string name="adaptive_view" formatted="false">"ดู"</string>
+    <string name="adaptive_vs">"เทียบกับ %1$s"</string>
+    <string name="add_access_body" formatted="false">"GitSync.md ต้องการการเข้าถึงพื้นที่เก็บข้อมูลร่วมเพื่อจัดการ Git สำเนางานจริงในโฟลเดอร์ของอุปกรณ์ เปิดใช้งานใน Android การตั้งค่า จากนั้นเลือกโฟลเดอร์ที่คุณต้องการใช้"</string>
+    <string name="add_access_cancel" formatted="false">"ยกเลิก"</string>
+    <string name="add_access_enable" formatted="false">"เปิดสิทธิ์เข้าถึง"</string>
+    <string name="add_access_note" formatted="false">"ตอนนี้ไม่ใช่หรือ? คุณสามารถใช้พื้นที่เก็บข้อมูลแอปต่อไปได้"</string>
+    <string name="add_access_title" formatted="false">"อนุญาตการเข้าถึงโฟลเดอร์ในเครื่อง"</string>
+    <string name="add_accounts_add" formatted="false">"เพิ่ม GitHub บัญชี"</string>
+    <string name="add_accounts_browsing" formatted="false">"กำลังเรียกดูด้วยบัญชีนี้"</string>
+    <string name="add_accounts_cancel" formatted="false">"ยกเลิก"</string>
+    <string name="add_accounts_empty_body" formatted="false">"ที่เก็บข้อมูลภายในเครื่องจะยังคงใช้งานได้"</string>
+    <string name="add_accounts_empty_title" formatted="false">"ไม่มีบัญชีที่เชื่อมต่อ"</string>
+    <string name="add_accounts_intro" formatted="false">"เลือกบัญชีที่ใช้ในการเรียกดู GitHub แต่ละที่เก็บจะเก็บบัญชีของตัวเอง; เปลี่ยนได้ในการเชื่อมต่อที่เก็บ"</string>
+    <string name="add_accounts_none_signed_in" formatted="false">"การตั้งค่า · ไม่มีผู้เข้าสู่ระบบ"</string>
+    <string name="add_accounts_remove" formatted="false">"ลบการลงชื่อเข้าใช้"</string>
+    <string name="add_accounts_remove_body" formatted="false">"ที่เก็บที่ใช้บัญชีนี้จะขอให้คุณเข้าสู่ระบบอีกครั้งหรือเลือกบัญชีอื่นในการเชื่อมต่อที่เก็บ ไฟล์และคอมมิตในเครื่องของคุณจะยังคงอยู่"</string>
+    <string name="add_accounts_remove_title">"ลบ %1$s หรือไม่"</string>
+    <string name="add_accounts_title" formatted="false">"บัญชี GitHub"</string>
+    <string name="add_accounts_use" formatted="false">"ใช้สำหรับเรียกดู"</string>
+    <string name="add_added" formatted="false">"เพิ่มแล้ว"</string>
+    <string name="add_ago_days">"%1$d วันที่แล้ว"</string>
+    <string name="add_ago_hours">"%1$dที่ผ่านมา h"</string>
+    <string name="add_ago_minutes">"%1$dm ที่ผ่านมา"</string>
+    <string name="add_ago_months">"%1$d เดือนที่แล้ว"</string>
+    <string name="add_ago_now" formatted="false">"เพิ่งได้รับ"</string>
+    <string name="add_ago_weeks">"%1$d สัปดาห์ที่แล้ว"</string>
+    <string name="add_ago_years">"%1$d ปีที่แล้ว"</string>
+    <string name="add_auth_github" formatted="false">"GitHub"</string>
+    <string name="add_auth_none" formatted="false">"ไม่มี"</string>
+    <string name="add_auth_saved" formatted="false">"บันทึกเรียบร้อยแล้ว"</string>
+    <string name="add_auth_ssh" formatted="false">"SSH คีย์"</string>
+    <string name="add_auth_token" formatted="false">"โทเคน"</string>
+    <string name="add_check_access_ro" formatted="false">"อ่านอย่างเดียว"</string>
+    <string name="add_check_access_rw" formatted="false">"อ่าน · เขียน"</string>
+    <string name="add_check_add_on_github" formatted="false">"เพิ่ม repo บน GitHub"</string>
+    <string name="add_check_again" formatted="false">"ตรวจสอบอีกครั้ง"</string>
+    <string name="add_check_app_callout">"GitHub App ถูกติดตั้งบน %1$s แต่ repo นี้ยังไม่ได้เลือก เพิ่มมันบน GitHub แล้วกลับมาอีกครั้ง"</string>
+    <string name="add_check_app_missing">"GitSync.md’s GitHub App ยังไม่อยู่บน %1$s เพิ่มมันบน GitHub พร้อมกับ repo นี้ แล้วกลับมาอีกครั้ง"</string>
+    <string name="add_check_checking" formatted="false">"กำลังตรวจสอบ…"</string>
+    <string name="add_check_clone" formatted="false">"โคลนคลัง"</string>
+    <string name="add_check_clone_obsidian" formatted="false">"โคลนไปที่ Obsidian"</string>
+    <string name="add_check_clones_to" formatted="false">"โคลนไปยัง"</string>
+    <string name="add_check_head_blocked" formatted="false">"มีหนึ่งอย่างที่ต้องแก้ไขก่อน"</string>
+    <string name="add_check_head_checking" formatted="false">"กำลังตรวจสอบ\nคลังของคุณ"</string>
+    <string name="add_check_head_ready" formatted="false">"Vault ของคุณพร้อมแล้ว"</string>
+    <string name="add_check_lfs_none" formatted="false">"ไม่มี"</string>
+    <string name="add_check_lfs_used" formatted="false">"กำลังใช้งาน"</string>
+    <string name="add_check_measuring" formatted="false">"กำลังวัด"</string>
+    <string name="add_check_no_obsidian" formatted="false">"ยังไม่มีโฟลเดอร์ .obsidian/"</string>
+    <string name="add_check_note_blocked" formatted="false">"คุณยังไม่ได้จ่ายอะไร ตัวเลือกปลดล็อกจะปรากฏเมื่อคลังของคุณผ่านการตรวจสอบเท่านั้น"</string>
+    <string name="add_check_note_checking" formatted="false">"อ่านเฉพาะข้อมูลเมตา จะไม่มีการดาวน์โหลดโน้ตจนกว่าคุณจะปลดล็อก"</string>
+    <string name="add_check_note_ready" formatted="false">"Google Play จะแสดงราคาสุดท้ายในสกุลเงินของคุณก่อนที่คุณจะยืนยัน"</string>
+    <string name="add_check_note_ready_unlocked" formatted="false">"Full Access ถูกปลดล็อก ไม่มีค่าใช้จ่ายเพิ่มเติม"</string>
+    <string name="add_check_obsidian_found" formatted="false">"พบ Vault ของ Obsidian"</string>
+    <string name="add_check_obsidian_git" formatted="false">"กำหนดค่าปลั๊กอิน Obsidian Git แล้ว"</string>
+    <string name="add_check_ok" formatted="false">"ตกลง"</string>
+    <string name="add_check_pick_another" formatted="false">"เลือกรีโพซิทอรีอื่น"</string>
+    <string name="add_check_play_note" formatted="false">"ซื้อครั้งเดียวผ่าน Google Play ไม่มีการสมัครสมาชิก"</string>
+    <string name="add_check_price_once">"%1$s ครั้งเดียว"</string>
+    <string name="add_check_size_files" formatted="false">"ขนาด &amp; ไฟล์"</string>
+    <string name="add_check_stat_access" formatted="false">"สิทธิ์เข้าถึง"</string>
+    <string name="add_check_stat_files" formatted="false">"ไฟล์"</string>
+    <string name="add_check_stat_lfs" formatted="false">"Git LFS"</string>
+    <string name="add_check_stat_size" formatted="false">"ขนาด"</string>
+    <string name="add_check_step">"ขั้นตอนที่ %1$d จาก 3"</string>
+    <string name="add_check_sub_blocked" formatted="false">"GitSync.md สามารถอ่าน repository นี้ได้แต่ไม่สามารถ push เข้าไปได้ แก้ไขบน GitHub แล้วตรวจสอบอีกครั้ง"</string>
+    <string name="add_check_sub_checking" formatted="false">"กำลังตรวจสอบว่า GitSync.md ซิงค์คลัง Git นี้ได้ ก่อนที่คุณจะจ่ายเงินใดๆ"</string>
+    <string name="add_check_sub_ready" formatted="false">"ทุกอย่างเรียบร้อย โคลนครั้งเดียวแล้ว Obsidian จะเปิดคลังพร้อมประวัติครบถ้วน"</string>
+    <string name="add_check_title" formatted="false">"การตรวจสอบคลัง"</string>
+    <string name="add_check_unknown" formatted="false">"—"</string>
+    <string name="add_check_write_access" formatted="false">"สิทธิ์เขียน"</string>
+    <string name="add_clone" formatted="false">"Clone"</string>
+    <string name="add_clone_app_storage" formatted="false">"ใช้พื้นที่จัดเก็บของแอป"</string>
+    <string name="add_clone_busy" formatted="false">"กำลังโคลน Repository"</string>
+    <string name="add_clone_bytes">"%1$s · %2$s"</string>
+    <string name="add_clone_cancel" formatted="false">"ยกเลิก"</string>
+    <string name="add_clone_checkout" formatted="false">"กำลังเช็คเอาท์ไฟล์"</string>
+    <string name="add_clone_choose_folder" formatted="false">"เลือกโฟลเดอร์อื่น"</string>
+    <string name="add_clone_cloned" formatted="false">": โคลน"</string>
+    <string name="add_clone_continue" formatted="false">"ดำเนินการต่อ"</string>
+    <string name="add_clone_finishing" formatted="false">"กำลังดำเนินการขั้นสุดท้าย"</string>
+    <string name="add_clone_finishing_body">"กำลังเพิ่ม %1$s ไปยัง vault ของคุณและตรวจสอบไฟล์ Git LFS ของมัน"</string>
+    <string name="add_clone_lfs" formatted="false">"โคลนเสร็จแล้ว ไฟล์ Git LFS บางไฟล์ยังต้องตรวจสอบหรือดาวน์โหลด โคลนและการแก้ไขในเครื่องของคุณยังคงอยู่"</string>
+    <string name="add_clone_lfs_review" formatted="false">"ตรวจสอบ Git LFS"</string>
+    <string name="add_clone_location" formatted="false">"ตำแหน่งที่โคลน"</string>
+    <string name="add_clone_new_folder" formatted="false">"โฟลเดอร์ใหม่"</string>
+    <string name="add_clone_nothing_yet" formatted="false">"จะไม่มีการดาวน์โหลดจนกว่าคุณจะแตะ Clone"</string>
+    <string name="add_clone_percent">"%1$d%%"</string>
+    <string name="add_clone_preparing" formatted="false">"กำลังเชื่อมต่อ"</string>
+    <string name="add_clone_receiving" formatted="false">"กำลังรับวัตถุ"</string>
+    <string name="add_clone_register_failed" formatted="false">"เพิ่มที่เก็บที่โคลนไม่ได้ ไฟล์ยังคงอยู่ ลองเพิ่มอีกครั้งหรือเชื่อมต่อโฟลเดอร์ของที่เก็บอีกครั้งจากที่เก็บในเครื่อง"</string>
+    <string name="add_clone_register_retry" formatted="false">"เพิ่มที่เก็บที่โคลน"</string>
+    <string name="add_clone_resolving" formatted="false">"กำลังแก้ไข deltas"</string>
+    <string name="add_clone_retry" formatted="false">"ลองใหม่อีกครั้ง"</string>
+    <string name="add_clone_saved_default" formatted="false">"ใช้ค่าเริ่มต้นที่บันทึกไว้"</string>
+    <string name="add_clone_start" formatted="false">"โคลน Repository"</string>
+    <string name="add_clone_title_cloning" formatted="false">"กำลังโคลน Repository"</string>
+    <string name="add_clone_title_done" formatted="false">": โคลน"</string>
+    <string name="add_clone_title_failed" formatted="false">"Clone ล้มเหลว"</string>
+    <string name="add_clone_title_ready" formatted="false">"โคลน Repository"</string>
+    <string name="add_clone_to">"→ %1$s"</string>
+    <string name="add_cloning_name">"กำลัง clone %1$s"</string>
+    <string name="add_close" formatted="false">"ปิด"</string>
+    <string name="add_connected_added" formatted="false">"ถูกเพิ่มไปยังบัญชีของคุณแล้ว"</string>
+    <string name="add_connected_title" formatted="false">"เชื่อมต่อบัญชี GitHub แล้ว"</string>
+    <string name="add_continue" formatted="false">"ดำเนินการต่อ"</string>
+    <string name="add_default_branch" formatted="false">"บรานช์เริ่มต้น"</string>
+    <string name="add_done" formatted="false">"เสร็จ"</string>
+    <string name="add_github_hint" formatted="false">"ใช้การเข้าสู่ระบบของบัญชี GitHub สำหรับ github.com"</string>
+    <string name="add_group_notes" formatted="false">"เหมือนกับบันทึก"</string>
+    <string name="add_group_other" formatted="false">"อื่นๆ ทั้งหมด"</string>
+    <string name="add_group_other_matching" formatted="false">"อื่นๆ ที่ตรงกัน"</string>
+    <string name="add_intro" formatted="false">"นำรีโปที่คุณมีอยู่แล้วเข้ามา หรือเปลี่ยนโฟลเดอร์ให้เป็นรีโป"</string>
+    <string name="add_key_copied" formatted="false">"คัดลอกกุญแจสาธารณะแล้ว"</string>
+    <string name="add_key_copy" formatted="false">"คัดลอกกุญแจสาธารณะ"</string>
+    <string name="add_key_failed" formatted="false">"ไม่สามารถสร้างกุญแจบนโทรศัพท์นี้ได้ ใช้กุญแจอื่นแทน"</string>
+    <string name="add_key_hint" formatted="false">"เพิ่มกุญแจสาธารณะไปยังโฮสต์ของคุณครั้งเดียว กุญแจส่วนตัวจะอยู่บนโทรศัพท์นี้"</string>
+    <string name="add_key_meta">"ed25519 · %1$s"</string>
+    <string name="add_key_other" formatted="false">"ใช้อย่างอื่น…"</string>
+    <string name="add_key_this_phone" formatted="false">"ใช้กุญแจของโทรศัพท์เครื่องนี้"</string>
+    <string name="add_key_title" formatted="false">"กุญแจของโทรศัพท์เครื่องนี้"</string>
+    <string name="add_local_add_selected" formatted="false">"เพิ่มรีโพซิทอรีที่เลือก"</string>
+    <string name="add_local_added" formatted="false">"รีโพซิทอรีที่เพิ่มแล้ว"</string>
+    <string name="add_local_already" formatted="false">"เพิ่มแล้ว"</string>
+    <string name="add_local_clean" formatted="false">"สะอาด"</string>
+    <string name="add_local_clone_instead" formatted="false">"โคลนจาก GitHub แทน"</string>
+    <string name="add_local_destination">"ปลายทาง: %1$s"</string>
+    <string name="add_local_detached" formatted="false">"HEAD แยกจากบรานช์หรือยังไม่มีคอมมิตแรก"</string>
+    <string name="add_local_dirty" formatted="false">"การเปลี่ยนแปลงในเครื่อง"</string>
+    <string name="add_local_discovered" formatted="false">"รีโพซิทอรีที่ค้นพบ"</string>
+    <string name="add_local_files_deleted" formatted="false">"ลบไฟล์ในเครื่องแล้ว"</string>
+    <string name="add_local_files_kept" formatted="false">"เก็บไฟล์ในเครื่องไว้"</string>
+    <string name="add_local_in">"ใน %1$s"</string>
+    <string name="add_local_interrupted" formatted="false">"การโคลนที่ถูกขัดจังหวะ"</string>
+    <string name="add_local_interrupted_body" formatted="false">"ลองเพิ่มโคลนนี้อีกครั้งหลังจากตรวจสอบโฟลเดอร์และการเชื่อมต่อแล้ว ไฟล์ที่มีอยู่จะถูกเก็บไว้"</string>
+    <string name="add_local_intro" formatted="false">"ค้นหาสำเนางานของ Git ที่มีอยู่แล้วบนโทรศัพท์นี้ เช่นโฟลเดอร์คลัง Obsidian และเพิ่มโดยไม่ต้องโคลนอีกรอบ การลบรายการภายหลังจะเก็บไฟล์ของมันไว้"</string>
+    <string name="add_local_none_added" formatted="false">"ยังไม่มีรีโพซิทอรีที่เพิ่ม"</string>
+    <string name="add_local_none_body">"ไม่มีอะไรใน %1$s ที่มีโฟลเดอร์ .git ลองใช้โฟลเดอร์ที่แอปบันทึกของคุณใช้ หรือโคลนจาก GitHub"</string>
+    <string name="add_local_none_title" formatted="false">"ไม่พบสำเนาที่ใช้งานได้"</string>
+    <string name="add_local_previous" formatted="false">"เคยเพิ่มไว้"</string>
+    <string name="add_local_scan_app" formatted="false">"สแกนโฟลเดอร์ของแอป"</string>
+    <string name="add_local_scan_app_label" formatted="false">"โฟลเดอร์แอป"</string>
+    <string name="add_local_scan_app_sub" formatted="false">"โฟลเดอร์ GitSync.md ถูกเก็บไว้แล้ว"</string>
+    <string name="add_local_scan_device" formatted="false">"สแกนโฟลเดอร์ในอุปกรณ์"</string>
+    <string name="add_local_scan_device_sub" formatted="false">"เลือกโฟลเดอร์ เช่น เอกสาร หรือ Obsidian"</string>
+    <string name="add_local_scanning">"กำลังสแกน %1$s"</string>
+    <string name="add_local_staged">"สำเนาชั่วคราว: %1$s"</string>
+    <string name="add_local_title" formatted="false">"คลังเก็บในเครื่อง"</string>
+    <string name="add_local_tracking_removed" formatted="false">"การติดตาม Git ถูกลบ · ไฟล์ยังคงอยู่"</string>
+    <string name="add_local_truncated" formatted="false">"การสแกนถึงขีดจำกัดความลึกหรือจำนวนโฟลเดอร์แล้ว บางโฟลเดอร์ไม่ได้รับการสแกน"</string>
+    <string name="add_location_body" formatted="false">"เลือกโฟลเดอร์อื่นเมื่อคุณโคลน หรือกำหนดค่าเริ่มต้นในการตั้งค่า"</string>
+    <string name="add_location_head" formatted="false">"ตำแหน่งบันทึกเริ่มต้น"</string>
+    <string name="add_location_head_muted" formatted="false">"ตำแหน่ง"</string>
+    <string name="add_location_label" formatted="false">"ตำแหน่งดาวน์โหลด"</string>
+    <string name="add_meta_lfs">"%1$s LFS"</string>
+    <string name="add_meta_private" formatted="false">"ลับ"</string>
+    <string name="add_meta_public" formatted="false">"สาธารณะ"</string>
+    <string name="add_more_options" formatted="false">"ชื่อ, สาขา และโฟลเดอร์"</string>
+    <string name="add_more_options_meta">"%1$s · %2$s"</string>
+    <string name="add_none_hint" formatted="false">"สำหรับที่เก็บสาธารณะ GitSync.md จะไม่ส่งข้อมูลรับรอง"</string>
+    <string name="add_not_signed_in" formatted="false">"ไม่ได้ลงชื่อเข้า"</string>
+    <string name="add_owner_orgs" formatted="false">"องค์กร"</string>
+    <string name="add_owner_starred" formatted="false">"ติดดาว"</string>
+    <string name="add_owner_yours" formatted="false">"ของฉัน"</string>
+    <string name="add_picker_accounts" formatted="false">"บัญชี GitHub"</string>
+    <string name="add_picker_empty_owner" formatted="false">"ยังไม่มีที่เก็บที่นี่"</string>
+    <string name="add_picker_refresh" formatted="false">"รีเฟรช"</string>
+    <string name="add_picker_search" formatted="false">"ค้นหาที่เก็บ"</string>
+    <string name="add_picker_starred_failed" formatted="false">"ไม่สามารถโหลดที่เก็บที่คุณทำเครื่องหมายไว้"</string>
+    <string name="add_picker_title" formatted="false">"เลือกรีโป"</string>
+    <string name="add_publish_account" formatted="false">"GitHub บัญชี"</string>
+    <string name="add_publish_author_email" formatted="false">"อีเมลผู้เขียน"</string>
+    <string name="add_publish_author_name" formatted="false">"ชื่อผู้เขียน"</string>
+    <string name="add_publish_cancel" formatted="false">"ยกเลิก"</string>
+    <string name="add_publish_check" formatted="false">"ตรวจสอบปลายทางเดิม"</string>
+    <string name="add_publish_choose" formatted="false">"เลือกโฟลเดอร์"</string>
+    <string name="add_publish_confirm" formatted="false">"เผยแพร่"</string>
+    <string name="add_publish_confirm_body">"นี่จะทำให้ %1$s เป็น repo แบบ %2$s และอัปโหลด commit แรกที่บันทึกไว้ เปิดแอปไว้ การลองใหม่จะตรวจสอบปลายทางนี้และจะไม่สร้าง commit ที่สอง"</string>
+    <string name="add_publish_confirm_dest">"%1$s · %2$s\n%3$s · %4$s · %5$s"</string>
+    <string name="add_publish_confirm_title" formatted="false">"เผยแพร่คอมมิตที่บันทึกไว้นี้หรือไม่?"</string>
+    <string name="add_publish_continue" formatted="false">"เผยแพร่ต่อจากที่บันทึกไว้"</string>
+    <string name="add_publish_creating" formatted="false">"กำลังสร้าง repository…"</string>
+    <string name="add_publish_discard" formatted="false">"ทิ้งการตรวจสอบที่บันทึกไว้"</string>
+    <string name="add_publish_file_ignored">"%1$s · ถูกละเว้น"</string>
+    <string name="add_publish_file_issue">"%1$s · %2$s"</string>
+    <string name="add_publish_file_large">"%1$s · เกิน 10 MiB"</string>
+    <string name="add_publish_file_regular">"%1$s · ไฟล์ปกติ"</string>
+    <string name="add_publish_file_sensitive">"%1$s · ชื่อไฟล์ที่ละเอียดอ่อน"</string>
+    <string name="add_publish_files" formatted="false">"ไฟล์"</string>
+    <string name="add_publish_intro" formatted="false">"เลือกโฟลเดอร์บนโทรศัพท์นี้ ตรวจสอบไฟล์ของโฟลเดอร์นั้น และบันทึก commit แรก การเผยแพร่จะสร้าง repo ใหม่บน GitHub ของคุณและอัปโหลดมัน"</string>
+    <string name="add_publish_keep_note" formatted="false">"ความคืบหน้าจะถูกบันทึกไว้เมื่อคุณออกไป หาก Android ยกเลิกการเข้าถึง ให้เชื่อมต่อโฟลเดอร์เดียวกันอีกครั้ง"</string>
+    <string name="add_publish_limits" formatted="false">"ไฟล์ของคุณจะอยู่ในที่ของพวกมัน ขนาดไฟล์สูงสุด 10 MiB, 10,000 ไฟล์ และรวมทั้งหมด 256 MiB Git จะข้ามโฟลเดอร์ว่าง"</string>
+    <string name="add_publish_manage_accounts" formatted="false">"จัดการบัญชี"</string>
+    <string name="add_publish_message" formatted="false">"ข้อความคอมมิตเริ่มต้น"</string>
+    <string name="add_publish_no_account" formatted="false">"ลงชื่อเข้าใช้ GitHub เพื่อเผยแพร่"</string>
+    <string name="add_publish_open" formatted="false">"เปิดที่เก็บ"</string>
+    <string name="add_publish_original" formatted="false">"โฟลเดอร์เดิม"</string>
+    <string name="add_publish_phase_created" formatted="false">"สร้างคลังแล้ว รออัปโหลด"</string>
+    <string name="add_publish_phase_done" formatted="false">"เผยแพร่แล้ว"</string>
+    <string name="add_publish_phase_prepared" formatted="false">"เตรียม commit ในเครื่องแล้ว"</string>
+    <string name="add_publish_phase_published" formatted="false">"เผยแพร่คอมมิตแล้ว รอตั้งค่า"</string>
+    <string name="add_publish_phase_review" formatted="false">"ตรวจสอบไฟล์และปลายทาง"</string>
+    <string name="add_publish_phase_unknown" formatted="false">"ต้องตรวจสอบการสร้างคลัง"</string>
+    <string name="add_publish_prepare" formatted="false">"เตรียมคอมมิตในเครื่อง"</string>
+    <string name="add_publish_preparing" formatted="false">"กำลังเตรียม commit ในเครื่อง…"</string>
+    <string name="add_publish_private" formatted="false">"คลังส่วนตัว"</string>
+    <string name="add_publish_private_off" formatted="false">"ทุกคนสามารถอ่านไฟล์ที่เลือกและประวัติได้"</string>
+    <string name="add_publish_private_on" formatted="false">"เฉพาะคนที่คุณให้สิทธิ์เข้าถึงเท่านั้นที่อ่านได้"</string>
+    <string name="add_publish_progress_bytes">"%1$s / %2$s · เปิดแอปค้างไว้"</string>
+    <string name="add_publish_progress_keep">"%1$s · เปิดแอปค้างไว้"</string>
+    <string name="add_publish_public_body" formatted="false">"ทุกคนจะสามารถอ่านไฟล์ที่คุณเผยแพร่ได้ ตรวจสอบสิ่งที่คุณเลือกสำหรับความลับ ข้อมูลส่วนตัว และไฟล์ที่คุณไม่สามารถแชร์ได้"</string>
+    <string name="add_publish_public_confirm" formatted="false">"เลือกสาธารณะ"</string>
+    <string name="add_publish_public_title" formatted="false">"ทำให้คลังนี้เป็นสาธารณะหรือไม่?"</string>
+    <string name="add_publish_publish" formatted="false">"เผยแพร่ไปยัง GitHub"</string>
+    <string name="add_publish_reconnect" formatted="false">"เชื่อมต่อโฟลเดอร์เดิมอีกครั้ง"</string>
+    <string name="add_publish_refresh" formatted="false">"รีเฟรชไฟล์"</string>
+    <string name="add_publish_registering" formatted="false">"กำลังเพิ่มที่เก็บ…"</string>
+    <string name="add_publish_reload" formatted="false">"โหลดความคืบหน้าที่บันทึกไว้อีกครั้ง"</string>
+    <string name="add_publish_repo_name" formatted="false">"ชื่อที่เก็บ"</string>
+    <string name="add_publish_save_review" formatted="false">"บันทึกการตรวจสอบ"</string>
+    <string name="add_publish_saved_commit">"คอมมิตที่บันทึกไว้: %1$s"</string>
+    <string name="add_publish_saved_progress" formatted="false">"ความคืบหน้าที่บันทึกไว้"</string>
+    <string name="add_publish_selected">"เลือกแล้ว: %1$d · %2$s"</string>
+    <string name="add_publish_step">"ขั้นตอนที่ %1$d จาก 3"</string>
+    <string name="add_publish_stop" formatted="false">"หยุด"</string>
+    <string name="add_publish_title" formatted="false">"เผยแพร่โฟลเดอร์"</string>
+    <string name="add_publish_unknown_note" formatted="false">"GitHub อาจสร้างรีโปแล้ว ตรวจสอบปลายทางเดิม ไม่มีการสร้างรีโปที่สองเว้นแต่คุณเลือกใช้รีโปรว่างที่ตรงกัน"</string>
+    <string name="add_publish_uploading" formatted="false">"กำลังอัปโหลดคอมมิตที่บันทึกไว้…"</string>
+    <string name="add_rail_github" formatted="false">"GitHub"</string>
+    <string name="add_rail_phone" formatted="false">"โทรศัพท์นี้"</string>
+    <string name="add_remote_file" formatted="false">"ในเครื่อง"</string>
+    <string name="add_remote_git" formatted="false">"git://"</string>
+    <string name="add_remote_http" formatted="false">"HTTP"</string>
+    <string name="add_remote_https" formatted="false">"HTTPS"</string>
+    <string name="add_remote_intro" formatted="false">"GitLab, Gitea, Codeberg, เซิร์ฟเวอร์ของคุณเอง"</string>
+    <string name="add_remote_label" formatted="false">"URL จากอินเทอร์เน็ต"</string>
+    <string name="add_remote_name_invalid" formatted="false">"ใช้ชื่อที่ไม่มี / หรือ \\ และไม่ใช่ “.” หรือ “..”"</string>
+    <string name="add_remote_placeholder" formatted="false">"ssh://git@host/owner/repo.git"</string>
+    <string name="add_remote_ssh" formatted="false">"SSH"</string>
+    <string name="add_remote_title" formatted="false">"โฮสต์ Git ใดก็ได้"</string>
+    <string name="add_resume_meta">"%1$s · ขั้นตอนที่ %2$d จาก 3 · บันทึกแล้ว"</string>
+    <string name="add_resume_title" formatted="false">"ดำเนินการเผยแพร่อีกครั้ง"</string>
+    <string name="add_saved_hint" formatted="false">"ใช้การเชื่อมต่อที่เข้ารหัสซึ่งบันทึกไว้สำหรับที่เก็บนี้อีกครั้ง"</string>
+    <string name="add_sign_in_with" formatted="false">"ลงชื่อเข้าด้วย"</string>
+    <string name="add_signed_in_as">"ลงชื่อเข้าเป็น @%1$s"</string>
+    <string name="add_signin_back_accounts" formatted="false">"กลับไปที่บัญชี"</string>
+    <string name="add_signin_body" formatted="false">"โคลนที่เก็บใดก็ได้ เขียนใน Obsidian หรือแอปอื่น แล้วซิงค์ด้วยการแตะครั้งเดียว"</string>
+    <string name="add_signin_busy" formatted="false">"กำลังลงชื่อเข้าใช้…"</string>
+    <string name="add_signin_eyebrow" formatted="false">"ทุกรีโพ ซิงก์กับ Android"</string>
+    <string name="add_signin_github" formatted="false">"ลงชื่อเข้าใช้ด้วย GitHub"</string>
+    <string name="add_signin_head_1" formatted="false">"โน้ตของคุณ"</string>
+    <string name="add_signin_head_2" formatted="false">"Git ของจริง"</string>
+    <string name="add_signin_head_3" formatted="false">"สอดคล้องกันเสมอ"</string>
+    <string name="add_signin_rail" formatted="false">"โทรศัพท์นี้และการประชุม GitHub ที่จุดซิงค์เดียวกัน"</string>
+    <string name="add_signin_sample" formatted="false">"ลองใช้คลังตัวอย่าง"</string>
+    <string name="add_signin_sample_busy" formatted="false">"กำลังเปิดตัวอย่าง…"</string>
+    <string name="add_signin_sample_hint" formatted="false">"Git จริง ออฟไลน์ ไม่ต้องใช้บัญชี"</string>
+    <string name="add_signin_token" formatted="false">"โทเคนการเข้าถึงส่วนบุคคล"</string>
+    <string name="add_signin_waiting" formatted="false">"ทำงานเสร็จบน GitHub ในแท็บเบราว์เซอร์ คุณจะกลับมาทันที"</string>
+    <string name="add_ssh_import_failed" formatted="false">"ไม่สามารถอ่านไฟล์กุญแจนั้นได้"</string>
+    <string name="add_ssh_import_key" formatted="false">"นำเข้าไฟล์กุญแจ"</string>
+    <string name="add_test_clone" formatted="false">"ทดสอบและ clone"</string>
+    <string name="add_test_failed_auth" formatted="false">"โฮสต์ปฏิเสธการเข้าสู่ระบบนี้ ตรวจสอบกุญแจหรือโทเค็นและการเข้าถึงรีโป"</string>
+    <string name="add_test_failed_branch">"โฮสต์ไม่มีสาขาที่ชื่อ %1$s"</string>
+    <string name="add_test_failed_missing" formatted="false">"โฮสต์ไม่มีรีโปที่ที่อยู่นี้"</string>
+    <string name="add_test_failed_network" formatted="false">"ไม่สามารถเข้าถึงโฮสต์ได้ ตรวจสอบที่อยู่และการเชื่อมต่อของคุณ"</string>
+    <string name="add_test_host_key" formatted="false">"ยืนยันกุญแจ SSH ของโฮสต์ แล้วแตะ ทดสอบ &amp; โคลน อีกครั้ง"</string>
+    <string name="add_testing" formatted="false">"กำลังทดสอบการเข้าสู่ระบบ…"</string>
+    <string name="add_title" formatted="false">"เพิ่ม vault"</string>
+    <string name="add_token_body" formatted="false">"วางโทเค็น GitHub ที่มีสิทธิ์เข้าถึงที่เก็บ"</string>
+    <string name="add_token_create" formatted="false">"สร้างโทเค็นบน GitHub"</string>
+    <string name="add_token_hide" formatted="false">"ซ่อน"</string>
+    <string name="add_token_hint" formatted="false">"โทเค็นถูกเข้ารหัสบนโทรศัพท์เครื่องนี้และส่งเฉพาะไปยังโฮสต์นี้เท่านั้น"</string>
+    <string name="add_token_label" formatted="false">"โทเคน"</string>
+    <string name="add_token_scopes" formatted="false">"ขอบเขต: repo และ user:email โทเค็นถูกเข้ารหัสบนโทรศัพท์เครื่องนี้"</string>
+    <string name="add_token_secret" formatted="false">"โทเคน"</string>
+    <string name="add_token_show" formatted="false">"แสดง"</string>
+    <string name="add_token_sign_in" formatted="false">"ลงชื่อเข้าใช้"</string>
+    <string name="add_token_title" formatted="false">"โทเคนการเข้าถึงส่วนบุคคล"</string>
+    <string name="add_token_user" formatted="false">"ชื่อผู้ใช้"</string>
+    <string name="add_unlock_rail">"%1$s · %2$s · ถูกตรวจแล้ว พร้อมคัดลอก"</string>
+    <string name="add_unlock_rail_cd">"%1$s ตรวจแล้วและพร้อมคัดลอกจาก GitHub ไปยัง Obsidian"</string>
+    <string name="add_unlock_rail_from" formatted="false">"GitHub"</string>
+    <string name="add_unlock_rail_plain">"%1$s · ตรวจแล้ว พร้อมคัดลอก"</string>
+    <string name="add_unlock_rail_to" formatted="false">"Obsidian"</string>
+    <string name="add_url_hint" formatted="false">"HTTPS, SSH, git:// หรือ owner/repo โฮสต์เอง? แตะที่กุญแจ"</string>
+    <string name="add_url_key" formatted="false">"ตัวเลือกการเข้าสู่ระบบสำหรับโฮสต์อื่น"</string>
+    <string name="add_url_label" formatted="false">"URL ของ Repository"</string>
+    <string name="add_url_placeholder" formatted="false">"https://github.com/owner/repo"</string>
+    <string name="add_url_section" formatted="false">"หรือวาง URL"</string>
+    <string name="add_way_github" formatted="false">"Clone จาก GitHub"</string>
+    <string name="add_way_github_sign_in" formatted="false">"เข้าสู่ระบบเพื่อเลือกจากรีโปของคุณ"</string>
+    <string name="add_way_local" formatted="false">"ค้นหาการคัดลอกในโทรศัพท์เครื่องนี้"</string>
+    <string name="add_way_local_sub" formatted="false">"สแกนที่เก็บข้อมูลร่วมเพื่อค้นหาโฟลเดอร์ .git ที่มีอยู่"</string>
+    <string name="add_way_open" formatted="false">"เปิดโฟลเดอร์รีโป"</string>
+    <string name="add_way_open_sub" formatted="false">"เลือกรีโป Git ด้วยตัวเลือกโฟลเดอร์ของระบบ"</string>
+    <string name="add_way_publish" formatted="false">"เผยแพร่โฟลเดอร์"</string>
+    <string name="add_way_publish_sub" formatted="false">"สร้างรีโป GitHub ใหม่จากโน้ตของคุณ"</string>
     <string name="automation_shortcut_label">"%1$s: %2$s"</string>
     <string name="background_allow_push" formatted="false">"อนุญาตให้เผยแพร่อัตโนมัติ"</string>
     <string name="background_binding">"เฉพาะสาขา %1$s ที่ติดตาม %2$s/%3$s การเปลี่ยนสาขา โฟลเดอร์ การเชื่อมต่อ หรือบัญชีต้องตรวจสอบใหม่"</string>
@@ -261,12 +597,43 @@
     <string name="dialogs_success_title" formatted="false">"สำเร็จ"</string>
     <string name="dialogs_timestamp_unknown" formatted="false">"ไม่ทราบ"</string>
     <string name="dialogs_warning_title" formatted="false">"คำเตือน"</string>
+    <string name="diff_m3_binary" formatted="false">"ไฟล์นี้ไม่ใช่ข้อความ ดังนั้นจึงไม่มีบรรทัดให้เปรียบเทียบ"</string>
+    <string name="diff_m3_changes" formatted="false">"การเปลี่ยนแปลง"</string>
+    <string name="diff_m3_deleted" formatted="false">"ไฟล์นี้ถูกลบ ทิ้งจะคืนค่ามันจากคอมมิตล่าสุด"</string>
+    <string name="diff_m3_discard" formatted="false">"ละทิ้ง"</string>
+    <string name="diff_m3_hunk">"%1$s · บรรทัด %2$d"</string>
+    <string name="diff_m3_hunk_line">"บรรทัด %1$d"</string>
+    <string name="diff_m3_load_failed" formatted="false">"ไม่สามารถอ่านการเปลี่ยนแปลงของไฟล์นี้ได้"</string>
+    <string name="diff_m3_next" formatted="false">"ไฟล์ถัดไป"</string>
+    <string name="diff_m3_no_changes" formatted="false">"ไม่มีการเปลี่ยนแปลงตั้งแต่คอมมิตล่าสุด"</string>
+    <string name="diff_m3_position">"%1$s · %2$d จาก %3$d"</string>
+    <string name="diff_m3_preview" formatted="false">"แสดงตัวอย่าง"</string>
+    <string name="diff_m3_previous" formatted="false">"ไฟล์ก่อนหน้า"</string>
+    <string name="diff_m3_stats_a11y">"เพิ่ม %1$d บรรทัด ลบ %2$d"</string>
+    <string name="diff_m3_vs_last_commit">"เทียบกับคอมมิตล่าสุด %1$s"</string>
+    <string name="diff_m3_vs_nothing" formatted="false">"ไฟล์ใหม่ · ยังไม่มีคอมมิต"</string>
+    <string name="diff_m3_whole_file" formatted="false">"ทั้งไฟล์"</string>
     <string name="discard_clear_staging" formatted="false">"ยกเลิกการเตรียมไฟล์"</string>
     <string name="discard_review_all" formatted="false">"การเปลี่ยนแปลงในไฟล์ที่ติดตามและไฟล์ใหม่ที่แสดงด้านล่างจะถูกทิ้งอย่างถาวร ไฟล์ที่ละเว้นจะยังคงอยู่"</string>
     <string name="discard_review_empty" formatted="false">"ไม่มีการเปลี่ยนแปลงให้ทิ้ง"</string>
     <string name="discard_review_operation" formatted="false">"การดำเนินการนี้จะยกเลิกการทำงานของ Git ที่กำลังดำเนินอยู่ด้วย"</string>
     <string name="discard_review_unborn" formatted="false">"ยังไม่มีคอมมิต การดำเนินการนี้จะยกเลิกการเตรียมไฟล์ที่แสดง โดยเก็บเนื้อหาไว้"</string>
     <string name="discovery_scanned">"สแกน %1$s แล้ว เลือกสำเนาการทำงานที่จะเพิ่ม"</string>
+    <string name="editor_m3_commit" formatted="false">"Commit"</string>
+    <string name="editor_m3_markdown" formatted="false">"มาร์กดาวน์"</string>
+    <string name="editor_m3_md_bold" formatted="false">"ตัวหนา"</string>
+    <string name="editor_m3_md_code" formatted="false">"โค้ด"</string>
+    <string name="editor_m3_md_heading" formatted="false">"หัวเรื่อง"</string>
+    <string name="editor_m3_md_indent" formatted="false">"เยื้อง"</string>
+    <string name="editor_m3_md_link" formatted="false">"ลิงก์"</string>
+    <string name="editor_m3_md_task" formatted="false">"งาน"</string>
+    <string name="editor_m3_not_saved" formatted="false">"ยังไม่ได้บันทึก"</string>
+    <string name="editor_m3_save_now" formatted="false">"บันทึกตอนนี้"</string>
+    <string name="editor_m3_saved" formatted="false">"บันทึกเรียบร้อยแล้ว"</string>
+    <string name="editor_m3_saved_changed">"บันทึกแล้ว · %1$s"</string>
+    <string name="editor_m3_saving" formatted="false">"กำลังบันทึก..."</string>
+    <string name="editor_m3_subtitle">"%1$s / %2$s"</string>
+    <string name="editor_m3_vault_ahead">"%1$s ↑%2$d"</string>
     <string name="file_clone_failure" formatted="false">"ไม่สามารถโคลนคลังในเครื่องได้ ตรวจสอบโฟลเดอร์ต้นทาง สิทธิ์เข้าถึงพื้นที่เก็บข้อมูล และสาขา โฟลเดอร์ที่มีอยู่ยังคงอยู่"</string>
     <string name="file_clone_guidance" formatted="false">"โคลนคลังบนอุปกรณ์โดยใช้การเข้าถึงในเครื่อง สำหรับพื้นที่เก็บข้อมูลที่ใช้ร่วมกัน ให้สิทธิ์เข้าถึงโฟลเดอร์ในการตั้งค่าก่อน"</string>
     <string name="file_delete_body" formatted="false">"ไฟล์จะถูกลบออกจากอุปกรณ์นี้ Git จะแสดงว่าไฟล์ถูกลบหากเคยติดตามไฟล์นี้"</string>
@@ -289,15 +656,344 @@
     <string name="file_renamed" formatted="false">"เปลี่ยนชื่อแล้ว"</string>
     <string name="file_save_title" formatted="false">"บันทึกการเปลี่ยนแปลงหรือไม่?"</string>
     <string name="file_saved" formatted="false">"บันทึกแล้ว"</string>
+    <string name="filehistory_m3_commits" formatted="false">"คำสั่งยืนยัน"</string>
+    <string name="filehistory_m3_empty" formatted="false">"ยังไม่มีคำสั่งยืนยันใดรวมไฟล์นี้"</string>
+    <string name="filehistory_m3_load_failed" formatted="false">"ไม่สามารถอ่านประวัติของไฟล์นี้ได้"</string>
+    <string name="filehistory_m3_meta">"%1$s · %2$s · %3$s"</string>
+    <string name="filehistory_m3_subtitle">"ประวัติ · %1$s"</string>
     <string name="files_folder" formatted="false">"โฟลเดอร์"</string>
     <string name="files_hide_hidden" formatted="false">"ซ่อนไฟล์ที่ซ่อน"</string>
+    <string name="files_m3_actions_for">"การทำงานสำหรับ %1$s"</string>
+    <string name="files_m3_age_days">"%1$d วันที่แล้ว"</string>
+    <string name="files_m3_age_hours">"%1$dที่ผ่านมา h"</string>
+    <string name="files_m3_age_minutes">"%1$dm ที่ผ่านมา"</string>
+    <string name="files_m3_age_months">"%1$d เดือนที่แล้ว"</string>
+    <string name="files_m3_age_now" formatted="false">"เพิ่งได้รับ"</string>
+    <string name="files_m3_age_weeks">"%1$d สัปดาห์ที่แล้ว"</string>
+    <string name="files_m3_age_years">"%1$d ปีที่แล้ว"</string>
+    <string name="files_m3_check_for_changes" formatted="false">"ตรวจหาการเปลี่ยนแปลง"</string>
+    <string name="files_m3_delete" formatted="false">"ลบ"</string>
+    <string name="files_m3_delete_folder_body" formatted="false">"ที่นี่สามารถลบได้เฉพาะโฟลเดอร์ว่างเท่านั้น"</string>
+    <string name="files_m3_delete_folder_title" formatted="false">"ลบโฟลเดอร์หรือไม่?"</string>
+    <string name="files_m3_fetch" formatted="false">"Fetch"</string>
+    <string name="files_m3_fetch_cd">"ดึง %1$s จากระยะไกล"</string>
+    <string name="files_m3_fetch_failed" formatted="false">"ไม่สามารถดึงไฟล์นี้จากระยะไกลได้ ตรวจสอบการเชื่อมต่อและการเข้าสู่ระบบ จากนั้นลองอีกครั้ง"</string>
+    <string name="files_m3_fetched">"ดึง %1$s เรียบร้อย"</string>
+    <string name="files_m3_folder_path" formatted="false">"เส้นทางโฟลเดอร์"</string>
+    <string name="files_m3_footnote" formatted="false">"กดค้างที่ไฟล์ใดก็ได้เพื่อดำเนินการ"</string>
+    <string name="files_m3_history" formatted="false">"ประวัติ"</string>
+    <string name="files_m3_lfs_pointer">"ตัวชี้ LFS · %1$s บน remote"</string>
+    <string name="files_m3_meta">"%1$s · %2$s"</string>
+    <string name="files_m3_meta_edited">"แก้ไข %1$s · %2$s"</string>
+    <string name="files_m3_new_file_cd" formatted="false">"ไฟล์ใหม่"</string>
+    <string name="files_m3_open_in" formatted="false">"เปิดใน…"</string>
+    <string name="files_m3_open_in_chooser">"เปิด %1$s ใน…"</string>
+    <string name="files_m3_open_in_failed" formatted="false">"ไม่มีแอปบนโทรศัพท์นี้ที่สามารถเปิดไฟล์นี้ได้"</string>
+    <string name="files_m3_rename" formatted="false">": ชื่อเปลี่ยน"</string>
+    <string name="files_m3_rename_field" formatted="false">"ชื่อ"</string>
+    <string name="files_m3_tag_added" formatted="false">"A"</string>
+    <string name="files_m3_tag_conflict" formatted="false">"!"</string>
+    <string name="files_m3_tag_lfs" formatted="false">"LFS"</string>
+    <string name="files_m3_tag_modified" formatted="false">"M"</string>
     <string name="files_show_hidden" formatted="false">"แสดงไฟล์ที่ซ่อน"</string>
     <string name="folder_access_not_enabled" formatted="false">"ยังไม่ได้เปิดสิทธิ์เข้าถึงโฟลเดอร์ คุณสามารถใช้พื้นที่จัดเก็บของแอปต่อได้"</string>
     <string name="folder_picker_unavailable" formatted="false">"ไม่มีตัวเลือกโฟลเดอร์บนอุปกรณ์นี้"</string>
     <string name="folder_settings_unavailable" formatted="false">"การตั้งค่าพื้นที่จัดเก็บ Android ไม่พร้อมใช้งาน พื้นที่จัดเก็บของแอปยังคงใช้งานได้"</string>
     <string name="folder_unusable" formatted="false">"ไม่สามารถใช้โฟลเดอร์นี้ได้"</string>
     <string name="git_fetch" formatted="false">"Fetch"</string>
+    <string name="git_m3_abort" formatted="false">"ยกเลิก"</string>
+    <string name="git_m3_abort_merge" formatted="false">"ยกเลิก merge"</string>
+    <string name="git_m3_abort_merge_body">"วาง %1$s กลับไปที่เดิมก่อนการรวม การเลือกที่ทำไว้ทั้งหมดจะถูกทิ้ง"</string>
+    <string name="git_m3_abort_merge_title" formatted="false">"ยกเลิกการรวมนี้หรือไม่?"</string>
+    <string name="git_m3_abort_rebase_ask" formatted="false">"ยกเลิกรีเบส…"</string>
+    <string name="git_m3_access_github" formatted="false">"GitHub ระบบเข้าสู่ระบบ"</string>
+    <string name="git_m3_access_https" formatted="false">"HTTPS"</string>
+    <string name="git_m3_access_local" formatted="false">"โฟลเดอร์ภายในเครื่อง"</string>
+    <string name="git_m3_access_ssh" formatted="false">"SSH คีย์"</string>
+    <string name="git_m3_age_days">"%1$dd"</string>
+    <string name="git_m3_age_hours">"%1$dh"</string>
+    <string name="git_m3_age_minutes">"%1$dm"</string>
+    <string name="git_m3_ago_days">"%1$d วันที่แล้ว"</string>
+    <string name="git_m3_ago_hours">"%1$dที่ผ่านมา h"</string>
+    <string name="git_m3_ago_minutes">"%1$dm ที่ผ่านมา"</string>
+    <string name="git_m3_ago_now" formatted="false">"เพิ่งได้รับ"</string>
+    <string name="git_m3_ahead">"นำหน้า %1$d"</string>
+    <string name="git_m3_annotated" formatted="false">"มีหมายเหตุ"</string>
+    <string name="git_m3_applied_toast">"ใช้ %1$s แล้ว กองเก็บยังคงถูกบันทึกอยู่"</string>
+    <string name="git_m3_apply" formatted="false">"ใช้"</string>
+    <string name="git_m3_apply_help" formatted="false">"นำการเปลี่ยนแปลงกลับมาและเก็บกองเก็บไว้"</string>
+    <string name="git_m3_back_to_remote" formatted="false">"กลับไปที่ Remote"</string>
+    <string name="git_m3_backup_at">"ข้อมูลสำรอง: %1$s"</string>
+    <string name="git_m3_behind">"ตามหลัง %1$d"</string>
+    <string name="git_m3_binary_side" formatted="false">"ไฟล์นี้ไม่สามารถแสดงเป็นข้อความได้ เลือกเวอร์ชันทั้งหมด"</string>
+    <string name="git_m3_both_edited_file" formatted="false">"ทั้งสองฝั่งแก้ไขไฟล์นี้"</string>
+    <string name="git_m3_both_edited_section">"ทั้งสองฝั่งแก้ไข “%1$s”"</string>
+    <string name="git_m3_both_moved" formatted="false">"ทั้งสองฝั่งเปลี่ยนไป"</string>
+    <string name="git_m3_both_moved_body">"ดึงเฉพาะ fast-forwards ดังนั้นจึงไม่สามารถรวมเหล่านี้ได้ การรวมจะเก็บประวัติทั้งสองไว้ การ Rebase จะวาง commit %1$d ของคุณไว้ด้านบน"</string>
+    <string name="git_m3_both_moved_headline" formatted="false">"remote เปลี่ยนไประหว่างที่คุณเขียน"</string>
+    <string name="git_m3_both_sides_edited" formatted="false">"ทั้งสองฝั่งแก้ไขไฟล์นี้"</string>
+    <string name="git_m3_branch_name" formatted="false">"ชื่อสาขา"</string>
+    <string name="git_m3_branch_placeholder" formatted="false">"เช่น draft/winter"</string>
+    <string name="git_m3_branches" formatted="false">"สาขา"</string>
+    <string name="git_m3_branches_stashes_tags" formatted="false">"สาขา กองเก็บ และแท็ก"</string>
+    <string name="git_m3_cancel" formatted="false">"ยกเลิก"</string>
+    <string name="git_m3_cant_switch_note" formatted="false">"ไฟล์ที่ไม่ถูกติดตามซึ่งสาขาอื่นจะเขียนทับก็ขัดขวางการสลับเช่นกัน ยังไม่มีอะไรเปลี่ยนแปลง"</string>
+    <string name="git_m3_cant_switch_title" formatted="false">"ยังไม่สามารถสลับได้"</string>
+    <string name="git_m3_check_changes" formatted="false">"ตรวจหาการเปลี่ยนแปลง"</string>
+    <string name="git_m3_commit_as" formatted="false">"Commit ในนาม"</string>
+    <string name="git_m3_commit_first" formatted="false">"Commit ก่อน"</string>
+    <string name="git_m3_commit_history" formatted="false">"ประวัติการ commit"</string>
+    <string name="git_m3_commit_of">"commit %1$d ของ %2$d"</string>
+    <string name="git_m3_conflict_body" formatted="false">"เลือกเวอร์ชันที่จะเก็บ หรือเก็บทั้งสองแล้วค่อยจัดระเบียบภายหลัง"</string>
+    <string name="git_m3_conflict_progress">"ความขัดแย้ง %1$d ของ %2$d · %3$s"</string>
+    <string name="git_m3_connection" formatted="false">"การเชื่อมต่อ"</string>
+    <string name="git_m3_continue_retry_first" formatted="false">"ดำเนินการ rebase ต่อ · ลองใหม่ก่อน"</string>
+    <string name="git_m3_create" formatted="false">"สร้าง"</string>
+    <string name="git_m3_create_tag" formatted="false">"สร้างแท็ก"</string>
+    <string name="git_m3_current" formatted="false">"ปัจจุบัน"</string>
+    <string name="git_m3_current_branch" formatted="false">"สาขาปัจจุบัน"</string>
+    <string name="git_m3_delete" formatted="false">"ลบ"</string>
+    <string name="git_m3_delete_branch_body">"ลบ %1$s บนโทรศัพท์นี้ GitHub ไม่ถูกแตะต้อง"</string>
+    <string name="git_m3_delete_branch_cd">"ลบสาขา %1$s"</string>
+    <string name="git_m3_delete_branch_title" formatted="false">"ลบสาขาไหม"</string>
+    <string name="git_m3_delete_files_sub" formatted="false">"ลบโฟลเดอร์ออกจากโทรศัพท์นี้"</string>
+    <string name="git_m3_delete_force" formatted="false">"บังคับ"</string>
+    <string name="git_m3_delete_force_help" formatted="false">"ลบสาขาอย่างบังคับแม้ว่าคอมมิตของมันจะไม่ถูกรวมเข้าด้วยกันแล้ว พวกมันอาจสูญหายได้"</string>
+    <string name="git_m3_delete_normal" formatted="false">"ปกติ"</string>
+    <string name="git_m3_delete_normal_help" formatted="false">"ลบสาขาเฉพาะเมื่อคอมมิตของมันถูกรวมแล้วเท่านั้น"</string>
+    <string name="git_m3_delete_tag" formatted="false">"ลบแท็ก"</string>
+    <string name="git_m3_delete_tag_body">"แท็กจะหายไปบนโทรศัพท์นี้ คอมมิต %1$s ยังคงอยู่ และสำเนาที่ถูก push ไปยัง GitHub ไม่ถูกแตะต้อง"</string>
+    <string name="git_m3_delete_tag_cd">"ลบแท็ก %1$s"</string>
+    <string name="git_m3_delete_tag_title">"ลบ \"%1$s\" หรือไม่?"</string>
+    <string name="git_m3_deleted_here_edited_there" formatted="false">"โทรศัพท์นี้ลบมันไป อีกด้านแก้ไขมัน"</string>
+    <string name="git_m3_deleted_on_phone" formatted="false">"ถูกลบบนโทรศัพท์นี้"</string>
+    <string name="git_m3_deleted_on_remote">"ถูกลบบน %1$s"</string>
+    <string name="git_m3_detached">"แยกออกที่ %1$s"</string>
+    <string name="git_m3_discard" formatted="false">"ละทิ้งการเปลี่ยนแปลง"</string>
+    <string name="git_m3_disconnected" formatted="false">"ตัดการเชื่อมต่อ"</string>
+    <string name="git_m3_drop" formatted="false">"ลบ"</string>
+    <string name="git_m3_drop_cd">"ทิ้ง %1$s"</string>
+    <string name="git_m3_drop_help" formatted="false">"ลบ stash โดยไม่ประยุกต์ใช้"</string>
+    <string name="git_m3_dropped_toast">"ทิ้ง %1$s แล้ว"</string>
+    <string name="git_m3_edit_by_hand" formatted="false">"แก้ไขด้วยตนเอง"</string>
+    <string name="git_m3_edit_connection" formatted="false">"แก้ไขการเชื่อมต่อ"</string>
+    <string name="git_m3_edited_ago">"แก้ไข %1$s"</string>
+    <string name="git_m3_edited_here_deleted_there" formatted="false">"โทรศัพท์เครื่องนี้แก้ไขแล้ว ฝั่งตรงข้ามลบออก"</string>
+    <string name="git_m3_fetch_again" formatted="false">"ดึงใหม่อีกครั้ง"</string>
+    <string name="git_m3_fetch_and_push">"ดึงและผลัก: %1$s"</string>
+    <string name="git_m3_fetch_hint" formatted="false">"เพื่อดูสาขาใหม่ที่ถูกส่งมาจากอุปกรณ์อื่นของคุณ"</string>
+    <string name="git_m3_fetch_review_again" formatted="false">"ดึงข้อมูลและตรวจสอบอีกครั้ง"</string>
+    <string name="git_m3_fetch_sub" formatted="false">"ตรวจสอบ GitHub สำหรับคอมมิตใหม่"</string>
+    <string name="git_m3_fetched">"fetch แล้ว %1$s"</string>
+    <string name="git_m3_finishing_merge" formatted="false">"กำลังทำการรวมเสร็จ…"</string>
+    <string name="git_m3_folder_location" formatted="false">"โฟลเดอร์และตำแหน่งของมัน"</string>
+    <string name="git_m3_from" formatted="false">"จาก"</string>
+    <string name="git_m3_from_remote">"↓%1$d จาก remote"</string>
+    <string name="git_m3_from_who">" จาก %1$s"</string>
+    <string name="git_m3_github" formatted="false">"GitHub"</string>
+    <string name="git_m3_hand_edited_markers" formatted="false">"เครื่องหมายความขัดแย้งยังอยู่ในไฟล์ ลบออกในตัวแก้ไขแล้วกลับมาอีกครั้ง"</string>
+    <string name="git_m3_hand_edited_ready" formatted="false">"แก้ไขด้วยมือ ใช้ไฟล์ที่คุณแก้ไข หรือเลือกฝั่งใดฝั่งหนึ่งเพื่อแทนที่"</string>
+    <string name="git_m3_how" formatted="false">"วิธี"</string>
+    <string name="git_m3_in_sync" formatted="false">"ซิงค์แล้ว"</string>
+    <string name="git_m3_in_sync_headline" formatted="false">"โทรศัพท์นี้ตรงกับระยะไกล"</string>
+    <string name="git_m3_in_the_way" formatted="false">"ขวางทาง"</string>
+    <string name="git_m3_in_this_vault" formatted="false">"ในตู้นี้"</string>
+    <string name="git_m3_its_remotes" formatted="false">"ระยะไกลของมัน"</string>
+    <string name="git_m3_keep_backup" formatted="false">"เก็บสำรองที่ยืนยันแล้ว"</string>
+    <string name="git_m3_keep_backup_sub" formatted="false">"สำเนาและ ZIP ของโฟลเดอร์ .git"</string>
+    <string name="git_m3_keep_both" formatted="false">"เก็บทั้งสอง"</string>
+    <string name="git_m3_kept_edit" formatted="false">"แก้ไขด้วยมือแล้ว"</string>
+    <string name="git_m3_kept_local" formatted="false">"เก็บการคอมมิตท้องถิ่นที่เล่นใหม่"</string>
+    <string name="git_m3_kept_upstream" formatted="false">"เก็บเวอร์ชันจากต้นทาง"</string>
+    <string name="git_m3_lfs" formatted="false">"ไฟล์ขนาดใหญ่ (LFS)"</string>
+    <string name="git_m3_lfs_none" formatted="false">"ไม่ได้ใช้"</string>
+    <string name="git_m3_lfs_value">"%1$s · %2$d ถูกล็อก"</string>
+    <string name="git_m3_light" formatted="false">"เบา"</string>
+    <string name="git_m3_local_only" formatted="false">"ในเครื่องเท่านั้น"</string>
+    <string name="git_m3_manage_vault" formatted="false">"จัดการตู้เก็บของ"</string>
+    <string name="git_m3_marker_end" formatted="false">"สิ้นสุดทั้งสองเวอร์ชัน"</string>
+    <string name="git_m3_marker_ours" formatted="false">"เวอร์ชันของโทรศัพท์นี้"</string>
+    <string name="git_m3_marker_theirs">"เวอร์ชันของ %1$s"</string>
+    <string name="git_m3_merge" formatted="false">"รวม"</string>
+    <string name="git_m3_merge_and_push" formatted="false">"ผสานและพุช"</string>
+    <string name="git_m3_merge_author">"ผู้เขียนการรวม: %1$s"</string>
+    <string name="git_m3_merge_both_body" formatted="false">"การคอมมิตของคุณเก็บ ID ของมันไว้ เนื่องจากทั้งสองฝ่ายมีการเคลื่อนที่ นี่จึงสร้างการคอมมิตแบบรวม ไฟล์ที่แก้ไขทั้งสองฝ่ายอาจต้องให้คุณเลือก"</string>
+    <string name="git_m3_merge_current_body" formatted="false">"ทั้งสองฝ่ายตรงกัน ไม่มีอะไรต้องรวม"</string>
+    <string name="git_m3_merge_ff_body" formatted="false">"มีเพียงระยะไกลเคลื่อนที่ ดังนั้นนี่จึงเป็นการเดินหน้าเร็วของสาขาของคุณ ไม่มีการคอมมิตใหม่"</string>
+    <string name="git_m3_merge_in_progress" formatted="false">"กำลังรวมอยู่"</string>
+    <string name="git_m3_merge_into">"รวมเข้ากับ %1$s"</string>
+    <string name="git_m3_merge_locally" formatted="false">"ผสานในเครื่อง"</string>
+    <string name="git_m3_merge_message">"Merge %1$s"</string>
+    <string name="git_m3_merge_named">"Merge %1$s"</string>
+    <string name="git_m3_merge_pause_note" formatted="false">"หากทั้งสองสาขาได้แก้ไขไฟล์เดียวกัน การรวมจะหยุดชั่วคราวเพื่อให้คุณเลือกสิ่งที่จะเก็บใน Git"</string>
+    <string name="git_m3_merge_push_body">"อัปเดต %1$s ด้วย %2$s จากนั้นส่งไปที่ %3$s ความขัดแย้งจะหยุดการส่ง หากระยะไกลไม่ยืนยัน การรวมจะยังคงอยู่บนโทรศัพท์เครื่องนี้และคุณสามารถลองใหม่ได้"</string>
+    <string name="git_m3_merge_push_only_body" formatted="false">"ไม่มีอะไรใหม่บนระยะไกล การรวมและส่งจะส่งคอมมิตของคุณ"</string>
+    <string name="git_m3_merge_push_title" formatted="false">"รวมและส่ง?"</string>
+    <string name="git_m3_merge_ready" formatted="false">"แก้ไขความขัดแย้งทั้งหมดแล้ว เสร็จสิ้นการรวม"</string>
+    <string name="git_m3_merge_reviewing" formatted="false">"กำลังดึงและตรวจสอบสิ่งที่มีจากระยะไกล…"</string>
+    <string name="git_m3_merge_sub" formatted="false">"ดึง ตรวจสอบ แล้วรวม"</string>
+    <string name="git_m3_merging">"%1$s · กำลังรวม %2$s"</string>
+    <string name="git_m3_message_optional" formatted="false">"ข้อความ (ไม่บังคับ)"</string>
+    <string name="git_m3_more_files">"%1$d เพิ่มเติม"</string>
+    <string name="git_m3_move_repository" formatted="false">"ย้ายคลังเก็บ"</string>
+    <string name="git_m3_move_sub" formatted="false">"เลือกโฟลเดอร์ใหม่"</string>
+    <string name="git_m3_never_fetched" formatted="false">"ยังไม่ได้ดึงข้อมูล"</string>
+    <string name="git_m3_new_branch" formatted="false">"สาขาใหม่"</string>
+    <string name="git_m3_new_on_remote" formatted="false">"ใหม่บนระยะไกล"</string>
+    <string name="git_m3_new_on_remote_body">"ดึง fast-forwards %1$s ให้ตรงกัน ไม่มีข้อมูลใดบนโทรศัพท์เครื่องนี้สูญหาย"</string>
+    <string name="git_m3_new_on_remote_headline" formatted="false">"รีโมตมีคอมมิตที่คุณยังไม่มี"</string>
+    <string name="git_m3_new_tag" formatted="false">"แท็กใหม่"</string>
+    <string name="git_m3_no_backup_warning" formatted="false">"หากไม่มีสำเนาสำรอง ประวัติ Git ของโทรศัพท์เครื่องนี้จะถูกลบถาวร การ commit ที่อยู่บน GitHub แล้วปลอดภัย"</string>
+    <string name="git_m3_no_conflicts" formatted="false">"ไม่มีความขัดแย้งเหลือ"</string>
+    <string name="git_m3_no_stashes" formatted="false">"ไม่มี stash ที่บันทึกไว้"</string>
+    <string name="git_m3_no_upstream" formatted="false">"เฉพาะเครื่องนี้ · ไม่มี upstream"</string>
+    <string name="git_m3_no_upstream_body" formatted="false">"เลือก upstream เพื่อให้การดึงและส่งรู้ว่าจะไปที่ไหน"</string>
+    <string name="git_m3_no_upstream_headline" formatted="false">"สาขานี้ยังไม่ได้ติดตามสาขารีโมทใด ๆ"</string>
+    <string name="git_m3_no_upstream_kicker" formatted="false">"ไม่มีอัปสตรีม"</string>
+    <string name="git_m3_none" formatted="false">"ไม่มี"</string>
+    <string name="git_m3_not_set" formatted="false">"ไม่ได้ตั้งค่า"</string>
+    <string name="git_m3_not_tracked">"%1$s · ไม่ได้ติดตาม"</string>
+    <string name="git_m3_notes_attachments_any" formatted="false">"โน้ตและไฟล์แนบของคุณ"</string>
+    <string name="git_m3_nothing_new">"ไม่มีอะไรที่ %1$s ไม่มี"</string>
+    <string name="git_m3_nothing_to_stash" formatted="false">"ไม่มีอะไรให้จัดเก็บชั่วคราว"</string>
+    <string name="git_m3_nothing_to_stash_body" formatted="false">"ไม่มีการเปลี่ยนแปลงในเครื่องนี้ แก้ไขโน้ตแล้วกลับมาที่นี่เพื่อจัดวาง"</string>
+    <string name="git_m3_ok" formatted="false">"ตกลง"</string>
+    <string name="git_m3_on_this_phone" formatted="false">"ในโทรศัพท์นี้"</string>
+    <string name="git_m3_only_on">"เฉพาะบน %1$s"</string>
+    <string name="git_m3_open" formatted="false">"เปิด"</string>
+    <string name="git_m3_open_rebase" formatted="false">"เปิดการรีเบส"</string>
+    <string name="git_m3_open_sub" formatted="false">"กลับไปที่ตู้เก็บ"</string>
+    <string name="git_m3_plain_folder">"%1$s ตอนนี้เป็นโฟลเดอร์ธรรมดา"</string>
+    <string name="git_m3_plain_folder_body" formatted="false">"โน้ตของคุณยังอยู่ที่เดิม GitSync.md ไม่ซิงค์โฟลเดอร์นี้อีกต่อไป"</string>
+    <string name="git_m3_pop" formatted="false">"ดึงออก"</string>
+    <string name="git_m3_pop_help" formatted="false">"นำการเปลี่ยนแปลงกลับมาและลบการจัดเก็บชั่วคราวออก"</string>
+    <string name="git_m3_popped_toast">"ดึง %1$s ออกมา การแก้ไขของคุณกลับมาแล้ว"</string>
+    <string name="git_m3_previously_added" formatted="false">"เคยเพิ่มไว้"</string>
+    <string name="git_m3_pull_n">"ดึง ↓%1$d"</string>
+    <string name="git_m3_pull_sub" formatted="false">"Fast-forward เท่านั้น"</string>
+    <string name="git_m3_pull_sub_blocked" formatted="false">"ทำได้เฉพาะแบบ fast-forward ตอนนี้ทำไม่ได้: ทั้งสองฝั่งมีการเคลื่อนไหว"</string>
+    <string name="git_m3_pulls_from">"%1$s ดึงมาจากและส่งไปที่"</string>
+    <string name="git_m3_push" formatted="false">"พุช"</string>
+    <string name="git_m3_push_n">"ส่ง ↑%1$d"</string>
+    <string name="git_m3_push_tag_cd">"ส่ง %1$s ไปยัง GitHub"</string>
+    <string name="git_m3_push_to">"ส่งไปยัง %1$s"</string>
+    <string name="git_m3_ready_to_push" formatted="false">"พร้อม push"</string>
+    <string name="git_m3_ready_to_push_body">"การส่งจะส่งการ commit ของคุณ %1$d ไม่มีอะไรเปลี่ยนแปลงบน remote จนกว่ามันจะยอมรับ"</string>
+    <string name="git_m3_ready_to_push_headline" formatted="false">"Remote ยังไม่ได้เห็น commit ของคุณ"</string>
+    <string name="git_m3_rebase" formatted="false">"Rebase"</string>
+    <string name="git_m3_rebase_abort_body">"วาง %1$s กลับไปที่ %2$s การแก้ไขและการเลือกความขัดแย้งที่ทำระหว่างการ rebase นี้จะถูกทิ้ง"</string>
+    <string name="git_m3_rebase_abort_title" formatted="false">"ยกเลิกรีเบสนี้หรือไม่?"</string>
+    <string name="git_m3_rebase_aborted" formatted="false">"ยกเลิกรีเบสแล้ว"</string>
+    <string name="git_m3_rebase_aborted_headline" formatted="false">"กลับสู่จุดเริ่มต้น"</string>
+    <string name="git_m3_rebase_begin_title" formatted="false">"เขียนคอมมิตในเครื่องใหม่หรือไม่?"</string>
+    <string name="git_m3_rebase_blocked_body" formatted="false">"ไฟล์ที่ไม่ได้อยู่ใน Git จะถูกเขียนทับโดยการ commit ครั้งถัดไป ย้ายไปยังที่ปลอดภัย รีเฟรช แล้วลองอีกครั้ง Commit ที่ทำซ้ำแล้วจะถูกเก็บไว้"</string>
+    <string name="git_m3_rebase_blocked_headline" formatted="false">"รีเบสกำลังรอ checkout ที่ถูกบล็อก"</string>
+    <string name="git_m3_rebase_conflicts">"ความขัดแย้ง · %1$d ของ %2$d ได้รับการแก้ไข"</string>
+    <string name="git_m3_rebase_conflicts_headline" formatted="false">"รีเบสหยุดที่ไฟล์ซึ่งทั้งสองฝั่งแก้ไข"</string>
+    <string name="git_m3_rebase_done_headline" formatted="false">"รีเบสเสร็จแล้ว"</string>
+    <string name="git_m3_rebase_in_progress" formatted="false">"กำลังรีเบส"</string>
+    <string name="git_m3_rebase_initial" formatted="false">"ดึงมาก่อนเพื่อดูว่า rebase จะย้ายอะไรบ้าง"</string>
+    <string name="git_m3_rebase_restored">"%1$s ถูกกู้คืนไปที่ %2$s · ↑%3$d ↓%4$d"</string>
+    <string name="git_m3_rebase_review_body">"เล่นซ้ำ commit ของคุณบน %1$s ID ของพวกเขาอาจเปลี่ยน การ merge commit จะรักษารูปร่างไว้ ไม่มีอะไรถูก push"</string>
+    <string name="git_m3_rebase_sides_note">"ในการ rebase, %1$s คือ “ours” ของ Git และ %2$s ของคุณคือ “theirs”"</string>
+    <string name="git_m3_rebase_skip_body">"ลบ %1$s ออกจากการ replay ตรวจสอบการเปลี่ยนแปลงของมันก่อน สิ่งนี้สามารถลบงานของคุณออกจากประวัติใหม่"</string>
+    <string name="git_m3_rebase_skip_title" formatted="false">"ข้ามคอมมิตในเครื่องนี้หรือไม่?"</string>
+    <string name="git_m3_rebase_step">"หยุดที่ commit %1$d ของ %2$d."</string>
+    <string name="git_m3_rebase_stopped" formatted="false">"การ rebase กำลังรอคุณอยู่."</string>
+    <string name="git_m3_rebase_sub" formatted="false">"เล่น commit ของคุณใหม่ด้านบน · ดำเนินการต่อ rebase"</string>
+    <string name="git_m3_rebase_theirs">"ใหม่บน %1$s · %2$d"</string>
+    <string name="git_m3_rebase_yours">"commit ของคุณที่จะเล่นซ้ำ · %1$d"</string>
+    <string name="git_m3_refresh_branches" formatted="false">"รีเฟรชสาขา"</string>
+    <string name="git_m3_remote" formatted="false">"Remote"</string>
+    <string name="git_m3_remote_access">"ดึงและส่ง · %1$s"</string>
+    <string name="git_m3_remote_pill" formatted="false">"remote"</string>
+    <string name="git_m3_remote_reading" formatted="false">"กำลังอ่านรีโมทของ vault นี้…"</string>
+    <string name="git_m3_remove" formatted="false">"ลบ"</string>
+    <string name="git_m3_remove_from_app" formatted="false">"นำออกจากแอป"</string>
+    <string name="git_m3_remove_from_app_body" formatted="false">"โฟลเดอร์และประวัติ Git ของมันจะอยู่บนโทรศัพท์นี้ เพิ่มกลับได้ทุกเมื่อ."</string>
+    <string name="git_m3_remove_from_app_sub" formatted="false">"เก็บไฟล์และ Git. เพิ่มกลับได้ทุกเมื่อ."</string>
+    <string name="git_m3_remove_from_app_title">"ลบ %1$s ออกจากแอป?"</string>
+    <string name="git_m3_remove_tracking_sub" formatted="false">"เก็บไฟล์ของคุณ นำ Git ออกจากโฟลเดอร์นี้"</string>
+    <string name="git_m3_replayed_commit" formatted="false">"commit ที่เล่นซ้ำแล้ว"</string>
+    <string name="git_m3_replayed_label">"เล่นซ้ำการคอมมิตในเครื่อง · %1$s"</string>
+    <string name="git_m3_resolve" formatted="false">"แก้ไข"</string>
+    <string name="git_m3_resolve_conflict" formatted="false">"แก้ไขความขัดแย้ง"</string>
+    <string name="git_m3_result_current" formatted="false">"ไม่มีสิ่งใหม่ที่จะรวม"</string>
+    <string name="git_m3_result_current_kicker" formatted="false">"อัปเดตแล้ว"</string>
+    <string name="git_m3_result_local_only" formatted="false">"ผลลัพธ์อยู่เฉพาะในโทรศัพท์เครื่องนี้เท่านั้น ดันเมื่อต้องการ"</string>
+    <string name="git_m3_result_merged" formatted="false">"รวมการเปลี่ยนแปลงของอีกฝั่งแล้ว"</string>
+    <string name="git_m3_result_merged_kicker" formatted="false">"ผสานแล้ว"</string>
+    <string name="git_m3_result_push_confirmed" formatted="false">"GitHub ยอมรับการคอมมิตนี้แล้ว"</string>
+    <string name="git_m3_result_push_unconfirmed" formatted="false">"ระยะไกลไม่ได้ยืนยันการดัน ลองใหม่จะส่งคอมมิตเดียวกันโดยไม่รวมอีกครั้ง"</string>
+    <string name="git_m3_result_saved_locally" formatted="false">"บันทึกคอมมิตผสานในเครื่องแล้ว"</string>
+    <string name="git_m3_result_unconfirmed" formatted="false">"บันทึกที่นี่แล้ว การดันยังไม่เสร็จ"</string>
+    <string name="git_m3_result_unconfirmed_kicker" formatted="false">"รวม · ยังไม่ได้ส่ง"</string>
+    <string name="git_m3_retry_blocked" formatted="false">"ลองคอมมิตที่ถูกบล็อกอีกครั้ง"</string>
+    <string name="git_m3_retry_push" formatted="false">"ลองพุชคอมมิตที่บันทึกไว้อีกครั้ง"</string>
+    <string name="git_m3_return_to_git" formatted="false">"กลับไปที่ Git"</string>
+    <string name="git_m3_review_folder" formatted="false">"ตรวจสอบโฟลเดอร์ที่กู้คืน"</string>
+    <string name="git_m3_reviewed_plan" formatted="false">"แผนที่ตรวจสอบแล้ว"</string>
+    <string name="git_m3_saved" formatted="false">"บันทึกเรียบร้อยแล้ว"</string>
+    <string name="git_m3_saved_in" formatted="false">"บันทึกไว้ใน"</string>
+    <string name="git_m3_set_aside" formatted="false">"ตั้งไว้ข้างๆ"</string>
+    <string name="git_m3_set_upstream" formatted="false">"ตั้งค่า upstream"</string>
+    <string name="git_m3_show_more">"แสดง %1$d เพิ่มเติม"</string>
+    <string name="git_m3_skip_commit" formatted="false">"ข้าม commit"</string>
+    <string name="git_m3_skip_commit_ask" formatted="false">"ข้าม commit…"</string>
+    <string name="git_m3_staged" formatted="false">"จัดเตรียมแล้ว"</string>
+    <string name="git_m3_starts_from">"เริ่มจาก %1$s บน %2$s · คุณอยู่ที่ %2$s"</string>
+    <string name="git_m3_stash_changes" formatted="false">"เก็บการเปลี่ยนแปลง"</string>
+    <string name="git_m3_stash_explain">"การเก็บจะเก็บไว้และรีเซ็ตไฟล์ของคุณไปที่ %1$s. นำกลับมาเมื่อไหรก็ได้"</string>
+    <string name="git_m3_stash_local_note" formatted="false">"การเก็บจะอยู่บนโทรศัพท์นี้ ไม่เคยถูกส่งไปยัง GitHub"</string>
+    <string name="git_m3_stash_on">"บน %1$s"</string>
+    <string name="git_m3_stash_placeholder" formatted="false">"คุณอยู่ระหว่างทำอะไรอยู่?"</string>
+    <string name="git_m3_stashed_older" formatted="false">"อันเก่าจะกลายเป็น stash@{1}"</string>
+    <string name="git_m3_stashes" formatted="false">"Stash"</string>
+    <string name="git_m3_stay_on">"อยู่ที่ %1$s"</string>
+    <string name="git_m3_stays_on_disk" formatted="false">"อยู่บนดิสก์"</string>
+    <string name="git_m3_stop_tracking" formatted="false">"หยุดติดตาม…"</string>
+    <string name="git_m3_strategy_always" formatted="false">"ใช้ merge commit เสมอ"</string>
+    <string name="git_m3_strategy_always_help">"สร้าง commit แบบ merge แม้ว่า %1$s จะสามารถเดินหน้าต่อไปได้"</string>
+    <string name="git_m3_strategy_ff" formatted="false">"Fast-forward เท่านั้น"</string>
+    <string name="git_m3_strategy_ff_help">"รวมเฉพาะเมื่อ %1$s อยู่ตรงหน้า %2$s เท่านั้น เก็บประวัติในเส้นตรง"</string>
+    <string name="git_m3_strategy_prefer" formatted="false">"Fast-forward หากทำได้"</string>
+    <string name="git_m3_strategy_prefer_help">"เลื่อน %1$s ไปข้างหน้าถ้าเป็นไปได้ หากไม่สามารถทำได้จะสร้าง merge commit"</string>
+    <string name="git_m3_subtitle">"%1$s · %2$s"</string>
+    <string name="git_m3_switch" formatted="false">"สลับ"</string>
+    <string name="git_m3_tag_kind_help" formatted="false">"เมื่อมีข้อความจะเป็นแบบ annotated ทิ้งว่างไว้เพื่อเป็น light tag"</string>
+    <string name="git_m3_tag_name" formatted="false">"ชื่อ tag"</string>
     <string name="git_m3_tag_name_invalid" formatted="false">"ป้อนชื่อแท็ก Git ที่ถูกต้อง"</string>
+    <string name="git_m3_tag_pushed">"ดัน %1$s ไปแล้ว"</string>
+    <string name="git_m3_tag_target">"บน %1$s · ล่าสุดบน %2$s"</string>
+    <string name="git_m3_tags" formatted="false">"แท็ก"</string>
+    <string name="git_m3_tags_note" formatted="false">"Commit &amp; push จะไม่ส่ง tags ดันแต่ละ tag เมื่อคุณต้องการให้มันอยู่บน GitHub การลบจะลบ tag จากโทรศัพท์นี้เท่านั้น"</string>
+    <string name="git_m3_the_named_remote">"remote %1$s"</string>
+    <string name="git_m3_the_remote" formatted="false">"remote"</string>
+    <string name="git_m3_this_phone" formatted="false">"โทรศัพท์นี้"</string>
+    <string name="git_m3_tracking">"กำลังติดตาม %1$s"</string>
+    <string name="git_m3_tracking_backup_body" formatted="false">"GitSync.md ตรวจสอบสำเนาและไฟล์ ZIP ของข้อมูล Git จากนั้นตัดการเชื่อมต่อโฟลเดอร์นี้ ไฟล์งานของคุณยังคงอยู่ที่เดิม"</string>
+    <string name="git_m3_tracking_backup_title" formatted="false">"ลบการติดตามและเก็บสำรองข้อมูลไว้หรือไม่?"</string>
+    <string name="git_m3_tracking_cap">"กำลังติดตาม %1$s"</string>
+    <string name="git_m3_tracking_permanent_body" formatted="false">"ข้อมูล .git ที่ตรวจสอบแล้วเท่านั้นที่จะถูกลบ ไฟล์งานของคุณยังคงอยู่ที่เดิม แต่ประวัติ Git ของโทรศัพท์นี้ไม่สามารถกู้คืนได้หากไม่มีสำเนาอีกชุด"</string>
+    <string name="git_m3_tracking_removed" formatted="false">"ลบการติดตามแล้ว"</string>
+    <string name="git_m3_tracking_removed_backup_toast" formatted="false">"ลบการติดตาม Git ตรวจสอบและบันทึกสำรองเรียบร้อย"</string>
+    <string name="git_m3_tracking_removed_kept" formatted="false">"นำการติดตาม Git ออกแล้ว · เก็บไฟล์ทำงานไว้"</string>
+    <string name="git_m3_tracking_review_body" formatted="false">"ไฟล์ของคุณยังคงอยู่ที่เดิม สำเนาประวัติของ Git ถูกเอาออกจากโฟลเดอร์นี้"</string>
+    <string name="git_m3_tracking_stale" formatted="false">"โฟลเดอร์มีการเปลี่ยนแปลงตั้งแต่คุณตรวจสอบ ยกเลิกและตรวจสอบอีกครั้ง"</string>
+    <string name="git_m3_uncommitted_plain_any" formatted="false">"การแก้ไขที่ยังไม่ได้ยืนยัน เป็นไฟล์ธรรมดา"</string>
+    <string name="git_m3_unresolved" formatted="false">"ยังไม่แก้ไข"</string>
+    <string name="git_m3_update" formatted="false">"อัปเดต"</string>
+    <string name="git_m3_upstream_body">"เลือกว่าจะให้ %1$s ดึงจากและส่งไปที่ไหน ไฟล์ การคอมมิต และการเชื่อมต่อที่บันทึกไว้ยังคงเหมือนเดิม"</string>
+    <string name="git_m3_upstream_help" formatted="false">"หากไม่มีต้นทาง การดึงและส่งจะไม่รู้ว่าจะไปที่ไหน"</string>
+    <string name="git_m3_use_branch">"ใช้เวอร์ชันของ %1$s"</string>
+    <string name="git_m3_use_edited" formatted="false">"ใช้เวอร์ชันที่ฉันแก้ไข"</string>
+    <string name="git_m3_use_phone" formatted="false">"ใช้เวอร์ชันของโทรศัพท์นี้"</string>
+    <string name="git_m3_use_remote">"ใช้เวอร์ชันของ %1$s"</string>
+    <string name="git_m3_vault_settings" formatted="false">"การตั้งค่า vault"</string>
+    <string name="git_m3_vs">"เทียบกับ %1$s"</string>
+    <string name="git_m3_what_each_does" formatted="false">"แต่ละอย่างทำอะไร"</string>
+    <string name="git_m3_workspace" formatted="false">"พื้นที่ทำงาน"</string>
+    <string name="git_m3_yours">"↑%1$d ของฉัน"</string>
     <string name="git_native_public_only" formatted="false">"โปรโตคอลดั้งเดิมของ Git รองรับเฉพาะการเข้าถึงแบบสาธารณะ ใช้ HTTPS หรือ SSH สำหรับการยืนยันตัวตน"</string>
     <string name="gitops_action_failed" formatted="false">"Git ไม่สามารถดำเนินการนี้ให้เสร็จสิ้นได้"</string>
     <string name="gitops_branch_action_failed" formatted="false">"ไม่สามารถดำเนินการกับบรานช์ให้เสร็จสิ้นได้"</string>
@@ -375,11 +1071,27 @@
     <string name="guide_step">"ขั้นตอนที่ %1$d จาก 4"</string>
     <string name="help_copy_email" formatted="false">"คัดลอกอีเมลฝ่ายสนับสนุน"</string>
     <string name="help_email_copied" formatted="false">"คัดลอกอีเมลฝ่ายสนับสนุนแล้ว"</string>
-    <string name="help_feedback" formatted="false">"ส่งข้อเสนอแนะ"</string>
+    <string name="help_feedback" formatted="false">"ส่งคำติชม"</string>
     <string name="help_open_failed" formatted="false">"ไม่มีแอปที่เปิดลิงก์นี้ได้ คุณสามารถคัดลอกอีเมลฝ่ายสนับสนุนแทนได้"</string>
     <string name="help_title" formatted="false">"ช่วยเหลือ"</string>
     <string name="history_screen" formatted="false">"ประวัติ"</string>
     <string name="http_transport_warning" formatted="false">"HTTP ไม่ได้เข้ารหัส ข้อมูลคลัง ชื่อผู้ใช้ หรือโทเค็นที่คุณป้อนอาจถูกอ่านระหว่างการส่ง ใช้ HTTPS เมื่อพร้อมใช้งาน"</string>
+    <string name="l10n_a11y_pair">"%1$s, %2$s"</string>
+    <string name="l10n_added_count">"+%1$d"</string>
+    <string name="l10n_background_unavailable" formatted="false">"Background Sync ไม่สามารถใช้งานได้"</string>
+    <string name="l10n_clone_preview_error" formatted="false">"การตรวจสอบสิทธิ์ล้มเหลว ลงชื่อเข้าใช้อีกครั้งแล้วลองใหม่"</string>
+    <string name="l10n_count">"%1$d"</string>
+    <string name="l10n_meta_pair">"%1$s · %2$s"</string>
+    <string name="l10n_not_vault_file" formatted="false">"ไม่ใช่ไฟล์ในคลังนี้"</string>
+    <string name="l10n_push_local_branch" formatted="false">"สลับไปยังสาขาในเครื่องก่อนส่ง"</string>
+    <string name="l10n_removed_count">"−%1$d"</string>
+    <string name="l10n_save_conditions" formatted="false">"ไม่สามารถบันทึกเงื่อนไขของ Background Sync ได้"</string>
+    <string name="l10n_save_default_author" formatted="false">"ไม่สามารถบันทึกผู้แต่งเริ่มต้นได้"</string>
+    <string name="l10n_save_ssh_key" formatted="false">"ไม่สามารถบันทึกกุญแจ SSH ของโทรศัพท์นี้ได้"</string>
+    <string name="l10n_save_theme" formatted="false">"ไม่สามารถบันทึกธีมได้"</string>
+    <string name="l10n_save_vault_preferences" formatted="false">"ไม่สามารถบันทึกการตั้งค่าตู้เก็บข้อมูลได้"</string>
+    <string name="l10n_unsupported_vault_preference" formatted="false">"การตั้งค่าความชอบคลังไม่รองรับ"</string>
+    <string name="l10n_vault_settings_failed" formatted="false">"ไม่สามารถอัปเดตการตั้งค่าคลังได้"</string>
     <string name="language_settings_legacy" formatted="false">"ก่อน Android 13 แอปนี้จะใช้ภาษาของอุปกรณ์"</string>
     <string name="language_settings_title" formatted="false">"ภาษา"</string>
     <string name="language_settings_unavailable" formatted="false">"เปิดการตั้งค่าภาษาไม่ได้"</string>
@@ -421,12 +1133,213 @@
     <string name="lfs_locks_server">"เซิร์ฟเวอร์ LFS: %1$s"</string>
     <string name="lfs_locks_title" formatted="false">"ล็อกของเซิร์ฟเวอร์"</string>
     <string name="lfs_locks_unsupported" formatted="false">"เซิร์ฟเวอร์นี้ไม่รองรับล็อกของ Git LFS"</string>
+    <string name="lfs_m3_allow_downloads" formatted="false">"อนุญาตให้ดาวน์โหลด"</string>
+    <string name="lfs_m3_allow_uploads" formatted="false">"อนุญาตให้อัปโหลด"</string>
+    <string name="lfs_m3_apply_rules" formatted="false">"ใช้กฎ"</string>
+    <string name="lfs_m3_apply_tracking" formatted="false">"ใช้ตัวเลือกการติดตาม"</string>
+    <string name="lfs_m3_approval_scope" formatted="false">"ตรวจสอบที่อยู่นี้กับเจ้าของที่เก็บข้อมูล การอนุมัติครอบคลุมเฉพาะที่เก็บข้อมูลนี้ ระยะไกล จุดเชื่อมต่อ และทิศทางบนโทรศัพท์เครื่องนี้"</string>
+    <string name="lfs_m3_approvals_title" formatted="false">"การอนุมัติปลายทาง LFS"</string>
+    <string name="lfs_m3_attention" formatted="false">"Git LFS ต้องได้รับการตรวจสอบ"</string>
+    <string name="lfs_m3_auth_new" formatted="false">"ชื่อผู้ใช้และโทเค็นแยกต่างหาก"</string>
+    <string name="lfs_m3_auth_reuse" formatted="false">"ใช้ข้อมูลรับรองปลายทางที่บันทึกไว้"</string>
+    <string name="lfs_m3_branch_remote">"%1$s · ระยะไกล %2$s"</string>
+    <string name="lfs_m3_cache_missing" formatted="false">"ไม่มีในแคช"</string>
+    <string name="lfs_m3_cache_verified" formatted="false">"แคชที่ตรวจสอบแล้ว"</string>
+    <string name="lfs_m3_cancel" formatted="false">"ยกเลิก"</string>
+    <string name="lfs_m3_candidate_changed">"%1$s · มีการเปลี่ยนแปลง แต่ยังไม่ได้ติดตาม"</string>
+    <string name="lfs_m3_candidate_new">"%1$s · ใหม่ แต่ยังไม่ได้ติดตาม"</string>
+    <string name="lfs_m3_check_ownership" formatted="false">"ตรวจสอบความเป็นเจ้าของ"</string>
+    <string name="lfs_m3_create_body" formatted="false">"การเชื่อมต่ออื่นมองว่าวัตถุถูกล็อกจนกว่าคุณจะปล่อย มันไม่เปลี่ยนแปลงบนโทรศัพท์เครื่องนี้"</string>
+    <string name="lfs_m3_download_body" formatted="false">"ที่เก็บข้อมูลนี้ต้องการดาวน์โหลดเนื้อหาไฟล์จากเซิร์ฟเวอร์ LFS แยกต่างหาก"</string>
+    <string name="lfs_m3_download_missing" formatted="false">"ดาวน์โหลดเนื้อหาที่ขาดหายไป"</string>
+    <string name="lfs_m3_download_progress" formatted="false">"ความคืบหน้าการดาวน์โหลด"</string>
+    <string name="lfs_m3_download_title" formatted="false">"อนุญาตให้ดาวน์โหลด LFS หรือไม่?"</string>
+    <string name="lfs_m3_downloading_prepare" formatted="false">"กำลังดาวน์โหลดเนื้อหาที่ขาดหาย"</string>
+    <string name="lfs_m3_downloads" formatted="false">"ดาวน์โหลด"</string>
+    <string name="lfs_m3_endpoint_auth" formatted="false">"การยืนยันตัวตนของปลายทาง"</string>
+    <string name="lfs_m3_endpoints_empty" formatted="false">"ไม่มีปลายทาง LFS แบบกำหนดเองที่อนุมัติ"</string>
+    <string name="lfs_m3_endpoints_intro" formatted="false">"แยกเซิร์ฟเวอร์ LFS ที่รีโพซิทอรีของคุณอาจใช้ การเพิกถอนจะหยุดการถ่ายโอนในทิศทางนั้นในอนาคต; สิ่งที่กำลังดำเนินการอยู่แล้วอาจเสร็จสิ้น"</string>
+    <string name="lfs_m3_endpoints_none" formatted="false">"การตั้งค่า · ไม่มีการอนุมัติ"</string>
+    <string name="lfs_m3_endpoints_title" formatted="false">"จุดปลาย LFS"</string>
+    <string name="lfs_m3_error_changed" formatted="false">"การอนุมัติเปลี่ยนแปลงในระหว่างการตรวจสอบ โหลดใหม่และตรวจสอบการถ่ายโอนอีกครั้ง"</string>
+    <string name="lfs_m3_ext_note_existing" formatted="false">"ไฟล์ที่มีตัวเลือกการติดตามของตัวเองอยู่แล้วจะคงไว้"</string>
+    <string name="lfs_m3_ext_note_limits" formatted="false">"ไฟล์ที่ถูกละเว้นจะยังคงถูกละเว้น จำกัดการจัดเก็บขึ้นอยู่กับโฮสต์ Git ของคุณ"</string>
+    <string name="lfs_m3_ext_note_stage" formatted="false">"มีการเปลี่ยนแปลงเฉพาะ .gitattributes จัดเตรียมไฟล์เพื่อเปลี่ยนเป็นตัวชี้"</string>
+    <string name="lfs_m3_ext_scope" formatted="false">"ครอบคลุมไฟล์ที่ตรงกันปัจจุบันและในอนาคตในทุกโฟลเดอร์ การจับคู่ตัวอักษรต้องตรงตามตัวพิมพ์ใหญ่-เล็ก"</string>
+    <string name="lfs_m3_ext_title" formatted="false">"ติดตามนามสกุลที่ตรงกันหรือไม่?"</string>
+    <string name="lfs_m3_extensions_updated" formatted="false">"กฎนามสกุลได้รับการอัปเดต จัด Stage .gitattributes และไฟล์เหล่านั้น จากนั้น commit"</string>
+    <string name="lfs_m3_fact_endpoint" formatted="false">"ปลายทาง LFS"</string>
+    <string name="lfs_m3_fact_remote" formatted="false">"รีโมต Git"</string>
+    <string name="lfs_m3_fact_repository" formatted="false">"รีโพซิทอรี"</string>
+    <string name="lfs_m3_force_ack" formatted="false">"ฉันเข้าใจว่าอาจมีคนยังแก้ไขไฟล์นี้อยู่"</string>
+    <string name="lfs_m3_force_title" formatted="false">"บังคับปลดล็อกของเจ้าของคนอื่นหรือไม่?"</string>
+    <string name="lfs_m3_force_warning" formatted="false">"นี่จะลบล็อกที่ถูกถือโดยการเชื่อมต่ออื่น ตรวจสอบกับเจ้าของก่อน"</string>
+    <string name="lfs_m3_http_warning" formatted="false">"HTTP ไม่มีการเข้ารหัส ข้อมูล repository และชื่อผู้ใช้หรือ token ใด ๆ สามารถถูกอ่านได้ระหว่างการส่ง ใช้ HTTPS เมื่อเป็นไปได้"</string>
+    <string name="lfs_m3_keep_body" formatted="false">"เพิ่มกฎ regular-Git อย่างชัดเจน เนื้อหาจะไปอยู่ใน commits ของคุณ ไฟล์ที่มีขนาดเกิน 100 MiB ยังคงต้องใช้ LFS"</string>
+    <string name="lfs_m3_keep_git" formatted="false">"เก็บใน regular Git"</string>
+    <string name="lfs_m3_keep_title" formatted="false">"เก็บสิ่งเหล่านี้ใน regular Git หรือไม่?"</string>
+    <string name="lfs_m3_list_read_only" formatted="false">"รายการแบบอ่านอย่างเดียว"</string>
+    <string name="lfs_m3_lock_a_file" formatted="false">"ล็อกไฟล์"</string>
+    <string name="lfs_m3_lockable_caption" formatted="false">"จะแสดงเฉพาะไฟล์ที่ถูกทำเครื่องหมายว่าสามารถล็อกได้ใน .gitattributes ที่นี่"</string>
+    <string name="lfs_m3_locked" formatted="false">"ล็อกอยู่"</string>
+    <string name="lfs_m3_locked_on_server" formatted="false">"ถูกล็อกบนเซิร์ฟเวอร์"</string>
+    <string name="lfs_m3_locks_empty" formatted="false">"ไม่มีอะไรถูกล็อกในสาขานี้"</string>
+    <string name="lfs_m3_locks_intro" formatted="false">"ตรวจสอบความเป็นเจ้าของก่อนที่คุณจะเปลี่ยนล็อก ล็อกจะอยู่บนเซิร์ฟเวอร์; ไฟล์และการ commit ของคุณจะอยู่ที่เดิม"</string>
+    <string name="lfs_m3_match_extensions" formatted="false">"ตรงกับนามสกุล..."</string>
+    <string name="lfs_m3_needs_choice" formatted="false">"ต้องเลือกการติดตาม"</string>
+    <string name="lfs_m3_no_lockable" formatted="false">"ไม่มีไฟล์ที่สามารถล็อกได้ซึ่งไม่ได้ล็อก"</string>
+    <string name="lfs_m3_no_tracked" formatted="false">"ยังไม่มีไฟล์ใดถูกเก็บไว้ใน LFS ในสาขานี้"</string>
+    <string name="lfs_m3_not_shared" formatted="false">"การเข้าสู่ระบบ GitHub ของคุณไม่ได้ถูกแชร์กับเซิร์ฟเวอร์นี้ ข้อมูลประจำตัวแยกต่างหากถูกเข้ารหัสบนโทรศัพท์นี้ จัดการได้ใน การตั้งค่า › จุดเชื่อมต่อ LFS"</string>
+    <string name="lfs_m3_ok" formatted="false">"ตกลง"</string>
+    <string name="lfs_m3_owned_here" formatted="false">"เป็นเจ้าของโดยการเชื่อมต่อนี้"</string>
+    <string name="lfs_m3_owner">"เจ้าของ: %1$s"</string>
+    <string name="lfs_m3_public_access" formatted="false">"การเข้าถึงสาธารณะ"</string>
+    <string name="lfs_m3_refresh_required" formatted="false">"ใช้ได้ผลแล้ว แต่สถานะ LFS ใหม่ไม่ได้โหลด โหลดใหม่ก่อนที่คุณจะทำอย่างอื่น"</string>
+    <string name="lfs_m3_release_body" formatted="false">"คนอื่นสามารถล็อกและแก้ไขมันได้อีก ไฟล์ท้องถิ่นและการคอมมิตของคุณจะคงอยู่ตามเดิม"</string>
+    <string name="lfs_m3_release_review" formatted="false">"ปล่อย…"</string>
+    <string name="lfs_m3_reload" formatted="false">"โหลดสถานะ LFS อีกครั้ง"</string>
+    <string name="lfs_m3_reset_all" formatted="false">"รีเซ็ตการอนุมัติปลายทาง LFS ทั้งหมด"</string>
+    <string name="lfs_m3_reset_body" formatted="false">"ลบการอนุมัติปลายทางที่ปรับแต่งทั้งหมดและข้อมูลประจำตัวที่บันทึกไว้ในโทรศัพท์เครื่องนี้ แต่ละปลายทางและทิศทางจะต้องผ่านการตรวจสอบใหม่"</string>
+    <string name="lfs_m3_reset_confirm" formatted="false">"รีเซ็ตการอนุมัติ"</string>
+    <string name="lfs_m3_reset_title" formatted="false">"รีเซ็ตการอนุมัติปลายทาง LFS ทั้งหมดหรือไม่?"</string>
+    <string name="lfs_m3_review_changed" formatted="false">"การล็อกเปลี่ยนแปลงตั้งแต่คุณเปิดไฟล์นี้ ยกเลิกและตรวจสอบความเป็นเจ้าของใหม่อีกครั้ง"</string>
+    <string name="lfs_m3_revoke" formatted="false">"เพิกถอน"</string>
+    <string name="lfs_m3_revoke_download_body">"การดาวน์โหลดในอนาคตจาก %1$s จำเป็นต้องผ่านการตรวจสอบใหม่ การอนุมัติการอัปโหลดและข้อมูลประจำตัวที่บันทึกไว้จะคงอยู่"</string>
+    <string name="lfs_m3_revoke_download_title" formatted="false">"เพิกถอนการอนุมัติดาวน์โหลดหรือไม่?"</string>
+    <string name="lfs_m3_revoke_downloads" formatted="false">"เพิกถอนการดาวน์โหลด"</string>
+    <string name="lfs_m3_revoke_upload_body">"การอัปโหลดในอนาคตไปยัง %1$s จำเป็นต้องผ่านการตรวจสอบใหม่ การอนุมัติการดาวน์โหลดและข้อมูลประจำตัวที่บันทึกไว้จะคงอยู่"</string>
+    <string name="lfs_m3_revoke_upload_title" formatted="false">"เพิกถอนการอนุมัติอัปโหลดหรือไม่?"</string>
+    <string name="lfs_m3_revoke_uploads" formatted="false">"เพิกถอนการอัปโหลด"</string>
+    <string name="lfs_m3_scope_read_only" formatted="false">"รายการแบบอ่านอย่างเดียว · ความเป็นเจ้าของไม่ได้รับการยืนยัน"</string>
+    <string name="lfs_m3_scope_verified" formatted="false">"ความเป็นเจ้าของได้รับการยืนยันด้วยการเชื่อมต่อนี้"</string>
+    <string name="lfs_m3_secret" formatted="false">"โทเคนหรือรหัสผ่าน"</string>
+    <string name="lfs_m3_separate_credentials" formatted="false">"ข้อมูลประจำตัวที่เข้ารหัสแยกต่างหาก"</string>
+    <string name="lfs_m3_server">"เซิร์ฟเวอร์ LFS %1$s"</string>
+    <string name="lfs_m3_ssh_authorization" formatted="false">"การอนุญาตจาก SSH"</string>
+    <string name="lfs_m3_ssh_review" formatted="false">"จุดปลาย HTTP นี้จะขอการอนุญาตชั่วคราวจากเซิร์ฟเวอร์ SSH ที่ได้รับการยืนยัน คีย์ SSH ของคุณจะอยู่บนโทรศัพท์เครื่องนี้ การอนุญาตสามารถถูกอ่านระหว่างส่งข้อมูลและไม่เคยถูกบันทึก"</string>
+    <string name="lfs_m3_stale" formatted="false">"ไฟล์มีการเปลี่ยนแปลงตั้งแต่คุณเปิดอยู่ ยกเลิกแล้วตรวจสอบอีกครั้ง"</string>
+    <string name="lfs_m3_state_pointer" formatted="false">"ตัวชี้ · ดาวน์โหลดเนื้อหา"</string>
+    <string name="lfs_m3_stored_body" formatted="false">"การคอมมิตจะเก็บตัวชี้ขนาดเล็ก การดึงข้อมูลจะดาวน์โหลดเนื้อหา การส่งจะอัปโหลดเนื้อหาก่อน"</string>
+    <string name="lfs_m3_stored_kicker" formatted="false">"เก็บอยู่ใน LFS"</string>
+    <string name="lfs_m3_stored_locked">"%1$s · %2$d ถูกล็อก"</string>
+    <string name="lfs_m3_subtitle">"%1$s · %2$s · Git LFS"</string>
+    <string name="lfs_m3_tab_files" formatted="false">"ไฟล์"</string>
+    <string name="lfs_m3_tab_locks" formatted="false">"การล็อก"</string>
+    <string name="lfs_m3_title" formatted="false">"ไฟล์ขนาดใหญ่"</string>
+    <string name="lfs_m3_track_body" formatted="false">"เพิ่มกฎ LFS แบบระบุเส้นทางที่แน่นอนสำหรับไฟล์ด้านล่าง ขีดจำกัดการเก็บและแบนด์วิดท์ขึ้นอยู่กับโฮสต์ Git ของคุณ จัดเตรียมการเปลี่ยนแปลงแล้วค่อยมาคอมมิต"</string>
+    <string name="lfs_m3_track_title" formatted="false">"ใช้ LFS สำหรับไฟล์เหล่านี้หรือไม่?"</string>
+    <string name="lfs_m3_tracked_files" formatted="false">"ไฟล์ที่ติดตาม"</string>
+    <string name="lfs_m3_tracking_caption" formatted="false">"มีการเปลี่ยนแปลงเพียง .gitattributes ไฟล์ของคุณยังคงอยู่จนกว่าคุณจะจัดเตรียมมัน"</string>
+    <string name="lfs_m3_tracking_updated" formatted="false">"กฎการติดตามได้รับการอัปเดต จัดเตรียม .gitattributes และไฟล์ จากนั้นทำการยืนยัน"</string>
+    <string name="lfs_m3_unsupported" formatted="false">"เซิร์ฟเวอร์นี้ไม่รองรับล็อก Git LFS"</string>
+    <string name="lfs_m3_upload_body" formatted="false">"โครงการนี้ต้องการส่งเนื้อหาไฟล์ไปยังเซิร์ฟเวอร์ LFS แยกต่างหาก"</string>
+    <string name="lfs_m3_upload_title" formatted="false">"อนุญาตให้อัปโหลด LFS หรือไม่?"</string>
+    <string name="lfs_m3_uploads" formatted="false">"การอัปโหลด"</string>
+    <string name="lfs_m3_username" formatted="false">"ชื่อผู้ใช้ปลายทาง LFS"</string>
     <string name="lfs_tracking_updated" formatted="false">"อัปเดตกฎการติดตามแล้ว ตรวจสอบและนำ .gitattributes กับไฟล์ที่เลือกเข้า staging จากนั้นจึงคอมมิต"</string>
     <string name="m3_editor_preview" formatted="false">"ดูตัวอย่าง"</string>
     <string name="m3_editor_write" formatted="false">"เขียน"</string>
     <string name="m3_open_in_editor" formatted="false">"เปิดในตัวแก้ไข"</string>
     <string name="m3_paywall_paid_with_play" formatted="false">"ชำระด้วยบัญชี Google Play ของคุณ"</string>
     <string name="m3_pick_a_file" formatted="false">"เลือกไฟล์เพื่อดูการเปลี่ยนแปลง"</string>
+    <string name="m3home_add_first" formatted="false">"เพิ่ม vault แรกของคุณ"</string>
+    <string name="m3home_add_vault" formatted="false">"เพิ่ม vault"</string>
+    <string name="m3home_auth_body" formatted="false">"โน้ตของคุณปลอดภัยในโทรศัพท์เครื่องนี้ ไม่มีอะไรสูญหาย"</string>
+    <string name="m3home_auth_headline" formatted="false">"หยุดซิงค์ชั่วคราว"</string>
+    <string name="m3home_auth_held">"↑%1$d ถูกพักไว้"</string>
+    <string name="m3home_auth_kicker">"การลงชื่อเข้า GitHub หมดอายุ · %1$s"</string>
+    <string name="m3home_auth_paused" formatted="false">"หยุดชั่วคราว"</string>
+    <string name="m3home_auth_row_meta">"%1$s · ซิงค์ครั้งล่าสุด %2$s"</string>
+    <string name="m3home_auth_sign_in" formatted="false">"ลงชื่อเข้าใช้ด้วย GitHub"</string>
+    <string name="m3home_auth_unaffected_label" formatted="false">"ไม่ได้รับผลกระทบ"</string>
+    <string name="m3home_auth_waiting_label" formatted="false">"กำลังรอการลงชื่อเข้า"</string>
+    <string name="m3home_badge_both">"↓%1$d ↑%2$d"</string>
+    <string name="m3home_badge_checking" formatted="false">"กำลังตรวจสอบ"</string>
+    <string name="m3home_badge_in_sync" formatted="false">"ซิงค์แล้ว"</string>
+    <string name="m3home_badge_local_only" formatted="false">"ในเครื่องเท่านั้น"</string>
+    <string name="m3home_badge_needs_you" formatted="false">"ต้องการคุณ"</string>
+    <string name="m3home_badge_sync_failed" formatted="false">"ไม่ได้ซิงค์"</string>
+    <string name="m3home_badge_syncing" formatted="false">"กำลังซิงค์"</string>
+    <string name="m3home_badge_to_pull">"↓%1$d รอ pull"</string>
+    <string name="m3home_badge_to_push">"↑%1$d รอ push"</string>
+    <string name="m3home_badge_unreadable" formatted="false">"อ่านไม่ได้"</string>
+    <string name="m3home_cred_github" formatted="false">"GitHub บัญชี"</string>
+    <string name="m3home_cred_local" formatted="false">"บนโทรศัพท์เครื่องนี้"</string>
+    <string name="m3home_cred_public" formatted="false">"สาธารณะ"</string>
+    <string name="m3home_cred_ssh" formatted="false">"SSH คีย์"</string>
+    <string name="m3home_cred_token" formatted="false">"โทเคน"</string>
+    <string name="m3home_empty_rail_description" formatted="false">"โทรศัพท์กับ GitHub ยังไม่มีอะไรให้ซิงค์"</string>
+    <string name="m3home_empty_rail_nothing" formatted="false">"ไม่มีอะไรให้ซิงค์"</string>
+    <string name="m3home_empty_signed_in">"ลงชื่อเข้าเป็น @%1$s"</string>
+    <string name="m3home_empty_title" formatted="false">"ยังไม่มี vault"</string>
+    <string name="m3home_filter_all">"ทั้งหมด %1$d"</string>
+    <string name="m3home_filter_attention">"ต้องดูแล %1$d"</string>
+    <string name="m3home_filter_empty_attention" formatted="false">"ไม่มีอะไรต้องการคุณ ทุกห้องเก็บข้อมูลถูกซิงค์แล้ว"</string>
+    <string name="m3home_filter_empty_pinned" formatted="false">"ยังไม่มีคลังข้อมูลที่ปักหมุด กดค้างที่คลังข้อมูลแล้วเลือก ปักหมุดที่ด้านบน"</string>
+    <string name="m3home_filter_pinned" formatted="false">"ปักหมุดแล้ว"</string>
+    <string name="m3home_headline_ready_accent" formatted="false">"ซิงค์แล้ว"</string>
+    <string name="m3home_how_title" formatted="false">"วิธีการทำงาน"</string>
+    <string name="m3home_meta_checked">"ตรวจสอบแล้ว %1$s"</string>
+    <string name="m3home_meta_checking">"กำลังตรวจสอบ %1$d"</string>
+    <string name="m3home_meta_in_sync">"ซิงค์แล้ว %1$d"</string>
+    <string name="m3home_meta_lfs">"%1$s LFS"</string>
+    <string name="m3home_meta_loading" formatted="false">"กำลังตรวจสอบ…"</string>
+    <string name="m3home_meta_never_checked" formatted="false">"ยังไม่ได้ตรวจสอบ"</string>
+    <string name="m3home_meta_not_synced" formatted="false">"ยังไม่ได้ซิงค์"</string>
+    <string name="m3home_meta_unreadable" formatted="false">"ไม่สามารถอ่านโฟลเดอร์นี้ได้"</string>
+    <string name="m3home_offline_accent" formatted="false">"เราจะตามให้ทัน"</string>
+    <string name="m3home_offline_fab" formatted="false">"ซิงค์เมื่อออนไลน์"</string>
+    <string name="m3home_offline_headline" formatted="false">"เขียนต่อไป"</string>
+    <string name="m3home_offline_last_known" formatted="false">"ล่าสุดที่ทราบ: ซิงค์แล้ว"</string>
+    <string name="m3home_offline_last_known_behind">"ล่าสุดที่รู้: ↓%1$d"</string>
+    <string name="m3home_offline_meta">"ไม่มีการเชื่อมต่อ · ตรวจสอบล่าสุด %1$s"</string>
+    <string name="m3home_offline_meta_never" formatted="false">"ไม่มีการเชื่อมต่อ"</string>
+    <string name="m3home_offline_queued">"↑%1$d อยู่ในคิว"</string>
+    <string name="m3home_offline_row_meta">"%1$s · ซิงค์แล้ว %2$s"</string>
+    <string name="m3home_onboarding_accent" formatted="false">"สอดคล้องกันเสมอ"</string>
+    <string name="m3home_onboarding_body" formatted="false">"โคลนที่เก็บใดก็ได้ เขียนใน Obsidian หรือแอปอื่น แล้วซิงค์ด้วยการแตะครั้งเดียว"</string>
+    <string name="m3home_onboarding_demo" formatted="false">"ลองสำรวจด้วยคลังข้อมูลสาธิต"</string>
+    <string name="m3home_onboarding_github" formatted="false">"ดำเนินการต่อด้วย GitHub"</string>
+    <string name="m3home_onboarding_headline" formatted="false">"โน้ตของคุณ.\nGit จริง"</string>
+    <string name="m3home_onboarding_other" formatted="false">"SSH, โทเคน หรือโฮสต์อื่น"</string>
+    <string name="m3home_onboarding_rail" formatted="false">"โน้ตบนโทรศัพท์และ commit บน GitHub มาบรรจบกันที่จุดซิงค์เดียว"</string>
+    <string name="m3home_onboarding_save_error" formatted="false">"ไม่สามารถบันทึกการเลือกได้ ลองอีกครั้ง"</string>
+    <string name="m3home_onboarding_this_phone" formatted="false">"โทรศัพท์นี้"</string>
+    <string name="m3home_pin" formatted="false">"ปักหมุดไว้ด้านบน"</string>
+    <string name="m3home_pin_failed" formatted="false">"ไม่สามารถบันทึกการปักหมุดได้ ลองอีกครั้ง"</string>
+    <string name="m3home_pinned" formatted="false">"ปักหมุดแล้ว"</string>
+    <string name="m3home_rail_github" formatted="false">"GitHub"</string>
+    <string name="m3home_rail_phone" formatted="false">"โทรศัพท์"</string>
+    <string name="m3home_rail_remote" formatted="false">"Remote"</string>
+    <string name="m3home_remove" formatted="false">"ลบจาก GitSync.md"</string>
+    <string name="m3home_row_actions" formatted="false">"การดำเนินการกับคลังข้อมูล"</string>
+    <string name="m3home_session_dismiss" formatted="false">"ปิด"</string>
+    <string name="m3home_settings" formatted="false">"การตั้งค่า"</string>
+    <string name="m3home_settings_signed_in">"การตั้งค่า, เข้าสู่ระบบเป็น %1$s"</string>
+    <string name="m3home_start_github" formatted="false">"Clone จาก GitHub"</string>
+    <string name="m3home_start_github_detail" formatted="false">"เลือกที่เก็บของคุณ"</string>
+    <string name="m3home_start_local" formatted="false">"ค้นหาการคัดลอกในโทรศัพท์เครื่องนี้"</string>
+    <string name="m3home_start_local_detail" formatted="false">"Obsidian, MGit, Termux…"</string>
+    <string name="m3home_start_publish" formatted="false">"เผยแพร่โฟลเดอร์"</string>
+    <string name="m3home_start_publish_detail" formatted="false">"เปลี่ยนโฟลเดอร์เป็นที่เก็บใหม่"</string>
+    <string name="m3home_start_url" formatted="false">"วาง URL"</string>
+    <string name="m3home_start_url_detail" formatted="false">"Git remote ใดก็ได้ ทั้งสาธารณะหรือส่วนตัว"</string>
+    <string name="m3home_start_with" formatted="false">"เริ่มด้วย"</string>
+    <string name="m3home_sync_all" formatted="false">"ซิงค์ทั้งหมด"</string>
+    <string name="m3home_sync_all_meta">"↓%1$d ↑%2$d"</string>
+    <string name="m3home_sync_busy" formatted="false">"การดึงทั้งหมดกำลังทำงานอยู่แล้ว ลองใหม่หลังจากเสร็จสิ้น"</string>
+    <string name="m3home_sync_done">"ซิงค์แล้ว · ดึง %1$d · ผลัก %2$d"</string>
+    <string name="m3home_sync_failed">"ไม่สามารถซิงค์ %1$s ได้"</string>
+    <string name="m3home_sync_start_failed" formatted="false">"ไม่สามารถเริ่มซิงค์ทั้งหมดได้ ตรวจสอบรายการโถของคุณในการตั้งค่า"</string>
+    <string name="m3home_syncing" formatted="false">"กำลังซิงค์"</string>
+    <string name="m3home_syncing_meta">"%1$d จาก %2$d"</string>
+    <string name="m3home_time_days">"%1$d วันที่แล้ว"</string>
+    <string name="m3home_time_hours">"%1$dที่ผ่านมา h"</string>
+    <string name="m3home_time_minutes_long">"%1$d นาทีที่แล้ว"</string>
+    <string name="m3home_time_minutes_short">"%1$dm ที่ผ่านมา"</string>
+    <string name="m3home_time_now" formatted="false">"เพิ่งได้รับ"</string>
+    <string name="m3home_time_yesterday" formatted="false">"เมื่อวาน"</string>
+    <string name="m3home_unpin" formatted="false">"เลิกปักหมุด"</string>
     <string name="modified" formatted="false">"แก้ไขแล้ว"</string>
     <string name="move_cancelled" formatted="false">"ยกเลิกการย้ายแล้ว สำเนาการทำงานเดิมยังคงอยู่"</string>
     <string name="move_confirm_action" formatted="false">"ย้าย"</string>
@@ -450,6 +1363,22 @@
     <string name="move_recovery_done" formatted="false">"กู้คืนการย้ายเสร็จสิ้น"</string>
     <string name="move_recovery_removed" formatted="false">"นำสำเนาการกู้คืนออกแล้ว"</string>
     <string name="move_title_restore" formatted="false">"กู้คืนสำเนาการกู้คืน"</string>
+    <string name="newfile_m3_blank" formatted="false">"ว่าง"</string>
+    <string name="newfile_m3_builtin_idea" formatted="false">"ไอเดีย"</string>
+    <string name="newfile_m3_create_open" formatted="false">"สร้างและเปิด"</string>
+    <string name="newfile_m3_exists">"มี %1$s อยู่ใน %2$s แล้ว ลองใช้ชื่ออื่น"</string>
+    <string name="newfile_m3_file_name" formatted="false">"ชื่อไฟล์"</string>
+    <string name="newfile_m3_folder" formatted="false">"โฟลเดอร์"</string>
+    <string name="newfile_m3_folder_name" formatted="false">"ชื่อโฟลเดอร์"</string>
+    <string name="newfile_m3_in">"ใน %1$s"</string>
+    <string name="newfile_m3_invalid" formatted="false">"ใช้ชื่อโดยไม่ใส่ / หรือ \\"</string>
+    <string name="newfile_m3_invalid_dots" formatted="false">"\".\" และ \"..\" ถูกสงวนไว้ ลองชื่ออื่น"</string>
+    <string name="newfile_m3_note" formatted="false">"โน้ต"</string>
+    <string name="newfile_m3_template">"เทมเพลต · %1$s"</string>
+    <string name="newfile_m3_title_folder" formatted="false">"โฟลเดอร์ใหม่"</string>
+    <string name="newfile_m3_title_note" formatted="false">"โน้ตใหม่"</string>
+    <string name="newfile_m3_today" formatted="false">"วันที่วันนี้"</string>
+    <string name="newfile_m3_too_long" formatted="false">"ชื่อนั้นยาวเกินไป ใช้ชื่อที่สั้นกว่า"</string>
     <string name="notes_acknowledge" formatted="false">"เข้าใจแล้ว"</string>
     <string name="notes_connections_body" formatted="false">"จัดการบัญชี GitHub และข้อมูลผู้เขียนของคลัง เชื่อมต่อผ่าน HTTPS หรือ SSH เลือกพื้นที่เก็บโคลน เชื่อมต่อสำเนาในเครื่องอีกครั้ง และตรวจสอบการย้ายหรือนำคลังออก"</string>
     <string name="notes_connections_title" formatted="false">"การเชื่อมต่อและพื้นที่เก็บข้อมูล"</string>
@@ -458,6 +1387,10 @@
     <string name="notes_version">"Android %1$s · บิลด์ %2$d"</string>
     <string name="notes_workflow_body" formatted="false">"เรียกดูและแก้ไขไฟล์ ตรวจสอบความแตกต่างที่เตรียมแล้วและยังไม่ได้เตรียม คอมมิตในเครื่อง พุชคอมมิตที่มีอยู่ และทำงานกับสาขา ประวัติ แท็ก และรีเบส"</string>
     <string name="notes_workflow_title" formatted="false">"ขั้นตอนการทำงานของคลัง"</string>
+    <string name="notification_m3_open_obsidian" formatted="false">"เปิดใน Obsidian"</string>
+    <string name="notification_m3_pulled" formatted="false">"การเปลี่ยนแปลงใหม่ถูกดึงเข้ามาในพื้นหลัง"</string>
+    <string name="notification_m3_see_changes" formatted="false">"ดูการเปลี่ยนแปลง"</string>
+    <string name="notification_m3_updated">"%1$s อัปเดตแล้ว"</string>
     <string name="obsidian_forgotten" formatted="false">"ปิดการส่งต่อในอนาคตแล้ว เตรียมการเชื่อมต่อใหม่เพื่อเชื่อมต่อโฟลเดอร์นี้อีกครั้ง"</string>
     <string name="obsidian_interrupted" formatted="false">"หยุดการเชื่อมต่อแล้ว จะไม่มีการเรียกใช้คำขอซ้ำโดยอัตโนมัติ เตรียมการเชื่อมต่อใหม่ก่อนลองอีกครั้งใน Obsidian"</string>
     <string name="obsidian_return" formatted="false">"กลับไปที่ Obsidian"</string>
@@ -560,6 +1493,47 @@
     <string name="pull_all_widget_description" formatted="false">"ดึงข้อมูลและอัปเดตแบบ fast-forward ให้ทุกที่เก็บในเครื่องโดยไม่เปิด GitSync.md"</string>
     <string name="pull_all_widget_subtitle" formatted="false">"ดึงข้อมูลและ fast-forward เท่านั้น"</string>
     <string name="pull_screen" formatted="false">"Pull"</string>
+    <string name="pullall_m3_again" formatted="false">"ดึงทั้งหมดอีกครั้ง"</string>
+    <string name="pullall_m3_attention_blocked" formatted="false">"ยังคงไม่เปลี่ยนแปลง ทำการ commit หรือ stash การเปลี่ยนแปลงในเครื่องก่อน"</string>
+    <string name="pullall_m3_attention_failed" formatted="false">"ไม่สามารถดึงอย่างปลอดภัยได้ ตรวจสอบการเชื่อมต่อและการเข้าถึงโฟลเดอร์"</string>
+    <string name="pullall_m3_attention_lfs" formatted="false">"ดึงแล้ว ไฟล์ Git LFS บางไฟล์ยังต้องดาวน์โหลด"</string>
+    <string name="pullall_m3_background" formatted="false">"ดึงทั้งหมดในเบื้องหลัง"</string>
+    <string name="pullall_m3_blocked" formatted="false">"ยังคงไม่เปลี่ยนแปลง ทำการ commit หรือ stash การเปลี่ยนแปลงในเครื่อง หรือทำงาน Git ที่เปิดอยู่ให้เสร็จ แล้วลองใหม่"</string>
+    <string name="pullall_m3_clear" formatted="false">"ล้างสรุปเบื้องหลัง"</string>
+    <string name="pullall_m3_clear_body" formatted="false">"นี่จะลบสรุปพื้นหลังล่าสุด ของคุณ ห้องนิรภัย และการตั้งค่าจะยังคงเหมือนเดิม งานที่ถูกขัดจังหวะจะไม่เริ่มใหม่เอง"</string>
+    <string name="pullall_m3_clear_confirm" formatted="false">"ลบสรุป"</string>
+    <string name="pullall_m3_clear_title" formatted="false">"ลบสรุปพื้นหลังหรือไม่?"</string>
+    <string name="pullall_m3_complete" formatted="false">"ดึงทั้งหมดเสร็จแล้ว ตรวจสอบสรุปที่บันทึกไว้"</string>
+    <string name="pullall_m3_control_failed" formatted="false">"สิ่งนั้นไม่ได้เปลี่ยน แสดงหน้าจอนี้อีกครั้งแล้วลองใหม่"</string>
+    <string name="pullall_m3_counts">"อัปเดต %1$d · ปัจจุบัน %2$d · LFS %3$d · ถูกบล็อก %4$d · ล้มเหลว %5$d"</string>
+    <string name="pullall_m3_current" formatted="false">"ไม่มีการเปลี่ยนแปลงขาเข้า"</string>
+    <string name="pullall_m3_empty" formatted="false">"ยังไม่มีห้องนิรภัยให้ดึงก่อน คลอนหรือเพิ่มห้องหนึ่งก่อน"</string>
+    <string name="pullall_m3_failed" formatted="false">"การดึงทั้งหมดหยุดด้วยข้อผิดพลาด อาจมีการดึงบางส่วนเสร็จสิ้นแล้ว ตรวจสอบสรุปและแต่ละห้องนิรภัยก่อนรันอีกครั้ง"</string>
+    <string name="pullall_m3_help" formatted="false">"เพิ่มวิดเจ็ต Pull all ไปที่หน้าจอหลักของคุณ หรือเพิ่มไอคอนไปที่การตั้งค่าอย่างรวดเร็ว ทั้งสองทำงานเพียงครั้งเดียวโดยไม่ต้องเปิดแอป กลับมาที่นี่เพื่อดูว่าเกิดอะไรขึ้น"</string>
+    <string name="pullall_m3_interrupted" formatted="false">"การดึงทั้งหมดถูกขัดจังหวะและจะไม่เริ่มใหม่เอง อาจมีการดึงบางส่วนเสร็จสิ้นก่อน ตรวจสอบแต่ละคลังก่อนรันอีกครั้ง"</string>
+    <string name="pullall_m3_item_failed" formatted="false">"ไม่สามารถดึงได้อย่างปลอดภัย ตรวจสอบการเชื่อมต่อและสิทธิ์เข้าถึงโฟลเดอร์ จากนั้นดูที่ Git สำหรับความแตกต่าง"</string>
+    <string name="pullall_m3_lfs" formatted="false">"ดึงแล้ว ไฟล์ Git LFS บางส่วนยังต้องดาวน์โหลด เปิด Git LFS เพื่อทดลองอีกครั้ง"</string>
+    <string name="pullall_m3_not_run" formatted="false">"ยังไม่ได้ทำงาน"</string>
+    <string name="pullall_m3_progress_cd" formatted="false">"ความคืบหน้าการดึงทั้งหมด"</string>
+    <string name="pullall_m3_pulling" formatted="false">"กำลัง pull…"</string>
+    <string name="pullall_m3_running" formatted="false">"การดึงทั้งหมดกำลังทำงานโดยไม่ต้องเปิดแอป ส่วนที่เหลือจะหยุดเมื่อคุณแตะหยุด"</string>
+    <string name="pullall_m3_scope" formatted="false">"ดึงและข้ามไปข้างหน้าทุกตู้เก็บของในโทรศัพท์เครื่องนี้ ดึงทุกขั้นตอนที่ยังไม่เกิดขึ้น, คำสั่ง commit หรือ push การเปลี่ยนแปลงของคุณ"</string>
+    <string name="pullall_m3_source_shortcut" formatted="false">"ทางลัด"</string>
+    <string name="pullall_m3_source_tile" formatted="false">"แผ่นกระเบื้อง"</string>
+    <string name="pullall_m3_source_widget" formatted="false">"วิดเจ็ต"</string>
+    <string name="pullall_m3_start" formatted="false">"ดึงทั้งหมด"</string>
+    <string name="pullall_m3_start_failed" formatted="false">"ดึงทั้งหมดไม่สามารถเริ่มได้ ตรวจสอบการตั้งค่าตู้เก็บของของคุณแล้วลองอีกครั้ง"</string>
+    <string name="pullall_m3_stop" formatted="false">"หยุดดึงทั้งหมด"</string>
+    <string name="pullall_m3_stopped" formatted="false">"หยุดแล้ว ตู้เก็บของที่กำลังถูกดึงอาจเสร็จสมบูรณ์แล้ว ดังนั้นตรวจสอบสถานะก่อนลองอีกครั้ง ส่วนที่เหลือยังไม่ได้เริ่ม"</string>
+    <string name="pullall_m3_stopping" formatted="false">"กำลังหยุดหลังจากตู้เก็บของนี้…"</string>
+    <string name="pullall_m3_surfaces" formatted="false">"วิดเจ็ตและแผ่นกระเบื้องการตั้งค่าอย่างรวดเร็ว"</string>
+    <string name="pullall_m3_tile_preview" formatted="false">"GitSync.md\nดึงทั้งหมด"</string>
+    <string name="pullall_m3_title" formatted="false">"ดึงทั้งหมด"</string>
+    <string name="pullall_m3_unreadable" formatted="false">"สรุปพื้นหลังที่บันทึกไว้ไม่สามารถอ่านได้และถูกเก็บไว้ เคลียร์มันก่อนที่คุณจะเริ่มรันพื้นหลังอีกครั้ง"</string>
+    <string name="pullall_m3_updated" formatted="false">"อัปเดตจากระยะไกลแล้ว"</string>
+    <string name="pullall_m3_when_source">"%1$s · จาก %2$s"</string>
+    <string name="pullall_m3_widget_name" formatted="false">"ดึงทั้งหมด"</string>
+    <string name="pullall_m3_widget_sub" formatted="false">"ดึงข้อมูลและ fast-forward เท่านั้น"</string>
     <string name="push_all_repositories" formatted="false">"ที่เก็บทั้งหมด รวมถึงที่เก็บที่จะสร้างในอนาคต"</string>
     <string name="push_cancelled" formatted="false">"ยกเลิกการเชื่อมต่อ GitHub แล้ว"</string>
     <string name="push_channel" formatted="false">"การอัปเดตที่เก็บ"</string>
@@ -617,6 +1591,7 @@
     <string name="repository_actions_changes">"พาธที่เปลี่ยนแปลง: %1$d"</string>
     <string name="repository_actions_confirm" formatted="false">"เรียกใช้หนึ่งครั้ง"</string>
     <string name="repository_actions_destination">"สาขาต้นทาง: %1$s / %2$s"</string>
+    <string name="repository_actions_destination_none" formatted="false">"ต้นน้ำ: ไม่มี"</string>
     <string name="repository_actions_dirty" formatted="false">"การเปลี่ยนแปลงในเครื่องขัดขวางการดึงคอมมิตขาเข้า ให้คอมมิตหรือเก็บใน stash ก่อน"</string>
     <string name="repository_actions_diverged" formatted="false">"ประวัติในเครื่องและระยะไกลแยกจากกัน เลือก merge หรือ rebase อย่างชัดเจนในส่วนควบคุม Git"</string>
     <string name="repository_actions_failed" formatted="false">"ไม่สามารถดำเนินการให้เสร็จได้ ตรวจสอบการเชื่อมต่อ บัญชี ความเชื่อถือ และการเข้าถึงโฟลเดอร์ จากนั้นตรวจสอบสถานะปัจจุบันก่อนลองใหม่"</string>
@@ -681,6 +1656,325 @@
     <string name="resolve_local_superseded" formatted="false">"รีโพที่เลือกเปลี่ยนไป โปรดตรวจสอบการเปลี่ยนแปลงในเครื่องอีกครั้ง"</string>
     <string name="resolve_local_title" formatted="false">": การแก้ไขท้องถิ่นได้ขัดขวางการดึงข้อมูลนี้"</string>
     <string name="settings_folder_unavailable" formatted="false">"ต้องตรวจสอบสิทธิ์การเข้าถึงโฟลเดอร์"</string>
+    <string name="settings_m3_account_meta">"@%1$s · GitHub"</string>
+    <string name="settings_m3_accounts" formatted="false">"บัญชี GitHub"</string>
+    <string name="settings_m3_app_storage" formatted="false">"พื้นที่เก็บข้อมูลของแอป"</string>
+    <string name="settings_m3_author_account_meta">"%1$s · ยังไม่มีการบันทึกอะไรในห้องเก็บนี้"</string>
+    <string name="settings_m3_author_account_meta_global">"%1$s · ยังไม่มีการบันทึกค่าเริ่มต้น"</string>
+    <string name="settings_m3_author_changed" formatted="false">"ผู้แต่งนี้ถูกเปลี่ยนแปลงภายนอก GitSync.md อาจโดย Git บน Mac ของคุณ โหลดใหม่เพื่อดูข้อความล่าสุด"</string>
+    <string name="settings_m3_author_default" formatted="false">"ค่าเริ่มต้น"</string>
+    <string name="settings_m3_author_email" formatted="false">"อีเมลผู้เขียน"</string>
+    <string name="settings_m3_author_from_account" formatted="false">"จากบัญชี GitHub ของคุณ"</string>
+    <string name="settings_m3_author_global_subtitle" formatted="false">"ทุกห้องเก็บโดยไม่มีผู้แต่งของตัวเอง"</string>
+    <string name="settings_m3_author_help_changed" formatted="false">"โหลดใหม่ก่อนบันทึก มิฉะนั้นคุณจะเขียนทับผู้แต่งที่ใหม่กว่า"</string>
+    <string name="settings_m3_author_help_match" formatted="false">"ให้ตรงกับอีเมลที่ Git ใช้บน Mac ของคุณ เพื่อให้ทั้งสองแสดงผลเป็นคุณ"</string>
+    <string name="settings_m3_author_help_noreply" formatted="false">"ที่อยู่อีเมลส่วนตัวของ GitHub เพื่อให้ที่อยู่อีเมลจริงของคุณยังคงซ่อนอยู่"</string>
+    <string name="settings_m3_author_intro" formatted="false">"การคอมมิตใหม่ในห้องเก็บนี้จะใช้ชื่อและอีเมลนี้ การคอมมิตที่คุณทำไปแล้วจะเก็บผู้แต่งเดิมไว้"</string>
+    <string name="settings_m3_author_intro_global" formatted="false">"การคอมมิตใหม่ในคลังของคุณจะใช้ชื่อและอีเมลนี้ เว้นแต่คลังจะบันทึกของตัวเอง การคอมมิตที่คุณทำไปแล้วจะเก็บข้อมูลผู้แต่งของมันไว้"</string>
+    <string name="settings_m3_author_name" formatted="false">"ชื่อผู้เขียน"</string>
+    <string name="settings_m3_author_override" formatted="false">"เขียนทับ"</string>
+    <string name="settings_m3_author_preview_message" formatted="false">"อัปเดตจาก GitSync.md"</string>
+    <string name="settings_m3_author_preview_meta">"%1$s &lt;%2$s&gt; · ตอนนี้"</string>
+    <string name="settings_m3_author_preview_title" formatted="false">"คอมมิตครั้งถัดไปของคุณจะอ่าน"</string>
+    <string name="settings_m3_author_reading" formatted="false">"กำลังอ่านคอนฟิก Git ของตู้เก็บนี้…"</string>
+    <string name="settings_m3_author_save" formatted="false">"บันทึกผู้เขียน"</string>
+    <string name="settings_m3_author_save_note" formatted="false">"การบันทึกจะปิดหน้าหน้านี้ ไม่มีอะไรถูกคอมมิต"</string>
+    <string name="settings_m3_author_saved_global" formatted="false">"บันทึกสำหรับทุกตู้เก็บ"</string>
+    <string name="settings_m3_author_saved_global_meta">"บนโทรศัพท์เครื่องนี้ · เข้ากับ %1$s"</string>
+    <string name="settings_m3_author_saved_vault" formatted="false">"บันทึกในตู้เก็บนี้"</string>
+    <string name="settings_m3_author_saved_vault_meta">".git/config · เข้ากับ %1$s"</string>
+    <string name="settings_m3_author_scope" formatted="false">"มีเพียงการเปลี่ยนแปลงในตู้เก็บนี้ ตู้เก็บอื่น ๆ ของคุณยังเก็บผู้เขียนของตนเอง หรือใช้บัญชี GitHub ที่พวกเขาซิงค์ด้วย"</string>
+    <string name="settings_m3_author_scope_global" formatted="false">"ตู้เก็บที่มีผู้เขียนบันทึกไว้ใน .git/config ของตัวเองยังคงเก็บไว้ คุณยังสามารถเปลี่ยนตู้เก็บเดี่ยวในการตั้งค่าตู้เก็บได้"</string>
+    <string name="settings_m3_author_use_account" formatted="false">"ใช้บัญชี GitHub ของฉันแทน"</string>
+    <string name="settings_m3_author_your_account" formatted="false">"บัญชี GitHub ของคุณ"</string>
+    <string name="settings_m3_background_on">"เปิด · %1$d vault"</string>
+    <string name="settings_m3_background_sync" formatted="false">"Background Sync"</string>
+    <string name="settings_m3_bg_attention_short" formatted="false">"ต้องตรวจสอบ"</string>
+    <string name="settings_m3_bg_charging" formatted="false">"กำลังชาร์จ"</string>
+    <string name="settings_m3_bg_cond_any" formatted="false">"บนการเชื่อมต่อใดก็ได้"</string>
+    <string name="settings_m3_bg_cond_both" formatted="false">"เฉพาะบน Wi-Fi ขณะชาร์จ"</string>
+    <string name="settings_m3_bg_cond_charging" formatted="false">"เฉพาะขณะชาร์จ"</string>
+    <string name="settings_m3_bg_cond_wifi" formatted="false">"เฉพาะบน Wi-Fi"</string>
+    <string name="settings_m3_bg_conditions_apply">"รัน %1$s เหมือนทุกตู้เก็บที่รวมอยู่"</string>
+    <string name="settings_m3_bg_connect" formatted="false">"เชื่อมต่อ"</string>
+    <string name="settings_m3_bg_failed_short" formatted="false">"ไม่สามารถซิงค์ได้"</string>
+    <string name="settings_m3_bg_include_cd">"รวม %1$s ใน Background Sync"</string>
+    <string name="settings_m3_bg_intro" formatted="false">"Android กำหนดตรวจสอบประมาณทุก 15 นาทีหรือมากกว่า ขึ้นอยู่กับการเชื่อมต่อ แบตเตอรี่ และข้อจำกัดของระบบ พยายามให้ดีที่สุด ไม่ใช่แบบเรียลไทม์"</string>
+    <string name="settings_m3_bg_modes" formatted="false">"โหมด"</string>
+    <string name="settings_m3_bg_never" formatted="false">"จะไม่"</string>
+    <string name="settings_m3_bg_no_runs" formatted="false">"ยังไม่มีการรันเลย Android จะเริ่มตรวจสอบครั้งแรกประมาณ 15 นาที"</string>
+    <string name="settings_m3_bg_nudge" formatted="false">"รับการแจ้งเตือนเมื่อ GitHub เปลี่ยนแปลง"</string>
+    <string name="settings_m3_bg_nudge_sub" formatted="false">"เลือกเข้าร่วม การดึงสามารถเริ่มได้ทันที"</string>
+    <string name="settings_m3_bg_only_when" formatted="false">"เฉพาะเมื่อ"</string>
+    <string name="settings_m3_bg_pull_sub" formatted="false">"Fast-forward เท่านั้น"</string>
+    <string name="settings_m3_bg_push_sub" formatted="false">"หยุดถ้ารีโมทเคลื่อนที่ก่อน"</string>
+    <string name="settings_m3_bg_recent" formatted="false">"การทำงานล่าสุด"</string>
+    <string name="settings_m3_bg_run_failed">"%1$s ซิงค์ไม่ได้"</string>
+    <string name="settings_m3_bg_run_local_edits">"ข้าม %1$s: การแก้ไขในเครื่อง"</string>
+    <string name="settings_m3_bg_run_offline">"%1$s กำลังรอการเชื่อมต่อ"</string>
+    <string name="settings_m3_bg_run_power">"%1$s กำลังรอการชาร์จ"</string>
+    <string name="settings_m3_bg_run_pushed" formatted="false">"↑ ดันแล้ว"</string>
+    <string name="settings_m3_bg_run_review">"%1$s ต้องการการตรวจสอบ"</string>
+    <string name="settings_m3_bg_run_skipped">"ข้าม %1$s: %2$s"</string>
+    <string name="settings_m3_bg_run_wifi">"%1$s กำลังรอ Wi-Fi"</string>
+    <string name="settings_m3_bg_vault_missing" formatted="false">"โฟลเดอร์ไม่ได้ถูกเพิ่มอีก จำหรือเพิ่มคลังอีกครั้ง"</string>
+    <string name="settings_m3_bg_vault_not_included" formatted="false">"ไม่รวม"</string>
+    <string name="settings_m3_bg_vaults" formatted="false">"Vault"</string>
+    <string name="settings_m3_bg_wifi" formatted="false">"ขณะใช้ Wi-Fi"</string>
+    <string name="settings_m3_close" formatted="false">"ปิด"</string>
+    <string name="settings_m3_commit_as" formatted="false">"Commit ในนาม"</string>
+    <string name="settings_m3_debug_app" formatted="false">"แอป"</string>
+    <string name="settings_m3_debug_background" formatted="false">"BACKGROUND"</string>
+    <string name="settings_m3_debug_bg" formatted="false">"BG"</string>
+    <string name="settings_m3_debug_clear" formatted="false">"ชัดเจน"</string>
+    <string name="settings_m3_debug_copy" formatted="false">"คัดลอกรายการที่มองเห็น"</string>
+    <string name="settings_m3_debug_day_time">"%1$s %2$s"</string>
+    <string name="settings_m3_debug_error" formatted="false">"ข้อผิดพลาด"</string>
+    <string name="settings_m3_debug_errors_count">"ข้อผิดพลาด %1$d"</string>
+    <string name="settings_m3_debug_info" formatted="false">"แสดงข้อมูลดีบัก"</string>
+    <string name="settings_m3_debug_info_tag" formatted="false">"ดึง"</string>
+    <string name="settings_m3_debug_log" formatted="false">"บันทึกดีบัก"</string>
+    <string name="settings_m3_debug_removed_vault" formatted="false">"เอาคลังออกแล้ว"</string>
+    <string name="settings_m3_debug_share" formatted="false">"แชร์ข้อมูลวินิจฉัย"</string>
+    <string name="settings_m3_debug_warn" formatted="false">"การเตือน"</string>
+    <string name="settings_m3_discord" formatted="false">"เข้าร่วม Discord"</string>
+    <string name="settings_m3_done" formatted="false">"เสร็จ"</string>
+    <string name="settings_m3_feedback_subtitle" formatted="false">"เปิดแอปอีเมลของคุณ"</string>
+    <string name="settings_m3_forget" formatted="false">"ลืม"</string>
+    <string name="settings_m3_full_access" formatted="false">"GitSync.md สิทธิ์เข้าถึงเต็มรูปแบบ"</string>
+    <string name="settings_m3_group_app" formatted="false">"แอป"</string>
+    <string name="settings_m3_group_more" formatted="false">"การเชื่อมต่อ &amp; ความช่วยเหลือ"</string>
+    <string name="settings_m3_group_new_vaults" formatted="false">"vault ใหม่"</string>
+    <string name="settings_m3_group_purchase" formatted="false">"การซื้อ"</string>
+    <string name="settings_m3_group_sync" formatted="false">"ซิงค์"</string>
+    <string name="settings_m3_help" formatted="false">"ความช่วยเหลือ &amp; เกี่ยวกับ"</string>
+    <string name="settings_m3_how_clone_url" formatted="false">"โคลนจาก URL"</string>
+    <string name="settings_m3_how_count" formatted="false">"4 สิ่งที่ต้องรู้"</string>
+    <string name="settings_m3_how_github" formatted="false">"GitHub"</string>
+    <string name="settings_m3_how_it_works" formatted="false">"วิธีการทำงาน"</string>
+    <string name="settings_m3_how_sample" formatted="false">"ทดลองตัวอย่างแบบออฟไลน์"</string>
+    <string name="settings_m3_how_start" formatted="false">"เริ่มจากตรงนี้"</string>
+    <string name="settings_m3_how_storage" formatted="false">"เลือกที่จัดเก็บ"</string>
+    <string name="settings_m3_how_subtitle" formatted="false">"มุมมองสองนาทีเกี่ยวกับพื้นฐาน"</string>
+    <string name="settings_m3_how_title" formatted="false">"วิธีการทำงานของ GitSync"</string>
+    <string name="settings_m3_language" formatted="false">"ภาษา"</string>
+    <string name="settings_m3_lfs_endpoints" formatted="false">"จุดปลาย LFS"</string>
+    <string name="settings_m3_license" formatted="false">"ใบอนุญาต"</string>
+    <string name="settings_m3_license_subtitle" formatted="false">"ซื้อครั้งเดียวผ่าน Google Play"</string>
+    <string name="settings_m3_move_action" formatted="false">"ย้าย Vault"</string>
+    <string name="settings_m3_move_cancel_meta" formatted="false">"ปล่อยให้คลังอยู่ในโฟลเดอร์เก่า"</string>
+    <string name="settings_m3_move_confirm_guidance" formatted="false">"อย่าให้ Obsidian และแอปอื่น ๆ อยู่ในทั้งสองโฟลเดอร์จนกว่าการย้ายจะเสร็จสิ้น"</string>
+    <string name="settings_m3_move_confirm_retained" formatted="false">"ของเดิมยังคงอยู่เป็นสำเนาสำหรับกู้คืน"</string>
+    <string name="settings_m3_move_confirm_title" formatted="false">"ต้องการย้ายคลังนี้หรือไม่?"</string>
+    <string name="settings_m3_move_copy_note" formatted="false">"สิ่งนี้ข้ามไปยังโวลุ่มเก็บข้อมูลอื่น ดังนั้น GitSync.md จะคัดลอกและตรวจสอบทุกไฟล์ แล้วเก็บไฟล์ต้นฉบับไว้ภายใต้การกู้คืนแบบ Move จนกว่าคุณจะลบออก"</string>
+    <string name="settings_m3_move_finish_meta" formatted="false">"ดำเนินต่อจากที่หยุดไว้"</string>
+    <string name="settings_m3_move_from" formatted="false">"จาก"</string>
+    <string name="settings_m3_move_interrupted" formatted="false">"มีการย้ายถูกขัดจังหวะ สำเนาทุกอันที่เราพบจะถูกเก็บไว้จนกว่าคุณจะทำให้เสร็จ"</string>
+    <string name="settings_m3_move_into" formatted="false">"เข้าไปยัง"</string>
+    <string name="settings_m3_move_intro" formatted="false">"ย้ายทั้งคลัง: ไฟล์, ประวัติของ Git และการเปลี่ยนแปลงที่ถูกสเตจ บัญชีและผู้เขียนคอมมิตย้ายไปด้วย"</string>
+    <string name="settings_m3_move_moving_button" formatted="false">"กำลังย้าย… เก็บ GitSync.md ไว้เปิด"</string>
+    <string name="settings_m3_move_progress" formatted="false">"กำลังย้ายและบันทึกการตั้งค่าตู้เซฟ…"</string>
+    <string name="settings_m3_move_title" formatted="false">"ย้าย Vault"</string>
+    <string name="settings_m3_move_will_move_to" formatted="false">"จะย้ายไปที่"</string>
+    <string name="settings_m3_never_force" formatted="false">"Force-push"</string>
+    <string name="settings_m3_never_overwrite" formatted="false">"เขียนทับการแก้ไข"</string>
+    <string name="settings_m3_never_rebase" formatted="false">"Rebase หรือ merge"</string>
+    <string name="settings_m3_never_resolve" formatted="false">"แก้ไขความขัดแย้ง"</string>
+    <string name="settings_m3_never_send" formatted="false">"ส่งไฟล์ของคุณมาให้เรา"</string>
+    <string name="settings_m3_never_switch" formatted="false">"สลับสาขา"</string>
+    <string name="settings_m3_not_now" formatted="false">"ไม่ใช่ตอนนี้"</string>
+    <string name="settings_m3_obsidian" formatted="false">"การเชื่อมต่อ Obsidian"</string>
+    <string name="settings_m3_obsidian_add_vault" formatted="false">"เพิ่ม vault"</string>
+    <string name="settings_m3_obsidian_before" formatted="false">"ก่อนที่คุณจะเริ่ม"</string>
+    <string name="settings_m3_obsidian_command" formatted="false">"GitSync.md Connect: เชื่อมต่อตู้เซฟนี้"</string>
+    <string name="settings_m3_obsidian_connected" formatted="false">"เชื่อมต่อแล้ว"</string>
+    <string name="settings_m3_obsidian_empty" formatted="false">"เพิ่มหรือลอกแบบตู้เซฟไปยังโฟลเดอร์อุปกรณ์ก่อน ตู้เซฟในพื้นที่เก็บแอปไม่สามารถเปิดโดย Obsidian ได้"</string>
+    <string name="settings_m3_obsidian_error" formatted="false">"Obsidian ไม่สามารถเชื่อมต่อได้ ตรวจสอบการเข้าถึงโฟลเดอร์ GitHub ระยะไกล HTTPS และบัญชีของตู้เซฟ จากนั้นเตรียมการเชื่อมต่อใหม่"</string>
+    <string name="settings_m3_obsidian_failed" formatted="false">"ไม่ได้เชื่อมต่อ"</string>
+    <string name="settings_m3_obsidian_forget_action" formatted="false">"ลืมการเชื่อมต่อ"</string>
+    <string name="settings_m3_obsidian_forget_body">"GitSync.md หยุดส่งข้อมูลรับรองไปยัง Obsidian สำหรับ %1$s ข้อมูลรับรองที่ Obsidian นำเข้าแล้วยังคงอยู่ ยกเลิกข้อมูลเหล่านั้นแยกต่างหาก ไฟล์ของคุณยังคงอยู่ที่เดิม"</string>
+    <string name="settings_m3_obsidian_forget_title" formatted="false">"ลืมการเชื่อมต่อนี้หรือไม่?"</string>
+    <string name="settings_m3_obsidian_intro" formatted="false">"ให้ปลั๊กอิน Obsidian Git ดันและดึงกับบัญชี GitHub ของตู้นี้ ข้อมูลประจำตัวถูกเข้ารหัสสำหรับปลั๊กอินคู่หูและไม่เคยใส่ในลิงก์"</string>
+    <string name="settings_m3_obsidian_prepare" formatted="false">"เตรียมการเชื่อมต่อ"</string>
+    <string name="settings_m3_obsidian_prepared_lead" formatted="false">"การเชื่อมต่อได้รับการเตรียมพร้อมแล้ว"</string>
+    <string name="settings_m3_obsidian_prepared_open">"เปิด %1$s ใน Obsidian และรัน"</string>
+    <string name="settings_m3_obsidian_prepared_tail" formatted="false">". คำขอใหม่กว่ามาแทนที่คำขอนี้"</string>
+    <string name="settings_m3_obsidian_ready">"ข้อมูลประจำตัวที่เข้ารหัสพร้อมสำหรับ Obsidian Obsidian Git สามารถซิงค์ %1$s ได้แล้ว"</string>
+    <string name="settings_m3_obsidian_req1_body" formatted="false">"Obsidian และ GitSync.md ต้องแชร์โฟลเดอร์อุปกรณ์เดียวกัน"</string>
+    <string name="settings_m3_obsidian_req1_title" formatted="false">"เปิดโฟลเดอร์เดียวกันใน Obsidian"</string>
+    <string name="settings_m3_obsidian_req2_body" formatted="false">"Git และ GitSync.md Connect ใน Obsidian › การตั้งค่า"</string>
+    <string name="settings_m3_obsidian_req2_title" formatted="false">"เปิดปลั๊กอินชุมชนสองตัว"</string>
+    <string name="settings_m3_obsidian_req3_body" formatted="false">"ด้วยบัญชี GitHub ที่เลือกในการเชื่อมต่อของตู้"</string>
+    <string name="settings_m3_obsidian_req3_title" formatted="false">"ใช้รีโมต GitHub ผ่าน HTTPS"</string>
+    <string name="settings_m3_obsidian_req4_body" formatted="false">"การเตรียมเพียงส่งมอบข้อมูลรับรอง ไม่ใช่ไฟล์หรือประวัติ"</string>
+    <string name="settings_m3_obsidian_req4_title" formatted="false">"ไม่มีสิ่งใดในตู้เปลี่ยนแปลง"</string>
+    <string name="settings_m3_obsidian_return_failed" formatted="false">"Obsidian ไม่เปิด เปิด GitSync.md Connect ใน Obsidian แล้วลองกลับมาอีกครั้ง"</string>
+    <string name="settings_m3_obsidian_subtitle" formatted="false">"Obsidian Git + GitSync.md Connect"</string>
+    <string name="settings_m3_obsidian_this_vault" formatted="false">"vault นี้"</string>
+    <string name="settings_m3_obsidian_vaults" formatted="false">"ตู้บนโทรศัพท์เครื่องนี้"</string>
+    <string name="settings_m3_obsidian_waiting" formatted="false">"กำลังรอ Obsidian"</string>
+    <string name="settings_m3_off" formatted="false">"ปิด"</string>
+    <string name="settings_m3_on" formatted="false">"เปิด"</string>
+    <string name="settings_m3_perk_nudge_body" formatted="false">"การดัน GitHub กระตุ้นแอปภายในไม่กี่วินาที"</string>
+    <string name="settings_m3_perk_nudge_title" formatted="false">"ดึงทันทีด้วย Push Sync"</string>
+    <string name="settings_m3_perk_pull_body" formatted="false">"fast-forward เท่านั้น สิ่งผิดปกติจะรอคุณ"</string>
+    <string name="settings_m3_perk_pull_title" formatted="false">"Pull ในเบื้องหลัง"</string>
+    <string name="settings_m3_perk_push_body" formatted="false">"ปิดโดยค่าเริ่มต้น คุณเลือกได้ว่า vault ใดจะเผยแพร่"</string>
+    <string name="settings_m3_perk_push_title" formatted="false">"Commit และ push การแก้ไข"</string>
+    <string name="settings_m3_privacy" formatted="false">"ความเป็นส่วนตัว"</string>
+    <string name="settings_m3_privacy_policy" formatted="false">"นโยบายความเป็นส่วนตัว"</string>
+    <string name="settings_m3_push_active" formatted="false">"เปิดใช้งาน"</string>
+    <string name="settings_m3_push_all_repos" formatted="false">"ทุกที่เก็บ รวมทั้งที่เก็บใหม่"</string>
+    <string name="settings_m3_push_channel_sub" formatted="false">"ใช้ช่องแจ้งเตือนการอัปเดตที่เก็บ"</string>
+    <string name="settings_m3_push_checked">"ตรวจสอบ %1$d · อัปเดต %2$d · ต้องตรวจสอบ %3$d"</string>
+    <string name="settings_m3_push_connect_again" formatted="false">"เชื่อมต่อ GitHub อีกครั้ง"</string>
+    <string name="settings_m3_push_connect_sub" formatted="false">"ติดตั้งแอป GitSync.md และเลือกที่เก็บ"</string>
+    <string name="settings_m3_push_connected" formatted="false">"เชื่อมต่อแล้ว"</string>
+    <string name="settings_m3_push_connection" formatted="false">"การเชื่อมต่อ GitHub"</string>
+    <string name="settings_m3_push_err_cancelled" formatted="false">"การเชื่อมต่อ GitHub ถูกยกเลิก ไม่มีอะไรเปลี่ยนแปลง เชื่อมต่ออีกครั้งเมื่อคุณพร้อม"</string>
+    <string name="settings_m3_push_err_cancelled_title" formatted="false">"กลับมาจาก GitHub"</string>
+    <string name="settings_m3_push_err_not_selected" formatted="false">"ไม่มีคลังข้อมูลบนโทรศัพท์นี้ตรงกับ GitHub รีโพและสาขานี้ เพิ่มรีโพไปยังการเข้าถึงของแอปใน GitHub หรือตรวจสอบการเชื่อมต่อและสาขาของคลังข้อมูล"</string>
+    <string name="settings_m3_push_err_not_selected_title" formatted="false">"รีโพนี้ไม่ได้ถูกแชร์กับแอป"</string>
+    <string name="settings_m3_push_err_owner_title" formatted="false">"ต้องลงชื่อเข้าใช้ด้วยเจ้าของ"</string>
+    <string name="settings_m3_push_example_cd" formatted="false">"การแจ้งเตือนตัวอย่าง"</string>
+    <string name="settings_m3_push_example_meta" formatted="false">"GitSync.md · อัปเดตรีโพ · ตอนนี้"</string>
+    <string name="settings_m3_push_example_note" formatted="false">"ส่วนตัวบนหน้าจอล็อก หากคลังข้อมูลสะอาดแล้ว จะถูกดึงเรียบร้อยก่อนที่คุณจะเห็นสิ่งนี้"</string>
+    <string name="settings_m3_push_example_repo" formatted="false">"owner/vault"</string>
+    <string name="settings_m3_push_example_title" formatted="false">"การเตือนดูเหมือนแบบนี้"</string>
+    <string name="settings_m3_push_existing_scope" formatted="false">"ลงชื่อเข้าใช้ในฐานะเจ้าของบัญชี หรือเจ้าขององค์กร แอปจะรักษาการเข้าถึงรีโพปัจจุบันไว้"</string>
+    <string name="settings_m3_push_github_app" formatted="false">"GitHub App"</string>
+    <string name="settings_m3_push_handoff_body" formatted="false">"เปิดแท็บเบราว์เซอร์ เลือกบัญชีและรีโพที่แอปสามารถดูได้ จากนั้นกลับมาที่นี่ หน้าจอนี้จะตรวจสอบอีกครั้งเมื่อคุณกลับมา"</string>
+    <string name="settings_m3_push_handoff_title" formatted="false">"เสร็จสิ้นที่ GitHub"</string>
+    <string name="settings_m3_push_intro" formatted="false">"เชื่อมต่อ GitSync.md GitHub App และการ push ไปที่ GitHub จะแจ้งเตือนโทรศัพท์นี้ภายในไม่กี่วินาที ห้องเก็บข้อมูลที่สะอาดจะดึงและข้ามไปข้างหน้าโดยอัตโนมัติ แตะการแจ้งเตือนเพื่อตรวจสอบอีกครั้ง"</string>
+    <string name="settings_m3_push_never" formatted="false">"Push Sync ไม่เคย"</string>
+    <string name="settings_m3_push_never_commit" formatted="false">"คำสั่งยืนยัน"</string>
+    <string name="settings_m3_push_never_hint" formatted="false">"การเปลี่ยนแปลงในเครื่องและประวัติที่แยกกันรอคุณอยู่ในห้องเก็บข้อมูล"</string>
+    <string name="settings_m3_push_never_merge" formatted="false">"รวมประวัติที่แยกกัน"</string>
+    <string name="settings_m3_push_never_switch" formatted="false">"สลับสาขา"</string>
+    <string name="settings_m3_push_never_upload" formatted="false">"อัปโหลดการเปลี่ยนแปลง"</string>
+    <string name="settings_m3_push_no_connections" formatted="false">"เชื่อมต่อบัญชีหรือองค์กร GitHub เพื่อเลือกว่าจะให้รีโพใดส่งการอัปเดต"</string>
+    <string name="settings_m3_push_open_vault" formatted="false">"เปิดห้องเก็บข้อมูล"</string>
+    <string name="settings_m3_push_permission" formatted="false">"อนุญาตการแจ้งเตือนสำหรับ GitSync.md ในการตั้งค่า Android จากนั้นเปิดการซิงค์พุช"</string>
+    <string name="settings_m3_push_registered" formatted="false">"โทรศัพท์เครื่องนี้ลงทะเบียนสำหรับการแจ้งเตือนแล้ว"</string>
+    <string name="settings_m3_push_remove" formatted="false">"ลบ"</string>
+    <string name="settings_m3_push_remove_body">"การซิงค์พุชจะหยุดการส่งต่ออัปเดตจาก @%1$s ไปยังโทรศัพท์เครื่องนี้ GitHub App ยังคงติดตั้งอยู่ ใช้จัดการใน GitHub เพื่อเปลี่ยนการเข้าถึงหรือถอนการติดตั้ง"</string>
+    <string name="settings_m3_push_remove_title" formatted="false">"ต้องการลบการเชื่อมต่อนี้หรือไม่?"</string>
+    <string name="settings_m3_push_result_updated" formatted="false">"อัปเดตจาก GitHub"</string>
+    <string name="settings_m3_push_stop" formatted="false">"หยุดการดำเนินการ"</string>
+    <string name="settings_m3_push_suspended" formatted="false">"ระงับ"</string>
+    <string name="settings_m3_push_sync" formatted="false">"การซิงค์พุชจาก GitHub"</string>
+    <string name="settings_m3_push_this_phone" formatted="false">"โทรศัพท์นี้"</string>
+    <string name="settings_m3_push_title" formatted="false">"Push Sync"</string>
+    <string name="settings_m3_push_waiting" formatted="false">"รอ GitHub"</string>
+    <string name="settings_m3_save_clones_in" formatted="false">"บันทึก clone ใหม่ใน"</string>
+    <string name="settings_m3_sc_action" formatted="false">"การกระทำ"</string>
+    <string name="settings_m3_sc_authorized" formatted="false">"ได้รับอนุญาต"</string>
+    <string name="settings_m3_sc_background_sub" formatted="false">"ผลลัพธ์จะไปยังที่นี่และในการแจ้งเตือน"</string>
+    <string name="settings_m3_sc_branch">"สาขา %1$s"</string>
+    <string name="settings_m3_sc_branch_reviewed">"สาขา %1$s · รีวิว %2$s"</string>
+    <string name="settings_m3_sc_clear" formatted="false">"ชัดเจน"</string>
+    <string name="settings_m3_sc_clear_results" formatted="false">"ล้างผลลัพธ์ที่บันทึกไว้"</string>
+    <string name="settings_m3_sc_ff_only" formatted="false">"ดึงข้อมูลและ fast-forward เท่านั้น"</string>
+    <string name="settings_m3_sc_item_title">"%1$s: %2$s"</string>
+    <string name="settings_m3_sc_launcher" formatted="false">"ทางลัดในหน้าจอหลัก"</string>
+    <string name="settings_m3_sc_link_identity">"ลิงก์ %1$s · สร้างเมื่อ %2$s"</string>
+    <string name="settings_m3_sc_link_private" formatted="false">"ใครก็ตามที่มีลิงก์นี้สามารถเรียกใช้งานได้ เก็บไว้เป็นส่วนตัว"</string>
+    <string name="settings_m3_sc_links" formatted="false">"ลิงก์ที่ได้รับอนุญาต"</string>
+    <string name="settings_m3_sc_new_title" formatted="false">"ทางลัดใหม่สำหรับคลังข้อมูลเดียว"</string>
+    <string name="settings_m3_sc_no_links" formatted="false">"ไม่มีลิงก์ที่ได้รับอนุญาต แอปอย่าง Obsidian หรือ Shortcuts สามารถขอลิงก์ได้"</string>
+    <string name="settings_m3_sc_no_shortcuts" formatted="false">"ยังไม่มีทางลัดของตัวเรียกใช้งาน เลือกคลังข้อมูลและการกระทำด้านบน"</string>
+    <string name="settings_m3_sc_open_pull_all" formatted="false">"เปิด Pull All"</string>
+    <string name="settings_m3_sc_open_pull_all_sub" formatted="false">"ดึงคลังข้อมูลทั้งหมดตอนนี้และดูผลลัพธ์แต่ละรายการ"</string>
+    <string name="settings_m3_sc_pin_consent">"แต่ละครั้งที่แตะจะรันสิ่งนี้เพียงครั้งเดียวโดยไม่ถามซ้ำ มันจะผูกกับ %1$s สาขา %2$s และบัญชีนี้ หากมีการเปลี่ยนแปลงใด ๆ ทางลัดจะหยุดทำงานและคุณต้องสร้างใหม่ สามารถเพิกถอนได้ที่นี่ตลอดเวลา"</string>
+    <string name="settings_m3_sc_pin_writes">"ทำการ commit ด้วย “%1$s” และอัปโหลดทุกการเปลี่ยนแปลงทุกครั้งที่แตะ"</string>
+    <string name="settings_m3_sc_pinned" formatted="false">"ปักหมุดแล้ว"</string>
+    <string name="settings_m3_sc_pull" formatted="false">"Pull"</string>
+    <string name="settings_m3_sc_pull_all" formatted="false">"ดึงทั้งหมด"</string>
+    <string name="settings_m3_sc_pull_all_note" formatted="false">"แต่ละครั้งที่แตะจะดึงทุกคลังเก็บครั้งหนึ่ง ไม่ได้บันทึกหรือผลักไปที่ไหน ผลลัพธ์รอดูได้ใน ดึงทั้งหมด"</string>
+    <string name="settings_m3_sc_pull_all_repos" formatted="false">"ดึงทั้งคลังข้อมูล"</string>
+    <string name="settings_m3_sc_pull_all_title" formatted="false">"ดึงทั้งหมด โดยไม่ต้องเปิดแอป"</string>
+    <string name="settings_m3_sc_pull_sub" formatted="false">"ดึงข้อมูลและ fast-forward เท่านั้น"</string>
+    <string name="settings_m3_sc_push" formatted="false">"Commit และ push"</string>
+    <string name="settings_m3_sc_push_sub" formatted="false">"บันทึกทุกการเปลี่ยนแปลง จากนั้นอัปโหลด"</string>
+    <string name="settings_m3_sc_refresh" formatted="false">"รีเฟรช"</string>
+    <string name="settings_m3_sc_requested" formatted="false">"มีการขอทางลัด อนุมัติในตัวเปิดของคุณ จากนั้นแตะ รีเฟรช ด้านล่างเพื่อตรวจสอบ"</string>
+    <string name="settings_m3_sc_returns_to">"กลับไปที่ %1$s"</string>
+    <string name="settings_m3_sc_review_again" formatted="false">"ตรวจสอบอีกครั้ง"</string>
+    <string name="settings_m3_sc_revoke" formatted="false">"เพิกถอน"</string>
+    <string name="settings_m3_sc_revoke_body" formatted="false">"หยุดการทำงานของ Git การกระทำ ไอคอนของมันอาจคงอยู่บนหน้าจอหลักของคุณ แต่เป็นสีเทา จนกว่าคุณจะลบออก ทางลัดใหม่ต้องได้รับการอนุมัติอีกครั้ง"</string>
+    <string name="settings_m3_sc_revoke_link" formatted="false">"เพิกถอนสิทธิ์ของลิงก์"</string>
+    <string name="settings_m3_sc_revoke_title" formatted="false">"ต้องการเพิกถอนทางลัดนี้หรือไม่?"</string>
+    <string name="settings_m3_sc_revoked" formatted="false">"เพิกถอนแล้ว"</string>
+    <string name="settings_m3_sc_run_once" formatted="false">"รันครั้งเดียวตอนนี้"</string>
+    <string name="settings_m3_sc_runs_closed" formatted="false">"รันโดยไม่เปิด GitSync.md"</string>
+    <string name="settings_m3_sc_runs_open" formatted="false">"เปิด GitSync.md แล้วรันครั้งเดียว"</string>
+    <string name="settings_m3_sc_status" formatted="false">"อ่านสถานะ"</string>
+    <string name="settings_m3_sc_status_sub" formatted="false">"ไม่มีเครือข่าย แสดงสิ่งที่เปลี่ยนแปลง"</string>
+    <string name="settings_m3_sc_sync" formatted="false">"ซิงค์"</string>
+    <string name="settings_m3_sc_sync_sub" formatted="false">"ดึงมาก่อน แล้วคอมมิต &amp; พุช"</string>
+    <string name="settings_m3_sc_tile_how" formatted="false">"เลื่อนลงการตั้งค่าอย่างรวดเร็ว › แก้ไข › ลากมาใน ดึงทั้งหมด"</string>
+    <string name="settings_m3_sc_tile_lead" formatted="false">"ไทล์:"</string>
+    <string name="settings_m3_sc_title" formatted="false">"วิดเจ็ต &amp; ทางลัด"</string>
+    <string name="settings_m3_sc_upstream">"อัปสตรีม %1$s / %2$s"</string>
+    <string name="settings_m3_sc_waiting" formatted="false">"รอหน้าเล่น"</string>
+    <string name="settings_m3_sc_widget_how" formatted="false">"กดค้างบนหน้าจอหลักของคุณ › วิดเจ็ต › GitSync.md"</string>
+    <string name="settings_m3_sc_widget_lead" formatted="false">"วิดเจ็ต:"</string>
+    <string name="settings_m3_sc_writes" formatted="false">"จัดเวทีทุกการเปลี่ยนแปลง คอมมิตถ้าจำเป็น แล้วอัปโหลด ความขัดแย้ง ประวัติที่แยก หรือระยะไกลที่ย้ายมาก่อนจะหยุดมัน และการอัปโหลดที่ล้มเหลวจะเก็บคอมมิตใหม่ไว้"</string>
+    <string name="settings_m3_shortcuts" formatted="false">"วิดเจ็ต &amp; ทางลัดตัวเปิดใช้"</string>
+    <string name="settings_m3_sign_out" formatted="false">"ลงชื่อออก"</string>
+    <string name="settings_m3_ssh_hosts" formatted="false">"เซิร์ฟเวอร์ SSH"</string>
+    <string name="settings_m3_storage_hint" formatted="false">"ที่จัดเก็บโทรศัพท์และการ์ด SD ใช้งานได้ โฟลเดอร์คลาวด์เช่น Google Drive ไม่สามารถเก็บคลัง Git ได้"</string>
+    <string name="settings_m3_storage_intro" formatted="false">"เลือกโฟลเดอร์ที่โคลนใหม่จะไปอยู่ คลังที่คุณมีอยู่แล้วจะอยู่ที่เดิม"</string>
+    <string name="settings_m3_storage_move_title" formatted="false">"ย้ายคลังที่คุณมีอยู่แล้ว"</string>
+    <string name="settings_m3_system_default" formatted="false">"เริ่มต้นระบบ"</string>
+    <string name="settings_m3_terms" formatted="false">"ข้อกำหนด"</string>
+    <string name="settings_m3_theme" formatted="false">"ธีม"</string>
+    <string name="settings_m3_theme_dark" formatted="false">"มืด"</string>
+    <string name="settings_m3_theme_light" formatted="false">"สว่าง"</string>
+    <string name="settings_m3_title" formatted="false">"การตั้งค่า"</string>
+    <string name="settings_m3_unlocked" formatted="false">"ปลดล็อกแล้ว"</string>
+    <string name="settings_m3_upgrade_body" formatted="false">"เปิด Obsidian ตอนเช้า ทุกอย่างก็พร้อมอยู่แล้ว"</string>
+    <string name="settings_m3_upgrade_illustration" formatted="false">"โทรศัพท์ล็อกที่ดึงและส่งกับ GitHub ตลอดคืน"</string>
+    <string name="settings_m3_upgrade_last_run">"%1$s · ดึง %2$d · ส่ง %3$d"</string>
+    <string name="settings_m3_upgrade_locked_phone" formatted="false">"โทรศัพท์ที่ล็อก"</string>
+    <string name="settings_m3_upgrade_note" formatted="false">"รวมมากับ GitSync.md . Android กำหนดเวลาที่งานเบื้องหลังทำงาน; พยายามเต็มที่ แบตเตอรี่อาจชะลอการทำงาน"</string>
+    <string name="settings_m3_upgrade_pull" formatted="false">"Pull ในเบื้องหลัง"</string>
+    <string name="settings_m3_upgrade_push" formatted="false">"commit และ push การแก้ไขของฉันด้วย"</string>
+    <string name="settings_m3_upgrade_title" formatted="false">"ซิงค์ขณะ\nคุณหลับ"</string>
+    <string name="settings_m3_upgrade_turn_on" formatted="false">"เปิด Background Sync"</string>
+    <string name="settings_m3_vault_check_ok" formatted="false">"ตกลง"</string>
+    <string name="settings_m3_vault_delete_action" formatted="false">"ลบ"</string>
+    <string name="settings_m3_vault_delete_body" formatted="false">"ลบโฟลเดอร์นี้ ไฟล์ของมัน และประวัติ Git จากโทรศัพท์นี้ ทุกสิ่งที่ไม่ได้ส่งไปยัง GitHub จะหายไป"</string>
+    <string name="settings_m3_vault_delete_title" formatted="false">"ลบตู้เก็บของ &amp; ลบไฟล์หรือไม่?"</string>
+    <string name="settings_m3_vault_display_name" formatted="false">"ชื่อที่แสดง"</string>
+    <string name="settings_m3_vault_display_name_hint" formatted="false">"ว่างไว้เพื่อใช้ชื่อของตู้เก็บของเอง"</string>
+    <string name="settings_m3_vault_errors" formatted="false">"ข้อผิดพลาด · 7 วัน"</string>
+    <string name="settings_m3_vault_files" formatted="false">"ไฟล์"</string>
+    <string name="settings_m3_vault_folder" formatted="false">"โฟลเดอร์"</string>
+    <string name="settings_m3_vault_group" formatted="false">"vault นี้"</string>
+    <string name="settings_m3_vault_health" formatted="false">"สถานะ"</string>
+    <string name="settings_m3_vault_health_attention" formatted="false">"ต้องตรวจสอบ"</string>
+    <string name="settings_m3_vault_health_good" formatted="false">"ดี"</string>
+    <string name="settings_m3_vault_include" formatted="false">"รวมไว้ใน Background Sync"</string>
+    <string name="settings_m3_vault_include_review" formatted="false">"ตรวจสอบสาขาและรีโมตก่อน"</string>
+    <string name="settings_m3_vault_include_sub">"เฉพาะสาขา %1$s ติดตาม %2$s/%3$s"</string>
+    <string name="settings_m3_vault_include_title" formatted="false">"รวมใน Background Sync หรือไม่?"</string>
+    <string name="settings_m3_vault_last_check">"การตรวจสอบพื้นหลังครั้งล่าสุด %1$s · %2$s"</string>
+    <string name="settings_m3_vault_lfs" formatted="false">"LFS"</string>
+    <string name="settings_m3_vault_no_check" formatted="false">"ยังไม่มีการตรวจสอบพื้นหลัง"</string>
+    <string name="settings_m3_vault_pin" formatted="false">"ปักหมุดไว้บนสุดของหน้าแรก"</string>
+    <string name="settings_m3_vault_remove" formatted="false">"ลบตู้เก็บของ…"</string>
+    <string name="settings_m3_vault_remove_action" formatted="false">"ลบ"</string>
+    <string name="settings_m3_vault_remove_delete" formatted="false">"ลบตู้เก็บของ &amp; ลบไฟล์…"</string>
+    <string name="settings_m3_vault_remove_kept" formatted="false">"GitSync.md หยุดแสดงมัน โฟลเดอร์นี้ไม่ได้ถูกจัดการโดย GitSync.md ดังนั้นไฟล์และประวัติของ Git จะยังคงอยู่ที่เดิม"</string>
+    <string name="settings_m3_vault_remove_title" formatted="false">"ลบคลังนี้หรือไม่?"</string>
+    <string name="settings_m3_vault_shortcut" formatted="false">"เพิ่มทางลัดในหน้าจอหลัก"</string>
+    <string name="settings_m3_vault_shortcut_sub" formatted="false">"ดึงหรือคอมมิทและผลักเค้าในครั้งเดียว"</string>
+    <string name="settings_m3_vault_stop_tracking" formatted="false">"หยุดติดตาม — เก็บไฟล์ไว้"</string>
+    <string name="settings_m3_vault_title" formatted="false">"การตั้งค่า vault"</string>
+    <string name="settings_m3_whats_new" formatted="false">"มีอะไรใหม่"</string>
+    <string name="settings_m3_whats_new_hint" formatted="false">"สิ่งนี้จะปรากฏขึ้นครั้งหนึ่งหลังจากอัปเดต คุณสามารถหามันได้ที่นี่ตลอดเวลา"</string>
+    <string name="settings_m3_whats_new_subtitle">"หมายเหตุการออกสำหรับ %1$s"</string>
     <string name="shortcut_background_attention" formatted="false">"ทางลัดต้องได้รับการตรวจสอบ เปิดการดำเนินการกับที่เก็บและตรวจสอบสถานะก่อนลองใหม่"</string>
     <string name="shortcut_background_channel" formatted="false">"การดำเนินการของทางลัด"</string>
     <string name="shortcut_background_complete" formatted="false">"การดำเนินการของทางลัดเสร็จแล้ว เปิดการดำเนินการกับที่เก็บเพื่อตรวจสอบผลลัพธ์"</string>
@@ -688,9 +1982,37 @@
     <string name="shortcut_background_interrupted" formatted="false">"การทำงานถูกขัดจังหวะ และจะไม่ทำงานซ้ำโดยอัตโนมัติ ตรวจสอบที่เก็บก่อนแตะอีกครั้ง"</string>
     <string name="shortcut_background_option" formatted="false">"เรียกใช้โดยไม่เปิด GitSync.md"</string>
     <string name="shortcut_background_running" formatted="false">"การดำเนินการของทางลัดกำลังทำงาน"</string>
+    <string name="shortcut_m3_add_vault" formatted="false">"เพิ่ม vault"</string>
+    <string name="shortcut_m3_commit_push">"%1$s: คอมมิทและผลักเค้า"</string>
+    <string name="shortcut_m3_commit_short" formatted="false">"Commit และ push"</string>
+    <string name="shortcut_m3_pull">"%1$s: ดึง"</string>
+    <string name="shortcut_m3_pull_short" formatted="false">"Pull"</string>
     <string name="shortcut_results_clear_scope" formatted="false">"ลบผลลัพธ์การทำงานของทางลัดและ callback ที่บันทึกไว้ การอนุญาตจะไม่เปลี่ยนแปลง การดำเนินการที่ถูกขัดจังหวะจะไม่ทำงานซ้ำโดยอัตโนมัติ"</string>
     <string name="shortcut_results_unavailable" formatted="false">"ไม่สามารถอ่านผลลัพธ์ทางลัดที่บันทึกไว้ได้ การอนุญาตยังคงแยกจากผลลัพธ์"</string>
     <string name="ssh_hide_private_key" formatted="false">"ซ่อนคีย์ส่วนตัว"</string>
+    <string name="ssh_m3_changed_title" formatted="false">"คีย์เซิร์ฟเวอร์ SSH เปลี่ยนแล้ว"</string>
+    <string name="ssh_m3_changed_warning" formatted="false">"กุญแจที่เปลี่ยนแปลงสามารถหมายความว่ามีคนปลอมแปลงเซิร์ฟเวอร์ ตรวจสอบลายนิ้วมือใหม่กับเจ้าของก่อนที่คุณจะแทนที่ความเชื่อถือ"</string>
+    <string name="ssh_m3_compare" formatted="false">"เปรียบเทียบกับกุญแจโฮสต์ของ SSH ที่เจ้าของเซิร์ฟเวอร์เผยแพร่ก่อนที่คุณจะเชื่อถือ"</string>
+    <string name="ssh_m3_empty" formatted="false">"ไม่มีเซิร์ฟเวอร์ SSH ที่เชื่อถือ"</string>
+    <string name="ssh_m3_error_save" formatted="false">"ไม่สามารถบันทึกความน่าเชื่อถือของเซิร์ฟเวอร์ SSH ได้ โปรดตรวจสอบลายนิ้วมืออีกครั้งก่อนที่คุณจะลองใหม่"</string>
+    <string name="ssh_m3_forget" formatted="false">"ลืม"</string>
+    <string name="ssh_m3_forget_body">"%1$s จะต้องมีการตรวจสอบลายนิ้วมือก่อนที่คุณจะเชื่อมต่ออีกครั้ง"</string>
+    <string name="ssh_m3_forget_cd">"ลืม %1$s"</string>
+    <string name="ssh_m3_forget_server" formatted="false">"ลืมเซิร์ฟเวอร์"</string>
+    <string name="ssh_m3_forget_title" formatted="false">"ลืมเซิร์ฟเวอร์ SSH หรือไม่?"</string>
+    <string name="ssh_m3_intro" formatted="false">"ลายนิ้วมือที่คุณไว้วางใจถูกบันทึกบนโทรศัพท์เครื่องนี้ ลืมหนึ่งอันและคุณจะต้องยืนยันอีกครั้งในการเชื่อมต่อครั้งต่อไป กุญแจ SSH ของคุณยังคงถูกบันทึกอยู่"</string>
+    <string name="ssh_m3_none" formatted="false">"การตั้งค่า · ไม่ไว้วางใจ"</string>
+    <string name="ssh_m3_previous">"ลายนิ้วมือที่เคยเชื่อถือ: %1$s"</string>
+    <string name="ssh_m3_replace" formatted="false">"แทนที่ความเชื่อถือและเชื่อมต่อ"</string>
+    <string name="ssh_m3_reset_all" formatted="false">"รีเซ็ตความเชื่อถือเซิร์ฟเวอร์ SSH ทั้งหมด"</string>
+    <string name="ssh_m3_reset_body" formatted="false">"เซิร์ฟเวอร์ SSH ทุกเครื่องจะต้องมีการตรวจสอบลายนิ้วมือก่อนที่คุณจะเชื่อมต่ออีกครั้ง นี่จะลบรายการความน่าเชื่อถือที่เสียหายด้วย"</string>
+    <string name="ssh_m3_reset_confirm" formatted="false">"รีเซ็ตความเชื่อถือ"</string>
+    <string name="ssh_m3_reset_title" formatted="false">"รีเซ็ตความเชื่อถือเซิร์ฟเวอร์ SSH ทั้งหมดหรือไม่?"</string>
+    <string name="ssh_m3_saved" formatted="false">"ความเชื่อถือถูกบันทึกบนโทรศัพท์นี้และการเชื่อมต่อที่รอกำลังดำเนินต่อไป การยกเลิกจะทำให้เซิร์ฟเวอร์ไม่เชื่อถือ"</string>
+    <string name="ssh_m3_title" formatted="false">"ความเชื่อถือเซิร์ฟเวอร์ SSH"</string>
+    <string name="ssh_m3_trust" formatted="false">"เชื่อถือและเชื่อมต่อ"</string>
+    <string name="ssh_m3_trusted" formatted="false">"เซิร์ฟเวอร์ที่เชื่อถือได้"</string>
+    <string name="ssh_m3_verify_title" formatted="false">"ยืนยันเซิร์ฟเวอร์ SSH"</string>
     <string name="ssh_show_private_key" formatted="false">"แสดงคีย์ส่วนตัว"</string>
     <string name="ssh_trust_error_changed" formatted="false">"ความเชื่อถือ SSH เปลี่ยนระหว่างการตรวจสอบ ตรวจสอบรายการเซิร์ฟเวอร์ปัจจุบันแล้วลองเชื่อมต่ออีกครั้ง"</string>
     <string name="ssh_trust_error_damaged" formatted="false">"ต้องตรวจสอบความเชื่อถือ SSH ที่บันทึกไว้ รีเซ็ตความเชื่อถือเซิร์ฟเวอร์ SSH ในการตั้งค่าก่อนลองอีกครั้ง"</string>
@@ -755,7 +2077,7 @@
     <string name="tide_vault_eyebrow_unreadable" formatted="false">"อ่านไม่ได้"</string>
     <string name="tide_vault_files_section" formatted="false">"ไฟล์"</string>
     <string name="tide_vault_from_remote">"จากรีโมต: ↓%1$d"</string>
-    <string name="tide_vault_git" formatted="false">"GIT"</string>
+    <string name="tide_vault_git" formatted="false">"Git"</string>
     <string name="tide_vault_headline_behind">"รายการใหม่บนรีโมต: %1$d"</string>
     <string name="tide_vault_headline_unreadable" formatted="false">"ไม่สามารถอ่านคลังนี้ได้"</string>
     <string name="tide_vault_more" formatted="false">"ตัวเลือกเพิ่มเติมของคลัง"</string>
@@ -768,6 +2090,13 @@
     <string name="tide_vault_sub_empty" formatted="false">"เพิ่มโน้ตแล้วคอมมิตจากที่นี่"</string>
     <string name="tide_vault_sub_in_sync" formatted="false">"ไม่มีสิ่งที่รอดำเนินการบนโทรศัพท์นี้"</string>
     <string name="tide_vault_yours">"ในเครื่อง: ↑%1$d"</string>
+    <string name="tile_m3_background_sync" formatted="false">"Background Sync"</string>
+    <string name="tile_m3_modes">"%1$s · %2$s"</string>
+    <string name="tile_m3_pull_all" formatted="false">"ดึงทั้งหมด"</string>
+    <string name="tile_m3_pull_off" formatted="false">"ดึงออก"</string>
+    <string name="tile_m3_pull_on" formatted="false">"ดึงเข้า"</string>
+    <string name="tile_m3_push_off" formatted="false">"ผลักออก"</string>
+    <string name="tile_m3_push_on" formatted="false">"ผลักเข้า"</string>
     <string name="tracking_metadata_size">"เมทาดาทา Git: %1$s"</string>
     <string name="tracking_remove_permanent_title" formatted="false">"นำประวัติ Git ออกอย่างถาวรหรือไม่?"</string>
     <string name="tracking_removed_backup">"นำการติดตาม Git ออกแล้ว ข้อมูลสำรองที่ตรวจสอบแล้ว: %1$s"</string>
@@ -778,14 +2107,23 @@
     <string name="ui_1_s_characters_bde60398">"อักขระ: %1$s"</string>
     <string name="ui_1_s_lines_2_s_bytes_c30a0cd1">"บรรทัด: %1$s ไบต์: %2$s"</string>
     <string name="ui_1_s_local_commits_2_s_upstream_commits_77dc6fa8">"คอมมิตในเครื่อง %1$s รายการ · คอมมิตอัปสตรีม %2$s รายการ"</string>
+    <string name="ui_1_vault_c39776f1" formatted="false">"1 vault"</string>
+    <string name="ui_2_of_3_commits_sent_5591e38a" formatted="false">"ส่งคอมมิตแล้ว 2 จาก 3"</string>
+    <string name="ui_3_changes_aren_t_committed_yet_commit_or_s_d878e782" formatted="false">"มีการเปลี่ยนแปลง 3 รายการที่ยังไม่ได้คอมมิต โปรดคอมมิตหรือเก็บไว้ก่อนเปลี่ยนสาขา"</string>
+    <string name="ui_3_held_f454ab2b" formatted="false">"↑ถือไว้ 3"</string>
+    <string name="ui_3_to_push_ac87b7cb" formatted="false">"↑ที่จะผลัก 3"</string>
+    <string name="ui_4_in_sync_checked_2_min_ago_a1f1ab5e" formatted="false">"4 ซิงค์ · ตรวจสอบเมื่อ 2 นาทีที่แล้ว"</string>
     <string name="ui_abort_rebase_fd5cfc32" formatted="false">"ยกเลิกรีเบส…"</string>
     <string name="ui_about_4efca0d1" formatted="false">"เกี่ยวกับ"</string>
+    <string name="ui_about_lfs_538b5b7e" formatted="false">"เกี่ยวกับ LFS"</string>
+    <string name="ui_all_5_8907f196" formatted="false">"ทั้งหมด 5"</string>
     <string name="ui_all_conflicts_are_staged_continue_replayin_b86b2a5a" formatted="false">"เตรียมการแก้ไขข้อขัดแย้งทั้งหมดแล้ว ดำเนินการนำคอมมิตกลับมาใช้ต่อ หาก Git รายงาน NOTHING_TO_COMMIT ให้พิจารณาว่าควรข้ามคอมมิตว่างหรือไม่"</string>
     <string name="ui_all_local_changes_to_this_file_will_be_per_0919f539" formatted="false">"การเปลี่ยนแปลงทั้งหมดในไฟล์นี้จะถูกละทิ้งอย่างถาวร"</string>
     <string name="ui_allow_local_folder_access_0b2888fb" formatted="false">"อนุญาตการเข้าถึงโฟลเดอร์ในเครื่อง"</string>
     <string name="ui_app_0d04bfeb" formatted="false">"แอป"</string>
     <string name="ui_app_settings_da645334" formatted="false">"การตั้งค่าแอป"</string>
     <string name="ui_apply_tracking_choice_47a2e187" formatted="false">"ใช้ตัวเลือกการติดตาม"</string>
+    <string name="ui_attention_1_fa1ea5dc" formatted="false">"ความสนใจ 1"</string>
     <string name="ui_authentication_66880d2d" formatted="false">"การยืนยันตัวตน"</string>
     <string name="ui_back_639807a2" formatted="false">"กลับ"</string>
     <string name="ui_back_aceb696a" formatted="false">"← กลับ"</string>
@@ -793,11 +2131,13 @@
     <string name="ui_backup_1_s_6ad01ca6">"ข้อมูลสำรอง: %1$s"</string>
     <string name="ui_base_7b47361a" formatted="false">"ฐาน"</string>
     <string name="ui_binary_large_or_lfs_file_choose_an_entire_52c3278a" formatted="false">"ไฟล์ไบนารี ไฟล์ขนาดใหญ่ หรือไฟล์ LFS: เลือกข้อมูลทั้งฝั่ง"</string>
+    <string name="ui_both_sides_edited_step_3_077f9640" formatted="false">"ทั้งสองฝ่ายแก้ไข “ขั้นตอนที่ 3”"</string>
     <string name="ui_branch_52656e81" formatted="false">"สาขา"</string>
     <string name="ui_branch_optional_e9dedf99" formatted="false">"สาขา (ไม่บังคับ)"</string>
     <string name="ui_browsing_with_this_account_28a8b330" formatted="false">"กำลังเรียกดูด้วยบัญชีนี้"</string>
     <string name="ui_cancel_pending_move_0858583b" formatted="false">"ยกเลิกการย้ายที่รอดำเนินการ"</string>
     <string name="ui_changes_bbd4b6a8" formatted="false">"การเปลี่ยนแปลง"</string>
+    <string name="ui_changes_on_this_phone_6359d3d5" formatted="false">"การเปลี่ยนแปลงบนโทรศัพท์นี้"</string>
     <string name="ui_choose_a_connected_account_for_this_reposi_c4817ea9" formatted="false">"เลือกบัญชีที่เชื่อมต่อสำหรับที่เก็บนี้"</string>
     <string name="ui_choose_a_device_folder_d00b7daf" formatted="false">"เลือกโฟลเดอร์ในอุปกรณ์"</string>
     <string name="ui_choose_an_authentication_method_before_clo_c89124ba" formatted="false">"เลือกวิธีตรวจสอบสิทธิ์ก่อนโคลน"</string>
@@ -810,14 +2150,18 @@
     <string name="ui_clone_again_e05eb495" formatted="false">"โคลนอีกครั้ง"</string>
     <string name="ui_clone_again_review_the_previous_branch_and_33cba147" formatted="false">"โคลนอีกครั้ง · ตรวจสอบสาขาและการเชื่อมต่อเดิมก่อนเริ่ม"</string>
     <string name="ui_clone_storage_47cafc8a" formatted="false">"ที่เก็บโคลน"</string>
+    <string name="ui_cloning_and_preparing_the_working_copy_6fe864ff" formatted="false">"โคลนและเตรียมสำเนาทำงาน"</string>
+    <string name="ui_commit_3_files_959a8528" formatted="false">"คอมมิต 3 ไฟล์"</string>
     <string name="ui_commit_author_e9376b3a" formatted="false">"ผู้เขียน commit"</string>
     <string name="ui_commit_message_a4b361b7" formatted="false">"ข้อความ commit…"</string>
     <string name="ui_commit_sha_d0bc6028" formatted="false">"Commit SHA"</string>
     <string name="ui_confirm_eebdd24a" formatted="false">"ยืนยัน"</string>
+    <string name="ui_conflict_1_of_2_ideas_23283a20" formatted="false">"ความขัดแย้ง 1 จาก 2 · ideas/"</string>
     <string name="ui_continue_rebase_7a14e965" formatted="false">"ดำเนินการปรับฐานต่อไป"</string>
     <string name="ui_create_a_file_or_folder_using_new_655c5596" formatted="false">"สร้างไฟล์หรือโฟลเดอร์ด้วยปุ่มใหม่"</string>
     <string name="ui_current_default_d914f86e" formatted="false">"โฟลเดอร์เริ่มต้นปัจจุบัน"</string>
     <string name="ui_current_separate_push_address_1_s_2a6ef8f9">"ที่อยู่ push แยกต่างหากปัจจุบัน: %1$s"</string>
+    <string name="ui_daily_new_file_42_31057cdf" formatted="false">"รายวัน · ไฟล์ใหม่ · +42"</string>
     <string name="ui_debug_info_697b4941" formatted="false">"ข้อมูลดีบัก"</string>
     <string name="ui_delete_1_s_6474596f">"ลบ \"%1$s\" หรือไม่?"</string>
     <string name="ui_delete_e2d0a549" formatted="false">"ลบ"</string>
@@ -826,6 +2170,10 @@
     <string name="ui_delete_local_files_20424441" formatted="false">": ลบไฟล์ท้องถิ่น"</string>
     <string name="ui_destination_1_s_0df94639">"ปลายทาง: %1$s"</string>
     <string name="ui_destination_parent_folder_c6c4f97e" formatted="false">"โฟลเดอร์หลักปลายทาง"</string>
+    <string name="ui_disabled_75081b59" formatted="false">"ผู้พิการ"</string>
+    <string name="ui_discard_3_95e06aed" formatted="false">"ยกเลิก 3"</string>
+    <string name="ui_discard_3_changes_d2ad52aa" formatted="false">"ต้องการยกเลิกการเปลี่ยนแปลง 3 ไฟล์หรือไม่?"</string>
+    <string name="ui_discard_changes_85bcf416" formatted="false">"ต้องการยกเลิกการเปลี่ยนแปลงหรือไม่?"</string>
     <string name="ui_discard_draft_cb30147e" formatted="false">"ทิ้งฉบับร่าง"</string>
     <string name="ui_discard_eb1a70e3" formatted="false">"ละทิ้ง"</string>
     <string name="ui_discard_resolution_draft_47c16148" formatted="false">"ทิ้งฉบับร่างการแก้ไขหรือไม่?"</string>
@@ -846,6 +2194,8 @@
     <string name="ui_gitsync_md_needs_shared_storage_access_to_f1b339ea" formatted="false">"GitSync.md ต้องการสิทธิ์เข้าถึงพื้นที่จัดเก็บที่ใช้ร่วมกันเพื่อจัดการสำเนาการทำงาน Git จริงในโฟลเดอร์ของอุปกรณ์ เลือกโฟลเดอร์ที่ต้องการใช้หลังจากเปิดสิทธิ์ในการตั้งค่า Android"</string>
     <string name="ui_go_back_and_select_a_repository_c3eedd39" formatted="false">"กลับไปเลือกที่เก็บ"</string>
     <string name="ui_hash_a9106914" formatted="false">"แฮช"</string>
+    <string name="ui_health_md_f72119f5" formatted="false">"health-md"</string>
+    <string name="ui_https_ssh_git_or_file_e79ef5ea" formatted="false">"HTTPS, SSH, git:// หรือ file://."</string>
     <string name="ui_i_understand_that_another_owner_may_still_b4a12b2d" formatted="false">"ฉันเข้าใจว่าเจ้าของคนอื่นอาจยังแก้ไขไฟล์นี้อยู่"</string>
     <string name="ui_include_the_ssh_username_in_the_address_gi_beb09b5a" formatted="false">"ใส่ชื่อผู้ใช้ SSH ในที่อยู่: git@host:team/repo.git หรือ ssh://git@host:2222/team/repo.git"</string>
     <string name="ui_keep_editing_e76fd2ad" formatted="false">"แก้ไขต่อ"</string>
@@ -882,8 +2232,12 @@
     <string name="ui_owner_1_s_599ca9ce">"เจ้าของ: %1$s"</string>
     <string name="ui_parents_1_s_914efbd0">"พาเรนต์ (%1$s)"</string>
     <string name="ui_path_62fa5a5b" formatted="false">"เส้นทาง"</string>
+    <string name="ui_plain_http_sends_credentials_unencrypted_c99e5672" formatted="false">"HTTP ปกติส่งข้อมูลรับรองโดยไม่เข้ารหัส."</string>
     <string name="ui_platform_c78ffe19" formatted="false">"แพลตฟอร์ม"</string>
     <string name="ui_pull_with_rebase_6d25f1e0" formatted="false">"พร้อมฐานรอง\nที่เก็บ"</string>
+    <string name="ui_push_was_rejected_fbc19d01" formatted="false">"การส่งถูกปฏิเสธ"</string>
+    <string name="ui_pushed_579e8c6a" formatted="false">"Push แล้ว"</string>
+    <string name="ui_rebase_completed_successfully_53314c91" formatted="false">": การปรับฐานข้อมูลเสร็จสิ้นอย่างประสบความสำเร็จ"</string>
     <string name="ui_rebase_in_progress_3ecd9c42" formatted="false">"กำลังรีเบส"</string>
     <string name="ui_rebase_onto_reviewed_upstream_c3b8fb93" formatted="false">"รีเบสบนอัปสตรีมที่ตรวจสอบแล้ว"</string>
     <string name="ui_reconnect_bf8a9eab" formatted="false">"เชื่อมต่อใหม่"</string>
@@ -893,6 +2247,7 @@
     <string name="ui_reload_author_18a711d8" formatted="false">"โหลดผู้เขียนใหม่"</string>
     <string name="ui_reload_connection_ceed2dae" formatted="false">"โหลดการเชื่อมต่ออีกครั้ง"</string>
     <string name="ui_reload_from_disk_d4288839" formatted="false">"โหลดใหม่จากดิสก์"</string>
+    <string name="ui_remote_has_no_new_commits_fetched_2m_ago_bdaa4b95" formatted="false">"ระยะไกลไม่มีคอมมิตใหม่ · ดึงข้อมูลเมื่อ 2 นาทีที่แล้ว"</string>
     <string name="ui_remove_1_s_e4dd7c24">"ลบ %1$s หรือไม่"</string>
     <string name="ui_remove_1_s_this_removes_it_from_gitsync_md_0a6b198d">"นำ “%1$s” ออกหรือไม่?\n\nการดำเนินการนี้จะนำออกจาก GitSync.md ไฟล์ในเครื่องทั้งหมดและประวัติ Git จะยังคงอยู่บนอุปกรณ์นี้ และคุณสามารถเชื่อมต่ออีกครั้งได้ภายหลัง รีโพซิทอรีระยะไกลจะไม่ได้รับผลกระทบ"</string>
     <string name="ui_remove_all_custom_endpoint_approvals_and_t_ffc30a9e" formatted="false">"นำการอนุมัติปลายทางแบบกำหนดเองทั้งหมดและข้อมูลรับรองที่บันทึกไว้บนอุปกรณ์นี้ออก แต่ละปลายทางและทิศทางการถ่ายโอนจะต้องตรวจสอบใหม่"</string>
@@ -932,17 +2287,20 @@
     <string name="ui_save_1509f561" formatted="false">"บันทึก"</string>
     <string name="ui_save_author_1c24b32a" formatted="false">"บันทึกผู้เขียน"</string>
     <string name="ui_save_connection_df24ef12" formatted="false">"บันทึกการเชื่อมต่อ"</string>
+    <string name="ui_saved_credentials_are_encrypted_on_this_de_9320d5e0" formatted="false">"ข้อมูลรับรองที่บันทึกไว้ถูกเข้ารหัสในอุปกรณ์นี้."</string>
     <string name="ui_saving_uses_this_address_for_both_fetch_an_48c82edc" formatted="false">"เมื่อบันทึก จะใช้ที่อยู่นี้ทั้งสำหรับ fetch และ push จากนั้นให้เรียกใช้ fetch เพื่ออัปเดตสถานะระยะไกล"</string>
     <string name="ui_selected_folder_0cf59bef" formatted="false">"โฟลเดอร์ที่เลือก"</string>
     <string name="ui_share_backup_archive_ee4ba873" formatted="false">"แชร์ไฟล์สำรองแบบเก็บถาวร"</string>
     <string name="ui_some_diagnostics_could_not_be_read_or_save_19e3372d" formatted="false">"ไม่สามารถอ่านหรือบันทึกข้อมูลวินิจฉัยบางส่วนได้ เก็บข้อมูลเดิมไว้แล้ว ล้างบันทึกเพื่อเริ่มบันทึกอีกครั้ง"</string>
     <string name="ui_ssh_private_key_0e92a613" formatted="false">"SSH คีย์ส่วนตัว"</string>
     <string name="ui_stage_de838855" formatted="false">"จัดเตรียม"</string>
+    <string name="ui_stay_on_main_915a176c" formatted="false">"อยู่บนสาขา main"</string>
     <string name="ui_the_active_destination_stays_in_place_gits_a4f1f68a" formatted="false">"ปลายทางที่ใช้งานอยู่จะยังคงอยู่ GitSync.md จะตรวจสอบว่าต้นฉบับที่เก็บไว้ไม่มีการแก้ไขภายหลัง ก่อนลบไฟล์และประวัติ Git ของต้นฉบับอย่างถาวร"</string>
     <string name="ui_the_folder_can_move_directly_on_this_stora_7b29fabb" formatted="false">"สามารถย้ายโฟลเดอร์ได้โดยตรงบนวอลุ่มจัดเก็บนี้"</string>
     <string name="ui_the_previous_github_account_is_disconnecte_628a1f8c" formatted="false">"บัญชี GitHub เดิมถูกตัดการเชื่อมต่อ เลือกบัญชีที่เชื่อมต่ออยู่หรือวิธีตรวจสอบสิทธิ์อื่น"</string>
     <string name="ui_the_replayed_local_commit_deletes_this_fil_ab00656d" formatted="false">"คอมมิตในเครื่องที่นำกลับมาใช้นี้จะลบไฟล์นี้"</string>
     <string name="ui_the_review_changed_cancel_and_refresh_serv_c7ee804c" formatted="false">"ข้อมูลที่ตรวจสอบเปลี่ยนไปแล้ว โปรดยกเลิกและโหลดล็อกของเซิร์ฟเวอร์อีกครั้ง"</string>
+    <string name="ui_these_files_go_back_to_how_they_were_in_a4_02e3cd66" formatted="false">"ไฟล์เหล่านี้กลับไปในสภาพเหมือนเดิมใน a41c9e2"</string>
     <string name="ui_this_history_entry_is_unavailable_c2c9f4e0" formatted="false">"รายการประวัตินี้ไม่พร้อมใช้งาน"</string>
     <string name="ui_this_removes_another_connection_s_lock_coo_880defbf" formatted="false">"การดำเนินการนี้จะลบล็อกของการเชื่อมต่ออื่น โปรดประสานงานกับเจ้าของก่อนดำเนินการต่อ"</string>
     <string name="ui_this_repository_will_use_public_access_unt_c94fad61" formatted="false">"ที่เก็บนี้จะใช้การเข้าถึงแบบสาธารณะจนกว่าคุณจะเลือกการยืนยันตัวตนอีกครั้ง บัญชี GitHub ที่คุณลงชื่อเข้าใช้จะไม่ถูกใช้กับที่เก็บนี้ ที่อยู่ fetch และ push จะไม่เปลี่ยนแปลง"</string>
@@ -955,6 +2313,7 @@
     <string name="ui_use_for_new_clones_be174c95" formatted="false">"ใช้สำหรับโคลนใหม่"</string>
     <string name="ui_use_saved_default_3bb7260d" formatted="false">"ใช้ค่าเริ่มต้นที่บันทึกไว้"</string>
     <string name="ui_username_e3b89e9d" formatted="false">"ชื่อผู้ใช้"</string>
+    <string name="ui_working_5474eef8" formatted="false">"กำลังทำงาน…"</string>
     <string name="ui_your_edits_have_not_been_saved_625899a4" formatted="false">"ยังไม่ได้บันทึกการแก้ไขของคุณ"</string>
     <string name="ui_your_unsubmitted_text_will_be_discarded_th_15717285" formatted="false">"ข้อความที่ยังไม่ได้ส่งจะถูกทิ้ง ไฟล์งานจะไม่เปลี่ยนแปลง"</string>
     <string name="untracked" formatted="false">"ไม่ได้ติดตาม"</string>
@@ -1048,9 +2407,108 @@
     <string name="vault_l10n_tracking_review_changed" formatted="false">"การตรวจสอบการเลิกติดตามเปลี่ยนไป ตรวจสอบรีโพและตัวเลือกการสำรองข้อมูลอีกครั้ง"</string>
     <string name="vault_l10n_volume_unavailable" formatted="false">"วอลุ่มพื้นที่เก็บข้อมูลนี้ไม่พร้อมใช้งาน"</string>
     <string name="vault_l10n_volume_unavailable_reconnect" formatted="false">"วอลุ่มพื้นที่เก็บข้อมูลนี้ไม่พร้อมใช้งาน เชื่อมต่ออีกครั้งแล้วเลือกโฟลเดอร์ใหม่"</string>
+    <string name="vault_m3_as_author">"เป็น %1$s · %2$s"</string>
+    <string name="vault_m3_branch_pushed">"ได้ดันคอมมิตของคุณไปยังสาขาใหม่ %1$s"</string>
+    <string name="vault_m3_cancel" formatted="false">"ยกเลิก"</string>
+    <string name="vault_m3_check_for_changes" formatted="false">"ตรวจหาการเปลี่ยนแปลง"</string>
+    <string name="vault_m3_checking" formatted="false">"กำลังตรวจสอบ…"</string>
+    <string name="vault_m3_checking_remote">"กำลังตรวจสอบ %1$s สำหรับคอมมิตใหม่"</string>
+    <string name="vault_m3_chip_theirs">"↓%1$d จาก %2$s · %3$s"</string>
+    <string name="vault_m3_chip_theirs_plain">"↓%1$d จากระยะไกล"</string>
+    <string name="vault_m3_chip_yours">"↑%1$d ของฉัน"</string>
+    <string name="vault_m3_commit_locally" formatted="false">"คอมมิตในเครื่อง"</string>
+    <string name="vault_m3_commit_push" formatted="false">"Commit และ push"</string>
+    <string name="vault_m3_commits_sent">"ส่ง %1$d จาก %2$d commit แล้ว"</string>
+    <string name="vault_m3_committing" formatted="false">"กำลัง commit…"</string>
+    <string name="vault_m3_days_ago">"%1$d วันที่แล้ว"</string>
+    <string name="vault_m3_deleted_path">"%1$s (ถูกลบ)"</string>
+    <string name="vault_m3_discard_body">"ไฟล์เหล่านี้กลับไปในสภาพเหมือนเดิมใน %1$s. การแก้ไขที่ทำบนโทรศัพท์นี้ตั้งแต่นั้นจะหายไปอย่างถาวร"</string>
+    <string name="vault_m3_dismiss" formatted="false">"ปิด"</string>
+    <string name="vault_m3_download_progress" formatted="false">"ความคืบหน้าการดาวน์โหลด"</string>
+    <string name="vault_m3_effect_delete" formatted="false">"ลบไฟล์ใหม่"</string>
+    <string name="vault_m3_effect_restore" formatted="false">"กู้คืน"</string>
+    <string name="vault_m3_effect_revert" formatted="false">"ย้อนกลับ"</string>
+    <string name="vault_m3_effect_unstage" formatted="false">"ยกเลิกจัดเตรียม"</string>
+    <string name="vault_m3_fetched_ago">"fetch แล้ว %1$s"</string>
+    <string name="vault_m3_hours_ago">"%1$dที่ผ่านมา h"</string>
+    <string name="vault_m3_included" formatted="false">"รวมอยู่"</string>
+    <string name="vault_m3_just_now" formatted="false">"เพิ่งได้รับ"</string>
+    <string name="vault_m3_keep_them" formatted="false">"เก็บไว้"</string>
+    <string name="vault_m3_latest_commit" formatted="false">"commit ล่าสุด"</string>
+    <string name="vault_m3_leave_note" formatted="false">"คุณสามารถออกจากหน้าจอนี้ได้ การซิงค์จะดำเนินต่อไปและแสดงความคืบหน้าในการแจ้งเตือน"</string>
+    <string name="vault_m3_merge" formatted="false">"merge"</string>
+    <string name="vault_m3_merge_conflicts" formatted="false">"การดึงพบความขัดแย้ง แก้ไขแล้วจึงดัน"</string>
+    <string name="vault_m3_message" formatted="false">"ข้อความ"</string>
+    <string name="vault_m3_minutes">"%1$dm"</string>
+    <string name="vault_m3_minutes_ago">"%1$dm ที่ผ่านมา"</string>
+    <string name="vault_m3_no_overlap_body" formatted="false">"การแก้ไขของคุณและของฝั่งนั้นอยู่คนละไฟล์ จึงน่าจะ merge ได้อย่างราบรื่น"</string>
+    <string name="vault_m3_no_overlap_title" formatted="false">"ไม่พบการทับซ้อน"</string>
+    <string name="vault_m3_no_upstream" formatted="false">"ไม่มีสาขา upstream"</string>
+    <string name="vault_m3_notify_channel" formatted="false">"การซิงค์ Vault"</string>
+    <string name="vault_m3_notify_title">"%1$s · %2$s"</string>
+    <string name="vault_m3_objects_received">"รับ %1$d จาก %2$d ออบเจ็กต์แล้ว"</string>
+    <string name="vault_m3_objects_sent">"ส่ง %1$d จาก %2$d ออบเจ็กต์แล้ว"</string>
+    <string name="vault_m3_only_on_phone" formatted="false">"มีเฉพาะบนโทรศัพท์เครื่องนี้เท่านั้น"</string>
+    <string name="vault_m3_overlap_body" formatted="false">"ทั้งสองฝ่ายแก้ไขไฟล์เดียวกัน การดึงอาจหยุดที่ความขัดแย้งเพื่อให้คุณแก้ไข"</string>
+    <string name="vault_m3_preparing" formatted="false">"กำลังเตรียม…"</string>
+    <string name="vault_m3_pull" formatted="false">"Pull"</string>
+    <string name="vault_m3_pull_then_push" formatted="false">"ดึงของพวกเขา แล้วจึงส่งขึ้น"</string>
+    <string name="vault_m3_pulled">"ทันสมัยกับ %1$s"</string>
+    <string name="vault_m3_pulling" formatted="false">"กำลัง pull…"</string>
+    <string name="vault_m3_push" formatted="false">"พุช"</string>
+    <string name="vault_m3_push_branch" formatted="false">"Push ไปยังสาขา"</string>
+    <string name="vault_m3_push_right_after" formatted="false">"Push ต่อทันที"</string>
+    <string name="vault_m3_pushed_to">"Push ไปยัง %1$s แล้ว"</string>
+    <string name="vault_m3_pushing" formatted="false">"กำลัง push…"</string>
+    <string name="vault_m3_rejected_kicker" formatted="false">"Push ไม่สำเร็จ"</string>
+    <string name="vault_m3_remote_generic" formatted="false">"remote"</string>
+    <string name="vault_m3_remote_is_here">"%1$s มาแล้ว"</string>
+    <string name="vault_m3_remote_no_new" formatted="false">"รีโมตไม่มีคอมมิตใหม่"</string>
+    <string name="vault_m3_remote_not_checked" formatted="false">"ยังไม่ได้ตรวจสอบรีโมท"</string>
+    <string name="vault_m3_review_first" formatted="false">"ตรวจสอบก่อน"</string>
+    <string name="vault_m3_seconds">"%1$ds"</string>
+    <string name="vault_m3_stash_first" formatted="false">"Stash สำเนาไว้ก่อน เผื่อไว้"</string>
+    <string name="vault_m3_step_branch">"สร้างสาขา %1$s"</string>
+    <string name="vault_m3_step_check">"ตรวจหา commit ใหม่ใน %1$s"</string>
+    <string name="vault_m3_step_download">"ดาวน์โหลดจาก %1$s"</string>
+    <string name="vault_m3_step_merge">"Merge %1$s"</string>
+    <string name="vault_m3_step_none" formatted="false">"ไม่มี"</string>
+    <string name="vault_m3_step_update" formatted="false">"อัปเดตไฟล์"</string>
+    <string name="vault_m3_step_upload">"อัปโหลดไปยัง %1$s"</string>
+    <string name="vault_m3_steps" formatted="false">"ขั้นตอน"</string>
+    <string name="vault_m3_suggest_add">"เพิ่ม %1$s"</string>
+    <string name="vault_m3_suggest_backup">"สำรอง vault: %1$s"</string>
+    <string name="vault_m3_suggest_delete">"ลบ %1$s"</string>
+    <string name="vault_m3_suggest_update">"อัปเดต %1$s"</string>
+    <string name="vault_m3_suggested" formatted="false">"แนะนำจากความแตกต่าง"</string>
+    <string name="vault_m3_sync_cancelled" formatted="false">"การซิงค์ถูกยกเลิก ข้อมูลใด ๆ ที่ได้ทำการคอมมิตแล้วจะคงอยู่บนโทรศัพท์เครื่องนี้"</string>
+    <string name="vault_m3_sync_failed" formatted="false">"การซิงค์หยุดลง"</string>
+    <string name="vault_m3_tap_for_diff" formatted="false">"แตะไฟล์เพื่อดูความแตกต่าง"</string>
+    <string name="vault_m3_time_left">"~%1$s ที่เหลือ"</string>
+    <string name="vault_m3_today" formatted="false">"วันนี้"</string>
+    <string name="vault_m3_upload_progress" formatted="false">"ความคืบหน้าในการอัปโหลด"</string>
+    <string name="vault_m3_vault_settings" formatted="false">"การตั้งค่า vault"</string>
+    <string name="vault_m3_who_both" formatted="false">"ทั้งสอง"</string>
+    <string name="vault_m3_who_theirs" formatted="false">"ของฝั่งนั้น"</string>
+    <string name="vault_m3_who_yours" formatted="false">"ของฉัน"</string>
+    <string name="vault_m3_yesterday" formatted="false">"เมื่อวาน"</string>
     <string name="vault_open_in_files_failed" formatted="false">"ไม่สามารถเปิดโฟลเดอร์นี้ในแอปไฟล์ได้"</string>
     <string name="vault_repository_fallback" formatted="false">"รีโพซิทอรี"</string>
     <string name="vault_url_copied" formatted="false">"คัดลอกแล้ว!"</string>
+    <string name="widget_m3_choose_vault" formatted="false">"เลือกคลัง"</string>
+    <string name="widget_m3_days_ago">"%1$d วันที่แล้ว"</string>
+    <string name="widget_m3_hours_ago">"%1$dที่ผ่านมา h"</string>
+    <string name="widget_m3_in_sync" formatted="false">"ซิงค์แล้ว"</string>
+    <string name="widget_m3_list_description" formatted="false">"คลังของคุณพร้อมกับสิ่งที่แต่ละคลังต้องดัน และปุ่ม ดึงทั้งหมด"</string>
+    <string name="widget_m3_list_name" formatted="false">"Vault"</string>
+    <string name="widget_m3_minutes_ago">"%1$dm ที่ผ่านมา"</string>
+    <string name="widget_m3_no_vaults" formatted="false">"ยังไม่มีคลัง เปิด GitSync.md เพื่อเพิ่มคลัง"</string>
+    <string name="widget_m3_now" formatted="false">"ตอนนี้"</string>
+    <string name="widget_m3_pull_all_repositories" formatted="false">"ดึงทั้งคลังข้อมูล"</string>
+    <string name="widget_m3_vault_description" formatted="false">"หนึ่งคลังและจำนวนการเปลี่ยนแปลงที่ต้องดัน"</string>
+    <string name="widget_m3_vault_missing" formatted="false">"คลังนี้ไม่ได้อยู่บนโทรศัพท์เครื่องนี้แล้ว"</string>
+    <string name="widget_m3_vault_name" formatted="false">"Vault"</string>
+    <string name="widget_m3_vault_widget" formatted="false">"วิดเจ็ตคลัง"</string>
     <plurals name="account_updated_days">
         <item quantity="one">"%1$d วันที่แล้ว"</item>
         <item quantity="other">"%1$d วันที่แล้ว"</item>
@@ -1075,6 +2533,48 @@
         <item quantity="one">"%1$d ปีที่แล้ว"</item>
         <item quantity="other">"%1$d ปีที่แล้ว"</item>
     </plurals>
+    <plurals name="adaptive_changes_on_phone">
+        <item quantity="other">"%1$s การเปลี่ยนแปลงบนโทรศัพท์นี้"</item>
+    </plurals>
+    <plurals name="adaptive_changes_on_tablet">
+        <item quantity="other">"%1$s การเปลี่ยนแปลงบนแท็บเล็ตนี้"</item>
+    </plurals>
+    <plurals name="adaptive_commit_changes">
+        <item quantity="other">"ยืนยันการเปลี่ยนแปลง %1$d"</item>
+    </plurals>
+    <plurals name="adaptive_merging_left">
+        <item quantity="other">"กำลังรวม %1$s · เหลือความขัดแย้ง %2$d"</item>
+    </plurals>
+    <plurals name="adaptive_merging_left_plain">
+        <item quantity="other">"กำลังรวม · เหลือความขัดแย้ง %1$d"</item>
+    </plurals>
+    <plurals name="adaptive_split_editing">
+        <item quantity="other">"กำลังแก้ไข %1$d"</item>
+    </plurals>
+    <plurals name="adaptive_split_live">
+        <item quantity="other">"%1$s การเปลี่ยนแปลง · สด"</item>
+    </plurals>
+    <plurals name="adaptive_vaults_need_you">
+        <item quantity="other">"%1$d ต้องการคุณ"</item>
+    </plurals>
+    <plurals name="add_accounts_signed_in">
+        <item quantity="other">"การตั้งค่า · ลงชื่อเข้าใช้ %1$d"</item>
+    </plurals>
+    <plurals name="add_clone_files">
+        <item quantity="other">"ไฟล์ %1$d"</item>
+    </plurals>
+    <plurals name="add_clone_lfs_files">
+        <item quantity="other">"ไฟล์ %1$d"</item>
+    </plurals>
+    <plurals name="add_local_folders">
+        <item quantity="other">"โฟลเดอร์ %1$d"</item>
+    </plurals>
+    <plurals name="add_way_github_repos">
+        <item quantity="other">"รีโป %1$d · รวมส่วนตัวแล้ว"</item>
+    </plurals>
+    <plurals name="add_way_github_repos_public">
+        <item quantity="other">"รีโป %1$d"</item>
+    </plurals>
     <plurals name="dialogs_error_merge_conflicts">
         <item quantity="one">"การรวมมีความขัดแย้งที่ยังไม่ได้แก้ %1$d รายการ\n\nแก้ไขก่อนทำการรวมให้เสร็จ"</item>
         <item quantity="other">"การรวมมีความขัดแย้งที่ยังไม่ได้แก้ %1$d รายการ\n\nแก้ไขก่อนทำการรวมให้เสร็จ"</item>
@@ -1082,6 +2582,75 @@
     <plurals name="diff_changed_lines">
         <item quantity="one">"+%1$s -%2$s บรรทัด"</item>
         <item quantity="other">"+%1$s -%2$s บรรทัด"</item>
+    </plurals>
+    <plurals name="editor_m3_lines_changed">
+        <item quantity="other">"แถวที่เปลี่ยนแปลง %1$d"</item>
+    </plurals>
+    <plurals name="files_m3_items">
+        <item quantity="other">"รายการ %1$d"</item>
+    </plurals>
+    <plurals name="files_m3_sync_diverged">
+        <item quantity="other">"%1$d คอมมิตใหม่บน %2$s และโทรศัพท์นี้มีคอมมิตที่ยังไม่ได้ส่ง เปิดแท็บการเปลี่ยนแปลงเพื่อดึงเข้ามา"</item>
+    </plurals>
+    <plurals name="files_m3_sync_local_changes">
+        <item quantity="other">"%1$d คอมมิตใหม่บน %2$s คอมมิตหรือทิ้งการเปลี่ยนแปลงท้องถิ่นของคุณในแท็บการเปลี่ยนแปลง แล้วซิงค์อีกครั้ง"</item>
+    </plurals>
+    <plurals name="git_m3_cant_switch_body">
+        <item quantity="other">"การสลับไปยัง %1$s จะทำให้ไฟล์บนโทรศัพท์นี้ถูกแทนที่ การเปลี่ยนแปลงที่ยังไม่ได้คอมมิตของ %2$d ต้องมีที่ปลอดภัยก่อน"</item>
+    </plurals>
+    <plurals name="git_m3_commits_missing">
+        <item quantity="other">"%1$d คอมมิตที่ %2$s ยังไม่มี"</item>
+    </plurals>
+    <plurals name="git_m3_conflicts_left">
+        <item quantity="other">"%1$d มีความขัดแย้งที่ต้องแก้ไข"</item>
+    </plurals>
+    <plurals name="git_m3_continue_resolve">
+        <item quantity="other">"ดำเนินการ rebase ต่อ · แก้ไข %1$d เพิ่มเติม"</item>
+    </plurals>
+    <plurals name="git_m3_dirty_note">
+        <item quantity="other">"การเปลี่ยนแปลงของ %1$d ยังไม่ได้คอมมิต คอมมิตหรือเก็บไว้ก่อนที่คุณจะสลับสาขา"</item>
+    </plurals>
+    <plurals name="git_m3_files">
+        <item quantity="other">"ไฟล์ %1$d"</item>
+    </plurals>
+    <plurals name="git_m3_n_branches">
+        <item quantity="other">"สาขา %1$d"</item>
+    </plurals>
+    <plurals name="git_m3_n_commits_history">
+        <item quantity="other">"การยืนยันประวัติ %1$d"</item>
+    </plurals>
+    <plurals name="git_m3_n_stashes">
+        <item quantity="other">"การเก็บชั่วคราว %1$d"</item>
+    </plurals>
+    <plurals name="git_m3_n_tags">
+        <item quantity="other">"แท็ก %1$d"</item>
+    </plurals>
+    <plurals name="git_m3_notes_attachments">
+        <item quantity="other">"บันทึกและไฟล์แนบ %1$d"</item>
+    </plurals>
+    <plurals name="git_m3_push_commits">
+        <item quantity="other">"ส่งการยืนยัน %1$d ขึ้นไป"</item>
+    </plurals>
+    <plurals name="git_m3_rebase_begin_body">
+        <item quantity="other">"การยืนยันภายในเครื่อง %1$d ของคุณถูกเล่นซ้ำบน upstream ที่ตรวจสอบแล้วและอาจได้รับรหัสใหม่ การ rebase ยังคงอยู่บนโทรศัพท์เครื่องนี้ การส่งเป็นขั้นตอนแยกต่างหาก"</item>
+    </plurals>
+    <plurals name="git_m3_rebase_done_meta">
+        <item quantity="other">"การยืนยัน %1$d ตอนนี้อยู่เหนือ %2$s · รหัสใหม่ · ยังไม่ได้ส่ง"</item>
+    </plurals>
+    <plurals name="git_m3_rebase_put_on_top">
+        <item quantity="other">"วางการยืนยัน %1$d ของคุณบนระยะไกล"</item>
+    </plurals>
+    <plurals name="git_m3_stash_n">
+        <item quantity="other">"เก็บการเปลี่ยนแปลง %1$d ชั่วคราว"</item>
+    </plurals>
+    <plurals name="git_m3_stashed_toast">
+        <item quantity="other">"เก็บการเปลี่ยนแปลง %1$d ชั่วคราวเป็น stash@{0}."</item>
+    </plurals>
+    <plurals name="git_m3_uncommitted_changes">
+        <item quantity="other">"%1$s การเปลี่ยนแปลงที่ยังไม่ได้ส่ง"</item>
+    </plurals>
+    <plurals name="git_m3_uncommitted_plain">
+        <item quantity="other">"%1$d การแก้ไขที่ยังไม่ได้ส่ง เป็นไฟล์ปกติ"</item>
     </plurals>
     <plurals name="gitops_merge_stopped_conflicts">
         <item quantity="one">"การรวมหยุดลง: %1$s (ข้อขัดแย้ง %2$d รายการ)"</item>
@@ -1099,6 +2668,24 @@
         <item quantity="one">"ไฟล์ปัจจุบัน %1$d ไฟล์จะคงตัวเลือกการติดตามที่ระบุไว้อย่างชัดเจน"</item>
         <item quantity="other">"ไฟล์ปัจจุบัน %1$d ไฟล์จะคงตัวเลือกการติดตามที่ระบุไว้อย่างชัดเจน"</item>
     </plurals>
+    <plurals name="lfs_m3_downloading">
+        <item quantity="other">"กำลังดาวน์โหลดไฟล์ %1$d"</item>
+    </plurals>
+    <plurals name="lfs_m3_endpoints_subtitle">
+        <item quantity="other">"การตั้งค่า · %1$d ได้รับอนุมัติ"</item>
+    </plurals>
+    <plurals name="lfs_m3_ext_affected">
+        <item quantity="other">"ย้ายไฟล์ %1$d ไปที่ LFS"</item>
+    </plurals>
+    <plurals name="lfs_m3_file_count">
+        <item quantity="other">"ไฟล์ %1$d"</item>
+    </plurals>
+    <plurals name="lfs_m3_stored_files">
+        <item quantity="other">"อยู่ในไฟล์ %1$d"</item>
+    </plurals>
+    <plurals name="lfs_m3_track_files">
+        <item quantity="other">"ติดตามไฟล์ %1$d ด้วย LFS"</item>
+    </plurals>
     <plurals name="lfs_restored_files">
         <item quantity="one">"กู้คืนไฟล์ %1$d ไฟล์แล้ว"</item>
         <item quantity="other">"กู้คืนไฟล์ %1$d ไฟล์แล้ว"</item>
@@ -1107,9 +2694,45 @@
         <item quantity="one">"%1$d ไฟล์"</item>
         <item quantity="other">"%1$d ไฟล์"</item>
     </plurals>
+    <plurals name="m3home_auth_waiting">
+        <item quantity="other">"ตู้ฝากข้อมูล %1$d กำลังรอ"</item>
+    </plurals>
+    <plurals name="m3home_badge_edited">
+        <item quantity="other">"%1$d แก้ไขแล้ว"</item>
+    </plurals>
+    <plurals name="m3home_headline_attention">
+        <item quantity="other">"ตู้ฝากข้อมูล %1$d"</item>
+    </plurals>
+    <plurals name="m3home_headline_attention_accent">
+        <item quantity="other">"%1$s ต้องการคุณ"</item>
+    </plurals>
+    <plurals name="m3home_headline_ready">
+        <item quantity="other">"ตู้ฝากข้อมูล %1$d"</item>
+    </plurals>
+    <plurals name="m3home_sync_nothing_local">
+        <item quantity="other">"ไม่มีอะไรให้ซิงค์ ตู้ฝากข้อมูล %1$d เหล่านี้มีเฉพาะในเครื่อง (ไม่มีระยะไกล)"</item>
+    </plurals>
     <plurals name="move_plan_summary">
         <item quantity="one">"%1$s ไฟล์ รวมเมทาดาทา Git · %2$s"</item>
         <item quantity="other">"%1$s ไฟล์ รวมเมทาดาทา Git · %2$s"</item>
+    </plurals>
+    <plurals name="notification_m3_commits">
+        <item quantity="other">"การส่ง %1$d ถูกดึงในพื้นหลัง"</item>
+    </plurals>
+    <plurals name="notification_m3_commits_from">
+        <item quantity="other">"การคอมมิตจาก %2$s ของ %1$d ถูกดึงในพื้นหลัง"</item>
+    </plurals>
+    <plurals name="pullall_m3_checked_repositories">
+        <item quantity="other">"ตรวจสอบที่เก็บ %2$d จำนวน %1$d"</item>
+    </plurals>
+    <plurals name="pullall_m3_checked_vaults">
+        <item quantity="other">"ตรวจสอบห้องเก็บ %2$d จำนวน %1$d"</item>
+    </plurals>
+    <plurals name="pullall_m3_updated_commits">
+        <item quantity="other">"ปรับปรุงจากระยะไกล · ↓%1$d คอมมิต"</item>
+    </plurals>
+    <plurals name="pullall_m3_vaults">
+        <item quantity="other">"ห้องเก็บ %1$d"</item>
     </plurals>
     <plurals name="rebase_additional_blocked_paths">
         <item quantity="one">"ไม่ได้แสดงเส้นทางที่ถูกบล็อกเพิ่มเติม %1$d รายการ"</item>
@@ -1131,12 +2754,72 @@
         <item quantity="one">"· %1$d รีโพซิทอรี"</item>
         <item quantity="other">"· %1$d รีโพซิทอรี"</item>
     </plurals>
+    <plurals name="settings_m3_bg_included">
+        <item quantity="other">"รวมห้องเก็บ %1$d"</item>
+    </plurals>
+    <plurals name="settings_m3_bg_run_quiet">
+        <item quantity="other">"ห้องเก็บ %1$d ไม่มีสิ่งใหม่"</item>
+    </plurals>
+    <plurals name="settings_m3_debug_errors_day">
+        <item quantity="other">"ข้อผิดพลาด %1$d ใน 24 ชั่วโมง"</item>
+    </plurals>
+    <plurals name="settings_m3_entries">
+        <item quantity="other">"บันทึก %1$d"</item>
+    </plurals>
+    <plurals name="settings_m3_push_connections">
+        <item quantity="other">"การเชื่อมต่อ GitHub จำนวน %1$d · เปิด"</item>
+    </plurals>
+    <plurals name="settings_m3_push_local_changes">
+        <item quantity="other">"การเปลี่ยนแปลงในเครื่อง %1$d บนโทรศัพท์นี้"</item>
+    </plurals>
+    <plurals name="settings_m3_sc_subtitle">
+        <item quantity="other">"วิดเจ็ต Pull All · ทางลัด %1$d"</item>
+    </plurals>
+    <plurals name="ssh_m3_subtitle">
+        <item quantity="other">"การตั้งค่า · เซิร์ฟเวอร์ %1$d"</item>
+    </plurals>
     <plurals name="tide_vault_changes_on_phone">
-        <item quantity="one">"การเปลี่ยนแปลงบนโทรศัพท์นี้"</item>
-        <item quantity="other">"การเปลี่ยนแปลงบนโทรศัพท์นี้"</item>
+        <item quantity="one">"%1$s การเปลี่ยนแปลงบนโทรศัพท์นี้"</item>
+        <item quantity="other">"%1$s การเปลี่ยนแปลงบนโทรศัพท์นี้"</item>
     </plurals>
     <plurals name="tide_vault_conflicts_to_resolve">
-        <item quantity="one">"ข้อขัดแย้งที่ต้องแก้ไข"</item>
-        <item quantity="other">"ข้อขัดแย้งที่ต้องแก้ไข"</item>
+        <item quantity="one">"%1$s ข้อขัดแย้งที่ต้องแก้ไข"</item>
+        <item quantity="other">"%1$s ข้อขัดแย้งที่ต้องแก้ไข"</item>
+    </plurals>
+    <plurals name="vault_m3_commit_title">
+        <item quantity="other">"คอมมิตไฟล์ %1$d"</item>
+    </plurals>
+    <plurals name="vault_m3_discard_n">
+        <item quantity="other">"ละทิ้ง %1$d"</item>
+    </plurals>
+    <plurals name="vault_m3_discard_title">
+        <item quantity="other">"ต้องการละทิ้งการเปลี่ยนแปลง %1$d หรือไม่?"</item>
+    </plurals>
+    <plurals name="vault_m3_effect_lines">
+        <item quantity="other">"−%1$d บรรทัด"</item>
+    </plurals>
+    <plurals name="vault_m3_file_count">
+        <item quantity="other">"%1$d ไฟล์"</item>
+    </plurals>
+    <plurals name="vault_m3_overlap_title">
+        <item quantity="other">"%1$d ไฟล์มีการเปลี่ยนแปลงทั้งสองด้าน"</item>
+    </plurals>
+    <plurals name="vault_m3_remote_new">
+        <item quantity="other">"รีโมตมีคอมมิตใหม่ %1$d"</item>
+    </plurals>
+    <plurals name="vault_m3_step_commit">
+        <item quantity="other">"คอมมิตไฟล์ %1$d"</item>
+    </plurals>
+    <plurals name="vault_m3_step_lfs">
+        <item quantity="other">"อัปโหลดไฟล์ LFS %1$d · %2$s"</item>
+    </plurals>
+    <plurals name="vault_m3_suggest_files">
+        <item quantity="other">"อัปเดตไฟล์ %1$d"</item>
+    </plurals>
+    <plurals name="vault_m3_uploading_lfs">
+        <item quantity="other">"กำลังอัปโหลดไฟล์ LFS %1$d"</item>
+    </plurals>
+    <plurals name="widget_m3_changes_to_push">
+        <item quantity="other">"%1$s การเปลี่ยนแปลงที่ต้องส่ง"</item>
     </plurals>
 </resources>

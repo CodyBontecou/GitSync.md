@@ -21665,7 +21665,7 @@
       }
     },
     "gitops_lfs_extensions_review_failed": {
-      "source": "Could not review extension tracking. Reload and check existing attributes, conflicts and file access before trying again.",
+      "source": "Couldn’t review extension tracking. Reload, then check existing attributes, conflicts and file access before trying again.",
       "localizations": {
         "ar": "تعذّرت مراجعة تتبّع الامتدادات. أعد التحميل وتحقق من السمات الحالية والتعارضات والوصول إلى الملفات قبل المحاولة مرة أخرى.",
         "da": "Kunne ikke gennemgå sporing af filtypenavne. Genindlæs, og kontrollér eksisterende attributter, konflikter og filadgang, før du prøver igen.",
@@ -22355,7 +22355,7 @@
       }
     },
     "account_sign_in_unverified": {
-      "source": "GitHub sign-in could not be verified. Start sign-in again.",
+      "source": "GitHub sign-in couldn’t be verified. Start sign-in again.",
       "localizations": {
         "ar": "تعذر التحقق من تسجيل الدخول إلى GitHub. ابدأ تسجيل الدخول من جديد.",
         "da": "GitHub-login kunne ikke bekræftes. Start login igen.",
@@ -22655,7 +22655,7 @@
       }
     },
     "account_browser_failed": {
-      "source": "Could not open the browser. Retry or use a Personal Access Token.",
+      "source": "Couldn’t open the browser. Retry, or use a personal access token.",
       "localizations": {
         "ar": "تعذر فتح المتصفح. أعد المحاولة أو استخدم رمز الوصول الشخصي.",
         "da": "Kunne ikke åbne browseren. Prøv igen, eller brug et Personal Access Token.",
@@ -30344,251 +30344,253 @@
     },
     "tide_vault_changes_on_phone": {
       "source": {
-        "one": "change on this phone",
-        "other": "changes on this phone"
+        "one": "%1$s change on this phone",
+        "other": "%1$s changes on this phone"
       },
       "localizations": {
         "ar": {
-          "zero": "لا تغييرات على هذا الهاتف",
-          "one": "تغيير على هذا الهاتف",
-          "two": "تغييران على هذا الهاتف",
-          "few": "تغييرات على هذا الهاتف",
-          "many": "تغييرًا على هذا الهاتف",
-          "other": "تغيير على هذا الهاتف"
+          "zero": "%1$s لا تغييرات على هذا الهاتف",
+          "one": "%1$s تغيير على هذا الهاتف",
+          "two": "%1$s تغييران على هذا الهاتف",
+          "few": "%1$s تغييرات على هذا الهاتف",
+          "many": "%1$s تغييرًا على هذا الهاتف",
+          "other": "%1$s تغيير على هذا الهاتف"
         },
         "da": {
-          "one": "ændring på denne telefon",
-          "other": "ændringer på denne telefon"
+          "one": "%1$s ændring på denne telefon",
+          "other": "%1$s ændringer på denne telefon"
         },
         "de": {
-          "one": "Änderung auf diesem Telefon",
-          "other": "Änderungen auf diesem Telefon"
+          "one": "%1$s Änderung auf diesem Telefon",
+          "other": "%1$s Änderungen auf diesem Telefon"
         },
         "es": {
-          "one": "cambio en este teléfono",
-          "many": "cambios en este teléfono",
-          "other": "cambios en este teléfono"
+          "one": "%1$s cambio en este teléfono",
+          "many": "%1$s cambios en este teléfono",
+          "other": "%1$s cambios en este teléfono"
         },
         "fi": {
-          "one": "muutos tässä puhelimessa",
-          "other": "muutosta tässä puhelimessa"
+          "one": "%1$s muutos tässä puhelimessa",
+          "other": "%1$s muutosta tässä puhelimessa"
         },
         "fr": {
-          "one": "modification sur ce téléphone",
-          "many": "modifications sur ce téléphone",
-          "other": "modifications sur ce téléphone"
+          "one": "%1$s modification sur ce téléphone",
+          "many": "%1$s modifications sur ce téléphone",
+          "other": "%1$s modifications sur ce téléphone"
         },
         "he": {
-          "one": "שינוי בטלפון הזה",
-          "two": "שני שינויים בטלפון הזה",
-          "many": "שינויים בטלפון הזה",
-          "other": "שינויים בטלפון הזה"
+          "one": "%1$s שינוי בטלפון הזה",
+          "two": "%1$s שני שינויים בטלפון הזה",
+          "many": "%1$s שינויים בטלפון הזה",
+          "other": "%1$s שינויים בטלפון הזה"
         },
         "hi": {
-          "one": "इस फ़ोन पर बदलाव",
-          "other": "इस फ़ोन पर बदलाव"
+          "one": "%1$s इस फ़ोन पर बदलाव",
+          "other": "%1$s इस फ़ोन पर बदलाव"
         },
         "hu": {
-          "one": "módosítás ezen a telefonon",
-          "other": "módosítás ezen a telefonon"
+          "one": "%1$s módosítás ezen a telefonon",
+          "other": "%1$s módosítás ezen a telefonon"
         },
         "id": {
-          "one": "perubahan di ponsel ini",
-          "other": "perubahan di ponsel ini"
+          "one": "%1$s perubahan di ponsel ini",
+          "other": "%1$s perubahan di ponsel ini"
         },
         "it": {
-          "one": "modifica su questo telefono",
-          "many": "modifiche su questo telefono",
-          "other": "modifiche su questo telefono"
+          "one": "%1$s modifica su questo telefono",
+          "many": "%1$s modifiche su questo telefono",
+          "other": "%1$s modifiche su questo telefono"
         },
         "ja": {
-          "one": "このスマートフォン上の変更",
-          "other": "このスマートフォン上の変更"
+          "one": "%1$s このスマートフォン上の変更",
+          "other": "%1$s このスマートフォン上の変更"
         },
         "ko": {
-          "one": "이 휴대전화의 변경 사항",
-          "other": "이 휴대전화의 변경 사항"
+          "one": "%1$s 이 휴대전화의 변경 사항",
+          "other": "%1$s 이 휴대전화의 변경 사항"
         },
         "nb": {
-          "one": "endring på denne telefonen",
-          "other": "endringer på denne telefonen"
+          "one": "%1$s endring på denne telefonen",
+          "other": "%1$s endringer på denne telefonen"
         },
         "nl": {
-          "one": "wijziging op deze telefoon",
-          "other": "wijzigingen op deze telefoon"
+          "one": "%1$s wijziging op deze telefoon",
+          "other": "%1$s wijzigingen op deze telefoon"
         },
         "pl": {
-          "one": "zmiana na tym telefonie",
-          "few": "zmiany na tym telefonie",
-          "many": "zmian na tym telefonie",
-          "other": "zmiany na tym telefonie"
+          "one": "%1$s zmiana na tym telefonie",
+          "few": "%1$s zmiany na tym telefonie",
+          "many": "%1$s zmian na tym telefonie",
+          "other": "%1$s zmiany na tym telefonie"
         },
         "pt-BR": {
-          "one": "alteração neste telefone",
-          "many": "alterações neste telefone",
-          "other": "alterações neste telefone"
+          "one": "%1$s alteração neste telefone",
+          "many": "%1$s alterações neste telefone",
+          "other": "%1$s alterações neste telefone"
         },
         "ru": {
-          "one": "изменение на этом телефоне",
-          "few": "изменения на этом телефоне",
-          "many": "изменений на этом телефоне",
-          "other": "изменения на этом телефоне"
+          "one": "%1$s изменение на этом телефоне",
+          "few": "%1$s изменения на этом телефоне",
+          "many": "%1$s изменений на этом телефоне",
+          "other": "%1$s изменения на этом телефоне"
         },
         "sv": {
-          "one": "ändring på den här telefonen",
-          "other": "ändringar på den här telefonen"
+          "one": "%1$s ändring på den här telefonen",
+          "other": "%1$s ändringar på den här telefonen"
         },
         "th": {
-          "one": "การเปลี่ยนแปลงบนโทรศัพท์นี้",
-          "other": "การเปลี่ยนแปลงบนโทรศัพท์นี้"
+          "one": "%1$s การเปลี่ยนแปลงบนโทรศัพท์นี้",
+          "other": "%1$s การเปลี่ยนแปลงบนโทรศัพท์นี้"
         },
         "tr": {
-          "one": "bu telefondaki değişiklik",
-          "other": "bu telefondaki değişiklik"
+          "one": "%1$s bu telefondaki değişiklik",
+          "other": "%1$s bu telefondaki değişiklik"
         },
         "uk": {
-          "one": "зміна на цьому телефоні",
-          "few": "зміни на цьому телефоні",
-          "many": "змін на цьому телефоні",
-          "other": "зміни на цьому телефоні"
+          "one": "%1$s зміна на цьому телефоні",
+          "few": "%1$s зміни на цьому телефоні",
+          "many": "%1$s змін на цьому телефоні",
+          "other": "%1$s зміни на цьому телефоні"
         },
         "vi": {
-          "one": "thay đổi trên điện thoại này",
-          "other": "thay đổi trên điện thoại này"
+          "one": "%1$s thay đổi trên điện thoại này",
+          "other": "%1$s thay đổi trên điện thoại này"
         },
         "zh-Hans": {
-          "one": "此手机上的更改",
-          "other": "此手机上的更改"
+          "one": "%1$s 此手机上的更改",
+          "other": "%1$s 此手机上的更改"
         },
         "zh-Hant": {
-          "one": "此手機上的變更",
-          "other": "此手機上的變更"
+          "one": "%1$s 此手機上的變更",
+          "other": "%1$s 此手機上的變更"
         }
-      }
+      },
+      "count_contract": "The existing adjacent count/subject is now bound by one complete translated template; wording unchanged. Human linguistic review remains pending."
     },
     "tide_vault_conflicts_to_resolve": {
       "source": {
-        "one": "conflict to resolve",
-        "other": "conflicts to resolve"
+        "one": "%1$s conflict to resolve",
+        "other": "%1$s conflicts to resolve"
       },
       "localizations": {
         "ar": {
-          "zero": "لا تعارضات للحل",
-          "one": "تعارض يجب حله",
-          "two": "تعارضان يجب حلهما",
-          "few": "تعارضات يجب حلها",
-          "many": "تعارضًا يجب حله",
-          "other": "تعارض يجب حله"
+          "zero": "%1$s لا تعارضات للحل",
+          "one": "%1$s تعارض يجب حله",
+          "two": "%1$s تعارضان يجب حلهما",
+          "few": "%1$s تعارضات يجب حلها",
+          "many": "%1$s تعارضًا يجب حله",
+          "other": "%1$s تعارض يجب حله"
         },
         "da": {
-          "one": "konflikt, der skal løses",
-          "other": "konflikter, der skal løses"
+          "one": "%1$s konflikt, der skal løses",
+          "other": "%1$s konflikter, der skal løses"
         },
         "de": {
-          "one": "zu lösender Konflikt",
-          "other": "zu lösende Konflikte"
+          "one": "%1$s zu lösender Konflikt",
+          "other": "%1$s zu lösende Konflikte"
         },
         "es": {
-          "one": "conflicto por resolver",
-          "many": "conflictos por resolver",
-          "other": "conflictos por resolver"
+          "one": "%1$s conflicto por resolver",
+          "many": "%1$s conflictos por resolver",
+          "other": "%1$s conflictos por resolver"
         },
         "fi": {
-          "one": "ratkaistava ristiriita",
-          "other": "ratkaistavaa ristiriitaa"
+          "one": "%1$s ratkaistava ristiriita",
+          "other": "%1$s ratkaistavaa ristiriitaa"
         },
         "fr": {
-          "one": "conflit à résoudre",
-          "many": "conflits à résoudre",
-          "other": "conflits à résoudre"
+          "one": "%1$s conflit à résoudre",
+          "many": "%1$s conflits à résoudre",
+          "other": "%1$s conflits à résoudre"
         },
         "he": {
-          "one": "התנגשות לפתרון",
-          "two": "שתי התנגשויות לפתרון",
-          "many": "התנגשויות לפתרון",
-          "other": "התנגשויות לפתרון"
+          "one": "%1$s התנגשות לפתרון",
+          "two": "%1$s שתי התנגשויות לפתרון",
+          "many": "%1$s התנגשויות לפתרון",
+          "other": "%1$s התנגשויות לפתרון"
         },
         "hi": {
-          "one": "हल करने के लिए विरोध",
-          "other": "हल करने के लिए विरोध"
+          "one": "%1$s हल करने के लिए विरोध",
+          "other": "%1$s हल करने के लिए विरोध"
         },
         "hu": {
-          "one": "feloldandó ütközés",
-          "other": "feloldandó ütközés"
+          "one": "%1$s feloldandó ütközés",
+          "other": "%1$s feloldandó ütközés"
         },
         "id": {
-          "one": "konflik yang perlu diselesaikan",
-          "other": "konflik yang perlu diselesaikan"
+          "one": "%1$s konflik yang perlu diselesaikan",
+          "other": "%1$s konflik yang perlu diselesaikan"
         },
         "it": {
-          "one": "conflitto da risolvere",
-          "many": "conflitti da risolvere",
-          "other": "conflitti da risolvere"
+          "one": "%1$s conflitto da risolvere",
+          "many": "%1$s conflitti da risolvere",
+          "other": "%1$s conflitti da risolvere"
         },
         "ja": {
-          "one": "解決が必要な競合",
-          "other": "解決が必要な競合"
+          "one": "%1$s 解決が必要な競合",
+          "other": "%1$s 解決が必要な競合"
         },
         "ko": {
-          "one": "해결할 충돌",
-          "other": "해결할 충돌"
+          "one": "%1$s 해결할 충돌",
+          "other": "%1$s 해결할 충돌"
         },
         "nb": {
-          "one": "konflikt som må løses",
-          "other": "konflikter som må løses"
+          "one": "%1$s konflikt som må løses",
+          "other": "%1$s konflikter som må løses"
         },
         "nl": {
-          "one": "op te lossen conflict",
-          "other": "op te lossen conflicten"
+          "one": "%1$s op te lossen conflict",
+          "other": "%1$s op te lossen conflicten"
         },
         "pl": {
-          "one": "konflikt do rozwiązania",
-          "few": "konflikty do rozwiązania",
-          "many": "konfliktów do rozwiązania",
-          "other": "konfliktu do rozwiązania"
+          "one": "%1$s konflikt do rozwiązania",
+          "few": "%1$s konflikty do rozwiązania",
+          "many": "%1$s konfliktów do rozwiązania",
+          "other": "%1$s konfliktu do rozwiązania"
         },
         "pt-BR": {
-          "one": "conflito para resolver",
-          "many": "conflitos para resolver",
-          "other": "conflitos para resolver"
+          "one": "%1$s conflito para resolver",
+          "many": "%1$s conflitos para resolver",
+          "other": "%1$s conflitos para resolver"
         },
         "ru": {
-          "one": "конфликт для разрешения",
-          "few": "конфликта для разрешения",
-          "many": "конфликтов для разрешения",
-          "other": "конфликта для разрешения"
+          "one": "%1$s конфликт для разрешения",
+          "few": "%1$s конфликта для разрешения",
+          "many": "%1$s конфликтов для разрешения",
+          "other": "%1$s конфликта для разрешения"
         },
         "sv": {
-          "one": "konflikt att lösa",
-          "other": "konflikter att lösa"
+          "one": "%1$s konflikt att lösa",
+          "other": "%1$s konflikter att lösa"
         },
         "th": {
-          "one": "ข้อขัดแย้งที่ต้องแก้ไข",
-          "other": "ข้อขัดแย้งที่ต้องแก้ไข"
+          "one": "%1$s ข้อขัดแย้งที่ต้องแก้ไข",
+          "other": "%1$s ข้อขัดแย้งที่ต้องแก้ไข"
         },
         "tr": {
-          "one": "çözülecek çakışma",
-          "other": "çözülecek çakışma"
+          "one": "%1$s çözülecek çakışma",
+          "other": "%1$s çözülecek çakışma"
         },
         "uk": {
-          "one": "конфлікт для вирішення",
-          "few": "конфлікти для вирішення",
-          "many": "конфліктів для вирішення",
-          "other": "конфлікту для вирішення"
+          "one": "%1$s конфлікт для вирішення",
+          "few": "%1$s конфлікти для вирішення",
+          "many": "%1$s конфліктів для вирішення",
+          "other": "%1$s конфлікту для вирішення"
         },
         "vi": {
-          "one": "xung đột cần giải quyết",
-          "other": "xung đột cần giải quyết"
+          "one": "%1$s xung đột cần giải quyết",
+          "other": "%1$s xung đột cần giải quyết"
         },
         "zh-Hans": {
-          "one": "待解决的冲突",
-          "other": "待解决的冲突"
+          "one": "%1$s 待解决的冲突",
+          "other": "%1$s 待解决的冲突"
         },
         "zh-Hant": {
-          "one": "待解決的衝突",
-          "other": "待解決的衝突"
+          "one": "%1$s 待解決的衝突",
+          "other": "%1$s 待解決的衝突"
         }
-      }
+      },
+      "count_contract": "The existing adjacent count/subject is now bound by one complete translated template; wording unchanged. Human linguistic review remains pending."
     },
     "move_plan_summary": {
       "source": {

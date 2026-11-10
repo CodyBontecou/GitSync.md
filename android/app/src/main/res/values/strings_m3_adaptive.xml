@@ -23,12 +23,12 @@
 
     <!-- Changes pane -->
     <plurals name="adaptive_changes_on_tablet">
-        <item quantity="one">change on this tablet</item>
-        <item quantity="other">changes on this tablet</item>
+        <item quantity="one">%1$s change on this tablet</item>
+        <item quantity="other">%1$s changes on this tablet</item>
     </plurals>
     <plurals name="adaptive_changes_on_phone">
-        <item quantity="one">change on this phone</item>
-        <item quantity="other">changes on this phone</item>
+        <item quantity="one">%1$s change on this phone</item>
+        <item quantity="other">%1$s changes on this phone</item>
     </plurals>
     <string name="adaptive_conflict">conflict</string>
     <plurals name="adaptive_merging_left">
@@ -81,8 +81,8 @@
     <!-- Split screen -->
     <string name="adaptive_split_watching">watching %1$s</string>
     <plurals name="adaptive_split_live">
-        <item quantity="one">change · live</item>
-        <item quantity="other">changes · live</item>
+        <item quantity="one">%1$s change · live</item>
+        <item quantity="other">%1$s changes · live</item>
     </plurals>
     <string name="adaptive_split_committed">↑%1$d committed</string>
     <plurals name="adaptive_split_editing">

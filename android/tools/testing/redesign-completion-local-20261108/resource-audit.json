@@ -1,0 +1,131 @@
+{
+  "base_strings": 2509,
+  "base_plurals": 97,
+  "locales": {
+    "ar": {
+      "missing_strings": [],
+      "missing_plurals": [],
+      "contract_errors": []
+    },
+    "da": {
+      "missing_strings": [],
+      "missing_plurals": [],
+      "contract_errors": []
+    },
+    "de": {
+      "missing_strings": [],
+      "missing_plurals": [],
+      "contract_errors": []
+    },
+    "es": {
+      "missing_strings": [],
+      "missing_plurals": [],
+      "contract_errors": []
+    },
+    "fi": {
+      "missing_strings": [],
+      "missing_plurals": [],
+      "contract_errors": []
+    },
+    "fr": {
+      "missing_strings": [],
+      "missing_plurals": [],
+      "contract_errors": []
+    },
+    "he": {
+      "missing_strings": [],
+      "missing_plurals": [],
+      "contract_errors": []
+    },
+    "hi": {
+      "missing_strings": [],
+      "missing_plurals": [],
+      "contract_errors": []
+    },
+    "hu": {
+      "missing_strings": [],
+      "missing_plurals": [],
+      "contract_errors": []
+    },
+    "id": {
+      "missing_strings": [],
+      "missing_plurals": [],
+      "contract_errors": []
+    },
+    "it": {
+      "missing_strings": [],
+      "missing_plurals": [],
+      "contract_errors": []
+    },
+    "ja": {
+      "missing_strings": [],
+      "missing_plurals": [],
+      "contract_errors": []
+    },
+    "ko": {
+      "missing_strings": [],
+      "missing_plurals": [],
+      "contract_errors": []
+    },
+    "nb": {
+      "missing_strings": [],
+      "missing_plurals": [],
+      "contract_errors": []
+    },
+    "nl": {
+      "missing_strings": [],
+      "missing_plurals": [],
+      "contract_errors": []
+    },
+    "pl": {
+      "missing_strings": [],
+      "missing_plurals": [],
+      "contract_errors": []
+    },
+    "pt-BR": {
+      "missing_strings": [],
+      "missing_plurals": [],
+      "contract_errors": []
+    },
+    "ru": {
+      "missing_strings": [],
+      "missing_plurals": [],
+      "contract_errors": []
+    },
+    "sv": {
+      "missing_strings": [],
+      "missing_plurals": [],
+      "contract_errors": []
+    },
+    "th": {
+      "missing_strings": [],
+      "missing_plurals": [],
+      "contract_errors": []
+    },
+    "tr": {
+      "missing_strings": [],
+      "missing_plurals": [],
+      "contract_errors": []
+    },
+    "uk": {
+      "missing_strings": [],
+      "missing_plurals": [],
+      "contract_errors": []
+    },
+    "vi": {
+      "missing_strings": [],
+      "missing_plurals": [],
+      "contract_errors": []
+    },
+    "zh-Hans": {
+      "missing_strings": [],
+      "missing_plurals": [],
+      "contract_errors": []
+    },
+    "zh-Hant": {
+      "missing_strings": [],
+      "missing_plurals": [],
+      "contract_errors": []
+    }
+  }
+}

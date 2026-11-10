@@ -1,0 +1,209 @@
+
+> Configure project :app
+Release signing not configured. Set RELEASE_STORE_FILE, RELEASE_STORE_PASSWORD, RELEASE_KEY_ALIAS, RELEASE_KEY_PASSWORD (env, gradle.properties, or keystore.properties).
+Play Console key not found at: /Users/codybontecou/.config/play-console/play-publisher-crested-drive-492000-u7.json
+WARNING: We recommend using a newer Android Gradle plugin to use compileSdk = 36
+
+This Android Gradle plugin (8.5.2) was tested up to compileSdk = 34.
+
+You are strongly encouraged to update your project to use a newer
+Android Gradle plugin that has been tested with compileSdk = 36.
+
+If you are already using the latest version of the Android Gradle plugin,
+you may need to wait until a newer version with support for compileSdk = 36 is available.
+
+For more information refer to the compatibility table:
+https://d.android.com/r/tools/api-level-support
+
+To suppress this warning, add/update
+    android.suppressUnsupportedCompileSdk=36
+to this project's gradle.properties.
+
+> Task :core:checkKotlinGradlePluginConfigurationErrors
+> Task :core:compileKotlin UP-TO-DATE
+> Task :core:compileJava UP-TO-DATE
+> Task :core:processResources NO-SOURCE
+> Task :core:classes UP-TO-DATE
+> Task :core:jar UP-TO-DATE
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:checkKotlinGradlePluginConfigurationErrors
+> Task :app:generateDebugBuildConfig UP-TO-DATE
+> Task :app:checkDebugAarMetadata UP-TO-DATE
+> Task :app:generateDebugResValues UP-TO-DATE
+> Task :app:mapDebugSourceSetPaths
+> Task :app:generateDebugResources
+> Task :app:mergeDebugResources
+> Task :app:packageDebugResources
+> Task :app:parseDebugLocalResources
+> Task :app:createDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksDebug UP-TO-DATE
+> Task :app:processDebugMainManifest UP-TO-DATE
+> Task :app:processDebugManifest UP-TO-DATE
+> Task :app:processDebugManifestForPackage UP-TO-DATE
+> Task :app:processDebugResources
+> Task :app:kaptGenerateStubsDebugKotlin
+> Task :app:kaptDebugKotlin
+
+> Task :app:compileDebugKotlin
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/main/kotlin/com/bontecou/syncmd/ui/adaptive/AdaptiveVaultHost.kt:200:99 Unnecessary safe call on a non-null receiver of type VaultSyncViewModel?
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/main/kotlin/com/bontecou/syncmd/ui/adaptive/AdaptiveVaultHost.kt:240:58 Unnecessary safe call on a non-null receiver of type VaultSyncViewModel?
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/main/kotlin/com/bontecou/syncmd/ui/adaptive/AdaptiveVaultHost.kt:243:54 Unnecessary safe call on a non-null receiver of type VaultSyncViewModel?
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/main/kotlin/com/bontecou/syncmd/ui/adaptive/AdaptiveVaultHost.kt:246:54 Unnecessary safe call on a non-null receiver of type VaultSyncViewModel?
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/main/kotlin/com/bontecou/syncmd/ui/adaptive/AdaptiveVaultHost.kt:249:54 Unnecessary safe call on a non-null receiver of type VaultSyncViewModel?
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/main/kotlin/com/bontecou/syncmd/ui/adaptive/AdaptiveVaultHost.kt:255:87 Unnecessary safe call on a non-null receiver of type VaultSyncViewModel?
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/main/kotlin/com/bontecou/syncmd/ui/adaptive/AdaptiveVaultHost.kt:258:53 Unnecessary safe call on a non-null receiver of type VaultSyncViewModel?
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/main/kotlin/com/bontecou/syncmd/ui/adaptive/AdaptiveVaultHost.kt:259:52 Unnecessary safe call on a non-null receiver of type VaultSyncViewModel?
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/main/kotlin/com/bontecou/syncmd/ui/adaptive/AdaptiveVaultHost.kt:260:53 Unnecessary safe call on a non-null receiver of type VaultSyncViewModel?
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/main/kotlin/com/bontecou/syncmd/ui/components/RebaseQuantities.kt:225:9 Variable 'locale' is never used
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/ConnectionScreen.kt:86:130 Unnecessary safe call on a non-null receiver of type RepositoryCredentialStore.Summary?
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/ConnectionScreen.kt:86:176 Unnecessary safe call on a non-null receiver of type RepositoryCredentialStore.Summary?
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/ConnectionScreen.kt:88:80 Unnecessary safe call on a non-null receiver of type RepositoryCredentialStore.Summary?
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/ConnectionScreen.kt:91:91 Unnecessary safe call on a non-null receiver of type RepositoryCredentialStore.Summary?
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/ConnectionScreen.kt:167:109 Unnecessary safe call on a non-null receiver of type RepositoryCredentialStore.Summary?
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/ConnectionScreen.kt:189:79 Unnecessary safe call on a non-null receiver of type RepositoryCredentialStore.Summary?
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/GitScreen.kt:77:5 Parameter 'onOpenDiff' is never used
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/GitScreen.kt:211:146 Unnecessary non-null assertion (!!) on a non-null receiver of type Int
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/SettingsScreen.kt:124:5 Parameter 'onNavigateToRepoPicker' is never used
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/SettingsScreen.kt:131:5 Parameter 'onReleaseNotes' is never used
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/VaultScreen.kt:114:5 Parameter 'onOpenFiles' is never used
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/VaultScreen.kt:186:99 Unnecessary safe call on a non-null receiver of type VaultSyncViewModel?
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/VaultSettingsScreen.kt:136:13 Variable 'context' is never used
+
+> Task :app:javaPreCompileDebug UP-TO-DATE
+> Task :app:compileDebugJavaWithJavac UP-TO-DATE
+> Task :app:hiltAggregateDepsDebug UP-TO-DATE
+> Task :app:hiltJavaCompileDebug
+> Task :app:transformDebugClassesWithAsm
+> Task :app:bundleDebugClassesToRuntimeJar
+> Task :app:preDebugUnitTestBuild UP-TO-DATE
+> Task :app:processDebugJavaRes UP-TO-DATE
+> Task :app:bundleDebugClassesToCompileJar
+> Task :app:kaptGenerateStubsDebugUnitTestKotlin
+> Task :app:kaptDebugUnitTestKotlin
+> Task :app:compileDebugUnitTestKotlin
+> Task :app:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :app:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :app:hiltAggregateDepsDebugUnitTest UP-TO-DATE
+> Task :app:hiltJavaCompileDebugUnitTest NO-SOURCE
+> Task :app:processDebugUnitTestJavaRes UP-TO-DATE
+> Task :app:transformDebugUnitTestClassesWithAsm
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+> Task :app:testDebugUnitTest
+> Task :app:preDebugAndroidTestBuild SKIPPED
+> Task :app:processDebugAndroidTestManifest
+> Task :app:generateDebugAndroidTestBuildConfig
+> Task :app:checkDebugAndroidTestAarMetadata
+> Task :app:generateDebugAndroidTestResValues
+> Task :app:mapDebugAndroidTestSourceSetPaths
+> Task :app:generateDebugAndroidTestResources
+> Task :app:mergeDebugAndroidTestResources
+> Task :app:processDebugAndroidTestResources
+> Task :app:kaptGenerateStubsDebugAndroidTestKotlin
+
+> Task :app:kaptDebugAndroidTestKotlin
+warning: The following options were not recognized by any processor: '[dagger.fastInit, dagger.hilt.android.internal.disableAndroidSuperclassValidation, dagger.hilt.android.internal.projectType, dagger.hilt.internal.useAggregatingRootProcessor, kapt.kotlin.generated]'
+
+> Task :app:compileDebugAndroidTestKotlin
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/androidTest/kotlin/com/bontecou/syncmd/AppGuideStoreTest.kt:95:92 Unsafe use of a nullable receiver of type File?
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/androidTest/kotlin/com/bontecou/syncmd/BranchCheckoutDeviceTest.kt:54:42 Unsafe use of a nullable receiver of type File?
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/androidTest/kotlin/com/bontecou/syncmd/BranchCheckoutDeviceTest.kt:59:96 Unsafe use of a nullable receiver of type File?
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/androidTest/kotlin/com/bontecou/syncmd/BranchCheckoutDeviceTest.kt:61:9 Unsafe use of a nullable receiver of type File?
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/androidTest/kotlin/com/bontecou/syncmd/CloneCatalogFixture.kt:33:22 This declaration overrides deprecated member but not marked as deprecated itself. Please add @Deprecated annotation or suppress. See https://youtrack.jetbrains.com/issue/KT-47902 for details
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/androidTest/kotlin/com/bontecou/syncmd/CloneCompletionTest.kt:53:26 This declaration overrides deprecated member but not marked as deprecated itself. Please add @Deprecated annotation or suppress. See https://youtrack.jetbrains.com/issue/KT-47902 for details
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/androidTest/kotlin/com/bontecou/syncmd/ClonePublicationColdStartTest.kt:43:22 This declaration overrides deprecated member but not marked as deprecated itself. Please add @Deprecated annotation or suppress. See https://youtrack.jetbrains.com/issue/KT-47902 for details
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/androidTest/kotlin/com/bontecou/syncmd/CloneRecoveryManagementTest.kt:51:26 This declaration overrides deprecated member but not marked as deprecated itself. Please add @Deprecated annotation or suppress. See https://youtrack.jetbrains.com/issue/KT-47902 for details
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/androidTest/kotlin/com/bontecou/syncmd/FileErrorLanguageTest.kt:186:25 Unnecessary non-null assertion (!!) on a non-null receiver of type ActivityScenario<ComponentActivity>
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/androidTest/kotlin/com/bontecou/syncmd/FileNavigationTest.kt:1432:49 Unsafe use of a nullable receiver of type File?
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/androidTest/kotlin/com/bontecou/syncmd/FilesLanguageTest.kt:308:37 Unnecessary non-null assertion (!!) on a non-null receiver of type ActivityScenario<ComponentActivity>
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/androidTest/kotlin/com/bontecou/syncmd/FolderPublicationDeviceTest.kt:41:27 'getter for externalMediaDirs: Array<(out) File!>!' is deprecated. Deprecated in Java
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/androidTest/kotlin/com/bontecou/syncmd/FolderPublicationJournalDeviceTest.kt:151:29 Variable 'ready' initializer is redundant
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/androidTest/kotlin/com/bontecou/syncmd/HistoryViewModelTest.kt:63:60 The corresponding parameter in the supertype 'RemoteRepository' is named 'name'. This may cause problems when calling this function with named arguments.
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/androidTest/kotlin/com/bontecou/syncmd/LfsTransportDeviceTest.kt:37:29 'getter for externalMediaDirs: Array<(out) File!>!' is deprecated. Deprecated in Java
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/androidTest/kotlin/com/bontecou/syncmd/ObsidianConnectionTest.kt:183:32 'getter for externalMediaDirs: Array<(out) File!>!' is deprecated. Deprecated in Java
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/androidTest/kotlin/com/bontecou/syncmd/PullAllLanguageTest.kt:103:37 Enum argument can be null in Java, but exhaustive when contains no null branch
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/androidTest/kotlin/com/bontecou/syncmd/RebaseLanguageTest.kt:101:91 The corresponding parameter in the supertype 'Factory' is named 'modelClass'. This may cause problems when calling this function with named arguments.
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/androidTest/kotlin/com/bontecou/syncmd/RebaseLanguageTest.kt:225:25 Unnecessary non-null assertion (!!) on a non-null receiver of type ActivityScenario<ComponentActivity>
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/androidTest/kotlin/com/bontecou/syncmd/RebaseScreenTest.kt:102:82 Unsafe use of a nullable receiver of type File?
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/androidTest/kotlin/com/bontecou/syncmd/RebaseScreenTest.kt:210:48 Unsafe use of a nullable receiver of type File?
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/androidTest/kotlin/com/bontecou/syncmd/RebaseScreenTest.kt:211:57 Unsafe use of a nullable receiver of type File?
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/androidTest/kotlin/com/bontecou/syncmd/RenameModifyFixture.kt:22:13 Unsafe use of a nullable receiver of type File?
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryCallbackGrantTest.kt:38:29 'getter for externalMediaDirs: Array<(out) File!>!' is deprecated. Deprecated in Java
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryCallbackGrantTest.kt:42:26 This declaration overrides deprecated member but not marked as deprecated itself. Please add @Deprecated annotation or suppress. See https://youtrack.jetbrains.com/issue/KT-47902 for details
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryCallbackScreenTest.kt:280:53 Unsafe use of a nullable receiver of type File?
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryCallbackTransportTest.kt:170:13 Name shadowed: message
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryCallbackTransportTest.kt:220:91 Unnecessary non-null assertion (!!) on a non-null receiver of type String
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryCallbackTransportTest.kt:226:45 Unnecessary non-null assertion (!!) on a non-null receiver of type String
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryCallbackTransportTest.kt:238:45 Unnecessary non-null assertion (!!) on a non-null receiver of type String
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryLocationsTest.kt:303:13 Variable 'folder' is never used
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryMoveTest.kt:226:26 This declaration overrides deprecated member but not marked as deprecated itself. Please add @Deprecated annotation or suppress. See https://youtrack.jetbrains.com/issue/KT-47902 for details
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryMoveTest.kt:546:23 Variable 'granted' initializer is redundant
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryMoveTest.kt:548:36 Variable 'pickerError' initializer is redundant
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryShortcutLauncherTest.kt:230:27 'recycle(): Unit' is deprecated. Deprecated in Java
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryShortcutLauncherTest.kt:369:75 Unnecessary non-null assertion (!!) on a non-null receiver of type LocaleManager
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/androidTest/kotlin/com/bontecou/syncmd/SafePullDeviceTest.kt:66:53 Unsafe use of a nullable receiver of type File?
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/androidTest/kotlin/com/bontecou/syncmd/StorageLanguageTest.kt:112:25 Unnecessary non-null assertion (!!) on a non-null receiver of type ActivityScenario<ComponentActivity>
+w: file:///private/tmp/gitsync-android-finish-20261108/android/app/src/androidTest/kotlin/com/bontecou/syncmd/UpstreamScreenTest.kt:47:26 This declaration overrides deprecated member but not marked as deprecated itself. Please add @Deprecated annotation or suppress. See https://youtrack.jetbrains.com/issue/KT-47902 for details
+
+> Task :app:generateDebugAndroidTestLintModel
+> Task :app:extractProguardFiles
+> Task :app:generateDebugLintReportModel
+> Task :app:generateDebugUnitTestLintModel
+> Task :app:lintAnalyzeDebug
+> Task :app:lintAnalyzeDebugAndroidTest
+> Task :app:lintAnalyzeDebugUnitTest
+
+> Task :app:lintReportDebug
+Wrote HTML report to file:///private/tmp/gitsync-android-finish-20261108/android/app/build/reports/lint-results-debug.html
+
+> Task :app:lintDebug FAILED
+Lint found 51 errors, 573 warnings. First failure:
+
+/private/tmp/gitsync-android-finish-20261108/android/app/src/main/kotlin/com/bontecou/syncmd/automation/BackgroundSyncTile.kt:66: Error: TileService#startActivityAndCollapse(Intent) is deprecated. Use TileService#startActivityAndCollapse(PendingIntent) instead. [StartActivityAndCollapseDeprecated]
+            startActivityAndCollapse(intent)
+                                     ~~~~~~
+
+The full lint text report is located at:
+  /private/tmp/gitsync-android-finish-20261108/android/app/build/intermediates/lint_intermediate_text_report/debug/lintReportDebug/lint-results-debug.txt
+[Incubating] Problems report is available at: file:///private/tmp/gitsync-android-finish-20261108/android/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:lintDebug'.
+> Lint found errors in the project; aborting build.
+
+  Fix the issues identified by lint, or create a baseline to see only new errors.
+  To create a baseline, run `gradlew updateLintBaseline` after adding the following to the module's build.gradle file:
+  ```
+  android {
+      lint {
+          baseline = file("lint-baseline.xml")
+      }
+  }
+  ```
+  For more details, see https://developer.android.com/studio/write/lint#snapshot
+
+  Lint found 51 errors, 573 warnings. First failure:
+
+  /private/tmp/gitsync-android-finish-20261108/android/app/src/main/kotlin/com/bontecou/syncmd/automation/BackgroundSyncTile.kt:66: Error: TileService#startActivityAndCollapse(Intent) is deprecated. Use TileService#startActivityAndCollapse(PendingIntent) instead. [StartActivityAndCollapseDeprecated]
+              startActivityAndCollapse(intent)
+                                       ~~~~~~
+
+  The full lint text report is located at:
+    /private/tmp/gitsync-android-finish-20261108/android/app/build/intermediates/lint_intermediate_text_report/debug/lintReportDebug/lint-results-debug.txt
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/8.11.1/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD FAILED in 1m 24s
+58 actionable tasks: 40 executed, 18 up-to-date

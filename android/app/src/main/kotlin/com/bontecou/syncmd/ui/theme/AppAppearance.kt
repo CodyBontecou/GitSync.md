@@ -1,5 +1,6 @@
 package com.bontecou.syncmd.ui.theme
 
+import com.bontecou.syncmd.R
 import android.content.Context
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
@@ -34,7 +35,7 @@ object AppAppearance {
 
     fun set(context: Context, value: ThemeMode) {
         val app = context.applicationContext
-        check(app.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit().putString(KEY, value.name).commit()) { "Could not save the theme" }
+        check(app.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit().putString(KEY, value.name).commit()) { app.getString(R.string.l10n_save_theme) }
         mode.value = value
     }
 

@@ -475,26 +475,26 @@ object ErrorMessages {
 @Preview(name = "Error · retry · light")
 @Composable
 private fun ErrorPreviewLight() = SyncMdTheme(darkTheme = false) {
-    ErrorDialog("Push was rejected", "The remote has commits you don't have yet. Pull first, then push again.",
+    ErrorDialog(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_push_was_rejected_fbc19d01), "The remote has commits you don't have yet. Pull first, then push again.",
         "! [rejected] main -> main (non-fast-forward)\nerror: failed to push some refs", onDismiss = {}, onRetry = {})
 }
 
 @Preview(name = "Error · dark")
 @Composable
 private fun ErrorPreviewDark() = SyncMdTheme(darkTheme = true) {
-    ErrorDialog("Push was rejected", "The remote has commits you don't have yet.", "fatal: unable to access", onDismiss = {})
+    ErrorDialog(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_push_was_rejected_fbc19d01), "The remote has commits you don't have yet.", "fatal: unable to access", onDismiss = {})
 }
 
 @Preview(name = "Warning · light")
 @Composable
 private fun WarningPreview() = SyncMdTheme(darkTheme = false) {
-    WarningDialog("Discard changes?", "3 files will go back to the last commit.", "Discard", onConfirm = {}, onDismiss = {})
+    WarningDialog(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_discard_changes_85bcf416), "3 files will go back to the last commit.", "Discard", onConfirm = {}, onDismiss = {})
 }
 
 @Preview(name = "Success · dark")
 @Composable
-private fun SuccessPreview() = SyncMdTheme(darkTheme = true) { SuccessDialog("Pushed", "3 commits are on GitHub.", onDismiss = {}) }
+private fun SuccessPreview() = SyncMdTheme(darkTheme = true) { SuccessDialog(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_pushed_579e8c6a), "3 commits are on GitHub.", onDismiss = {}) }
 
 @Preview(name = "Info · light")
 @Composable
-private fun InfoPreview() = SyncMdTheme(darkTheme = false) { InfoDialog("About LFS", "Large files live outside Git history.", onDismiss = {}) }
+private fun InfoPreview() = SyncMdTheme(darkTheme = false) { InfoDialog(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_about_lfs_538b5b7e), "Large files live outside Git history.", onDismiss = {}) }

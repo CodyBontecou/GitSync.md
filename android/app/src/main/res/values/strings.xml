@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Gitsync.md</string>
+    <string name="app_name" translatable="false">Gitsync.md</string>
     <string name="pull_screen">Pull</string>
     <string name="commit_screen">Commit</string>
     <string name="history_screen">History</string>

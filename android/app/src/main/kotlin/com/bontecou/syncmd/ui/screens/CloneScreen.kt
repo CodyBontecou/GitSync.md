@@ -194,4 +194,4 @@ private fun CloneCloningPreview() = SyncMdTheme(darkTheme = true) {
 }
 
 @Preview(name = "Clone · failed", widthDp = 412, heightDp = 915) @Composable
-private fun CloneFailedPreview() = SyncMdTheme(darkTheme = false) { ClonePreview(CloneViewModel.CloneState.Error("Authentication failed. Sign in again and retry.")) }
+private fun CloneFailedPreview() = SyncMdTheme(darkTheme = false) { ClonePreview(CloneViewModel.CloneState.Error(stringResource(R.string.l10n_clone_preview_error))) }

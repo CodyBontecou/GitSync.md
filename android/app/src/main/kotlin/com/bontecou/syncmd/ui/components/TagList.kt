@@ -81,6 +81,6 @@ private fun TagRowsPreview() = SyncMdTheme(darkTheme = false) {
 private fun DeleteTagPreview() = SyncMdTheme(darkTheme = true) {
     M3DialogSurface(stringResource(R.string.git_m3_delete_tag_title, "v0.3-beta"), icon = R.drawable.ic_m3_delete, iconTint = M3.colors.error,
         content = { DeleteTagBody("0b8d771") }) {
-        M3DialogAction("Cancel", {}); M3DialogAction("Delete tag", {}, destructive = true, filled = true)
+        M3DialogAction(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.publication_cancel), {}); M3DialogAction(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.git_m3_delete_tag), {}, destructive = true, filled = true)
     }
 }

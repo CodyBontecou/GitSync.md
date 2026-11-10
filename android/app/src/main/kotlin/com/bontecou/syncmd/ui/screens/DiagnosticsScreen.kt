@@ -214,7 +214,7 @@ private fun DebugLogRow(entry: DiagnosticEntry, locale: Locale, vaultNames: Map<
     SelectionContainer(modifier.testTag("diagnostic-entry-${entry.id}")) {
         Column(Modifier.fillMaxWidth().m3TopDivider(divider, c.outlineVar).padding(horizontal = 20.dp, vertical = 12.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text("$when_ · $source", Modifier.weight(1f), style = M3Type.meta.copy(textDirection = TextDirection.ContentOrLtr), color = c.onVar, maxLines = 1)
+                Text(stringResource(R.string.l10n_meta_pair, when_, source), Modifier.weight(1f), style = M3Type.meta.copy(textDirection = TextDirection.ContentOrLtr), color = c.onVar, maxLines = 1)
                 if (entry.background) M3Tag(stringResource(R.string.settings_m3_debug_bg), tone = M3Tone.Behind)
                 when (entry.level) {
                     DiagnosticLevel.ERROR -> M3Tag(stringResource(R.string.settings_m3_debug_error), tone = M3Tone.Warn)

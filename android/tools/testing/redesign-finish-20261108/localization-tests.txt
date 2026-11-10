@@ -1,0 +1,59 @@
+........................F....
+======================================================================
+FAIL: test_no_unreviewed_user_facing_literals (test_literal_guard.LiteralGuardTest)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/gitsync-android-finish-20261108/android/tools/localization/test_literal_guard.py", line 8, in test_no_unreviewed_user_facing_literals
+    try: self.assertEqual(literal_guard.main(), 0)
+AssertionError: 1 != 0
+
+----------------------------------------------------------------------
+Ran 29 tests in 0.357s
+
+FAILED (failures=1)
+app/src/main/kotlin/com/bontecou/syncmd/background/BackgroundRunHistory.kt: unlocalized English literal (1x): "Could not save Background Sync conditions"
+app/src/main/kotlin/com/bontecou/syncmd/security/DefaultAuthorStore.kt: unlocalized English literal (2x): "Could not save the default author"
+app/src/main/kotlin/com/bontecou/syncmd/security/DeviceSshKeyStore.kt: unlocalized English literal (1x): "Could not save this phone's SSH key"
+app/src/main/kotlin/com/bontecou/syncmd/storage/VaultPreferences.kt: unlocalized English literal (1x): "Background Sync is unavailable"
+app/src/main/kotlin/com/bontecou/syncmd/storage/VaultPreferences.kt: unlocalized English literal (1x): "Could not save vault preferences"
+app/src/main/kotlin/com/bontecou/syncmd/storage/VaultPreferences.kt: unlocalized English literal (1x): "Unsupported vault preference"
+app/src/main/kotlin/com/bontecou/syncmd/sync/VaultSyncRunner.kt: unlocalized English literal (2x): "Switch to a local branch before pushing"
+app/src/main/kotlin/com/bontecou/syncmd/ui/adaptive/AdaptiveCover.kt: unlocalized English literal (1x): "${card.changes}"
+app/src/main/kotlin/com/bontecou/syncmd/ui/adaptive/AdaptivePanes.kt: unlocalized English literal (1x): "$count"
+app/src/main/kotlin/com/bontecou/syncmd/ui/adaptive/AdaptivePreviews.kt: unlocalized English literal (1x): "Both sides edited “Step 3”."
+app/src/main/kotlin/com/bontecou/syncmd/ui/adaptive/AdaptivePreviews.kt: unlocalized English literal (1x): "Daily note, voice memo pipeline steps"
+app/src/main/kotlin/com/bontecou/syncmd/ui/adaptive/AdaptivePreviews.kt: unlocalized English literal (1x): "Pick the version to keep, or keep both and tidy up after."
+app/src/main/kotlin/com/bontecou/syncmd/ui/adaptive/AdaptiveSplit.kt: unlocalized English literal (1x): "${rows.size}"
+app/src/main/kotlin/com/bontecou/syncmd/ui/components/AddVaultParts.kt: unlocalized English literal (1x): "$owner/"
+app/src/main/kotlin/com/bontecou/syncmd/ui/components/FilesParts.kt: unlocalized English literal (1x): "Not a file in this vault"
+app/src/main/kotlin/com/bontecou/syncmd/ui/components/SshKeyFields.kt: unlocalized English literal (1x): "too large"
+app/src/main/kotlin/com/bontecou/syncmd/ui/components/VaultSyncParts.kt: unlocalized English literal (1x): "Capture"
+app/src/main/kotlin/com/bontecou/syncmd/ui/screens/CloneScreen.kt: unlocalized English literal (1x): "Authentication failed. Sign in again and retry."
+app/src/main/kotlin/com/bontecou/syncmd/ui/screens/DiagnosticsScreen.kt: unlocalized English literal (1x): "$when_ · $source"
+app/src/main/kotlin/com/bontecou/syncmd/ui/screens/DiffScreen.kt: unlocalized English literal (1x): "$a11y, $against"
+app/src/main/kotlin/com/bontecou/syncmd/ui/screens/DiffScreen.kt: unlocalized English literal (1x): "+${diff.added}"
+app/src/main/kotlin/com/bontecou/syncmd/ui/screens/DiffScreen.kt: unlocalized English literal (1x): "−${diff.removed}"
+app/src/main/kotlin/com/bontecou/syncmd/ui/screens/FilesScreen.kt: unlocalized English literal (1x): "VoxVault / daily"
+app/src/main/kotlin/com/bontecou/syncmd/ui/screens/FolderPublicationScreen.kt: unlocalized English literal (1x): "${record.account.login}/${record.repositoryName}"
+app/src/main/kotlin/com/bontecou/syncmd/ui/screens/FolderPublicationScreen.kt: unlocalized English literal (1x): "${saved.account.login}/${saved.repositoryName}"
+app/src/main/kotlin/com/bontecou/syncmd/ui/screens/FolderPublicationScreen.kt: unlocalized English literal (1x): "@$login"
+app/src/main/kotlin/com/bontecou/syncmd/ui/screens/GitStashesScreen.kt: unlocalized English literal (1x): "$changes"
+app/src/main/kotlin/com/bontecou/syncmd/ui/screens/HistoryScreen.kt: unlocalized English literal (1x): "Capture morning voice notes"
+app/src/main/kotlin/com/bontecou/syncmd/ui/screens/HistoryScreen.kt: unlocalized English literal (1x): "vault backup: 2026-10-31"
+app/src/main/kotlin/com/bontecou/syncmd/ui/screens/LfsExtensionControls.kt: unlocalized English literal (1x): "${File(review.plan.path).name} · ${review.plan.branch?.removePrefix("
+app/src/main/kotlin/com/bontecou/syncmd/ui/screens/LfsFileSummary.kt: unlocalized English literal (1x): "${LfsSizes.format(file.pointer.size)} · ${stringResource(if (file.cached) R.string.lfs_m3_cache_verified else R.string.lfs_m3_cache_missing)}"
+app/src/main/kotlin/com/bontecou/syncmd/ui/screens/LoginScreen.kt: unlocalized English literal (1x): "ghp_…"
+app/src/main/kotlin/com/bontecou/syncmd/ui/screens/RepositoryActionsScreen.kt: unlocalized English literal (1x): "GitSync.md"
+app/src/main/kotlin/com/bontecou/syncmd/ui/screens/VaultScreen.kt: unlocalized English literal (1x): "Capture morning voice notes"
+app/src/main/kotlin/com/bontecou/syncmd/ui/theme/AppAppearance.kt: unlocalized English literal (1x): "Could not save the theme"
+app/src/main/kotlin/com/bontecou/syncmd/ui/theme/M3Kit.kt: unlocalized English literal (1x): "2 of 3 commits sent"
+app/src/main/kotlin/com/bontecou/syncmd/ui/theme/M3Kit.kt: unlocalized English literal (1x): "Commit 3 files"
+app/src/main/kotlin/com/bontecou/syncmd/ui/theme/M3Kit.kt: unlocalized English literal (1x): "GitSync.md"
+app/src/main/kotlin/com/bontecou/syncmd/ui/theme/M3Kit.kt: unlocalized English literal (1x): "OK"
+app/src/main/kotlin/com/bontecou/syncmd/ui/theme/M3Kit.kt: unlocalized English literal (1x): "Only branch main, tracking origin/main"
+app/src/main/kotlin/com/bontecou/syncmd/ui/theme/M3Kit.kt: unlocalized English literal (1x): "Pushing…"
+app/src/main/kotlin/com/bontecou/syncmd/ui/theme/M3Kit.kt: unlocalized English literal (1x): "These files go back to how they were in a41c9e2."
+app/src/main/kotlin/com/bontecou/syncmd/ui/theme/M3Kit.kt: unlocalized English literal (1x): "VoxVault"
+app/src/main/kotlin/com/bontecou/syncmd/ui/theme/M3Kit.kt: unlocalized English literal (2x): "main · CodyBontecou/VoxVault"
+app/src/main/kotlin/com/bontecou/syncmd/ui/theme/M3Kit.kt: unlocalized English literal (1x): "thumbOffset"
+Literal guard: 45 new / 145 reviewed

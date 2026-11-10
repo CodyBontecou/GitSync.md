@@ -1,5 +1,6 @@
 package com.bontecou.syncmd.ui.screens
 
+import com.bontecou.syncmd.ui.util.quantityPhrase
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -107,9 +108,10 @@ fun GitStashesScreen(
         val c = M3.colors
         if (changes > 0) GitToneHero(c.inv, c.onInv) {
             GitKicker(stringResource(R.string.git_m3_set_aside), color = c.invAhead)
+            val changePhrase = quantityPhrase(R.plurals.git_m3_uncommitted_changes, changes)
             Row(Modifier.padding(top = 4.dp), verticalAlignment = Alignment.Bottom, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                Text("$changes", style = M3Type.display)
-                Text(pluralStringResource(R.plurals.git_m3_uncommitted_changes, changes), Modifier.padding(bottom = 10.dp), style = M3Type.lead)
+                Text(changePhrase.value, style = M3Type.display)
+                Text(changePhrase.label, Modifier.padding(bottom = 10.dp), style = M3Type.lead)
             }
             Text(stringResource(R.string.git_m3_stash_explain, summary?.head?.shortId ?: "HEAD"), Modifier.padding(top = 2.dp), style = M3Type.bodyMedium, color = c.invMeta)
             OutlinedTextField(message, { message = it }, Modifier.fillMaxWidth().padding(top = 20.dp).testTag("git-stash-message"),

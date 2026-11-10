@@ -39,7 +39,7 @@ internal fun LfsExtensionConfirmation(review: LfsExtensionReview, busy: Boolean,
         M3TextButton(stringResource(R.string.lfs_m3_cancel), onCancel, Modifier.fillMaxWidth())
     }) {
         Column(Modifier.fillMaxWidth().testTag("lfs-extension-review")) {
-            Text("${File(review.plan.path).name} · ${review.plan.branch?.removePrefix("refs/heads/").orEmpty()}".removeSuffix(" · "), style = M3Type.meta, color = c.onVar,
+            Text(listOfNotNull(File(review.plan.path).name, review.plan.branch?.removePrefix("refs/heads/")?.takeIf { it.isNotBlank() }).joinToString(" · "), style = M3Type.meta, color = c.onVar,
                 modifier = Modifier.padding(top = 4.dp))
             Text(review.patterns.joinToString("\n"), style = M3Type.code.copy(fontSize = 14.sp, lineHeight = 22.sp, fontWeight = FontWeight.SemiBold,
                 textDirection = TextDirection.Ltr), color = c.on,

@@ -240,7 +240,7 @@ fun SettingsScreen(
     if (showUnlock && unlock != null) UnlockSheet(unlock, null, onDismiss = { showUnlock = false })
 
     signOutReview?.let { review ->
-        val subject = review.login?.let { "⁦@$it⁩" } ?: stringResource(R.string.tide_settings_this_account)
+        val subject = review.login?.let { androidx.core.text.BidiFormatter.getInstance(androidx.compose.ui.platform.LocalLayoutDirection.current == androidx.compose.ui.unit.LayoutDirection.Rtl).unicodeWrap("@" + it) } ?: stringResource(R.string.tide_settings_this_account)
         M3Dialog(
             onDismissRequest = { githubViewModel.dismissSignOut(review) },
             title = stringResource(R.string.tide_settings_sign_out_title),

@@ -1,5 +1,6 @@
 package com.bontecou.syncmd.ui.adaptive
 
+import com.bontecou.syncmd.ui.util.SampleGitData
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -72,14 +73,14 @@ private fun BoardFrame(width: Int, pane: PreviewPane, info: AdaptiveInfo = Adapt
                     ChangesPaneContent("main · CodyBontecou/VoxVault", "VoxVault", 3, changesOnDevice(wide, 3), "Remote has no new commits · fetched 2m ago",
                         rows, selected = rows[if (pane == PreviewPane.Editor) 0 else 1].path, onOpen = {},
                         banner = if (pane == PreviewPane.Conflict) "Merging origin/main · 2 conflicts left" else null) {
-                        M3Button("Commit & push", {}, Modifier.fillMaxWidth(), size = M3ButtonSize.Large, trailingMeta = "↑3", enabled = pane != PreviewPane.Conflict)
+                        M3Button(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.shortcut_m3_commit_short), {}, Modifier.fillMaxWidth(), size = M3ButtonSize.Large, trailingMeta = "↑3", enabled = pane != PreviewPane.Conflict)
                     }
                 },
                 detail = {
                     when (pane) {
                         PreviewPane.Diff -> DiffPaneContent("ideas/voice-memo-pipeline.md", previewDiff, false, false, wide, DiffPaneStyle.Pane,
                             1 to 3, false, {}, {}, {}, {})
-                        PreviewPane.Editor -> EditorPaneFrame("2026-11-01.md", "daily · new file · +42", markdown = true, preview = false, onPreview = {},
+                        PreviewPane.Editor -> EditorPaneFrame(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_2026_11_01_md_4381fb10), androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_daily_new_file_42_31057cdf), markdown = true, preview = false, onPreview = {},
                             status = "Saved · 3 lines changed", dot = M3.colors.ok, canCommit = true, onCommit = {}) {
                             LineNumberedEditor("daily/2026-11-01.md", "# Sunday, Nov 1\n\n## Morning\nWalked the beach for forty minutes.\n\n## Today\n- [x] Ship Tide mockups\n- [ ] Port tokens to Compose\n- [ ] Record a Play Store demo\n",
                                 true, {}, setOf(1, 2, 3))
@@ -96,12 +97,12 @@ private fun ConflictPreview(tablet: Boolean) {
     val ours = "## Step 3\nTranscribe with on-device Whisper,\nthen tag by speaker."
     val theirs = "## Step 3\nTranscribe with the API,\nthen summarize to inbox."
     Column(Modifier.fillMaxSize().detailPane()) {
-        DetailHeader("voice-memo-pipeline.md", "Conflict 1 of 2 · ideas/") {
-            M3TextButton("Abort merge", {}, destructive = true)
+        DetailHeader(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_voice_memo_pipeline_md_2a5a57d3), androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_conflict_1_of_2_ideas_23283a20)) {
+            M3TextButton(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.adaptive_abort_merge), {}, destructive = true)
         }
         Column(Modifier.padding(start = 20.dp, end = 20.dp, top = 16.dp)) {
-            androidx.compose.material3.Text("Both sides edited “Step 3”.", style = com.bontecou.syncmd.ui.theme.M3Type.title, color = M3.colors.on)
-            androidx.compose.material3.Text("Pick the version to keep, or keep both and tidy up after.", style = com.bontecou.syncmd.ui.theme.M3Type.bodyMedium, color = M3.colors.onVar)
+            androidx.compose.material3.Text(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_both_sides_edited_step_3_077f9640), style = com.bontecou.syncmd.ui.theme.M3Type.title, color = M3.colors.on)
+            androidx.compose.material3.Text(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.git_m3_conflict_body), style = com.bontecou.syncmd.ui.theme.M3Type.bodyMedium, color = M3.colors.onVar)
         }
         ConflictSides(
             ConflictSideUi(if (tablet) "This tablet" else "This phone", "edited 40m ago", ConflictExcerpts.excerpt(ours, theirs), null),
@@ -109,8 +110,8 @@ private fun ConflictPreview(tablet: Boolean) {
             enabled = true, onKeepOurs = {}, onKeepTheirs = {}, modifier = Modifier.weight(1f),
         )
         DetailFooter {
-            M3Button("Keep both", {}, style = M3ButtonStyle.Outlined, size = M3ButtonSize.Medium)
-            M3Button("Edit by hand", {}, style = M3ButtonStyle.Outlined, size = M3ButtonSize.Medium)
+            M3Button(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.git_m3_keep_both), {}, style = M3ButtonStyle.Outlined, size = M3ButtonSize.Medium)
+            M3Button(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.git_m3_edit_by_hand), {}, style = M3ButtonStyle.Outlined, size = M3ButtonSize.Medium)
         }
     }
 }
@@ -161,7 +162,7 @@ private fun ConflictPreview(tablet: Boolean) {
                     files = listOf(CommitFile("daily/2026-11-01.md", true, false, true), CommitFile("ideas/voice-memo-pipeline.md", true, false, false),
                         CommitFile("old-inbox.md", true, true, false)),
                     counts = mapOf("daily/2026-11-01.md" to FileLineCount(42, 0), "ideas/voice-memo-pipeline.md" to FileLineCount(8, 3), "old-inbox.md" to FileLineCount(0, 17)),
-                    branch = "main", remote = "origin", message = "Daily note, voice memo pipeline steps", onMessage = {}, onToggle = { _, _ -> },
+                    branch = "main", remote = "origin", message = SampleGitData.DAILY_STEPS, onMessage = {}, onToggle = { _, _ -> },
                     enabled = true, canCommit = true, canPush = true, committing = false, pushing = false, onDiscard = {}, onCommitOnly = {}, onCommitAndPush = {},
                 )
             }

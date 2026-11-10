@@ -4,6 +4,12 @@ from extract_compose import xml_text, android_text
 import xml.etree.ElementTree as ET
 
 class CatalogTest(unittest.TestCase):
+    def test_override_cannot_translate_literal_pat_scopes(self):
+        source = 'Scopes: repo and user:email.'
+        row = {'source': source, 'localizations': {'es': 'Ámbitos: repositorio y usuario: correo electrónico.'}}
+        with self.assertRaisesRegex(ValueError, 'GitHub scope identifier changed'):
+            checked_translations(row, source, ['es'])
+
     def test_reordered_swift_arguments_keep_android_argument_types(self):
         self.assertEqual('%2$s / %1$s',adapt('%2$lld / %1$@','%@ : %lld','%1$s : %2$s'))
         self.assertEqual('%1$d',adapt('%lld','%lld','%1$d'))
@@ -45,6 +51,14 @@ class CatalogTest(unittest.TestCase):
         self.assertEqual(row['localizations'],checked_plurals(row,source,['de']))
         for forms in [{'one':'%1$d Datei'},{'one':'Datei','other':'Dateien'},{'one':'%1$d Datei','other':'%2$d Dateien'},{'one':'%1$d Datei','other':'%1$d Dateien','invalid':'%1$d'}]:
             with self.assertRaises(ValueError):checked_plurals({'source':source,'localizations':{'de':forms}},source,['de'])
+    def test_hebrew_requires_legacy_many_category_for_supported_android_versions(self):
+        source = {'one': '%1$d file', 'other': '%1$d files'}
+        row = {'source': source, 'localizations': {'he': {'one': '%1$d קובץ', 'two': '%1$d קבצים', 'other': '%1$d קבצים'}}}
+        with self.assertRaisesRegex(ValueError, 'lacks ICU categories'):
+            checked_plurals(row, source, ['he'])
+        row['localizations']['he']['many'] = '%1$d קבצים'
+        self.assertEqual(row['localizations'], checked_plurals(row, source, ['he']))
+
     def test_plurals_need_every_icu_category_android_selects(self):
         source={'one':'%1$d file','other':'%1$d files'}
         arabic={q:'ملفات %1$d' for q in ['zero','one','two','few','many','other']}

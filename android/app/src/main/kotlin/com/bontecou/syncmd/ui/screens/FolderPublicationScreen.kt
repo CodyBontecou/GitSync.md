@@ -200,7 +200,7 @@ fun FolderPublicationScreen(onBack: () -> Unit, onManageAccounts: () -> Unit,
                                     .padding(start = 20.dp, end = 16.dp, top = 12.dp, bottom = 12.dp).testTag("publication-resume-${saved.id}"),
                                     verticalAlignment = Alignment.CenterVertically) {
                                     Column(Modifier.weight(1f)) {
-                                        Text("${saved.account.login}/${saved.repositoryName}", style = M3Type.code.copy(fontSize = M3Type.bodyMedium.fontSize, fontWeight = FontWeight.SemiBold), color = c.on)
+                                        Text(listOf(saved.account.login, saved.repositoryName).joinToString("/"), style = M3Type.code.copy(fontSize = M3Type.bodyMedium.fontSize, fontWeight = FontWeight.SemiBold), color = c.on)
                                         Text(stringResource(phaseLabel(saved.phase)), style = M3Type.bodyMedium,
                                             color = if (saved.phase == FolderPublicationPhase.REVIEW) c.onVar else c.ahead)
                                         Text(addVaultFriendlyPath(context, saved.input.review.path, "/"), style = M3Type.meta, color = c.onVar)
@@ -300,7 +300,7 @@ fun FolderPublicationScreen(onBack: () -> Unit, onManageAccounts: () -> Unit,
                         Column(Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp)) {
                             Column(Modifier.fillMaxWidth().background(c.cLow, RoundedCornerShape(28.dp)).padding(horizontal = 20.dp, vertical = 16.dp)) {
                                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                                    Text("${record.account.login}/${record.repositoryName}", style = M3Type.code.copy(fontSize = M3Type.bodyMedium.fontSize, fontWeight = FontWeight.SemiBold),
+                                    Text(listOf(record.account.login, record.repositoryName).joinToString("/"), style = M3Type.code.copy(fontSize = M3Type.bodyMedium.fontSize, fontWeight = FontWeight.SemiBold),
                                         color = c.on, modifier = Modifier.weight(1f, fill = false))
                                     M3Badge(stringResource(if (record.isPrivate) R.string.add_meta_private else R.string.add_meta_public), if (record.isPrivate) M3Tone.Muted else M3Tone.Ahead)
                                 }
@@ -444,7 +444,7 @@ private fun PublicationAccounts(accounts: List<Pair<String, String>>, selectedId
                     .heightIn(min = 56.dp).padding(horizontal = 16.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                     M3RadioIndicator(id == selectedId)
                     M3Avatar(addVaultInitials(null, login), size = 32.dp)
-                    Text("@$login", style = M3Type.code.copy(fontSize = M3Type.bodyMedium.fontSize, fontWeight = FontWeight.Medium), color = c.on)
+                    Text("@" + login, style = M3Type.code.copy(fontSize = M3Type.bodyMedium.fontSize, fontWeight = FontWeight.Medium), color = c.on)
                 }
             }
         }

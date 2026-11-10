@@ -1,5 +1,7 @@
 package com.bontecou.syncmd.storage
 
+import com.bontecou.syncmd.ui.util.UiTextFailure
+import com.bontecou.syncmd.R
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.compose.runtime.Composable
@@ -122,7 +124,7 @@ class VaultPreferences(
     fun forget(repositoryId: String) = write(mapOf(pinnedKey(repositoryId) to null, nameKey(repositoryId) to null))
 
     private fun write(changes: Map<String, Any?>) {
-        check(storage.edit(changes)) { "Could not save vault preferences" }
+        if (!storage.edit(changes)) throw UiTextFailure(R.string.l10n_save_vault_preferences)
         local.value = decode(storage.all())
     }
 
@@ -157,7 +159,7 @@ class VaultPreferences(
                     null -> remove(key)
                     is Boolean -> putBoolean(key, value)
                     is String -> putString(key, value)
-                    else -> error("Unsupported vault preference")
+                    else -> throw UiTextFailure(R.string.l10n_unsupported_vault_preference)
                 }
             }
         }.commit()
@@ -205,7 +207,7 @@ fun VaultPreferences.collectAll(): State<Map<String, VaultPreference>> = all.col
 object NoBackgroundInclusion : VaultBackgroundInclusion {
     override val changes: Flow<*> = flowOf(Unit)
     override fun included(): Set<String> = emptySet()
-    override suspend fun review(repositoryId: String): RepositoryActionPlan = error("Background Sync is unavailable")
+    override suspend fun review(repositoryId: String): RepositoryActionPlan = throw UiTextFailure(R.string.l10n_background_unavailable)
     override suspend fun include(plan: RepositoryActionPlan, wifiOnly: Boolean?, externalPowerOnly: Boolean?) = Unit
     override suspend fun exclude(repositoryId: String) = Unit
 }

@@ -107,8 +107,8 @@
     <!-- Stashes -->
     <string name="git_m3_set_aside">Set aside</string>
     <plurals name="git_m3_uncommitted_changes">
-        <item quantity="one">uncommitted change</item>
-        <item quantity="other">uncommitted changes</item>
+        <item quantity="one">%1$s uncommitted change</item>
+        <item quantity="other">%1$s uncommitted changes</item>
     </plurals>
     <string name="git_m3_stash_explain">Stashing puts them away and resets your files to %1$s. Bring them back any time.</string>
     <string name="git_m3_message_optional">Message (optional)</string>

@@ -1066,7 +1066,7 @@ private fun PreviewFileList(dark: Boolean) = FilesPreviewFrame(dark) {
 private fun PreviewEditor(dark: Boolean) {
     SyncMdTheme(darkTheme = dark) {
         Column(Modifier.fillMaxSize().background(M3.colors.surface)) {
-            M3TopBar("2026-11-01.md", subtitle = "VoxVault / daily", onBack = {}, statusBarPadding = false) { M3TopBarTextAction("Commit", {}) }
+            M3TopBar(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_2026_11_01_md_4381fb10), subtitle = androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.ui_voxvault_daily_3b5d2f35), onBack = {}, statusBarPadding = false) { M3TopBarTextAction(androidx.compose.ui.res.stringResource(com.bontecou.syncmd.R.string.commit_screen), {}) }
             Box(Modifier.weight(1f)) {
                 LineNumberedEditor("daily/2026-11-01.md", "# Sunday, Nov 1\n\n## Morning\n- Walked the beach, 40 min\n- Recorded 3 voice memos\n  → see [[voice-memo-pipeline]]\n\n## Today\n- [x] Ship Tide mockups\n- [ ] Port tokens to Compose\n",
                     true, {}, setOf(4, 5, 6))

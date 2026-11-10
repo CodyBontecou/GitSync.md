@@ -19,12 +19,12 @@
     <string name="tide_vault_sub_ahead">Committed, not pushed yet</string>
     <string name="tide_vault_sub_empty">Add a note, then commit it from here.</string>
     <plurals name="tide_vault_changes_on_phone">
-        <item quantity="one">change on this phone</item>
-        <item quantity="other">changes on this phone</item>
+        <item quantity="one">%1$s change on this phone</item>
+        <item quantity="other">%1$s changes on this phone</item>
     </plurals>
     <plurals name="tide_vault_conflicts_to_resolve">
-        <item quantity="one">conflict to resolve</item>
-        <item quantity="other">conflicts to resolve</item>
+        <item quantity="one">%1$s conflict to resolve</item>
+        <item quantity="other">%1$s conflicts to resolve</item>
     </plurals>
     <string name="tide_vault_conflict_detail">The Git operation paused. Resolve each conflicted file to continue.</string>
     <string name="tide_vault_yours">↑%1$d yours</string>

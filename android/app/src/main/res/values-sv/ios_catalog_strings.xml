@@ -1,4 +1,4 @@
-<!-- Generated from the sibling iOS catalog by tools/localization/import_ios_catalog.py. -->
+<!-- Generated from the canonical Apple catalog and Android overrides by tools/localization/import_ios_catalog.py. -->
 <resources>
     <string name="account_alternative_exists" formatted="false">"En annan alternativ anslutning är redan sparad. Granska den innan du migrerar fler URL-inloggningsuppgifter."</string>
     <string name="account_api_error">"GitHub API-fel: HTTP %1$d"</string>
@@ -95,6 +95,342 @@
     <string name="account_token_invalid">"GitHub-token är ogiltig eller har gått ut (HTTP %1$d)"</string>
     <string name="account_updated_just_now" formatted="false">"just nu"</string>
     <string name="account_valid_branch" formatted="false">"Ange ett giltigt grennamn"</string>
+    <string name="adaptive_abort_merge" formatted="false">"Avbryt merge"</string>
+    <string name="adaptive_account" formatted="false">"Konto och inställningar"</string>
+    <string name="adaptive_badge_ahead">"↑%1$d"</string>
+    <string name="adaptive_badge_attention" formatted="false">"!"</string>
+    <string name="adaptive_badge_behind">"↓%1$d"</string>
+    <string name="adaptive_badge_both">"↓%1$d ↑%2$d"</string>
+    <string name="adaptive_badge_checking" formatted="false">"…"</string>
+    <string name="adaptive_badge_edited">"%1$d redigerade"</string>
+    <string name="adaptive_badge_in_sync" formatted="false">"✓"</string>
+    <string name="adaptive_branch_local_only">"%1$s · ingen fjärr"</string>
+    <string name="adaptive_branch_to_remote">"%1$s → %2$s"</string>
+    <string name="adaptive_cancel" formatted="false">"Avbryt"</string>
+    <string name="adaptive_commit_message" formatted="false">"– Verksamhetsmeddelande"</string>
+    <string name="adaptive_commit_only" formatted="false">"Endast commit"</string>
+    <string name="adaptive_commit_this_file" formatted="false">"Commita denna fil"</string>
+    <string name="adaptive_conflict" formatted="false">"konflikt"</string>
+    <string name="adaptive_conflict_position">"Konflikt %1$d av %2$d · %3$s"</string>
+    <string name="adaptive_cover_unfold" formatted="false">"Veckla ut för att läsa diffen bredvid förändringslistan."</string>
+    <string name="adaptive_discard_all" formatted="false">"Kassera"</string>
+    <string name="adaptive_edited" formatted="false">"redigerade"</string>
+    <string name="adaptive_include" formatted="false">"Inkludera"</string>
+    <string name="adaptive_keep_this_version" formatted="false">"Behåll den här versionen"</string>
+    <string name="adaptive_new_file" formatted="false">"ny fil"</string>
+    <string name="adaptive_no_changes" formatted="false">"Inga ändringar på den här enheten. Redigera en anteckning och den visas här."</string>
+    <string name="adaptive_position">"%1$d av %2$d"</string>
+    <string name="adaptive_pull" formatted="false">"Hämta"</string>
+    <string name="adaptive_pull_then_push" formatted="false">"Hämta, sedan skicka"</string>
+    <string name="adaptive_push" formatted="false">"Pusha"</string>
+    <string name="adaptive_rejected" formatted="false">"Fjärren har gått vidare. Hämta dess commits först, sedan dina."</string>
+    <string name="adaptive_review_first" formatted="false">"Granska först"</string>
+    <string name="adaptive_split_auto_commit" formatted="false">"Auto-commit när jag pausar i 2 minuter"</string>
+    <string name="adaptive_split_committed">"↑%1$d committade"</string>
+    <string name="adaptive_split_typing" formatted="false">"skriver…"</string>
+    <string name="adaptive_split_watching">"bevakar %1$s"</string>
+    <string name="adaptive_sync_all" formatted="false">"Synka alla"</string>
+    <string name="adaptive_sync_all_to_push">"Synka alla, %1$d att skicka"</string>
+    <string name="adaptive_this_tablet" formatted="false">"Denna surfplatta"</string>
+    <string name="adaptive_vaults" formatted="false">"Valv"</string>
+    <string name="adaptive_view" formatted="false">"Visa"</string>
+    <string name="adaptive_vs">"mot %1$s"</string>
+    <string name="add_access_body" formatted="false">"GitSync.md behöver åtkomst till delad lagring för att hantera riktiga Git arbetskopior i enhetsmappar. Slå på det under Android Inställningar, och välj sedan vilka mappar du vill använda."</string>
+    <string name="add_access_cancel" formatted="false">"Avbryt"</string>
+    <string name="add_access_enable" formatted="false">"Aktivera åtkomst"</string>
+    <string name="add_access_note" formatted="false">"Inte nu? Du kan fortsätta använda applagring."</string>
+    <string name="add_access_title" formatted="false">"Tillåt åtkomst till lokala mappar"</string>
+    <string name="add_accounts_add" formatted="false">"– Lägg till GitHub Kontonummer"</string>
+    <string name="add_accounts_browsing" formatted="false">"Bläddrar med det här kontot"</string>
+    <string name="add_accounts_cancel" formatted="false">"Avbryt"</string>
+    <string name="add_accounts_empty_body" formatted="false">"Lokala arkiv förblir tillgängliga."</string>
+    <string name="add_accounts_empty_title" formatted="false">"Inga anslutna konton"</string>
+    <string name="add_accounts_intro" formatted="false">"Välj kontot som används för att bläddra i GitHub. Varje arkiv har sitt eget konto; ändra det i Arkivanslutning."</string>
+    <string name="add_accounts_none_signed_in" formatted="false">"Inställningar · ingen inloggad"</string>
+    <string name="add_accounts_remove" formatted="false">"Ta bort inloggning"</string>
+    <string name="add_accounts_remove_body" formatted="false">"Arkiv som använder detta konto kommer att be dig logga in igen eller välja ett annat konto i Arkivanslutning. Dina lokala filer och commits förblir oförändrade."</string>
+    <string name="add_accounts_remove_title">"Ta bort %1$s?"</string>
+    <string name="add_accounts_title" formatted="false">"GitHub-konton"</string>
+    <string name="add_accounts_use" formatted="false">"Använd för att bläddra"</string>
+    <string name="add_added" formatted="false">"Tillagd"</string>
+    <string name="add_ago_days">"%1$d d sedan"</string>
+    <string name="add_ago_hours">"%1$dför h dagar"</string>
+    <string name="add_ago_minutes">"%1$dför m år sedan"</string>
+    <string name="add_ago_months">"%1$d månader sedan"</string>
+    <string name="add_ago_now" formatted="false">"just nu"</string>
+    <string name="add_ago_weeks">"%1$d veckor sedan"</string>
+    <string name="add_ago_years">"%1$d år sedan"</string>
+    <string name="add_auth_github" formatted="false">"GitHub"</string>
+    <string name="add_auth_none" formatted="false">"Inga"</string>
+    <string name="add_auth_saved" formatted="false">"sparad"</string>
+    <string name="add_auth_ssh" formatted="false">"SSH nyckel"</string>
+    <string name="add_auth_token" formatted="false">"Token"</string>
+    <string name="add_check_access_ro" formatted="false">"endast läsning"</string>
+    <string name="add_check_access_rw" formatted="false">"läsning · skrivning"</string>
+    <string name="add_check_add_on_github" formatted="false">"Lägg till repo på GitHub"</string>
+    <string name="add_check_again" formatted="false">"Kontrollera igen"</string>
+    <string name="add_check_app_callout">"GitHub App är installerat på %1$s men detta repo är inte valt. Lägg till det på GitHub, och kom sedan tillbaka."</string>
+    <string name="add_check_app_missing">"GitSync.md:s GitHub App är ännu inte på %1$s. Lägg till det på GitHub med detta repo, och kom sedan tillbaka."</string>
+    <string name="add_check_checking" formatted="false">"Kontrollerar…"</string>
+    <string name="add_check_clone" formatted="false">"Klona valv"</string>
+    <string name="add_check_clone_obsidian" formatted="false">"Klona till Obsidian"</string>
+    <string name="add_check_clones_to" formatted="false">"Klona till"</string>
+    <string name="add_check_head_blocked" formatted="false">"En sak behöver åtgärdas först."</string>
+    <string name="add_check_head_checking" formatted="false">"Kontrollerar\nditt valv."</string>
+    <string name="add_check_head_ready" formatted="false">"Ditt valv är redo."</string>
+    <string name="add_check_lfs_none" formatted="false">"inga"</string>
+    <string name="add_check_lfs_used" formatted="false">"används"</string>
+    <string name="add_check_measuring" formatted="false">"mäter"</string>
+    <string name="add_check_no_obsidian" formatted="false">"Ingen .obsidian/-mapp ännu"</string>
+    <string name="add_check_note_blocked" formatted="false">"Du har inte betalat något. Upplåsningen visas först när ditt valv klarar kontrollen."</string>
+    <string name="add_check_note_checking" formatted="false">"Endast metadata läses. Inga anteckningar laddas ned förrän du låser upp."</string>
+    <string name="add_check_note_ready" formatted="false">"Google Play visar slutpriset i din valuta innan du bekräftar."</string>
+    <string name="add_check_note_ready_unlocked" formatted="false">"Full Access är upplåst. Inget mer att betala."</string>
+    <string name="add_check_obsidian_found" formatted="false">"Obsidian-valv hittades"</string>
+    <string name="add_check_obsidian_git" formatted="false">"Obsidian Git-plugin konfigurerat"</string>
+    <string name="add_check_ok" formatted="false">"OK"</string>
+    <string name="add_check_pick_another" formatted="false">"Välj ett annat förråd"</string>
+    <string name="add_check_play_note" formatted="false">"Engångsköp via Google Play. Ingen prenumeration."</string>
+    <string name="add_check_price_once">"%1$s en gång"</string>
+    <string name="add_check_size_files" formatted="false">"Storlek &amp; filer"</string>
+    <string name="add_check_stat_access" formatted="false">"ÅTKOMST"</string>
+    <string name="add_check_stat_files" formatted="false">"Filer"</string>
+    <string name="add_check_stat_lfs" formatted="false">"Git LFS"</string>
+    <string name="add_check_stat_size" formatted="false">"STORLEK"</string>
+    <string name="add_check_step">"Steg %1$d av 3"</string>
+    <string name="add_check_sub_blocked" formatted="false">"GitSync.md kan läsa detta repo men kan inte pusha till det. Fixa det på GitHub, och kontrollera sedan igen."</string>
+    <string name="add_check_sub_checking" formatted="false">"Vi ser till att GitSync.md kan synkronisera det här arkivet innan du betalar något."</string>
+    <string name="add_check_sub_ready" formatted="false">"Allt ser bra ut. En kloning, så öppnar Obsidian det med historiken intakt."</string>
+    <string name="add_check_title" formatted="false">"Valvkontroll"</string>
+    <string name="add_check_unknown" formatted="false">"—"</string>
+    <string name="add_check_write_access" formatted="false">"Skrivåtkomst"</string>
+    <string name="add_clone" formatted="false">"Klona"</string>
+    <string name="add_clone_app_storage" formatted="false">"Använd appens lagring"</string>
+    <string name="add_clone_busy" formatted="false">"Klonar förråd"</string>
+    <string name="add_clone_bytes">"%1$s · %2$s"</string>
+    <string name="add_clone_cancel" formatted="false">"Avbryt"</string>
+    <string name="add_clone_checkout" formatted="false">"Hämtar filer"</string>
+    <string name="add_clone_choose_folder" formatted="false">"Välj en annan mapp"</string>
+    <string name="add_clone_cloned" formatted="false">"Klonat"</string>
+    <string name="add_clone_continue" formatted="false">"Fortsätt"</string>
+    <string name="add_clone_finishing" formatted="false">"Slutför"</string>
+    <string name="add_clone_finishing_body">"Lägger till %1$s till dina valv och kontrollerar dess Git LFS-filer."</string>
+    <string name="add_clone_lfs" formatted="false">"Kloningen är klar. Vissa Git LFS-filer behöver fortfarande granskas eller laddas ned. Klonen och dina lokala ändringar har bevarats."</string>
+    <string name="add_clone_lfs_review" formatted="false">"Granska Git LFS"</string>
+    <string name="add_clone_location" formatted="false">"Klonens plats"</string>
+    <string name="add_clone_new_folder" formatted="false">"Ny mapp"</string>
+    <string name="add_clone_nothing_yet" formatted="false">"Ingenting laddas ner förrän du trycker på Klona."</string>
+    <string name="add_clone_percent">"%1$d%%"</string>
+    <string name="add_clone_preparing" formatted="false">"Ansluter"</string>
+    <string name="add_clone_receiving" formatted="false">"Tar emot objekt"</string>
+    <string name="add_clone_register_failed" formatted="false">"Det klonade repositoryet kunde inte läggas till. Filerna behölls. Försök lägga till det igen eller anslut mappen igen från Lokala repositories."</string>
+    <string name="add_clone_register_retry" formatted="false">"Lägg till klonat repository"</string>
+    <string name="add_clone_resolving" formatted="false">"Löser deltas"</string>
+    <string name="add_clone_retry" formatted="false">"Försök igen"</string>
+    <string name="add_clone_saved_default" formatted="false">"Använd sparat standardval"</string>
+    <string name="add_clone_start" formatted="false">"Klona förråd"</string>
+    <string name="add_clone_title_cloning" formatted="false">"Klonar förråd"</string>
+    <string name="add_clone_title_done" formatted="false">"Klonat"</string>
+    <string name="add_clone_title_failed" formatted="false">"Kloningen misslyckades"</string>
+    <string name="add_clone_title_ready" formatted="false">"Klona förråd"</string>
+    <string name="add_clone_to">"→ %1$s"</string>
+    <string name="add_cloning_name">"Klonar %1$s"</string>
+    <string name="add_close" formatted="false">"Stäng"</string>
+    <string name="add_connected_added" formatted="false">"Lagt till i dina konton"</string>
+    <string name="add_connected_title" formatted="false">"GitHub-konto anslutet"</string>
+    <string name="add_continue" formatted="false">"Fortsätt"</string>
+    <string name="add_default_branch" formatted="false">"Standardgren"</string>
+    <string name="add_done" formatted="false">"Klar"</string>
+    <string name="add_github_hint" formatted="false">"Använder GitHub-kontots inloggning för github.com."</string>
+    <string name="add_group_notes" formatted="false">"Ser ut som anteckningar"</string>
+    <string name="add_group_other" formatted="false">"Allt annat"</string>
+    <string name="add_group_other_matching" formatted="false">"Allt annat som matchar"</string>
+    <string name="add_intro" formatted="false">"Hämta in ett arkiv du redan har, eller gör en mapp till ett."</string>
+    <string name="add_key_copied" formatted="false">"Offentlig nyckel kopierad"</string>
+    <string name="add_key_copy" formatted="false">"Kopiera publik nyckel"</string>
+    <string name="add_key_failed" formatted="false">"Kunde inte skapa en nyckel på den här telefonen. Använd en annan nyckel istället."</string>
+    <string name="add_key_hint" formatted="false">"Lägg till den offentliga nyckeln på din värd en gång. Den privata nyckeln stannar på den här telefonen."</string>
+    <string name="add_key_meta">"ed25519 · %1$s"</string>
+    <string name="add_key_other" formatted="false">"Använd en annan…"</string>
+    <string name="add_key_this_phone" formatted="false">"Använd den här telefonens nyckel"</string>
+    <string name="add_key_title" formatted="false">"Den här telefonens nyckel"</string>
+    <string name="add_local_add_selected" formatted="false">"Lägg till valda repositories"</string>
+    <string name="add_local_added" formatted="false">"Tillagda repositories"</string>
+    <string name="add_local_already" formatted="false">"Redan tillagt"</string>
+    <string name="add_local_clean" formatted="false">"ren"</string>
+    <string name="add_local_clone_instead" formatted="false">"Klona från GitHub istället"</string>
+    <string name="add_local_destination">"Mål: %1$s"</string>
+    <string name="add_local_detached" formatted="false">"Frikopplad HEAD eller ingen första commit"</string>
+    <string name="add_local_dirty" formatted="false">"Lokala ändringar"</string>
+    <string name="add_local_discovered" formatted="false">"Hittade repositories"</string>
+    <string name="add_local_files_deleted" formatted="false">"Lokala filer raderade"</string>
+    <string name="add_local_files_kept" formatted="false">"Lokala filer behållna"</string>
+    <string name="add_local_in">"i %1$s"</string>
+    <string name="add_local_interrupted" formatted="false">"Avbrutna kloningar"</string>
+    <string name="add_local_interrupted_body" formatted="false">"Försök lägga till den här klonen igen efter att du har granskat mappen och anslutningen. Befintliga filer behålls."</string>
+    <string name="add_local_intro" formatted="false">"Hitta Git arbetskopior redan på den här telefonen, som en Obsidian valv-mapp, och lägg till dem utan att klona igen. Att ta bort en post senare behåller dess filer."</string>
+    <string name="add_local_none_added" formatted="false">"Inga repositories har lagts till ännu."</string>
+    <string name="add_local_none_body">"Det fanns inget i %1$s som hade en .git mapp. Prova mappen som din anteckningsapp använder, eller klona från GitHub."</string>
+    <string name="add_local_none_title" formatted="false">"Inga fungerande kopior hittades"</string>
+    <string name="add_local_previous" formatted="false">"Tidigare tillagda"</string>
+    <string name="add_local_scan_app" formatted="false">"Skanna appmappar"</string>
+    <string name="add_local_scan_app_label" formatted="false">"appmappar"</string>
+    <string name="add_local_scan_app_sub" formatted="false">"Mappar GitSync.md är redan sparade"</string>
+    <string name="add_local_scan_device" formatted="false">"Skanna en mapp på enheten"</string>
+    <string name="add_local_scan_device_sub" formatted="false">"Välj en mapp, som Dokument eller Obsidian"</string>
+    <string name="add_local_scanning">"Skannar %1$s"</string>
+    <string name="add_local_staged">"Tillfällig kopia: %1$s"</string>
+    <string name="add_local_title" formatted="false">"Lokala arkiv"</string>
+    <string name="add_local_tracking_removed" formatted="false">"Git spårning borttagen · filer behållna"</string>
+    <string name="add_local_truncated" formatted="false">"Skanningen nådde gränsen för djup eller mappar. Vissa mappar skannades inte."</string>
+    <string name="add_location_body" formatted="false">"Välj en annan mapp när du klonar, eller ange en standard i Inställningar."</string>
+    <string name="add_location_head" formatted="false">"Standardplats"</string>
+    <string name="add_location_head_muted" formatted="false">"plats."</string>
+    <string name="add_location_label" formatted="false">"Nedladdningsplats"</string>
+    <string name="add_meta_lfs">"%1$s LFS"</string>
+    <string name="add_meta_private" formatted="false">"privat"</string>
+    <string name="add_meta_public" formatted="false">"– Offentligt"</string>
+    <string name="add_more_options" formatted="false">"Namn, branch och mapp"</string>
+    <string name="add_more_options_meta">"%1$s · %2$s"</string>
+    <string name="add_none_hint" formatted="false">"För offentliga repos. GitSync.md skickar inga autentiseringsuppgifter."</string>
+    <string name="add_not_signed_in" formatted="false">"Inte inloggad"</string>
+    <string name="add_owner_orgs" formatted="false">"Org."</string>
+    <string name="add_owner_starred" formatted="false">"Stjärnmärkta"</string>
+    <string name="add_owner_yours" formatted="false">"Dina"</string>
+    <string name="add_picker_accounts" formatted="false">"GitHub-konton"</string>
+    <string name="add_picker_empty_owner" formatted="false">"Inga repos här än."</string>
+    <string name="add_picker_refresh" formatted="false">"Uppdatera"</string>
+    <string name="add_picker_search" formatted="false">"Sök i arkiv"</string>
+    <string name="add_picker_starred_failed" formatted="false">"Kunde inte ladda dina favoritmarkerade repos."</string>
+    <string name="add_picker_title" formatted="false">"Välj ett arkiv"</string>
+    <string name="add_publish_account" formatted="false">"GitHub Kontonummer"</string>
+    <string name="add_publish_author_email" formatted="false">"Författarens e-post"</string>
+    <string name="add_publish_author_name" formatted="false">"Författarnamn"</string>
+    <string name="add_publish_cancel" formatted="false">"Avbryt"</string>
+    <string name="add_publish_check" formatted="false">"Kontrollera ursprunglig destination"</string>
+    <string name="add_publish_choose" formatted="false">"Välj en mapp"</string>
+    <string name="add_publish_confirm" formatted="false">"Publicera"</string>
+    <string name="add_publish_confirm_body">"Detta gör %1$s till ett %2$s-förråd och laddar upp den sparade första commiten. Håll appen öppen. Ett försök igen kontrollerar denna destination och skapar aldrig en andra commit."</string>
+    <string name="add_publish_confirm_dest">"%1$s · %2$s\n%3$s · %4$s · %5$s"</string>
+    <string name="add_publish_confirm_title" formatted="false">"Publicera den här sparade committen?"</string>
+    <string name="add_publish_continue" formatted="false">"Fortsätt sparad publicering"</string>
+    <string name="add_publish_creating" formatted="false">"Skapar förrådet…"</string>
+    <string name="add_publish_discard" formatted="false">"Kasta sparad granskning"</string>
+    <string name="add_publish_file_ignored">"%1$s · Ignorerad"</string>
+    <string name="add_publish_file_issue">"%1$s · %2$s"</string>
+    <string name="add_publish_file_large">"%1$s · Över 10 MiB"</string>
+    <string name="add_publish_file_regular">"%1$s · Vanlig fil"</string>
+    <string name="add_publish_file_sensitive">"%1$s · Känsligt filnamn"</string>
+    <string name="add_publish_files" formatted="false">"Filer"</string>
+    <string name="add_publish_intro" formatted="false">"Välj en mapp på den här telefonen, granska dess filer och spara en första commit. Publicering skapar sedan ett nytt förråd på din GitHub och laddar upp det."</string>
+    <string name="add_publish_keep_note" formatted="false">"Framsteg sparas när du lämnar. Om Android tar bort åtkomst, koppla åter samma mapp."</string>
+    <string name="add_publish_limits" formatted="false">"Dina filer stannar där de är. Upp till 10 MiB per fil, 10 000 filer och 256 MiB totalt. Git hoppar över tomma mappar."</string>
+    <string name="add_publish_manage_accounts" formatted="false">"Hantera konton"</string>
+    <string name="add_publish_message" formatted="false">"Meddelande för första commit"</string>
+    <string name="add_publish_no_account" formatted="false">"Logga in på GitHub för att publicera."</string>
+    <string name="add_publish_open" formatted="false">"Öppna arkiv"</string>
+    <string name="add_publish_original" formatted="false">"Ursprunglig mapp"</string>
+    <string name="add_publish_phase_created" formatted="false">"Arkiv skapat; uppladdning väntar"</string>
+    <string name="add_publish_phase_done" formatted="false">"Publicerad"</string>
+    <string name="add_publish_phase_prepared" formatted="false">"Lokal commit förberedd"</string>
+    <string name="add_publish_phase_published" formatted="false">"Commit publicerad; konfiguration väntar"</string>
+    <string name="add_publish_phase_review" formatted="false">"Granska filer och destination"</string>
+    <string name="add_publish_phase_unknown" formatted="false">"Skapandet av arkivet behöver granskas"</string>
+    <string name="add_publish_prepare" formatted="false">"Förbered lokal commit"</string>
+    <string name="add_publish_preparing" formatted="false">"Förbereder det lokala commitet…"</string>
+    <string name="add_publish_private" formatted="false">"Privat arkiv"</string>
+    <string name="add_publish_private_off" formatted="false">"Alla kan läsa de valda filerna och historiken."</string>
+    <string name="add_publish_private_on" formatted="false">"Bara personer du ger åtkomst kan läsa det."</string>
+    <string name="add_publish_progress_bytes">"%1$s / %2$s · håll appen öppen"</string>
+    <string name="add_publish_progress_keep">"%1$s · håll appen öppen"</string>
+    <string name="add_publish_public_body" formatted="false">"Alla kommer att kunna läsa de filer du publicerar. Kontrollera ditt urval för hemligheter, personliga uppgifter och filer som du inte kan dela."</string>
+    <string name="add_publish_public_confirm" formatted="false">"Välj offentlig"</string>
+    <string name="add_publish_public_title" formatted="false">"Gör det här arkivet offentligt?"</string>
+    <string name="add_publish_publish" formatted="false">"Publicera till GitHub"</string>
+    <string name="add_publish_reconnect" formatted="false">"Anslut ursprunglig mapp igen"</string>
+    <string name="add_publish_refresh" formatted="false">"Uppdatera filer"</string>
+    <string name="add_publish_registering" formatted="false">"Lägger till repot…"</string>
+    <string name="add_publish_reload" formatted="false">"Läs in sparade framsteg igen"</string>
+    <string name="add_publish_repo_name" formatted="false">"Arkivnamn"</string>
+    <string name="add_publish_save_review" formatted="false">"Spara granskning"</string>
+    <string name="add_publish_saved_commit">"Sparad commit: %1$s"</string>
+    <string name="add_publish_saved_progress" formatted="false">"Sparat förlopp"</string>
+    <string name="add_publish_selected">"Valda: %1$d · %2$s"</string>
+    <string name="add_publish_step">"Steg %1$d av 3"</string>
+    <string name="add_publish_stop" formatted="false">"Stoppa"</string>
+    <string name="add_publish_title" formatted="false">"Publicera en mapp"</string>
+    <string name="add_publish_unknown_note" formatted="false">"GitHub kan redan ha skapat repot. Kontrollera den ursprungliga destinationen. Inget andra repo skapas om du inte väljer att använda ett matchande tomt."</string>
+    <string name="add_publish_uploading" formatted="false">"Laddar upp den sparade committen…"</string>
+    <string name="add_rail_github" formatted="false">"GitHub"</string>
+    <string name="add_rail_phone" formatted="false">"den här telefonen"</string>
+    <string name="add_remote_file" formatted="false">"lokal"</string>
+    <string name="add_remote_git" formatted="false">"git://"</string>
+    <string name="add_remote_http" formatted="false">"HTTP"</string>
+    <string name="add_remote_https" formatted="false">"HTTPS"</string>
+    <string name="add_remote_intro" formatted="false">"GitLab, Gitea, Codeberg, din egen server."</string>
+    <string name="add_remote_label" formatted="false">"Distanthämtnings-URL"</string>
+    <string name="add_remote_name_invalid" formatted="false">"Använd ett namn utan / eller \\, och inte “.” eller “..”."</string>
+    <string name="add_remote_placeholder" formatted="false">"ssh://git@host/owner/repo.git"</string>
+    <string name="add_remote_ssh" formatted="false">"SSH"</string>
+    <string name="add_remote_title" formatted="false">"Valfri Git-värd"</string>
+    <string name="add_resume_meta">"%1$s · steg %2$d av 3 · sparad"</string>
+    <string name="add_resume_title" formatted="false">"Återuppta publicering"</string>
+    <string name="add_saved_hint" formatted="false">"Återanvänder den krypterade anslutningen som sparats för detta arkiv."</string>
+    <string name="add_sign_in_with" formatted="false">"Logga in med"</string>
+    <string name="add_signed_in_as">"inloggad som @%1$s"</string>
+    <string name="add_signin_back_accounts" formatted="false">"Tillbaka till konton"</string>
+    <string name="add_signin_body" formatted="false">"Klona ett arkiv, skriv i Obsidian eller en annan app och synkronisera med ett tryck."</string>
+    <string name="add_signin_busy" formatted="false">"Loggar in…"</string>
+    <string name="add_signin_eyebrow" formatted="false">"VALFRITT REPO. SYNKAT TILL ANDROID."</string>
+    <string name="add_signin_github" formatted="false">"Logga in med GitHub"</string>
+    <string name="add_signin_head_1" formatted="false">"Dina anteckningar."</string>
+    <string name="add_signin_head_2" formatted="false">"Riktig git."</string>
+    <string name="add_signin_head_3" formatted="false">"Alltid i takt."</string>
+    <string name="add_signin_rail" formatted="false">"Den här telefonen och GitHub möts vid en synkpunkt"</string>
+    <string name="add_signin_sample" formatted="false">"Prova exempelarkivet"</string>
+    <string name="add_signin_sample_busy" formatted="false">"Öppnar exempel…"</string>
+    <string name="add_signin_sample_hint" formatted="false">"Verklig Git, offline. Ingen konto behövs."</string>
+    <string name="add_signin_token" formatted="false">"Personlig åtkomsttoken"</string>
+    <string name="add_signin_waiting" formatted="false">"Avsluta på GitHub i webbläsarfliken. Du kommer tillbaka direkt."</string>
+    <string name="add_ssh_import_failed" formatted="false">"Kunde inte läsa den nyckelfilen."</string>
+    <string name="add_ssh_import_key" formatted="false">"Importera nyckelfil"</string>
+    <string name="add_test_clone" formatted="false">"Testa och klona"</string>
+    <string name="add_test_failed_auth" formatted="false">"Värden nekade denna inloggning. Kontrollera nyckeln eller token och dess åtkomst till repot."</string>
+    <string name="add_test_failed_branch">"Värden har ingen gren som heter %1$s."</string>
+    <string name="add_test_failed_missing" formatted="false">"Värden har inget repo på den här adressen."</string>
+    <string name="add_test_failed_network" formatted="false">"Kunde inte nå värden. Kontrollera adressen och din anslutning."</string>
+    <string name="add_test_host_key" formatted="false">"Bekräfta värdens SSH-nyckel, och tryck sedan på Testa &amp; klona igen."</string>
+    <string name="add_testing" formatted="false">"Testar inloggning…"</string>
+    <string name="add_title" formatted="false">"Lägg till ett valv"</string>
+    <string name="add_token_body" formatted="false">"Klistra in en GitHub-token med åtkomst till arkiv."</string>
+    <string name="add_token_create" formatted="false">"Skapa en token på GitHub"</string>
+    <string name="add_token_hide" formatted="false">"Dölj"</string>
+    <string name="add_token_hint" formatted="false">"Token är krypterad på denna telefon och skickas endast till denna värd."</string>
+    <string name="add_token_label" formatted="false">"Token"</string>
+    <string name="add_token_scopes" formatted="false">"Behörigheter: repo och user:email. Token är krypterad på denna telefon."</string>
+    <string name="add_token_secret" formatted="false">"Token"</string>
+    <string name="add_token_show" formatted="false">"Visa"</string>
+    <string name="add_token_sign_in" formatted="false">"Logga in"</string>
+    <string name="add_token_title" formatted="false">"Personlig åtkomsttoken"</string>
+    <string name="add_token_user" formatted="false">"Användarnamn"</string>
+    <string name="add_unlock_rail">"%1$s · %2$s · markerad, redo att klonas"</string>
+    <string name="add_unlock_rail_cd">"%1$s, markerad och redo att klonas från GitHub till Obsidian"</string>
+    <string name="add_unlock_rail_from" formatted="false">"GitHub"</string>
+    <string name="add_unlock_rail_plain">"%1$s · markerad, redo att klonas"</string>
+    <string name="add_unlock_rail_to" formatted="false">"Obsidian"</string>
+    <string name="add_url_hint" formatted="false">"HTTPS, SSH, git:// eller ägare/arkiv. Egen värd? Tryck på nyckeln."</string>
+    <string name="add_url_key" formatted="false">"Inloggningsalternativ för andra värdar"</string>
+    <string name="add_url_label" formatted="false">"Förråds-URL"</string>
+    <string name="add_url_placeholder" formatted="false">"https://github.com/owner/repo"</string>
+    <string name="add_url_section" formatted="false">"Eller klistra in en URL"</string>
+    <string name="add_way_github" formatted="false">"Klona från GitHub"</string>
+    <string name="add_way_github_sign_in" formatted="false">"Logga in för att välja bland dina repos"</string>
+    <string name="add_way_local" formatted="false">"Hitta kloner på denna telefon"</string>
+    <string name="add_way_local_sub" formatted="false">"Sök i delad lagring efter befintliga .git-mappar"</string>
+    <string name="add_way_open" formatted="false">"Öppna en arkivmapp"</string>
+    <string name="add_way_open_sub" formatted="false">"Välj ett Git-förråd med systemets mappväljare"</string>
+    <string name="add_way_publish" formatted="false">"Publicera en mapp"</string>
+    <string name="add_way_publish_sub" formatted="false">"Skapa ett nytt GitHub-arkiv från dina anteckningar"</string>
     <string name="automation_shortcut_label">"%1$s: %2$s"</string>
     <string name="background_allow_push" formatted="false">"Tillåt automatisk publicering"</string>
     <string name="background_binding">"Endast grenen %1$s som följer %2$s/%3$s. Ändrad gren, mapp, anslutning eller konto kräver ny granskning."</string>
@@ -261,12 +597,43 @@
     <string name="dialogs_success_title" formatted="false">"Klart"</string>
     <string name="dialogs_timestamp_unknown" formatted="false">"Okänd"</string>
     <string name="dialogs_warning_title" formatted="false">"Varning"</string>
+    <string name="diff_m3_binary" formatted="false">"Den här filen är inte text, så det finns inga rader att jämföra."</string>
+    <string name="diff_m3_changes" formatted="false">"Ändringar"</string>
+    <string name="diff_m3_deleted" formatted="false">"Den här filen raderades. Kassera återställer den från den senaste commit."</string>
+    <string name="diff_m3_discard" formatted="false">"Kassera"</string>
+    <string name="diff_m3_hunk">"%1$s · rad %2$d"</string>
+    <string name="diff_m3_hunk_line">"rad %1$d"</string>
+    <string name="diff_m3_load_failed" formatted="false">"Kunde inte läsa ändringar i den här filen."</string>
+    <string name="diff_m3_next" formatted="false">"Nästa fil"</string>
+    <string name="diff_m3_no_changes" formatted="false">"Inga ändringar sedan senaste commit."</string>
+    <string name="diff_m3_position">"%1$s · %2$d av %3$d"</string>
+    <string name="diff_m3_preview" formatted="false">"Förhandsvisa"</string>
+    <string name="diff_m3_previous" formatted="false">"Föregående fil"</string>
+    <string name="diff_m3_stats_a11y">"%1$d rader tillagda, %2$d borttagna"</string>
+    <string name="diff_m3_vs_last_commit">"mot senaste commit %1$s"</string>
+    <string name="diff_m3_vs_nothing" formatted="false">"ny fil · inga commits än"</string>
+    <string name="diff_m3_whole_file" formatted="false">"Hela filen"</string>
     <string name="discard_clear_staging" formatted="false">"Töm indexet"</string>
     <string name="discard_review_all" formatted="false">"Spårade ändringar och nya filer i listan nedan kastas bort permanent. Ignorerade filer behålls."</string>
     <string name="discard_review_empty" formatted="false">"Det finns inga ändringar att kasta."</string>
     <string name="discard_review_operation" formatted="false">"Detta avbryter också den aktiva Git-åtgärden."</string>
     <string name="discard_review_unborn" formatted="false">"Det finns ingen commit ännu. Detta tar bort de angivna filerna från indexet och behåller innehållet."</string>
     <string name="discovery_scanned">"%1$s har genomsökts. Välj arbetskopiorna som ska läggas till."</string>
+    <string name="editor_m3_commit" formatted="false">"Commit"</string>
+    <string name="editor_m3_markdown" formatted="false">"Markdown"</string>
+    <string name="editor_m3_md_bold" formatted="false">"Fet"</string>
+    <string name="editor_m3_md_code" formatted="false">"Kod"</string>
+    <string name="editor_m3_md_heading" formatted="false">"Rubrik"</string>
+    <string name="editor_m3_md_indent" formatted="false">"Indrag"</string>
+    <string name="editor_m3_md_link" formatted="false">"Länk"</string>
+    <string name="editor_m3_md_task" formatted="false">"Uppgift"</string>
+    <string name="editor_m3_not_saved" formatted="false">"Ej sparad"</string>
+    <string name="editor_m3_save_now" formatted="false">"Spara nu"</string>
+    <string name="editor_m3_saved" formatted="false">"sparad"</string>
+    <string name="editor_m3_saved_changed">"Sparad · %1$s"</string>
+    <string name="editor_m3_saving" formatted="false">"sparar ..."</string>
+    <string name="editor_m3_subtitle">"%1$s / %2$s"</string>
+    <string name="editor_m3_vault_ahead">"%1$s ↑%2$d"</string>
     <string name="file_clone_failure" formatted="false">"Det gick inte att klona det lokala arkivet. Kontrollera källmappen, lagringsåtkomsten och grenen. Befintliga mappar behölls."</string>
     <string name="file_clone_guidance" formatted="false">"Klona ett arkiv på enheten med lokal åtkomst. Ge först mappåtkomst i Inställningar för delad lagring."</string>
     <string name="file_delete_body" formatted="false">"Filen tas bort från denna enhet. Git visar den som borttagen om den spårades."</string>
@@ -289,15 +656,344 @@
     <string name="file_renamed" formatted="false">"Namn ändrat"</string>
     <string name="file_save_title" formatted="false">"Spara ändringar?"</string>
     <string name="file_saved" formatted="false">"Sparat"</string>
+    <string name="filehistory_m3_commits" formatted="false">"Commits"</string>
+    <string name="filehistory_m3_empty" formatted="false">"Inga commits inkluderar denna fil än."</string>
+    <string name="filehistory_m3_load_failed" formatted="false">"Kunde inte läsa denna fils historik."</string>
+    <string name="filehistory_m3_meta">"%1$s · %2$s · %3$s"</string>
+    <string name="filehistory_m3_subtitle">"Historik · %1$s"</string>
     <string name="files_folder" formatted="false">"Mapp"</string>
     <string name="files_hide_hidden" formatted="false">"Dölj dolda filer"</string>
+    <string name="files_m3_actions_for">"Åtgärder för %1$s"</string>
+    <string name="files_m3_age_days">"%1$d d sedan"</string>
+    <string name="files_m3_age_hours">"%1$dför h dagar"</string>
+    <string name="files_m3_age_minutes">"%1$dför m år sedan"</string>
+    <string name="files_m3_age_months">"%1$d månader sedan"</string>
+    <string name="files_m3_age_now" formatted="false">"just nu"</string>
+    <string name="files_m3_age_weeks">"%1$d veckor sedan"</string>
+    <string name="files_m3_age_years">"%1$d år sedan"</string>
+    <string name="files_m3_check_for_changes" formatted="false">"Sök efter ändringar"</string>
+    <string name="files_m3_delete" formatted="false">"Ta bort"</string>
+    <string name="files_m3_delete_folder_body" formatted="false">"Endast tomma mappar kan raderas här."</string>
+    <string name="files_m3_delete_folder_title" formatted="false">"Radera mapp?"</string>
+    <string name="files_m3_fetch" formatted="false">"Få"</string>
+    <string name="files_m3_fetch_cd">"Hämta %1$s från fjärranslutningen"</string>
+    <string name="files_m3_fetch_failed" formatted="false">"Kunde inte hämta den här filen från fjärranslutningen. Kontrollera din anslutning och inloggning, försök sedan igen."</string>
+    <string name="files_m3_fetched">"Hämtade %1$s."</string>
+    <string name="files_m3_folder_path" formatted="false">"Mappsökväg"</string>
+    <string name="files_m3_footnote" formatted="false">"Håll nedtryckt på valfri fil för att se åtgärder."</string>
+    <string name="files_m3_history" formatted="false">"Historik"</string>
+    <string name="files_m3_lfs_pointer">"LFS-pekare · %1$s på remote"</string>
+    <string name="files_m3_meta">"%1$s · %2$s"</string>
+    <string name="files_m3_meta_edited">"redigerad %1$s · %2$s"</string>
+    <string name="files_m3_new_file_cd" formatted="false">"– Ny fil"</string>
+    <string name="files_m3_open_in" formatted="false">"Öppna i…"</string>
+    <string name="files_m3_open_in_chooser">"Öppna %1$s i…"</string>
+    <string name="files_m3_open_in_failed" formatted="false">"Ingen app på denna telefon kan öppna filen."</string>
+    <string name="files_m3_rename" formatted="false">"– Ändra namn"</string>
+    <string name="files_m3_rename_field" formatted="false">"Namn"</string>
+    <string name="files_m3_tag_added" formatted="false">"A"</string>
+    <string name="files_m3_tag_conflict" formatted="false">"!"</string>
+    <string name="files_m3_tag_lfs" formatted="false">"LFS"</string>
+    <string name="files_m3_tag_modified" formatted="false">"M"</string>
     <string name="files_show_hidden" formatted="false">"Visa dolda filer"</string>
     <string name="folder_access_not_enabled" formatted="false">"Mappåtkomst aktiverades inte. Du kan fortsätta använda appens lagring."</string>
     <string name="folder_picker_unavailable" formatted="false">"Ingen mappväljare är tillgänglig på den här enheten"</string>
     <string name="folder_settings_unavailable" formatted="false">"Androids lagringsinställningar är inte tillgängliga. Appens lagring är fortfarande tillgänglig."</string>
     <string name="folder_unusable" formatted="false">"Den här mappen kunde inte användas"</string>
     <string name="git_fetch" formatted="false">"Få"</string>
+    <string name="git_m3_abort" formatted="false">"Avbryt"</string>
+    <string name="git_m3_abort_merge" formatted="false">"Avbryt merge"</string>
+    <string name="git_m3_abort_merge_body">"Lägger tillbaka %1$s där det var innan sammanslagningen. Val som gjorts hittills kastas."</string>
+    <string name="git_m3_abort_merge_title" formatted="false">"Avbryta denna sammanslagning?"</string>
+    <string name="git_m3_abort_rebase_ask" formatted="false">"Avbryt rebase…"</string>
+    <string name="git_m3_access_github" formatted="false">"GitHub Anslutning"</string>
+    <string name="git_m3_access_https" formatted="false">"HTTPS"</string>
+    <string name="git_m3_access_local" formatted="false">"lokal mapp"</string>
+    <string name="git_m3_access_ssh" formatted="false">"SSH nyckel"</string>
+    <string name="git_m3_age_days">"%1$dd"</string>
+    <string name="git_m3_age_hours">"%1$dh"</string>
+    <string name="git_m3_age_minutes">"%1$dm"</string>
+    <string name="git_m3_ago_days">"%1$d d sedan"</string>
+    <string name="git_m3_ago_hours">"%1$dför h dagar"</string>
+    <string name="git_m3_ago_minutes">"%1$dför m år sedan"</string>
+    <string name="git_m3_ago_now" formatted="false">"just nu"</string>
+    <string name="git_m3_ahead">"%1$d före"</string>
+    <string name="git_m3_annotated" formatted="false">"annoterad"</string>
+    <string name="git_m3_applied_toast">"Tillämpade %1$s. Stashen är fortfarande sparad."</string>
+    <string name="git_m3_apply" formatted="false">"Tillämpa"</string>
+    <string name="git_m3_apply_help" formatted="false">"Återför ändringarna och behåller stashen."</string>
+    <string name="git_m3_back_to_remote" formatted="false">"Tillbaka till Remote"</string>
+    <string name="git_m3_backup_at">"Säkerhetskopia: %1$s"</string>
+    <string name="git_m3_behind">"%1$d efter"</string>
+    <string name="git_m3_binary_side" formatted="false">"Den här filen kan inte visas som text. Välj en hel version."</string>
+    <string name="git_m3_both_edited_file" formatted="false">"Båda sidor redigerade den här filen."</string>
+    <string name="git_m3_both_edited_section">"Båda sidor redigerade “%1$s”."</string>
+    <string name="git_m3_both_moved" formatted="false">"Båda sidor har ändrats"</string>
+    <string name="git_m3_both_moved_body">"Dra bara fast-framåt, så det kan inte kombinera dessa. Merge behåller båda historiker. Rebase lägger dina %1$d commits ovanpå."</string>
+    <string name="git_m3_both_moved_headline" formatted="false">"Remote gick vidare medan du skrev."</string>
+    <string name="git_m3_both_sides_edited" formatted="false">"Båda sidor redigerade den här filen."</string>
+    <string name="git_m3_branch_name" formatted="false">"Grennamn"</string>
+    <string name="git_m3_branch_placeholder" formatted="false">"t.ex. draft/winter"</string>
+    <string name="git_m3_branches" formatted="false">"Grenar"</string>
+    <string name="git_m3_branches_stashes_tags" formatted="false">"Brancher, stashes och taggar"</string>
+    <string name="git_m3_cancel" formatted="false">"Avbryt"</string>
+    <string name="git_m3_cant_switch_note" formatted="false">"Ospårade filer som den andra grenen skulle skriva över blockerar också bytet. Inget har ändrats ännu."</string>
+    <string name="git_m3_cant_switch_title" formatted="false">"Kan inte byta ännu"</string>
+    <string name="git_m3_check_changes" formatted="false">"Sök efter ändringar"</string>
+    <string name="git_m3_commit_as" formatted="false">"Commit som"</string>
+    <string name="git_m3_commit_first" formatted="false">"Commit först"</string>
+    <string name="git_m3_commit_history" formatted="false">"Commit-historik"</string>
+    <string name="git_m3_commit_of">"commit %1$d av %2$d"</string>
+    <string name="git_m3_conflict_body" formatted="false">"Välj versionen att behålla, eller behåll båda och städa upp efteråt."</string>
+    <string name="git_m3_conflict_progress">"Konflikt %1$d av %2$d · %3$s"</string>
+    <string name="git_m3_connection" formatted="false">"Anslutning"</string>
+    <string name="git_m3_continue_retry_first" formatted="false">"Fortsätt rebase · försök först igen"</string>
+    <string name="git_m3_create" formatted="false">"Skapa"</string>
+    <string name="git_m3_create_tag" formatted="false">"Skapa tagg"</string>
+    <string name="git_m3_current" formatted="false">"Aktuell"</string>
+    <string name="git_m3_current_branch" formatted="false">"Aktuell branch"</string>
+    <string name="git_m3_delete" formatted="false">"Ta bort"</string>
+    <string name="git_m3_delete_branch_body">"Tar bort %1$s på den här telefonen. GitHub påverkas inte."</string>
+    <string name="git_m3_delete_branch_cd">"Radera branch %1$s"</string>
+    <string name="git_m3_delete_branch_title" formatted="false">"Radera branch?"</string>
+    <string name="git_m3_delete_files_sub" formatted="false">"Tar bort mappen från den här telefonen"</string>
+    <string name="git_m3_delete_force" formatted="false">"Tvinga"</string>
+    <string name="git_m3_delete_force_help" formatted="false">"Tvingar bort grenen även om dess commits aldrig har sammanslagits. De kan gå förlorade."</string>
+    <string name="git_m3_delete_normal" formatted="false">"Normal"</string>
+    <string name="git_m3_delete_normal_help" formatted="false">"Tar endast bort grenen om dess commits redan har sammanslagits."</string>
+    <string name="git_m3_delete_tag" formatted="false">"Ta bort tagg"</string>
+    <string name="git_m3_delete_tag_body">"Taggen försvinner på den här telefonen. Commit %1$s förblir, och en kopia som redan pushats till GitHub påverkas inte."</string>
+    <string name="git_m3_delete_tag_cd">"Radera tagg %1$s"</string>
+    <string name="git_m3_delete_tag_title">"Ta bort ”%1$s”?"</string>
+    <string name="git_m3_deleted_here_edited_there" formatted="false">"Den här telefonen raderade det. Den andra sidan redigerade det."</string>
+    <string name="git_m3_deleted_on_phone" formatted="false">"Raderad på den här telefonen."</string>
+    <string name="git_m3_deleted_on_remote">"Raderad på %1$s."</string>
+    <string name="git_m3_detached">"Kopplades bort vid %1$s"</string>
+    <string name="git_m3_discard" formatted="false">"Kassera ändringar"</string>
+    <string name="git_m3_disconnected" formatted="false">"Frånkopplad"</string>
+    <string name="git_m3_drop" formatted="false">"Släng"</string>
+    <string name="git_m3_drop_cd">"Släpp %1$s"</string>
+    <string name="git_m3_drop_help" formatted="false">"Tar bort stashen utan att tillämpa den."</string>
+    <string name="git_m3_dropped_toast">"Släppt %1$s."</string>
+    <string name="git_m3_edit_by_hand" formatted="false">"Redigera för hand"</string>
+    <string name="git_m3_edit_connection" formatted="false">"Redigera anslutning"</string>
+    <string name="git_m3_edited_ago">"redigerad %1$s"</string>
+    <string name="git_m3_edited_here_deleted_there" formatted="false">"Den här telefonen redigerade det. Den andra sidan tog bort det."</string>
+    <string name="git_m3_fetch_again" formatted="false">"Hämta igen"</string>
+    <string name="git_m3_fetch_and_push">"Hämta och skjut: %1$s"</string>
+    <string name="git_m3_fetch_hint" formatted="false">"för att se nya grenar som har skickats från dina andra enheter."</string>
+    <string name="git_m3_fetch_review_again" formatted="false">"Hämta och granska igen"</string>
+    <string name="git_m3_fetch_sub" formatted="false">"Kontrollera GitHub för nya commits"</string>
+    <string name="git_m3_fetched">"hämtad %1$s"</string>
+    <string name="git_m3_finishing_merge" formatted="false">"Avslutar sammanslagningen…"</string>
+    <string name="git_m3_folder_location" formatted="false">"Mappen och dess plats"</string>
+    <string name="git_m3_from" formatted="false">"Från"</string>
+    <string name="git_m3_from_remote">"↓%1$d från remote"</string>
+    <string name="git_m3_from_who">" från %1$s"</string>
+    <string name="git_m3_github" formatted="false">"GitHub"</string>
+    <string name="git_m3_hand_edited_markers" formatted="false">"Konfliktmarkörer finns fortfarande i filen. Ta bort dem i redigeraren och kom sedan tillbaka."</string>
+    <string name="git_m3_hand_edited_ready" formatted="false">"Redigerad för hand. Använd din redigerade fil, eller välj en sida att ersätta den med."</string>
+    <string name="git_m3_how" formatted="false">"Hur"</string>
+    <string name="git_m3_in_sync" formatted="false">"Synkat"</string>
+    <string name="git_m3_in_sync_headline" formatted="false">"Denna telefon matchar fjärren."</string>
+    <string name="git_m3_in_the_way" formatted="false">"I vägen"</string>
+    <string name="git_m3_in_this_vault" formatted="false">"I detta valv"</string>
+    <string name="git_m3_its_remotes" formatted="false">"Dess fjärrkopplingar"</string>
+    <string name="git_m3_keep_backup" formatted="false">"Behåll en verifierad säkerhetskopia"</string>
+    <string name="git_m3_keep_backup_sub" formatted="false">"kopia och ZIP av .git-mappen"</string>
+    <string name="git_m3_keep_both" formatted="false">"Behåll båda"</string>
+    <string name="git_m3_kept_edit" formatted="false">"Lösts manuellt."</string>
+    <string name="git_m3_kept_local" formatted="false">"Behöll den återspelade lokala commit."</string>
+    <string name="git_m3_kept_upstream" formatted="false">"Behöll upstream-versionen."</string>
+    <string name="git_m3_lfs" formatted="false">"Stora filer (LFS)"</string>
+    <string name="git_m3_lfs_none" formatted="false">"används inte"</string>
+    <string name="git_m3_lfs_value">"%1$s · %2$d låst"</string>
+    <string name="git_m3_light" formatted="false">"lätt"</string>
+    <string name="git_m3_local_only" formatted="false">"endast lokalt"</string>
+    <string name="git_m3_manage_vault" formatted="false">"Hantera valv"</string>
+    <string name="git_m3_marker_end" formatted="false">"Slut på båda versionerna"</string>
+    <string name="git_m3_marker_ours" formatted="false">"Den här telefonens version"</string>
+    <string name="git_m3_marker_theirs">"%1$s\'s version"</string>
+    <string name="git_m3_merge" formatted="false">"Sammanfoga"</string>
+    <string name="git_m3_merge_and_push" formatted="false">"Slå samman och pusha"</string>
+    <string name="git_m3_merge_author">"Mergesförfattare: %1$s"</string>
+    <string name="git_m3_merge_both_body" formatted="false">"Dina commits behåller sina ID. Eftersom båda sidorna har flyttat gör detta en merge-commit. Filer som redigerats på båda sidor kan kräva att du väljer."</string>
+    <string name="git_m3_merge_current_body" formatted="false">"Båda sidor matchar. Det finns inget att merge."</string>
+    <string name="git_m3_merge_ff_body" formatted="false">"Endast den fjärranslutna flyttade, vilket gör att din gren snabbframåtförs. Ingenting nytt är commitat."</string>
+    <string name="git_m3_merge_in_progress" formatted="false">"Merge pågår"</string>
+    <string name="git_m3_merge_into">"Slå ihop till %1$s"</string>
+    <string name="git_m3_merge_locally" formatted="false">"Slå samman lokalt"</string>
+    <string name="git_m3_merge_message">"Merge %1$s"</string>
+    <string name="git_m3_merge_named">"Merge %1$s"</string>
+    <string name="git_m3_merge_pause_note" formatted="false">"Om båda grenar ändrade samma fil, pausas sammanslagningen så att du kan välja vad som ska behållas i Git."</string>
+    <string name="git_m3_merge_push_body">"Uppdaterar %1$s med %2$s, sedan pushar till %3$s. Konflikter stoppar pushen. Om fjärren inte bekräftar det, stannar sammanslagningen på den här telefonen och du kan försöka igen."</string>
+    <string name="git_m3_merge_push_only_body" formatted="false">"Inget nytt på fjärren. Sammanslagning och push skickar dina commits."</string>
+    <string name="git_m3_merge_push_title" formatted="false">"Slå ihop och push?"</string>
+    <string name="git_m3_merge_ready" formatted="false">"Alla konflikter lösta. Avsluta sammanslagningen."</string>
+    <string name="git_m3_merge_reviewing" formatted="false">"Hämtar och granskar vad fjärren har…"</string>
+    <string name="git_m3_merge_sub" formatted="false">"Hämta, granska, sedan slå ihop"</string>
+    <string name="git_m3_merging">"%1$s · slår ihop %2$s"</string>
+    <string name="git_m3_message_optional" formatted="false">"Meddelande (valfritt)"</string>
+    <string name="git_m3_more_files">"%1$d mer"</string>
+    <string name="git_m3_move_repository" formatted="false">"Flytta arkiv"</string>
+    <string name="git_m3_move_sub" formatted="false">"Välj en ny mapp"</string>
+    <string name="git_m3_never_fetched" formatted="false">"inte hämtad än"</string>
+    <string name="git_m3_new_branch" formatted="false">"Ny gren"</string>
+    <string name="git_m3_new_on_remote" formatted="false">"Ny på fjärran"</string>
+    <string name="git_m3_new_on_remote_body">"Dra snabbspår framåt %1$s för att matcha. Ingenting på den här telefonen går förlorat."</string>
+    <string name="git_m3_new_on_remote_headline" formatted="false">"Fjärrarkivet har commits som du saknar."</string>
+    <string name="git_m3_new_tag" formatted="false">"Ny tagg"</string>
+    <string name="git_m3_no_backup_warning" formatted="false">"Utan säkerhetskopiering raderas den här telefonens Git-historik permanent. Commitar som redan finns på GitHub är säkra."</string>
+    <string name="git_m3_no_conflicts" formatted="false">"Inga konflikter kvar."</string>
+    <string name="git_m3_no_stashes" formatted="false">"Inga stashar sparade."</string>
+    <string name="git_m3_no_upstream" formatted="false">"endast lokal · ingen upstream"</string>
+    <string name="git_m3_no_upstream_body" formatted="false">"Välj en upstream så att pull och push vet vart de ska gå."</string>
+    <string name="git_m3_no_upstream_headline" formatted="false">"Den här grenen spårar ännu ingen fjärrgren."</string>
+    <string name="git_m3_no_upstream_kicker" formatted="false">"Ingen upstream"</string>
+    <string name="git_m3_none" formatted="false">"Inga"</string>
+    <string name="git_m3_not_set" formatted="false">"Inte angivet"</string>
+    <string name="git_m3_not_tracked">"%1$s · inte spårad"</string>
+    <string name="git_m3_notes_attachments_any" formatted="false">"Dina anteckningar och bilagor"</string>
+    <string name="git_m3_nothing_new">"inget %1$s inte har"</string>
+    <string name="git_m3_nothing_to_stash" formatted="false">"Inget att lägga undan."</string>
+    <string name="git_m3_nothing_to_stash_body" formatted="false">"Inga lokala ändringar på denna telefon. Redigera en anteckning och kom tillbaka för att lägga den åt sidan."</string>
+    <string name="git_m3_ok" formatted="false">"OK"</string>
+    <string name="git_m3_on_this_phone" formatted="false">"På denna telefon"</string>
+    <string name="git_m3_only_on">"Endast på %1$s"</string>
+    <string name="git_m3_open" formatted="false">"Öppna"</string>
+    <string name="git_m3_open_rebase" formatted="false">"Öppna rebase"</string>
+    <string name="git_m3_open_sub" formatted="false">"Tillbaka till valvet"</string>
+    <string name="git_m3_plain_folder">"%1$s är nu en vanlig mapp."</string>
+    <string name="git_m3_plain_folder_body" formatted="false">"Dina anteckningar är där de var. GitSync.md synkroniserar inte längre denna mapp."</string>
+    <string name="git_m3_pop" formatted="false">"Pop"</string>
+    <string name="git_m3_pop_help" formatted="false">"Återför ändringarna och tar bort stashen."</string>
+    <string name="git_m3_popped_toast">"Poppar %1$s. Dina ändringar är tillbaka."</string>
+    <string name="git_m3_previously_added" formatted="false">"Tidigare tillagda"</string>
+    <string name="git_m3_pull_n">"Hämta ↓%1$d"</string>
+    <string name="git_m3_pull_sub" formatted="false">"Endast fast-forward"</string>
+    <string name="git_m3_pull_sub_blocked" formatted="false">"Bara fast-forward. Kan inte nu: båda sidor har ändrats"</string>
+    <string name="git_m3_pulls_from">"%1$s hämtar från och skickar till"</string>
+    <string name="git_m3_push" formatted="false">"Pusha"</string>
+    <string name="git_m3_push_n">"Skicka ↑%1$d"</string>
+    <string name="git_m3_push_tag_cd">"Skicka %1$s till GitHub"</string>
+    <string name="git_m3_push_to">"skicka till %1$s"</string>
+    <string name="git_m3_ready_to_push" formatted="false">"Redo att pusha"</string>
+    <string name="git_m3_ready_to_push_body">"Skickar dina %1$d commits. Ingenting på fjärrservern ändras förrän den accepterar dem."</string>
+    <string name="git_m3_ready_to_push_headline" formatted="false">"Fjärrservern har inte sett dina commits än."</string>
+    <string name="git_m3_rebase" formatted="false">"Rebase"</string>
+    <string name="git_m3_rebase_abort_body">"Lägger tillbaka %1$s på %2$s. Redigeringar och konflikthanteringar gjorda under denna rebase kastas bort."</string>
+    <string name="git_m3_rebase_abort_title" formatted="false">"Avbryta denna ombasering?"</string>
+    <string name="git_m3_rebase_aborted" formatted="false">"Ombasering avbruten"</string>
+    <string name="git_m3_rebase_aborted_headline" formatted="false">"Tillbaka vid utgångspunkten."</string>
+    <string name="git_m3_rebase_begin_title" formatted="false">"Skriva om lokala commits?"</string>
+    <string name="git_m3_rebase_blocked_body" formatted="false">"Filer som inte finns i Git skulle skrivas över av nästa commit. Flytta dem till en säker plats, uppdatera, och försök igen. Commits som redan har återspelats bevaras."</string>
+    <string name="git_m3_rebase_blocked_headline" formatted="false">"Rebase väntar på en blockerad checkout."</string>
+    <string name="git_m3_rebase_conflicts">"Konflikter · %1$d av %2$d lösta"</string>
+    <string name="git_m3_rebase_conflicts_headline" formatted="false">"Rebase stannade vid filer som båda sidor har redigerat."</string>
+    <string name="git_m3_rebase_done_headline" formatted="false">"Rebase är klar."</string>
+    <string name="git_m3_rebase_in_progress" formatted="false">"Ombasering pågår"</string>
+    <string name="git_m3_rebase_initial" formatted="false">"Hämta först för att se vad en rebase skulle flytta."</string>
+    <string name="git_m3_rebase_restored">"%1$s återställd till %2$s · ↑%3$d ↓%4$d"</string>
+    <string name="git_m3_rebase_review_body">"Återspelar dina commits ovanpå %1$s. Deras ID kan ändras. Merge commits behåller sin form. Ingenting pushas."</string>
+    <string name="git_m3_rebase_sides_note">"Vid en rebase är %1$s Git’s “vårt” och din %2$s är “deras”."</string>
+    <string name="git_m3_rebase_skip_body">"Tar bort %1$s från återspelningen. Kontrollera dess ändringar först. Detta kan ta bort ditt arbete från den nya historiken."</string>
+    <string name="git_m3_rebase_skip_title" formatted="false">"Hoppa över denna lokala commit?"</string>
+    <string name="git_m3_rebase_step">"Stoppad vid commit %1$d av %2$d."</string>
+    <string name="git_m3_rebase_stopped" formatted="false">"Rebasen väntar på dig."</string>
+    <string name="git_m3_rebase_sub" formatted="false">"Återuppspela dina commits ovanpå · återuppta en rebase"</string>
+    <string name="git_m3_rebase_theirs">"Ny på %1$s · %2$d"</string>
+    <string name="git_m3_rebase_yours">"Dina commits att återuppspela · %1$d"</string>
+    <string name="git_m3_refresh_branches" formatted="false">"Uppdatera grenar"</string>
+    <string name="git_m3_remote" formatted="false">"Remote"</string>
+    <string name="git_m3_remote_access">"hämta och pusha · %1$s"</string>
+    <string name="git_m3_remote_pill" formatted="false">"remote"</string>
+    <string name="git_m3_remote_reading" formatted="false">"Läser den här valvets fjärr…"</string>
+    <string name="git_m3_remove" formatted="false">"Ta bort"</string>
+    <string name="git_m3_remove_from_app" formatted="false">"Ta bort från appen"</string>
+    <string name="git_m3_remove_from_app_body" formatted="false">"Mappen och dess Git-historik stannar på den här telefonen. Lägg tillbaka den när som helst."</string>
+    <string name="git_m3_remove_from_app_sub" formatted="false">"Behåller filer och Git. Lägg tillbaka den när som helst."</string>
+    <string name="git_m3_remove_from_app_title">"Ta bort %1$s från appen?"</string>
+    <string name="git_m3_remove_tracking_sub" formatted="false">"Behåller dina filer. Tar bort Git från den här mappen."</string>
+    <string name="git_m3_replayed_commit" formatted="false">"återuppspelad commit"</string>
+    <string name="git_m3_replayed_label">"Uppspelad lokalt commit · %1$s"</string>
+    <string name="git_m3_resolve" formatted="false">"Lösning"</string>
+    <string name="git_m3_resolve_conflict" formatted="false">"Lös konflikt"</string>
+    <string name="git_m3_result_current" formatted="false">"Ingenting nytt att slå samman."</string>
+    <string name="git_m3_result_current_kicker" formatted="false">"Uppdaterad"</string>
+    <string name="git_m3_result_local_only" formatted="false">"Resultatet finns bara på den här telefonen. Tryck på Push när du är redo."</string>
+    <string name="git_m3_result_merged" formatted="false">"Den andra sidans ändringar är med."</string>
+    <string name="git_m3_result_merged_kicker" formatted="false">"Sammanfogat"</string>
+    <string name="git_m3_result_push_confirmed" formatted="false">"GitHub bekräftade detta commit."</string>
+    <string name="git_m3_result_push_unconfirmed" formatted="false">"Fjärren bekräftade inte pushen. Försök igen skickar samma commit utan att slå samman igen."</string>
+    <string name="git_m3_result_saved_locally" formatted="false">"Merge-commit sparad lokalt."</string>
+    <string name="git_m3_result_unconfirmed" formatted="false">"Sparat här. Push slutfördes inte."</string>
+    <string name="git_m3_result_unconfirmed_kicker" formatted="false">"Sammanfogad · ej skickad"</string>
+    <string name="git_m3_retry_blocked" formatted="false">"Försök med blockerad commit igen"</string>
+    <string name="git_m3_retry_push" formatted="false">"Försök pusha sparad commit igen"</string>
+    <string name="git_m3_return_to_git" formatted="false">"Tillbaka till Git"</string>
+    <string name="git_m3_review_folder" formatted="false">"Granska återställd mapp"</string>
+    <string name="git_m3_reviewed_plan" formatted="false">"Granskad plan"</string>
+    <string name="git_m3_saved" formatted="false">"sparad"</string>
+    <string name="git_m3_saved_in" formatted="false">"Sparad i"</string>
+    <string name="git_m3_set_aside" formatted="false">"Lägg åt sidan"</string>
+    <string name="git_m3_set_upstream" formatted="false">"Ställ in upstream"</string>
+    <string name="git_m3_show_more">"Visa %1$d mer"</string>
+    <string name="git_m3_skip_commit" formatted="false">"Hoppa över commit"</string>
+    <string name="git_m3_skip_commit_ask" formatted="false">"Hoppa över commit…"</string>
+    <string name="git_m3_staged" formatted="false">"förberedd"</string>
+    <string name="git_m3_starts_from">"börjar från %1$s på %2$s · du stannar på %2$s"</string>
+    <string name="git_m3_stash_changes" formatted="false">"Lägg undan ändringar"</string>
+    <string name="git_m3_stash_explain">"Att lägga undan dem sparar dem och återställer dina filer till %1$s. Ta tillbaka dem när som helst."</string>
+    <string name="git_m3_stash_local_note" formatted="false">"Lagringar stannar på den här telefonen. De skickas aldrig till GitHub."</string>
+    <string name="git_m3_stash_on">"På %1$s"</string>
+    <string name="git_m3_stash_placeholder" formatted="false">"Vad höll du på med?"</string>
+    <string name="git_m3_stashed_older" formatted="false">"Den äldre är nu stash@{1}."</string>
+    <string name="git_m3_stashes" formatted="false">"Stashes"</string>
+    <string name="git_m3_stay_on">"Stanna på %1$s"</string>
+    <string name="git_m3_stays_on_disk" formatted="false">"Stannar på disken"</string>
+    <string name="git_m3_stop_tracking" formatted="false">"Sluta spåra…"</string>
+    <string name="git_m3_strategy_always" formatted="false">"Använd alltid merge-commit"</string>
+    <string name="git_m3_strategy_always_help">"Skapar en merge-commit även när %1$s bara kan gå framåt."</string>
+    <string name="git_m3_strategy_ff" formatted="false">"Endast fast-forward"</string>
+    <string name="git_m3_strategy_ff_help">"Slår bara ihop när %1$s är direkt framför %2$s. Behåller historiken i en rak linje."</string>
+    <string name="git_m3_strategy_prefer" formatted="false">"Fast-forward om möjligt"</string>
+    <string name="git_m3_strategy_prefer_help">"Flyttar %1$s framåt när det går. Skapar annars en merge-commit."</string>
+    <string name="git_m3_subtitle">"%1$s · %2$s"</string>
+    <string name="git_m3_switch" formatted="false">"Byt"</string>
+    <string name="git_m3_tag_kind_help" formatted="false">"Med ett meddelande blir det annoterat. Lämna det tomt för en lätt tagg."</string>
+    <string name="git_m3_tag_name" formatted="false">"Taggnamn"</string>
     <string name="git_m3_tag_name_invalid" formatted="false">"Ange ett giltigt Git-taggnamn."</string>
+    <string name="git_m3_tag_pushed">"Pushade %1$s."</string>
+    <string name="git_m3_tag_target">"på %1$s · senaste på %2$s"</string>
+    <string name="git_m3_tags" formatted="false">"Taggar"</string>
+    <string name="git_m3_tags_note" formatted="false">"Commit &amp; push skickar inte taggar. Push varje en när du vill ha den på GitHub. Delete tar bara bort en tagg från den här telefonen."</string>
+    <string name="git_m3_the_named_remote">"Den %1$s fjärranslutningen"</string>
+    <string name="git_m3_the_remote" formatted="false">"remote"</string>
+    <string name="git_m3_this_phone" formatted="false">"den här telefonen"</string>
+    <string name="git_m3_tracking">"spårar %1$s"</string>
+    <string name="git_m3_tracking_backup_body" formatted="false">"GitSync.md kontrollerar en kopia och en ZIP av Git-data, och kopplar sedan bort den här mappen. Dina arbetsfiler förblir på plats."</string>
+    <string name="git_m3_tracking_backup_title" formatted="false">"Ta bort spårning och behåll en backup?"</string>
+    <string name="git_m3_tracking_cap">"Spårar %1$s"</string>
+    <string name="git_m3_tracking_permanent_body" formatted="false">"Endast de granskade .git-data tas bort. Dina arbetsfiler förblir på plats, men den här telefonens Git-historik kan inte återhämtas utan en annan kopia."</string>
+    <string name="git_m3_tracking_removed" formatted="false">"Spårning borttagen"</string>
+    <string name="git_m3_tracking_removed_backup_toast" formatted="false">"Git-spårning borttagen. Verifierad backup sparad."</string>
+    <string name="git_m3_tracking_removed_kept" formatted="false">"Git-spårning borttagen · arbetsfiler behållna"</string>
+    <string name="git_m3_tracking_review_body" formatted="false">"Dina filer stannar där de är. Git’s kopia av deras historik tas bort från den här mappen."</string>
+    <string name="git_m3_tracking_stale" formatted="false">"Mappen har ändrats sedan du granskade den. Avbryt och granska igen."</string>
+    <string name="git_m3_uncommitted_plain_any" formatted="false">"Okommitade ändringar, som vanliga filer"</string>
+    <string name="git_m3_unresolved" formatted="false">"Olöst"</string>
+    <string name="git_m3_update" formatted="false">"uppdatera"</string>
+    <string name="git_m3_upstream_body">"Välj var %1$s hämtar från och skickar till. Filer, commits och sparade anslutningar förblir samma."</string>
+    <string name="git_m3_upstream_help" formatted="false">"Utan en upstream, vet inte pull och push vart de ska gå."</string>
+    <string name="git_m3_use_branch">"Använd %1$s-versionen"</string>
+    <string name="git_m3_use_edited" formatted="false">"Använd min redigerade version"</string>
+    <string name="git_m3_use_phone" formatted="false">"Använd den här telefonens version"</string>
+    <string name="git_m3_use_remote">"Använd %1$ss version"</string>
+    <string name="git_m3_vault_settings" formatted="false">"Valvinställningar"</string>
+    <string name="git_m3_vs">"mot %1$s"</string>
+    <string name="git_m3_what_each_does" formatted="false">"Vad varje gör"</string>
+    <string name="git_m3_workspace" formatted="false">"Arbetsyta"</string>
+    <string name="git_m3_yours">"↑%1$d dina"</string>
     <string name="git_native_public_only" formatted="false">"Gits eget protokoll stöder bara offentlig åtkomst. Använd HTTPS eller SSH för autentisering."</string>
     <string name="gitops_action_failed" formatted="false">"Git kunde inte slutföra den här åtgärden"</string>
     <string name="gitops_branch_action_failed" formatted="false">"Branchåtgärden kunde inte slutföras"</string>
@@ -380,6 +1076,22 @@
     <string name="help_title" formatted="false">"Hjälp"</string>
     <string name="history_screen" formatted="false">"Historik"</string>
     <string name="http_transport_warning" formatted="false">"HTTP är inte krypterat. Arkivdata och användarnamn eller token du anger kan läsas under överföringen. Använd HTTPS när det finns tillgängligt."</string>
+    <string name="l10n_a11y_pair">"%1$s, %2$s"</string>
+    <string name="l10n_added_count">"+%1$d"</string>
+    <string name="l10n_background_unavailable" formatted="false">"Background Sync är inte tillgänglig"</string>
+    <string name="l10n_clone_preview_error" formatted="false">"Autentisering misslyckades. Logga in igen och försök på nytt."</string>
+    <string name="l10n_count">"%1$d"</string>
+    <string name="l10n_meta_pair">"%1$s · %2$s"</string>
+    <string name="l10n_not_vault_file" formatted="false">"Inte en fil i detta valv"</string>
+    <string name="l10n_push_local_branch" formatted="false">"Byt till en lokal branch innan du pushar"</string>
+    <string name="l10n_removed_count">"−%1$d"</string>
+    <string name="l10n_save_conditions" formatted="false">"Kunde inte spara Background Sync-villkor"</string>
+    <string name="l10n_save_default_author" formatted="false">"Kunde inte spara standardförfattaren"</string>
+    <string name="l10n_save_ssh_key" formatted="false">"Kunde inte spara den här telefonens SSH-nyckel"</string>
+    <string name="l10n_save_theme" formatted="false">"Kunde inte spara temat"</string>
+    <string name="l10n_save_vault_preferences" formatted="false">"Kunde inte spara valvinställningarna"</string>
+    <string name="l10n_unsupported_vault_preference" formatted="false">"Ej stöd för valvinställning"</string>
+    <string name="l10n_vault_settings_failed" formatted="false">"Kunde inte uppdatera valvinställningar"</string>
     <string name="language_settings_legacy" formatted="false">"Före Android 13 använder den här appen enhetens språk."</string>
     <string name="language_settings_title" formatted="false">"Språk"</string>
     <string name="language_settings_unavailable" formatted="false">"Det gick inte att öppna språkinställningarna."</string>
@@ -421,12 +1133,213 @@
     <string name="lfs_locks_server">"LFS-server: %1$s"</string>
     <string name="lfs_locks_title" formatted="false">"Serverlås"</string>
     <string name="lfs_locks_unsupported" formatted="false">"Den här servern stöder inte Git LFS-lås."</string>
+    <string name="lfs_m3_allow_downloads" formatted="false">"Tillåt nedladdningar"</string>
+    <string name="lfs_m3_allow_uploads" formatted="false">"Tillåt uppladdningar"</string>
+    <string name="lfs_m3_apply_rules" formatted="false">"Tillämpa regler"</string>
+    <string name="lfs_m3_apply_tracking" formatted="false">"Använd spårningsval"</string>
+    <string name="lfs_m3_approval_scope" formatted="false">"Kontrollera denna adress med repository-ägaren. Godkännande täcker endast detta repository, fjärranslutning, slutpunkt och riktning på denna telefon."</string>
+    <string name="lfs_m3_approvals_title" formatted="false">"Godkännanden av LFS-slutpunkter"</string>
+    <string name="lfs_m3_attention" formatted="false">"Git LFS kräver uppmärksamhet"</string>
+    <string name="lfs_m3_auth_new" formatted="false">"Separat användarnamn och token"</string>
+    <string name="lfs_m3_auth_reuse" formatted="false">"Använd sparade inloggningsuppgifter för ändpunkten"</string>
+    <string name="lfs_m3_branch_remote">"%1$s · fjärranslutning %2$s"</string>
+    <string name="lfs_m3_cache_missing" formatted="false">"Inte i cache"</string>
+    <string name="lfs_m3_cache_verified" formatted="false">"Verifierad cache"</string>
+    <string name="lfs_m3_cancel" formatted="false">"Avbryt"</string>
+    <string name="lfs_m3_candidate_changed">"%1$s · ändrad, ej spårad ännu"</string>
+    <string name="lfs_m3_candidate_new">"%1$s · ny, ej spårad ännu"</string>
+    <string name="lfs_m3_check_ownership" formatted="false">"Kontrollera ägarskap"</string>
+    <string name="lfs_m3_create_body" formatted="false">"Andra anslutningar ser det som låst tills du släpper det. Inget på denna telefon ändras."</string>
+    <string name="lfs_m3_download_body" formatted="false">"Detta repository vill ladda ner filinnehåll från en separat LFS-server."</string>
+    <string name="lfs_m3_download_missing" formatted="false">"Ladda ner saknat innehåll"</string>
+    <string name="lfs_m3_download_progress" formatted="false">"Nedladdningsframsteg"</string>
+    <string name="lfs_m3_download_title" formatted="false">"Tillåt LFS-nedladdningar?"</string>
+    <string name="lfs_m3_downloading_prepare" formatted="false">"Hämtar saknat innehåll"</string>
+    <string name="lfs_m3_downloads" formatted="false">"Hämtningar"</string>
+    <string name="lfs_m3_endpoint_auth" formatted="false">"Autentisering för ändpunkt"</string>
+    <string name="lfs_m3_endpoints_empty" formatted="false">"Inga godkända anpassade LFS-ändpunkter"</string>
+    <string name="lfs_m3_endpoints_intro" formatted="false">"Separata LFS-servrar som dina arkiv kan använda. Återkallning stoppar framtida överföringar i den riktningen; allt som redan pågår kan slutföras."</string>
+    <string name="lfs_m3_endpoints_none" formatted="false">"Inställningar · inga godkända"</string>
+    <string name="lfs_m3_endpoints_title" formatted="false">"LFS-slutpunkter"</string>
+    <string name="lfs_m3_error_changed" formatted="false">"Godkännanden ändrades under granskningen. Ladda om dem och granska överföringen igen."</string>
+    <string name="lfs_m3_ext_note_existing" formatted="false">"Filer som redan har egen spårningsval behåller det."</string>
+    <string name="lfs_m3_ext_note_limits" formatted="false">"Ignorerade filer förblir ignorerade. Lagringsgränser beror på din Git-värd."</string>
+    <string name="lfs_m3_ext_note_stage" formatted="false">"Endast .gitattributes ändras. Stagea filerna för att göra dem till pekare."</string>
+    <string name="lfs_m3_ext_scope" formatted="false">"Täcker nuvarande och framtida matchande filer i varje mapp. Matchningen är skiftlägeskänslig."</string>
+    <string name="lfs_m3_ext_title" formatted="false">"Spåra matchande filändelser?"</string>
+    <string name="lfs_m3_extensions_updated" formatted="false">"Förlängningsregler uppdaterade. Etapp .gitattributes och filerna, sedan commit."</string>
+    <string name="lfs_m3_fact_endpoint" formatted="false">"LFS-ändpunkt"</string>
+    <string name="lfs_m3_fact_remote" formatted="false">"Git-fjärrarkiv"</string>
+    <string name="lfs_m3_fact_repository" formatted="false">"Förråd"</string>
+    <string name="lfs_m3_force_ack" formatted="false">"Jag förstår att någon fortfarande kan redigera denna fil."</string>
+    <string name="lfs_m3_force_title" formatted="false">"Tvångsfrigöra en annan ägares lås?"</string>
+    <string name="lfs_m3_force_warning" formatted="false">"Detta tar bort ett lås som hålls av en annan anslutning. Kontrollera med dess ägare först."</string>
+    <string name="lfs_m3_http_warning" formatted="false">"HTTP är okrypterat. Repositorydata och alla användarnamn eller token kan läsas under överföring. Använd HTTPS när du kan."</string>
+    <string name="lfs_m3_keep_body" formatted="false">"Lägger till explicita reguljära Git-regler. Innehållet går in i dina commits. Filer över 100 MiB behöver fortfarande LFS."</string>
+    <string name="lfs_m3_keep_git" formatted="false">"Behåll i vanlig Git"</string>
+    <string name="lfs_m3_keep_title" formatted="false">"Behåll dessa i vanlig Git?"</string>
+    <string name="lfs_m3_list_read_only" formatted="false">"Lista skrivskyddad"</string>
+    <string name="lfs_m3_lock_a_file" formatted="false">"Lås en fil"</string>
+    <string name="lfs_m3_lockable_caption" formatted="false">"Endast filer markerade som låsbara i .gitattributes visas här."</string>
+    <string name="lfs_m3_locked" formatted="false">"låst"</string>
+    <string name="lfs_m3_locked_on_server" formatted="false">"Låst på servern"</string>
+    <string name="lfs_m3_locks_empty" formatted="false">"Inget är låst på denna gren."</string>
+    <string name="lfs_m3_locks_intro" formatted="false">"Kontrollera ägarskap innan du ändrar ett lås. Lås finns på servern; dina filer och commits förblir på plats."</string>
+    <string name="lfs_m3_match_extensions" formatted="false">"Matcha filändelser…"</string>
+    <string name="lfs_m3_needs_choice" formatted="false">"Kräver ett spårningsval"</string>
+    <string name="lfs_m3_no_lockable" formatted="false">"Inga olåsta låsbara filer."</string>
+    <string name="lfs_m3_no_tracked" formatted="false">"Inga filer är lagrade i LFS på denna gren ännu."</string>
+    <string name="lfs_m3_not_shared" formatted="false">"Din GitHub inloggning delas inte med denna server. Separata autentiseringsuppgifter är krypterade på denna telefon. Hantera dem i Inställningar › LFS-slutpunkter."</string>
+    <string name="lfs_m3_ok" formatted="false">"OK"</string>
+    <string name="lfs_m3_owned_here" formatted="false">"Ägs av denna anslutning"</string>
+    <string name="lfs_m3_owner">"Ägare: %1$s"</string>
+    <string name="lfs_m3_public_access" formatted="false">"Offentlig åtkomst"</string>
+    <string name="lfs_m3_refresh_required" formatted="false">"Det fungerade, men det nya LFS-tillståndet laddades inte. Ladda om innan du gör något annat."</string>
+    <string name="lfs_m3_release_body" formatted="false">"Andra kan låsa och redigera det igen. Din lokala fil och dina commits förblir som de är."</string>
+    <string name="lfs_m3_release_review" formatted="false">"Släpp..."</string>
+    <string name="lfs_m3_reload" formatted="false">"Ladda om LFS-status"</string>
+    <string name="lfs_m3_reset_all" formatted="false">"Återställ alla LFS-ändpunktsgodkännanden"</string>
+    <string name="lfs_m3_reset_body" formatted="false">"Tar bort alla anpassade slutpunktsgodkännanden och dess sparade autentiseringsuppgifter på den här telefonen. Varje slutpunkt och riktning behöver en ny granskning."</string>
+    <string name="lfs_m3_reset_confirm" formatted="false">"Återställ godkännanden"</string>
+    <string name="lfs_m3_reset_title" formatted="false">"Återställ alla LFS-ändpunktsgodkännanden?"</string>
+    <string name="lfs_m3_review_changed" formatted="false">"Låsen har ändrats sedan du öppnade detta. Avbryt och kontrollera ägarskapet igen."</string>
+    <string name="lfs_m3_revoke" formatted="false">"Återkalla"</string>
+    <string name="lfs_m3_revoke_download_body">"Framtida nedladdningar från %1$s kommer att behöva en ny granskning. Uppladdningsgodkännandet och dess sparade autentiseringsuppgifter förblir."</string>
+    <string name="lfs_m3_revoke_download_title" formatted="false">"Återkalla godkännande för nedladdning?"</string>
+    <string name="lfs_m3_revoke_downloads" formatted="false">"Återkalla nedladdningar"</string>
+    <string name="lfs_m3_revoke_upload_body">"Framtida uppladdningar till %1$s kommer att behöva en ny granskning. Nedladdningsgodkännandet och dess sparade autentiseringsuppgifter förblir."</string>
+    <string name="lfs_m3_revoke_upload_title" formatted="false">"Återkalla godkännande för uppladdning?"</string>
+    <string name="lfs_m3_revoke_uploads" formatted="false">"Återkalla uppladdningar"</string>
+    <string name="lfs_m3_scope_read_only" formatted="false">"Endast läslista · ägarskap ej verifierat"</string>
+    <string name="lfs_m3_scope_verified" formatted="false">"Ägarskap verifierat med denna anslutning"</string>
+    <string name="lfs_m3_secret" formatted="false">"-token eller lösenord"</string>
+    <string name="lfs_m3_separate_credentials" formatted="false">"Separata krypterade referenser"</string>
+    <string name="lfs_m3_server">"LFS-server %1$s"</string>
+    <string name="lfs_m3_ssh_authorization" formatted="false">"Auktorisering från SSH"</string>
+    <string name="lfs_m3_ssh_review" formatted="false">"Denna HTTP-slutpunkt får kortlivad auktorisering från den verifierade SSH-servern. Din SSH-nyckel stannar på denna telefon. Auktoriseringen kan läsas under överföring och sparas aldrig."</string>
+    <string name="lfs_m3_stale" formatted="false">"Filändringar har skett sedan du öppnade detta. Avbryt och granska igen."</string>
+    <string name="lfs_m3_state_pointer" formatted="false">"Pekare · ladda ner innehåll"</string>
+    <string name="lfs_m3_stored_body" formatted="false">"Commits behåller små pekare. Pull laddar ner innehållet, push laddar upp dem först."</string>
+    <string name="lfs_m3_stored_kicker" formatted="false">"Sparad i LFS"</string>
+    <string name="lfs_m3_stored_locked">"%1$s · %2$d låst"</string>
+    <string name="lfs_m3_subtitle">"%1$s · %2$s · Git LFS"</string>
+    <string name="lfs_m3_tab_files" formatted="false">"Filer"</string>
+    <string name="lfs_m3_tab_locks" formatted="false">"Lås"</string>
+    <string name="lfs_m3_title" formatted="false">"Stora filer"</string>
+    <string name="lfs_m3_track_body" formatted="false">"Lägger till exakta-sökväg LFS-regler för nedanstående filer. Lager- och bandbreddsbegränsningar beror på din Git-värd. Fäst ändringarna, sedan commit."</string>
+    <string name="lfs_m3_track_title" formatted="false">"Använd LFS för dessa filer?"</string>
+    <string name="lfs_m3_tracked_files" formatted="false">"Spårade filer"</string>
+    <string name="lfs_m3_tracking_caption" formatted="false">"Endast .gitattributes ändras. Dina filer stannar kvar tills du gör en staging."</string>
+    <string name="lfs_m3_tracking_updated" formatted="false">"Spårningsregler uppdaterade. Stagea .gitattributes och filerna, sedan gör en commit."</string>
+    <string name="lfs_m3_unsupported" formatted="false">"Denna server stöder inte Git LFS lås."</string>
+    <string name="lfs_m3_upload_body" formatted="false">"Detta repository vill skicka filinnehåll till en separat LFS-server."</string>
+    <string name="lfs_m3_upload_title" formatted="false">"Tillåt LFS-uppladdningar?"</string>
+    <string name="lfs_m3_uploads" formatted="false">"Uppladdningar"</string>
+    <string name="lfs_m3_username" formatted="false">"Användarnamn för LFS-ändpunkt"</string>
     <string name="lfs_tracking_updated" formatted="false">"Spårningsreglerna har uppdaterats. Granska och lägg .gitattributes och de valda filerna i indexet och skapa sedan en commit."</string>
     <string name="m3_editor_preview" formatted="false">"Förhandsvisning"</string>
     <string name="m3_editor_write" formatted="false">"Skriv"</string>
     <string name="m3_open_in_editor" formatted="false">"Öppna i redigeraren"</string>
     <string name="m3_paywall_paid_with_play" formatted="false">"Betalas med ditt Google Play-konto"</string>
     <string name="m3_pick_a_file" formatted="false">"Välj en fil för att se dess ändringar."</string>
+    <string name="m3home_add_first" formatted="false">"Lägg till ditt första valv"</string>
+    <string name="m3home_add_vault" formatted="false">"Lägg till ett valv"</string>
+    <string name="m3home_auth_body" formatted="false">"Dina anteckningar är säkra på denna telefon. Ingenting gick förlorat."</string>
+    <string name="m3home_auth_headline" formatted="false">"Synk är pausad."</string>
+    <string name="m3home_auth_held">"↑%1$d kvarhållna"</string>
+    <string name="m3home_auth_kicker">"GitHub-inloggningen har gått ut · %1$s"</string>
+    <string name="m3home_auth_paused" formatted="false">"pausad"</string>
+    <string name="m3home_auth_row_meta">"%1$s · senast synkroniserad %2$s"</string>
+    <string name="m3home_auth_sign_in" formatted="false">"Logga in med GitHub"</string>
+    <string name="m3home_auth_unaffected_label" formatted="false">"Opåverkad"</string>
+    <string name="m3home_auth_waiting_label" formatted="false">"Väntar på inloggning"</string>
+    <string name="m3home_badge_both">"↓%1$d ↑%2$d"</string>
+    <string name="m3home_badge_checking" formatted="false">"Kontrollerar"</string>
+    <string name="m3home_badge_in_sync" formatted="false">"Synkat"</string>
+    <string name="m3home_badge_local_only" formatted="false">"endast lokalt"</string>
+    <string name="m3home_badge_needs_you" formatted="false">"Behöver dig"</string>
+    <string name="m3home_badge_sync_failed" formatted="false">"Synkroniserades inte"</string>
+    <string name="m3home_badge_syncing" formatted="false">"synkroniserar"</string>
+    <string name="m3home_badge_to_pull">"↓%1$d att hämta"</string>
+    <string name="m3home_badge_to_push">"↑%1$d att pusha"</string>
+    <string name="m3home_badge_unreadable" formatted="false">"Kan inte läsa"</string>
+    <string name="m3home_cred_github" formatted="false">"GitHub Kontonummer"</string>
+    <string name="m3home_cred_local" formatted="false">"på denna telefon"</string>
+    <string name="m3home_cred_public" formatted="false">"– Offentligt"</string>
+    <string name="m3home_cred_ssh" formatted="false">"SSH nyckel"</string>
+    <string name="m3home_cred_token" formatted="false">"token"</string>
+    <string name="m3home_empty_rail_description" formatted="false">"Telefon och GitHub, inget att synkronisera än"</string>
+    <string name="m3home_empty_rail_nothing" formatted="false">"inget att synka"</string>
+    <string name="m3home_empty_signed_in">"inloggad som @%1$s"</string>
+    <string name="m3home_empty_title" formatted="false">"Inga valv än."</string>
+    <string name="m3home_filter_all">"Alla %1$d"</string>
+    <string name="m3home_filter_attention">"Kräver åtgärd %1$d"</string>
+    <string name="m3home_filter_empty_attention" formatted="false">"Ingen behöver dig. Alla valv är i synk."</string>
+    <string name="m3home_filter_empty_pinned" formatted="false">"Inga fästa valv än. Håll ned ett valv och välj Fäst överst."</string>
+    <string name="m3home_filter_pinned" formatted="false">"Fäst"</string>
+    <string name="m3home_headline_ready_accent" formatted="false">"i synk."</string>
+    <string name="m3home_how_title" formatted="false">"Så fungerar det"</string>
+    <string name="m3home_meta_checked">"kontrollerade %1$s"</string>
+    <string name="m3home_meta_checking">"kontrollerar %1$d"</string>
+    <string name="m3home_meta_in_sync">"%1$d synkade"</string>
+    <string name="m3home_meta_lfs">"%1$s LFS"</string>
+    <string name="m3home_meta_loading" formatted="false">"Kontrollerar…"</string>
+    <string name="m3home_meta_never_checked" formatted="false">"Inte kontrollerat ännu"</string>
+    <string name="m3home_meta_not_synced" formatted="false">"inte synkad än"</string>
+    <string name="m3home_meta_unreadable" formatted="false">"kan inte läsa den här mappen"</string>
+    <string name="m3home_offline_accent" formatted="false">"Vi kommer ikapp."</string>
+    <string name="m3home_offline_fab" formatted="false">"Synkas när du är online"</string>
+    <string name="m3home_offline_headline" formatted="false">"Fortsätt skriva."</string>
+    <string name="m3home_offline_last_known" formatted="false">"senast känt: synkat"</string>
+    <string name="m3home_offline_last_known_behind">"sista kända: ↓%1$d"</string>
+    <string name="m3home_offline_meta">"ingen anslutning · senast kontrollerad %1$s"</string>
+    <string name="m3home_offline_meta_never" formatted="false">"ingen anslutning"</string>
+    <string name="m3home_offline_queued">"↑%1$d i kö"</string>
+    <string name="m3home_offline_row_meta">"%1$s · synkroniserad %2$s"</string>
+    <string name="m3home_onboarding_accent" formatted="false">"Alltid i takt."</string>
+    <string name="m3home_onboarding_body" formatted="false">"Klona ett arkiv, skriv i Obsidian eller en annan app och synkronisera med ett tryck."</string>
+    <string name="m3home_onboarding_demo" formatted="false">"Titta runt med ett demovalv"</string>
+    <string name="m3home_onboarding_github" formatted="false">"Fortsätt med GitHub"</string>
+    <string name="m3home_onboarding_headline" formatted="false">"Dina anteckningar.\nRiktigt git."</string>
+    <string name="m3home_onboarding_other" formatted="false">"SSH, token eller en annan värd"</string>
+    <string name="m3home_onboarding_rail" formatted="false">"Anteckningar på telefonen och commits på GitHub som möts i en synkpunkt"</string>
+    <string name="m3home_onboarding_save_error" formatted="false">"Kunde inte spara ditt val. Försök igen."</string>
+    <string name="m3home_onboarding_this_phone" formatted="false">"den här telefonen"</string>
+    <string name="m3home_pin" formatted="false">"Fäst överst"</string>
+    <string name="m3home_pin_failed" formatted="false">"Kunde inte spara fästningen. Försök igen."</string>
+    <string name="m3home_pinned" formatted="false">"Fäst"</string>
+    <string name="m3home_rail_github" formatted="false">"GitHub"</string>
+    <string name="m3home_rail_phone" formatted="false">"Telefon"</string>
+    <string name="m3home_rail_remote" formatted="false">"Remote"</string>
+    <string name="m3home_remove" formatted="false">"Ta bort från GitSync.md"</string>
+    <string name="m3home_row_actions" formatted="false">"Valvåtgärder"</string>
+    <string name="m3home_session_dismiss" formatted="false">"Stäng"</string>
+    <string name="m3home_settings" formatted="false">"Inställningar"</string>
+    <string name="m3home_settings_signed_in">"Inställningar, inloggad som %1$s"</string>
+    <string name="m3home_start_github" formatted="false">"Klona från GitHub"</string>
+    <string name="m3home_start_github_detail" formatted="false">"välj ett av dina repositories"</string>
+    <string name="m3home_start_local" formatted="false">"Hitta kloner på denna telefon"</string>
+    <string name="m3home_start_local_detail" formatted="false">"Obsidian, MGit, Termux…"</string>
+    <string name="m3home_start_publish" formatted="false">"Publicera en mapp"</string>
+    <string name="m3home_start_publish_detail" formatted="false">"gör en mapp till ett nytt repository"</string>
+    <string name="m3home_start_url" formatted="false">"Klistra in en URL"</string>
+    <string name="m3home_start_url_detail" formatted="false">"valfritt Git-fjärrarkiv, offentligt eller privat"</string>
+    <string name="m3home_start_with" formatted="false">"Börja med"</string>
+    <string name="m3home_sync_all" formatted="false">"Synka alla"</string>
+    <string name="m3home_sync_all_meta">"↓%1$d ↑%2$d"</string>
+    <string name="m3home_sync_busy" formatted="false">"Dra allt pågår redan. Försök igen när det är klart."</string>
+    <string name="m3home_sync_done">"Synkroniserad · drog %1$d · skickade %2$d"</string>
+    <string name="m3home_sync_failed">"Kunde inte synkronisera %1$s"</string>
+    <string name="m3home_sync_start_failed" formatted="false">"Synkronisera allt kunde inte starta. Kontrollera din valvlista i Inställningar."</string>
+    <string name="m3home_syncing" formatted="false">"synkroniserar"</string>
+    <string name="m3home_syncing_meta">"%1$d av %2$d"</string>
+    <string name="m3home_time_days">"%1$d d sedan"</string>
+    <string name="m3home_time_hours">"%1$dför h dagar"</string>
+    <string name="m3home_time_minutes_long">"%1$d min sedan"</string>
+    <string name="m3home_time_minutes_short">"%1$dför m år sedan"</string>
+    <string name="m3home_time_now" formatted="false">"just nu"</string>
+    <string name="m3home_time_yesterday" formatted="false">"igår"</string>
+    <string name="m3home_unpin" formatted="false">"Lossa"</string>
     <string name="modified" formatted="false">"Ändrad"</string>
     <string name="move_cancelled" formatted="false">"Flytten avbröts. Den ursprungliga arbetskopian behölls."</string>
     <string name="move_confirm_action" formatted="false">"Flytta"</string>
@@ -450,6 +1363,22 @@
     <string name="move_recovery_done" formatted="false">"Återställning av flytt slutförd"</string>
     <string name="move_recovery_removed" formatted="false">"Återställningskopian har tagits bort"</string>
     <string name="move_title_restore" formatted="false">"Återställ återställningskopia"</string>
+    <string name="newfile_m3_blank" formatted="false">"Tom"</string>
+    <string name="newfile_m3_builtin_idea" formatted="false">"idé"</string>
+    <string name="newfile_m3_create_open" formatted="false">"Skapa och öppna"</string>
+    <string name="newfile_m3_exists">"%1$s finns redan i %2$s. Prova ett annat namn."</string>
+    <string name="newfile_m3_file_name" formatted="false">"Filnamn"</string>
+    <string name="newfile_m3_folder" formatted="false">"Mapp"</string>
+    <string name="newfile_m3_folder_name" formatted="false">"Mappnamn"</string>
+    <string name="newfile_m3_in">"i %1$s"</string>
+    <string name="newfile_m3_invalid" formatted="false">"Använd ett namn utan / eller \\."</string>
+    <string name="newfile_m3_invalid_dots" formatted="false">"“.” och “..” är reserverade. Försök med ett annat namn."</string>
+    <string name="newfile_m3_note" formatted="false">"Anteckning"</string>
+    <string name="newfile_m3_template">"Mall · %1$s"</string>
+    <string name="newfile_m3_title_folder" formatted="false">"Ny mapp"</string>
+    <string name="newfile_m3_title_note" formatted="false">"Ny anteckning"</string>
+    <string name="newfile_m3_today" formatted="false">"Dagens datum"</string>
+    <string name="newfile_m3_too_long" formatted="false">"Det namnet är för långt. Använd ett kortare."</string>
     <string name="notes_acknowledge" formatted="false">"Jag förstår"</string>
     <string name="notes_connections_body" formatted="false">"Hantera GitHub-konton och arkivets författaridentitet. Anslut via HTTPS eller SSH, välj klonlagring, anslut lokala kopior igen och granska flytt eller borttagning av arkiv."</string>
     <string name="notes_connections_title" formatted="false">"Anslutningar och lagring"</string>
@@ -458,6 +1387,10 @@
     <string name="notes_version">"Android %1$s · bygge %2$d"</string>
     <string name="notes_workflow_body" formatted="false">"Bläddra bland och redigera filer, granska diffar i och utanför staging, gör lokala committar, pusha befintliga committar och arbeta med grenar, historik, taggar och rebase."</string>
     <string name="notes_workflow_title" formatted="false">"Arbetsflöde för arkiv"</string>
+    <string name="notification_m3_open_obsidian" formatted="false">"Öppna i Obsidian"</string>
+    <string name="notification_m3_pulled" formatted="false">"Nya ändringar hämtades i bakgrunden."</string>
+    <string name="notification_m3_see_changes" formatted="false">"Se ändringar"</string>
+    <string name="notification_m3_updated">"%1$s uppdaterades"</string>
     <string name="obsidian_forgotten" formatted="false">"Framtida överföringar är inaktiverade. Förbered en ny anslutning för att ansluta den här mappen igen."</string>
     <string name="obsidian_interrupted" formatted="false">"Anslutningen stoppades. Ingen begäran upprepas automatiskt. Förbered en ny anslutning innan du försöker igen i Obsidian."</string>
     <string name="obsidian_return" formatted="false">"Tillbaka till Obsidian"</string>
@@ -560,6 +1493,47 @@
     <string name="pull_all_widget_description" formatted="false">"Hämta och fast-forward-uppdatera alla lokala arkiv utan att öppna GitSync.md."</string>
     <string name="pull_all_widget_subtitle" formatted="false">"Endast hämtning och fast-forward"</string>
     <string name="pull_screen" formatted="false">"Hämta"</string>
+    <string name="pullall_m3_again" formatted="false">"Hämta alla igen"</string>
+    <string name="pullall_m3_attention_blocked" formatted="false">"Oförändrad. Spara eller stash lokala ändringar först."</string>
+    <string name="pullall_m3_attention_failed" formatted="false">"Kunde inte hämta säkert. Kontrollera anslutningen och mappåtkomst."</string>
+    <string name="pullall_m3_attention_lfs" formatted="false">"Hämtad. Vissa Git LFS-filer behöver fortfarande laddas ner."</string>
+    <string name="pullall_m3_background" formatted="false">"Hämta alla i bakgrunden"</string>
+    <string name="pullall_m3_blocked" formatted="false">"Oförändrad. Spara eller stash lokala ändringar, eller avsluta den öppna Git-operationen och försök sedan igen."</string>
+    <string name="pullall_m3_clear" formatted="false">"Rensa bakgrundssammanfattning"</string>
+    <string name="pullall_m3_clear_body" formatted="false">"Detta raderar den senaste bakgrundssammanfattningen. Dina valv och inställningar förblir som de är. Avbrutet arbete startar inte om automatiskt."</string>
+    <string name="pullall_m3_clear_confirm" formatted="false">"Rensa sammanfattning"</string>
+    <string name="pullall_m3_clear_title" formatted="false">"Rensa bakgrundssammanfattning?"</string>
+    <string name="pullall_m3_complete" formatted="false">"Hämta alla är klar. Granska den sparade sammanfattningen."</string>
+    <string name="pullall_m3_control_failed" formatted="false">"Det ändrades inte. Öppna denna skärm igen och försök på nytt."</string>
+    <string name="pullall_m3_counts">"Uppdaterad %1$d · Nuvarande %2$d · LFS %3$d · Blockerad %4$d · Misslyckad %5$d"</string>
+    <string name="pullall_m3_current" formatted="false">"Inga inkommande ändringar"</string>
+    <string name="pullall_m3_empty" formatted="false">"Inga valv att hämta än. Klona eller lägg till ett först."</string>
+    <string name="pullall_m3_failed" formatted="false">"Hämtning av alla stoppades med ett fel. Vissa hämtningar kan ha slutförts. Kontrollera sammanfattningen och varje valv innan du kör igen."</string>
+    <string name="pullall_m3_help" formatted="false">"Lägg till widgeten Hämta alla på din startskärm, eller rutan i Snabbinställningar. Båda körs en gång utan att öppna appen. Kom tillbaka hit för att se vad som hände."</string>
+    <string name="pullall_m3_interrupted" formatted="false">"Hämta alla avbröts och startar inte om av sig själv. En hämtning kan ha slutförts först. Kontrollera varje valv innan du kör den igen."</string>
+    <string name="pullall_m3_item_failed" formatted="false">"Kunde inte hämta säkert. Kontrollera anslutningen och mappåtkomsten, och titta sedan på Git för avvikelse."</string>
+    <string name="pullall_m3_lfs" formatted="false">"Hämtad. Vissa Git LFS-filer behöver fortfarande laddas ner. Öppna Git LFS för att försöka igen."</string>
+    <string name="pullall_m3_not_run" formatted="false">"Inte körd"</string>
+    <string name="pullall_m3_progress_cd" formatted="false">"Framsteg för Hämta alla"</string>
+    <string name="pullall_m3_pulling" formatted="false">"Hämtar…"</string>
+    <string name="pullall_m3_running" formatted="false">"Hämta alla körs utan att öppna appen. Resten stoppar när du trycker på Stop."</string>
+    <string name="pullall_m3_scope" formatted="false">"Hämta och snabbspola alla valv på den här telefonen. Dra alla aldrig stages, commits eller skicka dina ändringar."</string>
+    <string name="pullall_m3_source_shortcut" formatted="false">"genväg"</string>
+    <string name="pullall_m3_source_tile" formatted="false">"kakel"</string>
+    <string name="pullall_m3_source_widget" formatted="false">"widget"</string>
+    <string name="pullall_m3_start" formatted="false">": Hämta alla"</string>
+    <string name="pullall_m3_start_failed" formatted="false">"Dra alla kunde inte starta. Kontrollera dina valvinställningar och försök igen."</string>
+    <string name="pullall_m3_stop" formatted="false">"Stoppa hämtning av alla"</string>
+    <string name="pullall_m3_stopped" formatted="false">"Stoppad. Ett valv som redan dras kan ha avslutats, så kontrollera dess status innan du försöker igen. Resten startades inte."</string>
+    <string name="pullall_m3_stopping" formatted="false">"Stoppar efter detta valv…"</string>
+    <string name="pullall_m3_surfaces" formatted="false">"Widget och snabbinställningskakel"</string>
+    <string name="pullall_m3_tile_preview" formatted="false">"GitSync.md\nDra alla"</string>
+    <string name="pullall_m3_title" formatted="false">": Hämta alla"</string>
+    <string name="pullall_m3_unreadable" formatted="false">"Den sparade bakgrundssammanfattningen kan inte läsas och behölls. Rensa den innan du startar en annan bakgrundskörning."</string>
+    <string name="pullall_m3_updated" formatted="false">"Uppdaterat från fjärrarkivet"</string>
+    <string name="pullall_m3_when_source">"%1$s · från %2$s"</string>
+    <string name="pullall_m3_widget_name" formatted="false">": Hämta alla"</string>
+    <string name="pullall_m3_widget_sub" formatted="false">"Endast hämtning och fast-forward"</string>
     <string name="push_all_repositories" formatted="false">"Alla arkiv, även framtida arkiv"</string>
     <string name="push_cancelled" formatted="false">"Anslutningen till GitHub avbröts."</string>
     <string name="push_channel" formatted="false">"Arkivuppdateringar"</string>
@@ -617,6 +1591,7 @@
     <string name="repository_actions_changes">"Ändrade sökvägar: %1$d"</string>
     <string name="repository_actions_confirm" formatted="false">"Kör en gång"</string>
     <string name="repository_actions_destination">"Uppströmsgren: %1$s / %2$s"</string>
+    <string name="repository_actions_destination_none" formatted="false">"Uppströms: ingen"</string>
     <string name="repository_actions_dirty" formatted="false">"Lokala ändringar förhindrar hämtning av inkommande commits. Gör en commit eller lägg ändringarna i stash först."</string>
     <string name="repository_actions_diverged" formatted="false">"Lokal historik och fjärrhistorik har gått isär. Välj uttryckligen merge eller rebase i Git-kontrollerna."</string>
     <string name="repository_actions_failed" formatted="false">"Kunde inte slutföra åtgärden. Kontrollera anslutning, konto, tillit och mappåtkomst och granska sedan aktuellt läge innan du försöker igen."</string>
@@ -681,6 +1656,325 @@
     <string name="resolve_local_superseded" formatted="false">"Det valda repot har ändrats. Granska de lokala ändringarna igen."</string>
     <string name="resolve_local_title" formatted="false">": Lokala redigeringar blockerar denna hämtning."</string>
     <string name="settings_folder_unavailable" formatted="false">"Åtkomsten till mappen kräver uppmärksamhet"</string>
+    <string name="settings_m3_account_meta">"@%1$s · GitHub"</string>
+    <string name="settings_m3_accounts" formatted="false">"GitHub-konton"</string>
+    <string name="settings_m3_app_storage" formatted="false">"Applagring"</string>
+    <string name="settings_m3_author_account_meta">"%1$s · inget sparat i detta valv ännu"</string>
+    <string name="settings_m3_author_account_meta_global">"%1$s · ingen standard sparad ännu"</string>
+    <string name="settings_m3_author_changed" formatted="false">"Denna författare ändrades utanför GitSync.md, kanske av Git på din Mac. Ladda om för att se vad det säger nu."</string>
+    <string name="settings_m3_author_default" formatted="false">"Standard"</string>
+    <string name="settings_m3_author_email" formatted="false">"Författarens e-post"</string>
+    <string name="settings_m3_author_from_account" formatted="false">"Från ditt GitHub-konto"</string>
+    <string name="settings_m3_author_global_subtitle" formatted="false">"Varje valv utan egen författare"</string>
+    <string name="settings_m3_author_help_changed" formatted="false">"Ladda om innan du sparar, annars ersätter du den nyare författaren."</string>
+    <string name="settings_m3_author_help_match" formatted="false">"Matcha e-postadressen som Git använder på din Mac så att båda visas som du."</string>
+    <string name="settings_m3_author_help_noreply" formatted="false">"GitHub’s privata adress, så din riktiga e-post förblir dold."</string>
+    <string name="settings_m3_author_intro" formatted="false">"Nya commits i detta valv använder detta namn och e-post. Commits du redan gjort behåller sin författare."</string>
+    <string name="settings_m3_author_intro_global" formatted="false">"Nya commits i dina valv använder detta namn och e-post, om inte ett valv sparar sitt eget. Commits du redan har gjort behåller sin författare."</string>
+    <string name="settings_m3_author_name" formatted="false">"Författarnamn"</string>
+    <string name="settings_m3_author_override" formatted="false">"Åsidosätt"</string>
+    <string name="settings_m3_author_preview_message" formatted="false">"Uppdatering från GitSync.md"</string>
+    <string name="settings_m3_author_preview_meta">"%1$s &lt;%2$s&gt; · nu"</string>
+    <string name="settings_m3_author_preview_title" formatted="false">"Din nästa commit kommer att läsa"</string>
+    <string name="settings_m3_author_reading" formatted="false">"Läser denna valvs Git-konfiguration…"</string>
+    <string name="settings_m3_author_save" formatted="false">"Spara författare"</string>
+    <string name="settings_m3_author_save_note" formatted="false">"Att spara stänger denna sida. Ingenting är committat."</string>
+    <string name="settings_m3_author_saved_global" formatted="false">"Sparad för alla valv"</string>
+    <string name="settings_m3_author_saved_global_meta">"på denna telefon · åsidosätter %1$s"</string>
+    <string name="settings_m3_author_saved_vault" formatted="false">"Sparad i detta valv"</string>
+    <string name="settings_m3_author_saved_vault_meta">".git/config · åsidosätter %1$s"</string>
+    <string name="settings_m3_author_scope" formatted="false">"Endast detta valv ändras. Dina andra valv behåller sin egen författare eller använder det GitHub-konto de synkroniserar med."</string>
+    <string name="settings_m3_author_scope_global" formatted="false">"Valv med en författare sparad i sitt eget .git/config behåller den. Du kan fortfarande ändra ett enskilt valv i dess valvinställningar."</string>
+    <string name="settings_m3_author_use_account" formatted="false">"Använd mitt GitHub-konto istället"</string>
+    <string name="settings_m3_author_your_account" formatted="false">"ditt GitHub-konto"</string>
+    <string name="settings_m3_background_on">"på · %1$d valv"</string>
+    <string name="settings_m3_background_sync" formatted="false">"Background Sync"</string>
+    <string name="settings_m3_bg_attention_short" formatted="false">"Behöver granska"</string>
+    <string name="settings_m3_bg_charging" formatted="false">"Laddar"</string>
+    <string name="settings_m3_bg_cond_any" formatted="false">"på vilken anslutning som helst"</string>
+    <string name="settings_m3_bg_cond_both" formatted="false">"endast på Wi-Fi medan den laddas"</string>
+    <string name="settings_m3_bg_cond_charging" formatted="false">"endast medan den laddas"</string>
+    <string name="settings_m3_bg_cond_wifi" formatted="false">"endast på Wi-Fi"</string>
+    <string name="settings_m3_bg_conditions_apply">"Kör %1$s, som varje inkluderad valv."</string>
+    <string name="settings_m3_bg_connect" formatted="false">"Anslut"</string>
+    <string name="settings_m3_bg_failed_short" formatted="false">"Kunde inte synkronisera"</string>
+    <string name="settings_m3_bg_include_cd">"Inkludera %1$s i Background Sync"</string>
+    <string name="settings_m3_bg_intro" formatted="false">"Android schemalägger kontroller ungefär var 15:e minut eller senare, beroende på anslutning, batteri och systembegränsningar. Bästa ansträngning, aldrig i realtid."</string>
+    <string name="settings_m3_bg_modes" formatted="false">"Lägen"</string>
+    <string name="settings_m3_bg_never" formatted="false">"Den kommer aldrig att"</string>
+    <string name="settings_m3_bg_no_runs" formatted="false">"Inga körningar än. Android startar den första kontrollen inom cirka 15 minuter."</string>
+    <string name="settings_m3_bg_nudge" formatted="false">"Få en påminnelse när GitHub ändras"</string>
+    <string name="settings_m3_bg_nudge_sub" formatted="false">"Delta. Hämtningen kan starta direkt."</string>
+    <string name="settings_m3_bg_only_when" formatted="false">"Endast när"</string>
+    <string name="settings_m3_bg_pull_sub" formatted="false">"Endast fast-forward"</string>
+    <string name="settings_m3_bg_push_sub" formatted="false">"Stoppar om fjärren flyttade först"</string>
+    <string name="settings_m3_bg_recent" formatted="false">"Senaste körningar"</string>
+    <string name="settings_m3_bg_run_failed">"%1$s kunde inte synkroniseras"</string>
+    <string name="settings_m3_bg_run_local_edits">"%1$s hoppades över: lokala ändringar"</string>
+    <string name="settings_m3_bg_run_offline">"%1$s väntar på en anslutning"</string>
+    <string name="settings_m3_bg_run_power">"%1$s väntar på laddning"</string>
+    <string name="settings_m3_bg_run_pushed" formatted="false">"↑ skickad"</string>
+    <string name="settings_m3_bg_run_review">"%1$s behöver granskning"</string>
+    <string name="settings_m3_bg_run_skipped">"%1$s hoppades över: %2$s"</string>
+    <string name="settings_m3_bg_run_wifi">"%1$s väntar på Wi-Fi"</string>
+    <string name="settings_m3_bg_vault_missing" formatted="false">"Mappen är inte längre tillagd. Glöm den eller lägg till valvet igen."</string>
+    <string name="settings_m3_bg_vault_not_included" formatted="false">"Inte inkluderad"</string>
+    <string name="settings_m3_bg_vaults" formatted="false">"Valv"</string>
+    <string name="settings_m3_bg_wifi" formatted="false">"På Wi-Fi"</string>
+    <string name="settings_m3_close" formatted="false">"Stäng"</string>
+    <string name="settings_m3_commit_as" formatted="false">"Commit som"</string>
+    <string name="settings_m3_debug_app" formatted="false">"App"</string>
+    <string name="settings_m3_debug_background" formatted="false">"BACKGROUND"</string>
+    <string name="settings_m3_debug_bg" formatted="false">"BG"</string>
+    <string name="settings_m3_debug_clear" formatted="false">"– Klart"</string>
+    <string name="settings_m3_debug_copy" formatted="false">"Kopiera synliga poster"</string>
+    <string name="settings_m3_debug_day_time">"%1$s %2$s"</string>
+    <string name="settings_m3_debug_error" formatted="false">"FEWER"</string>
+    <string name="settings_m3_debug_errors_count">"Fel %1$d"</string>
+    <string name="settings_m3_debug_info" formatted="false">"Visa felsökningsinformation"</string>
+    <string name="settings_m3_debug_info_tag" formatted="false">"Information"</string>
+    <string name="settings_m3_debug_log" formatted="false">"Felsökningslogg"</string>
+    <string name="settings_m3_debug_removed_vault" formatted="false">"borttaget valv"</string>
+    <string name="settings_m3_debug_share" formatted="false">"Dela diagnostik"</string>
+    <string name="settings_m3_debug_warn" formatted="false">"VARNING"</string>
+    <string name="settings_m3_discord" formatted="false">"Gå med i Discord"</string>
+    <string name="settings_m3_done" formatted="false">"Klar"</string>
+    <string name="settings_m3_feedback_subtitle" formatted="false">"Öppnar din e-postapp"</string>
+    <string name="settings_m3_forget" formatted="false">"Glöm"</string>
+    <string name="settings_m3_full_access" formatted="false">"GitSync.md full åtkomst"</string>
+    <string name="settings_m3_group_app" formatted="false">"App"</string>
+    <string name="settings_m3_group_more" formatted="false">"Kontakter och hjälp"</string>
+    <string name="settings_m3_group_new_vaults" formatted="false">"Nya valv"</string>
+    <string name="settings_m3_group_purchase" formatted="false">"Köp"</string>
+    <string name="settings_m3_group_sync" formatted="false">"Synka"</string>
+    <string name="settings_m3_help" formatted="false">"Hjälp &amp; om"</string>
+    <string name="settings_m3_how_clone_url" formatted="false">"Klona från URL"</string>
+    <string name="settings_m3_how_count" formatted="false">"4 saker att veta"</string>
+    <string name="settings_m3_how_github" formatted="false">"GitHub"</string>
+    <string name="settings_m3_how_it_works" formatted="false">"Så fungerar det"</string>
+    <string name="settings_m3_how_sample" formatted="false">"Prova offline-exemplet"</string>
+    <string name="settings_m3_how_start" formatted="false">"Börja här"</string>
+    <string name="settings_m3_how_storage" formatted="false">"Välj lagring"</string>
+    <string name="settings_m3_how_subtitle" formatted="false">"En tvåminutersgenomgång av grunderna"</string>
+    <string name="settings_m3_how_title" formatted="false">"Hur GitSync fungerar"</string>
+    <string name="settings_m3_language" formatted="false">"Språk"</string>
+    <string name="settings_m3_lfs_endpoints" formatted="false">"LFS-slutpunkter"</string>
+    <string name="settings_m3_license" formatted="false">"Licens"</string>
+    <string name="settings_m3_license_subtitle" formatted="false">"Engångsköp via Google Play"</string>
+    <string name="settings_m3_move_action" formatted="false">"Flytta valv"</string>
+    <string name="settings_m3_move_cancel_meta" formatted="false">"Lämnar valvet i dess gamla mapp"</string>
+    <string name="settings_m3_move_confirm_guidance" formatted="false">"Håll Obsidian och andra appar utanför båda mappar tills flytten är klar."</string>
+    <string name="settings_m3_move_confirm_retained" formatted="false">"Det ursprungliga behålls som en återställningskopia."</string>
+    <string name="settings_m3_move_confirm_title" formatted="false">"Flytta detta valv?"</string>
+    <string name="settings_m3_move_copy_note" formatted="false">"Detta överförs till ett annat lagringsvolym, så GitSync.md kopierar och kontrollerar varje fil, och behåller sedan originalet under Flytta återställningar tills du tar bort det."</string>
+    <string name="settings_m3_move_finish_meta" formatted="false">"Fortsätter där det slutade"</string>
+    <string name="settings_m3_move_from" formatted="false">"Från"</string>
+    <string name="settings_m3_move_interrupted" formatted="false">"En flytt avbröts. Varje kopia vi hittade behålls tills du slutför den."</string>
+    <string name="settings_m3_move_into" formatted="false">"Till"</string>
+    <string name="settings_m3_move_intro" formatted="false">"Flyttar hela valvet: filer, Git-historik och stagade ändringar. Dess konto och commit-författare flyttas med."</string>
+    <string name="settings_m3_move_moving_button" formatted="false">"Flyttar… håll GitSync.md öppen"</string>
+    <string name="settings_m3_move_progress" formatted="false">"Flyttar och sparar valvinställningar…"</string>
+    <string name="settings_m3_move_title" formatted="false">"Flytta valv"</string>
+    <string name="settings_m3_move_will_move_to" formatted="false">"Kommer att flytta till"</string>
+    <string name="settings_m3_never_force" formatted="false">"Force-push"</string>
+    <string name="settings_m3_never_overwrite" formatted="false">"Skriv över ändringar"</string>
+    <string name="settings_m3_never_rebase" formatted="false">"Rebase eller merge"</string>
+    <string name="settings_m3_never_resolve" formatted="false">"Lös konflikter"</string>
+    <string name="settings_m3_never_send" formatted="false">"Skicka dina filer till oss"</string>
+    <string name="settings_m3_never_switch" formatted="false">"Byt branch"</string>
+    <string name="settings_m3_not_now" formatted="false">"Inte just nu"</string>
+    <string name="settings_m3_obsidian" formatted="false">"Obsidian-anslutningar"</string>
+    <string name="settings_m3_obsidian_add_vault" formatted="false">"Lägg till ett valv"</string>
+    <string name="settings_m3_obsidian_before" formatted="false">"Innan du börjar"</string>
+    <string name="settings_m3_obsidian_command" formatted="false">"GitSync.md Connect: Anslut detta valv"</string>
+    <string name="settings_m3_obsidian_connected" formatted="false">"ansluten"</string>
+    <string name="settings_m3_obsidian_empty" formatted="false">"Lägg till eller klona ett valv till en enhetsmapp först. Valv i app-lagring kan inte öppnas av Obsidian."</string>
+    <string name="settings_m3_obsidian_error" formatted="false">"Obsidian kunde inte ansluta. Kontrollera mappåtkomst, GitHub HTTPS-fjärr och valvets konto, och förbered sedan en ny anslutning."</string>
+    <string name="settings_m3_obsidian_failed" formatted="false">"Kunde inte ansluta"</string>
+    <string name="settings_m3_obsidian_forget_action" formatted="false">"Glöm anslutning"</string>
+    <string name="settings_m3_obsidian_forget_body">"GitSync.md slutar lämna ut autentiseringsuppgifter till Obsidian för %1$s. Inloggningsuppgifter som Obsidian redan har importerats stannar där; återkalla dessa separat. Dina filer förblir där de är."</string>
+    <string name="settings_m3_obsidian_forget_title" formatted="false">"Glöm detta anslutning?"</string>
+    <string name="settings_m3_obsidian_intro" formatted="false">"Låt Obsidian Git-pluginen skicka och hämta med denna valvs GitHub-konto. Uppgifterna är krypterade för medföljande plugin och läggs aldrig i en länk."</string>
+    <string name="settings_m3_obsidian_prepare" formatted="false">"Förbered anslutning"</string>
+    <string name="settings_m3_obsidian_prepared_lead" formatted="false">"Anslutning förberedd."</string>
+    <string name="settings_m3_obsidian_prepared_open">"Öppna %1$s i Obsidian och kör"</string>
+    <string name="settings_m3_obsidian_prepared_tail" formatted="false">". En nyare begäran ersätter denna."</string>
+    <string name="settings_m3_obsidian_ready">"Krypterade uppgifter är redo för Obsidian. Obsidian Git kan nu synkronisera %1$s."</string>
+    <string name="settings_m3_obsidian_req1_body" formatted="false">"Obsidian och GitSync.md måste dela en enhetsmapp."</string>
+    <string name="settings_m3_obsidian_req1_title" formatted="false">"Öppna samma mapp i Obsidian"</string>
+    <string name="settings_m3_obsidian_req2_body" formatted="false">"Git och GitSync.md Connect, i Obsidian › Inställningar."</string>
+    <string name="settings_m3_obsidian_req2_title" formatted="false">"Slå på två community-plugins"</string>
+    <string name="settings_m3_obsidian_req3_body" formatted="false">"Med ett GitHub-konto valt i valvets anslutning."</string>
+    <string name="settings_m3_obsidian_req3_title" formatted="false">"Använd en HTTPS GitHub-fjärranslutning"</string>
+    <string name="settings_m3_obsidian_req4_body" formatted="false">"Förbereder endast överlämning av referenser, inte filer eller historik."</string>
+    <string name="settings_m3_obsidian_req4_title" formatted="false">"Inget i valvet ändras"</string>
+    <string name="settings_m3_obsidian_return_failed" formatted="false">"Obsidian öppnades inte. Slå på GitSync.md Connect i Obsidian, försök sedan att återvända igen."</string>
+    <string name="settings_m3_obsidian_subtitle" formatted="false">"Obsidian Git + GitSync.md Connect"</string>
+    <string name="settings_m3_obsidian_this_vault" formatted="false">"Det här valvet"</string>
+    <string name="settings_m3_obsidian_vaults" formatted="false">"Valv på den här telefonen"</string>
+    <string name="settings_m3_obsidian_waiting" formatted="false">"Väntar på Obsidian"</string>
+    <string name="settings_m3_off" formatted="false">"av"</string>
+    <string name="settings_m3_on" formatted="false">"på"</string>
+    <string name="settings_m3_perk_nudge_body" formatted="false">"En GitHub push knuffar appen inom sekunder."</string>
+    <string name="settings_m3_perk_nudge_title" formatted="false">"Omedelbara hämtningar med Push Sync"</string>
+    <string name="settings_m3_perk_pull_body" formatted="false">"Endast fast-forward. Allt ovanligt väntar på dig."</string>
+    <string name="settings_m3_perk_pull_title" formatted="false">"Hämta i bakgrunden"</string>
+    <string name="settings_m3_perk_push_body" formatted="false">"Av som standard. Du väljer vilka valv som publiceras."</string>
+    <string name="settings_m3_perk_push_title" formatted="false">"Commit och push av ändringar"</string>
+    <string name="settings_m3_privacy" formatted="false">"Integritet"</string>
+    <string name="settings_m3_privacy_policy" formatted="false">"Integritetspolicy"</string>
+    <string name="settings_m3_push_active" formatted="false">"Aktiv"</string>
+    <string name="settings_m3_push_all_repos" formatted="false">"Alla arkiv, inklusive nya"</string>
+    <string name="settings_m3_push_channel_sub" formatted="false">"Använder meddelandekanalen för arkivuppdateringar"</string>
+    <string name="settings_m3_push_checked">"Kontrollerad %1$d · uppdaterad %2$d · behöver granskas %3$d"</string>
+    <string name="settings_m3_push_connect_again" formatted="false">"Anslut GitHub igen"</string>
+    <string name="settings_m3_push_connect_sub" formatted="false">"Installera GitSync.md-appen och välj förvaringsplatser"</string>
+    <string name="settings_m3_push_connected" formatted="false">"ansluten"</string>
+    <string name="settings_m3_push_connection" formatted="false">"GitHub-anslutning"</string>
+    <string name="settings_m3_push_err_cancelled" formatted="false">"GitHub-anslutningen avbröts. Inget ändrades. Anslut igen när du är redo."</string>
+    <string name="settings_m3_push_err_cancelled_title" formatted="false">"Tillbaka från GitHub"</string>
+    <string name="settings_m3_push_err_not_selected" formatted="false">"Ingen valv på den här telefonen matchar detta GitHub-repo och gren. Lägg till repot i appens åtkomst på GitHub, eller kontrollera valvets anslutning och gren."</string>
+    <string name="settings_m3_push_err_not_selected_title" formatted="false">"Detta repo delas inte med appen"</string>
+    <string name="settings_m3_push_err_owner_title" formatted="false">"Inloggning behövs för ägare"</string>
+    <string name="settings_m3_push_example_cd" formatted="false">"Exempel på meddelande"</string>
+    <string name="settings_m3_push_example_meta" formatted="false">"GitSync.md · Repository-uppdateringar · nu"</string>
+    <string name="settings_m3_push_example_note" formatted="false">"Privat på låsskärmen. Om valvet var rent har det redan hämtats när du ser detta."</string>
+    <string name="settings_m3_push_example_repo" formatted="false">"ägare/valv"</string>
+    <string name="settings_m3_push_example_title" formatted="false">"En puff ser ut så här"</string>
+    <string name="settings_m3_push_existing_scope" formatted="false">"Logga in som kontots ägare eller som ägare av organisationen. Appen behåller sin nuvarande repository-åtkomst."</string>
+    <string name="settings_m3_push_github_app" formatted="false">"GitHub App"</string>
+    <string name="settings_m3_push_handoff_body" formatted="false">"En webbläsarflik öppnades. Välj kontot och vilka repos appen kan se, sedan kom tillbaka. Den här skärmen kontrollerar igen när du återvänder."</string>
+    <string name="settings_m3_push_handoff_title" formatted="false">"Avsluta på GitHub"</string>
+    <string name="settings_m3_push_intro" formatted="false">"Anslut GitSync.md GitHub App och en push till GitHub signalerar denna telefon inom sekunder. Rena valv hämtar och spolar fram automatiskt. Tryck på notifikationen för att kontrollera igen."</string>
+    <string name="settings_m3_push_never" formatted="false">"Push-synkronisering aldrig"</string>
+    <string name="settings_m3_push_never_commit" formatted="false">"Commits"</string>
+    <string name="settings_m3_push_never_hint" formatted="false">"Lokala ändringar och delade historiker väntar på dig i valvet."</string>
+    <string name="settings_m3_push_never_merge" formatted="false">"Slår ihop delade historiker"</string>
+    <string name="settings_m3_push_never_switch" formatted="false">"Byter grenar"</string>
+    <string name="settings_m3_push_never_upload" formatted="false">"Laddar upp ändringar"</string>
+    <string name="settings_m3_push_no_connections" formatted="false">"Anslut ett GitHub-konto eller organisation för att välja vilka repos som kan skicka uppdateringar."</string>
+    <string name="settings_m3_push_open_vault" formatted="false">"Öppna valv"</string>
+    <string name="settings_m3_push_permission" formatted="false">"Tillåt aviseringar för GitSync.md i Android-inställningarna, och slå sedan på Push Sync."</string>
+    <string name="settings_m3_push_registered" formatted="false">"Denna telefon är registrerad för aviseringar"</string>
+    <string name="settings_m3_push_remove" formatted="false">"Ta bort"</string>
+    <string name="settings_m3_push_remove_body">"Push Sync slutar skicka uppdateringar från @%1$s till denna telefon. GitHub App förblir installerad. Använd Hantera på GitHub för att ändra dess åtkomst eller avinstallera den."</string>
+    <string name="settings_m3_push_remove_title" formatted="false">"Ta bort denna anslutning?"</string>
+    <string name="settings_m3_push_result_updated" formatted="false">"Uppdaterad från GitHub"</string>
+    <string name="settings_m3_push_stop" formatted="false">"Stoppa åtgärd"</string>
+    <string name="settings_m3_push_suspended" formatted="false">"Avstängd"</string>
+    <string name="settings_m3_push_sync" formatted="false">"Push Sync från GitHub"</string>
+    <string name="settings_m3_push_this_phone" formatted="false">"den här telefonen"</string>
+    <string name="settings_m3_push_title" formatted="false">"Push Sync"</string>
+    <string name="settings_m3_push_waiting" formatted="false">"Väntar på GitHub"</string>
+    <string name="settings_m3_save_clones_in" formatted="false">"Spara nya kloner i"</string>
+    <string name="settings_m3_sc_action" formatted="false">"Åtgärd"</string>
+    <string name="settings_m3_sc_authorized" formatted="false">"Auktoriserad"</string>
+    <string name="settings_m3_sc_background_sub" formatted="false">"Resultaten hamnar här och i en avisering"</string>
+    <string name="settings_m3_sc_branch">"Branch %1$s"</string>
+    <string name="settings_m3_sc_branch_reviewed">"Branch %1$s · granskad %2$s"</string>
+    <string name="settings_m3_sc_clear" formatted="false">"– Klart"</string>
+    <string name="settings_m3_sc_clear_results" formatted="false">"Rensa sparade resultat"</string>
+    <string name="settings_m3_sc_ff_only" formatted="false">"Endast hämtning och fast-forward"</string>
+    <string name="settings_m3_sc_item_title">"%1$s: %2$s"</string>
+    <string name="settings_m3_sc_launcher" formatted="false">"Genvägar på startskärmen"</string>
+    <string name="settings_m3_sc_link_identity">"Länk %1$s · Skapad %2$s"</string>
+    <string name="settings_m3_sc_link_private" formatted="false">"Vem som helst med den här länken kan köra den. Håll den privat."</string>
+    <string name="settings_m3_sc_links" formatted="false">"Auktoriserade länkar"</string>
+    <string name="settings_m3_sc_new_title" formatted="false">"Ny genväg för ett valv"</string>
+    <string name="settings_m3_sc_no_links" formatted="false">"Inga auktoriserade länkar. Appar som Obsidian eller Genvägar kan begära en."</string>
+    <string name="settings_m3_sc_no_shortcuts" formatted="false">"Inga startprogramsgenvägar än. Välj ett valv och en åtgärd ovan."</string>
+    <string name="settings_m3_sc_open_pull_all" formatted="false">"Öppna Dra Alla"</string>
+    <string name="settings_m3_sc_open_pull_all_sub" formatted="false">"Dra varje valv nu och se varje resultat"</string>
+    <string name="settings_m3_sc_pin_consent">"Varje tryck kör detta en gång, utan att fråga igen. Det förblir kopplat till %1$s, gren %2$s och detta konto. Om någon av dessa ändras, stoppas genvägen och du måste skapa en ny. Återkalla den här när som helst."</string>
+    <string name="settings_m3_sc_pin_writes">"Committar med “%1$s” och laddar upp varje ändring vid varje tryck."</string>
+    <string name="settings_m3_sc_pinned" formatted="false">"Fäst"</string>
+    <string name="settings_m3_sc_pull" formatted="false">"Hämta"</string>
+    <string name="settings_m3_sc_pull_all" formatted="false">": Hämta alla"</string>
+    <string name="settings_m3_sc_pull_all_note" formatted="false">"Varje tryck drar varje valv en gång. Ingenting begås eller pushas. Resultaten väntar i Hämta alla."</string>
+    <string name="settings_m3_sc_pull_all_repos" formatted="false">": Hämta alla lagringsplatser"</string>
+    <string name="settings_m3_sc_pull_all_title" formatted="false">"Hämta alla, utan att öppna appen"</string>
+    <string name="settings_m3_sc_pull_sub" formatted="false">"Endast hämtning och fast-forward"</string>
+    <string name="settings_m3_sc_push" formatted="false">"Commit och push"</string>
+    <string name="settings_m3_sc_push_sub" formatted="false">"Begår varje ändring, sedan laddar upp"</string>
+    <string name="settings_m3_sc_refresh" formatted="false">"Uppdatera"</string>
+    <string name="settings_m3_sc_requested" formatted="false">"Genväg begärd. Godkänn den i din launcher, tryck sedan på Uppdatera nedan för att kontrollera den."</string>
+    <string name="settings_m3_sc_returns_to">"återvänder till %1$s"</string>
+    <string name="settings_m3_sc_review_again" formatted="false">"Granska igen"</string>
+    <string name="settings_m3_sc_revoke" formatted="false">"Återkalla"</string>
+    <string name="settings_m3_sc_revoke_body" formatted="false">"Stoppar Git-åtgärder från att köras. Dess ikon kan ligga kvar på din startskärm, gråmarkerad, tills du tar bort den. En ny genväg behöver godkännande igen."</string>
+    <string name="settings_m3_sc_revoke_link" formatted="false">"Återkalla länk"</string>
+    <string name="settings_m3_sc_revoke_title" formatted="false">"Ångra denna genväg?"</string>
+    <string name="settings_m3_sc_revoked" formatted="false">"Återkallad"</string>
+    <string name="settings_m3_sc_run_once" formatted="false">"Kör en gång nu"</string>
+    <string name="settings_m3_sc_runs_closed" formatted="false">"Kör utan att öppna GitSync.md"</string>
+    <string name="settings_m3_sc_runs_open" formatted="false">"Öppnar GitSync.md, sedan kör en gång"</string>
+    <string name="settings_m3_sc_status" formatted="false">"Läs status"</string>
+    <string name="settings_m3_sc_status_sub" formatted="false">"Ingen nätverk. Visar vad som ändrats."</string>
+    <string name="settings_m3_sc_sync" formatted="false">"Synka"</string>
+    <string name="settings_m3_sc_sync_sub" formatted="false">"Hämta först, sedan commit &amp; push"</string>
+    <string name="settings_m3_sc_tile_how" formatted="false">"dra ner Snabbinställningar › Redigera › dra in Hämta alla."</string>
+    <string name="settings_m3_sc_tile_lead" formatted="false">"Kakel:"</string>
+    <string name="settings_m3_sc_title" formatted="false">"Widget &amp; genvägar"</string>
+    <string name="settings_m3_sc_upstream">"Upstream %1$s / %2$s"</string>
+    <string name="settings_m3_sc_waiting" formatted="false">"Väntar på launcher"</string>
+    <string name="settings_m3_sc_widget_how" formatted="false">"långtryck på din startskärm › Widgets › GitSync.md."</string>
+    <string name="settings_m3_sc_widget_lead" formatted="false">"Widget:"</string>
+    <string name="settings_m3_sc_writes" formatted="false">"Stage:ar varje ändring, committar vid behov, sedan laddar upp. Konflikter, delad historik eller en remote som flyttade först stoppar det, och ett misslyckat uppladdning behåller den nya commiten."</string>
+    <string name="settings_m3_shortcuts" formatted="false">"Widget- och startprogramsgenvägar"</string>
+    <string name="settings_m3_sign_out" formatted="false">"Logga ut"</string>
+    <string name="settings_m3_ssh_hosts" formatted="false">"SSH-servrar"</string>
+    <string name="settings_m3_storage_hint" formatted="false">"Telefonlagring och SD-kort fungerar. Molnmallar som Google Drive kan inte hålla ett Git-förråd."</string>
+    <string name="settings_m3_storage_intro" formatted="false">"Välj mappen som nya kloner ska gå till. Valv som du redan har stannar där de är."</string>
+    <string name="settings_m3_storage_move_title" formatted="false">"Flytta ett valv som du redan har"</string>
+    <string name="settings_m3_system_default" formatted="false">"Systemstandard"</string>
+    <string name="settings_m3_terms" formatted="false">"Villkor"</string>
+    <string name="settings_m3_theme" formatted="false">"Tema"</string>
+    <string name="settings_m3_theme_dark" formatted="false">"Mörkt"</string>
+    <string name="settings_m3_theme_light" formatted="false">"Ljust"</string>
+    <string name="settings_m3_title" formatted="false">"Inställningar"</string>
+    <string name="settings_m3_unlocked" formatted="false">"Upplåst"</string>
+    <string name="settings_m3_upgrade_body" formatted="false">"Öppna Obsidian på morgonen så finns allt redan där."</string>
+    <string name="settings_m3_upgrade_illustration" formatted="false">"Låst telefon som drar och skjuter med GitHub över natten"</string>
+    <string name="settings_m3_upgrade_last_run">"%1$s · drog %2$d · skickade %3$d"</string>
+    <string name="settings_m3_upgrade_locked_phone" formatted="false">"låst telefon"</string>
+    <string name="settings_m3_upgrade_note" formatted="false">"Ingår med GitSync.md. Android bestämmer när bakgrundsarbete körs; det är bästa möjliga försök. Batterisparare kan fördröja det."</string>
+    <string name="settings_m3_upgrade_pull" formatted="false">"Hämta i bakgrunden"</string>
+    <string name="settings_m3_upgrade_push" formatted="false">"Gör även commit och push av mina ändringar"</string>
+    <string name="settings_m3_upgrade_title" formatted="false">"Synka medan\ndu sover."</string>
+    <string name="settings_m3_upgrade_turn_on" formatted="false">"Slå på Background Sync"</string>
+    <string name="settings_m3_vault_check_ok" formatted="false">"OK"</string>
+    <string name="settings_m3_vault_delete_action" formatted="false">"Ta bort"</string>
+    <string name="settings_m3_vault_delete_body" formatted="false">"Tar bort denna mapp, dess filer och dess Git-historik från den här telefonen. Allt som inte har pushats till GitHub går förlorat."</string>
+    <string name="settings_m3_vault_delete_title" formatted="false">"Ta bort valvet och radera filer?"</string>
+    <string name="settings_m3_vault_display_name" formatted="false">"Visningsnamn"</string>
+    <string name="settings_m3_vault_display_name_hint" formatted="false">"Lämna tomt för att använda valvets eget namn."</string>
+    <string name="settings_m3_vault_errors" formatted="false">"fel · 7 d"</string>
+    <string name="settings_m3_vault_files" formatted="false">"filer"</string>
+    <string name="settings_m3_vault_folder" formatted="false">"Mapp"</string>
+    <string name="settings_m3_vault_group" formatted="false">"Det här valvet"</string>
+    <string name="settings_m3_vault_health" formatted="false">"Hälsa"</string>
+    <string name="settings_m3_vault_health_attention" formatted="false">"Behöver kontrolleras"</string>
+    <string name="settings_m3_vault_health_good" formatted="false">"bra"</string>
+    <string name="settings_m3_vault_include" formatted="false">"Inkludera i Background Sync"</string>
+    <string name="settings_m3_vault_include_review" formatted="false">"Granskar först grenen och fjärren"</string>
+    <string name="settings_m3_vault_include_sub">"Endast gren %1$s, spårar %2$s/%3$s"</string>
+    <string name="settings_m3_vault_include_title" formatted="false">"Inkludera i Background Sync?"</string>
+    <string name="settings_m3_vault_last_check">"senaste bakgrundskontroll %1$s · %2$s"</string>
+    <string name="settings_m3_vault_lfs" formatted="false">"LFS"</string>
+    <string name="settings_m3_vault_no_check" formatted="false">"ingen bakgrundskontroll än"</string>
+    <string name="settings_m3_vault_pin" formatted="false">"Fäst överst på Hem"</string>
+    <string name="settings_m3_vault_remove" formatted="false">"Ta bort valvet…"</string>
+    <string name="settings_m3_vault_remove_action" formatted="false">"Ta bort"</string>
+    <string name="settings_m3_vault_remove_delete" formatted="false">"Ta bort valvet och radera filer…"</string>
+    <string name="settings_m3_vault_remove_kept" formatted="false">"GitSync.md slutar visa det. Mappen hanteras inte av GitSync.md, så dess filer och Git-historik stannar där de är."</string>
+    <string name="settings_m3_vault_remove_title" formatted="false">"Ta bort detta valv?"</string>
+    <string name="settings_m3_vault_shortcut" formatted="false">"Lägg till genväg på startskärmen"</string>
+    <string name="settings_m3_vault_shortcut_sub" formatted="false">"Hämta eller begå &amp; skjut upp med ett tryck"</string>
+    <string name="settings_m3_vault_stop_tracking" formatted="false">"Sluta spåra – behåll filer"</string>
+    <string name="settings_m3_vault_title" formatted="false">"Valvinställningar"</string>
+    <string name="settings_m3_whats_new" formatted="false">"Nyheter"</string>
+    <string name="settings_m3_whats_new_hint" formatted="false">"Detta dyker också upp en gång efter en uppdatering. Du kan alltid hitta det här."</string>
+    <string name="settings_m3_whats_new_subtitle">"Versionsanteckningar för %1$s"</string>
     <string name="shortcut_background_attention" formatted="false">"Genvägen kräver uppmärksamhet. Öppna arkivåtgärder och granska läget innan du försöker igen."</string>
     <string name="shortcut_background_channel" formatted="false">"Genvägsåtgärder"</string>
     <string name="shortcut_background_complete" formatted="false">"Genvägsåtgärden är klar. Öppna arkivåtgärder för att granska resultatet."</string>
@@ -688,9 +1982,37 @@
     <string name="shortcut_background_interrupted" formatted="false">"Körningen avbröts. Den körs inte automatiskt igen. Granska arkivet innan du trycker igen."</string>
     <string name="shortcut_background_option" formatted="false">"Kör utan att öppna GitSync.md"</string>
     <string name="shortcut_background_running" formatted="false">"Genvägsåtgärd körs"</string>
+    <string name="shortcut_m3_add_vault" formatted="false">"Lägg till ett valv"</string>
+    <string name="shortcut_m3_commit_push">"%1$s: Begå &amp; skjut upp"</string>
+    <string name="shortcut_m3_commit_short" formatted="false">"Commit och push"</string>
+    <string name="shortcut_m3_pull">"%1$s: Hämta"</string>
+    <string name="shortcut_m3_pull_short" formatted="false">"Hämta"</string>
     <string name="shortcut_results_clear_scope" formatted="false">"Ta bort sparade körresultat för genvägar och callbacks. Deras behörigheter ändras inte. Avbrutna åtgärder körs inte automatiskt igen."</string>
     <string name="shortcut_results_unavailable" formatted="false">"Sparade genvägsresultat kan inte läsas. Behörigheten hanteras separat."</string>
     <string name="ssh_hide_private_key" formatted="false">"Dölj privat nyckel"</string>
+    <string name="ssh_m3_changed_title" formatted="false">"SSH-serverns nyckel har ändrats"</string>
+    <string name="ssh_m3_changed_warning" formatted="false">"En ändrad nyckel kan betyda att någon utger sig för att vara servern. Kontrollera det nya fingeravtrycket med dess ägare innan du ersätter förtroende."</string>
+    <string name="ssh_m3_compare" formatted="false">"Jämför det med SSH-servernyckeln som serverägaren publicerar innan du litar på den."</string>
+    <string name="ssh_m3_empty" formatted="false">"Inga betrodda SSH-servrar"</string>
+    <string name="ssh_m3_error_save" formatted="false">"Kunde inte spara SSH serverförtroende. Kontrollera fingeravtrycket igen innan du försöker på nytt."</string>
+    <string name="ssh_m3_forget" formatted="false">"Glöm"</string>
+    <string name="ssh_m3_forget_body">"%1$s kommer att behöva fingeravtrycksverifiering innan du ansluter igen."</string>
+    <string name="ssh_m3_forget_cd">"Glöm %1$s"</string>
+    <string name="ssh_m3_forget_server" formatted="false">"Glöm server"</string>
+    <string name="ssh_m3_forget_title" formatted="false">"Glöm SSH-server?"</string>
+    <string name="ssh_m3_intro" formatted="false">"Fingeravtryck du litade på är sparade på denna telefon. Glöm ett och du kommer att verifiera det igen nästa gång du ansluter. Dina SSH-nycklar förblir sparade."</string>
+    <string name="ssh_m3_none" formatted="false">"Inställningar · inga betrodda"</string>
+    <string name="ssh_m3_previous">"Tidigare betrott: %1$s"</string>
+    <string name="ssh_m3_replace" formatted="false">"Ersätt tillit och anslut"</string>
+    <string name="ssh_m3_reset_all" formatted="false">"Återställ all SSH-servertillit"</string>
+    <string name="ssh_m3_reset_body" formatted="false">"Varje SSH server kommer att behöva fingeravtrycksverifiering innan du ansluter igen. Detta rensar också skadade förtroendeposter."</string>
+    <string name="ssh_m3_reset_confirm" formatted="false">"Återställ tillit"</string>
+    <string name="ssh_m3_reset_title" formatted="false">"Återställ all SSH-servertillit?"</string>
+    <string name="ssh_m3_saved" formatted="false">"Förtroende sparas på denna telefon och den väntande anslutningen fortsätter. Avbryt gör servern oförtrodd."</string>
+    <string name="ssh_m3_title" formatted="false">"Förtroende för SSH-servrar"</string>
+    <string name="ssh_m3_trust" formatted="false">"Lita på och anslut"</string>
+    <string name="ssh_m3_trusted" formatted="false">"Betrodda servrar"</string>
+    <string name="ssh_m3_verify_title" formatted="false">"Verifiera SSH-server"</string>
     <string name="ssh_show_private_key" formatted="false">"Visa privat nyckel"</string>
     <string name="ssh_trust_error_changed" formatted="false">"SSH-tilliten ändrades under granskningen. Granska den aktuella serverposten och försök ansluta igen."</string>
     <string name="ssh_trust_error_damaged" formatted="false">"Sparad SSH-tillit behöver granskas. Återställ SSH-servertillit i Inställningar innan du försöker igen."</string>
@@ -755,7 +2077,7 @@
     <string name="tide_vault_eyebrow_unreadable" formatted="false">"Kunde inte läsa"</string>
     <string name="tide_vault_files_section" formatted="false">"Filer"</string>
     <string name="tide_vault_from_remote">"↓%1$d från fjärrsidan"</string>
-    <string name="tide_vault_git" formatted="false">"GIT"</string>
+    <string name="tide_vault_git" formatted="false">"Git"</string>
     <string name="tide_vault_headline_behind">"Nya på fjärrsidan: %1$d"</string>
     <string name="tide_vault_headline_unreadable" formatted="false">"Kunde inte läsa det här valvet."</string>
     <string name="tide_vault_more" formatted="false">"Fler alternativ för valvet"</string>
@@ -768,6 +2090,13 @@
     <string name="tide_vault_sub_empty" formatted="false">"Lägg till en anteckning och skapa sedan en commit här."</string>
     <string name="tide_vault_sub_in_sync" formatted="false">"Inget väntar på den här telefonen"</string>
     <string name="tide_vault_yours">"↑%1$d lokalt"</string>
+    <string name="tile_m3_background_sync" formatted="false">"Background Sync"</string>
+    <string name="tile_m3_modes">"%1$s · %2$s"</string>
+    <string name="tile_m3_pull_all" formatted="false">": Hämta alla"</string>
+    <string name="tile_m3_pull_off" formatted="false">"Dra av"</string>
+    <string name="tile_m3_pull_on" formatted="false">"Dra på"</string>
+    <string name="tile_m3_push_off" formatted="false">"Tryck av"</string>
+    <string name="tile_m3_push_on" formatted="false">"Tryck på"</string>
     <string name="tracking_metadata_size">"Git-metadata: %1$s"</string>
     <string name="tracking_remove_permanent_title" formatted="false">"Ta bort Git-historiken permanent?"</string>
     <string name="tracking_removed_backup">"Git-spårning borttagen. Verifierad säkerhetskopia: %1$s"</string>
@@ -778,14 +2107,23 @@
     <string name="ui_1_s_characters_bde60398">"Tecken: %1$s"</string>
     <string name="ui_1_s_lines_2_s_bytes_c30a0cd1">"Rader: %1$s, byte: %2$s"</string>
     <string name="ui_1_s_local_commits_2_s_upstream_commits_77dc6fa8">"%1$s lokala commits · %2$s upstream-commits"</string>
+    <string name="ui_1_vault_c39776f1" formatted="false">"1 valv"</string>
+    <string name="ui_2_of_3_commits_sent_5591e38a" formatted="false">"2 av 3 commitar skickade"</string>
+    <string name="ui_3_changes_aren_t_committed_yet_commit_or_s_d878e782" formatted="false">"3 ändringar är ännu inte committade. Commit eller stash dem innan du byter gren."</string>
+    <string name="ui_3_held_f454ab2b" formatted="false">"↑3 hållna"</string>
+    <string name="ui_3_to_push_ac87b7cb" formatted="false">"↑3 att pusha"</string>
+    <string name="ui_4_in_sync_checked_2_min_ago_a1f1ab5e" formatted="false">"4 i synk · kontrollerad för 2 min sedan"</string>
     <string name="ui_abort_rebase_fd5cfc32" formatted="false">"Avbryt rebase…"</string>
     <string name="ui_about_4efca0d1" formatted="false">"Om"</string>
+    <string name="ui_about_lfs_538b5b7e" formatted="false">"Om LFS"</string>
+    <string name="ui_all_5_8907f196" formatted="false">"Alla 5"</string>
     <string name="ui_all_conflicts_are_staged_continue_replayin_b86b2a5a" formatted="false">"Alla konfliktlösningar är förberedda. Fortsätt spela upp commits igen. Om Git rapporterar NOTHING_TO_COMMIT, granska om den tomma commiten ska hoppas över."</string>
     <string name="ui_all_local_changes_to_this_file_will_be_per_0919f539" formatted="false">"Alla lokala ändringar i denna fil kommer permanent att avskiljas."</string>
     <string name="ui_allow_local_folder_access_0b2888fb" formatted="false">"Tillåt åtkomst till lokala mappar"</string>
     <string name="ui_app_0d04bfeb" formatted="false">"App"</string>
     <string name="ui_app_settings_da645334" formatted="false">"Appinställningar"</string>
     <string name="ui_apply_tracking_choice_47a2e187" formatted="false">"Använd spårningsval"</string>
+    <string name="ui_attention_1_fa1ea5dc" formatted="false">"Uppmärksamhet 1"</string>
     <string name="ui_authentication_66880d2d" formatted="false">"Autentisering"</string>
     <string name="ui_back_639807a2" formatted="false">"TILLBAKA"</string>
     <string name="ui_back_aceb696a" formatted="false">"← Tillbaka"</string>
@@ -793,11 +2131,13 @@
     <string name="ui_backup_1_s_6ad01ca6">"Säkerhetskopia: %1$s"</string>
     <string name="ui_base_7b47361a" formatted="false">"Bas"</string>
     <string name="ui_binary_large_or_lfs_file_choose_an_entire_52c3278a" formatted="false">"Binär, stor eller LFS-fil: välj en hel sida."</string>
+    <string name="ui_both_sides_edited_step_3_077f9640" formatted="false">"Båda sidor redigerade \"Steg 3\"."</string>
     <string name="ui_branch_52656e81" formatted="false">"Gren"</string>
     <string name="ui_branch_optional_e9dedf99" formatted="false">"Gren (valfri)"</string>
     <string name="ui_browsing_with_this_account_28a8b330" formatted="false">"Bläddrar med det här kontot"</string>
     <string name="ui_cancel_pending_move_0858583b" formatted="false">"Avbryt väntande flytt"</string>
     <string name="ui_changes_bbd4b6a8" formatted="false">"Ändringar"</string>
+    <string name="ui_changes_on_this_phone_6359d3d5" formatted="false">"ändringar på denna telefon"</string>
     <string name="ui_choose_a_connected_account_for_this_reposi_c4817ea9" formatted="false">"Välj ett anslutet konto för det här arkivet."</string>
     <string name="ui_choose_a_device_folder_d00b7daf" formatted="false">"Välj en mapp på enheten"</string>
     <string name="ui_choose_an_authentication_method_before_clo_c89124ba" formatted="false">"Välj en autentiseringsmetod innan du klonar."</string>
@@ -810,14 +2150,18 @@
     <string name="ui_clone_again_e05eb495" formatted="false">"Klona igen"</string>
     <string name="ui_clone_again_review_the_previous_branch_and_33cba147" formatted="false">"Klona igen · granska den tidigare grenen och anslutningen innan du börjar."</string>
     <string name="ui_clone_storage_47cafc8a" formatted="false">"Lagring av kloner"</string>
+    <string name="ui_cloning_and_preparing_the_working_copy_6fe864ff" formatted="false">"Klonar och förbereder arbetskopian"</string>
+    <string name="ui_commit_3_files_959a8528" formatted="false">"Commit av 3 filer"</string>
     <string name="ui_commit_author_e9376b3a" formatted="false">"Commit-författare"</string>
     <string name="ui_commit_message_a4b361b7" formatted="false">"Commit-meddelande…"</string>
     <string name="ui_commit_sha_d0bc6028" formatted="false">"Commit SHA"</string>
     <string name="ui_confirm_eebdd24a" formatted="false">"Bekräfta"</string>
+    <string name="ui_conflict_1_of_2_ideas_23283a20" formatted="false">"Konflikt 1 av 2 · ideas/"</string>
     <string name="ui_continue_rebase_7a14e965" formatted="false">"Fortsätt rebase"</string>
     <string name="ui_create_a_file_or_folder_using_new_655c5596" formatted="false">"Skapa en fil eller mapp med Ny."</string>
     <string name="ui_current_default_d914f86e" formatted="false">"Nuvarande standard"</string>
     <string name="ui_current_separate_push_address_1_s_2a6ef8f9">"Nuvarande separata pushadress: %1$s"</string>
+    <string name="ui_daily_new_file_42_31057cdf" formatted="false">"daily · ny fil · +42"</string>
     <string name="ui_debug_info_697b4941" formatted="false">"Felsökningsinformation"</string>
     <string name="ui_delete_1_s_6474596f">"Ta bort ”%1$s”?"</string>
     <string name="ui_delete_e2d0a549" formatted="false">"Ta bort"</string>
@@ -826,6 +2170,10 @@
     <string name="ui_delete_local_files_20424441" formatted="false">"Ta bort lokala filer"</string>
     <string name="ui_destination_1_s_0df94639">"Mål: %1$s"</string>
     <string name="ui_destination_parent_folder_c6c4f97e" formatted="false">"Överordnad målmapp"</string>
+    <string name="ui_disabled_75081b59" formatted="false">"Utarmad"</string>
+    <string name="ui_discard_3_95e06aed" formatted="false">"Kassera 3"</string>
+    <string name="ui_discard_3_changes_d2ad52aa" formatted="false">"Kassera 3 ändringar?"</string>
+    <string name="ui_discard_changes_85bcf416" formatted="false">"Kassera ändringar?"</string>
     <string name="ui_discard_draft_cb30147e" formatted="false">"Kasta utkast"</string>
     <string name="ui_discard_eb1a70e3" formatted="false">"Förkasta"</string>
     <string name="ui_discard_resolution_draft_47c16148" formatted="false">"Kasta lösningsutkastet?"</string>
@@ -846,6 +2194,8 @@
     <string name="ui_gitsync_md_needs_shared_storage_access_to_f1b339ea" formatted="false">"GitSync.md behöver åtkomst till delad lagring för att hantera riktiga Git-arbetskopior i enhetens mappar. Välj de mappar du vill använda efter att du har aktiverat åtkomst i Android-inställningarna."</string>
     <string name="ui_go_back_and_select_a_repository_c3eedd39" formatted="false">"Gå tillbaka och välj ett arkiv."</string>
     <string name="ui_hash_a9106914" formatted="false">"Hash"</string>
+    <string name="ui_health_md_f72119f5" formatted="false">"health-md"</string>
+    <string name="ui_https_ssh_git_or_file_e79ef5ea" formatted="false">"HTTPS, SSH, git:// eller file://."</string>
     <string name="ui_i_understand_that_another_owner_may_still_b4a12b2d" formatted="false">"Jag förstår att en annan ägare fortfarande kan redigera denna fil."</string>
     <string name="ui_include_the_ssh_username_in_the_address_gi_beb09b5a" formatted="false">"Ta med SSH-användarnamnet i adressen: git@host:team/repo.git eller ssh://git@host:2222/team/repo.git."</string>
     <string name="ui_keep_editing_e76fd2ad" formatted="false">"Fortsätt redigera"</string>
@@ -882,8 +2232,12 @@
     <string name="ui_owner_1_s_599ca9ce">"Ägare: %1$s"</string>
     <string name="ui_parents_1_s_914efbd0">"Föräldrar (%1$s)"</string>
     <string name="ui_path_62fa5a5b" formatted="false">"Sökväg"</string>
+    <string name="ui_plain_http_sends_credentials_unencrypted_c99e5672" formatted="false">"Ren HTTP skickar referenser okrypterat."</string>
     <string name="ui_platform_c78ffe19" formatted="false">"Plattform"</string>
     <string name="ui_pull_with_rebase_6d25f1e0" formatted="false">": Tvinga med ombasering"</string>
+    <string name="ui_push_was_rejected_fbc19d01" formatted="false">"Push avvisades"</string>
+    <string name="ui_pushed_579e8c6a" formatted="false">"Pushad"</string>
+    <string name="ui_rebase_completed_successfully_53314c91" formatted="false">"– Rebase har slutförts framgångsfullt."</string>
     <string name="ui_rebase_in_progress_3ecd9c42" formatted="false">"Ombasering pågår"</string>
     <string name="ui_rebase_onto_reviewed_upstream_c3b8fb93" formatted="false">"Ombasera på granskad upstream"</string>
     <string name="ui_reconnect_bf8a9eab" formatted="false">"Anslut igen"</string>
@@ -893,6 +2247,7 @@
     <string name="ui_reload_author_18a711d8" formatted="false">"Läs in författare igen"</string>
     <string name="ui_reload_connection_ceed2dae" formatted="false">"Läs in anslutningen igen"</string>
     <string name="ui_reload_from_disk_d4288839" formatted="false">"Läs in från disk igen"</string>
+    <string name="ui_remote_has_no_new_commits_fetched_2m_ago_bdaa4b95" formatted="false">"Remote har inga nya commits · hämtades för 2 min sedan"</string>
     <string name="ui_remove_1_s_e4dd7c24">"Ta bort %1$s?"</string>
     <string name="ui_remove_1_s_this_removes_it_from_gitsync_md_0a6b198d">"Ta bort ”%1$s”?\n\nDetta tar bort det från GitSync.md. Alla lokala filer och Git-historiken finns kvar på den här enheten och du kan ansluta det igen senare. Det externa repositoryt påverkas inte."</string>
     <string name="ui_remove_all_custom_endpoint_approvals_and_t_ffc30a9e" formatted="false">"Ta bort alla anpassade ändpunktsgodkännanden och deras sparade inloggningsuppgifter på den här enheten. Varje ändpunkt och överföringsriktning kräver en ny granskning."</string>
@@ -932,17 +2287,20 @@
     <string name="ui_save_1509f561" formatted="false">"Spara"</string>
     <string name="ui_save_author_1c24b32a" formatted="false">"Spara författare"</string>
     <string name="ui_save_connection_df24ef12" formatted="false">"Spara anslutning"</string>
+    <string name="ui_saved_credentials_are_encrypted_on_this_de_9320d5e0" formatted="false">"Sparade referenser är krypterade på denna enhet."</string>
     <string name="ui_saving_uses_this_address_for_both_fetch_an_48c82edc" formatted="false">"När du sparar används den här adressen för både fetch och push. Kör fetch efteråt för att uppdatera fjärrstatus."</string>
     <string name="ui_selected_folder_0cf59bef" formatted="false">"Vald mapp"</string>
     <string name="ui_share_backup_archive_ee4ba873" formatted="false">"Dela säkerhetskopiearkiv"</string>
     <string name="ui_some_diagnostics_could_not_be_read_or_save_19e3372d" formatted="false">"Viss diagnostik kunde inte läsas eller sparas. Befintliga data behölls. Rensa loggen för att börja registrera igen."</string>
     <string name="ui_ssh_private_key_0e92a613" formatted="false">"SSH Privat nyckel"</string>
     <string name="ui_stage_de838855" formatted="false">"Förbered"</string>
+    <string name="ui_stay_on_main_915a176c" formatted="false">"Stanna på main"</string>
     <string name="ui_the_active_destination_stays_in_place_gits_a4f1f68a" formatted="false">"Det aktiva målet finns kvar. GitSync.md kontrollerar att det sparade originalet inte har några senare ändringar innan dess filer och Git-historik tas bort permanent."</string>
     <string name="ui_the_folder_can_move_directly_on_this_stora_7b29fabb" formatted="false">"Mappen kan flyttas direkt på den här lagringsvolymen."</string>
     <string name="ui_the_previous_github_account_is_disconnecte_628a1f8c" formatted="false">"Det tidigare GitHub-kontot är frånkopplat. Välj ett anslutet konto eller en annan autentiseringsmetod."</string>
     <string name="ui_the_replayed_local_commit_deletes_this_fil_ab00656d" formatted="false">"Den återspelade lokala commiten tar bort denna fil."</string>
     <string name="ui_the_review_changed_cancel_and_refresh_serv_c7ee804c" formatted="false">"De granskade uppgifterna har ändrats. Avbryt och uppdatera serverlåsen."</string>
+    <string name="ui_these_files_go_back_to_how_they_were_in_a4_02e3cd66" formatted="false">"Dessa filer återställs till hur de var i a41c9e2."</string>
     <string name="ui_this_history_entry_is_unavailable_c2c9f4e0" formatted="false">"Den här historikposten är inte tillgänglig."</string>
     <string name="ui_this_removes_another_connection_s_lock_coo_880defbf" formatted="false">"Detta tar bort en annan anslutnings lås. Kom överens med ägaren innan du fortsätter."</string>
     <string name="ui_this_repository_will_use_public_access_unt_c94fad61" formatted="false">"Det här arkivet använder offentlig åtkomst tills du väljer autentisering igen. Ditt inloggade GitHub-konto används inte för det. Adresserna för fetch och push förblir oförändrade."</string>
@@ -955,6 +2313,7 @@
     <string name="ui_use_for_new_clones_be174c95" formatted="false">"Använd för nya kloner"</string>
     <string name="ui_use_saved_default_3bb7260d" formatted="false">"Använd sparat standardval"</string>
     <string name="ui_username_e3b89e9d" formatted="false">"Användarnamn"</string>
+    <string name="ui_working_5474eef8" formatted="false">"Arbetar…"</string>
     <string name="ui_your_edits_have_not_been_saved_625899a4" formatted="false">"Dina ändringar har inte sparats."</string>
     <string name="ui_your_unsubmitted_text_will_be_discarded_th_15717285" formatted="false">"Texten du inte skickat in kastas. Arbetsfilen förblir oförändrad."</string>
     <string name="untracked" formatted="false">"Ospårad"</string>
@@ -1048,9 +2407,108 @@
     <string name="vault_l10n_tracking_review_changed" formatted="false">"Granskningen av borttagen spårning har ändrats. Granska arkivet och valet av säkerhetskopia igen."</string>
     <string name="vault_l10n_volume_unavailable" formatted="false">"Lagringsvolymen är inte tillgänglig"</string>
     <string name="vault_l10n_volume_unavailable_reconnect" formatted="false">"Lagringsvolymen är inte tillgänglig. Anslut den igen och välj mappen på nytt."</string>
+    <string name="vault_m3_as_author">"som %1$s · %2$s"</string>
+    <string name="vault_m3_branch_pushed">"Skickade dina commits till den nya grenen %1$s"</string>
+    <string name="vault_m3_cancel" formatted="false">"Avbryt"</string>
+    <string name="vault_m3_check_for_changes" formatted="false">"Sök efter ändringar"</string>
+    <string name="vault_m3_checking" formatted="false">"Kontrollerar…"</string>
+    <string name="vault_m3_checking_remote">"Kontrollerar %1$s för nya commits"</string>
+    <string name="vault_m3_chip_theirs">"↓%1$d från %2$s · %3$s"</string>
+    <string name="vault_m3_chip_theirs_plain">"↓%1$d från fjärrvärden"</string>
+    <string name="vault_m3_chip_yours">"↑%1$d dina"</string>
+    <string name="vault_m3_commit_locally" formatted="false">"Committa lokalt"</string>
+    <string name="vault_m3_commit_push" formatted="false">"Commit och push"</string>
+    <string name="vault_m3_commits_sent">"%1$d av %2$d commits skickade"</string>
+    <string name="vault_m3_committing" formatted="false">"Gör commit…"</string>
+    <string name="vault_m3_days_ago">"%1$d d sedan"</string>
+    <string name="vault_m3_deleted_path">"%1$s (raderad)"</string>
+    <string name="vault_m3_discard_body">"Dessa filer återställs till hur de var i %1$s. Ändringar som gjorts på denna telefon sedan dess är borta för alltid."</string>
+    <string name="vault_m3_dismiss" formatted="false">"Stäng"</string>
+    <string name="vault_m3_download_progress" formatted="false">"Nedladdningsframsteg"</string>
+    <string name="vault_m3_effect_delete" formatted="false">"radera ny fil"</string>
+    <string name="vault_m3_effect_restore" formatted="false">"återställ"</string>
+    <string name="vault_m3_effect_revert" formatted="false">"Ångra"</string>
+    <string name="vault_m3_effect_unstage" formatted="false">"Ta bort förberedelse"</string>
+    <string name="vault_m3_fetched_ago">"hämtad %1$s"</string>
+    <string name="vault_m3_hours_ago">"%1$dför h dagar"</string>
+    <string name="vault_m3_included" formatted="false">"Inkluderad"</string>
+    <string name="vault_m3_just_now" formatted="false">"just nu"</string>
+    <string name="vault_m3_keep_them" formatted="false">"Behåll dem"</string>
+    <string name="vault_m3_latest_commit" formatted="false">"Senaste commit"</string>
+    <string name="vault_m3_leave_note" formatted="false">"Du kan lämna denna skärm. Synkroniseringen fortsätter och visar sin framsteg i en notifikation."</string>
+    <string name="vault_m3_merge" formatted="false">"merge"</string>
+    <string name="vault_m3_merge_conflicts" formatted="false">"Pull hittade konflikter. Lös dem och tryck sedan på push."</string>
+    <string name="vault_m3_message" formatted="false">"Meddelande"</string>
+    <string name="vault_m3_minutes">"%1$dm"</string>
+    <string name="vault_m3_minutes_ago">"%1$dför m år sedan"</string>
+    <string name="vault_m3_no_overlap_body" formatted="false">"Dina och deras ändringar berör olika filer, så det här bör gå att sammanfoga utan problem."</string>
+    <string name="vault_m3_no_overlap_title" formatted="false">"Ingen överlappning hittades"</string>
+    <string name="vault_m3_no_upstream" formatted="false">"Ingen upstream-branch"</string>
+    <string name="vault_m3_notify_channel" formatted="false">"Valvsynk"</string>
+    <string name="vault_m3_notify_title">"%1$s · %2$s"</string>
+    <string name="vault_m3_objects_received">"%1$d av %2$d objekt mottagna"</string>
+    <string name="vault_m3_objects_sent">"%1$d av %2$d objekt skickade"</string>
+    <string name="vault_m3_only_on_phone" formatted="false">"Endast på denna telefon"</string>
+    <string name="vault_m3_overlap_body" formatted="false">"Båda parter redigerade samma filer. Pull kan stoppas vid en konflikt för dig att lösa."</string>
+    <string name="vault_m3_preparing" formatted="false">"Förbereder…"</string>
+    <string name="vault_m3_pull" formatted="false">"Hämta"</string>
+    <string name="vault_m3_pull_then_push" formatted="false">"Pull deras, sedan push"</string>
+    <string name="vault_m3_pulled">"Uppdaterad med %1$s"</string>
+    <string name="vault_m3_pulling" formatted="false">"Hämtar…"</string>
+    <string name="vault_m3_push" formatted="false">"Pusha"</string>
+    <string name="vault_m3_push_branch" formatted="false">"Pusha till en branch"</string>
+    <string name="vault_m3_push_right_after" formatted="false">"Pusha direkt efter"</string>
+    <string name="vault_m3_pushed_to">"Pushad till %1$s"</string>
+    <string name="vault_m3_pushing" formatted="false">"Pushar…"</string>
+    <string name="vault_m3_rejected_kicker" formatted="false">"Push gick inte igenom"</string>
+    <string name="vault_m3_remote_generic" formatted="false">"remote"</string>
+    <string name="vault_m3_remote_is_here">"%1$s finns här"</string>
+    <string name="vault_m3_remote_no_new" formatted="false">"Fjärrarkivet har inga nya commits"</string>
+    <string name="vault_m3_remote_not_checked" formatted="false">"Fjärranslutning ej kontrollerad än"</string>
+    <string name="vault_m3_review_first" formatted="false">"Granska först"</string>
+    <string name="vault_m3_seconds">"%1$ds"</string>
+    <string name="vault_m3_stash_first" formatted="false">"Lägg en kopia i stash först, för säkerhets skull"</string>
+    <string name="vault_m3_step_branch">"Skapa gren %1$s"</string>
+    <string name="vault_m3_step_check">"Sök efter nya commits i %1$s"</string>
+    <string name="vault_m3_step_download">"Ladda ner från %1$s"</string>
+    <string name="vault_m3_step_merge">"Merge %1$s"</string>
+    <string name="vault_m3_step_none" formatted="false">"inga"</string>
+    <string name="vault_m3_step_update" formatted="false">"Uppdatera filer"</string>
+    <string name="vault_m3_step_upload">"Ladda upp till %1$s"</string>
+    <string name="vault_m3_steps" formatted="false">"Steg"</string>
+    <string name="vault_m3_suggest_add">"Lägg till %1$s"</string>
+    <string name="vault_m3_suggest_backup">"valvsäkerhetskopia: %1$s"</string>
+    <string name="vault_m3_suggest_delete">"Radera %1$s"</string>
+    <string name="vault_m3_suggest_update">"Uppdatera %1$s"</string>
+    <string name="vault_m3_suggested" formatted="false">"Föreslaget från skillnaden"</string>
+    <string name="vault_m3_sync_cancelled" formatted="false">"Synkronisering avbruten. Allt som redan har skickats ligger kvar på denna telefon."</string>
+    <string name="vault_m3_sync_failed" formatted="false">"Synkronisering stoppad"</string>
+    <string name="vault_m3_tap_for_diff" formatted="false">"tryck på en fil för att se skillnaden"</string>
+    <string name="vault_m3_time_left">"~%1$s kvar"</string>
+    <string name="vault_m3_today" formatted="false">"Idag"</string>
+    <string name="vault_m3_upload_progress" formatted="false">"Uppladdningsförlopp"</string>
+    <string name="vault_m3_vault_settings" formatted="false">"Valvinställningar"</string>
+    <string name="vault_m3_who_both" formatted="false">"båda"</string>
+    <string name="vault_m3_who_theirs" formatted="false">"deras"</string>
+    <string name="vault_m3_who_yours" formatted="false">"dina"</string>
+    <string name="vault_m3_yesterday" formatted="false">"Igår"</string>
     <string name="vault_open_in_files_failed" formatted="false">"Det gick inte att öppna mappen i Filer."</string>
     <string name="vault_repository_fallback" formatted="false">"Förråd"</string>
     <string name="vault_url_copied" formatted="false">"Kopierat!"</string>
+    <string name="widget_m3_choose_vault" formatted="false">"Välj ett valv"</string>
+    <string name="widget_m3_days_ago">"%1$d d sedan"</string>
+    <string name="widget_m3_hours_ago">"%1$dför h dagar"</string>
+    <string name="widget_m3_in_sync" formatted="false">"Synkat"</string>
+    <string name="widget_m3_list_description" formatted="false">"Dina valv med vad varje har att skicka, och en Knapp för Hämta allt."</string>
+    <string name="widget_m3_list_name" formatted="false">"Valv"</string>
+    <string name="widget_m3_minutes_ago">"%1$dför m år sedan"</string>
+    <string name="widget_m3_no_vaults" formatted="false">"Inga valv än. Öppna GitSync.md för att lägga till ett."</string>
+    <string name="widget_m3_now" formatted="false">"nu"</string>
+    <string name="widget_m3_pull_all_repositories" formatted="false">": Hämta alla lagringsplatser"</string>
+    <string name="widget_m3_vault_description" formatted="false">"Ett valv och hur många ändringar det har att skicka."</string>
+    <string name="widget_m3_vault_missing" formatted="false">"Detta valv finns inte längre på denna telefon."</string>
+    <string name="widget_m3_vault_name" formatted="false">"Valv"</string>
+    <string name="widget_m3_vault_widget" formatted="false">"Valvwidget"</string>
     <plurals name="account_updated_days">
         <item quantity="one">"%1$d dag sedan"</item>
         <item quantity="other">"%1$d dagar sedan"</item>
@@ -1075,6 +2533,62 @@
         <item quantity="one">"%1$d år sedan"</item>
         <item quantity="other">"%1$d år sedan"</item>
     </plurals>
+    <plurals name="adaptive_changes_on_phone">
+        <item quantity="one">"%1$s ändring på denna telefon"</item>
+        <item quantity="other">"%1$s ändringar på denna telefon"</item>
+    </plurals>
+    <plurals name="adaptive_changes_on_tablet">
+        <item quantity="one">"%1$s ändring på denna surfplatta"</item>
+        <item quantity="other">"%1$s ändringar på denna surfplatta"</item>
+    </plurals>
+    <plurals name="adaptive_commit_changes">
+        <item quantity="one">"Bekräfta %1$d ändring"</item>
+        <item quantity="other">"Bekräfta %1$d ändringar"</item>
+    </plurals>
+    <plurals name="adaptive_merging_left">
+        <item quantity="one">"Slår ihop %1$s · %2$d konflikt kvar"</item>
+        <item quantity="other">"Slår ihop %1$s · %2$d konflikter kvar"</item>
+    </plurals>
+    <plurals name="adaptive_merging_left_plain">
+        <item quantity="one">"Slår ihop · %1$d konflikt kvar"</item>
+        <item quantity="other">"Slår ihop · %1$d konflikter kvar"</item>
+    </plurals>
+    <plurals name="adaptive_split_editing">
+        <item quantity="one">"%1$d redigeras"</item>
+        <item quantity="other">"%1$d redigeras"</item>
+    </plurals>
+    <plurals name="adaptive_split_live">
+        <item quantity="one">"%1$s ändring · live"</item>
+        <item quantity="other">"%1$s ändringar · live"</item>
+    </plurals>
+    <plurals name="adaptive_vaults_need_you">
+        <item quantity="one">"%1$d behöver dig"</item>
+        <item quantity="other">"%1$d behöver dig"</item>
+    </plurals>
+    <plurals name="add_accounts_signed_in">
+        <item quantity="one">"Inställningar · %1$d inloggad"</item>
+        <item quantity="other">"Inställningar · %1$d inloggad"</item>
+    </plurals>
+    <plurals name="add_clone_files">
+        <item quantity="one">"%1$d fil"</item>
+        <item quantity="other">"%1$d filer"</item>
+    </plurals>
+    <plurals name="add_clone_lfs_files">
+        <item quantity="one">"%1$d fil"</item>
+        <item quantity="other">"%1$d filer"</item>
+    </plurals>
+    <plurals name="add_local_folders">
+        <item quantity="one">"%1$d mapp"</item>
+        <item quantity="other">"%1$d mappar"</item>
+    </plurals>
+    <plurals name="add_way_github_repos">
+        <item quantity="one">"%1$d repo · privat inkluderad"</item>
+        <item quantity="other">"%1$d repos · privat inkluderad"</item>
+    </plurals>
+    <plurals name="add_way_github_repos_public">
+        <item quantity="one">"%1$d repo"</item>
+        <item quantity="other">"%1$d repos"</item>
+    </plurals>
     <plurals name="dialogs_error_merge_conflicts">
         <item quantity="one">"Sammanfogningen har %1$d olöst konflikt.\n\nLös den innan du slutför sammanfogningen."</item>
         <item quantity="other">"Sammanfogningen har %1$d olösta konflikter.\n\nLös dem innan du slutför sammanfogningen."</item>
@@ -1082,6 +2596,98 @@
     <plurals name="diff_changed_lines">
         <item quantity="one">"+%1$s -%2$s rad"</item>
         <item quantity="other">"+%1$s -%2$s rader"</item>
+    </plurals>
+    <plurals name="editor_m3_lines_changed">
+        <item quantity="one">"%1$d rad ändrad"</item>
+        <item quantity="other">"%1$d rader ändrade"</item>
+    </plurals>
+    <plurals name="files_m3_items">
+        <item quantity="one">"%1$d objekt"</item>
+        <item quantity="other">"%1$d objekt"</item>
+    </plurals>
+    <plurals name="files_m3_sync_diverged">
+        <item quantity="one">"%1$d nytt åtagande på %2$s, och denna telefon har åtaganden som den inte har pushat. Öppna fliken Ändringar för att hämta dem."</item>
+        <item quantity="other">"%1$d nya åtaganden på %2$s, och denna telefon har åtaganden som den inte har pushat. Öppna fliken Ändringar för att hämta dem."</item>
+    </plurals>
+    <plurals name="files_m3_sync_local_changes">
+        <item quantity="one">"%1$d nytt åtagande på %2$s. Commit eller förkasta dina lokala ändringar på fliken Ändringar, och synkronisera sedan igen."</item>
+        <item quantity="other">"%1$d nya commits på %2$s. Committa eller kassera dina lokala ändringar på fliken Ändringar och synkronisera sedan igen."</item>
+    </plurals>
+    <plurals name="git_m3_cant_switch_body">
+        <item quantity="one">"Att byta till %1$s skulle ersätta filerna på denna telefon. Din %2$d okommittade ändring behöver först en säker plats."</item>
+        <item quantity="other">"Att byta till %1$s skulle ersätta filerna på denna telefon. Dina %2$d okommittade ändringar behöver först en säker plats."</item>
+    </plurals>
+    <plurals name="git_m3_commits_missing">
+        <item quantity="one">"%1$d commit %2$s har inte"</item>
+        <item quantity="other">"%1$d commits %2$s har inte"</item>
+    </plurals>
+    <plurals name="git_m3_conflicts_left">
+        <item quantity="one">"%1$d konflikt att lösa."</item>
+        <item quantity="other">"%1$d konflikter att lösa."</item>
+    </plurals>
+    <plurals name="git_m3_continue_resolve">
+        <item quantity="one">"Fortsätt rebase · lös %1$d till"</item>
+        <item quantity="other">"Fortsätt rebase · lös %1$d mer"</item>
+    </plurals>
+    <plurals name="git_m3_dirty_note">
+        <item quantity="one">"%1$d ändring är inte ännu committad. Commit eller stash den innan du byter gren."</item>
+        <item quantity="other">"%1$d ändringar är inte ännu committade. Commit eller stash dem innan du byter gren."</item>
+    </plurals>
+    <plurals name="git_m3_files">
+        <item quantity="one">"%1$d fil"</item>
+        <item quantity="other">"%1$d filer"</item>
+    </plurals>
+    <plurals name="git_m3_n_branches">
+        <item quantity="one">"%1$d gren"</item>
+        <item quantity="other">"%1$d grenar"</item>
+    </plurals>
+    <plurals name="git_m3_n_commits_history">
+        <item quantity="one">"%1$d commit i historik"</item>
+        <item quantity="other">"%1$d commits i historik"</item>
+    </plurals>
+    <plurals name="git_m3_n_stashes">
+        <item quantity="one">"%1$d stash"</item>
+        <item quantity="other">"%1$d stashes"</item>
+    </plurals>
+    <plurals name="git_m3_n_tags">
+        <item quantity="one">"%1$d tagg"</item>
+        <item quantity="other">"%1$d taggar"</item>
+    </plurals>
+    <plurals name="git_m3_notes_attachments">
+        <item quantity="one">"%1$d notering eller bilaga"</item>
+        <item quantity="other">"%1$d noteringar och bilagor"</item>
+    </plurals>
+    <plurals name="git_m3_push_commits">
+        <item quantity="one">"Skjut upp %1$d commit"</item>
+        <item quantity="other">"Skjut upp %1$d commits"</item>
+    </plurals>
+    <plurals name="git_m3_rebase_begin_body">
+        <item quantity="one">"Din %1$d lokala commit spelas upp på den granskade upstreamen och kan få ett nytt ID. Rebasen stannar på den här telefonen. Pushning är ett separat steg."</item>
+        <item quantity="other">"Dina %1$d lokala commits spelas upp på den granskade upstreamen och kan få nya ID:n. Rebasen stannar på den här telefonen. Pushning är ett separat steg."</item>
+    </plurals>
+    <plurals name="git_m3_rebase_done_meta">
+        <item quantity="one">"%1$d commit nu ovanpå %2$s · nya ID:n · ej pushad"</item>
+        <item quantity="other">"%1$d commits nu ovanpå %2$s · nya ID:n · ej pushade"</item>
+    </plurals>
+    <plurals name="git_m3_rebase_put_on_top">
+        <item quantity="one">"Lägg din %1$d commit ovanpå fjärrservern."</item>
+        <item quantity="other">"Lägg dina %1$d commits ovanpå fjärrservern."</item>
+    </plurals>
+    <plurals name="git_m3_stash_n">
+        <item quantity="one">"Lägger undan %1$d ändring"</item>
+        <item quantity="other">"Lägger undan %1$d ändringar"</item>
+    </plurals>
+    <plurals name="git_m3_stashed_toast">
+        <item quantity="one">"Lade undan %1$d ändring som stash@{0}."</item>
+        <item quantity="other">"Lade undan %1$d ändringar som stash@{0}."</item>
+    </plurals>
+    <plurals name="git_m3_uncommitted_changes">
+        <item quantity="one">"%1$s ocommitterad ändring"</item>
+        <item quantity="other">"%1$s ocommitterade ändringar"</item>
+    </plurals>
+    <plurals name="git_m3_uncommitted_plain">
+        <item quantity="one">"%1$d ocommitterad redigering, som en vanlig fil"</item>
+        <item quantity="other">"%1$d ocommitterade redigeringar, som vanliga filer"</item>
     </plurals>
     <plurals name="gitops_merge_stopped_conflicts">
         <item quantity="one">"Merge stoppad: %1$s (%2$d konflikt)"</item>
@@ -1099,6 +2705,30 @@
         <item quantity="one">"%1$d befintlig fil behåller sitt uttryckliga spårningsval."</item>
         <item quantity="other">"%1$d befintliga filer behåller sina uttryckliga spårningsval."</item>
     </plurals>
+    <plurals name="lfs_m3_downloading">
+        <item quantity="one">"Laddar ner %1$d fil"</item>
+        <item quantity="other">"Laddar ner %1$d filer"</item>
+    </plurals>
+    <plurals name="lfs_m3_endpoints_subtitle">
+        <item quantity="one">"Inställningar · %1$d godkänd"</item>
+        <item quantity="other">"Inställningar · %1$d godkänd"</item>
+    </plurals>
+    <plurals name="lfs_m3_ext_affected">
+        <item quantity="one">"%1$d fil flyttas till LFS"</item>
+        <item quantity="other">"%1$d filer flyttas till LFS"</item>
+    </plurals>
+    <plurals name="lfs_m3_file_count">
+        <item quantity="one">"%1$d fil"</item>
+        <item quantity="other">"%1$d filer"</item>
+    </plurals>
+    <plurals name="lfs_m3_stored_files">
+        <item quantity="one">"i %1$d fil"</item>
+        <item quantity="other">"i %1$d filer"</item>
+    </plurals>
+    <plurals name="lfs_m3_track_files">
+        <item quantity="one">"Spåra %1$d fil med LFS"</item>
+        <item quantity="other">"Spåra %1$d filer med LFS"</item>
+    </plurals>
     <plurals name="lfs_restored_files">
         <item quantity="one">"Återställde %1$d fil."</item>
         <item quantity="other">"Återställde %1$d filer."</item>
@@ -1107,9 +2737,57 @@
         <item quantity="one">"%1$d fil"</item>
         <item quantity="other">"%1$d filer"</item>
     </plurals>
+    <plurals name="m3home_auth_waiting">
+        <item quantity="one">"%1$d valv väntar."</item>
+        <item quantity="other">"%1$d valv väntar."</item>
+    </plurals>
+    <plurals name="m3home_badge_edited">
+        <item quantity="one">"%1$d redigerade"</item>
+        <item quantity="other">"%1$d redigerade"</item>
+    </plurals>
+    <plurals name="m3home_headline_attention">
+        <item quantity="one">"%1$d valv"</item>
+        <item quantity="other">"%1$d valv"</item>
+    </plurals>
+    <plurals name="m3home_headline_attention_accent">
+        <item quantity="one">"%1$s behöver dig."</item>
+        <item quantity="other">"%1$s behöver dig."</item>
+    </plurals>
+    <plurals name="m3home_headline_ready">
+        <item quantity="one">"%1$d valv"</item>
+        <item quantity="other">"%1$d valv"</item>
+    </plurals>
+    <plurals name="m3home_sync_nothing_local">
+        <item quantity="other">"Ingenting att synkronisera. Dessa %1$d valv är endast lokala (ingen fjärranslutning)."</item>
+        <item quantity="one">"Inget att synkronisera. %1$d valv är endast lokalt (ingen fjärranslutning)."</item>
+    </plurals>
     <plurals name="move_plan_summary">
         <item quantity="one">"%1$s fil inklusive Git-metadata · %2$s"</item>
         <item quantity="other">"%1$s filer inklusive Git-metadata · %2$s"</item>
+    </plurals>
+    <plurals name="notification_m3_commits">
+        <item quantity="one">"%1$d commit hämtad i bakgrunden."</item>
+        <item quantity="other">"%1$d commits hämtade i bakgrunden."</item>
+    </plurals>
+    <plurals name="notification_m3_commits_from">
+        <item quantity="one">"%1$d commit från %2$s hämtad i bakgrunden."</item>
+        <item quantity="other">"%1$d commits från %2$s hämtade i bakgrunden."</item>
+    </plurals>
+    <plurals name="pullall_m3_checked_repositories">
+        <item quantity="one">"%1$d av %2$d-förvaret kontrollerat"</item>
+        <item quantity="other">"%1$d av %2$d-förvaren kontrollerade"</item>
+    </plurals>
+    <plurals name="pullall_m3_checked_vaults">
+        <item quantity="one">"%1$d av %2$d-valvet kontrollerat"</item>
+        <item quantity="other">"%1$d av %2$d-valven kontrollerade"</item>
+    </plurals>
+    <plurals name="pullall_m3_updated_commits">
+        <item quantity="one">"Uppdaterad från fjärran · ↓%1$d commit"</item>
+        <item quantity="other">"Uppdaterad från fjärran · ↓%1$d commits"</item>
+    </plurals>
+    <plurals name="pullall_m3_vaults">
+        <item quantity="one">"%1$d valv"</item>
+        <item quantity="other">"%1$d valv"</item>
     </plurals>
     <plurals name="rebase_additional_blocked_paths">
         <item quantity="one">"Ytterligare %1$d blockerad sökväg visas inte."</item>
@@ -1131,12 +2809,92 @@
         <item quantity="one">"· %1$d repository"</item>
         <item quantity="other">"· %1$d repositories"</item>
     </plurals>
+    <plurals name="settings_m3_bg_included">
+        <item quantity="one">"%1$d valv inkluderat"</item>
+        <item quantity="other">"%1$d valv inkluderade"</item>
+    </plurals>
+    <plurals name="settings_m3_bg_run_quiet">
+        <item quantity="one">"%1$d valv, inget nytt"</item>
+        <item quantity="other">"%1$d valv, inget nytt"</item>
+    </plurals>
+    <plurals name="settings_m3_debug_errors_day">
+        <item quantity="one">"%1$d fel på 24h"</item>
+        <item quantity="other">"%1$d fel på 24h"</item>
+    </plurals>
+    <plurals name="settings_m3_entries">
+        <item quantity="one">"%1$d post"</item>
+        <item quantity="other">"%1$d poster"</item>
+    </plurals>
+    <plurals name="settings_m3_push_connections">
+        <item quantity="one">"%1$d GitHub anslutning · på"</item>
+        <item quantity="other">"%1$d GitHub anslutningar · på"</item>
+    </plurals>
+    <plurals name="settings_m3_push_local_changes">
+        <item quantity="one">"%1$d lokal ändring på denna telefon"</item>
+        <item quantity="other">"%1$d lokala ändringar på denna telefon"</item>
+    </plurals>
+    <plurals name="settings_m3_sc_subtitle">
+        <item quantity="one">"Hämta alla widgetar · %1$d genväg"</item>
+        <item quantity="other">"Hämta alla widgetar · %1$d genvägar"</item>
+    </plurals>
+    <plurals name="ssh_m3_subtitle">
+        <item quantity="one">"Inställningar · %1$d server"</item>
+        <item quantity="other">"Inställningar · %1$d servrar"</item>
+    </plurals>
     <plurals name="tide_vault_changes_on_phone">
-        <item quantity="one">"ändring på den här telefonen"</item>
-        <item quantity="other">"ändringar på den här telefonen"</item>
+        <item quantity="one">"%1$s ändring på den här telefonen"</item>
+        <item quantity="other">"%1$s ändringar på den här telefonen"</item>
     </plurals>
     <plurals name="tide_vault_conflicts_to_resolve">
-        <item quantity="one">"konflikt att lösa"</item>
-        <item quantity="other">"konflikter att lösa"</item>
+        <item quantity="one">"%1$s konflikt att lösa"</item>
+        <item quantity="other">"%1$s konflikter att lösa"</item>
+    </plurals>
+    <plurals name="vault_m3_commit_title">
+        <item quantity="one">"Kommitt %1$d fil"</item>
+        <item quantity="other">"Kommitt %1$d filer"</item>
+    </plurals>
+    <plurals name="vault_m3_discard_n">
+        <item quantity="one">"Kassera %1$d"</item>
+        <item quantity="other">"Kassera %1$d"</item>
+    </plurals>
+    <plurals name="vault_m3_discard_title">
+        <item quantity="one">"Kassera %1$d ändring?"</item>
+        <item quantity="other">"Kassera %1$d ändringar?"</item>
+    </plurals>
+    <plurals name="vault_m3_effect_lines">
+        <item quantity="one">"−%1$d rad"</item>
+        <item quantity="other">"−%1$d rader"</item>
+    </plurals>
+    <plurals name="vault_m3_file_count">
+        <item quantity="one">"%1$d fil"</item>
+        <item quantity="other">"%1$d filer"</item>
+    </plurals>
+    <plurals name="vault_m3_overlap_title">
+        <item quantity="one">"%1$d fil ändrad på båda sidor"</item>
+        <item quantity="other">"%1$d filer ändrade på båda sidor"</item>
+    </plurals>
+    <plurals name="vault_m3_remote_new">
+        <item quantity="one">"Fjärr har %1$d nytt commit"</item>
+        <item quantity="other">"Fjärr har %1$d nya commits"</item>
+    </plurals>
+    <plurals name="vault_m3_step_commit">
+        <item quantity="one">"Kommitt %1$d fil"</item>
+        <item quantity="other">"Kommitt %1$d filer"</item>
+    </plurals>
+    <plurals name="vault_m3_step_lfs">
+        <item quantity="one">"Ladda upp %1$d LFS-fil · %2$s"</item>
+        <item quantity="other">"Ladda upp %1$d LFS-filer · %2$s"</item>
+    </plurals>
+    <plurals name="vault_m3_suggest_files">
+        <item quantity="one">"Uppdatera %1$d fil"</item>
+        <item quantity="other">"Uppdatera %1$d filer"</item>
+    </plurals>
+    <plurals name="vault_m3_uploading_lfs">
+        <item quantity="one">"Laddar upp %1$d LFS-fil"</item>
+        <item quantity="other">"Laddar upp %1$d LFS-filer"</item>
+    </plurals>
+    <plurals name="widget_m3_changes_to_push">
+        <item quantity="one">"%1$s ändring att pusha"</item>
+        <item quantity="other">"%1$s ändringar att pusha"</item>
     </plurals>
 </resources>
