@@ -26,6 +26,8 @@ android {
     compileSdk = 36
     
     defaultConfig {
+        // Setup links for ScrawlKit (debug builds): `scrawl link --scheme syncmdscrawl`.
+        manifestPlaceholders["scrawlScheme"] = "syncmdscrawl"
         // The free Play listing: GitSync.md is free to download and sold through a
         // one-time in-app unlock (billing/AppUnlock). The paid md.gitsync.md listing
         // is being retired.
@@ -147,7 +149,14 @@ play {
     defaultToAppBundles.set(true)
 }
 
+// ScrawlKit in debug builds: hold three fingers to record the screen, your voice and touches and
+// send them to your coding agent through Scrawl on the Mac. It comes from ~/.m2
+// (`./gradlew publishToMavenLocal` in ~/dev/scrawl/android) and is left out where that isn't
+// there (CI); release builds never include it.
+val scrawlKitAvailable = File(System.getProperty("user.home"), ".m2/repository/dev/kitlangton/scrawl/scrawlkit-autoinstall/0.1.0").isDirectory
+
 dependencies {
+    if (scrawlKitAvailable) debugImplementation("dev.kitlangton.scrawl:scrawlkit-autoinstall:0.1.0")
     // Project modules
     implementation(project(":core"))
     implementation(libs.gson)

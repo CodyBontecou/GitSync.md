@@ -3,5 +3,9 @@
     <domain-config cleartextTrafficPermitted="true">
         <domain>localhost</domain>
         <domain>127.0.0.1</domain>
+        <!-- Scrawl on the Mac (ScrawlKit): emulator host, Tailscale, LAN. -->
+        <domain>10.0.2.2</domain>
+        <domain>100.72.248.77</domain>
+        <domain>192.168.1.149</domain>
     </domain-config>
 </network-security-config>
