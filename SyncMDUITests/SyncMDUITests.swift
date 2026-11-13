@@ -294,7 +294,7 @@ final class SyncMDUITests: XCTestCase {
         let actualHEAD = String(decoding: try gitToolsHead(), as: UTF8.self)
             .trimmingCharacters(in: .whitespacesAndNewlines)
         let before = try gitToolsSnapshot()
-        openGitTools(in: app)
+        openObservedGitTools(in: app)
         let displayedHEAD = app.staticTexts["gitTools.observedHEAD"]
         XCTAssertTrue(displayedHEAD.waitForExistence(timeout: 5))
         XCTAssertTrue(displayedHEAD.label.hasPrefix(String(actualHEAD.prefix(7))), "Git Tools must display the external commit, not saved stale HEAD")
@@ -305,7 +305,7 @@ final class SyncMDUITests: XCTestCase {
         let app = launchGitToolsFixture("external-branch")
         XCTAssertTrue(app.staticTexts["Branch feature"].waitForExistence(timeout: 5))
         let before = try gitToolsSnapshot()
-        openGitTools(in: app)
+        openObservedGitTools(in: app)
         XCTAssertEqual(app.staticTexts["gitTools.observedBranch"].label, "feature")
         tapFirstHittableButton(labeled: "Close", in: app)
         tapWhenHittable(app.buttons["More vault options"], in: app, message: "Open repository settings")
@@ -519,6 +519,15 @@ final class SyncMDUITests: XCTestCase {
         attachScreenshot("Git Tools entry", in: app)
         tools.tap()
         assertGitToolsSheet(in: app)
+    }
+
+    /// Metadata-only checks must not resolve `feature` by label: it appears
+    /// both as the current branch and in the branch list after an external switch.
+    private func openObservedGitTools(in app: XCUIApplication) {
+        tapWhenHittable(app.buttons["More vault options"], in: app, message: "Open observed Git metadata")
+        tapFirstHittableButton(labeled: "Git Tools", in: app)
+        XCTAssertTrue(app.navigationBars.staticTexts["Git Tools"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["gitTools.observedHEAD"].waitForExistence(timeout: 5))
     }
 
     private func assertGitToolsSheet(in app: XCUIApplication) {
