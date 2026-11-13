@@ -228,7 +228,7 @@ struct VaultView: View {
         .navigationBarBackButtonHidden(state.callbackNavigateToRepoID != nil)
         .onAppear {
             #if DEBUG
-            guard !MarketingCapture.usesSeededData else { return }
+            guard !MarketingCapture.usesSeededData || MarketingCapture.allowsFixtureStatusRefresh else { return }
             #endif
             state.detectChanges(repoID: repoID, skipIfRecentlyStartedWithin: 5)
         }
