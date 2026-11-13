@@ -53,7 +53,11 @@ struct VaultView: View {
                             : String(localized: "Reconnect the original folder to use this repository. Its saved commit and settings have been preserved.")))
                     } actions: {
                         if state.isUsingCustomLocation(for: repoID) {
-                            Button("Reauthorize Folder") { showSettings = true }
+                            Button { showSettings = true } label: {
+                                Text("Reauthorize Folder")
+                                    .frame(minHeight: 44)
+                                    .contentShape(Rectangle())
+                            }
                                 .disabled(state.isSyncing)
                                 .accessibilityIdentifier("vault.reauthorizeFolder")
                         } else if repo.isExternalLocalRepository {
