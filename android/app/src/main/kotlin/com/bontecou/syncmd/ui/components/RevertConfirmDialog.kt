@@ -2,6 +2,8 @@ package com.bontecou.syncmd.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -13,7 +15,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -45,8 +46,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import com.bontecou.syncmd.R
 import com.bontecou.syncmd.services.git.DiscardEffect
 import com.bontecou.syncmd.services.git.DiscardReview
@@ -57,6 +56,7 @@ import com.bontecou.syncmd.ui.theme.M3ButtonStyle
 import com.bontecou.syncmd.ui.theme.M3CheckboxRow
 import com.bontecou.syncmd.ui.theme.M3Divider
 import com.bontecou.syncmd.ui.theme.M3Icon
+import com.bontecou.syncmd.ui.theme.M3ModalHost
 import com.bontecou.syncmd.ui.theme.M3Type
 import com.bontecou.syncmd.ui.theme.SyncMdTheme
 
@@ -87,7 +87,7 @@ fun RevertConfirmDialog(review: DiscardReview, onConfirmDiscard: (stashFirst: Bo
 private fun RevertConfirmDialogHost(review: DiscardReview, stashSupported: Boolean, onConfirm: (Boolean) -> Unit, onDismiss: () -> Unit) {
     val canStash = stashSupported && review.canStash
     var stash by rememberSaveable(review) { mutableStateOf(canStash) }
-    Dialog(onDismissRequest = onDismiss, properties = DialogProperties(usePlatformDefaultWidth = false, decorFitsSystemWindows = false)) {
+    M3ModalHost(onDismiss, true, true, Alignment.Center) { bars ->
         RevertReviewSheet(
             keepsWorkingFiles = review.keepsWorkingFiles,
             singleFile = review.filePath != null,
@@ -100,7 +100,7 @@ private fun RevertConfirmDialogHost(review: DiscardReview, stashSupported: Boole
             onStashChange = { stash = it },
             onConfirm = { onConfirm(stash && canStash) },
             onDismiss = onDismiss,
-            modifier = Modifier.semantics { testTagsAsResourceId = true },
+            modifier = Modifier.padding(bars).semantics { testTagsAsResourceId = true },
         )
     }
 }
@@ -126,7 +126,7 @@ private fun RevertReviewSheet(
         keepsWorkingFiles -> stringResource(R.string.discard_clear_staging)
         else -> pluralStringResource(R.plurals.vault_m3_discard_title, paths.size, paths.size)
     }
-    BoxWithConstraints(modifier.fillMaxSize().background(c.scrim).systemBarsPadding().padding(24.dp), contentAlignment = Alignment.Center) {
+    BoxWithConstraints(modifier.fillMaxSize().padding(24.dp), contentAlignment = Alignment.Center) {
         // Scrim: tapping outside keeps the changes.
         Box(Modifier.matchParentSize().clickable(indication = null,
             interactionSource = remember { MutableInteractionSource() }, onClick = onDismiss).clearAndSetSemantics {})
@@ -134,7 +134,9 @@ private fun RevertReviewSheet(
         LazyColumn(
             Modifier.widthIn(min = 280.dp, max = 560.dp).fillMaxWidth().heightIn(max = maxHeight)
                 .clip(RoundedCornerShape(28.dp)).background(c.cHigh)
-                .clickable(indication = null, interactionSource = remember { MutableInteractionSource() }) {}
+                // Swallow backdrop taps without merging the review's headings,
+                // paths and actions into a single accessibility node.
+                .pointerInput(Unit) { detectTapGestures { } }
                 .semantics { paneTitle = title }
                 .testTag("discard-review"),
             contentPadding = PaddingValues(24.dp),

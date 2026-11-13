@@ -2,6 +2,8 @@ package com.bontecou.syncmd.ui.components
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.foundation.border
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -29,6 +31,7 @@ import androidx.compose.ui.unit.sp
 import com.bontecou.syncmd.R
 import com.bontecou.syncmd.ui.theme.M3
 import com.bontecou.syncmd.ui.theme.M3Icon
+import com.bontecou.syncmd.ui.theme.M3ModalHost
 import com.bontecou.syncmd.ui.theme.M3Tone
 import com.bontecou.syncmd.ui.theme.M3Type
 import com.bontecou.syncmd.ui.theme.colors
@@ -165,8 +168,9 @@ internal fun LfsTileDialog(
     actions: @Composable RowScope.() -> Unit,
 ) {
     val c = M3.colors
-    androidx.compose.ui.window.Dialog(onDismissRequest, androidx.compose.ui.window.DialogProperties(usePlatformDefaultWidth = false)) {
-        Column(modifier.padding(24.dp).widthIn(min = 280.dp, max = 560.dp).fillMaxWidth().background(c.cHigh, RoundedCornerShape(28.dp)).padding(24.dp)
+    M3ModalHost(onDismissRequest, true, true, Alignment.Center) { bars ->
+        Column(modifier.padding(bars).padding(24.dp).imePadding().widthIn(min = 280.dp, max = 560.dp).fillMaxWidth()
+            .background(c.cHigh, RoundedCornerShape(28.dp)).pointerInput(Unit) { detectTapGestures { } }.padding(24.dp)
             .semantics { paneTitle = title }) {
             Column(Modifier.weight(1f, fill = false).verticalScroll(rememberScrollState())) {
                 LfsIconTile(icon, tileContainer, tileContent, Modifier.align(Alignment.CenterHorizontally))

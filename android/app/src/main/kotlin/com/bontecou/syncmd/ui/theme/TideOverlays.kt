@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.absolutePadding
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -103,7 +104,8 @@ fun TideDialog(
                 modifier
                     .then(dialogBars.tracker)
                     .statusBarsPadding()
-                    .padding(top = bars.calculateTopPadding())
+                    .absolutePadding(left = bars.calculateLeftPadding(parentDirection), right = bars.calculateRightPadding(parentDirection),
+                        top = bars.calculateTopPadding())
                     // Short windows (landscape phones) keep every action on screen by trimming the outer margin.
                     .then(if (sheet) Modifier else Modifier.navigationBarsPadding().padding(bottom = bars.calculateBottomPadding())
                         .padding(horizontal = 24.dp, vertical = if (compactHeight) 8.dp else 24.dp))
