@@ -583,6 +583,103 @@ final class SyncMDTests: XCTestCase {
     }
 
     @MainActor
+    func testExternalHEADInvalidatesRedesignedHistoryDecorationCaches() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        let state = AppState(gitRepositoryFactory: { _ in fixture.repository },
+                             reposFileURL: fixture.rootURL.appendingPathComponent("repos.json"), loadPersistedState: false)
+        state.repos = [fixture.repoConfig]
+        let id = fixture.repoConfig.id
+        let oldSHA = fixture.repoConfig.gitState.commitSHA
+        state.commitRefLabelsByRepo[id] = [oldSHA: [GitRefLabel(name: "main", kind: .localBranch)]]
+        state.commitExtrasByRepo[id] = [oldSHA: GitCommitExtras(parentCount: 1, fileCount: 2)]
+        let newSHA = String(repeating: "e", count: 40)
+        fixture.repository.repoInfoResult = LocalRepoInfo(branch: "main", commitSHA: newSHA, changeCount: 7)
+        state.detectChanges(repoID: id)
+        for _ in 0..<80 {
+            if state.changeCounts[id] == 7 { break }
+            try await Task.sleep(for: .milliseconds(25))
+        }
+        XCTAssertEqual(state.changeCounts[id], 7, "The actual status scan must have published")
+        XCTAssertEqual(state.repo(id: id)?.gitState.commitSHA, newSHA)
+        XCTAssertNil(state.commitRefLabelsByRepo[id], "Ref-label cache added by the redesign must invalidate too")
+        XCTAssertNil(state.commitExtrasByRepo[id], "Replaced history must not retain old decoration cache ownership")
+    }
+
+    @MainActor
+    func testExternalHEADRejectsSuspendedHistoryDecorationPublication() async throws {
+        try await verifyHistoryDecorationPublication(adoptExternalHEAD: true)
+    }
+
+    @MainActor
+    func testReplacementDecorationReadRetainsOwnershipAfterOldCompletion() async throws {
+        try await verifyHistoryDecorationPublication(adoptExternalHEAD: false)
+    }
+
+    @MainActor
+    private func verifyHistoryDecorationPublication(adoptExternalHEAD: Bool) async throws {
+        let fm = FileManager.default
+        let temporary = try makeTemporaryGitRepository(prefix: "HistoryDecorationOwnership")
+        let root = AppState.appDocumentsDirectory.appendingPathComponent(temporary.lastPathComponent, isDirectory: true)
+        try fm.moveItem(at: temporary, to: root)
+        do {
+            var repository: OpaquePointer?
+            defer { if let repository { git_repository_free(repository) } }
+            XCTAssertEqual(git_repository_open(&repository, root.path), 0)
+            XCTAssertEqual(git_repository_set_head(repository, "refs/heads/main"), 0)
+        }
+        let persistence = fm.temporaryDirectory.appendingPathComponent("decoration-\(UUID().uuidString).json")
+        defer { try? fm.removeItem(at: root); try? fm.removeItem(at: persistence) }
+        let note = root.appendingPathComponent("Note.md")
+        let native = LocalGitService(localURL: root)
+        try "base\n".write(to: note, atomically: true, encoding: .utf8)
+        try await native.stage(path: "Note.md")
+        let oldSHA = try await native.commitLocal(message: "Base", authorName: "Tests", authorEmail: "tests@example.com")
+        let gates = CommitCachePublicationGates()
+        let oldGate = AsyncGate(), newGate = AsyncGate()
+        let oldReady = expectation(description: "Old decoration read finished Git work")
+        let newReady = expectation(description: "Replacement decoration read finished Git work")
+        await gates.configure(history: [(oldGate, oldReady), (newGate, newReady)], detail: [])
+        defer { Task { await oldGate.open(); await newGate.open() } }
+        let state = AppState(reposFileURL: persistence, loadPersistedState: false,
+                             commitCachePublicationHook: { _, oid in await gates.wait(isDetail: oid != nil) })
+        var repo = RepoConfig(repoURL: "", branch: "main", authorName: "Tests",
+                              authorEmail: "tests@example.com", vaultFolderName: root.lastPathComponent)
+        repo.gitState.commitSHA = oldSHA
+        state.repos = [repo]
+        state.commitHistoryByRepo[repo.id] = [cacheSummary(oldSHA)]
+        let oldRead = Task { await state.loadHistoryDecorations(repoID: repo.id) }
+        await fulfillment(of: [oldReady], timeout: 3)
+
+        // Independent native Git mutation, not an AppState action. The old
+        // read has released all native resources and is held before publishing.
+        try "external commit\n".write(to: note, atomically: true, encoding: .utf8)
+        try await native.stage(path: "Note.md")
+        let newSHA = try await native.commitLocal(message: "External", authorName: "Tests", authorEmail: "tests@example.com")
+        if adoptExternalHEAD {
+            state.detectChanges(repoID: repo.id)
+            for _ in 0..<80 {
+                if state.repo(id: repo.id)?.gitState.commitSHA == newSHA { break }
+                try await Task.sleep(for: .milliseconds(25))
+            }
+            XCTAssertEqual(state.repo(id: repo.id)?.gitState.commitSHA, newSHA)
+        }
+        state.commitHistoryByRepo[repo.id] = [cacheSummary(newSHA)]
+        let newRead = Task { await state.loadHistoryDecorations(repoID: repo.id) }
+        await fulfillment(of: [newReady], timeout: 3)
+        await oldGate.open()
+        await oldRead.value
+        XCTAssertNil(state.commitRefLabelsByRepo[repo.id], "Obsolete labels must not publish while the replacement is held")
+        XCTAssertNil(state.commitExtrasByRepo[repo.id], "Obsolete extras must not publish while the replacement is held")
+        await newGate.open()
+        await newRead.value
+        XCTAssertTrue(state.commitRefLabelsByRepo[repo.id]?[newSHA]?.contains(GitRefLabel(name: "main", kind: .localBranch)) == true)
+        XCTAssertNil(state.commitRefLabelsByRepo[repo.id]?[oldSHA])
+        XCTAssertEqual(state.commitExtrasByRepo[repo.id]?[newSHA], GitCommitExtras(parentCount: 1, fileCount: 1))
+        XCTAssertEqual(try String(contentsOf: note, encoding: .utf8), "external commit\n")
+    }
+
+    @MainActor
     func testStatusRefreshAdoptsExternalCommitWithoutWritingWorkingCopy() async throws {
         try await assertStatusRefreshAdoptsExternalHEAD(switchBranch: false)
     }
@@ -2764,7 +2861,10 @@ final class SyncMDTests: XCTestCase {
         let clock = ContinuousClock()
         let deadline = clock.now.advanced(by: timeout)
         while !condition() && clock.now < deadline {
-            await Task.yield()
+            // Yield alone can immediately reselect this higher-priority test
+            // task and starve the utility-priority status scan on hosted CI.
+            // Suspend briefly; retain the same deadline and actual predicate.
+            try? await Task.sleep(for: .milliseconds(5))
         }
         XCTAssertTrue(condition(), "Timed out waiting for asynchronous condition")
     }

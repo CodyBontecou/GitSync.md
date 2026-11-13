@@ -371,7 +371,7 @@ struct VaultView: View {
             .animation(.easeInOut(duration: 0.25), value: callbackResult)
         }
         .scrollIndicators(.hidden)
-        .task(id: repo.gitState.commitSHA) {
+        .task(id: repo.gitState.commitSHA + ":" + repo.gitState.branch) {
             #if DEBUG
             // Marketing capture seeds fake repos; fixtures are real working copies.
             guard !MarketingCapture.isActive else { return }

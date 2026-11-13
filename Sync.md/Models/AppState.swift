@@ -170,6 +170,7 @@ final class AppState {
     // Transient publication ownership only; never cancel shared Git actor work.
     @ObservationIgnored private var commitCacheEpochByRepo: [UUID: UUID] = [:]
     @ObservationIgnored private var historyRequestByRepo: [UUID: UUID] = [:]
+    @ObservationIgnored private var historyDecorationRequestByRepo: [UUID: UUID] = [:]
     @ObservationIgnored private var detailRequestByRepo: [UUID: [String: UUID]] = [:]
     var stashesByRepo: [UUID: [GitStashEntry]] = [:]
     var tagsByRepo: [UUID: [GitTag]] = [:]
@@ -4411,12 +4412,38 @@ final class AppState {
         }
     }
 
+    // Decoration reads run in a separate file; keep their publication ownership
+    // at the same invalidation boundary as history pages and commit details.
+    func beginHistoryDecorationRead(repoID: UUID) -> UUID {
+        let request = UUID()
+        historyDecorationRequestByRepo[repoID] = request
+        return request
+    }
+
+    func canPublishHistoryDecorations(repoID: UUID, request: UUID) -> Bool {
+        historyDecorationRequestByRepo[repoID] == request
+            && repo(id: repoID)?.isCloned == true && !isDemoMode
+    }
+
+    func finishHistoryDecorationRead(repoID: UUID, request: UUID) {
+        if historyDecorationRequestByRepo[repoID] == request {
+            historyDecorationRequestByRepo.removeValue(forKey: repoID)
+        }
+    }
+
+    func holdHistoryDecorationPublicationForTesting(repoID: UUID) async {
+        if let commitCachePublicationHook { await commitCachePublicationHook(repoID, nil) }
+    }
+
     func clearCommitHistoryCache(for repoID: UUID) {
         // Retain an epoch tombstone across removal so an old response cannot
         // become current again if the same repository ID is re-added.
         commitCacheEpochByRepo[repoID] = UUID()
         historyRequestByRepo.removeValue(forKey: repoID)
         detailRequestByRepo.removeValue(forKey: repoID)
+        historyDecorationRequestByRepo.removeValue(forKey: repoID)
+        commitRefLabelsByRepo.removeValue(forKey: repoID)
+        commitExtrasByRepo.removeValue(forKey: repoID)
         commitHistoryByRepo.removeValue(forKey: repoID)
         commitHistoryHasMoreByRepo.removeValue(forKey: repoID)
         commitDetailByRepo.removeValue(forKey: repoID)
