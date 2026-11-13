@@ -1,0 +1,4 @@
+<resources>
+    <string name="remote_address_formats">Use HTTP, HTTPS, SSH, git://, file://, or owner/repo.</string>
+    <string name="remote_normalized_target">Repository address: %1$s</string>
+</resources>

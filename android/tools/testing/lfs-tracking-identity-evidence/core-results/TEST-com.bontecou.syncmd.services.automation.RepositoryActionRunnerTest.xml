@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.automation.RepositoryActionRunnerTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-11-02T19:08:10" hostname="MacBook-Pro.local" time="8.11">
+  <properties/>
+  <testcase name="sync can push dirty equal heads but will not overwrite dirty files for incoming changes" classname="com.bontecou.syncmd.services.automation.RepositoryActionRunnerTest" time="1.966"/>
+  <testcase name="lost upload reply reconciles remote receipt without pushing or committing again" classname="com.bontecou.syncmd.services.automation.RepositoryActionRunnerTest" time="1.922"/>
+  <testcase name="remote behind or divergent plans stop before staging or committing" classname="com.bontecou.syncmd.services.automation.RepositoryActionRunnerTest" time="0.095"/>
+  <testcase name="authorization is checked again after a network preflight before staging" classname="com.bontecou.syncmd.services.automation.RepositoryActionRunnerTest" time="0.05"/>
+  <testcase name="clean sync pulls only and push existing commits or no changes does not create a commit" classname="com.bontecou.syncmd.services.automation.RepositoryActionRunnerTest" time="0.139"/>
+  <testcase name="branch endpoint account and catalog changes invalidate reviewed action before staging" classname="com.bontecou.syncmd.services.automation.RepositoryActionRunnerTest" time="0.053"/>
+  <testcase name="failed upload keeps exact local commit and fresh review retries without creating another" classname="com.bontecou.syncmd.services.automation.RepositoryActionRunnerTest" time="1.903"/>
+  <testcase name="status never contacts remote and reports dirty paths without requiring upstream" classname="com.bontecou.syncmd.services.automation.RepositoryActionRunnerTest" time="0.049"/>
+  <testcase name="push stages current nonignored changes commits with repository author and acknowledges exact OID" classname="com.bontecou.syncmd.services.automation.RepositoryActionRunnerTest" time="1.933"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

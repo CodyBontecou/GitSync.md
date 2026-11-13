@@ -1,0 +1,3 @@
+INSTRUMENTATION_STATUS: stream=WIDGET_PICKER largeDark=false actualFontScale=1.0 action=[42.0,2169.0,1038.0,2316.0] safe=[0,136,1080,2274] clears=false
+INSTRUMENTATION_STATUS: stream=WIDGET_PICKER largeDark=true actualFontScale=1.6 action=[42.0,2169.0,1038.0,2316.0] safe=[0,136,1080,2274] clears=false
+Tests run: 13,  Failures: 3

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.files.RepositoryFilesTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-11-02T19:21:11" hostname="MacBook-Pro.local" time="0.367">
+  <properties/>
+  <testcase name="save preserves exact line endings and produces no orphaned temp file" classname="com.bontecou.syncmd.services.files.RepositoryFilesTest" time="0.029"/>
+  <testcase name="list sorts folders first shows git badges and protects metadata" classname="com.bontecou.syncmd.services.files.RepositoryFilesTest" time="0.041"/>
+  <testcase name="symlinks inside and outside the tree are excluded and cannot be followed" classname="com.bontecou.syncmd.services.files.RepositoryFilesTest" time="0.033"/>
+  <testcase name="paths cannot escape the repository or target git metadata" classname="com.bontecou.syncmd.services.files.RepositoryFilesTest" time="0.04"/>
+  <testcase name="creation and rename never overwrite existing content" classname="com.bontecou.syncmd.services.files.RepositoryFilesTest" time="0.034"/>
+  <testcase name="save refuses external modifications and preserves both the original draft and newer file" classname="com.bontecou.syncmd.services.files.RepositoryFilesTest" time="0.034"/>
+  <testcase name="binary invalid UTF8 and large files use readonly fallback" classname="com.bontecou.syncmd.services.files.RepositoryFilesTest" time="0.051"/>
+  <testcase name="nested file create save rename delete cycle produces real working tree changes" classname="com.bontecou.syncmd.services.files.RepositoryFilesTest" time="0.037"/>
+  <testcase name="atomic save preserves executable mode" classname="com.bontecou.syncmd.services.files.RepositoryFilesTest" time="0.033"/>
+  <testcase name="delete refuses a file that changed since opening" classname="com.bontecou.syncmd.services.files.RepositoryFilesTest" time="0.034"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

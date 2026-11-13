@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.git.lfs.AttributesCompatibilityTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-11-03T00:56:28" hostname="MacBook-Pro.local" time="0.133">
+  <properties/>
+  <testcase name="C quoted paths macros and overrides agree with native Git" classname="com.bontecou.syncmd.services.git.lfs.AttributesCompatibilityTest" time="0.133"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

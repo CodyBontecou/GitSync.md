@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest" tests="43" skipped="0" failures="0" errors="0" timestamp="2026-11-02T19:21:50" hostname="MacBook-Pro.local" time="26.869">
+  <properties/>
+  <testcase name="separate endpoint credentials and repository changes during approval stop lock writes" classname="com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest" time="0.598"/>
+  <testcase name="global attributes and credential record revision invalidate lock confirmation" classname="com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest" time="0.547"/>
+  <testcase name="failed object verification prevents publishing the Git commit and retains local edits" classname="com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest" time="0.647"/>
+  <testcase name="changed ownership cannot silently turn ordinary release into a force release" classname="com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest" time="0.633"/>
+  <testcase name="successful merge hydrates new pointer and failed download reports completed merge" classname="com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest" time="0.6"/>
+  <testcase name="corrupt download cannot replace pointer or publish corrupt cache" classname="com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest" time="0.632"/>
+  <testcase name="completed fast forward reports LFS attention when object download fails" classname="com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest" time="0.673"/>
+  <testcase name="lockCreationRejectsReplacementWorkingFolderWithOriginalMetadata" classname="com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest" time="0.773"/>
+  <testcase name="forceReleaseRejectsReplacementWorkingFolderWithOriginalMetadata" classname="com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest" time="0.581"/>
+  <testcase name="index lock held by another client prevents hydration from replacing working pointer" classname="com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest" time="0.539"/>
+  <testcase name="read only listing never authorizes a mutation and shows the fetch URL" classname="com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest" time="0.564"/>
+  <testcase name="confirmed write with failed refresh is distinct from an unconfirmed write reply" classname="com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest" time="0.647"/>
+  <testcase name="create list and unlock retain opaque identifiers Unicode cursors ref and force semantics" classname="com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest" time="0.724"/>
+  <testcase name="cached branch checkout remains offline without a configured remote" classname="com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest" time="0.766"/>
+  <testcase name="new branch and tag do not claim unmodified locked files already published on another ref" classname="com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest" time="1.057"/>
+  <testcase name="redirected object requests stop without forwarding action credentials" classname="com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest" time="0.514"/>
+  <testcase name="reviewed lock creation and release preserve local content index and refs" classname="com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest" time="0.511"/>
+  <testcase name="paused rebase hydrates nonconflicting files and returns a fresh resumable session" classname="com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest" time="0.792"/>
+  <testcase name="malformed ownership duplicate locks and repeated cursors cannot bypass verification" classname="com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest" time="0.6"/>
+  <testcase name="external edits during download survive while verified cache remains reusable" classname="com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest" time="0.413"/>
+  <testcase name="resolved LFS conflict remains staged on download failure and can hydrate without resolving again" classname="com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest" time="0.62"/>
+  <testcase name="LFS conflict chooses a whole pointer side hydrates it and keeps the staged pointer" classname="com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest" time="0.619"/>
+  <testcase name="branch switch downloads missing objects using the branch remote and keeps pointer index" classname="com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest" time="0.61"/>
+  <testcase name="destination created during lock verification is not overwritten even by force push" classname="com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest" time="0.679"/>
+  <testcase name="lock preflight needs only push advertisement on a write only Git endpoint" classname="com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest" time="0.614"/>
+  <testcase name="real HTTPS clone hydrates stage cleans push verifies and pull hydrates new objects" classname="com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest" time="0.664"/>
+  <testcase name="corrupt cached pointer content can be downloaded and repaired without trusting old bytes" classname="com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest" time="0.498"/>
+  <testcase name="branch switch protects external edits during object download" classname="com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest" time="0.595"/>
+  <testcase name="lockReleaseRejectsReplacementWorkingFolderWithOriginalMetadata" classname="com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest" time="0.486"/>
+  <testcase name="batch omissions and duplicate JSON are rejected before object replacement" classname="com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest" time="0.54"/>
+  <testcase name="real HTTP LFS clone upload verify and pull preserve pointers and bytes" classname="com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest" time="0.716"/>
+  <testcase name="cancelled lock review stops before requesting another page" classname="com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest" time="0.462"/>
+  <testcase name="clone hydration warning preserves an edit made during LFS download" classname="com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest" time="0.615"/>
+  <testcase name="review rejects changed branch attributes and credentials before server writes" classname="com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest" time="0.69"/>
+  <testcase name="foreign lock on later page blocks before object upload and retry keeps the same local commit" classname="com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest" time="0.816"/>
+  <testcase name="branch switch download failure keeps changed branch and allows independent LFS retry" classname="com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest" time="0.523"/>
+  <testcase name="rebase completed before download failure returns attention without retrying history rewrite" classname="com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest" time="0.758"/>
+  <testcase name="clone with a rejected LFS object redirect keeps the pointer without forwarding credentials" classname="com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest" time="0.532"/>
+  <testcase name="completed rebase hydrates upstream pointer and retains replayed local work" classname="com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest" time="0.789"/>
+  <testcase name="HTTP corruption cannot replace pointer or cache" classname="com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest" time="0.422"/>
+  <testcase name="clone retains completed Git history when LFS object verification fails and hydration can retry" classname="com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest" time="0.422"/>
+  <testcase name="only unsupported locking responses allow push while auth redirects and server errors fail closed" classname="com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest" time="0.819"/>
+  <testcase name="HTTP redirect does not receive object credentials and leaves pointer intact" classname="com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest" time="0.566"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[Nov 02, 2026 3:21:51 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit5255015789157402324/junit5034409975753453460/.gitsync-clone-3692986623540956854
+Nov 02, 2026 3:21:51 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=main commit=578d8392a60590d84191914c8375f1cb4043b115
+Nov 02, 2026 3:21:51 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 2 files, skipped 0
+Nov 02, 2026 3:21:51 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/main (578d839)
+Nov 02, 2026 3:21:51 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit18415576807842938129/junit9235051303481686885/.gitsync-clone-9083211749277023683
+Nov 02, 2026 3:21:51 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=main commit=578d8392a60590d84191914c8375f1cb4043b115
+Nov 02, 2026 3:21:51 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 2 files, skipped 0
+Nov 02, 2026 3:21:51 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/main (578d839)
+Nov 02, 2026 3:21:52 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit9548355269260331136/junit990632034082969759/.gitsync-clone-9390122331624819334
+Nov 02, 2026 3:21:52 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=main commit=910c19dbb5b357d51ef6c75b01514023a3405e4b
+Nov 02, 2026 3:21:52 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 2 files, skipped 0
+Nov 02, 2026 3:21:52 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/main (910c19d)
+Nov 02, 2026 3:21:52 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit10569637106206500733/junit13829458039752725207/.gitsync-clone-7915444723633279316
+Nov 02, 2026 3:21:53 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=main commit=910c19dbb5b357d51ef6c75b01514023a3405e4b
+Nov 02, 2026 3:21:53 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 2 files, skipped 0
+Nov 02, 2026 3:21:53 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/main (910c19d)
+Nov 02, 2026 3:21:53 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit14718126254940892550/junit8759649345200957326/.gitsync-clone-15291063484607713127
+Nov 02, 2026 3:21:53 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=main commit=d7bd2d8490318c3e4a5b23f4f47f1f7aa244543f
+Nov 02, 2026 3:21:53 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 2 files, skipped 0
+Nov 02, 2026 3:21:53 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/main (d7bd2d8)
+Nov 02, 2026 3:21:54 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit16678333680991596884/junit952587384320163622/.gitsync-clone-15186554810698207775
+Nov 02, 2026 3:21:54 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=main commit=aea98eef291002a5caf54eb9c0ca60dec11cbb5d
+Nov 02, 2026 3:21:54 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 2 files, skipped 0
+Nov 02, 2026 3:21:54 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/main (aea98ee)
+Nov 02, 2026 3:21:54 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit11654613399738003768/junit1146605956523637207/.gitsync-clone-15718053762695098341
+Nov 02, 2026 3:21:54 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=main commit=aea98eef291002a5caf54eb9c0ca60dec11cbb5d
+Nov 02, 2026 3:21:54 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 2 files, skipped 0
+Nov 02, 2026 3:21:54 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/main (aea98ee)
+Nov 02, 2026 3:21:55 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit12679616582021644848/junit11417947869283973141/.gitsync-clone-17214849885806168610
+Nov 02, 2026 3:21:55 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=main commit=556290175a9e7ab7d79fc312d7693349dd7ba644
+Nov 02, 2026 3:21:55 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 2 files, skipped 0
+Nov 02, 2026 3:21:55 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/main (5562901)
+Nov 02, 2026 3:21:56 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit8371293113782621995/junit10506277405964210962/.gitsync-clone-3930323672148928455
+Nov 02, 2026 3:21:56 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=main commit=b435ba75da7ab5e1ebfb40739d31716c3920c9df
+Nov 02, 2026 3:21:56 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 2 files, skipped 0
+Nov 02, 2026 3:21:56 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/main (b435ba7)
+Nov 02, 2026 3:21:56 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit210698702813219111/junit10030562524514584696/.gitsync-clone-789064929101975763
+Nov 02, 2026 3:21:56 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=main commit=b435ba75da7ab5e1ebfb40739d31716c3920c9df
+Nov 02, 2026 3:21:56 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 2 files, skipped 0
+Nov 02, 2026 3:21:56 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/main (b435ba7)
+Nov 02, 2026 3:21:57 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit2986111050386417713/junit903743219822335251/.gitsync-clone-3081500530269732407
+Nov 02, 2026 3:21:57 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=main commit=80c7ed8f31024b16a790a6c67256effd66a1018f
+Nov 02, 2026 3:21:57 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 2 files, skipped 0
+Nov 02, 2026 3:21:57 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/main (80c7ed8)
+Nov 02, 2026 3:21:57 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit7743010589508686565/junit16466040630749248371/.gitsync-clone-14070720780151836588
+Nov 02, 2026 3:21:57 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=main commit=80c7ed8f31024b16a790a6c67256effd66a1018f
+Nov 02, 2026 3:21:57 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 2 files, skipped 0
+Nov 02, 2026 3:21:57 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/main (80c7ed8)
+Nov 02, 2026 3:21:58 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit9707723913846115708/junit5698360787129682336/.gitsync-clone-9012005025421814215
+Nov 02, 2026 3:21:58 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=main commit=0415b97175a3c86f6ed8a5d4070a4a8f97ad5206
+Nov 02, 2026 3:21:58 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 2 files, skipped 0
+Nov 02, 2026 3:21:58 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/main (0415b97)
+Nov 02, 2026 3:21:59 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit6537474277707197981/junit14536440894141261004/.gitsync-clone-11541948667920576873
+Nov 02, 2026 3:21:59 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=main commit=0c98324725e43204271b5b598c10708be63f8708
+Nov 02, 2026 3:21:59 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 2 files, skipped 0
+Nov 02, 2026 3:21:59 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/main (0c98324)
+Nov 02, 2026 3:22:00 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit8117176538922061303/junit1181856804516679915/.gitsync-clone-3402996296331106583
+Nov 02, 2026 3:22:00 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=main commit=de188b54d23d541d601995ee3da7a6ebd167605b
+Nov 02, 2026 3:22:00 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 2 files, skipped 0
+Nov 02, 2026 3:22:00 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/main (de188b5)
+Nov 02, 2026 3:22:01 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit9676036452590347387/junit6905500019446418851/.gitsync-clone-18206570891319655839
+Nov 02, 2026 3:22:01 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=main commit=d91a17a00ad97bce0a8007d51f1446ab2c4fddf3
+Nov 02, 2026 3:22:01 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 2 files, skipped 0
+Nov 02, 2026 3:22:01 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/main (d91a17a)
+Nov 02, 2026 3:22:01 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit4382140446495666916/junit5130034829116395709/.gitsync-clone-13419316261841691981
+Nov 02, 2026 3:22:01 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=main commit=d91a17a00ad97bce0a8007d51f1446ab2c4fddf3
+Nov 02, 2026 3:22:01 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 2 files, skipped 0
+Nov 02, 2026 3:22:01 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/main (d91a17a)
+Nov 02, 2026 3:22:02 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit6281009272385036559/junit18295381766289967508/.gitsync-clone-13320977901413219358
+Nov 02, 2026 3:22:02 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=main commit=042f5ab32faa1c4ea97f1104e16d3375b3078d15
+Nov 02, 2026 3:22:02 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 2 files, skipped 0
+Nov 02, 2026 3:22:02 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/main (042f5ab)
+Nov 02, 2026 3:22:02 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit10164214432563634761/junit13627105588242827754/.gitsync-clone-13723313046525446246
+Nov 02, 2026 3:22:02 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=main commit=042f5ab32faa1c4ea97f1104e16d3375b3078d15
+Nov 02, 2026 3:22:02 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 2 files, skipped 0
+Nov 02, 2026 3:22:02 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/main (042f5ab)
+Nov 02, 2026 3:22:03 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit16529155902818236826/junit10459781253006945309/.gitsync-clone-2861813684902838015
+Nov 02, 2026 3:22:03 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=main commit=ecffb257e4c0ee557d3c760fb42e86862338859d
+Nov 02, 2026 3:22:03 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 2 files, skipped 0
+Nov 02, 2026 3:22:03 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/main (ecffb25)
+Nov 02, 2026 3:22:03 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit14847520542939085049/junit14006099867374419405/.gitsync-clone-16796989340161437224
+Nov 02, 2026 3:22:03 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=main commit=ecffb257e4c0ee557d3c760fb42e86862338859d
+Nov 02, 2026 3:22:03 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 2 files, skipped 0
+Nov 02, 2026 3:22:03 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/main (ecffb25)
+Nov 02, 2026 3:22:04 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit12468115096702014922/junit8621547023120900887/.gitsync-clone-17510588886420770513
+Nov 02, 2026 3:22:04 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=main commit=ff0ee4655444b6d2c6848ba78114ea385b7a4e33
+Nov 02, 2026 3:22:04 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 2 files, skipped 0
+Nov 02, 2026 3:22:04 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/main (ff0ee46)
+Nov 02, 2026 3:22:05 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit14438449169123329488/junit14276243596834369497/.gitsync-clone-12284470644868817554
+Nov 02, 2026 3:22:05 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=main commit=f31b274e7e40b809bad6e8b80bfa7b4baa2569f9
+Nov 02, 2026 3:22:05 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 2 files, skipped 0
+Nov 02, 2026 3:22:05 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/main (f31b274)
+Nov 02, 2026 3:22:05 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit6356239876156650512/junit3728468433937191180/.gitsync-clone-8124248887182128191
+Nov 02, 2026 3:22:05 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=main commit=f31b274e7e40b809bad6e8b80bfa7b4baa2569f9
+Nov 02, 2026 3:22:05 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 2 files, skipped 0
+Nov 02, 2026 3:22:05 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/main (f31b274)
+Nov 02, 2026 3:22:06 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit2263681673094248769/junit12903767382305422736/.gitsync-clone-6869460047484582185
+Nov 02, 2026 3:22:06 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=main commit=d154b8e449c059ed0a0ed507aab81c8d2cd66dd2
+Nov 02, 2026 3:22:06 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 2 files, skipped 0
+Nov 02, 2026 3:22:06 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/main (d154b8e)
+Nov 02, 2026 3:22:06 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit3131978728515949994/junit3547751235172290174/.gitsync-clone-3914135825199781125
+Nov 02, 2026 3:22:07 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=main commit=d154b8e449c059ed0a0ed507aab81c8d2cd66dd2
+Nov 02, 2026 3:22:07 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 2 files, skipped 0
+Nov 02, 2026 3:22:07 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/main (d154b8e)
+Nov 02, 2026 3:22:07 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit1420885247979380239/junit2440674513302839832/.gitsync-clone-5355707516966054938
+Nov 02, 2026 3:22:07 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=main commit=5593003fd0b82e58ce6cb4c79911f296af417218
+Nov 02, 2026 3:22:07 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 2 files, skipped 0
+Nov 02, 2026 3:22:07 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/main (5593003)
+Nov 02, 2026 3:22:08 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit6221867707405178278/junit249736306233440987/.gitsync-clone-1672789504968260934
+Nov 02, 2026 3:22:08 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=main commit=a88a1cb89c400bcac8a5d701e37031c0f9ed37bd
+Nov 02, 2026 3:22:08 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 2 files, skipped 0
+Nov 02, 2026 3:22:08 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/main (a88a1cb)
+Nov 02, 2026 3:22:08 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit16212233009927713896/junit12898639684993869556/.gitsync-clone-7619848608447254388
+Nov 02, 2026 3:22:08 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=main commit=a88a1cb89c400bcac8a5d701e37031c0f9ed37bd
+Nov 02, 2026 3:22:08 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 2 files, skipped 0
+Nov 02, 2026 3:22:08 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/main (a88a1cb)
+Nov 02, 2026 3:22:09 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit17408916953997543353/junit8823726055402567325/.gitsync-clone-14549805168929212890
+Nov 02, 2026 3:22:09 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=main commit=a63d86c7aba209f2c704e6657e84c13c06db2be8
+Nov 02, 2026 3:22:09 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 2 files, skipped 0
+Nov 02, 2026 3:22:09 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/main (a63d86c)
+Nov 02, 2026 3:22:09 PM com.bontecou.syncmd.services.git.LocalGitRepository cloneWithoutSymlinks-BWLJW6A
+WARNING: Clone completed; Git LFS file contents need review or download
+Nov 02, 2026 3:22:09 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit17408916953997543353/junit8823726055402567325/.gitsync-clone-9617160790939863662
+Nov 02, 2026 3:22:09 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=main commit=a63d86c7aba209f2c704e6657e84c13c06db2be8
+Nov 02, 2026 3:22:09 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 2 files, skipped 0
+Nov 02, 2026 3:22:09 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/main (a63d86c)
+Nov 02, 2026 3:22:09 PM com.bontecou.syncmd.services.git.LocalGitRepository cloneWithoutSymlinks-BWLJW6A
+WARNING: Clone completed; Git LFS file contents need review or download
+Nov 02, 2026 3:22:09 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit12211968860133316184/junit304033519201106609/.gitsync-clone-3825945604116147780
+Nov 02, 2026 3:22:09 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=main commit=a63d86c7aba209f2c704e6657e84c13c06db2be8
+Nov 02, 2026 3:22:09 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 2 files, skipped 0
+Nov 02, 2026 3:22:09 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/main (a63d86c)
+Nov 02, 2026 3:22:10 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit3562811893247472083/junit7830614810537916470/.gitsync-clone-18159449219568327857
+Nov 02, 2026 3:22:10 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=main commit=f2662200c0748171163b4fcc531f27ca8b74f56f
+Nov 02, 2026 3:22:10 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 2 files, skipped 0
+Nov 02, 2026 3:22:10 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/main (f266220)
+Nov 02, 2026 3:22:11 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit16799576837450376855/junit14445048725480957512/.gitsync-clone-2628922360773333470
+Nov 02, 2026 3:22:11 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=main commit=c138dc8b82c1e35b0716575440c5ade4e23d9226
+Nov 02, 2026 3:22:11 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 2 files, skipped 0
+Nov 02, 2026 3:22:11 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/main (c138dc8)
+Nov 02, 2026 3:22:11 PM com.bontecou.syncmd.services.git.LocalGitRepository cloneWithoutSymlinks-BWLJW6A
+WARNING: Clone completed; Git LFS file contents need review or download
+Nov 02, 2026 3:22:11 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit14292621581422824309/junit12511091309540764550/.gitsync-clone-9896438872260848827
+Nov 02, 2026 3:22:11 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=main commit=c138dc8b82c1e35b0716575440c5ade4e23d9226
+Nov 02, 2026 3:22:11 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 2 files, skipped 0
+Nov 02, 2026 3:22:11 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/main (c138dc8)
+Nov 02, 2026 3:22:12 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit8538093599022015716/junit15930792476904242254/.gitsync-clone-2695883394142185956
+Nov 02, 2026 3:22:12 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=main commit=9e420bbe2b2fed80a741e2f5804f7c740d0f2097
+Nov 02, 2026 3:22:12 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 2 files, skipped 0
+Nov 02, 2026 3:22:12 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/main (9e420bb)
+Nov 02, 2026 3:22:13 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit11226243207949581207/junit10926977446058759771/.gitsync-clone-5396752549206063298
+Nov 02, 2026 3:22:13 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=main commit=67fb143de20b55008d611199c9e7bfa5f3b191ee
+Nov 02, 2026 3:22:13 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 2 files, skipped 0
+Nov 02, 2026 3:22:13 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/main (67fb143)
+Nov 02, 2026 3:22:13 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit3400945536964486818/junit157678616427057487/.gitsync-clone-12273268730807626955
+Nov 02, 2026 3:22:13 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=main commit=67fb143de20b55008d611199c9e7bfa5f3b191ee
+Nov 02, 2026 3:22:13 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 2 files, skipped 0
+Nov 02, 2026 3:22:13 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/main (67fb143)
+Nov 02, 2026 3:22:14 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit14439263298498626051/junit6584878221096780724/.gitsync-clone-8416972855305013086
+Nov 02, 2026 3:22:14 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=main commit=c526bcdf2fa20dcf8cc22ae6102729d0bb777849
+Nov 02, 2026 3:22:14 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 2 files, skipped 0
+Nov 02, 2026 3:22:14 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/main (c526bcd)
+Nov 02, 2026 3:22:14 PM com.bontecou.syncmd.services.git.LocalGitRepository cloneWithoutSymlinks-BWLJW6A
+WARNING: Clone completed; Git LFS file contents need review or download
+Nov 02, 2026 3:22:14 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit14654067987846512093/junit15553869346926947249/.gitsync-clone-6030489600324337367
+Nov 02, 2026 3:22:15 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=main commit=c526bcdf2fa20dcf8cc22ae6102729d0bb777849
+Nov 02, 2026 3:22:15 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 2 files, skipped 0
+Nov 02, 2026 3:22:15 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/main (c526bcd)
+Nov 02, 2026 3:22:15 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit11790086203344953050/junit6350239049406716177/.gitsync-clone-2749672480064064312
+Nov 02, 2026 3:22:15 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=main commit=40a9f1d5326bd5552a3635344ff25a94f9086b2d
+Nov 02, 2026 3:22:15 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 2 files, skipped 0
+Nov 02, 2026 3:22:15 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/main (40a9f1d)
+Nov 02, 2026 3:22:16 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit14493844153978767832/junit10717798093061819799/.gitsync-clone-1518047550566126731
+Nov 02, 2026 3:22:16 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=main commit=32ff136b975444b731a7b7d71fefb75a008dd05c
+Nov 02, 2026 3:22:16 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 2 files, skipped 0
+Nov 02, 2026 3:22:16 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/main (32ff136)
+Nov 02, 2026 3:22:16 PM com.bontecou.syncmd.services.git.LocalGitRepository cloneWithoutSymlinks-BWLJW6A
+WARNING: Clone completed; Git LFS file contents need review or download
+Nov 02, 2026 3:22:16 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit2033773075694803168/junit3047762916878837080/.gitsync-clone-7628223525119038809
+Nov 02, 2026 3:22:16 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=main commit=32ff136b975444b731a7b7d71fefb75a008dd05c
+Nov 02, 2026 3:22:16 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 2 files, skipped 0
+Nov 02, 2026 3:22:16 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/main (32ff136)
+Nov 02, 2026 3:22:17 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit14256943996282073553/junit11406909407875452435/.gitsync-clone-2491964085433574829
+Nov 02, 2026 3:22:17 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=main commit=be3be89722b0ce925c627be8c547515dbb5222b6
+Nov 02, 2026 3:22:17 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 2 files, skipped 0
+Nov 02, 2026 3:22:17 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/main (be3be89)
+]]></system-err>
+</testsuite>

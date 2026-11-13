@@ -1,0 +1,25 @@
+steps:
+  - echo: Launch an isolated clean local Git fixture and inspect editor actions with
+      a long filename.
+  - launch:
+      native: bontecou.Sync-md
+      ios:
+        app: bontecou.Sync-md
+        args:
+          - -SignedOutUITest
+          - -UITestGitToolsFixture
+          - clean
+          - -AppleLanguages
+          - (en)
+          - -AppleLocale
+          - en_US
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: home.addRepository
+      timeoutMs: 8000
+  - echo: Open the seeded Git fixture; expect its vault screen.
+  - tap:
+      x: 0.5
+      y: 0.4415

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.git.lfs.LfsTrackingTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-11-02T19:09:24" hostname="MacBook-Pro.local" time="1.005">
+  <properties/>
+  <testcase name="oversized regular Git blob cannot commit and keeps its staged index" classname="com.bontecou.syncmd.services.git.lfs.LfsTrackingTest" time="0.93"/>
+  <testcase name="exact path choice supports spaces Unicode and literal glob characters without tracking siblings" classname="com.bontecou.syncmd.services.git.lfs.LfsTrackingTest" time="0.028"/>
+  <testcase name="regular Git choice remains explicit and does not ask again" classname="com.bontecou.syncmd.services.git.lfs.LfsTrackingTest" time="0.011"/>
+  <testcase name="changed attributes preserve existing user edits and staged index" classname="com.bontecou.syncmd.services.git.lfs.LfsTrackingTest" time="0.006"/>
+  <testcase name="binary tracking requires explicit consent and only then stages pointer plus attributes" classname="com.bontecou.syncmd.services.git.lfs.LfsTrackingTest" time="0.015"/>
+  <testcase name="changed reviewed file leaves attributes and index untouched" classname="com.bontecou.syncmd.services.git.lfs.LfsTrackingTest" time="0.007"/>
+  <testcase name="empty LFS files remain empty blobs" classname="com.bontecou.syncmd.services.git.lfs.LfsTrackingTest" time="0.008"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

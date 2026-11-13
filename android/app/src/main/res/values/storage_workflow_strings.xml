@@ -1,0 +1,4 @@
+<resources>
+    <string name="storage_default_saved">Default clone location saved</string>
+    <string name="storage_app_saved">New clones will use app storage</string>
+</resources>

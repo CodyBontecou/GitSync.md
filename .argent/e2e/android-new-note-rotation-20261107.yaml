@@ -1,0 +1,42 @@
+steps:
+  - tap:
+      text: New file
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: New note
+  - await: { idle: true }
+  - tap:
+      role: TextField
+      after: { text: New note }
+  - tool: keyboard
+    args:
+      text: qa-interrupted-form
+  - tap:
+      text: Template · idea
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: qa-interrupted-form
+        role: TextField
+  - tool: rotate
+    args:
+      orientation: LandscapeLeft
+  - await: { idle: true }
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: New note
+      timeoutMs: 3000
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: qa-interrupted-form
+        role: TextField
+executionPrerequisite: Android phone in English, Sample repository open on Files
+  tab, portrait, no dialog or keyboard visible. No file is created by this
+  fragment.

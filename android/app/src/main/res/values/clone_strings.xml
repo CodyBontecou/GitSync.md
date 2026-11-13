@@ -1,0 +1,3 @@
+<resources>
+    <string name="clone_registration_failed">Could not add the cloned repository. Its files were kept. Retry adding it, or reconnect its folder from Local repositories.</string>
+</resources>

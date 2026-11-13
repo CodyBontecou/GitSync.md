@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.repositories.CloneCatalogProvenanceTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-11-02T19:22:22" hostname="MacBook-Pro.local" time="0.004">
+  <properties/>
+  <testcase name="explicitDismissalCanBeRecordedBeforeAnyCatalogEntryWithoutGrantingAuthority" classname="com.bontecou.syncmd.services.repositories.CloneCatalogProvenanceTest" time="0.002"/>
+  <testcase name="malformedAndNoncanonicalPayloadsFailClosed" classname="com.bontecou.syncmd.services.repositories.CloneCatalogProvenanceTest" time="0.0"/>
+  <testcase name="staleFolderOrDateCannotReuseAnActiveReceiptButAFreshPublicationCanRegister" classname="com.bontecou.syncmd.services.repositories.CloneCatalogProvenanceTest" time="0.001"/>
+  <testcase name="removalAndReplacementRevokeEvenBeforeThePrivateFileAcknowledgesRegistration" classname="com.bontecou.syncmd.services.repositories.CloneCatalogProvenanceTest" time="0.0"/>
+  <testcase name="revocationAndPruningClearAbandonedPendingMarkersButRetainANewActiveScope" classname="com.bontecou.syncmd.services.repositories.CloneCatalogProvenanceTest" time="0.0"/>
+  <testcase name="catalogAndRegistrationArePlannedInTheSameCommitAndExactRetryIsIdempotent" classname="com.bontecou.syncmd.services.repositories.CloneCatalogProvenanceTest" time="0.0"/>
+  <testcase name="unrelatedCatalogWorkSurvivesCorruptReceiptsWithoutTreatingThemAsConsent" classname="com.bontecou.syncmd.services.repositories.CloneCatalogProvenanceTest" time="0.001"/>
+  <testcase name="metadataIsPrunedOnlyWhenItsPrivatePublicationHasGoneAway" classname="com.bontecou.syncmd.services.repositories.CloneCatalogProvenanceTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

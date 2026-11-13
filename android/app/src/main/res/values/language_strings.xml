@@ -1,0 +1,5 @@
+<resources>
+    <string name="language_settings_title">Language</string>
+    <string name="language_settings_legacy">Before Android 13, this app follows the device language.</string>
+    <string name="language_settings_unavailable">Language settings could not be opened.</string>
+</resources>

@@ -1,0 +1,62 @@
+
+com.bontecou.syncmd.VaultResolveDeviceTest:
+Error in blockedPullOffersResolveWhichCommitsLocallyThenOpensTheReviewedMerge(com.bontecou.syncmd.VaultResolveDeviceTest):
+java.lang.AssertionError: Failed: performScrollToNode(TestTag = 'vault-pull')
+Reason: Expected exactly '1' node but could not find any node that satisfies: (ScrollToIndex is defined)
+
+	at androidx.compose.ui.test.SemanticsNodeInteraction.fetchOneOrDie(SemanticsNodeInteraction.kt:145)
+	at androidx.compose.ui.test.SemanticsNodeInteraction.fetchSemanticsNode(SemanticsNodeInteraction.kt:79)
+	at androidx.compose.ui.test.ActionsKt.performScrollToNode(Actions.kt:217)
+	at com.bontecou.syncmd.VaultResolveDeviceTest.blockedPullOffersResolveWhichCommitsLocallyThenOpensTheReviewedMerge(VaultResolveDeviceTest.kt:78)
+
+Error in cancellingResolveCommitsNothing(com.bontecou.syncmd.VaultResolveDeviceTest):
+java.lang.AssertionError: Failed: performScrollToNode(TestTag = 'vault-pull')
+Reason: Expected exactly '1' node but could not find any node that satisfies: (ScrollToIndex is defined)
+
+	at androidx.compose.ui.test.SemanticsNodeInteraction.fetchOneOrDie(SemanticsNodeInteraction.kt:145)
+	at androidx.compose.ui.test.SemanticsNodeInteraction.fetchSemanticsNode(SemanticsNodeInteraction.kt:79)
+	at androidx.compose.ui.test.ActionsKt.performScrollToNode(Actions.kt:217)
+	at com.bontecou.syncmd.VaultResolveDeviceTest.cancellingResolveCommitsNothing(VaultResolveDeviceTest.kt:105)
+.
+com.bontecou.syncmd.RepositoryOperationScreenTest:
+Error in vaultPullIsDisabledWhileRunningAndItsFailureCanBeAcknowledgedWithoutRetry(com.bontecou.syncmd.RepositoryOperationScreenTest):
+java.lang.AssertionError: Failed: performScrollToNode(TestTag = 'vault-pull')
+Reason: Expected exactly '1' node but could not find any node that satisfies: (ScrollToIndex is defined)
+
+	at androidx.compose.ui.test.SemanticsNodeInteraction.fetchOneOrDie(SemanticsNodeInteraction.kt:145)
+	at androidx.compose.ui.test.SemanticsNodeInteraction.fetchSemanticsNode(SemanticsNodeInteraction.kt:79)
+	at androidx.compose.ui.test.ActionsKt.performScrollToNode(Actions.kt:217)
+	at com.bontecou.syncmd.RepositoryOperationScreenTest.vaultPullIsDisabledWhileRunningAndItsFailureCanBeAcknowledgedWithoutRetry(RepositoryOperationScreenTest.kt:57)
+
+
+Time: 6.61
+There were 3 failures:
+1) blockedPullOffersResolveWhichCommitsLocallyThenOpensTheReviewedMerge(com.bontecou.syncmd.VaultResolveDeviceTest)
+java.lang.AssertionError: Failed: performScrollToNode(TestTag = 'vault-pull')
+Reason: Expected exactly '1' node but could not find any node that satisfies: (ScrollToIndex is defined)
+
+	at androidx.compose.ui.test.SemanticsNodeInteraction.fetchOneOrDie(SemanticsNodeInteraction.kt:145)
+	at androidx.compose.ui.test.SemanticsNodeInteraction.fetchSemanticsNode(SemanticsNodeInteraction.kt:79)
+	at androidx.compose.ui.test.ActionsKt.performScrollToNode(Actions.kt:217)
+	at com.bontecou.syncmd.VaultResolveDeviceTest.blockedPullOffersResolveWhichCommitsLocallyThenOpensTheReviewedMerge(VaultResolveDeviceTest.kt:78)
+2) cancellingResolveCommitsNothing(com.bontecou.syncmd.VaultResolveDeviceTest)
+java.lang.AssertionError: Failed: performScrollToNode(TestTag = 'vault-pull')
+Reason: Expected exactly '1' node but could not find any node that satisfies: (ScrollToIndex is defined)
+
+	at androidx.compose.ui.test.SemanticsNodeInteraction.fetchOneOrDie(SemanticsNodeInteraction.kt:145)
+	at androidx.compose.ui.test.SemanticsNodeInteraction.fetchSemanticsNode(SemanticsNodeInteraction.kt:79)
+	at androidx.compose.ui.test.ActionsKt.performScrollToNode(Actions.kt:217)
+	at com.bontecou.syncmd.VaultResolveDeviceTest.cancellingResolveCommitsNothing(VaultResolveDeviceTest.kt:105)
+3) vaultPullIsDisabledWhileRunningAndItsFailureCanBeAcknowledgedWithoutRetry(com.bontecou.syncmd.RepositoryOperationScreenTest)
+java.lang.AssertionError: Failed: performScrollToNode(TestTag = 'vault-pull')
+Reason: Expected exactly '1' node but could not find any node that satisfies: (ScrollToIndex is defined)
+
+	at androidx.compose.ui.test.SemanticsNodeInteraction.fetchOneOrDie(SemanticsNodeInteraction.kt:145)
+	at androidx.compose.ui.test.SemanticsNodeInteraction.fetchSemanticsNode(SemanticsNodeInteraction.kt:79)
+	at androidx.compose.ui.test.ActionsKt.performScrollToNode(Actions.kt:217)
+	at com.bontecou.syncmd.RepositoryOperationScreenTest.vaultPullIsDisabledWhileRunningAndItsFailureCanBeAcknowledgedWithoutRetry(RepositoryOperationScreenTest.kt:57)
+
+FAILURES!!!
+Tests run: 4,  Failures: 3
+
+

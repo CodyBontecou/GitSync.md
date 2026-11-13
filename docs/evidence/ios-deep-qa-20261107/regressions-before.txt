@@ -1,0 +1,12 @@
+Baseline: xcodebuild test -project Sync.md.xcodeproj -scheme Sync.md -destination platform=iOS Simulator,id=15EC4EBE-5744-4B13-BABA-4207C4F43E51 -derivedDataPath /tmp/gitsync-ios-edge-fixes -parallel-testing-enabled NO
+Selected tests: configuration rejection, final-newline diff matrix, Git Tools draft retention.
+Full log: /tmp/gitsync-deep-before.log
+
+Test Case '-[SyncMDTests.SyncMDTests testConfigurationRejectsInvalidBranchBeforeChangingRemoteOrCredentials]' failed (0.401 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testUnifiedDiffPreservesLinesForEveryFinalNewlineCombination]' failed (0.130 seconds).
+Test Case '-[SyncMDUITests.SyncMDUITests testGitToolsFailureKeepsSheetDraftAndRejectedBranch]' failed (45.527 seconds).
+/Users/codybontecou/dev/gitsync.md/SyncMDTests/SyncMDTests.swift:53: error: -[SyncMDTests.SyncMDTests testUnifiedDiffPreservesLinesForEveryFinalNewlineCombination] : XCTAssertTrue failed - diff --git a/note.md b/note.md
+/Users/codybontecou/dev/gitsync.md/SyncMDTests/SyncMDTests.swift:54: error: -[SyncMDTests.SyncMDTests testUnifiedDiffPreservesLinesForEveryFinalNewlineCombination] : XCTAssertTrue failed - diff --git a/note.md b/note.md
+/Users/codybontecou/dev/gitsync.md/SyncMDTests/SyncMDTests.swift:55: error: -[SyncMDTests.SyncMDTests testUnifiedDiffPreservesLinesForEveryFinalNewlineCombination] : XCTAssertFalse failed - diff --git a/note.md b/note.md
+/Users/codybontecou/dev/gitsync.md/SyncMDTests/SyncMDTests.swift:53: error: -[SyncMDTests.SyncMDTests testUnifiedDiffPreservesLinesForEveryFinalNewlineCombination] : XCTAssertTrue failed - diff --git a/note.md b/note.md
+/Users/codybontecou/dev/gitsync.md/SyncMDTests/SyncMDTests.swift:55: error: -[SyncMDTests.SyncMDTests testUnifiedDiffPreservesLinesForEveryFinalNewlineCombination] : XCTAssertFalse failed - diff --git a/note.md b/note.md

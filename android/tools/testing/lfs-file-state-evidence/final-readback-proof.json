@@ -1,0 +1,12 @@
+{
+  "checked_at": "2026-11-02T18:48:01.160061+00:00",
+  "readback": "/tmp/syncmd-lfs-language-readback-8kbds40c/fixture",
+  "working_files": 6,
+  "cached_objects": 3,
+  "head": "d2b764d7c4d88fa930598715dba7742f1f0b8514",
+  "exact_working_index_config_preserved": true,
+  "original_cached_objects_preserved": true,
+  "added_generated_draft_cache": true,
+  "remote_absent": true,
+  "owned_checkout_removed": true
+}

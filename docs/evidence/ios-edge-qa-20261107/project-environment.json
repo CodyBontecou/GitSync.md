@@ -1,0 +1,15 @@
+{
+  "is_react_native": false,
+  "is_native_ios": true,
+  "is_native_android": true,
+  "ios_framework": "SwiftUI",
+  "ios_project": "Sync.md.xcodeproj",
+  "ios_scheme": "Sync.md",
+  "ios_bundle_id": "bontecou.Sync-md",
+  "ios_build_command": "xcodebuild -project Sync.md.xcodeproj -scheme Sync.md -configuration Debug -destination 'platform=iOS Simulator,id=<udid>' -derivedDataPath /tmp/gitsync-ios-edge-qa build",
+  "qa_device": "GitSync-Tide-check",
+  "qa_runtime": "iOS 27.0",
+  "installed_version": "3.0 (202611071310)",
+  "fixture": "Existing dirty git-tools-fixture; launch reset arguments were not used",
+  "inspection_date": "2026-11-07"
+}

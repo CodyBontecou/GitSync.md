@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.repositories.RepositoryUpstreamTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-11-02T20:55:00" hostname="MacBook-Pro.local" time="0.304">
+  <properties/>
+  <testcase name="savesOnlySelectedLocalBranchTrackingAndPreservesAllEndpointsAndData" classname="com.bontecou.syncmd.services.repositories.RepositoryUpstreamTest" time="0.037"/>
+  <testcase name="rejectsUnknownRemoteAndInvalidBranchNames" classname="com.bontecou.syncmd.services.repositories.RepositoryUpstreamTest" time="0.033"/>
+  <testcase name="detachedHeadIsReadableButCannotHaveAnUpstreamAssigned" classname="com.bontecou.syncmd.services.repositories.RepositoryUpstreamTest" time="0.032"/>
+  <testcase name="externalConfigLockAndActiveMergeCannotBeOverwritten" classname="com.bontecou.syncmd.services.repositories.RepositoryUpstreamTest" time="0.033"/>
+  <testcase name="rejectsUnmappedBranchAndPreservesOtherFetchRules" classname="com.bontecou.syncmd.services.repositories.RepositoryUpstreamTest" time="0.031"/>
+  <testcase name="pullUsesTheChosenRemoteBranchWithoutSwitchingTheLocalBranch" classname="com.bontecou.syncmd.services.repositories.RepositoryUpstreamTest" time="0.071"/>
+  <testcase name="rejectsBranchSwitchEvenWhenConfigDidNotChange" classname="com.bontecou.syncmd.services.repositories.RepositoryUpstreamTest" time="0.034"/>
+  <testcase name="rejectsStaleConfigWithoutChangingTheExternalEdit" classname="com.bontecou.syncmd.services.repositories.RepositoryUpstreamTest" time="0.033"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

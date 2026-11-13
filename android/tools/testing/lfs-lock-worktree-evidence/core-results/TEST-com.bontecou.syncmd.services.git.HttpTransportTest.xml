@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.git.HttpTransportTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-11-02T19:21:18" hostname="MacBook-Pro.local" time="0.464">
+  <properties/>
+  <testcase name="explicit HTTP credentials answer only the exact selected scheme host port and repository" classname="com.bontecou.syncmd.services.git.HttpTransportTest" time="0.001"/>
+  <testcase name="HTTP connection guard rejects cross origin repository and scheme before creating requests" classname="com.bontecou.syncmd.services.git.HttpTransportTest" time="0.454"/>
+  <testcase name="HTTP GitHub addresses never read the automatic account token" classname="com.bontecou.syncmd.services.git.HttpTransportTest" time="0.008"/>
+  <testcase name="HTTP addresses canonicalize independently of HTTPS and reject embedded secrets" classname="com.bontecou.syncmd.services.git.HttpTransportTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,11 @@
+Full log: /tmp/gitsync-navigation-before.log
+
+/Users/codybontecou/dev/gitsync.md/SyncMDUITests/SyncMDUITests.swift:47: error: -[SyncMDUITests.SyncMDUITests testBrowserFolderRenameRejectsSeparatorsAndAllowsCorrection] : XCTAssertFalse failed - Invalid path must be explained before dismissing the rename form
+Test Case '-[SyncMDUITests.SyncMDUITests testBrowserFolderRenameRejectsSeparatorsAndAllowsCorrection]' failed (22.243 seconds).
+/Users/codybontecou/dev/gitsync.md/SyncMDUITests/SyncMDUITests.swift:76: error: -[SyncMDUITests.SyncMDUITests testNewNoteRejectsPastedTabThenCreatesCorrectedName] : XCTAssertFalse failed - Invisible control characters must not become file names
+Test Case '-[SyncMDUITests.SyncMDUITests testNewNoteRejectsPastedTabThenCreatesCorrectedName]' failed (18.336 seconds).
+	 Executed 2 tests, with 2 failures (0 unexpected) in 40.579 (40.584) seconds
+	 Executed 2 tests, with 2 failures (0 unexpected) in 40.579 (40.584) seconds
+	 Executed 2 tests, with 2 failures (0 unexpected) in 40.579 (40.585) seconds
+	/tmp/gitsync-ios-navigation-fixes/Logs/Test/Test-Sync.md-2026.11.07_21-03-47--0400.xcresult
+** TEST FAILED **

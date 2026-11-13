@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.git.GitRemoteInputTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-11-03T00:55:57" hostname="MacBook-Pro.local" time="0.011">
+  <properties/>
+  <testcase name="explicit GitHub shorthand expands once and binds credentials to its exact HTTPS repository" classname="com.bontecou.syncmd.services.git.GitRemoteInputTest" time="0.001"/>
+  <testcase name="stored relative filesystem remotes never become GitHub addresses or read the default token" classname="com.bontecou.syncmd.services.git.GitRemoteInputTest" time="0.004"/>
+  <testcase name="shorthand is limited to literal owner and repository path segments" classname="com.bontecou.syncmd.services.git.GitRemoteInputTest" time="0.0"/>
+  <testcase name="git plus ssh aliases canonicalize without changing port user or absolute and home relative paths" classname="com.bontecou.syncmd.services.git.GitRemoteInputTest" time="0.005"/>
+  <testcase name="Unicode shorthand uses escaped literal GitHub path segments" classname="com.bontecou.syncmd.services.git.GitRemoteInputTest" time="0.001"/>
+  <testcase name="malformed address errors never repeat inline secrets in the user input" classname="com.bontecou.syncmd.services.git.GitRemoteInputTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

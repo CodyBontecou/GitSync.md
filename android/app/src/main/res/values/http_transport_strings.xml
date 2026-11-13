@@ -1,0 +1,1 @@
+<resources><string name="http_transport_warning">HTTP is unencrypted. Repository data and any username or token you enter can be read in transit. Use HTTPS when available.</string></resources>

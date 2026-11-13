@@ -1,0 +1,22 @@
+WEBVTT
+
+00:00.000 --> 00:03.000
+Open Publish a Folder and tap Choose a Folder.
+
+00:03.000 --> 00:09.000
+Choose MyNotes under On My iPhone, then tap Open.
+
+00:09.000 --> 00:14.000
+Review the files. Sensitive filenames start unchecked.
+Uncheck any notes you want to keep on your device.
+
+00:14.000 --> 00:30.000
+Enter the author name and email for your first commit.
+Use your own GitHub noreply address for privacy.
+
+00:30.000 --> 00:40.000
+Choose a repository name, such as my-notes.
+
+00:40.000 --> 00:45.267
+Choose Private or Public.
+Sign in with GitHub to prepare the commit and publish.

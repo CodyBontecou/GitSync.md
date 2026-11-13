@@ -35,6 +35,7 @@ enum LocalGitError: LocalizedError {
     case tagAlreadyExists(String)
     case tagNotFound(String)
     case repositoryCorrupted(String)
+    case indexLocked
     case lfsFailed(String)
     case lfsHydrationBlockedByLocalChanges(String)
     case invalidAuthorIdentity(String)
@@ -100,6 +101,8 @@ enum LocalGitError: LocalizedError {
             return String(localized: "Tag '\(name)' was not found.")
         case .repositoryCorrupted(let msg):
             return String(localized: "Repository corrupted: \(msg). Try removing and re-cloning.")
+        case .indexLocked:
+            return String(localized: "The Git index is locked. Wait for other Git operations to finish, then try again. If no Git operation is running, remove the stale index.lock file from the repository's Git directory.")
         case .lfsFailed(let msg):
             return String(localized: "Git LFS failed: \(msg)")
         case .lfsHydrationBlockedByLocalChanges:
@@ -278,6 +281,10 @@ private struct GitSignatureIdentity {
 }
 
 private func validatedGitSignatureIdentity(authorName: String, authorEmail: String) throws -> GitSignatureIdentity {
+    if let issue = GitIdentityValidation.controlCharacterIssue(authorName)
+        ?? GitIdentityValidation.controlCharacterIssue(authorEmail) {
+        throw LocalGitError.invalidAuthorIdentity(issue)
+    }
     let name = authorName.trimmingCharacters(in: .whitespacesAndNewlines)
     let email = authorEmail.trimmingCharacters(in: .whitespacesAndNewlines)
 
@@ -385,21 +392,38 @@ nonisolated private final class GitIndexFileLock {
     private var prepared = false
     private var publishedRetainingLock = false
 
-    init(index: OpaquePointer?) throws {
+    init(
+        index: OpaquePointer?,
+        waitTimeout: TimeInterval = 0,
+        cancellationSignal: LocalGitCancellationSignal? = nil
+    ) throws {
         guard let rawPath = git_index_path(index) else {
             throw LocalGitError.repositoryCorrupted(String(localized: "Could not read the Git index."))
         }
         indexPath = String(cString: rawPath)
         lockPath = indexPath + ".lock"
-        descriptor = lockPath.withCString {
-            Darwin.open($0, O_WRONLY | O_CREAT | O_EXCL, mode_t(0o666))
+        descriptor = -1
+        let deadline = ProcessInfo.processInfo.systemUptime + waitTimeout
+        while true {
+            try cancellationSignal?.checkCancellation()
+            descriptor = lockPath.withCString {
+                Darwin.open($0, O_WRONLY | O_CREAT | O_EXCL, mode_t(0o666))
+            }
+            if descriptor >= 0 {
+                ownsLock = true
+                return
+            }
+            // Only explicit discard operations wait. Never remove an existing
+            // lock: it may belong to another app, even if it looks abandoned.
+            guard errno == EEXIST, waitTimeout > 0 else {
+                throw LocalGitError.commitFailed(
+                    String(localized: "Could not stage all local file changes before push.")
+                )
+            }
+            let remaining = deadline - ProcessInfo.processInfo.systemUptime
+            guard remaining > 0 else { throw LocalGitError.indexLocked }
+            Thread.sleep(forTimeInterval: min(0.05, remaining))
         }
-        guard descriptor >= 0 else {
-            throw LocalGitError.commitFailed(
-                String(localized: "Could not stage all local file changes before push.")
-            )
-        }
-        ownsLock = true
     }
 
     deinit { release() }
@@ -545,6 +569,9 @@ private class CredentialContext {
     var didAttemptUserPass = false
     var didAttemptSSHKey = false
     var didAttemptDefault = false
+    /// Working-directory path used to route transfer progress to observers
+    /// (`GitTransferProgressCenter`). Nil disables progress reporting.
+    var progressPath: String?
     private(set) var callbackErrorMessage: String?
     private(set) var sshHostKeyTrustError: GitLFSSSHHostKeyTrustError?
 
@@ -833,6 +860,14 @@ nonisolated private func transferProgressCallback(
 ) -> Int32 {
     guard let payload else { return GIT_EUSER.rawValue }
     let ctx = Unmanaged<CredentialContext>.fromOpaque(payload).takeUnretainedValue()
+    if let stats = stats?.pointee, ctx.progressPath != nil {
+        GitTransferProgressCenter.shared.report(path: ctx.progressPath, .fetchProgress(
+            receivedObjects: Int(stats.received_objects),
+            totalObjects: Int(stats.total_objects),
+            indexedObjects: Int(stats.indexed_objects),
+            receivedBytes: Int(stats.received_bytes)
+        ))
+    }
     return ctx.cancellationSignal?.isCancelled == true ? GIT_EUSER.rawValue : 0
 }
 
@@ -863,6 +898,22 @@ private final class PushContext: CredentialContext {
     var expectedRemoteOID: git_oid?
     var expectedLocalOID: git_oid?
     var negotiationValidated = false
+
+    /// libgit2's local (file://) transport reports `bytes` from a
+    /// `git_indexer_progress` whose `received_bytes` starts uninitialised
+    /// (packbuilder write), so a 17-byte push could read as "4.77 GB".
+    /// Only smart (network) transports report a trustworthy byte count.
+    var reportsReliablePushBytes: Bool {
+        guard let url = remoteURL?.trimmingCharacters(in: .whitespaces).lowercased(), !url.isEmpty else { return true }
+        return !(url.hasPrefix("file:") || url.hasPrefix("/") || url.hasPrefix(".") || url.hasPrefix("~"))
+    }
+}
+
+/// Byte count safe to show for a push sample: zero (hidden) when the
+/// transport's value is untrustworthy or implausible.
+nonisolated func sanitizedPushBytes(_ bytes: Int, reliable: Bool) -> Int {
+    guard reliable, bytes > 0, bytes < (1 << 40) else { return 0 }
+    return bytes
 }
 
 nonisolated private func pushCredentialCallback(
@@ -891,6 +942,13 @@ nonisolated private func pushTransferProgressCallback(
 ) -> Int32 {
     guard let payload else { return GIT_EUSER.rawValue }
     let ctx = Unmanaged<PushContext>.fromOpaque(payload).takeUnretainedValue()
+    if ctx.progressPath != nil {
+        GitTransferProgressCenter.shared.report(
+            path: ctx.progressPath,
+            .pushProgress(current: Int(current), total: Int(total),
+                          bytes: sanitizedPushBytes(bytes, reliable: ctx.reportsReliablePushBytes))
+        )
+    }
     return ctx.cancellationSignal?.isCancelled == true ? GIT_EUSER.rawValue : 0
 }
 
@@ -925,6 +983,7 @@ nonisolated private func pushNegotiationCallback(
     }
 
     ctx.negotiationValidated = true
+    GitTransferProgressCenter.shared.report(path: ctx.progressPath, .remoteChecked)
     return 0
 }
 
@@ -944,6 +1003,7 @@ nonisolated private func pushUpdateReferenceCallback(
         ctx.rejectedRefs.append((refname: refnameString, reason: String(cString: status)))
     } else {
         ctx.acceptedRefs.insert(refnameString)
+        GitTransferProgressCenter.shared.report(path: ctx.progressPath, .pushAccepted)
     }
     return 0
 }
@@ -965,7 +1025,10 @@ nonisolated private func diffPrintCallback(
     // emitted text is a well-formed unified diff that parsers can classify.
     let origin = UInt8(bitPattern: line.pointee.origin)
     switch origin {
-    case UInt8(ascii: "F"), UInt8(ascii: "H"), UInt8(ascii: "B"):
+    case UInt8(ascii: "F"), UInt8(ascii: "H"), UInt8(ascii: "B"),
+         UInt8(ascii: "="), UInt8(ascii: ">"), UInt8(ascii: "<"):
+        // EOF origins are metadata. Their content already contains the
+        // newline and "\\ No newline" annotation, not a file-line prefix.
         break
     default:
         collector.output.append(Character(Unicode.Scalar(origin)))
@@ -1022,6 +1085,20 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
     /// One-time libgit2 global init.
     private static let initOnce: Void = { git_libgit2_init() }()
 
+    /// Read the configured origin without network access or parent-directory
+    /// discovery. libgit2 resolves .git pointer files and shared worktree config.
+    static func readOriginURL(at url: URL) -> String? {
+        _ = initOnce
+        var repo: OpaquePointer?
+        defer { if let repo { git_repository_free(repo) } }
+        guard git_repository_open_ext(&repo, url.path, UInt32(GIT_REPOSITORY_OPEN_NO_SEARCH.rawValue), nil) == 0 else { return nil }
+        var remote: OpaquePointer?
+        defer { if let remote { git_remote_free(remote) } }
+        guard git_remote_lookup(&remote, repo, "origin") == 0,
+              let value = git_remote_url(remote) else { return nil }
+        return String(cString: value)
+    }
+
     /// Set `core.precomposeunicode = true` on a repo so libgit2 transparently
     /// normalises filenames between NFC (git objects) and NFD (APFS/HFS+).
     /// Without this, Korean/Japanese/Chinese filenames appear as permanently
@@ -1070,6 +1147,23 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
 
     // MARK: - Clone / Remote Configuration
 
+    static func validateFolderPublicationAuthor(name: String, email: String) throws {
+        _ = try validatedGitSignatureIdentity(authorName: name, authorEmail: email)
+    }
+
+    /// Initial folder publication uses the same cross-process index safeguards
+    /// as ordinary staging, while supplying its own reviewed entry set.
+    static func folderPublicationIndexChecksum(_ index: OpaquePointer?) throws -> String {
+        try indexChecksumHex(index)
+    }
+
+    static func writeFolderPublicationIndex(repo: OpaquePointer?, index: OpaquePointer?, baselineChecksum: String) throws {
+        let lock = try lockUnchangedIndex(repo: repo, index: index, baselineChecksum: baselineChecksum)
+        defer { lock.release() }
+        try lock.prepare(index: index)
+        try lock.commitPreparedIndex()
+    }
+
     func setRemoteURL(name: String = "origin", url: String) async throws {
         let repoPath = self.localURL.path
         let trimmedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -1105,11 +1199,17 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
         }.value
     }
 
-    func clone(remoteURL: String, pat: String) async throws -> LocalCloneResult {
+    func clone(remoteURL: String, pat: String, branch: String? = nil) async throws -> LocalCloneResult {
+        let trimmedBranch = branch?.trimmingCharacters(in: .whitespacesAndNewlines)
+        let selectedBranch = trimmedBranch?.isEmpty == false ? trimmedBranch : nil
+        if let selectedBranch, let issue = GitBranchName.validationMessage(selectedBranch) {
+            throw LocalGitError.cloneFailed(issue)
+        }
         let dest = self.localURL.path
         let localURL = self.localURL
+        let cancellationSignal = LocalGitCancellationSignal()
 
-        let result = try await Task.detached {
+        let cloneOperation = Task.detached {
             var repo: OpaquePointer?
             defer { if let repo { git_repository_free(repo) } }
 
@@ -1117,16 +1217,33 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             var opts = git_clone_options()
             git_clone_options_init(&opts, UInt32(GIT_CLONE_OPTIONS_VERSION))
 
-            let ctx = CredentialContext(credentials: GitRemoteCredentials.fromTransportPayload(pat), remoteURL: remoteURL)
+            let ctx = CredentialContext(
+                credentials: GitRemoteCredentials.fromTransportPayload(pat),
+                remoteURL: remoteURL,
+                cancellationSignal: cancellationSignal
+            )
+            ctx.progressPath = dest
             let ctxPtr = Unmanaged.passRetained(ctx).toOpaque()
             defer { Unmanaged<CredentialContext>.fromOpaque(ctxPtr).release() }
 
             opts.fetch_opts.callbacks.credentials = credentialCallback
             opts.fetch_opts.callbacks.certificate_check = certificateCheckCallback
+            opts.fetch_opts.callbacks.transfer_progress = transferProgressCallback
             opts.fetch_opts.callbacks.payload = ctxPtr
 
-            let code = git_clone(&repo, remoteURL, dest, &opts)
+            try cancellationSignal.checkCancellation()
+            let code: Int32
+            if let selectedBranch {
+                // libgit2 borrows this C string for the synchronous clone.
+                code = selectedBranch.withCString { branchName in
+                    opts.checkout_branch = branchName
+                    return git_clone(&repo, remoteURL, dest, &opts)
+                }
+            } else {
+                code = git_clone(&repo, remoteURL, dest, &opts)
+            }
             guard code == 0, let repo else {
+                if cancellationSignal.isCancelled { throw CancellationError() }
                 if let sshHostKeyTrustError = ctx.sshHostKeyTrustError {
                     throw LocalGitError.sshHostKeyTrustRequired(sshHostKeyTrustError)
                 }
@@ -1155,7 +1272,13 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             let fileCount = Self.countFiles(in: localURL)
 
             return LocalCloneResult(commitSHA: commitSHA, branch: branch, fileCount: fileCount)
-        }.value
+        }
+        let result = try await withTaskCancellationHandler {
+            try await cloneOperation.value
+        } onCancel: {
+            cancellationSignal.cancel()
+            cloneOperation.cancel()
+        }
 
         var lfsWarning: String?
         var lfsTrustError: GitLFSSSHHostKeyTrustError?
@@ -3192,6 +3315,10 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             try GitLFSService.cleanAndStageLFSFiles(
                 repo: repo,
                 index: index,
+                // Git's add/update passes already chose legitimate tracked or
+                // non-ignored paths. LFS must not enumerate and re-add ignored
+                // files that those passes deliberately omitted.
+                candidatePaths: Self.indexPaths(index: index),
                 autoTrackingPolicy: lfsAutoTrack ? .default : .disabled
             )
 
@@ -3344,154 +3471,132 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
     }
 
     func discardChanges(path: String) async throws {
-        let repoPath = self.localURL.path
-        let fullPath = self.localURL.appendingPathComponent(path).path
-
-        try await Task.detached {
-            var repo: OpaquePointer?
-            defer { if let repo { git_repository_free(repo) } }
-            try git2Check(git_repository_open(&repo, repoPath), context: "Open repo")
-
-            var index: OpaquePointer?
-            defer { if let index { git_index_free(index) } }
-            try git2Check(git_repository_index(&index, repo), context: "Get index")
-
-            // Check whether the file is tracked (has an index entry or exists in HEAD)
-            let existsInIndex = path.withCString { cPath in
-                git_index_get_bypath(index, cPath, 0) != nil
-            }
-
-            // Also check if file exists in HEAD tree (covers staged-new files)
-            var headRef: OpaquePointer?
-            defer { if let headRef { git_reference_free(headRef) } }
-            let hasHead = git_repository_head(&headRef, repo) == 0
-
-            var existsInHead = false
-            if hasHead, let oid = git_reference_target(headRef) {
-                var commit: OpaquePointer?
-                defer { if let commit { git_commit_free(commit) } }
-                var oidCopy = oid.pointee
-                if git_commit_lookup(&commit, repo, &oidCopy) == 0 {
-                    var tree: OpaquePointer?
-                    defer { if let tree { git_tree_free(tree) } }
-                    if git_commit_tree(&tree, commit) == 0 {
-                        var entry: OpaquePointer?
-                        existsInHead = path.withCString { cPath in
-                            git_tree_entry_bypath(&entry, tree, cPath) == 0
-                        }
-                        if let entry { git_tree_entry_free(entry) }
-                    }
-                }
-            }
-
-            if !existsInIndex && !existsInHead {
-                // Purely untracked file — remove from disk
-                try FileManager.default.removeItem(atPath: fullPath)
-                return
-            }
-
-            let cString = strdup(path)!
-            let storage = UnsafeMutablePointer<UnsafeMutablePointer<CChar>?>.allocate(capacity: 1)
-            defer {
-                free(cString)
-                storage.deallocate()
-            }
-
-            var pathspec = git_strarray()
-            makeStrarray(cString, into: &pathspec, storage: storage)
-
-            // Unstage: reset index entry to HEAD so staged changes are cleared
-            if hasHead {
-                var headObject: OpaquePointer?
-                defer { if let headObject { git_object_free(headObject) } }
-                if let headOID = git_reference_target(headRef) {
-                    try git2Check(
-                        git_object_lookup(&headObject, repo, headOID, GIT_OBJECT_ANY),
-                        context: "Lookup HEAD for reset"
-                    )
-                }
-                try git2Check(
-                    git_reset_default(repo, headObject, &pathspec),
-                    context: "Unstage \(path)"
-                )
-            } else {
-                // No HEAD (unborn branch) — remove from index directly
-                try git2Check(
-                    git_index_remove_bypath(index, cString),
-                    context: "Remove from index \(path)"
-                )
-                try git2Check(git_index_write(index), context: "Write index")
-            }
-
-            // Restore working tree to HEAD
-            if existsInHead {
-                var opts = git_checkout_options()
-                git_checkout_options_init(&opts, UInt32(GIT_CHECKOUT_OPTIONS_VERSION))
-                opts.checkout_strategy = UInt32(GIT_CHECKOUT_FORCE.rawValue)
-                opts.paths = pathspec
-
-                try git2Check(
-                    git_checkout_head(repo, &opts),
-                    context: "Discard changes in \(path)"
-                )
-            } else {
-                // File doesn't exist in HEAD (was newly added) — remove from disk
-                try? FileManager.default.removeItem(atPath: fullPath)
-            }
-        }.value
+        try await performDiscardChanges(path: path)
     }
 
     func discardAllChanges() async throws {
-        let repoPath = self.localURL.path
+        try await performDiscardChanges(path: nil)
+    }
 
-        try await Task.detached {
-            var repo: OpaquePointer?
-            defer { if let repo { git_repository_free(repo) } }
-            try git2Check(git_repository_open(&repo, repoPath), context: "Open repo")
+    private func performDiscardChanges(path: String?) async throws {
+        let localURL = self.localURL
+        let cancellationSignal = LocalGitCancellationSignal()
+        try await withTaskCancellationHandler {
+            try await Task.detached {
+                try cancellationSignal.checkCancellation()
+                var repo: OpaquePointer?
+                defer { if let repo { git_repository_free(repo) } }
+                try git2Check(git_repository_open(&repo, localURL.path), context: "Open repo")
 
-            var headRef: OpaquePointer?
-            defer { if let headRef { git_reference_free(headRef) } }
-            let headCode = git_repository_head(&headRef, repo)
-
-            // Unborn branch (no HEAD yet): nothing to revert to. Clear the
-            // index and remove any remaining untracked files.
-            if headCode == GIT_EUNBORNBRANCH.rawValue || headCode == GIT_ENOTFOUND.rawValue {
                 var index: OpaquePointer?
                 defer { if let index { git_index_free(index) } }
                 try git2Check(git_repository_index(&index, repo), context: "Get index")
-                try git2Check(git_index_clear(index), context: "Clear index")
-                try git2Check(git_index_write(index), context: "Write index")
-                return
-            }
-            try git2Check(headCode, context: "Read HEAD for discard all")
 
-            guard let headOid = git_reference_target(headRef) else {
-                throw LocalGitError.repositoryCorrupted(String(localized: "Could not resolve HEAD for discard all"))
-            }
+                // git_reset(HARD) checks the index lock only after touching the
+                // worktree. Acquire it first and wait briefly for another Git
+                // client, without ever deleting that client's lock.
+                let indexLock = try GitIndexFileLock(
+                    index: index, waitTimeout: 2, cancellationSignal: cancellationSignal
+                )
+                defer { indexLock.release() }
+                try cancellationSignal.checkCancellation()
+                try git2Check(git_index_read(index, 1), context: "Refresh index for discard")
 
-            var headCommit: OpaquePointer?
-            defer { if let headCommit { git_commit_free(headCommit) } }
-            var headOidCopy = headOid.pointee
-            try git2Check(
-                git_commit_lookup(&headCommit, repo, &headOidCopy),
-                context: "Lookup HEAD commit for discard all"
-            )
+                var headRef: OpaquePointer?
+                defer { if let headRef { git_reference_free(headRef) } }
+                var headCommit: OpaquePointer?
+                defer { if let headCommit { git_commit_free(headCommit) } }
+                var headTree: OpaquePointer?
+                defer { if let headTree { git_tree_free(headTree) } }
+                let headCode = git_repository_head(&headRef, repo)
+                if headCode == 0 {
+                    guard let headOID = git_reference_target(headRef) else {
+                        throw LocalGitError.repositoryCorrupted(String(localized: "Could not resolve HEAD for discard all"))
+                    }
+                    var oid = headOID.pointee
+                    try git2Check(git_commit_lookup(&headCommit, repo, &oid), context: "Lookup HEAD for discard")
+                    try git2Check(git_commit_tree(&headTree, headCommit), context: "Read HEAD tree for discard")
+                } else if headCode != GIT_EUNBORNBRANCH.rawValue && headCode != GIT_ENOTFOUND.rawValue {
+                    try git2Check(headCode, context: "Read HEAD for discard")
+                }
 
-            var opts = git_checkout_options()
-            git_checkout_options_init(&opts, UInt32(GIT_CHECKOUT_OPTIONS_VERSION))
-            opts.checkout_strategy = UInt32(GIT_CHECKOUT_FORCE.rawValue) |
-                                     UInt32(GIT_CHECKOUT_REMOVE_UNTRACKED.rawValue)
+                var opts = git_checkout_options()
+                git_checkout_options_init(&opts, UInt32(GIT_CHECKOUT_OPTIONS_VERSION))
+                // The guarded index is refreshed above. Checkout may update its
+                // in-memory entries, but must not re-lock/write the shared index.
+                opts.checkout_strategy = GIT_CHECKOUT_FORCE.rawValue |
+                    GIT_CHECKOUT_NO_REFRESH.rawValue | GIT_CHECKOUT_DONT_WRITE_INDEX.rawValue |
+                    GIT_CHECKOUT_DISABLE_PATHSPEC_MATCH.rawValue
 
-            // HARD reset resets the index to HEAD's tree in addition to
-            // overwriting the working tree. `git_checkout_head` alone leaves
-            // stale index state behind when both the index and the worktree
-            // are dirty, so the file-level revert path already works around
-            // this by unstaging explicitly before the checkout.
-            try git2Check(
-                git_reset(repo, headCommit, GIT_RESET_HARD, &opts),
-                context: "Hard reset to HEAD"
-            )
-        }.value
+                if let path {
+                    var headEntry: OpaquePointer?
+                    defer { if let headEntry { git_tree_entry_free(headEntry) } }
+                    if let headTree {
+                        let code = path.withCString { git_tree_entry_bypath(&headEntry, headTree, $0) }
+                        if code != GIT_ENOTFOUND.rawValue {
+                            try git2Check(code, context: "Find HEAD entry for \(path)")
+                        }
+                    }
+                    try path.withCString { cPath in
+                        if let headEntry, let oid = git_tree_entry_id(headEntry) {
+                            var entry = git_index_entry()
+                            entry.path = cPath
+                            entry.id = oid.pointee
+                            entry.mode = git_tree_entry_filemode(headEntry).rawValue
+                            try git2Check(git_index_add(index, &entry), context: "Restore index entry for \(path)")
+                        } else {
+                            let code = git_index_remove_bypath(index, cPath)
+                            if code != GIT_ENOTFOUND.rawValue {
+                                try git2Check(code, context: "Remove index entry for \(path)")
+                            }
+                        }
+                    }
+                    // Serialize before touching files so a preparation failure
+                    // leaves both the shared index and the worktree unchanged.
+                    try indexLock.prepare(index: index)
+                    try cancellationSignal.checkCancellation()
+                    if headEntry != nil {
+                        let cString = strdup(path)!
+                        let storage = UnsafeMutablePointer<UnsafeMutablePointer<CChar>?>.allocate(capacity: 1)
+                        defer { free(cString); storage.deallocate() }
+                        makeStrarray(cString, into: &opts.paths, storage: storage)
+                        try git2Check(git_checkout_tree(repo, headTree, &opts), context: "Discard changes in \(path)")
+                    } else {
+                        let fileURL = localURL.appendingPathComponent(path)
+                        if FileManager.default.fileExists(atPath: fileURL.path) {
+                            try FileManager.default.removeItem(at: fileURL)
+                        }
+                    }
+                    try indexLock.commitPreparedIndex()
+                } else {
+                    var targetIndex: OpaquePointer?
+                    defer { if let targetIndex { git_index_free(targetIndex) } }
+                    try git2Check(git_index_new(&targetIndex), context: "Create discard index")
+                    try git2Check(git_index_set_version(targetIndex, git_index_version(index)), context: "Preserve index version")
+                    let capabilities = git_index_caps(index)
+                    if capabilities >= 0 {
+                        try git2Check(git_index_set_caps(targetIndex, capabilities), context: "Preserve index capabilities")
+                    }
+                    if let headTree {
+                        try git2Check(git_index_read_tree(targetIndex, headTree), context: "Restore index to HEAD")
+                    }
+                    try indexLock.prepare(index: targetIndex)
+                    try cancellationSignal.checkCancellation()
+                    if let headTree {
+                        opts.checkout_strategy |= GIT_CHECKOUT_REMOVE_UNTRACKED.rawValue
+                        try git2Check(git_checkout_tree(repo, headTree, &opts), context: "Discard all changes")
+                    }
+                    // On an unborn branch, preserve the existing behavior:
+                    // clear staging, since there is no committed tree to restore.
+                    try indexLock.commitPreparedIndex()
+                    if headTree != nil {
+                        try git2Check(git_repository_state_cleanup(repo), context: "Clean up discarded Git operation")
+                    }
+                }
+            }.value
+        } onCancel: {
+            cancellationSignal.cancel()
+        }
     }
 
     // MARK: - Stash
@@ -3682,6 +3787,9 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
     }
 
     func createTag(name: String, targetOID: String?, message: String?, authorName: String, authorEmail: String) async throws -> GitTag {
+        if let issue = GitTagName.validationMessage(name) { throw LocalGitError.libgit2(issue) }
+        let name = name.trimmingCharacters(in: .whitespacesAndNewlines)
+
         let repoPath = self.localURL.path
 
         return try await Task.detached {
@@ -3733,6 +3841,9 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
     }
 
     func deleteTag(name: String) async throws {
+        if let issue = GitTagName.validationMessage(name) { throw LocalGitError.libgit2(issue) }
+        let name = name.trimmingCharacters(in: .whitespacesAndNewlines)
+
         let repoPath = self.localURL.path
 
         try await Task.detached {
@@ -3749,6 +3860,9 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
     }
 
     func pushTag(name: String, pat: String) async throws {
+        if let issue = GitTagName.validationMessage(name) { throw LocalGitError.libgit2(issue) }
+        let name = name.trimmingCharacters(in: .whitespacesAndNewlines)
+
         let repoPath = self.localURL.path
 
         try await Task.detached {
@@ -3970,6 +4084,18 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             if let safetyExpectation, safetyExpectation.branch != branchName {
                 throw LocalGitError.wrongBranch(expected: safetyExpectation.branch, actual: branchName)
             }
+            if let safetyExpectation {
+                var plannedLocalOID = try Self.oid(
+                    hex: safetyExpectation.localCommitSHA,
+                    context: "Read expected commit parent"
+                )
+                guard var parentOID = expectedParentOID,
+                      git_oid_equal(&parentOID, &plannedLocalOID) != 0 else {
+                    throw LocalGitError.commitFailed(
+                        String(localized: "The local branch changed before commit. Publication was stopped.")
+                    )
+                }
+            }
 
             // Create author/committer signature.
             var sig: UnsafeMutablePointer<git_signature>?
@@ -4056,6 +4182,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             try git2Check(git_transaction_commit(commitTransaction), context: "Commit branch update")
 
             let commitSHA = oidToHex(&commitOid)
+            GitTransferProgressCenter.shared.report(path: path, .committed(files: stagedPaths.count, sha: commitSHA))
             do {
             commitIndexLock.release()
             try cancellationSignal.checkCancellation()
@@ -4076,10 +4203,15 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                 candidatePaths: lfsPointerPaths
             )
             if !lfsPointers.isEmpty {
+                GitTransferProgressCenter.shared.report(path: path, .lfsUploadStarted(
+                    count: lfsPointers.count,
+                    bytes: lfsPointers.reduce(Int64(0)) { $0 + $1.size }
+                ))
                 let uploaded = try await GitLFSService(
                     localURL: URL(fileURLWithPath: path, isDirectory: true),
                     credentials: GitRemoteCredentials.fromTransportPayload(pat)
                 ).uploadObjects(lfsPointers)
+                GitTransferProgressCenter.shared.report(path: path, .lfsUploadFinished)
                 await DebugLogger.shared.info("lfs", "Uploaded Git LFS objects before push", detail: "\(uploaded) uploaded, \(lfsPointers.count) referenced")
             }
             try cancellationSignal.checkCancellation()
@@ -4136,6 +4268,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                 remoteURL: remoteURL,
                 cancellationSignal: cancellationSignal
             )
+            pushCtx.progressPath = path
             let destinationRef = "refs/heads/\(branchName)"
             pushCtx.expectedDestinationRef = destinationRef
             pushCtx.expectedLocalOID = commitOid
@@ -4228,6 +4361,22 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
         expectedBranch: String? = nil,
         safetyExpectation: PushSafetyExpectation? = nil
     ) async throws {
+        try await pushBranch(pat: pat, expectedBranch: expectedBranch, safetyExpectation: safetyExpectation, processLFS: true)
+    }
+
+    /// The caller must validate the immutable reviewed commit tree as regular,
+    /// bounded, non-LFS content before using this first-publication transport.
+    /// Its mutable index must never select extra LFS objects for upload.
+    func pushReviewedNonLFSBranch(pat: String, safetyExpectation: PushSafetyExpectation) async throws {
+        try await pushBranch(
+            pat: pat, expectedBranch: safetyExpectation.branch,
+            safetyExpectation: safetyExpectation, processLFS: false
+        )
+    }
+
+    private func pushBranch(
+        pat: String, expectedBranch: String?, safetyExpectation: PushSafetyExpectation?, processLFS: Bool
+    ) async throws {
         let path = self.localURL.path
         let cancellationSignal = LocalGitCancellationSignal()
 
@@ -4253,42 +4402,48 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             if let safetyExpectation, safetyExpectation.branch != branchName {
                 throw LocalGitError.wrongBranch(expected: safetyExpectation.branch, actual: branchName)
             }
-
-            let pushedPaths = try Self.pushedChangePaths(repo: repo, headRef: headRef)
+            if let safetyExpectation {
+                // Do not adopt a HEAD advanced by another Git client after the
+                // runner's plan. Retain this OID through transport negotiation.
+                expectedLocalOID = try Self.oid(
+                    hex: safetyExpectation.localCommitSHA,
+                    context: "Read expected local branch target"
+                )
+                try Self.ensureCurrentBranch(repo: repo, expected: branchName, target: &expectedLocalOID)
+            }
 
             var index: OpaquePointer?
             defer { if let index { git_index_free(index) } }
             try git2Check(git_repository_index(&index, repo), context: "Open index before push")
             try Self.ensureNoActiveConflict(repo: repo, index: index)
             let baselineIndexChecksum = try Self.indexChecksumHex(index)
-            try GitLFSService.validateNoLargeNonLFSBlobs(
-                repo: repo,
-                index: index,
-                candidatePaths: pushedPaths.isEmpty ? nil : pushedPaths
-            )
-
-            try await GitLFSService(
-                localURL: URL(fileURLWithPath: path, isDirectory: true),
-                credentials: GitRemoteCredentials.fromTransportPayload(pat)
-            ).verifyPushAllowed(changedPaths: pushedPaths, refName: "refs/heads/\(branchName)")
-            try cancellationSignal.checkCancellation()
-
-            let lfsPointers: [GitLFSPointer]
-            if pushedPaths.isEmpty {
-                lfsPointers = []
-            } else {
-                lfsPointers = try GitLFSService.pointersInIndex(
+            if processLFS {
+                let pushedPaths = try Self.pushedChangePaths(repo: repo, headRef: headRef)
+                try GitLFSService.validateNoLargeNonLFSBlobs(
                     repo: repo,
                     index: index,
-                    candidatePaths: pushedPaths
+                    candidatePaths: pushedPaths.isEmpty ? nil : pushedPaths
                 )
-            }
-            if !lfsPointers.isEmpty {
-                let uploaded = try await GitLFSService(
+                try await GitLFSService(
                     localURL: URL(fileURLWithPath: path, isDirectory: true),
                     credentials: GitRemoteCredentials.fromTransportPayload(pat)
-                ).uploadObjects(lfsPointers)
-                await DebugLogger.shared.info("lfs", "Uploaded Git LFS objects before branch push", detail: "\(uploaded) uploaded, \(lfsPointers.count) referenced")
+                ).verifyPushAllowed(changedPaths: pushedPaths, refName: "refs/heads/\(branchName)")
+                try cancellationSignal.checkCancellation()
+                let lfsPointers = pushedPaths.isEmpty ? [] : try GitLFSService.pointersInIndex(
+                    repo: repo, index: index, candidatePaths: pushedPaths
+                )
+                if !lfsPointers.isEmpty {
+                    GitTransferProgressCenter.shared.report(path: path, .lfsUploadStarted(
+                        count: lfsPointers.count,
+                        bytes: lfsPointers.reduce(Int64(0)) { $0 + $1.size }
+                    ))
+                    let uploaded = try await GitLFSService(
+                        localURL: URL(fileURLWithPath: path, isDirectory: true),
+                        credentials: GitRemoteCredentials.fromTransportPayload(pat)
+                    ).uploadObjects(lfsPointers)
+                    GitTransferProgressCenter.shared.report(path: path, .lfsUploadFinished)
+                    await DebugLogger.shared.info("lfs", "Uploaded Git LFS objects before branch push", detail: "\(uploaded) uploaded, \(lfsPointers.count) referenced")
+                }
             }
             try cancellationSignal.checkCancellation()
             do {
@@ -4341,6 +4496,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                 remoteURL: remoteURL,
                 cancellationSignal: cancellationSignal
             )
+            pushCtx.progressPath = path
             let destinationRef = "refs/heads/\(branchName)"
             pushCtx.expectedDestinationRef = destinationRef
             pushCtx.expectedLocalOID = expectedLocalOID
@@ -4593,9 +4749,9 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             defer { if let repo { git_repository_free(repo) } }
             try git2Check(git_repository_open(&repo, path), context: "Open repo")
 
-            // Ensure core.precomposeunicode is set for repos cloned before
-            // this fix was in place (no-op if already configured).
-            Self.setPrecomposeUnicode(repo: repo)
+            // Normalize filenames for status without changing on-disk metadata.
+            // Foreground refresh must not invalidate another workflow's review.
+            try git2Check(clibgit2_repository_use_readonly_unicode_config(repo), context: "Configure Unicode status reads")
 
             // Read HEAD
             var head: OpaquePointer?
@@ -5000,6 +5156,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             remoteURL: remoteURL,
             cancellationSignal: cancellationSignal
         )
+        ctx.progressPath = git_repository_workdir(repo).map { String(cString: $0) }
         let ctxPtr = Unmanaged.passRetained(ctx).toOpaque()
         defer { Unmanaged<CredentialContext>.fromOpaque(ctxPtr).release() }
 
@@ -5226,5 +5383,588 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             if !isDir { count += 1 }
         }
         return count
+    }
+}
+
+// MARK: - Remote Connection Pre-flight
+
+/// Result of an `ls-remote`-style connection check.
+struct RemoteConnectionCheck: Sendable, Equatable {
+    /// Number of refs the remote advertised.
+    let refCount: Int
+    /// Branch the remote's HEAD points to, when advertised.
+    let defaultBranch: String?
+    /// Advertised branch names, excluding tags and HEAD aliases.
+    let branchNames: [String]
+}
+
+extension LocalGitService {
+    /// Connects to `remoteURL` with the same credential and host-key callbacks
+    /// as clone, lists the advertised refs, and disconnects. Nothing is written
+    /// to disk. Throws `LocalGitError.sshHostKeyTrustRequired` for an untrusted
+    /// SSH host key and `authenticationFailed` when credentials are rejected.
+    static func checkRemoteConnection(remoteURL: String, pat: String) async throws -> RemoteConnectionCheck {
+        _ = initOnce
+        return try await Task.detached {
+            let ctx = CredentialContext(credentials: GitRemoteCredentials.fromTransportPayload(pat), remoteURL: remoteURL)
+            let ctxPtr = Unmanaged.passRetained(ctx).toOpaque()
+            defer { Unmanaged<CredentialContext>.fromOpaque(ctxPtr).release() }
+
+            var remote: OpaquePointer?
+            defer { if let remote { git_remote_free(remote) } }
+            try git2Check(git_remote_create_anonymous(&remote, nil, remoteURL), context: "Open remote")
+
+            var callbacks = git_remote_callbacks()
+            git_remote_init_callbacks(&callbacks, UInt32(GIT_REMOTE_CALLBACKS_VERSION))
+            callbacks.credentials = credentialCallback
+            callbacks.certificate_check = certificateCheckCallback
+            callbacks.payload = ctxPtr
+
+            try git2TransportCheck(
+                git_remote_connect(remote, GIT_DIRECTION_FETCH, &callbacks, nil, nil),
+                context: "Connect to remote",
+                credentialContext: ctx,
+                wrapping: LocalGitError.cloneFailed
+            )
+            defer { git_remote_disconnect(remote) }
+
+            var heads: UnsafeMutablePointer<UnsafePointer<git_remote_head>?>?
+            var headCount: Int = 0
+            try git2Check(git_remote_ls(&heads, &headCount, remote), context: "List remote refs")
+
+            var defaultBranch: String?
+            var buf = git_buf()
+            if git_remote_default_branch(&buf, remote) == 0, let ptr = buf.ptr {
+                let ref = String(cString: ptr)
+                defaultBranch = ref.hasPrefix("refs/heads/") ? String(ref.dropFirst("refs/heads/".count)) : ref
+            }
+            git_buf_dispose(&buf)
+
+            let branchNames = (0..<headCount).compactMap { index -> String? in
+                guard let head = heads?[index], let name = head.pointee.name else { return nil }
+                let ref = String(cString: name)
+                guard ref.hasPrefix("refs/heads/") else { return nil }
+                return String(ref.dropFirst("refs/heads/".count))
+            }
+            return RemoteConnectionCheck(refCount: headCount, defaultBranch: defaultBranch, branchNames: branchNames)
+        }.value
+    }
+}
+
+// MARK: - Sync States (push rejection, offline queue, notifications)
+
+/// Result of comparing this iPhone's branch with the freshly fetched
+/// remote-tracking branch since their merge base.
+struct IncomingChangesAnalysis: Sendable, Equatable {
+    let branch: String
+    let localCommitSHA: String
+    let remoteCommitSHA: String
+    let aheadBy: Int
+    let behindBy: Int
+    /// Paths changed on this iPhone since the merge base.
+    let localPaths: [String]
+    /// Paths changed on the remote since the merge base.
+    let remotePaths: [String]
+    /// Newest first, capped.
+    let incomingCommits: [GitCommitSummary]
+
+    var overlappingPaths: [String] {
+        let theirs = Set(remotePaths)
+        return localPaths.filter { theirs.contains($0) }
+    }
+}
+
+struct LocalAheadBehind: Sendable, Equatable {
+    let branch: String
+    let ahead: Int
+    let behind: Int
+}
+
+struct CommitRangeSummary: Sendable, Equatable {
+    let count: Int
+    let newestAuthor: String?
+}
+
+extension LocalGitService {
+    /// Fetches origin and compares HEAD with `origin/<branch>` since the merge
+    /// base. Read-only apart from updating remote-tracking refs.
+    func analyzeIncomingChanges(pat: String) async throws -> IncomingChangesAnalysis {
+        let path = self.localURL.path
+        let cancellationSignal = LocalGitCancellationSignal()
+        let operation = Task.detached { () throws -> IncomingChangesAnalysis in
+            var repo: OpaquePointer?
+            defer { if let repo { git_repository_free(repo) } }
+            try git2Check(git_repository_open(&repo, path), context: "Open repo")
+            try Self.fetchOrigin(repo: repo, pat: pat, cancellationSignal: cancellationSignal)
+            return try Self.analyzeAgainstUpstream(repo: repo)
+        }
+        return try await withTaskCancellationHandler {
+            try await operation.value
+        } onCancel: {
+            cancellationSignal.cancel()
+            operation.cancel()
+        }
+    }
+
+    /// Local-only ahead/behind against the last fetched remote-tracking ref.
+    func localAheadBehind() async -> LocalAheadBehind? {
+        let path = self.localURL.path
+        return await Task.detached { () -> LocalAheadBehind? in
+            var repo: OpaquePointer?
+            defer { if let repo { git_repository_free(repo) } }
+            guard git_repository_open(&repo, path) == 0 else { return nil }
+            var head: OpaquePointer?
+            defer { if let head { git_reference_free(head) } }
+            guard git_repository_head(&head, repo) == 0,
+                  let localOID = git_reference_target(head) else { return nil }
+            let branch = git_reference_shorthand(head).map { String(cString: $0) } ?? ""
+            var upstream: OpaquePointer?
+            defer { if let upstream { git_reference_free(upstream) } }
+            guard git_reference_lookup(&upstream, repo, "refs/remotes/origin/\(branch)") == 0,
+                  let upstreamOID = git_reference_target(upstream) else {
+                return LocalAheadBehind(branch: branch, ahead: 0, behind: 0)
+            }
+            var ahead = 0
+            var behind = 0
+            guard git_graph_ahead_behind(&ahead, &behind, repo, localOID, upstreamOID) == 0 else { return nil }
+            return LocalAheadBehind(branch: branch, ahead: ahead, behind: behind)
+        }.value
+    }
+
+    /// Unified patch of what the remote changed since the merge base
+    /// (optionally limited to one path). Uses the last fetched tracking ref.
+    func incomingPatch(path filePath: String? = nil) async throws -> String {
+        let path = self.localURL.path
+        return try await Task.detached { () throws -> String in
+            var repo: OpaquePointer?
+            defer { if let repo { git_repository_free(repo) } }
+            try git2Check(git_repository_open(&repo, path), context: "Open repo")
+            let (localOID, remoteOID, _) = try Self.headAndUpstream(repo: repo)
+            var base = git_oid()
+            var local = localOID
+            var remote = remoteOID
+            try git2Check(git_merge_base(&base, repo, &local, &remote), context: "Find merge base")
+            let baseTree = try Self.tree(for: base, repo: repo)
+            defer { git_tree_free(baseTree) }
+            let remoteTree = try Self.tree(for: remoteOID, repo: repo)
+            defer { git_tree_free(remoteTree) }
+
+            var options = git_diff_options()
+            git_diff_options_init(&options, UInt32(GIT_DIFF_OPTIONS_VERSION))
+            var pathStorage: UnsafeMutablePointer<CChar>?
+            let pathArray = UnsafeMutablePointer<UnsafeMutablePointer<CChar>?>.allocate(capacity: 1)
+            defer {
+                pathArray.deallocate()
+                if let pathStorage { free(pathStorage) }
+            }
+            if let filePath {
+                pathStorage = strdup(filePath)
+                pathArray[0] = pathStorage
+                options.pathspec = git_strarray(strings: pathArray, count: 1)
+                options.flags |= GIT_DIFF_DISABLE_PATHSPEC_MATCH.rawValue
+            }
+            var diff: OpaquePointer?
+            try git2Check(git_diff_tree_to_tree(&diff, repo, baseTree, remoteTree, &options), context: "Diff incoming")
+            guard let diff else { return "" }
+            defer { git_diff_free(diff) }
+            let collector = DiffPrintCollector()
+            let collectorPtr = Unmanaged.passRetained(collector).toOpaque()
+            defer { Unmanaged<DiffPrintCollector>.fromOpaque(collectorPtr).release() }
+            try git2Check(
+                git_diff_print(diff, GIT_DIFF_FORMAT_PATCH, diffPrintCallback, collectorPtr),
+                context: "Render incoming diff"
+            )
+            return collector.output
+        }.value
+    }
+
+    /// Creates `refs/heads/<name>` at HEAD (without switching to it) and
+    /// publishes it to origin under the same name. Never force-pushes: an
+    /// existing local or remote branch with that name fails the operation.
+    func pushHeadToNewBranch(name: String, pat: String) async throws {
+        let path = self.localURL.path
+        let cancellationSignal = LocalGitCancellationSignal()
+        let operation = Task.detached { () throws -> Void in
+            var repo: OpaquePointer?
+            defer { if let repo { git_repository_free(repo) } }
+            try git2Check(git_repository_open(&repo, path), context: "Open repo")
+
+            var head: OpaquePointer?
+            defer { if let head { git_reference_free(head) } }
+            try git2Check(git_repository_head(&head, repo), context: "Read HEAD")
+            guard let headOIDPointer = git_reference_target(head) else {
+                throw LocalGitError.repositoryCorrupted(String(localized: "Could not resolve HEAD for push"))
+            }
+            var headOID = headOIDPointer.pointee
+            var headCommit: OpaquePointer?
+            defer { if let headCommit { git_commit_free(headCommit) } }
+            try git2Check(git_commit_lookup(&headCommit, repo, &headOID), context: "Lookup HEAD commit")
+
+            var branchRef: OpaquePointer?
+            defer { if let branchRef { git_reference_free(branchRef) } }
+            let createCode = git_branch_create(&branchRef, repo, name, headCommit, 0)
+            if createCode == GIT_EEXISTS.rawValue { throw LocalGitError.branchAlreadyExists(name) }
+            try git2Check(createCode, context: "Create branch")
+
+            var pushRemote: OpaquePointer?
+            defer {
+                cancellationSignal.unregister(remote: pushRemote)
+                if let pushRemote { git_remote_free(pushRemote) }
+            }
+            guard git_remote_lookup(&pushRemote, repo, "origin") == 0 else {
+                throw LocalGitError.pushFailed(String(localized: "No remote 'origin' configured."))
+            }
+            cancellationSignal.register(remote: pushRemote)
+            try cancellationSignal.checkCancellation()
+
+            var pushOpts = git_push_options()
+            git_push_options_init(&pushOpts, UInt32(GIT_PUSH_OPTIONS_VERSION))
+            let remoteURL = git_remote_url(pushRemote).map { String(cString: $0) }
+            let pushCtx = PushContext(
+                credentials: GitRemoteCredentials.fromTransportPayload(pat),
+                remoteURL: remoteURL,
+                cancellationSignal: cancellationSignal
+            )
+            pushCtx.progressPath = path
+            let destinationRef = "refs/heads/\(name)"
+            pushCtx.expectedDestinationRef = destinationRef
+            pushCtx.expectedLocalOID = headOID
+            pushCtx.expectedRemoteOID = git_oid() // new branch: remote side must be zero
+            let pushCtxPtr = Unmanaged.passRetained(pushCtx).toOpaque()
+            defer { Unmanaged<PushContext>.fromOpaque(pushCtxPtr).release() }
+            pushOpts.callbacks.credentials = pushCredentialCallback
+            pushOpts.callbacks.certificate_check = certificateCheckCallback
+            pushOpts.callbacks.push_transfer_progress = pushTransferProgressCallback
+            pushOpts.callbacks.push_negotiation = pushNegotiationCallback
+            pushOpts.callbacks.push_update_reference = pushUpdateReferenceCallback
+            pushOpts.callbacks.payload = pushCtxPtr
+
+            let refspecCStr = strdup("\(destinationRef):\(destinationRef)")!
+            defer { free(refspecCStr) }
+            let refStringsPtr = UnsafeMutablePointer<UnsafeMutablePointer<CChar>?>.allocate(capacity: 1)
+            defer { refStringsPtr.deallocate() }
+            refStringsPtr[0] = refspecCStr
+            var refspecs = git_strarray(strings: refStringsPtr, count: 1)
+            let pushCode = git_remote_push(pushRemote, &refspecs, &pushOpts)
+            if !pushCtx.rejectedRefs.isEmpty {
+                throw LocalGitError.pushFailed(
+                    pushCtx.rejectedRefs.map { "\($0.refname): \($0.reason)" }.joined(separator: "; ")
+                )
+            }
+            guard pushCtx.acceptedRefs.contains(destinationRef) else {
+                if pushCode < 0 {
+                    try git2TransportCheck(
+                        pushCode,
+                        context: "Push to origin",
+                        fallback: pushCtx.callbackErrorMessage,
+                        credentialContext: pushCtx,
+                        wrapping: LocalGitError.pushFailed
+                    )
+                }
+                throw LocalGitError.pushFailed(
+                    String(localized: "Origin did not confirm that the branch was published. Publication status is unknown.")
+                )
+            }
+        }
+        try await withTaskCancellationHandler {
+            try await operation.value
+        } onCancel: {
+            cancellationSignal.cancel()
+            operation.cancel()
+        }
+    }
+
+    /// Number of commits reachable from `newSHA` but not `oldSHA`, plus the
+    /// newest one's author. Local-only.
+    func commitRange(from oldSHA: String, to newSHA: String) async -> CommitRangeSummary? {
+        let path = self.localURL.path
+        return await Task.detached { () -> CommitRangeSummary? in
+            var repo: OpaquePointer?
+            defer { if let repo { git_repository_free(repo) } }
+            guard git_repository_open(&repo, path) == 0,
+                  var newOID = try? Self.oid(hex: newSHA, context: "Read new commit") else { return nil }
+            var walk: OpaquePointer?
+            defer { if let walk { git_revwalk_free(walk) } }
+            guard git_revwalk_new(&walk, repo) == 0, git_revwalk_push(walk, &newOID) == 0 else { return nil }
+            if !oldSHA.isEmpty, var oldOID = try? Self.oid(hex: oldSHA, context: "Read old commit") {
+                _ = git_revwalk_hide(walk, &oldOID)
+            }
+            var count = 0
+            var oid = git_oid()
+            while count < 500, git_revwalk_next(&oid, walk) == 0 { count += 1 }
+            var newest: OpaquePointer?
+            defer { if let newest { git_commit_free(newest) } }
+            var author: String?
+            if git_commit_lookup(&newest, repo, &newOID) == 0 {
+                author = git_commit_author(newest)?.pointee.name.map { String(cString: $0) }
+            }
+            return CommitRangeSummary(count: count, newestAuthor: author)
+        }.value
+    }
+
+    /// Undoes the most recent commit while keeping its changes staged
+    /// (`git reset --soft HEAD~1`). Refuses unless HEAD is still exactly
+    /// `expectedHeadSHA` and that commit has not reached the remote-tracking
+    /// branch — published history is never rewritten.
+    func undoUnpushedCommit(expectedHeadSHA: String) async throws {
+        let path = self.localURL.path
+        try await Task.detached { () throws -> Void in
+            var repo: OpaquePointer?
+            defer { if let repo { git_repository_free(repo) } }
+            try git2Check(git_repository_open(&repo, path), context: "Open repo")
+            var head: OpaquePointer?
+            defer { if let head { git_reference_free(head) } }
+            try git2Check(git_repository_head(&head, repo), context: "Read HEAD")
+            guard let headOIDPointer = git_reference_target(head) else {
+                throw LocalGitError.repositoryCorrupted(String(localized: "Could not resolve HEAD"))
+            }
+            var headOID = headOIDPointer.pointee
+            guard oidToHex(&headOID) == expectedHeadSHA else {
+                throw LocalGitError.commitFailed(String(localized: "The branch moved since that commit, so it can't be undone here."))
+            }
+            let branch = git_reference_shorthand(head).map { String(cString: $0) } ?? ""
+            var upstream: OpaquePointer?
+            defer { if let upstream { git_reference_free(upstream) } }
+            if git_reference_lookup(&upstream, repo, "refs/remotes/origin/\(branch)") == 0,
+               let upstreamOID = git_reference_target(upstream) {
+                if git_oid_equal(upstreamOID, &headOID) != 0
+                    || git_graph_descendant_of(repo, upstreamOID, &headOID) == 1 {
+                    throw LocalGitError.commitFailed(String(localized: "That commit is already on the remote, so it can't be undone here."))
+                }
+            }
+            var commit: OpaquePointer?
+            defer { if let commit { git_commit_free(commit) } }
+            try git2Check(git_commit_lookup(&commit, repo, &headOID), context: "Lookup HEAD commit")
+            guard git_commit_parentcount(commit) == 1 else {
+                throw LocalGitError.commitFailed(String(localized: "Only a single-parent commit can be undone."))
+            }
+            var parent: OpaquePointer?
+            defer { if let parent { git_commit_free(parent) } }
+            try git2Check(git_commit_parent(&parent, commit, 0), context: "Lookup parent commit")
+            try git2Check(git_reset(repo, parent, GIT_RESET_SOFT, nil), context: "Soft reset")
+        }.value
+    }
+
+    // MARK: Helpers
+
+    private static func headAndUpstream(repo: OpaquePointer?) throws -> (git_oid, git_oid, String) {
+        var head: OpaquePointer?
+        defer { if let head { git_reference_free(head) } }
+        try git2Check(git_repository_head(&head, repo), context: "Read HEAD")
+        guard let localOID = git_reference_target(head) else {
+            throw LocalGitError.repositoryCorrupted(String(localized: "Could not resolve HEAD"))
+        }
+        let branch = git_reference_shorthand(head).map { String(cString: $0) } ?? "main"
+        var upstream: OpaquePointer?
+        defer { if let upstream { git_reference_free(upstream) } }
+        let code = git_reference_lookup(&upstream, repo, "refs/remotes/origin/\(branch)")
+        if code == GIT_ENOTFOUND.rawValue { throw LocalGitError.pullRemoteBranchMissing(branch) }
+        try git2Check(code, context: "Read remote-tracking branch")
+        guard let remoteOID = git_reference_target(upstream) else {
+            throw LocalGitError.pullRemoteBranchMissing(branch)
+        }
+        return (localOID.pointee, remoteOID.pointee, branch)
+    }
+
+    private static func tree(for commitOID: git_oid, repo: OpaquePointer?) throws -> OpaquePointer? {
+        var oid = commitOID
+        var commit: OpaquePointer?
+        defer { if let commit { git_commit_free(commit) } }
+        try git2Check(git_commit_lookup(&commit, repo, &oid), context: "Lookup commit")
+        var tree: OpaquePointer?
+        try git2Check(git_commit_tree(&tree, commit), context: "Lookup commit tree")
+        return tree
+    }
+
+    private static func changedPaths(repo: OpaquePointer?, from oldOID: git_oid, to newOID: git_oid) throws -> [String] {
+        var a = oldOID
+        var b = newOID
+        if git_oid_equal(&a, &b) != 0 { return [] }
+        let oldTree = try tree(for: oldOID, repo: repo)
+        defer { git_tree_free(oldTree) }
+        let newTree = try tree(for: newOID, repo: repo)
+        defer { git_tree_free(newTree) }
+        var diff: OpaquePointer?
+        try git2Check(git_diff_tree_to_tree(&diff, repo, oldTree, newTree, nil), context: "Diff trees")
+        guard let diff else { return [] }
+        defer { git_diff_free(diff) }
+        var paths: [String] = []
+        for i in 0..<git_diff_num_deltas(diff) {
+            guard let delta = git_diff_get_delta(diff, i)?.pointee else { continue }
+            if let newPath = delta.new_file.path {
+                paths.append(String(cString: newPath))
+            } else if let oldPath = delta.old_file.path {
+                paths.append(String(cString: oldPath))
+            }
+        }
+        return paths
+    }
+
+    private static func analyzeAgainstUpstream(repo: OpaquePointer?) throws -> IncomingChangesAnalysis {
+        let (localOID, remoteOID, branch) = try headAndUpstream(repo: repo)
+        var local = localOID
+        var remote = remoteOID
+        var ahead = 0
+        var behind = 0
+        try git2Check(git_graph_ahead_behind(&ahead, &behind, repo, &local, &remote), context: "Compare branches")
+        var base = git_oid()
+        try git2Check(git_merge_base(&base, repo, &local, &remote), context: "Find merge base")
+        let localPaths = try changedPaths(repo: repo, from: base, to: localOID)
+        let remotePaths = try changedPaths(repo: repo, from: base, to: remoteOID)
+
+        var commits: [GitCommitSummary] = []
+        var walk: OpaquePointer?
+        defer { if let walk { git_revwalk_free(walk) } }
+        if git_revwalk_new(&walk, repo) == 0 {
+            git_revwalk_sorting(walk, UInt32(GIT_SORT_TOPOLOGICAL.rawValue | GIT_SORT_TIME.rawValue))
+            _ = git_revwalk_push(walk, &remote)
+            _ = git_revwalk_hide(walk, &local)
+            var oid = git_oid()
+            while commits.count < 50, git_revwalk_next(&oid, walk) == 0 {
+                var commit: OpaquePointer?
+                defer { if let commit { git_commit_free(commit) } }
+                var lookup = oid
+                guard git_commit_lookup(&commit, repo, &lookup) == 0 else { continue }
+                let message = git_commit_message(commit).map { String(cString: $0) } ?? ""
+                let author = git_commit_author(commit)
+                let hex = oidToHex(&lookup)
+                commits.append(GitCommitSummary(
+                    oid: hex,
+                    shortOID: String(hex.prefix(7)),
+                    message: message.components(separatedBy: .newlines).first ?? message,
+                    authorName: author?.pointee.name.map { String(cString: $0) } ?? "",
+                    authorEmail: author?.pointee.email.map { String(cString: $0) } ?? "",
+                    authoredDate: dateFromSignature(author)
+                ))
+            }
+        }
+        return IncomingChangesAnalysis(
+            branch: branch,
+            localCommitSHA: oidToHex(&local),
+            remoteCommitSHA: oidToHex(&remote),
+            aheadBy: ahead,
+            behindBy: behind,
+            localPaths: localPaths,
+            remotePaths: remotePaths,
+            incomingCommits: commits
+        )
+    }
+}
+
+// MARK: - Tide: file history & commit lookup
+
+extension LocalGitService {
+    /// Commits that changed `path`, newest first. A commit counts when the
+    /// tree entry at `path` differs from its first parent's (content, mode, adds, deletes).
+    func fileHistory(path: String, limit: Int = 50) async throws -> [GitCommitSummary] {
+        let repoPath = self.localURL.path
+        // Git tree paths are byte-exact; normalizing Unicode can select a different entry.
+        let target = path
+        let safeLimit = max(0, limit)
+
+        return try await Task.detached {
+            guard safeLimit > 0 else { return [] }
+            var repo: OpaquePointer?
+            defer { if let repo { git_repository_free(repo) } }
+            try git2Check(git_repository_open(&repo, repoPath), context: "Open repo")
+
+            var walk: OpaquePointer?
+            defer { if let walk { git_revwalk_free(walk) } }
+            try git2Check(git_revwalk_new(&walk, repo), context: "Create revwalk")
+            git_revwalk_sorting(walk, UInt32(GIT_SORT_TOPOLOGICAL.rawValue | GIT_SORT_TIME.rawValue))
+            git_revwalk_simplify_first_parent(walk)
+
+            let pushHeadCode = git_revwalk_push_head(walk)
+            if pushHeadCode == GIT_EUNBORNBRANCH.rawValue || pushHeadCode == GIT_ENOTFOUND.rawValue {
+                return []
+            }
+            try git2Check(pushHeadCode, context: "Push HEAD to revwalk")
+
+            /// Identity and mode of the exact tree entry, nil when absent.
+            func entryState(in commit: OpaquePointer?) -> (oid: git_oid, mode: UInt32)? {
+                guard let commit else { return nil }
+                var tree: OpaquePointer?
+                defer { if let tree { git_tree_free(tree) } }
+                guard git_commit_tree(&tree, commit) == 0 else { return nil }
+                var entry: OpaquePointer?
+                defer { if let entry { git_tree_entry_free(entry) } }
+                guard git_tree_entry_bypath(&entry, tree, target) == 0,
+                      let oid = git_tree_entry_id(entry) else { return nil }
+                return (oid.pointee, git_tree_entry_filemode(entry).rawValue)
+            }
+
+            var summaries: [GitCommitSummary] = []
+            var oid = git_oid()
+            var scanned = 0
+            while summaries.count < safeLimit, scanned < 5000 {
+                let next = git_revwalk_next(&oid, walk)
+                if next == GIT_ITEROVER.rawValue { break }
+                try git2Check(next, context: "Read next commit from history")
+                scanned += 1
+
+                var commit: OpaquePointer?
+                defer { if let commit { git_commit_free(commit) } }
+                var oidCopy = oid
+                guard git_commit_lookup(&commit, repo, &oidCopy) == 0 else { continue }
+
+                var parent: OpaquePointer?
+                defer { if let parent { git_commit_free(parent) } }
+                if git_commit_parentcount(commit) > 0 { _ = git_commit_parent(&parent, commit, 0) }
+
+                let changed: Bool
+                switch (entryState(in: commit), entryState(in: parent)) {
+                case (nil, nil): changed = false
+                case (var a?, var b?): changed = a.mode != b.mode || git_oid_equal(&a.oid, &b.oid) == 0
+                default: changed = true
+                }
+                guard changed else { continue }
+
+                let fullMessage = git_commit_message(commit).map { String(cString: $0) } ?? ""
+                let author = git_commit_author(commit)
+                let hex = oidToHex(&oidCopy)
+                summaries.append(GitCommitSummary(
+                    oid: hex,
+                    shortOID: String(hex.prefix(7)),
+                    message: fullMessage.components(separatedBy: .newlines).first ?? fullMessage,
+                    authorName: author?.pointee.name.map { String(cString: $0) } ?? "",
+                    authorEmail: author?.pointee.email.map { String(cString: $0) } ?? "",
+                    authoredDate: Self.dateFromSignature(author)
+                ))
+            }
+            return summaries
+        }.value
+    }
+
+    /// The commit a revision resolves to ("MERGE_HEAD", "@{upstream}", …), or nil.
+    func commitSummary(revision: String) async throws -> GitCommitSummary? {
+        let repoPath = self.localURL.path
+        return try await Task.detached {
+            var repo: OpaquePointer?
+            defer { if let repo { git_repository_free(repo) } }
+            try git2Check(git_repository_open(&repo, repoPath), context: "Open repo")
+
+            var object: OpaquePointer?
+            defer { if let object { git_object_free(object) } }
+            guard git_revparse_single(&object, repo, revision) == 0 else { return nil }
+            var commitObject: OpaquePointer?
+            defer { if let commitObject { git_object_free(commitObject) } }
+            guard git_object_peel(&commitObject, object, GIT_OBJECT_COMMIT) == 0,
+                  let oidPtr = git_object_id(commitObject) else { return nil }
+            var oid = oidPtr.pointee
+            var commit: OpaquePointer?
+            defer { if let commit { git_commit_free(commit) } }
+            guard git_commit_lookup(&commit, repo, &oid) == 0 else { return nil }
+            let fullMessage = git_commit_message(commit).map { String(cString: $0) } ?? ""
+            let author = git_commit_author(commit)
+            let hex = oidToHex(&oid)
+            return GitCommitSummary(
+                oid: hex,
+                shortOID: String(hex.prefix(7)),
+                message: fullMessage.components(separatedBy: .newlines).first ?? fullMessage,
+                authorName: author?.pointee.name.map { String(cString: $0) } ?? "",
+                authorEmail: author?.pointee.email.map { String(cString: $0) } ?? "",
+                authoredDate: Self.dateFromSignature(author)
+            )
+        }.value
     }
 }

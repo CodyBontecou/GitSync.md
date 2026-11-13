@@ -1,0 +1,11 @@
+# Repository setup and empty-state languages
+
+Added **200 authored translations** for eight existing resource keys across all 25 supported non-English locales: optional alias, two literal examples, full-path guidance, saved-repository empty state, no-repository state, repository-selection guidance and operation failure. All eight keys have current production references, recorded in `resource-proof.json`. English resources, identifiers, original 468 extracted-English fixtures and Git behavior are unchanged. Human linguistic review remains pending.
+
+MyProject and prod retain their literal spelling/case. Arabic/Hebrew examples use LRI/PDI. XML readback verifies all 200 unformatted values and unchanged signatures. AAPT independently reads **200 exact values per debug/release APK**, including the directional markers; `compiled-resource-proof.json` pins the values and artifact/dump hashes. This does not qualify native rendering, font scaling, TalkBack, keyboard behavior or recreation. No instrumentation ran and no tests were added to mirror these translations.
+
+All **93 app JVM tests / six suites**, **25 localization tooling tests**, debug/Android-test/release APK builds and release lint pass on frozen source in **6m 11s**. `build-proof.json` pins **641 inputs**, fifteen localization validation inputs, six app result XMLs and three APKs. All workspace inputs match at final readback. The prior **700 core tests** were not rerun; **193 core input hashes / 81 result hashes** were revalidated against `../conflict-byte-evidence/`. `change.patch` records the 29-input resource/tooling delta from `../branch-language-evidence/`.
+
+Coverage is **1,247/1,288 base string keys**, **41 missing**, with all nineteen plurals mapped. A read-only usage audit finds current production references for 25 of the 41 remaining keys; retained variants remain packaged and are not deleted to increase coverage. Other raw/model/default copy, functional requirements and native acceptance remain open. Full parity remains active.
+
+Release SHA-256: `4d3881c478043d9f5e6608a028d534f7e3fba8f88366326c25672644fcbe9b37`. It remains uninstalled. No device/emulator access, user account/credential/repository operation, settings/permission change, cloud change or publication occurred. JVM tests used generated fixtures only.

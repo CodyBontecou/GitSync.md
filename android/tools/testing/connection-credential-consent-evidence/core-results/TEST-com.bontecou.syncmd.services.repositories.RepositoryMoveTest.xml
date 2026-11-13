@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.repositories.RepositoryMoveTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2026-11-02T20:54:58" hostname="MacBook-Pro.local" time="2.367">
+  <properties/>
+  <testcase name="catalog failure leaves a resumable published copy and preserves later destination edits" classname="com.bontecou.syncmd.services.repositories.RepositoryMoveTest" time="0.066"/>
+  <testcase name="opposing path reservations and cancellation release every lease" classname="com.bontecou.syncmd.services.repositories.RepositoryMoveTest" time="0.031"/>
+  <testcase name="same filesystem move preserves the whole working copy index refs identity and settings" classname="com.bontecou.syncmd.services.repositories.RepositoryMoveTest" time="0.062"/>
+  <testcase name="each durable cross filesystem phase resumes after process loss" classname="com.bontecou.syncmd.services.repositories.RepositoryMoveTest" time="0.903"/>
+  <testcase name="recovery copy edits and replaced destination prevent destructive cleanup" classname="com.bontecou.syncmd.services.repositories.RepositoryMoveTest" time="0.168"/>
+  <testcase name="copy errors keep source and may be cancelled without touching another destination" classname="com.bontecou.syncmd.services.repositories.RepositoryMoveTest" time="0.152"/>
+  <testcase name="authorized recovery deletion resumes after interruption without needing the old source path" classname="com.bontecou.syncmd.services.repositories.RepositoryMoveTest" time="0.175"/>
+  <testcase name="recovery restoration preserves active destination and consumes only the original recovery record" classname="com.bontecou.syncmd.services.repositories.RepositoryMoveTest" time="0.303"/>
+  <testcase name="renamed directory is recognized even when journal publication was interrupted" classname="com.bontecou.syncmd.services.repositories.RepositoryMoveTest" time="0.124"/>
+  <testcase name="cross filesystem move verifies files and retains original until explicit cleanup" classname="com.bontecou.syncmd.services.repositories.RepositoryMoveTest" time="0.178"/>
+  <testcase name="changed source and existing destination are never overwritten" classname="com.bontecou.syncmd.services.repositories.RepositoryMoveTest" time="0.046"/>
+  <testcase name="retained original can be restored when interrupted before publication" classname="com.bontecou.syncmd.services.repositories.RepositoryMoveTest" time="0.159"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

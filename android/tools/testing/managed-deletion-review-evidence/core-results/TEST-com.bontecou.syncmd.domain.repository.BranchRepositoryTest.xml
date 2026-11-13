@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.domain.repository.BranchRepositoryTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-11-02T20:53:19" hostname="MacBook-Pro.local" time="0.888">
+  <properties/>
+  <testcase name="getCurrentBranch returns HEAD branch" classname="com.bontecou.syncmd.domain.repository.BranchRepositoryTest" time="0.155"/>
+  <testcase name="merge creates merge commit when FF not possible" classname="com.bontecou.syncmd.domain.repository.BranchRepositoryTest" time="0.084"/>
+  <testcase name="switchBranch changes current branch" classname="com.bontecou.syncmd.domain.repository.BranchRepositoryTest" time="0.082"/>
+  <testcase name="deleteBranch fails when deleting current branch" classname="com.bontecou.syncmd.domain.repository.BranchRepositoryTest" time="0.1"/>
+  <testcase name="createBranch creates new branch" classname="com.bontecou.syncmd.domain.repository.BranchRepositoryTest" time="0.118"/>
+  <testcase name="switchBranch blocks when working tree is dirty" classname="com.bontecou.syncmd.domain.repository.BranchRepositoryTest" time="0.093"/>
+  <testcase name="listBranches returns at least main branch" classname="com.bontecou.syncmd.domain.repository.BranchRepositoryTest" time="0.079"/>
+  <testcase name="merge with FAST_FORWARD strategy merges without conflict" classname="com.bontecou.syncmd.domain.repository.BranchRepositoryTest" time="0.085"/>
+  <testcase name="deleteBranch removes branch" classname="com.bontecou.syncmd.domain.repository.BranchRepositoryTest" time="0.091"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

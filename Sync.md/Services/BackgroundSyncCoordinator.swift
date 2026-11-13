@@ -59,6 +59,7 @@ extension AppState: AssistRepositoryProviding {
     }
     func recordAssist(result: RepositoryReconciliationResult?, health: RepoAssistHealth, repoID: UUID) {
         guard let index = repoIndex(id: repoID) else { return }
+        recordBackgroundRun(result: result, health: health, repoID: repoID)
         if let sha = result?.finalLocalCommitSHA, !sha.isEmpty {
             repos[index].gitState.commitSHA = sha
             clearCommitHistoryCache(for: repoID)
@@ -169,11 +170,20 @@ final class BackgroundSyncCoordinator {
     /// Multiple clones of the same GitHub repository/branch are supported and
     /// share the processing concurrency ceiling.
     func reconcilePush(repoIDs: [UUID], hintID: String) async -> BackgroundSyncDisposition {
-        let results = await reconcileMany(
+        Self.summarize(await reconcilePushResults(repoIDs: repoIDs, hintID: hintID))
+    }
+
+    /// Per-repository results of a push-triggered reconciliation, for run
+    /// records. `reconcilePush` reduces these to a single disposition.
+    func reconcilePushResults(repoIDs: [UUID], hintID: String) async -> [UUID: BackgroundSyncDisposition] {
+        await reconcileMany(
             Array(Set(repoIDs)),
             limit: 3,
             trigger: .push(hintID: hintID)
         )
+    }
+
+    static func summarize(_ results: [UUID: BackgroundSyncDisposition]) -> BackgroundSyncDisposition {
         if let transferred = results.values.first(where: \.didTransferData) { return transferred }
         if let failed = results.values.first(where: \.isFailure) { return failed }
         return results.values.first ?? .ignored

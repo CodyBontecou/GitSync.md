@@ -1,0 +1,91 @@
+
+com.bontecou.syncmd.FilesScreenTest:
+Error in pastedFilenameControlsAreVisibleSpacesBeforeCreation(com.bontecou.syncmd.FilesScreenTest):
+java.lang.AssertionError: Failed to assert the following: (Text + EditableText = [qa edge test])
+Semantics of the node:
+Node #71 at (l=126.0, t=1167.0, r=953.0, b=1335.0)px, Tag: 'filename-input'
+ImeAction = 'Default'
+EditableText = 'qa
+edge	test'
+TextSelectionRange = 'TextRange(13, 13)'
+Focused = 'true'
+Text = '[File name, .md]'
+Actions = [GetTextLayoutResult, SetText, InsertTextAtCursor, SetSelection, PerformImeAction, OnClick, OnLongClick, PasteText, RequestFocus, MagnifierPositionInRoot]
+MergeDescendants = 'true'
+Has 4 siblings
+Selector used: (TestTag = 'filename-input')
+
+	at androidx.compose.ui.test.AssertionsKt.assert(Assertions.kt:270)
+	at androidx.compose.ui.test.AssertionsKt.assert$default(Assertions.kt:260)
+	at androidx.compose.ui.test.AssertionsKt.assertTextEquals(Assertions.kt:190)
+	at androidx.compose.ui.test.AssertionsKt.assertTextEquals$default(Assertions.kt:186)
+	at com.bontecou.syncmd.FilesScreenTest.pastedFilenameControlsAreVisibleSpacesBeforeCreation(FilesScreenTest.kt:128)
+.
+com.bontecou.syncmd.FileNavigationTest:
+Error in pastedTagControlsAreVisibleAndInvalidNamesCannotSubmit(com.bontecou.syncmd.FileNavigationTest):
+java.lang.AssertionError: Failed to assert the following: (Text + EditableText = [qa invalid tag])
+Semantics of the node:
+Node #461 at (l=84.0, t=438.0, r=996.0, b=606.0)px, Tag: 'git-tag-name'
+ImeAction = 'Default'
+EditableText = 'qa
+invalid	tag'
+TextSelectionRange = 'TextRange(14, 14)'
+Focused = 'true'
+Text = '[Tag name]'
+Actions = [GetTextLayoutResult, SetText, InsertTextAtCursor, SetSelection, PerformImeAction, OnClick, OnLongClick, PasteText, RequestFocus, MagnifierPositionInRoot]
+MergeDescendants = 'true'
+Has 8 siblings
+Selector used: (TestTag = 'git-tag-name')
+
+	at androidx.compose.ui.test.AssertionsKt.assert(Assertions.kt:270)
+	at androidx.compose.ui.test.AssertionsKt.assert$default(Assertions.kt:260)
+	at androidx.compose.ui.test.AssertionsKt.assertTextEquals(Assertions.kt:190)
+	at androidx.compose.ui.test.AssertionsKt.assertTextEquals$default(Assertions.kt:186)
+	at com.bontecou.syncmd.FileNavigationTest.pastedTagControlsAreVisibleAndInvalidNamesCannotSubmit(FileNavigationTest.kt:1404)
+
+
+Time: 5.129
+There were 2 failures:
+1) pastedFilenameControlsAreVisibleSpacesBeforeCreation(com.bontecou.syncmd.FilesScreenTest)
+java.lang.AssertionError: Failed to assert the following: (Text + EditableText = [qa edge test])
+Semantics of the node:
+Node #71 at (l=126.0, t=1167.0, r=953.0, b=1335.0)px, Tag: 'filename-input'
+ImeAction = 'Default'
+EditableText = 'qa
+edge	test'
+TextSelectionRange = 'TextRange(13, 13)'
+Focused = 'true'
+Text = '[File name, .md]'
+Actions = [GetTextLayoutResult, SetText, InsertTextAtCursor, SetSelection, PerformImeAction, OnClick, OnLongClick, PasteText, RequestFocus, MagnifierPositionInRoot]
+MergeDescendants = 'true'
+Has 4 siblings
+Selector used: (TestTag = 'filename-input')
+
+	at androidx.compose.ui.test.AssertionsKt.assert(Assertions.kt:270)
+	at androidx.compose.ui.test.AssertionsKt.assert$default(Assertions.kt:260)
+	at androidx.compose.ui.test.AssertionsKt.assertTextEquals(Assertions.kt:190)
+	at androidx.compose.ui.test.AssertionsKt.assertTextEquals$default(Assertions.kt:186)
+	at com.bontecou.syncmd.FilesScreenTest.pastedFilenameControlsAreVisibleSpacesBeforeCreation(FilesScreenTest.kt:128)
+2) pastedTagControlsAreVisibleAndInvalidNamesCannotSubmit(com.bontecou.syncmd.FileNavigationTest)
+java.lang.AssertionError: Failed to assert the following: (Text + EditableText = [qa invalid tag])
+Semantics of the node:
+Node #461 at (l=84.0, t=438.0, r=996.0, b=606.0)px, Tag: 'git-tag-name'
+ImeAction = 'Default'
+EditableText = 'qa
+invalid	tag'
+TextSelectionRange = 'TextRange(14, 14)'
+Focused = 'true'
+Text = '[Tag name]'
+Actions = [GetTextLayoutResult, SetText, InsertTextAtCursor, SetSelection, PerformImeAction, OnClick, OnLongClick, PasteText, RequestFocus, MagnifierPositionInRoot]
+MergeDescendants = 'true'
+Has 8 siblings
+Selector used: (TestTag = 'git-tag-name')
+
+	at androidx.compose.ui.test.AssertionsKt.assert(Assertions.kt:270)
+	at androidx.compose.ui.test.AssertionsKt.assert$default(Assertions.kt:260)
+	at androidx.compose.ui.test.AssertionsKt.assertTextEquals(Assertions.kt:190)
+	at androidx.compose.ui.test.AssertionsKt.assertTextEquals$default(Assertions.kt:186)
+	at com.bontecou.syncmd.FileNavigationTest.pastedTagControlsAreVisibleAndInvalidNamesCannotSubmit(FileNavigationTest.kt:1404)
+
+FAILURES!!!
+Tests run: 3,  Failures: 2

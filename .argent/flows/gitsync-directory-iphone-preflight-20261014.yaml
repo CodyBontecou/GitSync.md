@@ -1,0 +1,11 @@
+steps:
+  - launch: bontecou.Sync-md
+  - tap:
+      text: +, ADD REPOSITORY
+  - tap:
+      text: Pick from GitHub
+  - tap:
+      text: CodyBontecou/myself.md
+  - tool: keyboard
+    args:
+      text: gitsync-directory-qa

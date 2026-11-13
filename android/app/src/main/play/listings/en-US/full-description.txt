@@ -1,0 +1,31 @@
+GitSync.md brings Git workflows to your Android phone, tablet and foldable. Keep a local working copy of your Markdown vault or other Git repository, review changes, and choose what to commit and sync.
+
+CHECK YOUR VAULT FIRST
+Download the app and check a repository before buying. The check verifies connectivity and the selected branch. For supported GitHub connections it can also inspect write access, repository size, Git LFS usage and an Obsidian folder. Checks that cannot be completed are identified in the app.
+
+A one-time Full Access purchase through Google Play unlocks cloning, linking and publishing vaults. There is no subscription. Google Play shows the current price in your currency before you confirm and supports restoring eligible purchases.
+
+WORK WITH YOUR FILES
+- Clone a repository or link an existing local Git working copy
+- Use app storage or supported device folders with the required storage access
+- Browse, create, rename and edit files, with Markdown preview
+- Review line-by-line diffs and stage or unstage individual files
+- Commit locally, pull remote changes and push your commits
+
+KEEP CONTROL OF YOUR HISTORY
+- Create, switch, merge and delete branches
+- Resolve conflicts using either version or a manual edit
+- Browse commits, review stashes and manage tags
+- Review destructive actions before discarding work or dropping a stash
+- Review Git LFS endpoints, transfers and locks when your repository uses them
+
+CONNECT YOUR WAY
+Browse GitHub repositories with OAuth or a personal access token. Connect other supported Git hosts by URL using HTTPS credentials or SSH keys. Credentials are stored on your device; SSH server trust and separate LFS endpoint access are reviewed explicitly.
+
+OPTIONAL BACKGROUND SYNC
+Choose the repositories and branches that may sync in the background, with Wi-Fi and charging conditions. Android controls when background work runs, and battery or network restrictions can delay it. GitHub Push Sync requires the GitSync.md GitHub App and a compatible connection; local edits or diverged histories can require foreground review.
+
+MADE FOR ANDROID
+Light and dark themes, adaptive layouts for phones, tablets and foldables, and local Git operations without a system Git binary. Cloud document providers that do not expose writable filesystem folders cannot be used as Git working copies.
+
+GitSync.md is an independent app and is not affiliated with GitHub or Obsidian.

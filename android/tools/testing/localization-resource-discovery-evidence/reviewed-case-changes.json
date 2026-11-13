@@ -1,0 +1,248 @@
+[
+  {
+    "name": "ui_conflict_d79910c7",
+    "original_source": "CONFLICT",
+    "reviewed_source": "Conflict",
+    "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
+  },
+  {
+    "name": "ui_resolved_fea6a678",
+    "original_source": "RESOLVED",
+    "reviewed_source": "Resolved",
+    "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
+  },
+  {
+    "name": "ui_cancel_ad8d6985",
+    "original_source": "CANCEL",
+    "reviewed_source": "Cancel",
+    "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
+  },
+  {
+    "name": "ui_clone_failed_958e3f3a",
+    "original_source": "CLONE FAILED",
+    "reviewed_source": "Clone failed",
+    "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
+  },
+  {
+    "name": "ui_retry_e464c660",
+    "original_source": "RETRY",
+    "reviewed_source": "Retry",
+    "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
+  },
+  {
+    "name": "ui_back_f645ed02",
+    "original_source": "←  BACK",
+    "reviewed_source": "←  Back",
+    "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
+  },
+  {
+    "name": "ui_revert_c8d62872",
+    "original_source": "↩  REVERT",
+    "reviewed_source": "↩  Revert",
+    "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
+  },
+  {
+    "name": "ui_added_b4561641",
+    "original_source": "ADDED",
+    "reviewed_source": "Added",
+    "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
+  },
+  {
+    "name": "ui_removed_70fa71f8",
+    "original_source": "REMOVED",
+    "reviewed_source": "Removed",
+    "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
+  },
+  {
+    "name": "ui_git_b084246d",
+    "original_source": "GIT",
+    "reviewed_source": "Git",
+    "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
+  },
+  {
+    "name": "ui_done_283e91eb",
+    "original_source": "DONE",
+    "reviewed_source": "Done",
+    "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
+  },
+  {
+    "name": "ui_debug_0ffd43f5",
+    "original_source": "DEBUG",
+    "reviewed_source": "Debug",
+    "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
+  },
+  {
+    "name": "ui_local_changes_4d25c7d4",
+    "original_source": "LOCAL CHANGES",
+    "reviewed_source": "Local changes",
+    "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
+  },
+  {
+    "name": "ui_create_fde9c501",
+    "original_source": "CREATE",
+    "reviewed_source": "Create",
+    "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
+  },
+  {
+    "name": "ui_merge_fc2b737d",
+    "original_source": "MERGE",
+    "reviewed_source": "Merge",
+    "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
+  },
+  {
+    "name": "ui_complete_894981ff",
+    "original_source": "COMPLETE",
+    "reviewed_source": "Complete",
+    "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
+  },
+  {
+    "name": "ui_abort_merge_5af7a9ac",
+    "original_source": "✕  ABORT MERGE",
+    "reviewed_source": "✕  Abort merge",
+    "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
+  },
+  {
+    "name": "ui_revert_all_changes_416c8713",
+    "original_source": "↩  REVERT ALL CHANGES",
+    "reviewed_source": "↩  Revert all changes",
+    "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
+  },
+  {
+    "name": "ui_save_c210bfdf",
+    "original_source": "SAVE",
+    "reviewed_source": "Save",
+    "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
+  },
+  {
+    "name": "ui_current_e3cc57e1",
+    "original_source": "CURRENT",
+    "reviewed_source": "Current",
+    "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
+  },
+  {
+    "name": "ui_ours_ab658c14",
+    "original_source": "OURS",
+    "reviewed_source": "Ours",
+    "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
+  },
+  {
+    "name": "ui_theirs_691ef727",
+    "original_source": "THEIRS",
+    "reviewed_source": "Theirs",
+    "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
+  },
+  {
+    "name": "ui_manual_7c8107bd",
+    "original_source": "MANUAL",
+    "reviewed_source": "Manual",
+    "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
+  },
+  {
+    "name": "ui_diff_b6aeb797",
+    "original_source": "DIFF",
+    "reviewed_source": "Diff",
+    "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
+  },
+  {
+    "name": "ui_apply_2cbf6555",
+    "original_source": "APPLY",
+    "reviewed_source": "Apply",
+    "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
+  },
+  {
+    "name": "ui_pop_52e740ad",
+    "original_source": "POP",
+    "reviewed_source": "Pop",
+    "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
+  },
+  {
+    "name": "ui_push_792aac67",
+    "original_source": "PUSH",
+    "reviewed_source": "Push",
+    "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
+  },
+  {
+    "name": "ui_sync_7dcad682",
+    "original_source": "SYNC",
+    "reviewed_source": "Sync",
+    "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
+  },
+  {
+    "name": "ui_back_639807a2",
+    "original_source": "BACK",
+    "reviewed_source": "Back",
+    "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
+  },
+  {
+    "name": "ui_personal_access_token_702ef4a0",
+    "original_source": "PERSONAL ACCESS TOKEN",
+    "reviewed_source": "Personal access token",
+    "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
+  },
+  {
+    "name": "ui_create_a_pat_on_github_baa86691",
+    "original_source": "CREATE A PAT ON GITHUB →",
+    "reviewed_source": "Create a PAT on GitHub →",
+    "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
+  },
+  {
+    "name": "ui_download_location_7cc4e69d",
+    "original_source": "DOWNLOAD LOCATION",
+    "reviewed_source": "Download location",
+    "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
+  },
+  {
+    "name": "ui_choose_a_different_folder_when_cloning_or_f2d3c905",
+    "original_source": "CHOOSE A DIFFERENT FOLDER WHEN CLONING, OR SET A DEFAULT IN SETTINGS.",
+    "reviewed_source": "Choose a different folder when cloning, or set a default in settings.",
+    "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
+  },
+  {
+    "name": "ui_sign_in_75606a00",
+    "original_source": "SIGN IN",
+    "reviewed_source": "Sign in",
+    "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
+  },
+  {
+    "name": "ui_add_repository_e2be0a30",
+    "original_source": "ADD REPOSITORY",
+    "reviewed_source": "Add repository",
+    "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
+  },
+  {
+    "name": "ui_remove_5fdf0b2b",
+    "original_source": "REMOVE",
+    "reviewed_source": "Remove",
+    "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
+  },
+  {
+    "name": "ui_no_repository_aec5972a",
+    "original_source": "NO REPOSITORY",
+    "reviewed_source": "No repository",
+    "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
+  },
+  {
+    "name": "ui_full_version_no_subscription_8fe42d1c",
+    "original_source": "FULL VERSION · NO SUBSCRIPTION",
+    "reviewed_source": "Full version · no subscription",
+    "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
+  },
+  {
+    "name": "ui_settings_02f6ea12",
+    "original_source": "SETTINGS",
+    "reviewed_source": "Settings",
+    "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
+  },
+  {
+    "name": "ui_default_for_new_clones_each_clone_can_use_f0929c99",
+    "original_source": "DEFAULT FOR NEW CLONES. EACH CLONE CAN USE ANOTHER FOLDER.",
+    "reviewed_source": "Default for new clones. Each clone can use another folder.",
+    "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
+  },
+  {
+    "name": "ui_repos_6dc25005",
+    "original_source": "REPOS",
+    "reviewed_source": "Repos",
+    "source_review": "Reviewed existing redesign capitalization only. Words, decorative symbols, resource identity, argument positions and action meaning are unchanged."
+  }
+]

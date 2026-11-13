@@ -1,0 +1,5 @@
+<resources>
+    <string name="file_local_access">Local access</string>
+    <string name="file_clone_guidance">Clone a device repository using local access. For shared storage, grant folder access in Settings first.</string>
+    <string name="file_clone_failure">Could not clone the local repository. Check the source folder, storage access and branch. Existing folders were kept.</string>
+</resources>

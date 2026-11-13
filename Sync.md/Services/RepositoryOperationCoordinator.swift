@@ -244,8 +244,8 @@ final class SerializedGitRepository: GitRepositoryProtocol, @unchecked Sendable 
         }
     }
 
-    func clone(remoteURL: String, pat: String) async throws -> LocalCloneResult {
-        try await run { try await $0.clone(remoteURL: remoteURL, pat: pat) }
+    func clone(remoteURL: String, pat: String, branch: String? = nil) async throws -> LocalCloneResult {
+        try await run { try await $0.clone(remoteURL: remoteURL, pat: pat, branch: branch) }
     }
 
     func hydrateLFSObjects(pat: String) async throws -> GitLFSHydrateResult {

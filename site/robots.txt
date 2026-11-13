@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://gitsyncmd.app/sitemap.xml
+Sitemap: https://gitsync.md/sitemap.xml

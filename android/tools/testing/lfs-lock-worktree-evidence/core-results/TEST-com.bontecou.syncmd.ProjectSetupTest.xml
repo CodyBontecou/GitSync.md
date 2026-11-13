@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.ProjectSetupTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-11-02T19:20:48" hostname="MacBook-Pro.local" time="0.029">
+  <properties/>
+  <testcase name="truth assertions available" classname="com.bontecou.syncmd.ProjectSetupTest" time="0.004"/>
+  <testcase name="gson is available" classname="com.bontecou.syncmd.ProjectSetupTest" time="0.011"/>
+  <testcase name="app version is accessible" classname="com.bontecou.syncmd.ProjectSetupTest" time="0.0"/>
+  <testcase name="kotlin standard library is available" classname="com.bontecou.syncmd.ProjectSetupTest" time="0.009"/>
+  <testcase name="core module builds successfully" classname="com.bontecou.syncmd.ProjectSetupTest" time="0.0"/>
+  <testcase name="coroutines core is available" classname="com.bontecou.syncmd.ProjectSetupTest" time="0.004"/>
+  <testcase name="mockito kotlin is available" classname="com.bontecou.syncmd.ProjectSetupTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

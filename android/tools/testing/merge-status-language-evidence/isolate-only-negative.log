@@ -1,0 +1,2 @@
+Exception in thread "main" java.lang.AssertionError: Remote/branch separator is not LTR
+	at UpstreamDisplayBidiProbe.main(UpstreamDisplayBidiProbe.java:24)

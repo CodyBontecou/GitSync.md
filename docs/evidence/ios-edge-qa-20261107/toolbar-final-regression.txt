@@ -1,0 +1,9 @@
+Test Suite 'Selected tests' started at 2026-11-07 19:18:37.545.
+Test Suite 'SyncMDUITests.xctest' started at 2026-11-07 19:18:37.545.
+Test Suite 'SyncMDUITests' started at 2026-11-07 19:18:37.546.
+Test Case '-[SyncMDUITests.SyncMDUITests testFileEditorSaveFlowPersistsEditToSeededFile]' started.
+Test Case '-[SyncMDUITests.SyncMDUITests testFileEditorSaveFlowPersistsEditToSeededFile]' passed (28.114 seconds).
+Test Suite 'SyncMDUITests' passed at 2026-11-07 19:19:05.663.
+Test Suite 'SyncMDUITests.xctest' passed at 2026-11-07 19:19:05.663.
+Test Suite 'Selected tests' passed at 2026-11-07 19:19:05.664.
+** TEST SUCCEEDED **

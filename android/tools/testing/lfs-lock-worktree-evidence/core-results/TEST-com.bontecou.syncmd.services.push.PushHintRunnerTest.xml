@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.push.PushHintRunnerTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-11-02T19:22:22" hostname="MacBook-Pro.local" time="0.333">
+  <properties/>
+  <testcase name="dirtyOrDivergedCopiesKeepExactWorkAndIndexAndNeverCreateCommits" classname="com.bontecou.syncmd.services.push.PushHintRunnerTest" time="0.08"/>
+  <testcase name="unrelatedBranchesAndRepositoriesNeverMutateTheCheckout" classname="com.bontecou.syncmd.services.push.PushHintRunnerTest" time="0.062"/>
+  <testcase name="registrationInventoryReadsConfiguredGithubUpstreamsWithoutNetworkOrSecrets" classname="com.bontecou.syncmd.services.push.PushHintRunnerTest" time="0.054"/>
+  <testcase name="disablingWhileQueuedForTheRepositoryLeaseStopsBeforeFetchingOrCheckout" classname="com.bontecou.syncmd.services.push.PushHintRunnerTest" time="0.048"/>
+  <testcase name="matchingHintFetchesAuthoritativeHeadAndFastForwardsWithoutUsingHintShaOrPushing" classname="com.bontecou.syncmd.services.push.PushHintRunnerTest" time="0.089"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

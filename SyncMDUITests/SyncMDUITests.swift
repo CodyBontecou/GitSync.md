@@ -1,4 +1,5 @@
 import XCTest
+import UIKit
 
 final class SyncMDUITests: XCTestCase {
     func testLaunch() {
@@ -17,7 +18,7 @@ final class SyncMDUITests: XCTestCase {
         app.launch()
 
         tap("second-brain", in: app)
-        tap("Browse Files", in: app)
+        openFilesTab(in: app)
         tap("projects", in: app)
         tap("mobile", in: app)
         tap("client", in: app)
@@ -31,11 +32,267 @@ final class SyncMDUITests: XCTestCase {
 
     // MARK: - Git Tools Discoverability
 
+    func testBrowserFolderRenameRejectsSeparatorsAndAllowsCorrection() throws {
+        let app = launchGitToolsFixture("dirty")
+        openFilesTab(in: app)
+        let folder = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "notes, ")).firstMatch
+        XCTAssertTrue(folder.waitForExistence(timeout: 5))
+        folder.press(forDuration: 1)
+        app.buttons["Rename"].firstMatch.tap()
+        let field = app.textFields["File name"]
+        XCTAssertTrue(field.waitForExistence(timeout: 5))
+        field.tap(withNumberOfTaps: 3, numberOfTouches: 1)
+        field.typeText("bad/name")
+        let rename = app.buttons["Rename"].firstMatch
+        XCTAssertFalse(rename.isEnabled, "Invalid path must be explained before dismissing the rename form")
+        guard !rename.isEnabled else { return }
+        field.tap(withNumberOfTaps: 3, numberOfTouches: 1)
+        field.typeText("README.md")
+        XCTAssertFalse(rename.isEnabled, "Existing file must not be replaced by a folder")
+        field.tap(withNumberOfTaps: 3, numberOfTouches: 1)
+        field.typeText("renamed-notes")
+        XCTAssertTrue(rename.isEnabled)
+        rename.tap()
+        let worktree = try gitToolsWorktreeURL()
+        XCTAssertTrue(waitUntil(timeout: 5) { FileManager.default.fileExists(atPath: worktree.appendingPathComponent("renamed-notes/hello.md").path) })
+        XCTAssertFalse(FileManager.default.fileExists(atPath: worktree.appendingPathComponent("notes").path))
+        XCTAssertEqual(try String(contentsOf: worktree.appendingPathComponent("renamed-notes/hello.md"), encoding: .utf8), "# Hello\n\nBase remote note.\n")
+    }
+
+    func testNewNoteRejectsPastedTabThenCreatesCorrectedName() throws {
+        let app = launchGitToolsFixture("dirty")
+        openFilesTab(in: app)
+        app.buttons["Create New File"].tap()
+        let field = app.textFields["File name"]
+        XCTAssertTrue(field.waitForExistence(timeout: 5))
+        UIPasteboard.general.string = "bad\tname"
+        field.press(forDuration: 1.2)
+        let paste = app.menuItems["Paste"].exists ? app.menuItems["Paste"] : app.buttons["Paste"].firstMatch
+        XCTAssertTrue(paste.waitForExistence(timeout: 5), "Paste menu must be available to exercise literal tab input")
+        guard paste.exists else { return }
+        paste.tap()
+        XCTAssertEqual(field.value as? String, "bad\tname", "The literal tab must reach the form")
+        let create = app.buttons["Create & open"]
+        XCTAssertFalse(create.isEnabled, "Invisible control characters must not become file names")
+        guard !create.isEnabled else { return }
+        app.buttons["Folder"].tap()
+        XCTAssertFalse(app.buttons["Create folder"].isEnabled, "Folder creation uses the same validation")
+        app.buttons["Note"].tap()
+        field.tap(withNumberOfTaps: 3, numberOfTouches: 1)
+        field.typeText("corrected-note")
+        XCTAssertTrue(create.isEnabled)
+        create.tap()
+        let file = try gitToolsWorktreeURL().appendingPathComponent("corrected-note.md")
+        XCTAssertTrue(waitUntil(timeout: 5) { FileManager.default.fileExists(atPath: file.path) })
+        XCTAssertFalse(FileManager.default.fileExists(atPath: file.deletingLastPathComponent().appendingPathComponent("bad\tname.md").path))
+    }
+
+    func testBrowserRenameFailureKeepsFormAndAllowsRetry() throws {
+        let app = launchGitToolsFixture("dirty")
+        openFilesTab(in: app)
+        let folder = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "notes, ")).firstMatch
+        XCTAssertTrue(folder.waitForExistence(timeout: 5))
+        folder.press(forDuration: 1)
+        app.buttons["Rename"].firstMatch.tap()
+        let field = app.textFields["File name"]
+        XCTAssertTrue(field.waitForExistence(timeout: 5))
+        field.tap(withNumberOfTaps: 3, numberOfTouches: 1)
+        field.typeText("retry-notes")
+        let worktree = try gitToolsWorktreeURL()
+        let source = worktree.appendingPathComponent("notes")
+        let held = worktree.appendingPathComponent("held-notes")
+        let fm = FileManager.default
+        // Simulate another file provider moving the source while its form is open.
+        try fm.moveItem(at: source, to: held)
+        defer { if fm.fileExists(atPath: held.path) { try? fm.moveItem(at: held, to: source) } }
+        let rename = app.buttons["Rename"].firstMatch
+        rename.tap()
+        XCTAssertTrue(waitUntil(timeout: 5) { app.staticTexts.matching(NSPredicate(format: "label CONTAINS[c] %@ OR label CONTAINS[c] %@", "exist", "no such file")).firstMatch.exists })
+        XCTAssertTrue(app.buttons["Cancel"].exists, "A failed move must keep the rename form")
+        guard app.buttons["Cancel"].exists else { return }
+        XCTAssertEqual(field.value as? String, "retry-notes")
+        XCTAssertTrue(rename.isEnabled, "A transient failure must allow retry without losing the name")
+        try fm.moveItem(at: held, to: source)
+        rename.tap()
+        XCTAssertTrue(waitUntil(timeout: 5) { fm.fileExists(atPath: worktree.appendingPathComponent("retry-notes/hello.md").path) })
+    }
+
+    func testCloneFormRejectsInvalidBranchThenClonesSelectedBranch() throws {
+        let app = XCUIApplication()
+        app.launchArguments = signedOutLaunchArguments(extra: ["-UITestCloneFixture"])
+        app.launch()
+        XCTAssertTrue(app.staticTexts["No vaults yet."].waitForExistence(timeout: 10))
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent("clone-ui-\(UUID())")
+        try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: root) }
+        let remote = root.appendingPathComponent("qa-selected.git")
+        try FileManager.default.copyItem(at: URL(fileURLWithPath: "/tmp/syncmd-uitest-fixtures/bare-remote.git"), to: remote)
+        let branchDir = remote.appendingPathComponent("refs/heads/qa")
+        try FileManager.default.createDirectory(at: branchDir, withIntermediateDirectories: true)
+        let sha = try String(contentsOf: remote.appendingPathComponent("refs/heads/main"), encoding: .utf8)
+        try sha.write(to: branchDir.appendingPathComponent("selected"), atomically: true, encoding: .utf8)
+        app.buttons["home.addRepository"].tap()
+        app.buttons["addRepository.enterURL"].tap()
+        let url = app.textFields["Repository URL"].firstMatch
+        XCTAssertTrue(url.waitForExistence(timeout: 5))
+        url.tap()
+        url.typeText(remote.absoluteString)
+        let branch = app.textFields.matching(NSPredicate(format: "placeholderValue IN %@", ["main", "Default branch"])).firstMatch
+        for _ in 0..<6 where !branch.isHittable { app.swipeUp() }
+        XCTAssertTrue(branch.isHittable)
+        branch.tap(withNumberOfTaps: 3, numberOfTouches: 1)
+        branch.typeText("bad..clone")
+        let clone = app.buttons["addRepository.addAndClone"]
+        XCTAssertFalse(clone.isEnabled, "Malformed branch must be rejected before preflight or clone")
+        guard !clone.isEnabled else { return }
+        branch.tap(withNumberOfTaps: 3, numberOfTouches: 1)
+        branch.typeText("qa/selected")
+        XCTAssertTrue(clone.isEnabled)
+        for _ in 0..<6 where !clone.isHittable { app.swipeUp() }
+        clone.tap()
+        let row = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "qa-selected, ")).firstMatch
+        XCTAssertTrue(row.waitForExistence(timeout: 20))
+        XCTAssertTrue(waitUntil(timeout: 10) { row.label.contains("qa/selected") }, row.label)
+        row.tap()
+        XCTAssertTrue(app.staticTexts["Branch qa/selected"].waitForExistence(timeout: 5))
+    }
+
+    func testGitToolsFailureKeepsSheetDraftAndRejectedBranch() {
+        let app = launchGitToolsFixture("dirty")
+        app.buttons["More vault options"].tap()
+        app.buttons["Git Tools"].tap()
+        XCTAssertTrue(app.buttons["Close"].waitForExistence(timeout: 5))
+        let draft = app.descendants(matching: .any)["gitTools.commitMessage"].firstMatch
+        for _ in 0..<6 where !draft.isHittable { app.swipeDown() }
+        XCTAssertTrue(draft.isHittable)
+        draft.tap()
+        draft.typeText("Draft must survive")
+        let branch = app.textFields["new-branch-name"]
+        XCTAssertTrue(reveal(branch, in: app))
+        branch.tap()
+        branch.typeText("bad..draft")
+        let create = app.buttons["Create"].firstMatch
+        tapWhenHittable(create, in: app, message: "Create branch must be reachable")
+        let alert = app.alerts["Error"]
+        XCTAssertTrue(alert.waitForExistence(timeout: 5))
+        guard alert.exists else { return }
+        alert.buttons["OK"].firstMatch.tap()
+        XCTAssertTrue(app.buttons["Close"].exists, "Error must retain the Git Tools sheet")
+        guard app.buttons["Close"].exists else { return }
+        XCTAssertEqual(branch.value as? String, "bad..draft")
+        for _ in 0..<6 where !draft.isHittable { app.swipeDown() }
+        XCTAssertTrue(draft.isHittable)
+        XCTAssertEqual(draft.value as? String, "Draft must survive")
+        tapFirstHittableButton(labeled: "Close", in: app)
+        XCTAssertFalse(alert.exists, "Handled sheet error must not replay on the vault")
+    }
+
+    func testSettingsRejectsInvalidBranchAndAllowsCorrection() {
+        let app = launchGitToolsFixture("clean")
+        app.buttons["More vault options"].tap()
+        app.buttons["Settings"].tap()
+        let branch = app.textFields["repositorySettings.branch"]
+        XCTAssertTrue(reveal(branch, in: app))
+        branch.tap(withNumberOfTaps: 3, numberOfTouches: 1)
+        branch.typeText("bad..settings")
+        app.buttons["Save"].firstMatch.tap()
+        let alert = app.alerts.firstMatch
+        XCTAssertTrue(alert.waitForExistence(timeout: 5))
+        guard alert.exists else { return }
+        XCTAssertTrue(alert.staticTexts["Please enter a valid Git branch name."].exists)
+        alert.buttons["OK"].firstMatch.tap()
+        XCTAssertTrue(app.buttons["Cancel"].exists, "Validation must keep Settings open")
+        XCTAssertEqual(branch.value as? String, "bad..settings")
+        branch.tap(withNumberOfTaps: 3, numberOfTouches: 1)
+        branch.typeText("main")
+        app.buttons["Save"].firstMatch.tap()
+        XCTAssertTrue(waitUntil(timeout: 5) { !app.buttons["Cancel"].exists })
+        app.buttons["More vault options"].tap()
+        app.buttons["Settings"].tap()
+        XCTAssertTrue(reveal(branch, in: app))
+        XCTAssertEqual(branch.value as? String, "main")
+    }
+
+    func testGitCreationErrorsAppearOnChildScreenAndPreserveInput() throws {
+        let app = launchGitToolsFixture("clean")
+        openGitTab(in: app)
+        tap("Branches", in: app)
+        let field = app.textFields.firstMatch
+        XCTAssertTrue(field.waitForExistence(timeout: 5))
+        field.tap()
+        field.typeText("../bad.lock")
+        app.buttons["Create"].tap()
+        let alert = app.alerts["Error"]
+        XCTAssertTrue(alert.waitForExistence(timeout: 5), "Rejection must appear before navigating Back")
+        guard alert.exists else { return }
+        alert.buttons["OK"].tap()
+        XCTAssertEqual(field.value as? String, "../bad.lock")
+        field.tap()
+        field.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: "../bad.lock".count) + "qa-valid-branch")
+        app.buttons["Create"].tap()
+        XCTAssertTrue(app.staticTexts["qa-valid-branch"].waitForExistence(timeout: 5), "Correcting the rejected name must allow creation")
+        app.navigationBars.buttons["Back"].firstMatch.tap()
+        XCTAssertFalse(alert.exists, "Dismissed errors must not reappear on Back")
+        tap("Tags", in: app)
+        let tagField = app.textFields.firstMatch
+        XCTAssertTrue(tagField.waitForExistence(timeout: 5))
+        tagField.tap()
+        tagField.typeText("bad..tag")
+        app.buttons["Tag HEAD"].tap()
+        XCTAssertTrue(alert.waitForExistence(timeout: 5))
+        guard alert.exists else { return }
+        alert.buttons["OK"].tap()
+        XCTAssertEqual(tagField.value as? String, "bad..tag")
+        XCTAssertTrue(app.staticTexts["No tags"].exists)
+    }
+
+    func testCallbackErrorAppearsOverEditorPreviewWithoutGoingBack() throws {
+        let app = launchGitToolsFixture("clean")
+        let file = try gitToolsWorktreeURL().appendingPathComponent("README.md")
+        try "# Callback test\n\n[odd link](syncmd://x-callback-url/unknown)\n".write(to: file, atomically: true, encoding: .utf8)
+        openFilesTab(in: app)
+        tap("README.md", in: app)
+        app.buttons["Preview"].tap()
+        let link = app.links["odd link"]
+        XCTAssertTrue(link.waitForExistence(timeout: 5))
+        link.tap()
+        let alert = app.alerts["Error"]
+        XCTAssertTrue(alert.waitForExistence(timeout: 5), "Callback errors must appear over the active preview")
+        guard alert.exists else { return }
+        XCTAssertTrue(alert.staticTexts["Unknown action: unknown"].exists)
+        alert.buttons["OK"].tap()
+        XCTAssertTrue(app.buttons["Edit"].exists, "Dismissing the error must preserve preview navigation")
+    }
+
+    func testEditorRenameRejectsTraversalAndAllowsCorrection() throws {
+        let app = launchGitToolsFixture("clean")
+        openFilesTab(in: app)
+        tap("README.md", in: app)
+        app.buttons["More file options"].tap()
+        app.buttons["Rename File"].tap()
+        let field = app.textFields.firstMatch
+        XCTAssertTrue(field.waitForExistence(timeout: 5))
+        field.tap()
+        let existing = field.value as? String ?? ""
+        field.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: existing.count) + "../escape.md")
+        let rename = app.buttons["Rename"].firstMatch
+        XCTAssertFalse(rename.isEnabled, "Traversal must be blocked in the rename modal")
+        guard !rename.isEnabled else { return }
+        field.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: "../escape.md".count) + "مرحبا 🌱.md")
+        XCTAssertTrue(rename.isEnabled, "A corrected Unicode filename must permit retry")
+        rename.tap()
+        let worktree = try gitToolsWorktreeURL()
+        XCTAssertTrue(waitUntil(timeout: 5) { FileManager.default.fileExists(atPath: worktree.appendingPathComponent("مرحبا 🌱.md").path) })
+        XCTAssertFalse(FileManager.default.fileExists(atPath: worktree.appendingPathComponent("README.md").path))
+        XCTAssertEqual(try String(contentsOf: worktree.appendingPathComponent("مرحبا 🌱.md"), encoding: .utf8), "# Git Tools Fixture\n\nBase note.\n")
+    }
+
     /// The fixture has a real clean index, a second branch, and a saved stash.
     /// Opening and closing the sheet must not change any repository bytes.
     func testGitToolsCleanRepositoryExposesBranchesAndExistingStashesWithoutMutation() throws {
         let app = launchGitToolsFixture("clean")
-        XCTAssertFalse(syncAction("Commit & Push", in: app).isEnabled)
+        let commitPush = syncAction("Commit & Push", in: app)
+        XCTAssertFalse(commitPush.exists && commitPush.isEnabled, "A clean vault offers no commit")
         let before = try gitToolsSnapshot()
 
         openGitTools(in: app)
@@ -44,13 +301,13 @@ final class SyncMDUITests: XCTestCase {
             NSPredicate(format: "label CONTAINS %@", "Saved Git Tools note")
         ).firstMatch
         XCTAssertTrue(reveal(savedStash, in: app), "Saved stashes should be reachable with no local changes")
-        XCTAssertTrue(app.buttons["APPLY"].isEnabled)
-        XCTAssertTrue(app.buttons["POP"].isEnabled)
-        XCTAssertFalse(app.buttons["SAVE"].isEnabled, "Saving a new stash still requires changes")
+        XCTAssertTrue(app.buttons["Apply"].isEnabled)
+        XCTAssertTrue(app.buttons["Pop"].isEnabled)
+        XCTAssertFalse(app.buttons["Save"].isEnabled, "Saving a new stash still requires changes")
         XCTAssertTrue(try gitToolsSnapshot() == before, "Opening must not stage, commit, push, or alter the stash")
 
         tapFirstHittableButton(labeled: "Close", in: app)
-        XCTAssertTrue(app.staticTexts["REPO HEALTH"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["vault.title"].waitForExistence(timeout: 5))
         XCTAssertTrue(try gitToolsSnapshot() == before, "Closing must also leave Git state untouched")
     }
 
@@ -58,17 +315,58 @@ final class SyncMDUITests: XCTestCase {
         let app = launchGitToolsFixture("dirty")
         let before = try gitToolsSnapshot()
         openGitTools(in: app)
-        XCTAssertTrue(reveal(app.buttons["STAGE ALL"], in: app))
-        XCTAssertTrue(app.buttons["STAGE ALL"].isEnabled)
-        XCTAssertTrue(reveal(app.buttons["PUSH 0 FILES"], in: app))
-        XCTAssertFalse(app.buttons["PUSH 0 FILES"].isEnabled, "Opening must not auto-stage unstaged edits")
+        XCTAssertTrue(reveal(app.buttons["Stage all"], in: app))
+        XCTAssertTrue(app.buttons["Stage all"].isEnabled)
+        XCTAssertTrue(reveal(app.buttons["Push 0 files"], in: app))
+        XCTAssertFalse(app.buttons["Push 0 files"].isEnabled, "Opening must not auto-stage unstaged edits")
         XCTAssertTrue(try gitToolsSnapshot() == before, "Opening dirty Git Tools must not stage or publish")
 
         tapFirstHittableButton(labeled: "Close", in: app)
-        tapWhenHittable(syncAction("Commit & Push", in: app), in: app, message: "Dirty Commit & Push should still open the sheet")
-        assertGitToolsSheet(in: app)
-        XCTAssertTrue(reveal(app.buttons["STAGE ALL"], in: app), "Commit & Push should retain staging controls")
-        XCTAssertTrue(try gitToolsSnapshot() == before, "Commit & Push's navigation must not commit or push by itself")
+        tapWhenHittable(syncAction("Commit & Push", in: app), in: app, message: "Dirty Commit & Push should open the commit sheet")
+        XCTAssertTrue(app.staticTexts["commitSheet.title"].waitForExistence(timeout: 5), "Commit & Push opens the commit sheet")
+        XCTAssertTrue(app.buttons["Git Tools"].exists, "The commit sheet links back to Git Tools")
+        XCTAssertTrue(try gitToolsSnapshot() == before, "Opening the commit sheet must not stage, commit or push by itself")
+    }
+
+    func testFileRevertThenPullToRefreshCompletesWithoutCancellationAlert() throws {
+        let app = launchGitToolsFixture("dirty")
+        let localHead = try gitToolsHead()
+        let remoteHead = try gitToolsHead(remote: true)
+        let worktree = try gitToolsWorktreeURL()
+        let readme = worktree.appendingPathComponent("README.md")
+        XCTAssertTrue(try String(contentsOf: readme, encoding: .utf8).contains("Unstaged local note"))
+
+        // Per-file discard lives in the change row's long-press menu.
+        let row = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "README.md,")).firstMatch
+        XCTAssertTrue(reveal(row, in: app))
+        row.press(forDuration: 1.0)
+        let revert = app.buttons["Revert Changes"].firstMatch
+        XCTAssertTrue(revert.waitForExistence(timeout: 5))
+        revert.tap()
+        XCTAssertTrue(app.staticTexts["Discard changes to this file?"].waitForExistence(timeout: 5))
+        app.buttons["Discard changes"].tap()
+        XCTAssertTrue(waitUntil(timeout: 5) {
+            (try? String(contentsOf: readme, encoding: .utf8)) == "# Git Tools Fixture\n\nBase note.\n"
+        }, "Revert must actually restore the file before refreshing")
+        XCTAssertFalse(app.alerts["Error"].exists)
+        // Discard stashes a safety copy first; refresh once the vault shows
+        // the clean state so the pull isn't racing that work.
+        XCTAssertTrue(
+            app.staticTexts["No changes on this iPhone"].waitForExistence(timeout: 10),
+            "The vault should settle on the clean state after the revert"
+        )
+
+        let scrollView = app.scrollViews.firstMatch
+        let start = scrollView.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.25))
+        let end = scrollView.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.85))
+        // Pull the way a person does: drag down and hold briefly past the threshold.
+        start.press(forDuration: 0.1, thenDragTo: end, withVelocity: .slow, thenHoldForDuration: 0.3)
+        XCTAssertTrue(app.staticTexts["Already up to date"].waitForExistence(timeout: 10), "Pull-to-refresh must complete after reverting")
+        XCTAssertFalse(app.alerts["Error"].exists, "Revert then refresh must not display Swift.CancellationError")
+        XCTAssertEqual(try gitToolsHead(), localHead, "Revert and a no-op pull must not create a commit")
+        XCTAssertEqual(try gitToolsHead(remote: true), remoteHead, "Refresh must not publish changes")
+        XCTAssertEqual(try String(contentsOf: readme, encoding: .utf8), "# Git Tools Fixture\n\nBase note.\n")
+        attachScreenshot("Revert then pull-to-refresh", in: app)
     }
 
     func testGitToolsAheadRepositoryOpensWithoutPushingAndExistingPushRemainsDirect() throws {
@@ -87,26 +385,47 @@ final class SyncMDUITests: XCTestCase {
         XCTAssertTrue(waitUntil(timeout: 15) { (try? self.gitToolsHead(remote: true)) == localHead })
         XCTAssertEqual(try gitToolsHead(), localHead, "Direct push must not create another commit")
         XCTAssertFalse(app.buttons["Close"].exists, "Direct push must not present the Git sheet")
-        XCTAssertTrue(app.staticTexts["REPO HEALTH"].exists)
+        XCTAssertTrue(app.staticTexts["vault.title"].exists)
     }
 
     func testGitToolsRemainsAvailableDuringSynchronizationWhileOperationsStayDisabled() throws {
         let app = launchGitToolsFixture("syncing")
-        for title in ["Pull", "Pull with Rebase", "Commit & Push"] {
-            XCTAssertFalse(syncAction(title, in: app).isEnabled, "\(title) should stay disabled during sync")
+        // While syncing the hero swaps its actions for progress.
+        for title in ["Pull", "Commit & push"] {
+            let action = syncAction(title, in: app)
+            XCTAssertFalse(action.exists && action.isEnabled, "\(title) should be unavailable during sync")
         }
+        XCTAssertFalse(syncAction("Pull with Rebase", in: app).isEnabled, "Pull with Rebase should stay disabled during sync")
         let before = try gitToolsSnapshot()
         openGitTools(in: app)
-        XCTAssertFalse(app.buttons["SWITCH"].isEnabled, "Branch mutation must stay disabled")
-        XCTAssertTrue(reveal(app.buttons["STAGE ALL"], in: app))
-        XCTAssertFalse(app.buttons["STAGE ALL"].isEnabled, "Staging must stay disabled")
-        XCTAssertTrue(reveal(app.buttons["APPLY"], in: app))
-        XCTAssertFalse(app.buttons["APPLY"].isEnabled, "Stash mutation must stay disabled")
-        XCTAssertTrue(reveal(app.buttons["PUSH 0 FILES"], in: app))
-        XCTAssertFalse(app.buttons["PUSH 0 FILES"].isEnabled, "Publication must stay disabled")
+        // The Git tab's branch card and the sheet both offer Switch; neither may run.
+        let switches = app.buttons.matching(NSPredicate(format: "label == %@", "Switch"))
+        for index in 0..<switches.count {
+            XCTAssertFalse(switches.element(boundBy: index).isEnabled, "Branch mutation must stay disabled")
+        }
+        XCTAssertTrue(reveal(app.buttons["Stage all"], in: app))
+        XCTAssertFalse(app.buttons["Stage all"].isEnabled, "Staging must stay disabled")
+        XCTAssertTrue(reveal(app.buttons["Apply"], in: app))
+        XCTAssertFalse(app.buttons["Apply"].isEnabled, "Stash mutation must stay disabled")
+        XCTAssertTrue(reveal(app.buttons["Push 0 files"], in: app))
+        XCTAssertFalse(app.buttons["Push 0 files"].isEnabled, "Publication must stay disabled")
         XCTAssertTrue(try gitToolsSnapshot() == before, "Busy-state navigation must not mutate Git")
         tapFirstHittableButton(labeled: "Close", in: app)
         XCTAssertTrue(app.buttons["Git Tools"].isEnabled, "Tools navigation must remain available after dismissing")
+    }
+
+    func testIncompleteMarkdownCheckoutShowsCheckoutWarningAndPreservesConcurrentEdit() throws {
+        let app = launchGitToolsFixture("checkout-incomplete")
+        let remoteHead = try gitToolsHead(remote: true)
+        XCTAssertNotEqual(try gitToolsHead(), remoteHead)
+        tapWhenHittable(syncAction("Pull", in: app), in: app, message: "Start the real native checkout race")
+        XCTAssertTrue(app.staticTexts["Working tree needs attention"].waitForExistence(timeout: 15))
+        XCTAssertFalse(app.staticTexts["Large files couldn't download"].exists)
+        XCTAssertEqual(try gitToolsHead(), remoteHead, "Completed update must retain its advanced HEAD")
+        let note = try gitToolsWorktreeURL().appendingPathComponent("notes/hello.md")
+        XCTAssertEqual(try String(contentsOf: note, encoding: .utf8), "# Hello\n\nPR45 concurrent local edit preserved.\n")
+        XCTAssertFalse(app.alerts["Error"].exists)
+        attachScreenshot("Native incomplete Markdown checkout", in: app)
     }
 
     func testGitToolsBehindRepositoryAndExistingPullFastForward() throws {
@@ -145,17 +464,26 @@ final class SyncMDUITests: XCTestCase {
         app.launchArguments = signedOutLaunchArguments(extra: ["-UITestGitToolsFixture", scenario])
         app.launch()
         tap("git-tools-fixture", in: app)
-        XCTAssertTrue(app.staticTexts["REPO HEALTH"].waitForExistence(timeout: 10))
+        XCTAssertTrue(app.staticTexts["vault.title"].waitForExistence(timeout: 10))
         return app
     }
 
     private func syncAction(_ title: String, in app: XCUIApplication) -> XCUIElement {
-        // Action-row labels combine icon, title, subtitle, and arrow. The
-        // comma boundary keeps Pull distinct from Pull with Rebase.
-        app.buttons.matching(NSPredicate(format: "label CONTAINS %@", ", \(title),")).firstMatch
+        // The hero carries the state's primary/secondary actions; the rest
+        // live under the Git tab as rows whose label starts "<title>, ".
+        if ["Pull with Rebase", "Push Current Branch"].contains(title) { openGitTab(in: app) }
+        return app.buttons.matching(
+            NSPredicate(format: "label ==[c] %@ OR label BEGINSWITH[c] %@", title, "\(title), ")
+        ).firstMatch
+    }
+
+    private func openGitTab(in app: XCUIApplication) {
+        let tab = app.buttons["Git"].firstMatch
+        if tab.waitForExistence(timeout: 5) { tab.tap() }
     }
 
     private func openGitTools(in app: XCUIApplication) {
+        openGitTab(in: app)
         let tools = app.buttons["Git Tools"]
         XCTAssertTrue(reveal(tools, in: app), "Git Tools should always be discoverable as a labelled button")
         XCTAssertTrue(tools.isEnabled, "Git Tools is navigation, not a gated Git operation")
@@ -171,7 +499,7 @@ final class SyncMDUITests: XCTestCase {
         XCTAssertTrue(app.buttons["Close"].exists)
         XCTAssertTrue(app.staticTexts["BRANCHES"].exists)
         XCTAssertTrue(reveal(app.staticTexts["feature"], in: app), "The sheet must load real branch controls")
-        XCTAssertTrue(app.buttons["SWITCH"].exists)
+        XCTAssertTrue(app.buttons["Switch"].exists)
         XCTAssertTrue(app.textFields["new-branch-name"].exists)
         attachScreenshot("Git Tools sheet", in: app)
     }
@@ -259,39 +587,28 @@ final class SyncMDUITests: XCTestCase {
         ]
         app.launch()
 
-        // First slide: hero copy and both bottom controls must be exposed as
-        // labelled accessibility elements.
-        let continueButton = button(app, labels: ["Continue", "CONTINUE"])
+        // Welcome screen: GitHub sign-in, the other-ways entry and the demo
+        // link are all labelled buttons on the first screen.
         XCTAssertTrue(
-            continueButton.waitForExistence(timeout: 10),
-            "Onboarding forward action should be discoverable as a labelled button"
+            button(app, labels: ["Continue with GitHub"]).waitForExistence(timeout: 10),
+            "Welcome should offer GitHub sign-in directly"
         )
+        let otherWays = button(app, labels: ["SSH, token or another host"])
+        XCTAssertTrue(otherWays.exists, "Welcome should offer SSH, token or another host")
         XCTAssertTrue(
-            button(app, labels: ["Skip", "SKIP"]).exists,
-            "Onboarding Skip escape hatch should be discoverable as a labelled button"
+            button(app, labels: ["Look around with a demo vault →"]).exists,
+            "First-run demo affordance should be discoverable as a labelled button"
         )
-        XCTAssertTrue(
-            app.staticTexts["YOUR REPOS, ON YOUR IPHONE"].exists,
-            "First onboarding slide subtitle should be exposed to accessibility"
-        )
+        otherWays.tap()
 
-        advanceOnboardingToSignIn(
-            in: app,
-            expectingSlideSubtitles: ["MARKDOWN-FIRST WORKFLOW", "BRANCHES, DIFFS, HISTORY"]
-        )
-
-        // The final sign-in step exposes each auth choice as a labelled button.
+        // The other-ways step exposes each auth choice as a labelled button.
         XCTAssertTrue(
-            button(app, labels: ["Personal Access Token", "PERSONAL ACCESS TOKEN"]).exists,
+            button(app, labels: ["Personal Access Token", "PERSONAL ACCESS TOKEN"]).waitForExistence(timeout: 8),
             "PAT sign-in option should be discoverable as a labelled button"
         )
         XCTAssertTrue(
             button(app, labels: ["Continue without GitHub", "CONTINUE WITHOUT GITHUB"]).exists,
             "Continue-without-GitHub option should be discoverable as a labelled button"
-        )
-        XCTAssertTrue(
-            button(app, labels: ["Try Demo", "TRY DEMO"]).exists,
-            "First-run Try Demo affordance should be discoverable as a labelled button"
         )
 
         let continueWithout = button(app, labels: ["Continue without GitHub", "CONTINUE WITHOUT GITHUB"])
@@ -321,11 +638,11 @@ final class SyncMDUITests: XCTestCase {
             "Completing onboarding should land in the repository list"
         )
         XCTAssertTrue(
-            app.buttons["Sign In"].exists,
+            app.buttons["Sign in with GitHub"].exists,
             "Signed-out repo list should expose the Sign In toolbar action"
         )
         XCTAssertTrue(
-            app.staticTexts["NO REPOSITORIES"].exists || app.staticTexts["No Repositories"].exists,
+            app.staticTexts["No vaults yet."].exists,
             "Empty repo list state should be exposed to accessibility"
         )
     }
@@ -351,35 +668,19 @@ final class SyncMDUITests: XCTestCase {
         )
         let pushToggle = backgroundSyncSwitch(
             in: app,
-            labelPrefix: "Commit and push local changes"
+            labelPrefix: "Commit & push mine"
         )
 
-        // First consent request is cancelled: the branded modal disappears,
-        // global mode remains off, and action controls remain unavailable.
-        tapWhenHittable(globalToggle, in: app, message: "Enable Background Sync toggle should be tappable")
-        assertBrandedConfirmation(
-            title: "Enable Background Sync for all repositories?",
-            in: app
-        )
-        tapFirstHittableButton(labeled: "Cancel", in: app)
-        XCTAssertTrue(
-            waitUntil(timeout: 5) {
-                !app.staticTexts["Enable Background Sync for all repositories?"].exists
-            },
-            "Cancelling should dismiss the Background Sync confirmation"
-        )
-        assertSwitch(globalToggle, isOn: false, "Cancelling global consent should leave Background Sync off")
+        // First consent request is declined with "Not now": the sheet goes
+        // away, global mode remains off, and action controls stay unavailable.
+        cancelBackgroundSyncTurnOn(in: app)
+        assertBackgroundSyncOff(in: app, "Declining the sheet should leave Background Sync off")
         XCTAssertFalse(pullToggle.exists, "Pull control should stay hidden after cancelled global consent")
         XCTAssertFalse(pushToggle.exists, "Push control should stay hidden after cancelled global consent")
 
         // Confirming global consent starts with fail-closed publishing:
         // automatic pull on, automatic commit/push off.
-        tapWhenHittable(globalToggle, in: app, message: "Enable Background Sync toggle should remain tappable")
-        assertBrandedConfirmation(
-            title: "Enable Background Sync for all repositories?",
-            in: app
-        )
-        tapFirstHittableButton(labeled: "Enable Background Sync", in: app)
+        globalToggle = turnOnBackgroundSync(in: app)
         assertSwitch(globalToggle, isOn: true, "Confirming should enable Background Sync")
         XCTAssertTrue(
             reveal(pullToggle, in: app),
@@ -464,7 +765,7 @@ final class SyncMDUITests: XCTestCase {
         )
         let persistedPushToggle = backgroundSyncSwitch(
             in: app,
-            labelPrefix: "Commit and push local changes"
+            labelPrefix: "Commit & push mine"
         )
         assertSwitch(globalToggle, isOn: true, "Global Background Sync should persist across relaunch")
         XCTAssertTrue(reveal(persistedPullToggle, in: app), "Persisted pull control should be visible")
@@ -490,27 +791,14 @@ final class SyncMDUITests: XCTestCase {
             waitUntil(timeout: 5) { !persistedPullToggle.exists && !persistedPushToggle.exists },
             "Global disable should remove both reset action controls"
         )
-        XCTAssertTrue(
-            reveal(
-                app.staticTexts[
-                    "Background Sync is off. Manual Git, Shortcuts, callbacks, and local repository features are unchanged."
-                ],
-                in: app
-            ),
-            "Global disable should expose the stable off-state copy"
-        )
+        assertBackgroundSyncOff(in: app, "Global disable should return to the Turn on Background Sync state")
 
         // Reopen after the conditional pull/push rows collapse. This gives
-        // XCUITest a fresh switch snapshot instead of tapping through a
+        // XCUITest a fresh snapshot instead of tapping through a
         // just-mutated scroll hierarchy.
-        globalToggle = reopenBackgroundSyncFromAppSettings(in: app)
-        assertSwitch(globalToggle, isOn: false, "Global disable should persist across reopening the sheet")
-        tapWhenHittable(globalToggle, in: app, message: "Disabled global toggle should be re-enableable")
-        assertBrandedConfirmation(
-            title: "Enable Background Sync for all repositories?",
-            in: app
-        )
-        tapFirstHittableButton(labeled: "Enable Background Sync", in: app)
+        _ = reopenBackgroundSyncFromAppSettings(in: app)
+        assertBackgroundSyncOff(in: app, "Global disable should persist across reopening the sheet")
+        globalToggle = turnOnBackgroundSync(in: app)
         assertSwitch(globalToggle, isOn: true, "Background Sync should re-enable")
         XCTAssertTrue(reveal(persistedPullToggle, in: app), "Re-enabled pull control should return")
         assertSwitch(persistedPullToggle, isOn: true, "Re-enable should restore the safe pull-on default")
@@ -555,21 +843,21 @@ final class SyncMDUITests: XCTestCase {
 
         // Verify the fixture arrived under the normalized global-off gate
         // before opening its repository settings.
-        let fixtureGlobalToggle = openBackgroundSyncSettings(in: app)
-        assertSwitch(fixtureGlobalToggle, isOn: false, "Fixture should start with global mode off")
+        _ = openBackgroundSyncSettings(in: app)
+        assertBackgroundSyncOff(in: app, "Fixture should start with global mode off")
         XCTAssertFalse(
             backgroundSyncSwitch(in: app, labelPrefix: "Pull remote changes").exists,
             "Global-off fixture should expose no automatic pull control"
         )
         XCTAssertFalse(
-            backgroundSyncSwitch(in: app, labelPrefix: "Commit and push local changes").exists,
+            backgroundSyncSwitch(in: app, labelPrefix: "Commit & push mine").exists,
             "Global-off fixture should expose no automatic push control"
         )
         closeBackgroundSyncAndAppSettings(in: app)
 
         tap("conflict-fixture", in: app)
         XCTAssertTrue(
-            app.staticTexts["REPO HEALTH"].waitForExistence(timeout: 10),
+            app.staticTexts["vault.title"].waitForExistence(timeout: 10),
             "Seeded local repository should open without a Git action"
         )
 
@@ -579,7 +867,7 @@ final class SyncMDUITests: XCTestCase {
         assertSwitch(inclusionToggle, isOn: false, "Repository should be locally excluded")
         tapFirstHittableButton(labeled: "Save", in: app)
         XCTAssertTrue(
-            app.staticTexts["REPO HEALTH"].waitForExistence(timeout: 15),
+            app.staticTexts["vault.title"].waitForExistence(timeout: 15),
             "Saving exclusion should dismiss back to the repository"
         )
 
@@ -589,7 +877,7 @@ final class SyncMDUITests: XCTestCase {
         assertSwitch(inclusionToggle, isOn: true, "Repository inclusion should restore locally")
         tapFirstHittableButton(labeled: "Save", in: app)
         XCTAssertTrue(
-            app.staticTexts["REPO HEALTH"].waitForExistence(timeout: 15),
+            app.staticTexts["vault.title"].waitForExistence(timeout: 15),
             "Saving restored inclusion should dismiss back to the repository"
         )
 
@@ -597,7 +885,7 @@ final class SyncMDUITests: XCTestCase {
         assertSwitch(inclusionToggle, isOn: true, "Restored inclusion should persist after reopening Settings")
         tapFirstHittableButton(labeled: "Cancel", in: app)
         XCTAssertTrue(
-            app.staticTexts["REPO HEALTH"].waitForExistence(timeout: 10),
+            app.staticTexts["vault.title"].waitForExistence(timeout: 10),
             "Cancel should close the final read-only Settings check"
         )
 
@@ -608,14 +896,14 @@ final class SyncMDUITests: XCTestCase {
             "Fixture should remain listed after restoring inclusion"
         )
 
-        let finalGlobalToggle = openBackgroundSyncSettings(in: app)
-        assertSwitch(finalGlobalToggle, isOn: false, "Per-repository test must leave global mode off")
+        _ = openBackgroundSyncSettings(in: app)
+        assertBackgroundSyncOff(in: app, "Per-repository test must leave global mode off")
         XCTAssertFalse(
             backgroundSyncSwitch(in: app, labelPrefix: "Pull remote changes").exists,
             "Per-repository cleanup should leave automatic pull unavailable"
         )
         XCTAssertFalse(
-            backgroundSyncSwitch(in: app, labelPrefix: "Commit and push local changes").exists,
+            backgroundSyncSwitch(in: app, labelPrefix: "Commit & push mine").exists,
             "Per-repository cleanup should leave automatic push unavailable"
         )
         closeBackgroundSyncAndAppSettings(in: app)
@@ -638,13 +926,13 @@ final class SyncMDUITests: XCTestCase {
         app.launch()
 
         tap("second-brain", in: app)
-        tap("Browse Files", in: app)
+        openFilesTab(in: app)
         tap("projects", in: app)
         tap("app-launch.md", in: app)
 
         // Editor chrome is discoverable by accessibility label.
         XCTAssertTrue(
-            app.staticTexts["APP-LAUNCH.MD"].waitForExistence(timeout: 10),
+            app.staticTexts["app-launch.md"].waitForExistence(timeout: 10),
             "Editor should expose the open file's name as its title"
         )
         let save = app.buttons["Save"]
@@ -711,6 +999,43 @@ final class SyncMDUITests: XCTestCase {
 
     // MARK: - Repo Clone Flow (Issue #19)
 
+    /// Navigation alone exposes the publication scope and separate consent
+    /// flow. The signed-out local fixture makes no GitHub requests, and this
+    /// test intentionally never opens Files or starts a publication operation.
+    func testPublishFolderEntryExplainsVisibilityChoiceBeforeFolderSelection() {
+        let app = XCUIApplication()
+        app.launchArguments = signedOutLaunchArguments(extra: ["-UITestCloneFixture"])
+        app.launch()
+        finishSignedOutEmptyLaunch(in: app)
+
+        let addRepository = app.buttons["home.addRepository"].firstMatch
+        tapWhenHittable(addRepository, in: app, message: "Add Repository should open the folder publication entry")
+        XCTAssertTrue(app.staticTexts["Add a vault"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["Open a repo folder"].exists, "Existing Git repositories retain their separate entry")
+
+        let publication = app.buttons["addRepository.publishFolder"]
+        tapWhenHittable(publication, in: app, message: "Publish a Folder should be discoverable separately from opening a repository")
+        
+        let chooseFolder = app.buttons["folderPublication.chooseFolder"]
+        XCTAssertTrue(chooseFolder.waitForExistence(timeout: 5))
+        XCTAssertTrue(chooseFolder.isEnabled, "Folder selection should be available before signing in")
+        let scope = app.staticTexts["folderPublication.scope"]
+        XCTAssertTrue(scope.exists)
+        XCTAssertTrue(scope.label.contains("public or private repository"))
+        XCTAssertTrue(scope.label.contains("personal GitHub account"))
+        XCTAssertTrue(scope.label.contains("Nothing is uploaded until you tap"), "Opening this screen must not imply upload consent")
+        XCTAssertTrue(app.staticTexts["folderPublication.localFiles"].label.contains("original folder"))
+        XCTAssertFalse(app.buttons["folderPublication.prepare"].exists)
+        XCTAssertFalse(app.buttons["folderPublication.publish"].exists, "No upload action is available before reviewing and preparing a folder")
+        XCTAssertFalse(app.alerts["Error"].exists)
+        attachScreenshot("Publish a Folder introduction", in: app)
+
+        app.buttons["folderPublication.close"].tap()
+        XCTAssertTrue(app.staticTexts["Add a vault"].waitForExistence(timeout: 5))
+        tapFirstHittableButton(labeled: "Cancel", in: app)
+        XCTAssertTrue(app.staticTexts["No vaults yet."].waitForExistence(timeout: 5), "Closing the publication entry must not register a repository")
+    }
+
     /// Issue #19 clone-flow slice: from the signed-out repo list, add a
     /// repository by manual `file://` URL pointing at the `-UITestCloneFixture`
     /// bare remote (a REAL git repository seeded under /tmp), with `none`
@@ -729,7 +1054,7 @@ final class SyncMDUITests: XCTestCase {
 
         // Seeding completes in ContentView.onAppear, which may briefly flash
         // onboarding before the seeded (onboarded) state lands.
-        if button(app, labels: ["Skip", "SKIP"]).waitForExistence(timeout: 3) {
+        if button(app, labels: ["SSH, token or another host"]).waitForExistence(timeout: 3) {
             completeOnboardingIfPresent(in: app)
             continueWithoutGitHubIfPresent(in: app)
         }
@@ -737,12 +1062,10 @@ final class SyncMDUITests: XCTestCase {
         // Signed-out empty repo list exposes its copy and Add action by label
         // (the label varies if a "previously cloned" ghost row is present).
         XCTAssertTrue(
-            app.staticTexts["NO REPOSITORIES"].waitForExistence(timeout: 10),
+            app.staticTexts["No vaults yet."].waitForExistence(timeout: 10),
             "Seeded signed-out repo list should expose the empty state copy"
         )
-        let addRepository = app.buttons.matching(
-            NSPredicate(format: "label CONTAINS 'ADD' AND label CONTAINS 'REPOSITORY'")
-        ).firstMatch
+        let addRepository = app.buttons["home.addRepository"].firstMatch
         XCTAssertTrue(
             addRepository.waitForExistence(timeout: 10),
             "Repo list should expose the Add Repository action as a labelled button"
@@ -752,29 +1075,23 @@ final class SyncMDUITests: XCTestCase {
 
         // AddRepoView chrome is discoverable by label.
         XCTAssertTrue(
-            app.staticTexts["ADD REPOSITORY"].waitForExistence(timeout: 10),
+            app.staticTexts["Add a vault"].waitForExistence(timeout: 10),
             "Add Repository sheet should expose its titled chrome"
         )
-        let enterURL = app.staticTexts["ENTER URL MANUALLY"]
-        XCTAssertTrue(
-            enterURL.waitForExistence(timeout: 10),
-            "Manual URL entry affordance should be discoverable by label"
-        )
-        for _ in 0..<4 where !enterURL.isHittable { app.swipeUp() }
-        enterURL.tap()
-
-        // Type the local file remote. `GitRemoteURL.parse` accepts file://
-        // URLs, so the INVALID URL badge must stay absent.
-        let urlField = app.textFields.firstMatch
+        // Paste the local file remote into "Or paste a URL" and continue.
+        // `GitRemoteURL.parse` accepts file:// URLs, so no invalid-URL note appears.
+        let urlField = app.textFields["addRepository.url"]
         XCTAssertTrue(
             urlField.waitForExistence(timeout: 10),
-            "Manual URL entry should expose a text field"
+            "Manual URL entry should expose a labelled text field"
         )
+        for _ in 0..<4 where !urlField.isHittable { app.swipeUp() }
         urlField.tap()
         urlField.typeText("file:///tmp/syncmd-uitest-fixtures/bare-remote.git")
-        urlField.typeText("\n") // dismiss the keyboard for the sections below
+        urlField.typeText("\n") // submits the URL and moves to the remote step
         XCTAssertFalse(
-            app.staticTexts["INVALID URL"].waitForExistence(timeout: 1),
+            app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH %@", "Invalid URL")).firstMatch
+                .waitForExistence(timeout: 1),
             "A file:// remote URL should validate"
         )
 
@@ -785,12 +1102,13 @@ final class SyncMDUITests: XCTestCase {
             app.staticTexts["BRANCH"].waitForExistence(timeout: 10),
             "Configuration section should expose the Branch field label"
         )
-        let noAuthentication = app.staticTexts["No Authentication"]
+        let noAuthentication = app.buttons["None"]
         XCTAssertTrue(
             noAuthentication.waitForExistence(timeout: 10),
-            "Credential-free (No Authentication) method should be discoverable by label"
+            "Credential-free (None) sign-in method should be discoverable by label"
         )
         for _ in 0..<6 where !noAuthentication.isHittable { app.swipeUp() }
+        noAuthentication.tap()
         XCTAssertTrue(
             app.staticTexts["CLONE TO"].exists,
             "Clone location section should be exposed to accessibility"
@@ -798,9 +1116,7 @@ final class SyncMDUITests: XCTestCase {
 
         // Submit: Add & Clone Repository runs a real libgit2 clone against the
         // local bare remote with `none` credentials.
-        let addAndClone = app.buttons.matching(
-            NSPredicate(format: "label CONTAINS %@", "ADD & CLONE REPOSITORY")
-        ).firstMatch
+        let addAndClone = app.buttons["addRepository.addAndClone"]
         XCTAssertTrue(
             addAndClone.waitForExistence(timeout: 10),
             "Add & Clone action should be discoverable as a labelled button"
@@ -838,10 +1154,10 @@ final class SyncMDUITests: XCTestCase {
         // The cloned repo opens with its health card and file browser, and the
         // cloned files are browsable — proving the clone wrote real content.
         XCTAssertTrue(
-            app.staticTexts["REPO HEALTH"].waitForExistence(timeout: 10),
+            app.staticTexts["vault.title"].waitForExistence(timeout: 10),
             "Cloned repo should land in the vault view"
         )
-        tap("Browse Files", in: app)
+        openFilesTab(in: app)
         XCTAssertTrue(
             app.staticTexts["README.md"].waitForExistence(timeout: 10),
             "File browser should list the cloned README.md"
@@ -874,32 +1190,23 @@ final class SyncMDUITests: XCTestCase {
         // Seeded divergent repo is in the list; open it.
         tap("conflict-fixture", in: app)
         XCTAssertTrue(
-            app.staticTexts["REPO HEALTH"].waitForExistence(timeout: 10),
+            app.staticTexts["vault.title"].waitForExistence(timeout: 10),
             "Seeded repo should open into the vault view"
         )
 
-        // Pull against the local bare remote classifies the fixture as
-        // diverged and surfaces Merge/Rebase controls by label.
-        tap("Pull", in: app)
+        // The vault reads the fixture's ahead/behind on open and shows the
+        // diverged state up front, with "Bring theirs in" (merge) and Rebase.
+        let merge = app.buttons["Bring theirs in"].firstMatch
         XCTAssertTrue(
-            app.staticTexts[
-                "Local and remote have diverged. Merge support is required to continue."
-            ].waitForExistence(timeout: 20),
-            "Pull on the diverged fixture should surface the diverged outcome"
-        )
-        let merge = app.buttons["MERGE"]
-        XCTAssertTrue(
-            merge.waitForExistence(timeout: 10),
-            "Diverged banner should expose the Merge action as a labelled button"
+            merge.waitForExistence(timeout: 20),
+            "Diverged vault should offer Bring theirs in as a labelled button"
         )
         XCTAssertTrue(
-            app.buttons["REBASE"].exists,
-            "Diverged banner should expose the Rebase action as a labelled button"
+            app.buttons["Rebase"].firstMatch.exists,
+            "Diverged vault should offer Rebase as a labelled button"
         )
 
         // Merging the diverged fixture produces a genuine conflict session.
-        // (The banner can appear while the pull's progress delay still holds
-        // isSyncing, so wait for enabled, not merely hittable.)
         let mergeReady = XCTNSPredicateExpectation(
             predicate: NSPredicate(format: "isEnabled == true AND isHittable == true"),
             object: merge
@@ -907,7 +1214,7 @@ final class SyncMDUITests: XCTestCase {
         XCTAssertEqual(
             XCTWaiter().wait(for: [mergeReady], timeout: 10),
             .completed,
-            "Merge action should become enabled and tappable"
+            "Bring theirs in should become enabled and tappable"
         )
         merge.tap()
         XCTAssertTrue(
@@ -920,105 +1227,59 @@ final class SyncMDUITests: XCTestCase {
         // The conflicted file is listed; its row exposes the conflict state
         // through its accessibility label (path + status summary + CONFLICT
         // badge are combined by SwiftUI into the row button's label).
-        let conflictedRow = app.staticTexts["notes/shared.md"]
-        XCTAssertTrue(
-            conflictedRow.waitForExistence(timeout: 10),
-            "Conflicted file should be listed in Changed Files"
-        )
         let conflictedRowButton = app.buttons.matching(
             NSPredicate(format: "label BEGINSWITH %@", "notes/shared.md,")
         ).firstMatch
         XCTAssertTrue(
-            conflictedRowButton.exists,
-            "Conflicted file row should be discoverable as a labelled element"
+            conflictedRowButton.waitForExistence(timeout: 10),
+            "Conflicted file should be listed in Changes as a labelled row"
         )
         XCTAssertTrue(
-            conflictedRowButton.label.contains("CONFLICT"),
-            "Conflicted file row should expose its Conflict badge by label (got: \(conflictedRowButton.label))"
+            conflictedRowButton.label.localizedCaseInsensitiveContains("conflict"),
+            "Conflicted file row should expose its conflict state by label (got: \(conflictedRowButton.label))"
         )
 
         // Open the resolver by tapping the conflicted file.
-        tap("notes/shared.md", in: app)
+        for _ in 0..<4 where !conflictedRowButton.isHittable { app.swipeUp() }
+        conflictedRowButton.tap()
 
-        // Resolver chrome and both sides are discoverable by label.
+        // Both versions are discoverable by label.
         XCTAssertTrue(
-            app.staticTexts["RESOLVE CONFLICT"].waitForExistence(timeout: 10),
-            "Conflict editor should expose its titled chrome"
+            app.staticTexts["This iPhone"].waitForExistence(timeout: 10),
+            "This iPhone's version should be discoverable by label"
         )
-        XCTAssertTrue(
-            app.staticTexts["OURS"].waitForExistence(timeout: 10),
-            "Ours pane should be discoverable by label"
-        )
-        XCTAssertTrue(
-            app.staticTexts["THEIRS"].exists,
-            "Theirs pane should be discoverable by label"
-        )
-        XCTAssertTrue(
-            app.staticTexts["your version"].exists,
-            "Ours pane should expose its descriptive subtitle"
-        )
-        XCTAssertTrue(
-            app.staticTexts["remote version"].exists,
-            "Theirs pane should expose its descriptive subtitle"
-        )
-        XCTAssertTrue(
-            app.buttons["USE THIS"].firstMatch.exists,
-            "Per-pane USE THIS pickers should be discoverable by label"
-        )
-        XCTAssertTrue(
-            app.staticTexts["RESULT"].exists,
-            "Result editor section should be exposed to accessibility"
-        )
-        XCTAssertTrue(
-            app.buttons["USE OURS"].exists,
-            "USE OURS picker should be discoverable by label"
-        )
-        XCTAssertTrue(
-            app.buttons["USE THEIRS"].exists,
-            "USE THEIRS picker should be discoverable by label"
-        )
+        // A file:// remote has no hosting service name, so its side reads "Remote".
+        XCTAssertTrue(app.staticTexts["Remote"].exists, "Remote version should be discoverable by label")
+        XCTAssertTrue(app.buttons["Keep both"].exists, "Each conflicting section offers Keep both")
+        XCTAssertTrue(app.buttons["Keep this iPhone's version"].exists, "Ours picker should be labelled")
+        XCTAssertTrue(app.buttons["Edit by hand"].exists, "Manual resolution should stay available")
 
-        // Resolve by explicitly taking theirs (which differs from HEAD, so the
-        // staged resolution surfaces as a change), then confirm via the modal.
-        let useTheirs = app.buttons["USE THEIRS"]
+        // Resolve by keeping the remote version (which differs from HEAD, so
+        // the staged resolution surfaces as a change); it opens the confirmation.
+        let useTheirs = app.buttons["Keep the remote version"]
+        XCTAssertTrue(useTheirs.exists, "Theirs picker should be labelled")
         for _ in 0..<6 where !useTheirs.isHittable { app.swipeUp() }
         useTheirs.tap()
 
-        let resolve = app.buttons["RESOLVE"]
         XCTAssertTrue(
-            resolve.waitForExistence(timeout: 10),
-            "Conflict editor should expose the Resolve action as a labelled button"
-        )
-        let resolveEnabled = XCTNSPredicateExpectation(
-            predicate: NSPredicate(format: "isEnabled == true"),
-            object: resolve
-        )
-        XCTAssertEqual(
-            XCTWaiter().wait(for: [resolveEnabled], timeout: 10),
-            .completed,
-            "Resolve should be enabled for a text conflict"
-        )
-        resolve.tap()
-
-        XCTAssertTrue(
-            app.staticTexts["MARK AS RESOLVED?"].waitForExistence(timeout: 10),
+            app.staticTexts["Mark as resolved?"].waitForExistence(timeout: 10),
             "Resolve should present a discoverable confirmation modal"
         )
         // The toolbar RESOLVE and the modal's confirm share a label; the modal
         // button sits below the navigation bar, so pick the lower match.
-        tapLowermostButton(labeled: "RESOLVE", in: app)
+        tapLowermostButton(labeled: "Resolve", in: app)
 
         // Resolution completes and dismisses back to the vault view. The
         // stable end state: the conflict is cleared (staged), verified via the
         // Git sheet's Conflict Center.
         XCTAssertTrue(
-            app.staticTexts["REPO HEALTH"].waitForExistence(timeout: 15),
+            app.staticTexts["vault.title"].waitForExistence(timeout: 15),
             "Resolving should dismiss back to the vault view"
         )
         // The staged resolution is an async change scan away; wait until the
         // Commit & Push row is actually enabled before opening the Git sheet.
         let commitPush = app.buttons.matching(
-            NSPredicate(format: "label CONTAINS %@", "Commit & Push")
+            NSPredicate(format: "label CONTAINS[c] %@", "Commit & push")
         ).firstMatch
         XCTAssertTrue(
             commitPush.waitForExistence(timeout: 10),
@@ -1033,11 +1294,15 @@ final class SyncMDUITests: XCTestCase {
             .completed,
             "Commit & Push should become enabled once the staged resolution is scanned"
         )
-        for _ in 0..<4 where !commitPush.isHittable { app.swipeUp() }
-        commitPush.tap()
+        // Commit & push now opens the commit sheet; the Conflict Center
+        // lives in Git Tools.
+        openGitTab(in: app)
+        let tools = app.buttons["Git Tools"]
+        XCTAssertTrue(reveal(tools, in: app), "Git Tools should stay reachable from the Git tab")
+        tools.tap()
         XCTAssertTrue(
             app.navigationBars.staticTexts["Git Tools"].waitForExistence(timeout: 10),
-            "Commit & Push should open the Git control sheet"
+            "Git Tools should open the Git control sheet"
         )
 
         let allResolved = app.staticTexts["All conflicts resolved. Complete or abort the merge."]
@@ -1051,9 +1316,58 @@ final class SyncMDUITests: XCTestCase {
             "Conflict Center should report all conflicts resolved after the keep-theirs resolution"
         )
         XCTAssertTrue(
-            app.buttons["ABORT MERGE"].exists,
+            app.buttons["Abort merge"].exists,
             "Conflict Center should keep the Abort Merge escape hatch discoverable by label"
         )
+    }
+
+    func testConflictManualDraftSurvivesRepeatedEntryAndCancelledResolution() {
+        let app = XCUIApplication()
+        app.launchArguments = signedOutLaunchArguments(extra: ["-UITestConflictFixture"])
+        app.launch()
+        tap("conflict-fixture", in: app)
+        let merge = app.buttons["Bring theirs in"]
+        tapWhenHittable(merge, in: app, message: "Fixture should offer a local merge")
+        let row = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "notes/shared.md,")).firstMatch
+        XCTAssertTrue(reveal(row, in: app))
+        row.tap()
+
+        let manual = app.buttons["Edit by hand"]
+        XCTAssertTrue(reveal(manual, in: app))
+        manual.tap()
+        let result = app.textViews.firstMatch
+        XCTAssertTrue(reveal(result, in: app))
+        result.tap()
+        result.typeText("\nQA manual draft 20261107\n")
+        let draft = result.value as? String
+        XCTAssertTrue(draft?.contains("QA manual draft 20261107") == true)
+
+        // This used to remain visible and silently regenerate the result.
+        if manual.exists {
+            XCTAssertTrue(reveal(manual, in: app))
+            manual.tap()
+        }
+        XCTAssertEqual(result.value as? String, draft, "Entering manual mode again must not erase typed resolution text")
+        XCTAssertFalse(manual.exists, "The mode-entry action should disappear once editing")
+        XCTAssertFalse(app.buttons["Keep both"].isEnabled, "Section choices must not overwrite the manual draft")
+        XCTAssertFalse(app.buttons["Keep the remote version"].isEnabled)
+        XCTAssertFalse(app.buttons["Keep this iPhone's version"].isEnabled)
+
+        // Opening and cancelling confirmation must also retain the exact draft.
+        tapLowermostButton(labeled: "Resolve", in: app)
+        XCTAssertTrue(app.staticTexts["Mark as resolved?"].waitForExistence(timeout: 5))
+        app.buttons["Cancel"].firstMatch.tap()
+        XCTAssertEqual(result.value as? String, draft)
+        XCTAssertFalse(app.staticTexts["Mark as resolved?"].exists)
+
+        app.buttons["Abort"].firstMatch.tap()
+        let abort = app.buttons["Abort merge"]
+        XCTAssertTrue(abort.waitForExistence(timeout: 5))
+        abort.tap()
+        XCTAssertTrue(app.staticTexts["vault.title"].waitForExistence(timeout: 10))
+        XCTAssertTrue(app.buttons["Bring theirs in"].exists, "Aborting restores the original diverged state")
+        XCTAssertFalse(app.staticTexts["Merge has conflicts — tap a conflicted file to resolve"].exists,
+                       "A completed abort must not tell the user to resolve nonexistent conflicts")
     }
 
     // MARK: - Rebase Conflict Session (Issue #19)
@@ -1081,27 +1395,19 @@ final class SyncMDUITests: XCTestCase {
         // Seeded divergent repo is in the list; open it.
         tap("conflict-fixture", in: app)
         XCTAssertTrue(
-            app.staticTexts["REPO HEALTH"].waitForExistence(timeout: 10),
+            app.staticTexts["vault.title"].waitForExistence(timeout: 10),
             "Seeded repo should open into the vault view"
         )
 
-        // Pull against the local bare remote classifies the fixture as
-        // diverged (same banner the merge test asserts).
-        tap("Pull", in: app)
+        // The vault reads the fixture's ahead/behind on open and shows the
+        // diverged state up front, with Rebase next to "Bring theirs in".
+        let rebase = app.buttons["Rebase"].firstMatch
         XCTAssertTrue(
-            app.staticTexts[
-                "Local and remote have diverged. Merge support is required to continue."
-            ].waitForExistence(timeout: 20),
-            "Pull on the diverged fixture should surface the diverged outcome"
-        )
-        let rebase = app.buttons["REBASE"]
-        XCTAssertTrue(
-            rebase.waitForExistence(timeout: 10),
-            "Diverged banner should expose the Rebase action as a labelled button"
+            rebase.waitForExistence(timeout: 20),
+            "Diverged vault should expose the Rebase action as a labelled button"
         )
 
-        // The banner can appear while the pull's trailing progress delay still
-        // holds isSyncing, so wait for enabled, not merely hittable.
+        // Wait for enabled, not merely hittable, while the open-time refresh runs.
         let rebaseReady = XCTNSPredicateExpectation(
             predicate: NSPredicate(format: "isEnabled == true AND isHittable == true"),
             object: rebase
@@ -1125,81 +1431,58 @@ final class SyncMDUITests: XCTestCase {
         // The conflicted file is listed; its row exposes the conflict state
         // through its combined accessibility label (same technique as the
         // merge test).
-        let conflictedRow = app.staticTexts["notes/shared.md"]
-        XCTAssertTrue(
-            conflictedRow.waitForExistence(timeout: 10),
-            "Conflicted file should be listed in Changed Files during the rebase session"
-        )
         let conflictedRowButton = app.buttons.matching(
             NSPredicate(format: "label BEGINSWITH %@", "notes/shared.md,")
         ).firstMatch
         XCTAssertTrue(
-            conflictedRowButton.exists,
-            "Conflicted file row should be discoverable as a labelled element"
+            conflictedRowButton.waitForExistence(timeout: 10),
+            "Conflicted file should be listed in Changes as a labelled row"
         )
         XCTAssertTrue(
-            conflictedRowButton.label.contains("CONFLICT"),
-            "Conflicted file row should expose its Conflict badge by label (got: \(conflictedRowButton.label))"
+            conflictedRowButton.label.localizedCaseInsensitiveContains("conflict"),
+            "Conflicted file row should expose its conflict state by label (got: \(conflictedRowButton.label))"
         )
 
-        // Open the resolver and drive the SAME resolution path as the merge
-        // test: take theirs explicitly, resolve, confirm via the modal.
-        tap("notes/shared.md", in: app)
-        XCTAssertTrue(
-            app.staticTexts["RESOLVE CONFLICT"].waitForExistence(timeout: 10),
-            "Conflict editor should expose its titled chrome"
-        )
-        XCTAssertTrue(
-            app.staticTexts["OURS"].waitForExistence(timeout: 10),
-            "Ours pane should be discoverable by label"
-        )
-        XCTAssertTrue(
-            app.staticTexts["THEIRS"].exists,
-            "Theirs pane should be discoverable by label"
-        )
+        // Open the resolver by tapping the conflicted file.
+        for _ in 0..<4 where !conflictedRowButton.isHittable { app.swipeUp() }
+        conflictedRowButton.tap()
 
-        let useTheirs = app.buttons["USE THEIRS"]
+        // Both versions are discoverable by label.
         XCTAssertTrue(
-            useTheirs.waitForExistence(timeout: 10),
-            "USE THEIRS picker should be discoverable by label"
+            app.staticTexts["This iPhone"].waitForExistence(timeout: 10),
+            "This iPhone's version should be discoverable by label"
         )
+        // A file:// remote has no hosting service name, so its side reads "Remote".
+        XCTAssertTrue(app.staticTexts["Remote"].exists, "Remote version should be discoverable by label")
+        XCTAssertTrue(app.buttons["Keep both"].exists, "Each conflicting section offers Keep both")
+        XCTAssertTrue(app.buttons["Keep this iPhone's version"].exists, "Ours picker should be labelled")
+        XCTAssertTrue(app.buttons["Edit by hand"].exists, "Manual resolution should stay available")
+
+        // Resolve by keeping the remote version (which differs from HEAD, so
+        // the staged resolution surfaces as a change); it opens the confirmation.
+        let useTheirs = app.buttons["Keep the remote version"]
+        XCTAssertTrue(useTheirs.exists, "Theirs picker should be labelled")
         for _ in 0..<6 where !useTheirs.isHittable { app.swipeUp() }
         useTheirs.tap()
 
-        let resolve = app.buttons["RESOLVE"]
         XCTAssertTrue(
-            resolve.waitForExistence(timeout: 10),
-            "Conflict editor should expose the Resolve action as a labelled button"
-        )
-        let resolveEnabled = XCTNSPredicateExpectation(
-            predicate: NSPredicate(format: "isEnabled == true"),
-            object: resolve
-        )
-        XCTAssertEqual(
-            XCTWaiter().wait(for: [resolveEnabled], timeout: 10),
-            .completed,
-            "Resolve should be enabled for a text conflict"
-        )
-        resolve.tap()
-
-        XCTAssertTrue(
-            app.staticTexts["MARK AS RESOLVED?"].waitForExistence(timeout: 10),
+            app.staticTexts["Mark as resolved?"].waitForExistence(timeout: 10),
             "Resolve should present a discoverable confirmation modal"
         )
         // The toolbar RESOLVE and the modal's confirm share a label; the modal
         // button sits below the navigation bar, so pick the lower match.
-        tapLowermostButton(labeled: "RESOLVE", in: app)
+        tapLowermostButton(labeled: "Resolve", in: app)
 
         // Resolution completes and dismisses back to the vault view. Open the
         // Git control sheet via the vault's Commit & Push row (never tapped
         // inside the sheet); the staged theirs-resolution is an async change
         // scan away, so wait for the row to be enabled first (merge-test rule).
         XCTAssertTrue(
-            app.staticTexts["REPO HEALTH"].waitForExistence(timeout: 15),
+            app.staticTexts["vault.title"].waitForExistence(timeout: 15),
             "Resolving should dismiss back to the vault view"
         )
         let commitPush = app.buttons.matching(
-            NSPredicate(format: "label CONTAINS %@", "Commit & Push")
+            NSPredicate(format: "label CONTAINS[c] %@", "Commit & push")
         ).firstMatch
         XCTAssertTrue(
             commitPush.waitForExistence(timeout: 10),
@@ -1214,11 +1497,14 @@ final class SyncMDUITests: XCTestCase {
             .completed,
             "Commit & Push row should become enabled once the staged resolution is scanned"
         )
-        for _ in 0..<4 where !commitPush.isHittable { app.swipeUp() }
-        commitPush.tap()
+        // Commit & push opens the commit sheet; the Conflict Center lives in Git Tools.
+        openGitTab(in: app)
+        let tools = app.buttons["Git Tools"]
+        XCTAssertTrue(reveal(tools, in: app), "Git Tools should stay reachable from the Git tab")
+        tools.tap()
         XCTAssertTrue(
             app.navigationBars.staticTexts["Git Tools"].waitForExistence(timeout: 10),
-            "Commit & Push row should open the Git control sheet"
+            "Git Tools should open the Git control sheet"
         )
 
         // Rebase-flavored stable state: the Conflict Center reports all
@@ -1236,10 +1522,10 @@ final class SyncMDUITests: XCTestCase {
             "Conflict Center should report all conflicts resolved for the rebase session"
         )
         XCTAssertTrue(
-            app.buttons["CONTINUE REBASE"].firstMatch.exists,
+            app.buttons["Continue rebase"].firstMatch.exists,
             "Conflict Center should expose Continue Rebase as a labelled button"
         )
-        let abortRebase = app.buttons["ABORT REBASE"].firstMatch
+        let abortRebase = app.buttons["Abort rebase"].firstMatch
         XCTAssertTrue(
             abortRebase.exists,
             "Conflict Center should expose Abort Rebase as a labelled button"
@@ -1270,7 +1556,7 @@ final class SyncMDUITests: XCTestCase {
             "Aborting the rebase should clear the Conflict Center"
         )
         XCTAssertFalse(
-            app.buttons["ABORT REBASE"].exists,
+            app.buttons["Abort rebase"].exists,
             "Abort Rebase should disappear once the rebase session is cleared"
         )
 
@@ -1279,7 +1565,7 @@ final class SyncMDUITests: XCTestCase {
         // local and remote still diverge, nothing was merged or pushed).
         tapFirstHittableButton(labeled: "Close", in: app)
         XCTAssertTrue(
-            app.staticTexts["REPO HEALTH"].waitForExistence(timeout: 15),
+            app.staticTexts["vault.title"].waitForExistence(timeout: 15),
             "Vault should remain healthy after aborting the rebase"
         )
         XCTAssertTrue(
@@ -1318,7 +1604,7 @@ final class SyncMDUITests: XCTestCase {
         continueWithoutGitHubIfPresent(in: app)
 
         // Signed-out toolbar exposes both 44pt actions.
-        let signIn = app.buttons["Sign In"]
+        let signIn = app.buttons["Sign in with GitHub"]
         let appSettings = app.buttons["App Settings"]
         XCTAssertTrue(signIn.waitForExistence(timeout: 10), "Signed-out Sign In toolbar action should exist")
         XCTAssertTrue(appSettings.waitForExistence(timeout: 10), "Signed-out App Settings toolbar action should exist")
@@ -1373,7 +1659,7 @@ final class SyncMDUITests: XCTestCase {
         // Seeding completes in ContentView.onAppear, which may briefly flash
         // onboarding before the seeded (onboarded) state lands (clone-test
         // rule for the same launch-arg composition).
-        if button(app, labels: ["Skip", "SKIP"]).waitForExistence(timeout: 3) {
+        if button(app, labels: ["SSH, token or another host"]).waitForExistence(timeout: 3) {
             completeOnboardingIfPresent(in: app)
             continueWithoutGitHubIfPresent(in: app)
         }
@@ -1381,11 +1667,14 @@ final class SyncMDUITests: XCTestCase {
         // Open the seeded (signed-out, credential-free) repository.
         tap("conflict-fixture", in: app)
         XCTAssertTrue(
-            app.staticTexts["REPO HEALTH"].waitForExistence(timeout: 10),
+            app.staticTexts["vault.title"].waitForExistence(timeout: 10),
             "Seeded repo should open into the vault view"
         )
 
-        // The vault's Settings gear opens the per-repo SettingsView sheet.
+        // The vault's ⋯ menu opens the per-repo SettingsView sheet.
+        let moreOptions = app.buttons["More vault options"]
+        XCTAssertTrue(moreOptions.waitForExistence(timeout: 10), "Vault should expose its options menu")
+        moreOptions.tap()
         let settingsGear = app.buttons["Settings"]
         XCTAssertTrue(
             settingsGear.waitForExistence(timeout: 10),
@@ -1459,7 +1748,7 @@ final class SyncMDUITests: XCTestCase {
         // back in the vault, then the repo list still lists the fixture.
         tapFirstHittableButton(labeled: "Cancel", in: app)
         XCTAssertTrue(
-            app.staticTexts["REPO HEALTH"].waitForExistence(timeout: 15),
+            app.staticTexts["vault.title"].waitForExistence(timeout: 15),
             "Cancel should close the settings sheet back to the vault"
         )
         let back = app.navigationBars.firstMatch.buttons.element(boundBy: 0)
@@ -1505,19 +1794,15 @@ final class SyncMDUITests: XCTestCase {
             "App Settings should offer GitHub sign-in when signed out"
         )
 
-        // Scroll to the Push Sync section (below Background Sync).
-        var pushSyncHeaderFound = false
-        for _ in 0..<10 {
-            if app.staticTexts["PUSH SYNC"].exists {
-                pushSyncHeaderFound = true
-                break
-            }
-            app.swipeUp()
-        }
+        // Push Sync lives behind the "Push notifications from GitHub" row.
+        let pushRow = app.buttons.matching(
+            NSPredicate(format: "label BEGINSWITH %@", "Push notifications from GitHub")
+        ).firstMatch
         XCTAssertTrue(
-            pushSyncHeaderFound,
-            "App Settings should expose the global Push Sync section"
+            reveal(pushRow, in: app),
+            "App Settings should expose the Push notifications from GitHub row"
         )
+        pushRow.tap()
 
         let toggle = app.switches.matching(
             NSPredicate(format: "label BEGINSWITH %@", "Notify when GitHub changes")
@@ -1547,7 +1832,10 @@ final class SyncMDUITests: XCTestCase {
             "Global surface should state it covers all cloned GitHub repositories"
         )
 
-        // Close via Done and confirm the stable return to the repo list.
+        // Back out of the Push Sync screen, then close via Done and confirm
+        // the stable return to the repo list.
+        let back = app.buttons["BackButton"].firstMatch
+        if back.waitForExistence(timeout: 3) { back.tap() }
         tapFirstHittableButton(labeled: "Done", in: app)
         XCTAssertTrue(
             app.buttons["App Settings"].waitForExistence(timeout: 10),
@@ -1564,7 +1852,7 @@ final class SyncMDUITests: XCTestCase {
     }
 
     private func finishSignedOutEmptyLaunch(in app: XCUIApplication) {
-        let emptyState = app.staticTexts["NO REPOSITORIES"]
+        let emptyState = app.staticTexts["No vaults yet."]
         if !emptyState.waitForExistence(timeout: 3) {
             completeOnboardingIfPresent(in: app)
             continueWithoutGitHubIfPresent(in: app)
@@ -1577,7 +1865,7 @@ final class SyncMDUITests: XCTestCase {
     }
 
     private func finishConflictFixtureLaunch(in app: XCUIApplication) {
-        if button(app, labels: ["Skip", "SKIP"]).waitForExistence(timeout: 3) {
+        if button(app, labels: ["SSH, token or another host"]).waitForExistence(timeout: 3) {
             completeOnboardingIfPresent(in: app)
             continueWithoutGitHubIfPresent(in: app)
         }
@@ -1607,15 +1895,64 @@ final class SyncMDUITests: XCTestCase {
             "Background Sync settings should expose its Done toolbar control"
         )
 
+        // On: the global switch. Off: the "Turn on Background Sync" card,
+        // which opens the upgrade sheet instead of a switch.
         let globalToggle = backgroundSyncSwitch(
             in: app,
             labelPrefix: "Enable Background Sync"
         )
         XCTAssertTrue(
-            reveal(globalToggle, in: app),
-            "Background Sync settings should expose its global toggle by label"
+            waitUntil(timeout: 10) { globalToggle.exists || self.backgroundSyncTurnOnCard(in: app).exists },
+            "Background Sync settings should show its global switch or the Turn on card"
         )
         return globalToggle
+    }
+
+    private func backgroundSyncTurnOnCard(in app: XCUIApplication) -> XCUIElement {
+        app.buttons["backgroundSync.turnOn"].firstMatch
+    }
+
+    private func assertBackgroundSyncOff(in app: XCUIApplication, _ message: String) {
+        XCTAssertTrue(reveal(backgroundSyncTurnOnCard(in: app), in: app), message)
+        XCTAssertFalse(
+            backgroundSyncSwitch(in: app, labelPrefix: "Enable Background Sync").exists,
+            "\(message) (no global switch while off)"
+        )
+    }
+
+    /// Opens the upgrade sheet from the off state and declines with "Not now".
+    private func cancelBackgroundSyncTurnOn(in app: XCUIApplication) {
+        tapWhenHittable(backgroundSyncTurnOnCard(in: app), in: app, message: "Turn on Background Sync should be tappable")
+        let confirm = app.buttons["backgroundSyncUpgrade.turnOn"].firstMatch
+        XCTAssertTrue(confirm.waitForExistence(timeout: 10), "Turning on should present the Background Sync sheet")
+        tapFirstHittableButton(labeled: "Not now", in: app)
+        XCTAssertTrue(waitUntil(timeout: 5) { !confirm.exists }, "Not now should dismiss the Background Sync sheet")
+    }
+
+    /// Opens the upgrade sheet, confirms with its defaults (pull on, push
+    /// off) and answers the notification prompt it raises.
+    @discardableResult
+    private func turnOnBackgroundSync(in app: XCUIApplication) -> XCUIElement {
+        tapWhenHittable(backgroundSyncTurnOnCard(in: app), in: app, message: "Turn on Background Sync should be tappable")
+        let confirm = app.buttons["backgroundSyncUpgrade.turnOn"].firstMatch
+        XCTAssertTrue(confirm.waitForExistence(timeout: 10), "Turning on should present the Background Sync sheet")
+        tapWhenHittable(confirm, in: app, message: "The sheet's Turn on Background Sync should be tappable")
+        dismissNotificationPromptIfPresent()
+        let globalToggle = backgroundSyncSwitch(in: app, labelPrefix: "Enable Background Sync")
+        XCTAssertTrue(reveal(globalToggle, in: app), "Turning on should reveal the global switch")
+        return globalToggle
+    }
+
+    /// Background Sync asks for notification permission when it turns on.
+    private func dismissNotificationPromptIfPresent() {
+        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        for label in ["Don’t Allow", "Don't Allow"] {
+            let button = springboard.buttons[label]
+            if button.waitForExistence(timeout: 3) {
+                button.tap()
+                return
+            }
+        }
     }
 
     private func closeBackgroundSyncAndAppSettings(in app: XCUIApplication) {
@@ -1645,13 +1982,16 @@ final class SyncMDUITests: XCTestCase {
         )
         let globalToggle = backgroundSyncSwitch(in: app, labelPrefix: "Enable Background Sync")
         XCTAssertTrue(
-            reveal(globalToggle, in: app),
-            "Reopened Background Sync settings should expose its global toggle"
+            waitUntil(timeout: 10) { globalToggle.exists || self.backgroundSyncTurnOnCard(in: app).exists },
+            "Reopened Background Sync settings should show its global switch or the Turn on card"
         )
         return globalToggle
     }
 
     private func openRepositorySettingsAndRevealBackgroundSync(in app: XCUIApplication) -> XCUIElement {
+        // Vault settings live in the vault's ⋯ menu.
+        let menu = app.buttons["More vault options"].firstMatch
+        tapWhenHittable(menu, in: app, message: "The vault's options menu should be tappable by label")
         let settings = app.buttons["Settings"].firstMatch
         tapWhenHittable(settings, in: app, message: "Repository Settings should be tappable by label")
         XCTAssertTrue(
@@ -1679,34 +2019,27 @@ final class SyncMDUITests: XCTestCase {
     /// already appears off, it is enabled (with consent) and disabled once so
     /// stale hidden pull/push defaults cannot leak in from an earlier run.
     private func normalizeBackgroundSyncOff(globalToggle: XCUIElement, in app: XCUIApplication) {
-        guard waitUntil(timeout: 5, condition: { switchState(of: globalToggle) != nil }),
-              let initiallyOn = switchState(of: globalToggle) else {
-            XCTFail("Global Background Sync toggle should expose a readable value")
-            return
+        // Reach the on state first (through the sheet when off), then turn
+        // off: disabling resets both action preferences to known defaults.
+        var toggle = globalToggle
+        if !toggle.exists {
+            toggle = turnOnBackgroundSync(in: app)
         }
-
-        if !initiallyOn {
-            tapWhenHittable(globalToggle, in: app, message: "Global toggle should be tappable for normalization")
-            assertBrandedConfirmation(
-                title: "Enable Background Sync for all repositories?",
-                in: app
-            )
-            tapFirstHittableButton(labeled: "Enable Background Sync", in: app)
-            assertSwitch(globalToggle, isOn: true, "Normalization should reach the enabled state")
-        }
+        assertSwitch(toggle, isOn: true, "Normalization should reach the enabled state")
 
         setSwitchDirectly(
-            globalToggle,
+            toggle,
             to: false,
             in: app,
             message: "Normalization should finish with global mode off"
         )
         let pull = backgroundSyncSwitch(in: app, labelPrefix: "Pull remote changes")
-        let push = backgroundSyncSwitch(in: app, labelPrefix: "Commit and push local changes")
+        let push = backgroundSyncSwitch(in: app, labelPrefix: "Commit & push mine")
         XCTAssertTrue(
             waitUntil(timeout: 5) { !pull.exists && !push.exists },
             "Normalization should reset and remove both automatic action controls"
         )
+        assertBackgroundSyncOff(in: app, "Normalization should end on the Turn on Background Sync state")
     }
 
     private func assertBrandedConfirmation(title: String, in app: XCUIApplication) {
@@ -1759,7 +2092,11 @@ final class SyncMDUITests: XCTestCase {
 
         for attempt in 0..<3 {
             tapWhenHittable(element, in: app, message: message)
-            if waitUntil(timeout: 5, condition: { switchState(of: element) == expected }) {
+            // A switch that hides itself when turned off (Background Sync's
+            // global switch gives way to its Turn on card) counts as off.
+            if waitUntil(timeout: 5, condition: {
+                switchState(of: element) == expected || (!expected && !element.exists)
+            }) {
                 return true
             }
             if attempt < 2 {
@@ -1816,7 +2153,7 @@ final class SyncMDUITests: XCTestCase {
     }
 
     private func completeOnboardingIfPresent(in app: XCUIApplication) {
-        let skip = button(app, labels: ["Skip", "SKIP"])
+        let skip = button(app, labels: ["SSH, token or another host"])
         guard skip.waitForExistence(timeout: 8) else { return }
         for _ in 0..<4 where !skip.isHittable { app.swipeUp() }
         skip.tap()
@@ -1851,46 +2188,6 @@ final class SyncMDUITests: XCTestCase {
         return query.firstMatch
     }
 
-    /// Taps Continue / Get Started until the embedded sign-in step of the
-    /// onboarding paged flow is showing, asserting each informational slide's
-    /// subtitle while that page is current (TabView materializes only nearby
-    /// pages, so offscreen slides are not queryable afterwards). Works with or
-    /// without the optional Background Sync feature slide.
-    private func advanceOnboardingToSignIn(
-        in app: XCUIApplication,
-        expectingSlideSubtitles subtitles: [String]
-    ) {
-        let signInStep = button(app, labels: ["Sign in with GitHub", "SIGN IN WITH GITHUB"])
-        var pendingSubtitles = subtitles
-        var taps = 0
-        while !signInStep.exists, taps < 6 {
-            let advance = button(app, labels: ["Continue", "CONTINUE", "Get Started", "GET STARTED"])
-            XCTAssertTrue(
-                advance.exists,
-                "Onboarding slides should always expose a labelled forward control"
-            )
-            for _ in 0..<4 where !advance.isHittable { app.swipeUp() }
-            advance.tap()
-            taps += 1
-            if !pendingSubtitles.isEmpty {
-                let subtitle = pendingSubtitles.removeFirst()
-                XCTAssertTrue(
-                    app.staticTexts[subtitle].waitForExistence(timeout: 5),
-                    "Onboarding slide copy \(subtitle) should be exposed to accessibility while shown"
-                )
-            }
-            _ = signInStep.waitForExistence(timeout: 2)
-        }
-        XCTAssertTrue(
-            pendingSubtitles.isEmpty,
-            "Every informational onboarding slide should have been walked"
-        )
-        XCTAssertTrue(
-            signInStep.waitForExistence(timeout: 5),
-            "Walking onboarding slides should reach the sign-in step"
-        )
-    }
-
     /// Taps the first hittable button with the given label — used when a
     /// presented sheet and its presenting view both expose the same control
     /// (e.g. the two "Done" toolbar buttons around the premium sheet).
@@ -1910,6 +2207,27 @@ final class SyncMDUITests: XCTestCase {
     /// confirmation modal and the toolbar behind it expose the same label
     /// (e.g. the conflict editor's "RESOLVE" toolbar action vs. the modal's
     /// confirm button); the modal button always sits below the nav bar.
+    /// Pulls from the vault: the hero's pull action when it shows one,
+    /// otherwise pull-to-refresh (which always pulls).
+    private func pullFromVault(in app: XCUIApplication) {
+        for title in ["Check for changes", "Pull"] {
+            let action = app.buttons[title].firstMatch
+            if action.waitForExistence(timeout: 2), action.isHittable {
+                action.tap()
+                return
+            }
+        }
+        let scrollView = app.scrollViews.firstMatch
+        scrollView.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.25))
+            .press(forDuration: 0.1, thenDragTo: scrollView.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.85)))
+    }
+
+    /// The vault root listing lives inline under the Files tab.
+    private func openFilesTab(in app: XCUIApplication) {
+        let files = app.buttons["Files"].firstMatch
+        if files.waitForExistence(timeout: 10) { files.tap() }
+    }
+
     private func tapLowermostButton(labeled label: String, in app: XCUIApplication) {
         let candidates = app.buttons.matching(NSPredicate(format: "label == %@", label))
         var best: XCUIElement?

@@ -1,0 +1,6 @@
+<resources>
+    <plurals name="lfs_tracking_files">
+        <item quantity="one">%1$d file</item>
+        <item quantity="other">%1$d files</item>
+    </plurals>
+</resources>

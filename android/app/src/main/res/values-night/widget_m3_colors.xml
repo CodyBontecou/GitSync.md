@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="widget_m3_surface">#1B1B1F</color>
+    <color name="widget_m3_on">#E5E2E1</color>
+    <color name="widget_m3_on_var">#C8C5CD</color>
+    <color name="widget_m3_primary">#B9C3FF</color>
+    <color name="widget_m3_outline_var">#47464E</color>
+    <color name="widget_m3_pc">#2440B8</color>
+    <color name="widget_m3_on_pc">#DEE1FF</color>
+    <color name="widget_m3_tc">#7F2C05</color>
+    <color name="widget_m3_on_tc">#FFDBCB</color>
+    <color name="widget_m3_okc">#0F5130</color>
+    <color name="widget_m3_on_okc">#B6F2CB</color>
+    <color name="widget_m3_inv">#1E1E22</color>
+</resources>

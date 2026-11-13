@@ -1,0 +1,27 @@
+Gitsync.md lleva flujos de trabajo Git reales a Android. Conecta GitHub, clona repositorios en el almacenamiento de la app, revisa los cambios y sincroniza código o markdown de forma segura desde tu móvil.
+
+HECHO PARA REPOS REALES
+- Explora repositorios de GitHub tras iniciar sesión con OAuth o un token de acceso personal
+- Clona proyectos directamente en el almacenamiento de la app de Android
+- Ejecuta operaciones Git sin necesidad de un binario git del sistema
+
+SINCRONIZA CON CONFIANZA
+- Consulta la rama, el estado limpio o con cambios, los archivos en stage y los no rastreados
+- Haz pull de forma segura tras comprobar el estado del repositorio
+- Revisa los diffs línea a línea antes de descartar cambios o hacer commit
+- Haz commit y push de tus cambios locales a tu remoto
+
+KIT DE HERRAMIENTAS GIT LOCAL
+- Añade y quita archivos individuales del stage
+- Crea, cambia, fusiona y elimina ramas
+- Resuelve conflictos con «ours», «theirs» o elección manual
+- Consulta el historial, crea y recupera stashes, y gestiona etiquetas
+
+DISEÑADO PARA MÓVIL
+- Interfaz rápida con Jetpack Compose
+- Modo oscuro y claro
+- Ubicación de clonado en el almacenamiento de la app para compatibilidad con Android
+- Descarga gratuita con una única compra integrada de Acceso completo a través de Google Play
+- Sin anuncios ni suscripciones
+
+Gitsync.md está pensado para desarrolladores, escritores y cualquiera que gestione archivos alojados en GitHub desde Android. Para repositorios privados, inicia sesión con GitHub o proporciona un token de acceso personal. Los tokens se guardan localmente en tu dispositivo.

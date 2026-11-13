@@ -1,0 +1,18 @@
+Full log: /tmp/gitsync-navigation-after.log
+
+Test Case '-[SyncMDTests.SyncMDTests testBrowserDirectoryRenamePreservesContentsAndRejectsCollision]' passed (0.020 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testEditorRenameMutationRejectsCollisionAndStaleBytesThenAcceptsUnicode]' passed (0.011 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testEditorRenameMutationRejectsSourceReachedThroughEscapingSymlink]' passed (0.002 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testEditorRenameMutationRejectsTraversalAndInvalidNamesWithoutChangingBytes]' passed (0.002 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testRepositoryItemNamesRejectControlsSeparatorsAndOverlongUTF8]' passed (0.001 seconds).
+	 Executed 5 tests, with 0 failures (0 unexpected) in 0.036 (0.039) seconds
+	 Executed 5 tests, with 0 failures (0 unexpected) in 0.036 (0.039) seconds
+	 Executed 5 tests, with 0 failures (0 unexpected) in 0.036 (0.040) seconds
+Test Case '-[SyncMDUITests.SyncMDUITests testBrowserFolderRenameRejectsSeparatorsAndAllowsCorrection]' passed (21.815 seconds).
+Test Case '-[SyncMDUITests.SyncMDUITests testBrowserRenameFailureKeepsFormAndAllowsRetry]' passed (21.480 seconds).
+Test Case '-[SyncMDUITests.SyncMDUITests testNewNoteRejectsPastedTabThenCreatesCorrectedName]' passed (18.885 seconds).
+	 Executed 3 tests, with 0 failures (0 unexpected) in 62.180 (62.185) seconds
+	 Executed 3 tests, with 0 failures (0 unexpected) in 62.180 (62.186) seconds
+	 Executed 3 tests, with 0 failures (0 unexpected) in 62.180 (62.188) seconds
+	/tmp/gitsync-ios-navigation-fixes/Logs/Test/Test-Sync.md-2026.11.07_21-07-00--0400.xcresult
+** TEST SUCCEEDED **

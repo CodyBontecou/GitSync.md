@@ -1,0 +1,8 @@
+<resources>
+    <string name="pull_all_background_title">Background Pull All</string>
+    <string name="pull_all_background_running">Pull All is running without opening the app. Remaining repositories stop when you choose Stop.</string>
+    <string name="pull_all_background_complete">Pull All finished. Review the saved summary.</string>
+    <string name="pull_all_background_attention">Pull All needs attention. Tap to review the saved summary.</string>
+    <string name="pull_all_background_counts">Updated: %1$d · Current: %2$d · LFS attention: %3$d · Blocked: %4$d · Failed: %5$d</string>
+    <string name="pull_all_background_busy">Pull All is already running. Open Pull All to stop it or review progress.</string>
+</resources>

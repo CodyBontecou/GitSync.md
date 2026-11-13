@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Board 29 single-vault widget, dark in both themes: vault name, the count to push, "main · 2m ago". -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/vault_widget_root" android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:padding="16dp" android:background="@drawable/widget_m3_inverse"
+    android:clickable="true" android:focusable="true">
+    <TextView android:id="@+id/vault_widget_name" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:maxLines="1" android:ellipsize="end" android:textSize="13sp" android:fontFamily="sans-serif-medium" android:textStyle="bold"
+        android:textColor="@color/widget_m3_on_inv" />
+    <TextView android:id="@+id/vault_widget_count" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp"
+        android:includeFontPadding="false" android:textSize="45sp" android:fontFamily="sans-serif-medium" android:textColor="@color/widget_m3_inv_ahead" />
+    <TextView android:id="@+id/vault_widget_label" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:maxLines="1" android:ellipsize="end" android:textSize="12sp" android:textColor="@color/widget_m3_inv_meta" />
+    <FrameLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" />
+    <TextView android:id="@+id/vault_widget_meta" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:maxLines="1" android:ellipsize="end" android:textSize="10sp" android:fontFamily="@font/roboto_mono_regular" android:textColor="@color/widget_m3_inv_meta" />
+</LinearLayout>

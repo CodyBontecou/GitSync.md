@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <files-path name="internal-git-backups" path="git-backups/" />
+    <external-files-path name="external-git-backups" path="git-backups/" />
+    <external-media-path name="media-git-backups" path="git-backups/" />
+    <cache-path name="open-in" path="open-in/" />
+</paths>

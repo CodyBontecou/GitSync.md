@@ -1,0 +1,15 @@
+F..
+======================================================================
+FAIL: test_extractor_preserves_review_metadata_on_reextraction (test_resource_discovery.ResourceDiscoveryTest)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/codybontecou/dev/sync-md-android/tools/localization/test_resource_discovery.py", line 95, in test_extractor_preserves_review_metadata_on_reextraction
+    extractor.main()
+  File "/Users/codybontecou/dev/sync-md-android/tools/localization/extract_compose.py", line 63, in main
+    assert name not in expectations or expectations[name]==expectation, 'Source fixture changed: '+name
+AssertionError: Source fixture changed: ready
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.020s
+
+FAILED (failures=1)

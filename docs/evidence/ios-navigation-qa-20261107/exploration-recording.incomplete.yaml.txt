@@ -1,0 +1,5 @@
+steps:
+  - tap:
+      role: AXScrollArea
+executionPrerequisite: Installed QA build on capture simulator with disposable
+  dirty Git Tools fixture at vault root.

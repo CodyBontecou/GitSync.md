@@ -1,0 +1,7 @@
+<resources>
+    <string name="upstream_title">Upstream branch</string>
+    <string name="upstream_local_branch">Local branch: %1$s</string>
+    <string name="upstream_remote">Remote</string>
+    <string name="upstream_branch">Branch</string>
+    <string name="upstream_unavailable">Choose a local branch with a configured remote and finish any active Git operation first.</string>
+</resources>

@@ -1,0 +1,9 @@
+Languages: 25 mapped Android strings: 1500 of 2464 rejected candidates: 20
+Traceback (most recent call last):
+  File "/private/tmp/gitsync-android-finish-20261108/android/tools/localization/import_ios_catalog.py", line 207, in <module>
+    if __name__=='__main__':main()
+  File "/private/tmp/gitsync-android-finish-20261108/android/tools/localization/import_ios_catalog.py", line 200, in main
+    emit(path,'<!-- Generated from the sibling iOS catalog by tools/localization/import_ios_catalog.py. -->\n<resources>\n'+
+  File "/private/tmp/gitsync-android-finish-20261108/android/tools/localization/import_ios_catalog.py", line 196, in emit
+    if options.check: assert path.exists() and path.read_text()==text, 'Generated localization drift: '+str(path.relative_to(ROOT))
+AssertionError: Generated localization drift: app/src/main/res/values-ar/ios_catalog_strings.xml

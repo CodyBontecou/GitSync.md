@@ -1,0 +1,81 @@
+@font-face {
+  font-family: CampaignSans;
+  src: url("sources/Manrope.ttf");
+  font-display: block;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  color: #21201f;
+  background: #e4e1da;
+  font-family: CampaignSans, sans-serif;
+}
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 24px 32px;
+  border-bottom: 1px solid #d0cdc5;
+}
+.toolbar strong { font-size: 18px; }
+.toolbar p { margin: 8px 0 0; font-size: 14px; color: #615f57; }
+a { color: #3d5195; }
+a:hover { color: #21201f; }
+a:focus-visible { outline: 2px solid #3d5195; outline-offset: 4px; }
+.gallery { padding: 32px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 24px; }
+.preview { margin: 0; min-width: 0; }
+.viewport { position: relative; overflow: hidden; aspect-ratio: 9 / 16; background: #faf9f6; }
+.viewport .asset { transform-origin: top left; }
+figcaption { padding: 12px 0 24px; font-size: 12px; color: #615f57; overflow-wrap: anywhere; }
+h2 { font-size: 18px; margin: 32px 0 24px; }
+.feature-viewport { max-width: 1024px; aspect-ratio: 1024 / 500; }
+.asset {
+  position: relative;
+  width: 1080px;
+  height: 1920px;
+  overflow: hidden;
+  background: #faf9f6;
+}
+.ornaments { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.brand { position: absolute; top: 72px; left: 80px; font-size: 24px; font-weight: 600; letter-spacing: 1px; }
+.index { position: absolute; right: 80px; top: 76px; font-size: 18px; letter-spacing: 2px; color: #6d6a61; }
+.copy { position: absolute; top: 180px; left: 80px; width: 920px; text-align: center; }
+.headline {
+  font-family: Georgia, serif;
+  font-size: 96px;
+  font-weight: 400;
+  line-height: 1.03;
+  letter-spacing: -4px;
+  margin: 0;
+  white-space: pre-line;
+}
+.subtext { font-size: 34px; line-height: 1.35; color: #615f57; margin: 32px auto 0; white-space: pre-line; }
+.figure { position: absolute; margin: 0; }
+.capture { position: relative; overflow: hidden; background: white; border: 1px solid #d9d7cf; border-radius: 16px; box-shadow: 0 16px 48px #22201710; }
+.capture img { position: absolute; max-width: none; }
+.caption { font-size: 18px; line-height: 1.5; color: #7b776e; margin: 20px 0 0; padding: 0; text-align: center; }
+.note { position: absolute; left: 80px; bottom: 80px; width: 920px; text-align: center; font-size: 22px; line-height: 1.5; color: #615f57; }
+.sketch { position: absolute; left: 240px; top: 1370px; width: 600px; height: 380px; }
+.sketch svg { width: 100%; height: 100%; }
+.sketch text { font: 400 28px CampaignSans, sans-serif; fill: #615f57; }
+.hero .caption { display: none; }
+.staging .sketch { top: 1480px; }
+.feature { width: 1024px; height: 500px; }
+.feature .brand { top: 40px; left: 48px; font-size: 20px; }
+.feature .index { right: 48px; top: 42px; font-size: 14px; }
+.feature .copy { top: 126px; left: 48px; width: 550px; text-align: left; }
+.feature .headline { font-size: 64px; letter-spacing: -2px; }
+.feature .subtext { font-size: 22px; margin-top: 24px; }
+.feature .note { left: 48px; bottom: 36px; width: 500px; font-size: 16px; text-align: left; }
+.feature .ornaments { opacity: .65; }
+#render-root { display: none; }
+.render-mode { background: #faf9f6; }
+.render-mode .toolbar, .render-mode .gallery { display: none; }
+.render-mode #render-root { display: block; }
+@media (max-width: 600px) {
+  .toolbar { align-items: flex-start; flex-direction: column; }
+  .gallery { padding: 24px; }
+  .grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; }
+}

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.publication.FolderPublicationCoordinatorTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-11-02T19:22:19" hostname="MacBook-Pro.local" time="0.508">
+  <properties/>
+  <testcase name="interrupted creating intent recovers without network or Git mutation" classname="com.bontecou.syncmd.services.publication.FolderPublicationCoordinatorTest" time="0.061"/>
+  <testcase name="lost push reply reconciles same commit without pushing or committing again" classname="com.bontecou.syncmd.services.publication.FolderPublicationCoordinatorTest" time="0.073"/>
+  <testcase name="every mutation has durable intent and success still awaits guarded registration" classname="com.bontecou.syncmd.services.publication.FolderPublicationCoordinatorTest" time="0.053"/>
+  <testcase name="reconnection checks replacement permission and preserves frozen publication identity" classname="com.bontecou.syncmd.services.publication.FolderPublicationCoordinatorTest" time="0.035"/>
+  <testcase name="review refresh retains exclusions and only suggests new eligible nonsensitive files" classname="com.bontecou.syncmd.services.publication.FolderPublicationCoordinatorTest" time="0.025"/>
+  <testcase name="lost create reply requires explicit fresh empty candidate adoption without another POST" classname="com.bontecou.syncmd.services.publication.FolderPublicationCoordinatorTest" time="0.051"/>
+  <testcase name="known creation rejection needs explicit retry and stale request cannot start it" classname="com.bontecou.syncmd.services.publication.FolderPublicationCoordinatorTest" time="0.055"/>
+  <testcase name="cancellation saves unknown and cross instance duplicate requests and removal are blocked" classname="com.bontecou.syncmd.services.publication.FolderPublicationCoordinatorTest" time="0.042"/>
+  <testcase name="registration precedes completion and clearing and retries never register a completed workflow again" classname="com.bontecou.syncmd.services.publication.FolderPublicationCoordinatorTest" time="0.067"/>
+  <testcase name="foreign refs or changed account destination and permission stop mutations" classname="com.bontecou.syncmd.services.publication.FolderPublicationCoordinatorTest" time="0.046"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

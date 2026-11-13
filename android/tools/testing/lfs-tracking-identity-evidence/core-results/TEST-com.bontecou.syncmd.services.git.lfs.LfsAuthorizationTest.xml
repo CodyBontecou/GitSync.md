@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.git.lfs.LfsAuthorizationTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2026-11-02T19:09:02" hostname="MacBook-Pro.local" time="2.229">
+  <properties/>
+  <testcase name="SSH authorization expiring during endpoint review fails before an HTTP request" classname="com.bontecou.syncmd.services.git.lfs.LfsAuthorizationTest" time="2.204"/>
+  <testcase name="approved custom credential providers cannot inject unsafe HTTP headers" classname="com.bontecou.syncmd.services.git.lfs.LfsAuthorizationTest" time="0.005"/>
+  <testcase name="HTTP SSH authorization validates server output before review and uses only fresh ephemeral headers" classname="com.bontecou.syncmd.services.git.lfs.LfsAuthorizationTest" time="0.003"/>
+  <testcase name="HTTP actions retain signed queries but HTTPS batches cannot downgrade" classname="com.bontecou.syncmd.services.git.lfs.LfsAuthorizationTest" time="0.0"/>
+  <testcase name="derived endpoint receives scoped credentials while repository supplied foreign endpoints do not" classname="com.bontecou.syncmd.services.git.lfs.LfsAuthorizationTest" time="0.003"/>
+  <testcase name="invalid signed action address never leaks its token in the error" classname="com.bontecou.syncmd.services.git.lfs.LfsAuthorizationTest" time="0.001"/>
+  <testcase name="approved custom endpoint authorizes only that repository and receives no inherited Git secret" classname="com.bontecou.syncmd.services.git.lfs.LfsAuthorizationTest" time="0.003"/>
+  <testcase name="expired authorization unsupported numeric sizes duplicate JSON and deep responses fail closed" classname="com.bontecou.syncmd.services.git.lfs.LfsAuthorizationTest" time="0.001"/>
+  <testcase name="named remote LFS settings do not inherit origin overrides" classname="com.bontecou.syncmd.services.git.lfs.LfsAuthorizationTest" time="0.002"/>
+  <testcase name="action addresses reject insecure schemes credentials traversal fragments and header injection" classname="com.bontecou.syncmd.services.git.lfs.LfsAuthorizationTest" time="0.001"/>
+  <testcase name="custom endpoint credentials are requested only after approval and never borrow Git credentials" classname="com.bontecou.syncmd.services.git.lfs.LfsAuthorizationTest" time="0.003"/>
+  <testcase name="explicit push endpoint has its own scope and cannot inherit download credentials" classname="com.bontecou.syncmd.services.git.lfs.LfsAuthorizationTest" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

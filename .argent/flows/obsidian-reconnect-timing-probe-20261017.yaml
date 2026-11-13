@@ -1,0 +1,21 @@
+# Requires the Gitsync vault open on its Hello World note, both plugins enabled,
+# and GitSync.md signed in. Renews this vault's credentials without editing notes.
+# The raw downward swipe is Obsidian's command-palette gesture, not scrolling.
+steps:
+  - launch: md.obsidian
+  - await: { visible: { text: Hello World } }
+  - await: { idle: true }
+  - echo: Open the command palette with the downward note gesture
+  - tool: gesture-swipe
+    args:
+      fromX: 0.5
+      fromY: 0.35
+      toX: 0.5
+      toY: 0.65
+      momentum: false
+  - await: { visible: { text: Reconnect this vault } }
+  - await: { idle: true }
+  - tap: { text: Reconnect this vault (replace existing Git credentials) }
+  - await:
+      visible: { text: Obsidian Git is connected to GitSync.md. }
+      timeout: 15000

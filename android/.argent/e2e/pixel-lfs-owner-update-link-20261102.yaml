@@ -1,0 +1,48 @@
+steps:
+- launch: md.gitsync.md
+- await:
+    visible:
+      text: GITSYNC.MD
+      role: StaticText
+- await:
+    idle: true
+- await:
+    visible:
+      text: NO REPOSITORIES
+      role: StaticText
+- tap:
+    text: ⚙
+- tool: stop-all-simulator-servers
+  args:
+    devices:
+    - 2C061FDH200CJN
+- await:
+    visible:
+      text: SETTINGS
+      role: StaticText
+- await:
+    idle: true
+- tap:
+    text: PUSH SYNC
+- tool: stop-all-simulator-servers
+  args:
+    devices:
+    - 2C061FDH200CJN
+- await:
+    visible:
+      text: Push Sync
+      role: StaticText
+- await:
+    idle: true
+- await:
+    visible:
+      text: Notification device registered.
+      role: StaticText
+- await:
+    visible:
+      text: '@CodyBontecou'
+      role: StaticText
+- await:
+    visible:
+      text: All repositories, including future repositories
+      role: StaticText

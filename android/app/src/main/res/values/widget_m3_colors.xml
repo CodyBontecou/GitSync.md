@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Board 29 widget palette (light). Dark values live in values-night/widget_m3_colors.xml. -->
+<resources>
+    <color name="widget_m3_surface">#FBF8F3</color>
+    <color name="widget_m3_on">#1C1B1A</color>
+    <color name="widget_m3_on_var">#4A4850</color>
+    <color name="widget_m3_primary">#2D4FD8</color>
+    <color name="widget_m3_outline_var">#CBC6CC</color>
+    <color name="widget_m3_pc">#DEE1FF</color>
+    <color name="widget_m3_on_pc">#00164F</color>
+    <color name="widget_m3_tc">#FFDBCB</color>
+    <color name="widget_m3_on_tc">#370E00</color>
+    <color name="widget_m3_okc">#CDEED8</color>
+    <color name="widget_m3_on_okc">#00210E</color>
+    <!-- The single-vault widget is dark in both themes (inv/onInv). -->
+    <color name="widget_m3_inv">#111113</color>
+    <color name="widget_m3_on_inv">#F2F1EC</color>
+    <color name="widget_m3_inv_meta">#B5B5BB</color>
+    <color name="widget_m3_inv_ahead">#FF8A4C</color>
+</resources>

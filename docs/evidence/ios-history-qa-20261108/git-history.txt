@@ -1,0 +1,6 @@
+QA executable bit only
+
+ mode change 100644 => 100755 "cafe\314\201.md"
+QA decomposed filename
+
+ create mode 100644 "cafe\314\201.md"
