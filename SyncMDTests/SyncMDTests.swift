@@ -583,6 +583,289 @@ final class SyncMDTests: XCTestCase {
     }
 
     @MainActor
+    func testExternalHEADInvalidatesRedesignedHistoryDecorationCaches() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        let state = AppState(gitRepositoryFactory: { _ in fixture.repository },
+                             reposFileURL: fixture.rootURL.appendingPathComponent("repos.json"), loadPersistedState: false)
+        state.repos = [fixture.repoConfig]
+        let id = fixture.repoConfig.id
+        let oldSHA = fixture.repoConfig.gitState.commitSHA
+        state.commitRefLabelsByRepo[id] = [oldSHA: [GitRefLabel(name: "main", kind: .localBranch)]]
+        state.commitExtrasByRepo[id] = [oldSHA: GitCommitExtras(parentCount: 1, fileCount: 2)]
+        let newSHA = String(repeating: "e", count: 40)
+        fixture.repository.repoInfoResult = LocalRepoInfo(branch: "main", commitSHA: newSHA, changeCount: 7)
+        state.detectChanges(repoID: id)
+        for _ in 0..<80 {
+            if state.changeCounts[id] == 7 { break }
+            try await Task.sleep(for: .milliseconds(25))
+        }
+        XCTAssertEqual(state.changeCounts[id], 7, "The actual status scan must have published")
+        XCTAssertEqual(state.repo(id: id)?.gitState.commitSHA, newSHA)
+        XCTAssertNil(state.commitRefLabelsByRepo[id], "Ref-label cache added by the redesign must invalidate too")
+        XCTAssertNil(state.commitExtrasByRepo[id], "Replaced history must not retain old decoration cache ownership")
+    }
+
+    @MainActor
+    func testExternalHEADRejectsSuspendedHistoryDecorationPublication() async throws {
+        try await verifyHistoryDecorationPublication(adoptExternalHEAD: true)
+    }
+
+    @MainActor
+    func testReplacementDecorationReadRetainsOwnershipAfterOldCompletion() async throws {
+        try await verifyHistoryDecorationPublication(adoptExternalHEAD: false)
+    }
+
+    @MainActor
+    private func verifyHistoryDecorationPublication(adoptExternalHEAD: Bool) async throws {
+        let fm = FileManager.default
+        let temporary = try makeTemporaryGitRepository(prefix: "HistoryDecorationOwnership")
+        let root = AppState.appDocumentsDirectory.appendingPathComponent(temporary.lastPathComponent, isDirectory: true)
+        try fm.moveItem(at: temporary, to: root)
+        do {
+            var repository: OpaquePointer?
+            defer { if let repository { git_repository_free(repository) } }
+            XCTAssertEqual(git_repository_open(&repository, root.path), 0)
+            XCTAssertEqual(git_repository_set_head(repository, "refs/heads/main"), 0)
+        }
+        let persistence = fm.temporaryDirectory.appendingPathComponent("decoration-\(UUID().uuidString).json")
+        defer { try? fm.removeItem(at: root); try? fm.removeItem(at: persistence) }
+        let note = root.appendingPathComponent("Note.md")
+        let native = LocalGitService(localURL: root)
+        try "base\n".write(to: note, atomically: true, encoding: .utf8)
+        try await native.stage(path: "Note.md")
+        let oldSHA = try await native.commitLocal(message: "Base", authorName: "Tests", authorEmail: "tests@example.com")
+        let gates = CommitCachePublicationGates()
+        let oldGate = AsyncGate(), newGate = AsyncGate()
+        let oldReady = expectation(description: "Old decoration read finished Git work")
+        let newReady = expectation(description: "Replacement decoration read finished Git work")
+        await gates.configure(history: [(oldGate, oldReady), (newGate, newReady)], detail: [])
+        defer { Task { await oldGate.open(); await newGate.open() } }
+        let state = AppState(reposFileURL: persistence, loadPersistedState: false,
+                             commitCachePublicationHook: { _, oid in await gates.wait(isDetail: oid != nil) })
+        var repo = RepoConfig(repoURL: "", branch: "main", authorName: "Tests",
+                              authorEmail: "tests@example.com", vaultFolderName: root.lastPathComponent)
+        repo.gitState.commitSHA = oldSHA
+        state.repos = [repo]
+        state.commitHistoryByRepo[repo.id] = [cacheSummary(oldSHA)]
+        let oldRead = Task { await state.loadHistoryDecorations(repoID: repo.id) }
+        await fulfillment(of: [oldReady], timeout: 3)
+
+        // Independent native Git mutation, not an AppState action. The old
+        // read has released all native resources and is held before publishing.
+        try "external commit\n".write(to: note, atomically: true, encoding: .utf8)
+        try await native.stage(path: "Note.md")
+        let newSHA = try await native.commitLocal(message: "External", authorName: "Tests", authorEmail: "tests@example.com")
+        if adoptExternalHEAD {
+            state.detectChanges(repoID: repo.id)
+            for _ in 0..<80 {
+                if state.repo(id: repo.id)?.gitState.commitSHA == newSHA { break }
+                try await Task.sleep(for: .milliseconds(25))
+            }
+            XCTAssertEqual(state.repo(id: repo.id)?.gitState.commitSHA, newSHA)
+        }
+        state.commitHistoryByRepo[repo.id] = [cacheSummary(newSHA)]
+        let newRead = Task { await state.loadHistoryDecorations(repoID: repo.id) }
+        await fulfillment(of: [newReady], timeout: 3)
+        await oldGate.open()
+        await oldRead.value
+        XCTAssertNil(state.commitRefLabelsByRepo[repo.id], "Obsolete labels must not publish while the replacement is held")
+        XCTAssertNil(state.commitExtrasByRepo[repo.id], "Obsolete extras must not publish while the replacement is held")
+        await newGate.open()
+        await newRead.value
+        XCTAssertTrue(state.commitRefLabelsByRepo[repo.id]?[newSHA]?.contains(GitRefLabel(name: "main", kind: .localBranch)) == true)
+        XCTAssertNil(state.commitRefLabelsByRepo[repo.id]?[oldSHA])
+        XCTAssertEqual(state.commitExtrasByRepo[repo.id]?[newSHA], GitCommitExtras(parentCount: 1, fileCount: 1))
+        XCTAssertEqual(try String(contentsOf: note, encoding: .utf8), "external commit\n")
+    }
+
+    @MainActor
+    func testStatusRefreshAdoptsExternalCommitWithoutWritingWorkingCopy() async throws {
+        try await assertStatusRefreshAdoptsExternalHEAD(switchBranch: false)
+    }
+
+    @MainActor
+    func testStatusRefreshAdoptsExternalBranchSwitchWithoutWritingWorkingCopy() async throws {
+        try await assertStatusRefreshAdoptsExternalHEAD(switchBranch: true)
+    }
+
+    @MainActor
+    private func assertStatusRefreshAdoptsExternalHEAD(switchBranch: Bool) async throws {
+        let fm = FileManager.default
+        let root = fm.temporaryDirectory.appendingPathComponent("SyncMD-ExternalHEAD-\(UUID().uuidString)")
+        let vault = root.appendingPathComponent("vault")
+        try fm.createDirectory(at: vault, withIntermediateDirectories: true)
+        defer { try? fm.removeItem(at: root) }
+        var gitRepo: OpaquePointer?
+        XCTAssertEqual(git_repository_init(&gitRepo, vault.path, 0), 0)
+        if let gitRepo { git_repository_free(gitRepo) }
+
+        // A separate client mutates the same repository, without going through
+        // AppState's mutation tracking or its Git Tools entry points.
+        let externalClient = LocalGitService(localURL: vault)
+        let note = vault.appendingPathComponent("Note.md")
+        try "initial note\n".write(to: note, atomically: true, encoding: .utf8)
+        try await externalClient.stage(path: "Note.md")
+        let initialSHA = try await commitLocalFixtureChanges(using: externalClient, message: "Initial")
+        let initialInfo = try await externalClient.repoInfo()
+        var repo = RepoConfig(repoURL: "owner/repo", branch: "automatic-sync", authorName: "Tests",
+                              authorEmail: "tests@example.com", vaultFolderName: "vault")
+        repo.gitState = GitState(commitSHA: initialSHA, treeSHA: "legacy-tree", branch: initialInfo.branch,
+                                 blobSHAs: ["Note.md": "legacy-blob"], lastSyncDate: Date(timeIntervalSince1970: 100))
+        repo.assist = RepoAssistSettings(enabled: true, selectedBranch: "automatic-sync")
+        let settings = root.appendingPathComponent("repos.json")
+        let appState = AppState(gitRepositoryFactory: { _ in LocalGitService(localURL: vault) },
+                                reposFileURL: settings, loadPersistedState: false)
+        appState.repos = [repo]
+        XCTAssertTrue(appState.saveRepos())
+        await appState.loadCommitHistory(repoID: repo.id, pageSize: 1, reset: true)
+        await appState.loadCommitDetail(repoID: repo.id, oid: initialSHA)
+        await appState.loadBranches(repoID: repo.id)
+        XCTAssertEqual(appState.commitHistoryByRepo[repo.id]?.first?.oid, initialSHA)
+        XCTAssertEqual(appState.commitHistoryHasMoreByRepo[repo.id], true)
+        XCTAssertNotNil(appState.commitDetailByRepo[repo.id]?[initialSHA])
+
+        if switchBranch {
+            try await externalClient.createBranch(name: "external-notes")
+            try await externalClient.switchBranch(name: "external-notes")
+        }
+        try "externally committed note\n".write(to: note, atomically: true, encoding: .utf8)
+        try await externalClient.stage(path: "Note.md")
+        let newSHA = try await commitLocalFixtureChanges(using: externalClient, message: "External commit")
+        if switchBranch {
+            // Make the final external operation a switch to a different HEAD.
+            try await externalClient.switchBranch(name: initialInfo.branch)
+            try await externalClient.switchBranch(name: "external-notes")
+        }
+        // Include uncommitted bytes: observing HEAD must not check out, stage,
+        // discard, or hydrate any file (nor change the index or refs).
+        try "unsaved local edits\n".write(to: note, atomically: true, encoding: .utf8)
+        let beforeRefresh = try repositoryFileSnapshot(at: vault)
+        appState.detectChanges(repoID: repo.id)
+        await waitUntil(timeout: .seconds(10)) { appState.changeCounts[repo.id] != nil }
+
+        let observed = try XCTUnwrap(appState.repo(id: repo.id))
+        XCTAssertEqual(observed.gitState.commitSHA, newSHA)
+        XCTAssertEqual(observed.gitState.branch, switchBranch ? "external-notes" : initialInfo.branch)
+        XCTAssertEqual(observed.branch, repo.branch)
+        XCTAssertEqual(observed.assist, repo.assist)
+        XCTAssertEqual(observed.gitState.treeSHA, repo.gitState.treeSHA)
+        XCTAssertEqual(observed.gitState.blobSHAs, repo.gitState.blobSHAs)
+        XCTAssertEqual(observed.gitState.lastSyncDate, repo.gitState.lastSyncDate)
+        XCTAssertEqual(appState.changeCounts[repo.id], 1)
+        XCTAssertNil(appState.commitHistoryByRepo[repo.id])
+        XCTAssertNil(appState.commitHistoryHasMoreByRepo[repo.id])
+        XCTAssertNil(appState.commitDetailByRepo[repo.id])
+        if switchBranch { XCTAssertEqual(appState.branchesByRepo[repo.id], .empty) }
+        XCTAssertEqual(try repositoryFileSnapshot(at: vault), beforeRefresh)
+        let persisted = try XCTUnwrap(RepoPersistenceStore.shared.load(from: settings).first)
+        XCTAssertEqual(persisted.gitState, observed.gitState)
+        XCTAssertEqual(persisted.branch, repo.branch)
+        XCTAssertEqual(persisted.assist, repo.assist)
+        // Reload from the new HEAD rather than append pages from the old one.
+        await appState.loadCommitHistory(repoID: repo.id, pageSize: 1)
+        XCTAssertEqual(appState.commitHistoryByRepo[repo.id]?.map(\.oid), [newSHA])
+    }
+
+    private func repositoryFileSnapshot(at root: URL) throws -> [String: Data] {
+        let enumerator = try XCTUnwrap(FileManager.default.enumerator(at: root, includingPropertiesForKeys: [.isRegularFileKey]))
+        var files: [String: Data] = [:]
+        for case let file as URL in enumerator {
+            if try file.resourceValues(forKeys: [.isRegularFileKey]).isRegularFile == true {
+                files[String(file.path.dropFirst(root.path.count))] = try Data(contentsOf: file)
+            }
+        }
+        return files
+    }
+
+    @MainActor
+    func testStatusRefreshSameHEADBranchSwitchPreservesHistoryAndSyncConfiguration() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        let state = AppState(gitRepositoryFactory: { _ in fixture.repository },
+                             reposFileURL: fixture.rootURL.appendingPathComponent("repos.json"), loadPersistedState: false)
+        state.repos = [fixture.repoConfig]
+        // Presence of these cache entries distinguishes invalidation from a no-op.
+        state.commitHistoryByRepo[fixture.repoConfig.id] = []
+        state.commitHistoryHasMoreByRepo[fixture.repoConfig.id] = true
+        state.commitDetailByRepo[fixture.repoConfig.id] = [:]
+        fixture.repository.repoInfoResult = LocalRepoInfo(branch: "other", commitSHA: fixture.repoInfo.commitSHA, changeCount: 0)
+        state.detectChanges(repoID: fixture.repoConfig.id)
+        await waitUntil { state.changeCounts[fixture.repoConfig.id] != nil }
+        XCTAssertEqual(state.repo(id: fixture.repoConfig.id)?.gitState.branch, "other")
+        XCTAssertEqual(state.repo(id: fixture.repoConfig.id)?.branch, "main")
+        XCTAssertNotNil(state.commitHistoryByRepo[fixture.repoConfig.id])
+        XCTAssertEqual(state.commitHistoryHasMoreByRepo[fixture.repoConfig.id], true)
+        XCTAssertNotNil(state.commitDetailByRepo[fixture.repoConfig.id])
+        // An unchanged refresh should not rewrite the settings file.
+        let settings = fixture.rootURL.appendingPathComponent("repos.json")
+        let modified = try settings.resourceValues(forKeys: [.contentModificationDateKey]).contentModificationDate
+        state.changeCounts[fixture.repoConfig.id] = nil
+        state.detectChanges(repoID: fixture.repoConfig.id)
+        await waitUntil { state.changeCounts[fixture.repoConfig.id] != nil }
+        XCTAssertEqual(try settings.resourceValues(forKeys: [.contentModificationDateKey]).contentModificationDate, modified)
+    }
+
+    @MainActor
+    func testStatusRefreshFailurePreservesPersistedHEADAndBranch() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        let settings = fixture.rootURL.appendingPathComponent("repos.json")
+        let state = AppState(gitRepositoryFactory: { _ in fixture.repository }, reposFileURL: settings, loadPersistedState: false)
+        state.repos = [fixture.repoConfig]
+        XCTAssertTrue(state.saveRepos())
+        let persistedBytes = try Data(contentsOf: settings)
+        fixture.repository.repoInfoResults = [.failure(LocalGitError.libgit2("Read HEAD failed"))]
+        state.detectChanges(repoID: fixture.repoConfig.id)
+        await waitUntil { state.changeCounts[fixture.repoConfig.id] != nil }
+        XCTAssertEqual(state.repo(id: fixture.repoConfig.id)?.gitState, fixture.repoConfig.gitState)
+        XCTAssertEqual(try Data(contentsOf: settings), persistedBytes)
+    }
+
+    @MainActor
+    func testStatusRefreshDiscardsStaleHEADAndRunsQueuedScanAfterMutation() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        let oldGate = AsyncGate()
+        let freshGate = AsyncGate()
+        let freshSHA = String(repeating: "f", count: 40)
+        fixture.repository.repoInfoResults = [
+            .success(LocalRepoInfo(branch: "stale", commitSHA: String(repeating: "a", count: 40), changeCount: 7)),
+            .success(LocalRepoInfo(branch: "fresh", commitSHA: freshSHA, changeCount: 2))
+        ]
+        fixture.repository.repoInfoGates = [oldGate, freshGate]
+        let state = AppState(gitRepositoryFactory: { _ in fixture.repository },
+                             reposFileURL: fixture.rootURL.appendingPathComponent("repos.json"), loadPersistedState: false)
+        let repo = fixture.repoConfig
+        state.repos = [repo]
+        state.commitHistoryByRepo[repo.id] = []
+        state.commitHistoryHasMoreByRepo[repo.id] = true
+        state.commitDetailByRepo[repo.id] = [:]
+        state.detectChanges(repoID: repo.id)
+        await waitUntil { fixture.repository.repoInfoCallCount == 1 }
+        // Saving configuration advances the existing mutation generation and
+        // queues a scan while the first observation is still in flight.
+        let saved = await state.saveRepoConfiguration(id: repo.id, repoURL: repo.repoURL, branch: "automatic-sync",
+                                                       authorName: repo.authorName, authorEmail: repo.authorEmail,
+                                                       authMethod: .none, credentials: .none)
+        XCTAssertTrue(saved)
+        await oldGate.open()
+        await waitUntil { fixture.repository.repoInfoCallCount == 2 }
+        XCTAssertEqual(state.repo(id: repo.id)?.gitState, repo.gitState)
+        XCTAssertNil(state.changeCounts[repo.id])
+        XCTAssertNotNil(state.commitHistoryByRepo[repo.id])
+        XCTAssertEqual(state.commitHistoryHasMoreByRepo[repo.id], true)
+        XCTAssertNotNil(state.commitDetailByRepo[repo.id])
+        await freshGate.open()
+        await waitUntil { state.changeCounts[repo.id] == 2 }
+        XCTAssertEqual(state.repo(id: repo.id)?.gitState.commitSHA, freshSHA)
+        XCTAssertEqual(state.repo(id: repo.id)?.gitState.branch, "fresh")
+        XCTAssertEqual(state.repo(id: repo.id)?.branch, "automatic-sync")
+        XCTAssertNil(state.commitHistoryByRepo[repo.id])
+        XCTAssertEqual(fixture.repository.repoInfoCallCount, 2)
+    }
+
+    @MainActor
     func testAppStatePromptsBeforeStagingAutoLFSCandidate() async throws {
         let fixture = try GitFixtureFactory.make(state: .dirty)
         defer { fixture.cleanup() }
@@ -2578,7 +2861,10 @@ final class SyncMDTests: XCTestCase {
         let clock = ContinuousClock()
         let deadline = clock.now.advanced(by: timeout)
         while !condition() && clock.now < deadline {
-            await Task.yield()
+            // Yield alone can immediately reselect this higher-priority test
+            // task and starve the utility-priority status scan on hosted CI.
+            // Suspend briefly; retain the same deadline and actual predicate.
+            try? await Task.sleep(for: .milliseconds(5))
         }
         XCTAssertTrue(condition(), "Timed out waiting for asynchronous condition")
     }
@@ -4120,6 +4406,7 @@ final class SyncMDTests: XCTestCase {
         appState.repos = [fixture.repoConfig]
 
         await appState.pull(repoID: fixture.repoConfig.id)
+        await waitUntil { appState.changeCounts[fixture.repoConfig.id] != nil }
 
         XCTAssertEqual(appState.repos.first?.gitState.commitSHA, newCommit)
         XCTAssertEqual(appState.pullOutcomeByRepo[fixture.repoConfig.id]?.kind, .fastForwarded)
@@ -4547,6 +4834,7 @@ final class SyncMDTests: XCTestCase {
         appState.repos = [fixture.repoConfig]
 
         await appState.pullWithRebase(repoID: fixture.repoConfig.id)
+        await waitUntil { appState.changeCounts[fixture.repoConfig.id] != nil }
 
         XCTAssertEqual(appState.repos.first?.gitState.commitSHA, rebasedCommit)
         XCTAssertEqual(appState.pullOutcomeByRepo[fixture.repoConfig.id]?.kind, .rebased)
@@ -4664,6 +4952,217 @@ final class SyncMDTests: XCTestCase {
 
         XCTAssertEqual(appState.commitHistoryByRepo[fixture.repoConfig.id]?.count, 3)
         XCTAssertEqual(appState.commitHistoryHasMoreByRepo[fixture.repoConfig.id], false)
+    }
+
+    @MainActor
+    func testExternalHEADInvalidatesSuspendedFirstPageAndDetailSuccess() async throws {
+        try await verifySuspendedCommitCacheLoads(boundary: .externalHEAD, pagination: false, fails: false)
+    }
+
+    @MainActor
+    func testExternalHEADInvalidatesSuspendedPaginationAndDetailSuccess() async throws {
+        try await verifySuspendedCommitCacheLoads(boundary: .externalHEAD, pagination: true, fails: false)
+    }
+
+    @MainActor
+    func testExternalHEADSuppressesSuspendedFirstPageAndDetailErrors() async throws {
+        try await verifySuspendedCommitCacheLoads(boundary: .externalHEAD, pagination: false, fails: true)
+    }
+
+    @MainActor
+    func testExternalHEADSuppressesSuspendedPaginationAndDetailErrors() async throws {
+        try await verifySuspendedCommitCacheLoads(boundary: .externalHEAD, pagination: true, fails: true)
+    }
+
+    @MainActor
+    func testHistoryResetInvalidatesSuspendedHistoryAndDetailSuccess() async throws {
+        try await verifySuspendedCommitCacheLoads(boundary: .reset, pagination: true, fails: false)
+    }
+
+    @MainActor
+    func testHistoryResetSuppressesSuspendedHistoryAndDetailErrors() async throws {
+        try await verifySuspendedCommitCacheLoads(boundary: .reset, pagination: true, fails: true)
+    }
+
+    @MainActor
+    func testRepositoryRemovalAndReaddRejectSuspendedCommitCacheSuccess() async throws {
+        try await verifySuspendedCommitCacheLoads(boundary: .removal, pagination: true, fails: false)
+    }
+
+    @MainActor
+    func testRepositoryRemovalAndReaddSuppressSuspendedCommitCacheErrors() async throws {
+        try await verifySuspendedCommitCacheLoads(boundary: .removal, pagination: true, fails: true)
+    }
+
+    @MainActor
+    func testWorkingCopyReplacementRejectsSuspendedCommitCacheSuccess() async throws {
+        try await verifySuspendedCommitCacheLoads(boundary: .workingCopy, pagination: true, fails: false)
+    }
+
+    @MainActor
+    func testReplacementRequestsRetainOwnershipAfterObsoleteCompletion() async throws {
+        try await verifySuspendedCommitCacheLoads(boundary: .requestsOnly, pagination: false, fails: true)
+    }
+
+    @MainActor
+    func testMissingGitResetRejectsSuspendedCommitCacheSuccess() async throws {
+        try await verifySuspendedCommitCacheLoads(boundary: .missingGit, pagination: true, fails: false)
+    }
+
+    private enum CommitCacheBoundary { case externalHEAD, reset, removal, workingCopy, requestsOnly, missingGit }
+
+    private func cacheSummary(_ oid: String) -> GitCommitSummary {
+        GitCommitSummary(oid: oid, shortOID: String(oid.prefix(7)), message: oid,
+                         authorName: "Tests", authorEmail: "tests@example.com",
+                         authoredDate: Date(timeIntervalSince1970: 100))
+    }
+
+    private func cacheDetail(_ oid: String, message: String) -> GitCommitDetail {
+        GitCommitDetail(oid: oid, message: message, authorName: "Tests", authorEmail: "tests@example.com",
+                        authoredDate: Date(timeIntervalSince1970: 100), committerName: "Tests",
+                        committerEmail: "tests@example.com", committedDate: Date(timeIntervalSince1970: 100),
+                        parentOIDs: [], changedFiles: [])
+    }
+
+    @MainActor
+    private func verifySuspendedCommitCacheLoads(boundary: CommitCacheBoundary, pagination: Bool, fails: Bool) async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        let publicationGates = CommitCachePublicationGates()
+        let state = AppState(gitRepositoryFactory: { _ in fixture.repository },
+                             reposFileURL: fixture.rootURL.appendingPathComponent("repos.json"), loadPersistedState: false,
+                             commitCachePublicationHook: { _, oid in
+                                 await publicationGates.wait(isDetail: oid != nil)
+                             })
+        var repo = fixture.repoConfig
+        repo.branch = "automatic-sync"
+        state.repos = [repo]
+        let id = repo.id
+        let oldOID = String(repeating: "a", count: 40)
+        let currentOID = String(repeating: "f", count: 40)
+        if pagination {
+            state.commitHistoryByRepo[id] = [cacheSummary(oldOID)]
+            state.commitHistoryHasMoreByRepo[id] = true
+        }
+        let oldHistoryGate = AsyncGate(), oldDetailGate = AsyncGate()
+        let currentHistoryGate = AsyncGate(), currentDetailGate = AsyncGate()
+        let oldHistoryStarted = expectation(description: "old history captured")
+        let oldDetailStarted = expectation(description: "old detail captured")
+        let currentHistoryStarted = expectation(description: "replacement history captured")
+        let currentDetailStarted = expectation(description: "replacement detail captured")
+        fixture.repository.scriptedHistoryResults = [
+            fails ? .failure(LocalGitError.libgit2("obsolete history error")) : .success([cacheSummary(oldOID)]),
+            .success([cacheSummary(currentOID)])
+        ]
+        // Use the SAME detail OID in old and replacement requests to verify
+        // per-OID ownership as well as the repository epoch.
+        fixture.repository.scriptedDetailResults = [
+            fails ? .failure(LocalGitError.libgit2("obsolete detail error")) : .success(cacheDetail(oldOID, message: "obsolete")),
+            .success(cacheDetail(oldOID, message: "current"))
+        ]
+        // Gate publication, NOT the fake Git operation: AppState's production
+        // wrapper releases the shared repository lease before this seam.
+        await publicationGates.configure(
+            history: [(oldHistoryGate, oldHistoryStarted), (currentHistoryGate, currentHistoryStarted)],
+            detail: [(oldDetailGate, oldDetailStarted), (currentDetailGate, currentDetailStarted)]
+        )
+        let oldHistory = Task { await state.loadCommitHistory(repoID: id, pageSize: 1, reset: !pagination) }
+        await fulfillment(of: [oldHistoryStarted], timeout: 2)
+        let oldDetail = Task { await state.loadCommitDetail(repoID: id, oid: oldOID) }
+        await fulfillment(of: [oldDetailStarted], timeout: 2)
+        XCTAssertEqual(fixture.repository.historyRequests.first?.skip, pagination ? 1 : 0)
+
+        switch boundary {
+        case .externalHEAD:
+            fixture.repository.repoInfoResult = LocalRepoInfo(branch: "external", commitSHA: currentOID, changeCount: 0)
+            state.detectChanges(repoID: id)
+            await waitUntil { state.repo(id: id)?.gitState.commitSHA == currentOID }
+            XCTAssertEqual(state.repo(id: id)?.gitState.branch, "external")
+        case .reset, .requestsOnly:
+            break // The replacement history invocation below is the boundary.
+        case .removal:
+            let beforeRemoval = fixture.snapshot()
+            await state.removeRepo(id: id)
+            XCTAssertNil(state.repo(id: id))
+            XCTAssertNil(state.commitHistoryByRepo[id])
+            XCTAssertNil(state.commitDetailByRepo[id])
+            // Default removal keeps user bytes; exclude our settings JSON.
+            XCTAssertEqual(fixture.snapshot().filter { $0.key != "repos.json" },
+                           beforeRemoval.filter { $0.key != "repos.json" })
+            state.repos = [repo] // Same UUID and HEAD: the tombstone must survive.
+        case .workingCopy:
+            state.updateRepo(id: id) { $0.vaultFolderName += "-replacement" }
+        case .missingGit:
+            fixture.repository.hasGitDirectoryValue = false
+            state.validateClonedRepos()
+            XCTAssertEqual(state.repo(id: id)?.isCloned, false)
+            fixture.repository.hasGitDirectoryValue = true
+            state.repos = [repo]
+        }
+        let currentHistory = Task {
+            await state.loadCommitHistory(repoID: id, pageSize: 1, reset: boundary == .reset)
+        }
+        await fulfillment(of: [currentHistoryStarted], timeout: 2)
+        let currentDetail = Task { await state.loadCommitDetail(repoID: id, oid: oldOID) }
+        await fulfillment(of: [currentDetailStarted], timeout: 2)
+        XCTAssertEqual(fixture.repository.historyRequests.last?.skip, 0)
+        // Old tasks finish while replacements remain suspended. They must not
+        // publish, overwrite an unrelated UI error, or release new ownership.
+        state.lastError = "current UI error"
+        state.showError = false
+        await oldHistoryGate.open()
+        await oldDetailGate.open()
+        await oldHistory.value
+        await oldDetail.value
+        XCTAssertNil(state.commitHistoryByRepo[id])
+        XCTAssertNil(state.commitHistoryHasMoreByRepo[id])
+        XCTAssertNil(state.commitDetailByRepo[id])
+        XCTAssertEqual(state.lastError, "current UI error")
+        XCTAssertFalse(state.showError)
+
+        // Current detail completes BEFORE current reset/history: history success
+        // must not wipe a detail loaded in the new epoch.
+        await currentDetailGate.open()
+        await currentDetail.value
+        XCTAssertEqual(state.commitDetailByRepo[id]?[oldOID]?.message, "current")
+        await currentHistoryGate.open()
+        await currentHistory.value
+        XCTAssertEqual(state.commitHistoryByRepo[id]?.map(\.oid), [currentOID])
+        XCTAssertEqual(state.commitHistoryHasMoreByRepo[id], true)
+        XCTAssertEqual(state.commitDetailByRepo[id]?[oldOID]?.message, "current")
+        XCTAssertEqual(state.lastError, "current UI error")
+        XCTAssertFalse(state.showError)
+        XCTAssertEqual(state.repo(id: id)?.branch, "automatic-sync")
+        XCTAssertEqual(state.repo(id: id)?.assist, repo.assist)
+        // Ordinary next-page and different-OID loads remain functional.
+        await state.loadCommitHistory(repoID: id, pageSize: 1)
+        XCTAssertEqual(fixture.repository.historyRequests.last?.skip, 1)
+        XCTAssertEqual(state.commitHistoryByRepo[id]?.map(\.oid), [currentOID])
+        XCTAssertEqual(state.commitHistoryHasMoreByRepo[id], false)
+        fixture.repository.commitDetailResultByOID[currentOID] = cacheDetail(currentOID, message: "another detail")
+        await state.loadCommitDetail(repoID: id, oid: currentOID)
+        XCTAssertEqual(state.commitDetailByRepo[id]?[currentOID]?.message, "another detail")
+        XCTAssertEqual(state.commitDetailByRepo[id]?[oldOID]?.message, "current")
+    }
+
+    @MainActor
+    func testCurrentCommitCacheErrorsStillPublish() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        let state = AppState(gitRepositoryFactory: { _ in fixture.repository },
+                             reposFileURL: fixture.rootURL.appendingPathComponent("repos.json"), loadPersistedState: false)
+        state.repos = [fixture.repoConfig]
+        fixture.repository.scriptedHistoryResults = [.failure(LocalGitError.libgit2("current history error"))]
+        await state.loadCommitHistory(repoID: fixture.repoConfig.id, reset: true)
+        XCTAssertTrue(state.showError)
+        XCTAssertTrue(state.lastError?.contains("current history error") == true)
+        XCTAssertEqual(state.commitHistoryByRepo[fixture.repoConfig.id]?.count, 0)
+        XCTAssertEqual(state.commitHistoryHasMoreByRepo[fixture.repoConfig.id], false)
+        state.showError = false
+        fixture.repository.scriptedDetailResults = [.failure(LocalGitError.libgit2("current detail error"))]
+        await state.loadCommitDetail(repoID: fixture.repoConfig.id, oid: "missing")
+        XCTAssertTrue(state.showError)
+        XCTAssertTrue(state.lastError?.contains("current detail error") == true)
     }
 
     @MainActor
@@ -4890,6 +5389,7 @@ final class SyncMDTests: XCTestCase {
         appState.repos = [fixture.repoConfig]
 
         await appState.mergeBranch(repoID: fixture.repoConfig.id, from: "feature")
+        await waitUntil { appState.changeCounts[fixture.repoConfig.id] != nil }
 
         XCTAssertEqual(appState.repos.first?.gitState.commitSHA, mergedSHA)
     }
@@ -4913,6 +5413,7 @@ final class SyncMDTests: XCTestCase {
         appState.repos = [fixture.repoConfig]
 
         await appState.revertCommit(repoID: fixture.repoConfig.id, oid: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", message: "Revert")
+        await waitUntil { appState.changeCounts[fixture.repoConfig.id] != nil }
 
         XCTAssertEqual(appState.repos.first?.gitState.commitSHA, revertedSHA)
     }
@@ -4932,6 +5433,7 @@ final class SyncMDTests: XCTestCase {
         appState.repos = [fixture.repoConfig]
 
         await appState.completeMerge(repoID: fixture.repoConfig.id, message: "Resolve merge")
+        await waitUntil { appState.changeCounts[fixture.repoConfig.id] != nil }
 
         XCTAssertEqual(appState.repos.first?.gitState.commitSHA, finalizedSHA)
     }
@@ -10251,6 +10753,7 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
     var repoInfoResult: LocalRepoInfo
     var repoInfoResults: [Result<LocalRepoInfo, Error>] = []
     var repoInfoCallCount = 0
+    var repoInfoGates: [AsyncGate] = []
     var pullPlanResult: PullPlan
     var pullPlanResults: [PullPlan] = []
     var pullResult: Result<LocalPullResult, Error>
@@ -10262,6 +10765,9 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
     var diffResult: UnifiedDiffResult = .empty
     var commitHistoryResult: [GitCommitSummary] = []
     var commitDetailResultByOID: [String: GitCommitDetail] = [:]
+    var scriptedHistoryResults: [Result<[GitCommitSummary], Error>] = []
+    var scriptedDetailResults: [Result<GitCommitDetail, Error>] = []
+    var historyRequests: [(limit: Int, skip: Int)] = []
     var stashEntriesResult: [GitStashEntry] = []
     var savedStashes: [(message: String, includeUntracked: Bool)] = []
     var appliedStashIndices: [Int] = []
@@ -10336,11 +10842,23 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
         hasGitDirectoryValue
     }
 
+    // Successful mutations must agree with subsequent status observations.
+    // Preserve each test's explicit count/entry/sync-state fixtures.
+    private func adoptHEAD(_ sha: String, branch: String? = nil) {
+        guard !sha.isEmpty else { return }
+        repoInfoResult = LocalRepoInfo(
+            branch: branch ?? repoInfoResult.branch, commitSHA: sha,
+            changeCount: repoInfoResult.changeCount, syncState: repoInfoResult.syncState,
+            statusEntries: repoInfoResult.statusEntries
+        )
+    }
+
     func clone(remoteURL: String, pat: String, branch: String?) async throws -> LocalCloneResult {
         cloneRemoteURLs.append(remoteURL)
         if !cloneResults.isEmpty {
             switch cloneResults.removeFirst() {
             case .success(let result):
+                adoptHEAD(result.commitSHA, branch: result.branch)
                 return result
             case .failure(let error):
                 throw error
@@ -10386,7 +10904,9 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
         case .remoteBranchMissing:
             throw LocalGitError.pullRemoteBranchMissing(plan.branch)
         case .fastForward:
-            return try pullResult.get()
+            let result = try pullResult.get()
+            adoptHEAD(result.newCommitSHA, branch: plan.branch)
+            return result
         }
     }
 
@@ -10394,7 +10914,11 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
         executePullOnlyCallCount += 1
         executePullOnlyStarted?()
         if let executePullOnlyGate { await executePullOnlyGate.wait() }
-        if let executePullOnlyResult { return try executePullOnlyResult.get() }
+        if let executePullOnlyResult {
+            let execution = try executePullOnlyResult.get()
+            if let result = execution.pullResult { adoptHEAD(result.newCommitSHA, branch: execution.plan.branch) }
+            return execution
+        }
         let plan = try await pullPlan(pat: pat)
         if let expectedBranch, expectedBranch != plan.branch {
             throw LocalGitError.wrongBranch(expected: expectedBranch, actual: plan.branch)
@@ -10402,7 +10926,9 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
         switch plan.action {
         case .fastForward:
             pullFastForwardCallCount += 1
-            return PullExecutionResult(plan: plan, pullResult: try pullResult.get())
+            let result = try pullResult.get()
+            adoptHEAD(result.newCommitSHA, branch: plan.branch)
+            return PullExecutionResult(plan: plan, pullResult: result)
         case .upToDate, .blockedByLocalChanges, .diverged, .remoteBranchMissing:
             return PullExecutionResult(plan: plan, pullResult: nil)
         }
@@ -10410,13 +10936,16 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
 
     func pullFastForward(branch: String, pat: String) async throws -> LocalPullResult {
         pullFastForwardCallCount += 1
-        return try pullResult.get()
+        let result = try pullResult.get()
+        adoptHEAD(result.newCommitSHA, branch: branch)
+        return result
     }
 
     func pullRebase(branch: String, pat: String, authorName: String, authorEmail: String) async throws -> LocalPullResult {
         pullRebaseCallCount += 1
         switch rebaseResult ?? pullResult {
         case .success(let result):
+            adoptHEAD(result.newCommitSHA, branch: branch)
             return result
         case .failure(let error):
             throw error
@@ -10437,6 +10966,7 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
 
     func switchBranch(name: String) async throws {
         switchedBranches.append(name)
+        adoptHEAD(repoInfoResult.commitSHA, branch: name)
     }
 
     func deleteBranch(name: String) async throws {
@@ -10445,6 +10975,7 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
 
     func mergeBranch(name: String, authorName: String, authorEmail: String) async throws -> MergeResult {
         mergeBranchCallCount += 1
+        adoptHEAD(mergeResult.newCommitSHA)
         return mergeResult
     }
 
@@ -10472,11 +11003,13 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
     func fetchRemote(pat: String) async throws {}
 
     func revertCommit(oid: String, message: String, authorName: String, authorEmail: String) async throws -> RevertResult {
-        revertResult
+        if let sha = revertResult.newCommitSHA { adoptHEAD(sha) }
+        return revertResult
     }
 
     func completeMerge(message: String, authorName: String, authorEmail: String) async throws -> MergeFinalizeResult {
         completeMergeCallCount += 1
+        adoptHEAD(mergeFinalizeResult.newCommitSHA)
         return mergeFinalizeResult
     }
 
@@ -10488,6 +11021,7 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
         continueRebaseCallCount += 1
         switch continueRebaseResult ?? rebaseResult ?? pullResult {
         case .success(let result):
+            adoptHEAD(result.newCommitSHA)
             return result
         case .failure(let error):
             throw error
@@ -10582,6 +11116,7 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
         if let commitAndPushResult {
             switch commitAndPushResult {
             case .success(let result):
+                adoptHEAD(result.commitSHA)
                 return result
             case .failure(let error):
                 if let sha = commitAndPushPostFailureSHA {
@@ -10648,6 +11183,10 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
     }
 
     func commitHistory(limit: Int, skip: Int) async throws -> [GitCommitSummary] {
+        historyRequests.append((limit, skip))
+        if !scriptedHistoryResults.isEmpty {
+            return try scriptedHistoryResults.removeFirst().get()
+        }
         guard limit > 0 else { return [] }
         guard skip < commitHistoryResult.count else { return [] }
         let upperBound = min(commitHistoryResult.count, skip + limit)
@@ -10655,6 +11194,9 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
     }
 
     func commitDetail(oid: String) async throws -> GitCommitDetail {
+        if !scriptedDetailResults.isEmpty {
+            return try scriptedDetailResults.removeFirst().get()
+        }
         if let detail = commitDetailResultByOID[oid] {
             return detail
         }
@@ -10663,8 +11205,9 @@ private final class FakeGitRepository: GitRepositoryProtocol, @unchecked Sendabl
 
     func repoInfo() async throws -> LocalRepoInfo {
         repoInfoCallCount += 1
-        if !repoInfoResults.isEmpty { return try repoInfoResults.removeFirst().get() }
-        return repoInfoResult
+        let result = repoInfoResults.isEmpty ? .success(repoInfoResult) : repoInfoResults.removeFirst()
+        if !repoInfoGates.isEmpty { await repoInfoGates.removeFirst().wait() }
+        return try result.get()
     }
 }
 
@@ -10924,6 +11467,29 @@ private actor EventRecorder {
     private var events: [String] = []
     func append(_ event: String) { events.append(event) }
     func values() -> [String] { events }
+}
+
+private actor CommitCachePublicationGates {
+    private var history: [(AsyncGate, XCTestExpectation)] = []
+    private var detail: [(AsyncGate, XCTestExpectation)] = []
+
+    func configure(history: [(AsyncGate, XCTestExpectation)], detail: [(AsyncGate, XCTestExpectation)]) {
+        self.history = history
+        self.detail = detail
+    }
+
+    func wait(isDetail: Bool) async {
+        let item: (AsyncGate, XCTestExpectation)
+        if isDetail {
+            guard !detail.isEmpty else { return }
+            item = detail.removeFirst()
+        } else {
+            guard !history.isEmpty else { return }
+            item = history.removeFirst()
+        }
+        item.1.fulfill()
+        await item.0.wait()
+    }
 }
 
 private actor AsyncGate {

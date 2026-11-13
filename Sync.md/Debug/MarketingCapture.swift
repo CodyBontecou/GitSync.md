@@ -40,6 +40,10 @@ enum MarketingCapture {
         value(for: "-UITestGitToolsFixture")
     }
 
+    static var allowsFixtureStatusRefresh: Bool {
+        gitToolsUITestScenario == "external-commit" || gitToolsUITestScenario == "external-branch"
+    }
+
     static var usesSeededData: Bool {
         isActive || isFileBrowserUITestActive
             || isUITestCloneFixtureActive || isUITestConflictFixtureActive
@@ -204,6 +208,14 @@ final class MarketingCaptureCoordinator {
 
 @MainActor
 enum MarketingDemoSeeder {
+
+    /// External-client fixtures must not load or reconcile the user's inventory.
+    static func externalRefreshAppStateIfRequested() -> AppState? {
+        guard MarketingCapture.allowsFixtureStatusRefresh else { return nil }
+        let inventoryURL = FileManager.default.temporaryDirectory.appendingPathComponent("pr46-qa/repos.json")
+        try? FileManager.default.removeItem(at: inventoryURL)
+        return AppState(reposFileURL: inventoryURL, loadPersistedState: false)
+    }
 
     /// Exercise a real post-ref SAFE-checkout race through the normal foreground
     /// runner. The fixture has no credentials/network and never loads user repos.
@@ -595,6 +607,18 @@ enum MarketingDemoSeeder {
             default: syncState = .upToDate
             }
             state.syncStateByRepo = [repo.id: syncState]
+            // Mutate the real repository without using AppState's Git actions or
+            // publishing its new HEAD/branch. Normal Vault-on-appear status
+            // refresh must discover this independently, like another Git client.
+            if scenario == "external-commit" {
+                try UITestGitFixtures.commitWorktreeFiles(
+                    atPath: vaultURL.path,
+                    files: ["notes/hello.md": Data("# Hello\n\nPR46 external committed note.\n".utf8)],
+                    message: "PR46 external commit"
+                )
+            } else if scenario == "external-branch" {
+                try UITestGitFixtures.selectExistingFeatureHEAD(atPath: vaultURL.path)
+            }
             if scenario == "syncing" {
                 state.isSyncing = true
                 state.syncingRepoID = repo.id
@@ -775,7 +799,7 @@ enum UITestGitFixtures {
 
         var sig: UnsafeMutablePointer<git_signature>?
         defer { if let sig { git_signature_free(sig) } }
-        try check(git_signature_now(&sig, "UITest Seeder", "uitest@syncmd.example"), "signature")
+        try check(makeSignature(&sig), "signature")
 
         // Parent: the ref's current tip, when it exists.
         var parentCommit: OpaquePointer?
@@ -878,7 +902,7 @@ enum UITestGitFixtures {
 
         var sig: UnsafeMutablePointer<git_signature>?
         defer { if let sig { git_signature_free(sig) } }
-        try check(git_signature_now(&sig, "UITest Seeder", "uitest@syncmd.example"), "signature")
+        try check(makeSignature(&sig), "signature")
 
         var commitID = git_oid()
         var parents: [OpaquePointer?] = [parentCommit]
@@ -907,9 +931,18 @@ enum UITestGitFixtures {
             .write(to: URL(fileURLWithPath: path).appendingPathComponent("README.md"))
         var signature: UnsafeMutablePointer<git_signature>?
         defer { if let signature { git_signature_free(signature) } }
-        try check(git_signature_now(&signature, "UITest Seeder", "uitest@syncmd.example"), "stash signature")
+        try check(makeSignature(&signature), "stash signature")
         var stashOID = git_oid()
         try check(git_stash_save(&stashOID, repo, signature, "Saved Git Tools note", 0), "save fixture stash")
+    }
+
+    /// Both branches already name the same tree. Changing symbolic HEAD is an
+    /// independent Git client operation and must not touch any worktree bytes.
+    static func selectExistingFeatureHEAD(atPath path: String) throws {
+        var repo: OpaquePointer?
+        defer { if let repo { git_repository_free(repo) } }
+        try check(git_repository_open(&repo, path), "open external-branch fixture")
+        try check(git_repository_set_head(repo, "refs/heads/feature"), "select external feature HEAD")
     }
 
     /// Fetches `origin` (local file transport — no credentials involved) so
@@ -948,6 +981,15 @@ enum UITestGitFixtures {
     }
 
     // MARK: - libgit2 Helpers
+
+    private static func makeSignature(_ signature: inout UnsafeMutablePointer<git_signature>?) -> Int32 {
+        if MarketingCapture.allowsFixtureStatusRefresh {
+            // Fixed fixture commit IDs let device checks compare displayed HEAD
+            // with the independently-created commit, not just a success label.
+            return git_signature_new(&signature, "UITest Seeder", "uitest@syncmd.example", 1_700_000_000, 0)
+        }
+        return git_signature_now(&signature, "UITest Seeder", "uitest@syncmd.example")
+    }
 
     private static func check(_ code: Int32, _ context: String) throws {
         guard code >= 0 else {

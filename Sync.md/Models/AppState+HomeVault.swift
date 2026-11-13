@@ -87,6 +87,8 @@ extension AppState {
         guard let repo = repo(id: repoID), repo.isCloned, !isDemoMode,
               hasLocalRepositoryAccess(repoID: repoID) else { return }
         let url = vaultURL(for: repoID)
+        let request = beginHistoryDecorationRead(repoID: repoID)
+        defer { finishHistoryDecorationRead(repoID: repoID, request: request) }
         let known = commitExtrasByRepo[repoID] ?? [:]
         let missing = (commitHistoryByRepo[repoID] ?? []).map(\.oid).filter { known[$0] == nil }
 
@@ -95,7 +97,8 @@ extension AppState {
             let extras = (try? VaultInsightsService.commitExtras(repositoryURL: url, oids: missing)) ?? [:]
             return (labels, extras)
         }.value
-        guard !Task.isCancelled else { return }
+        await holdHistoryDecorationPublicationForTesting(repoID: repoID)
+        guard !Task.isCancelled, canPublishHistoryDecorations(repoID: repoID, request: request) else { return }
         if commitRefLabelsByRepo[repoID] != labels {
             commitRefLabelsByRepo[repoID] = labels
         }

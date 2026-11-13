@@ -419,6 +419,7 @@ struct GitControlSheet: View {
                     VStack(alignment: .leading, spacing: 4) {
                         TideSectionLabel(title: String(localized: "Current branch"))
                         Text(repo?.gitState.branch ?? currentBranchShortName)
+                            .accessibilityIdentifier("gitTools.observedBranch")
                             .font(TideFont.mono(22, .semibold, relativeTo: .title2))
                             .foregroundStyle(Tide.ink)
                             .lineLimit(1)
@@ -432,6 +433,7 @@ struct GitControlSheet: View {
                     Text(String(repo.gitState.commitSHA.prefix(7)) + " · " + (repo.gitState.lastSyncDate == .distantPast
                          ? String(localized: "not synced yet")
                          : String(localized: "synced \(lastSyncText)")))
+                        .accessibilityIdentifier("gitTools.observedHEAD")
                         .font(TideFont.mono(12, relativeTo: .footnote))
                         .foregroundStyle(Tide.inkMid)
                 }

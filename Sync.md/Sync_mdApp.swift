@@ -59,7 +59,8 @@ struct Sync_mdApp: App {
         }
         #endif
         #if DEBUG
-        let appState = MarketingDemoSeeder.checkoutRaceAppStateIfRequested() ?? AppState()
+        let appState = MarketingDemoSeeder.externalRefreshAppStateIfRequested()
+            ?? MarketingDemoSeeder.checkoutRaceAppStateIfRequested() ?? AppState()
         #else
         let appState = AppState()
         #endif
@@ -172,7 +173,7 @@ struct Sync_mdApp: App {
         .onChange(of: scenePhase) { _, newPhase in
             if newPhase == .active {
                 #if DEBUG
-                guard !MarketingCapture.usesSeededData else { return }
+                guard !MarketingCapture.usesSeededData || MarketingCapture.allowsFixtureStatusRefresh else { return }
                 #endif
 
                 // Re-validate repos when returning to foreground —

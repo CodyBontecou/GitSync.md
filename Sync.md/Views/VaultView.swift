@@ -228,7 +228,7 @@ struct VaultView: View {
         .navigationBarBackButtonHidden(state.callbackNavigateToRepoID != nil)
         .onAppear {
             #if DEBUG
-            guard !MarketingCapture.usesSeededData else { return }
+            guard !MarketingCapture.usesSeededData || MarketingCapture.allowsFixtureStatusRefresh else { return }
             #endif
             state.detectChanges(repoID: repoID, skipIfRecentlyStartedWithin: 5)
         }
@@ -371,7 +371,7 @@ struct VaultView: View {
             .animation(.easeInOut(duration: 0.25), value: callbackResult)
         }
         .scrollIndicators(.hidden)
-        .task(id: repo.gitState.commitSHA) {
+        .task(id: repo.gitState.commitSHA + ":" + repo.gitState.branch) {
             #if DEBUG
             // Marketing capture seeds fake repos; fixtures are real working copies.
             guard !MarketingCapture.isActive else { return }

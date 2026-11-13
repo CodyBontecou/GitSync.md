@@ -289,6 +289,33 @@ final class SyncMDUITests: XCTestCase {
 
     /// The fixture has a real clean index, a second branch, and a saved stash.
     /// Opening and closing the sheet must not change any repository bytes.
+    func testExternalCommitRefreshShowsActualHEADWithoutChangingWorkingCopy() throws {
+        let app = launchGitToolsFixture("external-commit")
+        let actualHEAD = String(decoding: try gitToolsHead(), as: UTF8.self)
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+        let before = try gitToolsSnapshot()
+        openObservedGitTools(in: app)
+        let displayedHEAD = app.staticTexts["gitTools.observedHEAD"]
+        XCTAssertTrue(displayedHEAD.waitForExistence(timeout: 5))
+        XCTAssertTrue(displayedHEAD.label.hasPrefix(String(actualHEAD.prefix(7))), "Git Tools must display the external commit, not saved stale HEAD")
+        XCTAssertEqual(try gitToolsSnapshot(), before, "Read-only refresh must preserve the working copy")
+    }
+
+    func testExternalBranchRefreshPreservesConfiguredSyncTargetAndWorkingCopy() throws {
+        let app = launchGitToolsFixture("external-branch")
+        XCTAssertTrue(app.staticTexts["Branch feature"].waitForExistence(timeout: 5))
+        let before = try gitToolsSnapshot()
+        openObservedGitTools(in: app)
+        XCTAssertEqual(app.staticTexts["gitTools.observedBranch"].label, "feature")
+        tapFirstHittableButton(labeled: "Close", in: app)
+        tapWhenHittable(app.buttons["More vault options"], in: app, message: "Open repository settings")
+        tapFirstHittableButton(labeled: "Settings", in: app)
+        let configuredBranch = app.textFields["repositorySettings.branch"]
+        XCTAssertTrue(reveal(configuredBranch, in: app))
+        XCTAssertEqual(configuredBranch.value as? String, "main", "Observed branch must not rewrite the automatic-sync target")
+        XCTAssertEqual(try gitToolsSnapshot(), before)
+    }
+
     func testGitToolsCleanRepositoryExposesBranchesAndExistingStashesWithoutMutation() throws {
         let app = launchGitToolsFixture("clean")
         let commitPush = syncAction("Commit & Push", in: app)
@@ -492,6 +519,15 @@ final class SyncMDUITests: XCTestCase {
         attachScreenshot("Git Tools entry", in: app)
         tools.tap()
         assertGitToolsSheet(in: app)
+    }
+
+    /// Metadata-only checks must not resolve `feature` by label: it appears
+    /// both as the current branch and in the branch list after an external switch.
+    private func openObservedGitTools(in app: XCUIApplication) {
+        tapWhenHittable(app.buttons["More vault options"], in: app, message: "Open observed Git metadata")
+        tapFirstHittableButton(labeled: "Git Tools", in: app)
+        XCTAssertTrue(app.navigationBars.staticTexts["Git Tools"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["gitTools.observedHEAD"].waitForExistence(timeout: 5))
     }
 
     private func assertGitToolsSheet(in app: XCUIApplication) {

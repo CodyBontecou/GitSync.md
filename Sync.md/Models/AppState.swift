@@ -140,7 +140,23 @@ final class AppState {
 
     // MARK: - Repositories
 
-    var repos: [RepoConfig] = []
+    var repos: [RepoConfig] = [] {
+        didSet {
+            // Also covers persisted inventory reconciliation and replacement of
+            // a working copy under the same ID, including remove/re-add.
+            for old in oldValue {
+                guard let current = repos.first(where: { $0.id == old.id }),
+                      current.gitState.commitSHA == old.gitState.commitSHA,
+                      current.vaultFolderName == old.vaultFolderName,
+                      current.customVaultBookmarkData == old.customVaultBookmarkData,
+                      current.customLocationIsParent == old.customLocationIsParent,
+                      current.customVaultRelativePath == old.customVaultRelativePath else {
+                    clearCommitHistoryCache(for: old.id)
+                    continue
+                }
+            }
+        }
+    }
     var changeCounts: [UUID: Int] = [:]
     var statusEntriesByRepo: [UUID: [GitStatusEntry]] = [:]
     var syncStateByRepo: [UUID: RepoSyncState] = [:]
@@ -151,6 +167,11 @@ final class AppState {
     var commitHistoryByRepo: [UUID: [GitCommitSummary]] = [:]
     var commitHistoryHasMoreByRepo: [UUID: Bool] = [:]
     var commitDetailByRepo: [UUID: [String: GitCommitDetail]] = [:]
+    // Transient publication ownership only; never cancel shared Git actor work.
+    @ObservationIgnored private var commitCacheEpochByRepo: [UUID: UUID] = [:]
+    @ObservationIgnored private var historyRequestByRepo: [UUID: UUID] = [:]
+    @ObservationIgnored private var historyDecorationRequestByRepo: [UUID: UUID] = [:]
+    @ObservationIgnored private var detailRequestByRepo: [UUID: [String: UUID]] = [:]
     var stashesByRepo: [UUID: [GitStashEntry]] = [:]
     var tagsByRepo: [UUID: [GitTag]] = [:]
 
@@ -412,6 +433,10 @@ final class AppState {
     private let sshHostKeyTrustStore: any GitLFSSSHHostKeyTrustStore
     private let repoPersistenceStore: RepoPersistenceStore
     private let persistedReposURL: URL
+    // Deterministic scheduling seam for tests. Production leaves this nil:
+    // hold a completed read AFTER its shared Git lease has been released,
+    // but BEFORE AppState can publish either its value or its error.
+    private let commitCachePublicationHook: (@MainActor @Sendable (UUID, String?) async -> Void)?
     private let gitTrackingRemovalService: GitTrackingRemovalService
     let folderPublication: FolderPublicationCoordinator
     private var persistedRepoSnapshot: [UUID: RepoConfig] = [:]
@@ -428,7 +453,8 @@ final class AppState {
         reposFileURL: URL? = nil,
         loadPersistedState: Bool = true,
         folderPublicationCoordinator: FolderPublicationCoordinator? = nil,
-        gitTrackingRemovalService: GitTrackingRemovalService = GitTrackingRemovalService()
+        gitTrackingRemovalService: GitTrackingRemovalService = GitTrackingRemovalService(),
+        commitCachePublicationHook: (@MainActor @Sendable (UUID, String?) async -> Void)? = nil
     ) {
         self.gitRepositoryFactory = { url in
             SerializedGitRepository(base: gitRepositoryFactory(url), localURL: url)
@@ -436,6 +462,7 @@ final class AppState {
         self.sshHostKeyTrustStore = sshHostKeyTrustStore
         self.repoPersistenceStore = repoPersistenceStore
         self.persistedReposURL = reposFileURL ?? Self.reposFileURL
+        self.commitCachePublicationHook = commitCachePublicationHook
         self.gitTrackingRemovalService = gitTrackingRemovalService
         let publicationStoreURL: URL
         if let reposFileURL {
@@ -1007,6 +1034,7 @@ final class AppState {
                 diffByRepo[repo.id] = .empty
                 branchesByRepo[repo.id] = .empty
                 conflictSessionByRepo[repo.id] = .none
+                clearCommitHistoryCache(for: repo.id)
                 commitHistoryByRepo[repo.id] = []
                 commitHistoryHasMoreByRepo[repo.id] = false
                 commitDetailByRepo[repo.id] = [:]
@@ -1063,6 +1091,7 @@ final class AppState {
             diffByRepo[repoID] = .empty
             branchesByRepo[repoID] = .empty
             conflictSessionByRepo[repoID] = .none
+            clearCommitHistoryCache(for: repoID)
             commitHistoryByRepo[repoID] = []
             commitHistoryHasMoreByRepo[repoID] = false
             commitDetailByRepo[repoID] = [:]
@@ -1091,7 +1120,19 @@ final class AppState {
             do {
                 let info = try await gitService.repoInfo()
                 let isStale = startedGeneration != (repoMutationGeneration[repoID] ?? 0)
-                if !isStale {
+                if !isStale, let idx = repoIndex(id: repoID) {
+                    // A shared working copy can be committed or switched by another
+                    // Git client. Adopt its observed HEAD, not the configured sync
+                    // branch, and leave last-sync/file metadata untouched.
+                    let headChanged = repos[idx].gitState.commitSHA != info.commitSHA
+                    let branchChanged = repos[idx].gitState.branch != info.branch
+                    if headChanged || branchChanged {
+                        repos[idx].gitState.commitSHA = info.commitSHA
+                        repos[idx].gitState.branch = info.branch
+                        if headChanged { clearCommitHistoryCache(for: repoID) }
+                        if branchChanged { branchesByRepo[repoID] = .empty }
+                        saveRepos()
+                    }
                     changeCounts[repoID] = info.changeCount
                     statusEntriesByRepo[repoID] = info.statusEntries
                     syncStateByRepo[repoID] = info.syncState
@@ -1117,6 +1158,7 @@ final class AppState {
                     diffByRepo[repoID] = .empty
                     branchesByRepo[repoID] = .empty
                     conflictSessionByRepo[repoID] = .none
+                    clearCommitHistoryCache(for: repoID)
                     commitHistoryByRepo[repoID] = []
                     commitHistoryHasMoreByRepo[repoID] = false
                     commitDetailByRepo[repoID] = [:]
@@ -1772,11 +1814,13 @@ final class AppState {
 
     func loadCommitHistory(repoID: UUID, pageSize: Int = 30, reset: Bool = false) async {
         guard let repo = repo(id: repoID), repo.isCloned else {
+            clearCommitHistoryCache(for: repoID)
             commitHistoryByRepo[repoID] = []
             commitHistoryHasMoreByRepo[repoID] = false
             return
         }
         if isDemoMode {
+            clearCommitHistoryCache(for: repoID)
             commitHistoryByRepo[repoID] = []
             commitHistoryHasMoreByRepo[repoID] = false
             return
@@ -1786,27 +1830,43 @@ final class AppState {
         let gitService = gitRepositoryFactory(vaultDir)
 
         guard gitService.hasGitDirectory else {
+            clearCommitHistoryCache(for: repoID)
             commitHistoryByRepo[repoID] = []
             commitHistoryHasMoreByRepo[repoID] = false
             return
         }
 
-        let existing = reset ? [] : (commitHistoryByRepo[repoID] ?? [])
+        if reset { clearCommitHistoryCache(for: repoID) }
+        let epoch = commitCacheEpochByRepo[repoID] ?? UUID()
+        commitCacheEpochByRepo[repoID] = epoch
+        let request = UUID()
+        historyRequestByRepo[repoID] = request
+        defer {
+            // An obsolete completion must not release a replacement's ownership.
+            if historyRequestByRepo[repoID] == request {
+                historyRequestByRepo.removeValue(forKey: repoID)
+            }
+        }
+        let existing = commitHistoryByRepo[repoID] ?? []
         let skip = existing.count
+        let isCurrent = {
+            self.commitCacheEpochByRepo[repoID] == epoch &&
+            self.historyRequestByRepo[repoID] == request &&
+            self.repo(id: repoID)?.isCloned == true && !self.isDemoMode
+        }
 
         do {
             let page = try await gitService.commitHistory(limit: pageSize, skip: skip)
-            let merged = reset ? page : (existing + page)
-            commitHistoryByRepo[repoID] = merged
+            if let commitCachePublicationHook { await commitCachePublicationHook(repoID, nil) }
+            guard isCurrent() else { return }
+            commitHistoryByRepo[repoID] = existing + page
             commitHistoryHasMoreByRepo[repoID] = page.count == pageSize
-            if reset {
-                commitDetailByRepo[repoID] = [:]
-            }
         } catch {
+            if let commitCachePublicationHook { await commitCachePublicationHook(repoID, nil) }
+            guard isCurrent() else { return }
             if reset {
                 commitHistoryByRepo[repoID] = []
                 commitHistoryHasMoreByRepo[repoID] = false
-                commitDetailByRepo[repoID] = [:]
             }
             showError(message: error.localizedDescription)
         }
@@ -1824,12 +1884,30 @@ final class AppState {
 
         guard gitService.hasGitDirectory else { return }
 
+        let epoch = commitCacheEpochByRepo[repoID] ?? UUID()
+        commitCacheEpochByRepo[repoID] = epoch
+        let request = UUID()
+        detailRequestByRepo[repoID, default: [:]][trimmedOID] = request
+        defer {
+            if detailRequestByRepo[repoID]?[trimmedOID] == request {
+                detailRequestByRepo[repoID]?.removeValue(forKey: trimmedOID)
+            }
+        }
+        let isCurrent = {
+            self.commitCacheEpochByRepo[repoID] == epoch &&
+            self.detailRequestByRepo[repoID]?[trimmedOID] == request &&
+            self.repo(id: repoID)?.isCloned == true && !self.isDemoMode
+        }
         do {
             let detail = try await gitService.commitDetail(oid: trimmedOID)
+            if let commitCachePublicationHook { await commitCachePublicationHook(repoID, trimmedOID) }
+            guard isCurrent() else { return }
             var existing = commitDetailByRepo[repoID] ?? [:]
             existing[trimmedOID] = detail
             commitDetailByRepo[repoID] = existing
         } catch {
+            if let commitCachePublicationHook { await commitCachePublicationHook(repoID, trimmedOID) }
+            guard isCurrent() else { return }
             showError(message: error.localizedDescription)
         }
     }
@@ -4073,9 +4151,7 @@ final class AppState {
         diffByRepo.removeValue(forKey: repoID)
         branchesByRepo.removeValue(forKey: repoID)
         conflictSessionByRepo.removeValue(forKey: repoID)
-        commitHistoryByRepo.removeValue(forKey: repoID)
-        commitHistoryHasMoreByRepo.removeValue(forKey: repoID)
-        commitDetailByRepo.removeValue(forKey: repoID)
+        clearCommitHistoryCache(for: repoID)
         stashesByRepo.removeValue(forKey: repoID)
         tagsByRepo.removeValue(forKey: repoID)
     }
@@ -4336,7 +4412,38 @@ final class AppState {
         }
     }
 
+    // Decoration reads run in a separate file; keep their publication ownership
+    // at the same invalidation boundary as history pages and commit details.
+    func beginHistoryDecorationRead(repoID: UUID) -> UUID {
+        let request = UUID()
+        historyDecorationRequestByRepo[repoID] = request
+        return request
+    }
+
+    func canPublishHistoryDecorations(repoID: UUID, request: UUID) -> Bool {
+        historyDecorationRequestByRepo[repoID] == request
+            && repo(id: repoID)?.isCloned == true && !isDemoMode
+    }
+
+    func finishHistoryDecorationRead(repoID: UUID, request: UUID) {
+        if historyDecorationRequestByRepo[repoID] == request {
+            historyDecorationRequestByRepo.removeValue(forKey: repoID)
+        }
+    }
+
+    func holdHistoryDecorationPublicationForTesting(repoID: UUID) async {
+        if let commitCachePublicationHook { await commitCachePublicationHook(repoID, nil) }
+    }
+
     func clearCommitHistoryCache(for repoID: UUID) {
+        // Retain an epoch tombstone across removal so an old response cannot
+        // become current again if the same repository ID is re-added.
+        commitCacheEpochByRepo[repoID] = UUID()
+        historyRequestByRepo.removeValue(forKey: repoID)
+        detailRequestByRepo.removeValue(forKey: repoID)
+        historyDecorationRequestByRepo.removeValue(forKey: repoID)
+        commitRefLabelsByRepo.removeValue(forKey: repoID)
+        commitExtrasByRepo.removeValue(forKey: repoID)
         commitHistoryByRepo.removeValue(forKey: repoID)
         commitHistoryHasMoreByRepo.removeValue(forKey: repoID)
         commitDetailByRepo.removeValue(forKey: repoID)
