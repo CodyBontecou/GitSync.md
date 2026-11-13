@@ -708,8 +708,8 @@ enum UITestGitFixtures {
     static var gitToolsBareRemotePath: String { rootPath + "/git-tools-fixture.git" }
 
     /// The `file://` URL the UI test types into AddRepoView's manual entry.
-    static let cloneRemoteFileURL = "file:///tmp/syncmd-uitest-fixtures/bare-remote.git"
-    static let conflictRemoteFileURL = "file:///tmp/syncmd-uitest-fixtures/conflict-fixture.git"
+    static var cloneRemoteFileURL: String { "file://" + cloneBareRemotePath }
+    static var conflictRemoteFileURL: String { "file://" + conflictBareRemotePath }
 
     /// Vault folder (inside the app's Documents) for the conflict working copy.
     static let conflictVaultFolderName = "conflict-fixture"
