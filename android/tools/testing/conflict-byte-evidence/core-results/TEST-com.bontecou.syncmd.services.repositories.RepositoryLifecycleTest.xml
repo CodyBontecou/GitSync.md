@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.repositories.RepositoryLifecycleTest" tests="14" skipped="0" failures="0" errors="0" timestamp="2026-11-03T00:57:18" hostname="MacBook-Pro.local" time="0.764">
+  <properties/>
+  <testcase name="clone publishes a validated working copy and removes its staging directory" classname="com.bontecou.syncmd.services.repositories.RepositoryLifecycleTest" time="0.077"/>
+  <testcase name="backup inside a repository is rejected and working copy remains registered on disk" classname="com.bontecou.syncmd.services.repositories.RepositoryLifecycleTest" time="0.055"/>
+  <testcase name="bounded scans disclose truncation and invalid working copies" classname="com.bontecou.syncmd.services.repositories.RepositoryLifecycleTest" time="0.003"/>
+  <testcase name="clone refuses occupied destinations without deleting local content" classname="com.bontecou.syncmd.services.repositories.RepositoryLifecycleTest" time="0.04"/>
+  <testcase name="removing tracking with backup preserves original history working files and a verified archive" classname="com.bontecou.syncmd.services.repositories.RepositoryLifecycleTest" time="0.091"/>
+  <testcase name="a parent repository initialized after review blocks detachment" classname="com.bontecou.syncmd.services.repositories.RepositoryLifecycleTest" time="0.055"/>
+  <testcase name="scan discovers real working copies skips bare metadata and never follows symlinks" classname="com.bontecou.syncmd.services.repositories.RepositoryLifecycleTest" time="0.062"/>
+  <testcase name="inspection requires the exact repository root and redacts remote credentials" classname="com.bontecou.syncmd.services.repositories.RepositoryLifecycleTest" time="0.044"/>
+  <testcase name="managed deletion rejects the root itself and external repositories and never follows links" classname="com.bontecou.syncmd.services.repositories.RepositoryLifecycleTest" time="0.041"/>
+  <testcase name="metadata changes after review abort removal" classname="com.bontecou.syncmd.services.repositories.RepositoryLifecycleTest" time="0.049"/>
+  <testcase name="explicit removal without backup keeps every working file" classname="com.bontecou.syncmd.services.repositories.RepositoryLifecycleTest" time="0.046"/>
+  <testcase name="clone preserves Git symlinks as pointer files instead of staged deletions" classname="com.bontecou.syncmd.services.repositories.RepositoryLifecycleTest" time="0.089"/>
+  <testcase name="lock files symlinks and nested repositories are rejected before detaching" classname="com.bontecou.syncmd.services.repositories.RepositoryLifecycleTest" time="0.045"/>
+  <testcase name="a destination created during clone is preserved and only the owned staging folder is removed" classname="com.bontecou.syncmd.services.repositories.RepositoryLifecycleTest" time="0.067"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[Nov 02, 2026 8:57:18 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit3189923045081769873/clones/.gitsync-clone-16184203695625161587
+Nov 02, 2026 8:57:18 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=main commit=af7488a7cbfdea818a9e2ca6783f27cf453ff1f2
+Nov 02, 2026 8:57:18 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 1 files, skipped 0
+Nov 02, 2026 8:57:18 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/main (af7488a)
+Nov 02, 2026 8:57:19 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit12661169985185498983/clones/.gitsync-clone-3943793576720716966
+Nov 02, 2026 8:57:19 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=main commit=b9e4ea1ce3a7f0f4f1670c006c4c13a81a467bf8
+Nov 02, 2026 8:57:19 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 3 files, skipped 0
+Nov 02, 2026 8:57:19 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/main (b9e4ea1)
+Nov 02, 2026 8:57:19 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit13788545917816695527/clones/.gitsync-clone-15201157669306278062
+Nov 02, 2026 8:57:19 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=main commit=017c844ef5b62d61130c569ea841a58a2dce1155
+Nov 02, 2026 8:57:19 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 1 files, skipped 0
+Nov 02, 2026 8:57:19 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/main (017c844)
+]]></system-err>
+</testsuite>

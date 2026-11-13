@@ -1,0 +1,25 @@
+INSTRUMENTATION_STATUS: stream=M3_SHEET largeDark=false action=[549.0,912.0,723.0,1017.0] safe=[0,74,2274,1080] clears=true
+INSTRUMENTATION_STATUS: stream=M3_SHEET largeDark=true action=[549.0,912.0,790.0,1017.0] safe=[0,74,2274,1080] clears=true
+INSTRUMENTATION_STATUS: stream=M3_DIALOG largeDark=false action=[1834.0,849.0,2008.0,954.0] safe=[0,74,2274,1080] clears=true
+INSTRUMENTATION_STATUS: stream=M3_DIALOG largeDark=true action=[1767.0,849.0,2008.0,954.0] safe=[0,74,2274,1080] clears=true
+INSTRUMENTATION_STATUS: stream=TIDE_DIALOG largeDark=false action=[1249.0,933.0,1423.0,1038.0] safe=[0,74,2274,1080] clears=true
+INSTRUMENTATION_STATUS: stream=TIDE_DIALOG largeDark=true action=[1216.0,933.0,1457.0,1038.0] safe=[0,74,2274,1080] clears=true
+INSTRUMENTATION_STATUS: stream=TIDE_SHEET largeDark=false action=[1249.0,933.0,1423.0,1038.0] safe=[0,74,2274,1080] clears=true
+INSTRUMENTATION_STATUS: stream=TIDE_SHEET largeDark=true action=[1216.0,933.0,1457.0,1038.0] safe=[0,74,2274,1080] clears=true
+INSTRUMENTATION_STATUS: stream=SSH_DIALOG largeDark=false action=[1703.0,922.0,1877.0,1027.0] safe=[0,74,2274,1080] clears=true
+INSTRUMENTATION_STATUS: stream=SSH_DIALOG largeDark=true action=[1703.0,922.0,1877.0,1027.0] safe=[0,74,2274,1080] clears=true
+INSTRUMENTATION_STATUS: stream=SSH_REVIEW largeDark=false action=[1332.0,922.0,1877.0,1027.0] safe=[0,74,2274,1080] clears=true
+INSTRUMENTATION_STATUS: stream=SSH_REVIEW largeDark=true action=[1332.0,922.0,1877.0,1027.0] safe=[0,74,2274,1080] clears=true
+INSTRUMENTATION_STATUS: stream=DISCARD largeDark=false action=[1452.0,901.0,1688.0,1027.0] safe=[0,74,2274,1080] clears=true
+INSTRUMENTATION_STATUS: stream=DISCARD largeDark=true action=[1452.0,901.0,1688.0,1027.0] safe=[0,74,2274,1080] clears=true
+INSTRUMENTATION_STATUS: stream=VAULT_CHECK largeDark=false action=[178.0,870.0,2493.0,1017.0] safe=[0,74,2274,1080] clears=false
+INSTRUMENTATION_STATUS: stream=VAULT_CHECK largeDark=true action=[178.0,870.0,2493.0,1017.0] safe=[0,74,2274,1080] clears=false
+INSTRUMENTATION_STATUS: stream=UNLOCK largeDark=false action=[1431.0,975.0,1598.0,1080.0] safe=[0,74,2274,1080] clears=true
+INSTRUMENTATION_STATUS: stream=UNLOCK largeDark=true action=[1486.0,975.0,1716.0,1080.0] safe=[0,74,2274,1080] clears=true
+INSTRUMENTATION_STATUS: stream=BOTTOM_ACTION largeDark=false action=[42.0,922.0,216.0,1027.0] safe=[0,74,2274,1080] clears=true
+INSTRUMENTATION_STATUS: stream=BOTTOM_ACTION largeDark=true action=[42.0,922.0,283.0,1027.0] safe=[0,74,2274,1080] clears=true
+INSTRUMENTATION_STATUS: stream=TOOLBAR largeDark=false action=[42.0,923.0,216.0,1028.0] safe=[0,74,2274,1080] clears=true
+INSTRUMENTATION_STATUS: stream=TOOLBAR largeDark=true action=[42.0,923.0,283.0,1028.0] safe=[0,74,2274,1080] clears=true
+INSTRUMENTATION_STATUS: stream=NAVIGATION largeDark=false action=[1705.0,870.0,2274.0,1080.0] safe=[0,74,2274,1080] clears=true
+INSTRUMENTATION_STATUS: stream=NAVIGATION largeDark=true action=[1705.0,870.0,2274.0,1080.0] safe=[0,74,2274,1080] clears=true
+Tests run: 12,  Failures: 1

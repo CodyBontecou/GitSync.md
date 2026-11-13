@@ -1,0 +1,19 @@
+Test Case '-[SyncMDTests.SyncMDTests testAppStateRejectsTagControlsBeforeDelegation]' started.
+/Users/codybontecou/dev/gitsync.md/SyncMDTests/SyncMDTests.swift:48: error: -[SyncMDTests.SyncMDTests testAppStateRejectsTagControlsBeforeDelegation] : XCTAssertFalse failed
+/Users/codybontecou/dev/gitsync.md/SyncMDTests/SyncMDTests.swift:48: error: -[SyncMDTests.SyncMDTests testAppStateRejectsTagControlsBeforeDelegation] : XCTAssertFalse failed
+/Users/codybontecou/dev/gitsync.md/SyncMDTests/SyncMDTests.swift:48: error: -[SyncMDTests.SyncMDTests testAppStateRejectsTagControlsBeforeDelegation] : XCTAssertFalse failed
+/Users/codybontecou/dev/gitsync.md/SyncMDTests/SyncMDTests.swift:48: error: -[SyncMDTests.SyncMDTests testAppStateRejectsTagControlsBeforeDelegation] : XCTAssertFalse failed
+/Users/codybontecou/dev/gitsync.md/SyncMDTests/SyncMDTests.swift:48: error: -[SyncMDTests.SyncMDTests testAppStateRejectsTagControlsBeforeDelegation] : XCTAssertFalse failed
+/Users/codybontecou/dev/gitsync.md/SyncMDTests/SyncMDTests.swift:50: error: -[SyncMDTests.SyncMDTests testAppStateRejectsTagControlsBeforeDelegation] : XCTAssertTrue failed
+Test Case '-[SyncMDTests.SyncMDTests testAppStateRejectsTagControlsBeforeDelegation]' failed (0.597 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testTagNamesRejectControlsBeforeNativeMutation]' started.
+/Users/codybontecou/dev/gitsync.md/SyncMDTests/SyncMDTests.swift:31: error: -[SyncMDTests.SyncMDTests testTagNamesRejectControlsBeforeNativeMutation] : failed - NUL must not create a truncated tag
+/Users/codybontecou/dev/gitsync.md/SyncMDTests/SyncMDTests.swift:34: error: -[SyncMDTests.SyncMDTests testTagNamesRejectControlsBeforeNativeMutation] : XCTAssertTrue failed
+/Users/codybontecou/dev/gitsync.md/SyncMDTests/SyncMDTests.swift:31: error: -[SyncMDTests.SyncMDTests testTagNamesRejectControlsBeforeNativeMutation] : failed - NUL must not create a truncated tag
+/Users/codybontecou/dev/gitsync.md/SyncMDTests/SyncMDTests.swift:34: error: -[SyncMDTests.SyncMDTests testTagNamesRejectControlsBeforeNativeMutation] : XCTAssertTrue failed
+Test Case '-[SyncMDTests.SyncMDTests testTagNamesRejectControlsBeforeNativeMutation]' failed (0.112 seconds).
+	 Executed 2 tests, with 10 failures (0 unexpected) in 0.709 (0.720) seconds
+	 Executed 2 tests, with 10 failures (0 unexpected) in 0.709 (0.720) seconds
+	 Executed 2 tests, with 10 failures (0 unexpected) in 0.709 (0.721) seconds
+	/tmp/gitsync-ios-navigation-fixes/Logs/Test/Test-Sync.md-2026.11.08_14-27-40--0400.xcresult
+** TEST FAILED **

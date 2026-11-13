@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.git.lfs.LfsTrackingIdentityTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-11-02T19:22:17" hostname="MacBook-Pro.local" time="0.157">
+  <properties/>
+  <testcase name="extensionChoiceRejectsIdenticalReplacementCheckout" classname="com.bontecou.syncmd.services.git.lfs.LfsTrackingIdentityTest" time="0.037"/>
+  <testcase name="exactChoiceRejectsChangedConfiguration" classname="com.bontecou.syncmd.services.git.lfs.LfsTrackingIdentityTest" time="0.015"/>
+  <testcase name="exactChoiceRejectsIdenticalReplacementCheckout" classname="com.bontecou.syncmd.services.git.lfs.LfsTrackingIdentityTest" time="0.027"/>
+  <testcase name="extensionChoiceRejectsIdenticalReplacementMetadata" classname="com.bontecou.syncmd.services.git.lfs.LfsTrackingIdentityTest" time="0.032"/>
+  <testcase name="exactChoiceRejectsIdenticalReplacementMetadata" classname="com.bontecou.syncmd.services.git.lfs.LfsTrackingIdentityTest" time="0.025"/>
+  <testcase name="extensionChoiceRejectsChangedConfiguration" classname="com.bontecou.syncmd.services.git.lfs.LfsTrackingIdentityTest" time="0.021"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

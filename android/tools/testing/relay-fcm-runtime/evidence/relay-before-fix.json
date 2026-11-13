@@ -1,0 +1,14 @@
+[
+  {
+    "matched": 1,
+    "accepted": 0,
+    "throttled": 0,
+    "unauthorized": 0,
+    "pruned": 0,
+    "rejected": 0,
+    "failed": 1,
+    "failureKinds": {
+      "Error:Other": 1
+    }
+  }
+]

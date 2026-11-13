@@ -1,0 +1,16 @@
+Test Case '-[SyncMDTests.SyncMDTests testMissingDisplayedStashCannotMutateReplacement]' started.
+/Users/codybontecou/dev/gitsync.md/SyncMDTests/SyncMDTests.swift:52: error: -[SyncMDTests.SyncMDTests testMissingDisplayedStashCannotMutateReplacement] : XCTAssertTrue failed - apply
+/Users/codybontecou/dev/gitsync.md/SyncMDTests/SyncMDTests.swift:53: error: -[SyncMDTests.SyncMDTests testMissingDisplayedStashCannotMutateReplacement] : XCTAssertTrue failed - apply
+/Users/codybontecou/dev/gitsync.md/SyncMDTests/SyncMDTests.swift:52: error: -[SyncMDTests.SyncMDTests testMissingDisplayedStashCannotMutateReplacement] : XCTAssertTrue failed - pop
+/Users/codybontecou/dev/gitsync.md/SyncMDTests/SyncMDTests.swift:54: error: -[SyncMDTests.SyncMDTests testMissingDisplayedStashCannotMutateReplacement] : XCTAssertTrue failed - pop
+/Users/codybontecou/dev/gitsync.md/SyncMDTests/SyncMDTests.swift:52: error: -[SyncMDTests.SyncMDTests testMissingDisplayedStashCannotMutateReplacement] : XCTAssertTrue failed - drop
+/Users/codybontecou/dev/gitsync.md/SyncMDTests/SyncMDTests.swift:55: error: -[SyncMDTests.SyncMDTests testMissingDisplayedStashCannotMutateReplacement] : XCTAssertTrue failed - drop
+Test Case '-[SyncMDTests.SyncMDTests testMissingDisplayedStashCannotMutateReplacement]' failed (0.333 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testStashActionsFollowDisplayedIdentityAfterExternalInsertion]' started.
+/Users/codybontecou/dev/gitsync.md/SyncMDTests/SyncMDTests.swift:34: error: -[SyncMDTests.SyncMDTests testStashActionsFollowDisplayedIdentityAfterExternalInsertion] : XCTAssertEqual failed: ("[0]") is not equal to ("[1]") - apply
+/Users/codybontecou/dev/gitsync.md/SyncMDTests/SyncMDTests.swift:34: error: -[SyncMDTests.SyncMDTests testStashActionsFollowDisplayedIdentityAfterExternalInsertion] : XCTAssertEqual failed: ("[0]") is not equal to ("[1]") - pop
+/Users/codybontecou/dev/gitsync.md/SyncMDTests/SyncMDTests.swift:34: error: -[SyncMDTests.SyncMDTests testStashActionsFollowDisplayedIdentityAfterExternalInsertion] : XCTAssertEqual failed: ("[0]") is not equal to ("[1]") - drop
+Test Case '-[SyncMDTests.SyncMDTests testStashActionsFollowDisplayedIdentityAfterExternalInsertion]' failed (0.029 seconds).
+	 Executed 2 tests, with 9 failures (0 unexpected) in 0.361 (0.367) seconds
+	 Executed 2 tests, with 9 failures (0 unexpected) in 0.361 (0.367) seconds
+	 Executed 2 tests, with 9 failures (0 unexpected) in 0.361 (0.369) seconds

@@ -1,0 +1,5 @@
+{
+  "summary": "Screenshot diff summary\n\nOverall:\n- status: unchanged\n- pixel_mismatch: 0% - no pixel change\n- changed_areas: shown=0 total=0 omitted=0\n- diff_images: see diffPath (full size) and contextDiffPath in this result\n  - legend: green=pixel brighter in current, red=pixel darker in current, yellow rectangles outline changed regions\n\nText changes:\n- text_analysis: status=skipped provider=ocr\n\nRegions:\n- regions: shown=0 total=0 omitted=0\n- None detected.",
+  "diffPath": "/tmp/pr47-warning-diff/pr47-warning-home-b-diff.png",
+  "contextDiffPath": "/tmp/pr47-warning-diff/pr47-warning-home-b-context-diff.png"
+}

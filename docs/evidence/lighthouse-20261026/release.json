@@ -1,0 +1,36 @@
+{
+  "date": "2026-10-26",
+  "origin": "https://gitsync.md",
+  "lighthouseVersion": "13.5.0",
+  "initialProductionDeployment": "e64c2761-8f0b-44c8-b168-aa2505bceb14",
+  "finalProductionDeployment": "9c04b0f6.syncmd.pages.dev",
+  "finalPreviewDeployment": "d59d24a4.syncmd.pages.dev",
+  "method": "Standard Lighthouse simulated throttling; isolated headless Chrome; no skipped audits or blocked requests.",
+  "changes": [
+    "Optimized homepage screenshots and video poster as WebP",
+    "Fixed contrast of screenshot tab numbers and use-case symbols",
+    "Load YouTube players on activation, preserving keyboard activation and no-JS direct links",
+    "Inline local styles in generated deployment HTML to remove render-blocking stylesheet requests"
+  ],
+  "validation": [
+    "SEO/content/link checks across all 20 HTML pages and 19 sitemap URLs",
+    "8 SEO-checker fixture tests",
+    "2 testimonial tests",
+    "Build smoke checks: stylesheet resolution, other links preserved, overwrite/source/URL guards",
+    "Homepage visual and screenshot-tab checks at 390px and 1440px; no horizontal overflow",
+    "Zero initial YouTube requests; keyboard activation creates titled iframe and moves focus; no-JS direct video link"
+  ],
+  "note": "Scores are lab measurements for the recorded runs; field data and future runs can differ. Preview URLs intentionally send noindex. Existing unrelated workspace changes were preserved. Deployment built from dirty workspace without committing.",
+  "results": {
+    "mobile": {
+      "pages": 19,
+      "allCategories": 100
+    },
+    "desktop": {
+      "pages": [
+        "/"
+      ],
+      "allCategories": 100
+    }
+  }
+}

@@ -1,0 +1,102 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.11.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+
+> Configure project :app
+Play Console key not found at: /Users/codybontecou/.config/play-console/play-publisher-crested-drive-492000-u7.json
+Warning: SDK processing. This version only understands SDK XML versions up to 3 but an SDK XML file of version 4 was encountered. This can happen if you use versions of Android Studio and the command-line tools that were released at different times.
+WARNING: We recommend using a newer Android Gradle plugin to use compileSdk = 36
+
+This Android Gradle plugin (8.2.0) was tested up to compileSdk = 34.
+
+You are strongly encouraged to update your project to use a newer
+Android Gradle plugin that has been tested with compileSdk = 36.
+
+If you are already using the latest version of the Android Gradle plugin,
+you may need to wait until a newer version with support for compileSdk = 36 is available.
+
+To suppress this warning, add/update
+    android.suppressUnsupportedCompileSdk=36
+to this project's gradle.properties.
+
+> Task :core:checkKotlinGradlePluginConfigurationErrors
+
+> Task :core:compileKotlin
+w: file:///Users/codybontecou/dev/sync-md-android/core/src/main/kotlin/com/bontecou/syncmd/services/git/DiscardReview.kt:83:21 The value 'true' assigned to 'var ownsPreparedIndex: Boolean defined in com.bontecou.syncmd.services.git.ReviewedDiscard.execute.`<anonymous>`' is never used
+w: file:///Users/codybontecou/dev/sync-md-android/core/src/main/kotlin/com/bontecou/syncmd/services/git/LocalConflictRepository.kt:128:25 Name shadowed: detail
+w: file:///Users/codybontecou/dev/sync-md-android/core/src/main/kotlin/com/bontecou/syncmd/services/git/RepositoryRebase.kt:118:111 Unnecessary non-null assertion (!!) on a non-null receiver of type String
+w: file:///Users/codybontecou/dev/sync-md-android/core/src/main/kotlin/com/bontecou/syncmd/services/git/RepositoryRebase.kt:128:111 Unnecessary non-null assertion (!!) on a non-null receiver of type String
+w: file:///Users/codybontecou/dev/sync-md-android/core/src/main/kotlin/com/bontecou/syncmd/services/git/lfs/LfsLockManager.kt:84:25 Variable 'supported' initializer is redundant
+
+> Task :core:compileJava
+> Task :core:processResources NO-SOURCE
+> Task :core:classes
+> Task :core:jar
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:checkKotlinGradlePluginConfigurationErrors
+> Task :app:generateDebugBuildConfig
+> Task :app:checkDebugAarMetadata
+> Task :app:generateDebugResValues
+> Task :app:mapDebugSourceSetPaths
+> Task :app:generateDebugResources
+> Task :app:mergeDebugResources
+> Task :app:packageDebugResources
+> Task :app:parseDebugLocalResources
+> Task :app:createDebugCompatibleScreenManifests
+> Task :app:extractDeepLinksDebug
+> Task :app:processDebugMainManifest
+> Task :app:processDebugManifest
+> Task :app:processDebugManifestForPackage
+> Task :app:processDebugResources
+> Task :app:kaptGenerateStubsDebugKotlin
+> Task :app:kaptDebugKotlin
+> Task :app:compileDebugKotlin
+w: file:///Users/codybontecou/dev/sync-md-android/app/src/main/kotlin/com/bontecou/syncmd/automation/RepositoryCallbackGrants.kt:88:48 Conditional branch result of type JSONArray is implicitly cast to Any
+w: file:///Users/codybontecou/dev/sync-md-android/app/src/main/kotlin/com/bontecou/syncmd/automation/RepositoryCallbackGrants.kt:88:126 Conditional branch result of type String is implicitly cast to Any
+w: file:///Users/codybontecou/dev/sync-md-android/app/src/main/kotlin/com/bontecou/syncmd/observation/RepositoryObservations.kt:99:25 Variable 'available' initializer is redundant
+w: file:///Users/codybontecou/dev/sync-md-android/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/CloneScreen.kt:64:9 Variable 'context' is never used
+w: file:///Users/codybontecou/dev/sync-md-android/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/RemoteCloneScreen.kt:57:9 Variable 'context' is never used
+w: file:///Users/codybontecou/dev/sync-md-android/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/RemoteCloneScreen.kt:59:9 Variable 'registering' is never used
+w: file:///Users/codybontecou/dev/sync-md-android/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/VaultScreen.kt:206:5 Parameter 'onOpenDiff' is never used
+w: file:///Users/codybontecou/dev/sync-md-android/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/VaultScreen.kt:257:47 Condition 'status != null' is always 'false'
+w: file:///Users/codybontecou/dev/sync-md-android/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/VaultScreen.kt:301:17 Condition 'status != null' is always 'false'
+w: file:///Users/codybontecou/dev/sync-md-android/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/VaultScreen.kt:302:24 Unreachable code
+w: file:///Users/codybontecou/dev/sync-md-android/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/VaultScreen.kt:445:16 Elvis operator (?:) always returns the left operand of non-nullable type Int?
+w: file:///Users/codybontecou/dev/sync-md-android/app/src/main/kotlin/com/bontecou/syncmd/ui/theme/BrutalDesignSystem.kt:109:30 Parameter 'style' is never used
+w: file:///Users/codybontecou/dev/sync-md-android/app/src/main/kotlin/com/bontecou/syncmd/ui/theme/Theme.kt:95:20 'setter for statusBarColor: Int' is deprecated. Deprecated in Java
+w: file:///Users/codybontecou/dev/sync-md-android/app/src/main/kotlin/com/bontecou/syncmd/ui/theme/Theme.kt:96:20 'setter for navigationBarColor: Int' is deprecated. Deprecated in Java
+w: file:///Users/codybontecou/dev/sync-md-android/app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/CloneViewModel.kt:161:36 Unnecessary non-null assertion (!!) on a non-null receiver of type GitHubAccountSnapshot
+
+> Task :app:javaPreCompileDebug
+> Task :app:compileDebugJavaWithJavac
+> Task :app:hiltAggregateDepsDebug
+> Task :app:hiltJavaCompileDebug
+> Task :app:transformDebugClassesWithAsm
+> Task :app:bundleDebugClassesToRuntimeJar
+> Task :app:preDebugUnitTestBuild UP-TO-DATE
+> Task :app:processDebugJavaRes
+> Task :app:bundleDebugClassesToCompileJar
+> Task :app:kaptGenerateStubsDebugUnitTestKotlin
+
+> Task :app:kaptDebugUnitTestKotlin
+warning: The following options were not recognized by any processor: '[dagger.fastInit, dagger.hilt.android.internal.disableAndroidSuperclassValidation, dagger.hilt.android.internal.projectType, dagger.hilt.internal.useAggregatingRootProcessor, kapt.kotlin.generated]'
+
+> Task :app:compileDebugUnitTestKotlin
+> Task :app:javaPreCompileDebugUnitTest
+> Task :app:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :app:hiltAggregateDepsDebugUnitTest
+> Task :app:hiltJavaCompileDebugUnitTest NO-SOURCE
+> Task :app:processDebugUnitTestJavaRes
+> Task :app:transformDebugUnitTestClassesWithAsm
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+> Task :app:testDebugUnitTest
+[Incubating] Problems report is available at: file:///tmp/syncmd-connection-consent-build/root/reports/problems/problems-report.html
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/8.11.1/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 1m 41s
+37 actionable tasks: 37 executed

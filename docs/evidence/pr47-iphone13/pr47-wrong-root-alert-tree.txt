@@ -1,0 +1,18 @@
+Source: xcuitest-runner
+Mode: nested
+Coordinates are normalized [0,1] fractions of the screen (x, y, width, height), not pixels.
+Pass them straight to gesture-tap / gesture-swipe / gesture-pinch, which expect this same space.
+To tap an element, use its centre: tap_x = frame.x + frame.width / 2, tap_y = frame.y + frame.height / 2.
+
+ROOT  Application (0.000, 0.000, 1.000, 1.000)
+
+  Alert "Reauthorization Failed"  (0.126, 0.414, 0.748, 0.186)
+    ScrollView [scrollable]  (0.126, 0.414, 0.748, 0.100)
+      AXStaticText "Reauthorization Failed"  (0.196, 0.438, 0.607, 0.022)
+      AXStaticText "The folder “git-tools-fixture” doesn’t exist."  (0.196, 0.468, 0.607, 0.041)
+      Other "Vertical scroll bar, 1 page" value="0%"  (0.797, 0.414, 0.070, 0.100)
+      Other "Horizontal scroll bar, 1 page" value="0%"  (0.126, 0.478, 0.748, 0.032)
+    ScrollView [scrollable]  (0.126, 0.514, 0.748, 0.086)
+      AXButton "OK"  (0.164, 0.531, 0.673, 0.052)
+      Other "Vertical scroll bar, 1 page" value="0%"  (0.797, 0.514, 0.070, 0.086)
+      Other "Horizontal scroll bar, 1 page" value="0%"  (0.126, 0.564, 0.748, 0.032)

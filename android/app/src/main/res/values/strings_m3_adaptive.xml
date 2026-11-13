@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Tablet and foldable layouts (boards Tablet, TabletEditor, TabletConflict, Fold*) -->
+
+    <!-- Rail -->
+    <string name="adaptive_sync_all_to_push">Sync all, %1$d to push</string>
+    <string name="adaptive_sync_all">Sync all</string>
+    <string name="adaptive_account">Account and settings</string>
+
+    <!-- Vault list (Tablet) -->
+    <string name="adaptive_vaults">Vaults</string>
+    <plurals name="adaptive_vaults_need_you">
+        <item quantity="one">%1$d needs you</item>
+        <item quantity="other">%1$d need you</item>
+    </plurals>
+    <string name="adaptive_badge_in_sync">✓</string>
+    <string name="adaptive_badge_ahead">↑%1$d</string>
+    <string name="adaptive_badge_behind">↓%1$d</string>
+    <string name="adaptive_badge_both">↓%1$d ↑%2$d</string>
+    <string name="adaptive_badge_edited">%1$d edited</string>
+    <string name="adaptive_badge_attention">!</string>
+    <string name="adaptive_badge_checking">…</string>
+
+    <!-- Changes pane -->
+    <plurals name="adaptive_changes_on_tablet">
+        <item quantity="one">%1$s change on this tablet</item>
+        <item quantity="other">%1$s changes on this tablet</item>
+    </plurals>
+    <plurals name="adaptive_changes_on_phone">
+        <item quantity="one">%1$s change on this phone</item>
+        <item quantity="other">%1$s changes on this phone</item>
+    </plurals>
+    <string name="adaptive_conflict">conflict</string>
+    <plurals name="adaptive_merging_left">
+        <item quantity="one">Merging %1$s · %2$d conflict left</item>
+        <item quantity="other">Merging %1$s · %2$d conflicts left</item>
+    </plurals>
+    <plurals name="adaptive_merging_left_plain">
+        <item quantity="one">Merging · %1$d conflict left</item>
+        <item quantity="other">Merging · %1$d conflicts left</item>
+    </plurals>
+    <string name="adaptive_no_changes">No changes on this device. Edit a note and it shows up here.</string>
+    <string name="adaptive_pull">Pull</string>
+    <string name="adaptive_push">Push</string>
+    <string name="adaptive_pull_then_push">Pull, then push</string>
+    <string name="adaptive_review_first">Review first</string>
+    <string name="adaptive_rejected">The remote moved on. Pull its commits first, then push yours.</string>
+    <string name="adaptive_cancel">Cancel</string>
+
+    <!-- Diff detail -->
+    <string name="adaptive_vs">vs %1$s</string>
+    <string name="adaptive_new_file">new file</string>
+    <string name="adaptive_view">View</string>
+
+    <!-- Editor detail -->
+    <string name="adaptive_edited">edited</string>
+    <string name="adaptive_commit_this_file">Commit this file</string>
+
+    <!-- Conflict detail -->
+    <string name="adaptive_conflict_position">Conflict %1$d of %2$d · %3$s</string>
+    <string name="adaptive_abort_merge">Abort merge</string>
+    <string name="adaptive_this_tablet">This tablet</string>
+    <string name="adaptive_keep_this_version">Keep this version</string>
+
+    <!-- Foldable cover -->
+    <string name="adaptive_cover_unfold">Unfold to read the diff beside the change list.</string>
+
+    <!-- Tabletop -->
+    <string name="adaptive_position">%1$d of %2$d</string>
+    <plurals name="adaptive_commit_changes">
+        <item quantity="one">Commit %1$d change</item>
+        <item quantity="other">Commit %1$d changes</item>
+    </plurals>
+    <string name="adaptive_branch_to_remote">%1$s → %2$s</string>
+    <string name="adaptive_branch_local_only">%1$s · no remote</string>
+    <string name="adaptive_commit_message">Commit message</string>
+    <string name="adaptive_include">Include</string>
+    <string name="adaptive_commit_only">Commit only</string>
+    <string name="adaptive_discard_all">Discard</string>
+
+    <!-- Split screen -->
+    <string name="adaptive_split_watching">watching %1$s</string>
+    <plurals name="adaptive_split_live">
+        <item quantity="one">%1$s change · live</item>
+        <item quantity="other">%1$s changes · live</item>
+    </plurals>
+    <string name="adaptive_split_committed">↑%1$d committed</string>
+    <plurals name="adaptive_split_editing">
+        <item quantity="one">%1$d being edited</item>
+        <item quantity="other">%1$d being edited</item>
+    </plurals>
+    <string name="adaptive_split_typing">typing…</string>
+    <string name="adaptive_split_auto_commit">Auto-commit when I pause for 2 min</string>
+</resources>

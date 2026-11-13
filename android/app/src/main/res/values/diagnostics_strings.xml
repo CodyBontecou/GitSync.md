@@ -1,0 +1,35 @@
+<resources>
+    <string name="diagnostics_all">"All"</string>
+    <string name="diagnostics_warnings">"Warnings"</string>
+    <string name="diagnostics_errors">"Errors"</string>
+    <string name="diagnostics_share_title">"Share diagnostics"</string>
+    <string name="diagnostics_empty">"No diagnostic entries yet. Git actions will appear here."</string>
+    <string name="diagnostics_filtered_empty">"No entries match this filter."</string>
+    <string name="diagnostics_clear_recovery">"Remove all stored diagnostics, including unreadable diagnostic data. New operations can add entries afterward."</string>
+    <string name="diagnostics_clear_entries">"Entries to remove: %1$d, including entries hidden by the filter. New operations can add entries afterward."</string>
+    <string name="diagnostics_cleared">"Diagnostic log cleared"</string>
+    <string name="diagnostics_copied">"Visible entries copied"</string>
+    <string name="diagnostics_action_failed">"Diagnostics could not complete this action. Existing records were kept."</string>
+    <string name="diagnostics_operation_clone">"Clone"</string>
+    <string name="diagnostics_operation_fetch">"Fetch"</string>
+    <string name="diagnostics_operation_push">"Push"</string>
+    <string name="diagnostics_operation_rebase">"Rebase"</string>
+    <string name="diagnostics_operation_conflict">"Conflict"</string>
+    <string name="diagnostics_operation_lfs">"Git LFS"</string>
+    <string name="diagnostics_operation_tag">"Tag"</string>
+    <string name="diagnostics_operation_revert">"Revert"</string>
+    <string name="diagnostics_outcome_started">"Started"</string>
+    <string name="diagnostics_outcome_completed">"Completed"</string>
+    <string name="diagnostics_outcome_stopped">"Stopped"</string>
+    <string name="diagnostics_outcome_attention">"Needs attention"</string>
+    <string name="diagnostics_outcome_cancelled">"Cancelled"</string>
+    <string name="diagnostics_reason_local_changes">"Local changes need review"</string>
+    <string name="diagnostics_reason_lfs_contents">"Git completed; some LFS contents still need download"</string>
+    <string name="diagnostics_reason_lfs_lock">"A server LFS lock blocked publishing"</string>
+    <string name="diagnostics_reason_trust">"Server approval or trust review is required"</string>
+    <string name="diagnostics_reason_cancelled">"The action was cancelled"</string>
+    <string name="diagnostics_reason_network">"The network operation did not complete"</string>
+    <string name="diagnostics_reason_storage">"Storage access is unavailable"</string>
+    <string name="diagnostics_reason_review">"Repository state needs review"</string>
+    <string name="diagnostics_reason_unknown">"The action stopped. Review repository status and connection settings."</string>
+</resources>

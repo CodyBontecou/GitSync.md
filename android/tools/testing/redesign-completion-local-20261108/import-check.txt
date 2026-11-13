@@ -1,0 +1,1 @@
+Languages: 25 mapped Android strings: 2509 of 2509 rejected candidates: 0

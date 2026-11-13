@@ -1,0 +1,590 @@
+steps:
+  - launch:
+      native: bontecou.Sync-md.prqa
+      ios:
+        app: bontecou.Sync-md.prqa
+        args:
+          - -UITestGitToolsFixture
+          - bookmark-parent
+          - -AppleLanguages
+          - (en)
+          - -AppleLocale
+          - en_US
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Attention 1
+        role: Button
+  - launch: com.apple.DocumentsApp
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: Browse View
+  - tap:
+      id: folder.fill
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: DOC.sidebar.item.On My iPhone
+  - tap:
+      id: DOC.sidebar.item.On My iPhone
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: On My iPhone
+        role: StaticText
+  - echo: Create only the uniquely owned GitSync-PR47-QA-20261113 folder in the
+      external On My iPhone provider; do not open unrelated app folders.
+  - tap:
+      id: TopOverflowBarButtonItem
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: New Folder
+        role: Button
+  - tap:
+      x: 0.66
+      y: 0.1295
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: DOC.inlineRenameField
+  - tool: keyboard
+    args:
+      text: GitSync-PR47-QA-20261113
+  - tool: keyboard
+    args:
+      key: enter
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: GitSync-PR47-QA-20261113, Folder
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: GitSync PR QA, Container
+  - tap:
+      text: GitSync PR QA
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: git-tools-fixture, Folder
+  - tap:
+      id: TopOverflowBarButtonItem
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: checkmark.circle
+  - tap:
+      id: checkmark.circle
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Select Items
+        role: StaticText
+  - tap:
+      text: git-tools-fixture
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: checkmark.circle.platter
+  - echo: Only git-tools-fixture is selected. Move it to the owned external QA
+      parent, preserving its hidden Git directory and dirty notes.
+  - tap:
+      text: Move
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: Browse View (Picker)
+  - tap:
+      text: GitSync-PR47-QA-20261113
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: "DOC.browsingRoot Source: com.apple.FileProvider.LocalStorage,
+          Title: GitSync-PR47-QA-20261113"
+  - tool: await-ui-element
+    args:
+      condition: text
+      selector:
+        identifier: DOCPicker.filenameTextField
+      expectedText: git-tools-fixture
+      textMatch: equals
+  - tap:
+      id: DOCPicker.actionButton
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Folder is Empty
+        role: StaticText
+  - tool: await-ui-element
+    args:
+      condition: hidden
+      selector:
+        identifier: git-tools-fixture, Folder
+  - launch:
+      native: bontecou.Sync-md.prqa
+      ios:
+        app: bontecou.Sync-md.prqa
+        args:
+          - -UITestGitToolsFixture
+          - bookmark-resume
+          - -AppleLanguages
+          - (en)
+          - -AppleLocale
+          - en_US
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Attention 1
+        role: Button
+  - tap:
+      text: main · syncmd-uitest-fixtures/git-tools-fixture
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: vault.reauthorizeFolder
+  - tap:
+      id: vault.reauthorizeFolder
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Vault settings
+  - tool: gesture-swipe
+    args:
+      fromX: 0.5
+      fromY: 0.85
+      toX: 0.5
+      toY: 0.3
+      durationMs: 400
+      momentum: false
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: repository.reauthorizeFolder
+  - echo: Intentionally select the working-copy child instead of its required
+      parent. Renewal must reject the wrong root without replacing saved
+      metadata or touching files.
+  - tap:
+      text: Reauthorize Folder
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: Browse View (Picker)
+  - tap:
+      id: folder.fill
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: DOC.sidebar.item.On My iPhone
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: "DOC.browsingRoot Source: com.apple.FileProvider.LocalStorage,
+          Title: On My iPhone"
+  - tap:
+      id: folder.fill
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: DOC.sidebar.item.On My iPhone
+  - tap:
+      id: DOC.sidebar.item.On My iPhone
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: GitSync-PR47-QA-20261113, Folder
+  - tap:
+      text: GitSync-PR47-QA-20261113
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: "DOC.browsingRoot Source: com.apple.FileProvider.LocalStorage,
+          Title: GitSync-PR47-QA-20261113"
+  - tap:
+      text: git-tools-fixture
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: "DOC.browsingRoot Source: com.apple.FileProvider.LocalStorage,
+          Title: git-tools-fixture"
+  - tap:
+      id: DOCPicker.actionButton
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Reauthorization Failed
+        role: Alert
+  - tap:
+      text: OK
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: repository.reauthorizeFolder
+  - echo: Renew using the actual external QA parent containing the retained native
+      working copy.
+  - tap:
+      text: Reauthorize Folder
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: Browse View (Picker)
+  - tap:
+      id: folder.fill
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: DOC.sidebar.item.On My iPhone
+  - tap:
+      id: DOC.sidebar.item.On My iPhone
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: GitSync-PR47-QA-20261113, Folder
+  - tap:
+      text: GitSync-PR47-QA-20261113
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: "DOC.browsingRoot Source: com.apple.FileProvider.LocalStorage,
+          Title: GitSync-PR47-QA-20261113"
+  - tap:
+      id: DOCPicker.actionButton
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: GitSync-PR47-QA-20261113 › git-tools-fixture
+        role: StaticText
+  - tool: await-ui-element
+    args:
+      condition: text
+      selector:
+        identifier: repositorySettings.branch
+      expectedText: main
+      textMatch: equals
+  - tap:
+      text: Cancel
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: vault.title
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: README.md, modified
+        role: Button
+  - tool: await-ui-element
+    args:
+      condition: hidden
+      selector:
+        identifier: vault.reauthorizeFolder
+  - launch:
+      native: bontecou.Sync-md.prqa
+      ios:
+        app: bontecou.Sync-md.prqa
+        args:
+          - -UITestGitToolsFixture
+          - bookmark-resume
+          - -AppleLanguages
+          - (en)
+          - -AppleLocale
+          - en_US
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Attention 1
+        role: Button
+  - tap:
+      text: main · syncmd-uitest-fixtures/git-tools-fixture
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: vault.title
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: README.md, modified
+        role: Button
+  - echo: Cold process recovered the real external worktree and its unpublished
+      edit. Rename only the owned child in Files; the parent grant must remain,
+      saved clone metadata must not be erased.
+  - launch: com.apple.DocumentsApp
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: GitSync-PR47-QA-20261113, Actions Menu
+        role: Button
+  - tool: gesture-custom
+    args:
+      events:
+        - type: Down
+          x: 0.1755
+          y: 0.2805
+        - type: Up
+          x: 0.1755
+          y: 0.2805
+          delayMs: 800
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: pencil
+  - tap:
+      id: pencil
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: DOC.inlineRenameField
+  - tool: keyboard
+    args:
+      text: git-tools-fixture-moved
+  - tool: keyboard
+    args:
+      key: enter
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: git-tools-fixture-moved, Folder
+  - launch:
+      native: bontecou.Sync-md.prqa
+      ios:
+        app: bontecou.Sync-md.prqa
+        args:
+          - -UITestGitToolsFixture
+          - bookmark-resume
+          - -AppleLanguages
+          - (en)
+          - -AppleLocale
+          - en_US
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Attention 1
+        role: Button
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Folder Access Unavailable
+        role: StaticText
+  - tap:
+      text: main · syncmd-uitest-fixtures/git-tools-fixture
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: vault.reauthorizeFolder
+  - echo: Renamed-child loss is recoverable, not Not Cloned, and all saved metadata
+      is intact. Restore only the owned child name in Files; never clone to
+      repair it.
+  - launch: com.apple.DocumentsApp
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: git-tools-fixture-moved, Folder
+  - tool: gesture-custom
+    args:
+      events:
+        - type: Down
+          x: 0.1755
+          y: 0.2805
+        - type: Up
+          x: 0.1755
+          y: 0.2805
+          delayMs: 800
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: pencil
+  - tap:
+      id: pencil
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: DOC.inlineRenameField
+  - tool: keyboard
+    args:
+      text: git-tools-fixture
+  - tool: keyboard
+    args:
+      key: enter
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: git-tools-fixture, Folder
+  - launch:
+      native: bontecou.Sync-md.prqa
+      ios:
+        app: bontecou.Sync-md.prqa
+        args:
+          - -UITestGitToolsFixture
+          - bookmark-resume
+          - -AppleLanguages
+          - (en)
+          - -AppleLocale
+          - en_US
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Attention 1
+        role: Button
+  - tap:
+      text: main · syncmd-uitest-fixtures/git-tools-fixture
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: vault.title
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: README.md, modified
+        role: Button
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Pull
+        role: Button
+  - echo: Run genuine Pull against the credential-free QA bare remote at the same
+      HEAD. Do not commit or push the unpublished README; inspect the persisted
+      outcome and fetch metadata.
+  - tap:
+      text: Pull
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Already up to date
+        role: StaticText
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: README.md, modified
+        role: Button
+  - launch: com.apple.DocumentsApp
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: git-tools-fixture, Folder
+  - echo: Return the owned fixture to its original isolated QA Documents location
+      for byte/index/ref inspection. Do not replace an existing destination.
+  - tool: gesture-custom
+    args:
+      events:
+        - type: Down
+          x: 0.1755
+          y: 0.2805
+        - type: Up
+          x: 0.1755
+          y: 0.2805
+          delayMs: 800
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Move
+        role: Button
+  - tap:
+      id: folder.fill
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: Browse View (Picker)
+  - tap:
+      id: BackButton
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: GitSync PR QA, Container
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: GitSync PR QA, Container
+  - tap:
+      id: BackButton
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: DOC.sidebar.item.On My iPhone
+  - tap:
+      id: DOC.sidebar.item.On My iPhone
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: GitSync PR QA, Container
+  - tap:
+      text: GitSync PR QA
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: pr47-return-anchor, Folder
+  - tool: await-ui-element
+    args:
+      condition: hidden
+      selector:
+        identifier: git-tools-fixture, Folder
+  - tap:
+      id: DOCPicker.actionButton
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Folder is Empty
+        role: StaticText

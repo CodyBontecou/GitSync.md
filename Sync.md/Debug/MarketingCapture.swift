@@ -40,6 +40,16 @@ enum MarketingCapture {
         value(for: "-UITestGitToolsFixture")
     }
 
+    static var isBookmarkRecoveryFixture: Bool {
+        ["bookmark-direct", "bookmark-parent", "bookmark-discovery", "bookmark-resume"]
+            .contains(gitToolsUITestScenario ?? "")
+    }
+
+    static var allowsFixtureStatusRefresh: Bool {
+        gitToolsUITestScenario == "external-commit" || gitToolsUITestScenario == "external-branch"
+            || isBookmarkRecoveryFixture
+    }
+
     static var usesSeededData: Bool {
         isActive || isFileBrowserUITestActive
             || isUITestCloneFixtureActive || isUITestConflictFixtureActive
@@ -50,6 +60,28 @@ enum MarketingCapture {
         let args = ProcessInfo.processInfo.arguments
         guard let idx = args.firstIndex(of: key), idx + 1 < args.count else { return nil }
         return args[idx + 1]
+    }
+
+    /// Repositories the picker lists under `-UITestGitHubRepos`.
+    static var sampleGitHubRepos: [GitHubRepo] {
+        func repo(_ id: Int64, _ owner: String, _ name: String, private isPrivate: Bool,
+                  sizeKB: Int, language: String?, daysAgo: Double) -> GitHubRepo {
+            let updated = ISO8601DateFormatter().string(from: Date().addingTimeInterval(-daysAgo * 86_400))
+            return GitHubRepo(
+                id: id, name: name, fullName: "\(owner)/\(name)", description: nil,
+                isPrivate: isPrivate, htmlURL: "https://github.com/\(owner)/\(name)",
+                defaultBranch: "main", updatedAt: updated,
+                owner: GitHubRepo.Owner(login: owner), size: sizeKB, language: language
+            )
+        }
+        return [
+            repo(1, "sample-developer", "second-brain", private: true, sizeKB: 2_400, language: nil, daysAgo: 0.1),
+            repo(2, "sample-developer", "reading-vault", private: true, sizeKB: 4_100, language: nil, daysAgo: 3),
+            repo(3, "sample-developer", "work-notes", private: true, sizeKB: 215_000, language: "Markdown", daysAgo: 7),
+            repo(4, "sample-developer", "vault-templates", private: false, sizeKB: 18, language: nil, daysAgo: 60),
+            repo(5, "sample-developer", "dotfiles", private: false, sizeKB: 6, language: "Shell", daysAgo: 240),
+            repo(6, "sample-org", "team-handbook", private: true, sizeKB: 9_800, language: nil, daysAgo: 2),
+        ]
     }
 
     // MARK: Locale
@@ -183,6 +215,71 @@ final class MarketingCaptureCoordinator {
 @MainActor
 enum MarketingDemoSeeder {
 
+    /// Real native repository plus malformed persisted bookmark. Construction of
+    /// the returned state exercises Foundation resolution and normal cold-load
+    /// validation; resume deliberately keeps the renewed picker grant/inventory.
+    static func bookmarkRecoveryAppStateIfRequested() -> AppState? {
+        guard MarketingCapture.isBookmarkRecoveryFixture else { return nil }
+        #if !targetEnvironment(simulator)
+        precondition(Bundle.main.bundleIdentifier == "bontecou.Sync-md.prqa", "Bookmark QA requires the isolated QA app")
+        #endif
+        let inventoryURL = FileManager.default.temporaryDirectory.appendingPathComponent("pr47-qa/repos.json")
+        do {
+            if MarketingCapture.gitToolsUITestScenario != "bookmark-resume" {
+                try? FileManager.default.removeItem(at: inventoryURL)
+                let seed = AppState(reposFileURL: inventoryURL, loadPersistedState: false)
+                seedUITestGitToolsFixture(into: seed, scenario: "dirty")
+                guard var config = seed.repos.first else { preconditionFailure("Missing native bookmark fixture") }
+                config.customVaultBookmarkData = Data("PR47 deliberately malformed bookmark".utf8)
+                config.customLocationIsParent = MarketingCapture.gitToolsUITestScenario == "bookmark-parent"
+                config.customVaultRelativePath = MarketingCapture.gitToolsUITestScenario == "bookmark-discovery"
+                    ? "git-tools-fixture" : nil
+                try RepoPersistenceStore().replaceAll([config], at: inventoryURL)
+            }
+            precondition(FileManager.default.fileExists(atPath: inventoryURL.path), "Prepare the bookmark fixture before resuming")
+            return AppState(reposFileURL: inventoryURL)
+        } catch {
+            preconditionFailure("Could not prepare isolated bookmark fixture: \(error)")
+        }
+    }
+
+    /// Cancellation QA uses a real native repo and its own inventory, never the
+    /// shipping account/store. The UI explicitly acquires/releases its lease.
+    static func pullCancellationAppStateIfRequested() -> AppState? {
+        guard MarketingCapture.gitToolsUITestScenario == "pull-cancel" else { return nil }
+        precondition(Bundle.main.bundleIdentifier == "bontecou.Sync-md.prqa")
+        let inventoryURL = FileManager.default.temporaryDirectory.appendingPathComponent("pr44-qa/repos.json")
+        try? FileManager.default.removeItem(at: inventoryURL)
+        return AppState(reposFileURL: inventoryURL, loadPersistedState: false)
+    }
+
+    /// External-client fixtures must not load or reconcile the user's inventory.
+    static func externalRefreshAppStateIfRequested() -> AppState? {
+        guard MarketingCapture.gitToolsUITestScenario == "external-commit"
+                || MarketingCapture.gitToolsUITestScenario == "external-branch" else { return nil }
+        let inventoryURL = FileManager.default.temporaryDirectory.appendingPathComponent("pr46-qa/repos.json")
+        try? FileManager.default.removeItem(at: inventoryURL)
+        return AppState(reposFileURL: inventoryURL, loadPersistedState: false)
+    }
+
+    /// Exercise a real post-ref SAFE-checkout race through the normal foreground
+    /// runner. The fixture has no credentials/network and never loads user repos.
+    static func checkoutRaceAppStateIfRequested() -> AppState? {
+        guard MarketingCapture.gitToolsUITestScenario == "checkout-incomplete" else { return nil }
+        let inventoryURL = FileManager.default.temporaryDirectory.appendingPathComponent("pr45-qa/repos.json")
+        // Every launch starts from one fixture inventory, rather than merging
+        // random IDs from prior runs into the persistence store after Pull.
+        try? FileManager.default.removeItem(at: inventoryURL)
+        return AppState(gitRepositoryFactory: { url in
+            LocalGitService(localURL: url, pullOnlyBeforeFinalCheckout: {
+                guard url.lastPathComponent == "git-tools-fixture" else { return }
+                try? "# Hello\n\nPR45 concurrent local edit preserved.\n".write(
+                    to: url.appendingPathComponent("notes/hello.md"), atomically: true, encoding: .utf8
+                )
+            })
+        }, reposFileURL: inventoryURL, loadPersistedState: false)
+    }
+
     static func seed(into state: AppState) {
         // UI-test local-git fixture modes (Issue #19 clone-flow and
         // conflict-resolver slices). These build REAL on-disk git fixtures and
@@ -196,6 +293,15 @@ enum MarketingDemoSeeder {
             return
         }
 
+        if MarketingCapture.isBookmarkRecoveryFixture {
+            // The app initializer already cold-loaded the private inventory.
+            // Re-seeding here would mask lost metadata and destroy recovery.
+            state.isSignedIn = false
+            state.hasCompletedOnboarding = true
+            state.hasSeenOnboarding = true
+            state.isDemoMode = false
+            return
+        }
         if let scenario = MarketingCapture.gitToolsUITestScenario {
             seedUITestGitToolsFixture(into: state, scenario: scenario)
             return
@@ -436,6 +542,16 @@ enum MarketingDemoSeeder {
         } catch {
             assertionFailure("Could not create seeded file-browser data: \(error)")
         }
+
+        // Offline stand-ins for GitHub-backed flows, so UI tests and QA can
+        // reach them without an account or network.
+        if ProcessInfo.processInfo.arguments.contains("-UITestGitHubRepos") {
+            state.gitHubRepos = MarketingCapture.sampleGitHubRepos
+        }
+        if ProcessInfo.processInfo.arguments.contains("-UITestAuthExpired") {
+            let cloned = state.repos.filter(\.isCloned).map(\.id)
+            Task { @MainActor in state.markAuthExpired(repoIDs: cloned) }
+        }
     }
 
     // MARK: - UI-Test Local Git Fixtures (Issue #19)
@@ -478,7 +594,7 @@ enum MarketingDemoSeeder {
         let documents = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
         let vaultURL = documents.appendingPathComponent("git-tools-fixture", isDirectory: true)
         let remotePath = UITestGitFixtures.gitToolsBareRemotePath
-        let isDirty = scenario == "dirty" || scenario == "syncing"
+        let isDirty = scenario == "dirty" || scenario == "syncing" || scenario == "pull-cancel"
         var files = [
             "README.md": Data("# Git Tools Fixture\n\nBase note.\n".utf8),
             "notes/hello.md": Data("# Hello\n\nBase remote note.\n".utf8),
@@ -497,7 +613,7 @@ enum MarketingDemoSeeder {
                     message: "Local note"
                 )
             }
-            if scenario == "behind" || scenario == "diverged" {
+            if scenario == "behind" || scenario == "diverged" || scenario == "checkout-incomplete" {
                 files["notes/hello.md"] = Data("# Hello\n\nUpdated remote note.\n".utf8)
                 try UITestGitFixtures.commitToBare(atPath: remotePath, files: files, message: "Remote note")
                 try UITestGitFixtures.fetchOrigin(atPath: vaultURL.path)
@@ -540,11 +656,24 @@ enum MarketingDemoSeeder {
             let syncState: RepoSyncState
             switch scenario {
             case "ahead": syncState = .ahead
-            case "behind": syncState = .behind
+            case "behind", "checkout-incomplete": syncState = .behind
             case "diverged": syncState = .diverged
             default: syncState = .upToDate
             }
             state.syncStateByRepo = [repo.id: syncState]
+            if scenario == "pull-cancel" { _ = state.saveRepos() }
+            // Mutate the real repository without using AppState's Git actions or
+            // publishing its new HEAD/branch. Normal Vault-on-appear status
+            // refresh must discover this independently, like another Git client.
+            if scenario == "external-commit" {
+                try UITestGitFixtures.commitWorktreeFiles(
+                    atPath: vaultURL.path,
+                    files: ["notes/hello.md": Data("# Hello\n\nPR46 external committed note.\n".utf8)],
+                    message: "PR46 external commit"
+                )
+            } else if scenario == "external-branch" {
+                try UITestGitFixtures.selectExistingFeatureHEAD(atPath: vaultURL.path)
+            }
             if scenario == "syncing" {
                 state.isSyncing = true
                 state.syncingRepoID = repo.id
@@ -647,15 +776,22 @@ enum UITestGitFixtures {
 
     /// Simulator processes (app and UI-test runner) share the host `/tmp`, so
     /// a fixed absolute path is addressable from both sides.
-    static let rootPath = "/tmp/syncmd-uitest-fixtures"
+    static var rootPath: String {
+        #if targetEnvironment(simulator)
+        return "/tmp/syncmd-uitest-fixtures"
+        #else
+        // Physical apps cannot write the simulator's host-shared /tmp path.
+        return FileManager.default.temporaryDirectory.appendingPathComponent("syncmd-uitest-fixtures").path
+        #endif
+    }
 
     static var cloneBareRemotePath: String { rootPath + "/bare-remote.git" }
     static var conflictBareRemotePath: String { rootPath + "/conflict-fixture.git" }
     static var gitToolsBareRemotePath: String { rootPath + "/git-tools-fixture.git" }
 
     /// The `file://` URL the UI test types into AddRepoView's manual entry.
-    static let cloneRemoteFileURL = "file:///tmp/syncmd-uitest-fixtures/bare-remote.git"
-    static let conflictRemoteFileURL = "file:///tmp/syncmd-uitest-fixtures/conflict-fixture.git"
+    static var cloneRemoteFileURL: String { "file://" + cloneBareRemotePath }
+    static var conflictRemoteFileURL: String { "file://" + conflictBareRemotePath }
 
     /// Vault folder (inside the app's Documents) for the conflict working copy.
     static let conflictVaultFolderName = "conflict-fixture"
@@ -718,7 +854,7 @@ enum UITestGitFixtures {
 
         var sig: UnsafeMutablePointer<git_signature>?
         defer { if let sig { git_signature_free(sig) } }
-        try check(git_signature_now(&sig, "UITest Seeder", "uitest@syncmd.example"), "signature")
+        try check(makeSignature(&sig), "signature")
 
         // Parent: the ref's current tip, when it exists.
         var parentCommit: OpaquePointer?
@@ -821,7 +957,7 @@ enum UITestGitFixtures {
 
         var sig: UnsafeMutablePointer<git_signature>?
         defer { if let sig { git_signature_free(sig) } }
-        try check(git_signature_now(&sig, "UITest Seeder", "uitest@syncmd.example"), "signature")
+        try check(makeSignature(&sig), "signature")
 
         var commitID = git_oid()
         var parents: [OpaquePointer?] = [parentCommit]
@@ -850,9 +986,18 @@ enum UITestGitFixtures {
             .write(to: URL(fileURLWithPath: path).appendingPathComponent("README.md"))
         var signature: UnsafeMutablePointer<git_signature>?
         defer { if let signature { git_signature_free(signature) } }
-        try check(git_signature_now(&signature, "UITest Seeder", "uitest@syncmd.example"), "stash signature")
+        try check(makeSignature(&signature), "stash signature")
         var stashOID = git_oid()
         try check(git_stash_save(&stashOID, repo, signature, "Saved Git Tools note", 0), "save fixture stash")
+    }
+
+    /// Both branches already name the same tree. Changing symbolic HEAD is an
+    /// independent Git client operation and must not touch any worktree bytes.
+    static func selectExistingFeatureHEAD(atPath path: String) throws {
+        var repo: OpaquePointer?
+        defer { if let repo { git_repository_free(repo) } }
+        try check(git_repository_open(&repo, path), "open external-branch fixture")
+        try check(git_repository_set_head(repo, "refs/heads/feature"), "select external feature HEAD")
     }
 
     /// Fetches `origin` (local file transport — no credentials involved) so
@@ -891,6 +1036,15 @@ enum UITestGitFixtures {
     }
 
     // MARK: - libgit2 Helpers
+
+    private static func makeSignature(_ signature: inout UnsafeMutablePointer<git_signature>?) -> Int32 {
+        if MarketingCapture.allowsFixtureStatusRefresh {
+            // Fixed fixture commit IDs let device checks compare displayed HEAD
+            // with the independently-created commit, not just a success label.
+            return git_signature_new(&signature, "UITest Seeder", "uitest@syncmd.example", 1_700_000_000, 0)
+        }
+        return git_signature_now(&signature, "UITest Seeder", "uitest@syncmd.example")
+    }
 
     private static func check(_ code: Int32, _ context: String) throws {
         guard code >= 0 else {

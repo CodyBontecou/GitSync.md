@@ -1,0 +1,12 @@
+steps:
+  - tap:
+      text: Hello-World
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Latest commit
+  - tap:
+      role: ComposeView
+executionPrerequisite: Dedicated Android QA emulator on Home with existing clean
+  Hello-World test vault.

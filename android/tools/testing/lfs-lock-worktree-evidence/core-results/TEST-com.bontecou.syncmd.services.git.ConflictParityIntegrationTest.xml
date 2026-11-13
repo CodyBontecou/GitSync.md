@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.git.ConflictParityIntegrationTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-11-02T19:21:14" hostname="MacBook-Pro.local" time="0.318">
+  <properties/>
+  <testcase name="invalid UTF8 cannot be corrupted by manual resolution and whole side keeps exact bytes" classname="com.bontecou.syncmd.services.git.ConflictParityIntegrationTest" time="0.071"/>
+  <testcase name="ordinary conflict actions cannot follow a replaced file to another working file" classname="com.bontecou.syncmd.services.git.ConflictParityIntegrationTest" time="0.064"/>
+  <testcase name="manual resolution preserves complete file contents outside conflict hunks" classname="com.bontecou.syncmd.services.git.ConflictParityIntegrationTest" time="0.064"/>
+  <testcase name="binary conflict cannot be silently replaced by empty editor content" classname="com.bontecou.syncmd.services.git.ConflictParityIntegrationTest" time="0.065"/>
+  <testcase name="ordinary conflict actions cannot traverse a replaced parent directory" classname="com.bontecou.syncmd.services.git.ConflictParityIntegrationTest" time="0.054"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.git.FileRemoteTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-11-03T00:55:57" hostname="MacBook-Pro.local" time="0.211">
+  <properties/>
+  <testcase name="file URLs accept only absolute local paths and preserve escaped filename characters" classname="com.bontecou.syncmd.services.git.FileRemoteTest" time="0.001"/>
+  <testcase name="bare and working repositories clone selected branch into independent working copies without changing source" classname="com.bontecou.syncmd.services.git.FileRemoteTest" time="0.145"/>
+  <testcase name="missing local source or branch leaves no clone publication or staging directory" classname="com.bontecou.syncmd.services.git.FileRemoteTest" time="0.062"/>
+  <testcase name="local endpoints cannot receive network credentials or read the default GitHub token" classname="com.bontecou.syncmd.services.git.FileRemoteTest" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[Nov 02, 2026 8:55:57 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit7959359537808383964/junit16974304693584711386/.gitsync-clone-5891781176205699961
+Nov 02, 2026 8:55:57 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=sample-branch commit=892a5062334b4e9c11df980dba793ef577591e3a
+Nov 02, 2026 8:55:57 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 1 files, skipped 0
+Nov 02, 2026 8:55:57 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/sample-branch (892a506)
+Nov 02, 2026 8:55:57 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit7959359537808383964/junit12765107230756695068/.gitsync-clone-15552283927519355726
+Nov 02, 2026 8:55:57 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=sample-branch commit=892a5062334b4e9c11df980dba793ef577591e3a
+Nov 02, 2026 8:55:57 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 1 files, skipped 0
+Nov 02, 2026 8:55:57 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/sample-branch (892a506)
+Nov 02, 2026 8:55:57 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit10593669905684677580/junit8990239113949827230/.gitsync-clone-6733005760608675600
+Nov 02, 2026 8:55:57 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit10593669905684677580/junit18420545336560267611/.gitsync-clone-2899281338040947842
+]]></system-err>
+</testsuite>

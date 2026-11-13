@@ -1,0 +1,14 @@
+11-13 07:32:35.005 19028 19054 I TestRunner: run started: 6 tests
+11-13 07:32:35.006 19028 19054 I TestRunner: started: unbornConfirmationSaysClearStagingAndPreservesEveryWorkingFile(com.bontecou.syncmd.DiscardReviewDialogTest)
+11-13 07:32:37.507 19028 19054 I TestRunner: finished: unbornConfirmationSaysClearStagingAndPreservesEveryWorkingFile(com.bontecou.syncmd.DiscardReviewDialogTest)
+11-13 07:32:37.509 19028 19054 I TestRunner: started: everyLocaleCanReviewAllFullPathsAndCancelAtLargeTextWithoutChangingFilesOrIndex(com.bontecou.syncmd.DiscardReviewDialogTest)
+11-13 07:35:41.943 19028 19054 I TestRunner: finished: everyLocaleCanReviewAllFullPathsAndCancelAtLargeTextWithoutChangingFilesOrIndex(com.bontecou.syncmd.DiscardReviewDialogTest)
+11-13 07:35:41.955 19028 19054 I TestRunner: started: lockedCheckShowsPriceThenUnlockContinuesTheCloneOnce(com.bontecou.syncmd.PaywallFlowDeviceTest)
+11-13 07:35:45.252 19028 19054 I TestRunner: finished: lockedCheckShowsPriceThenUnlockContinuesTheCloneOnce(com.bontecou.syncmd.PaywallFlowDeviceTest)
+11-13 07:35:45.257 19028 19054 I TestRunner: started: pendingPurchaseWaitsAndDismissDropsTheAction(com.bontecou.syncmd.PaywallFlowDeviceTest)
+11-13 07:35:48.434 19028 19054 I TestRunner: finished: pendingPurchaseWaitsAndDismissDropsTheAction(com.bontecou.syncmd.PaywallFlowDeviceTest)
+11-13 07:35:48.435 19028 19054 I TestRunner: started: restoreFindsAnEarlierPurchase(com.bontecou.syncmd.PaywallFlowDeviceTest)
+11-13 07:35:51.277 19028 19054 I TestRunner: finished: restoreFindsAnEarlierPurchase(com.bontecou.syncmd.PaywallFlowDeviceTest)
+11-13 07:35:51.292 19028 19054 I TestRunner: started: sheetFooterIsAboveSystemNavigationAndRemainsClickable(com.bontecou.syncmd.ModalSystemBarsTest)
+11-13 07:35:54.656 19028 19054 I TestRunner: finished: sheetFooterIsAboveSystemNavigationAndRemainsClickable(com.bontecou.syncmd.ModalSystemBarsTest)
+11-13 07:35:54.663 19028 19054 I TestRunner: run finished: 6 tests, 0 failed, 0 ignored

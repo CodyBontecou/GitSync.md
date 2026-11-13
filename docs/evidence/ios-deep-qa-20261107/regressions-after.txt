@@ -1,0 +1,17 @@
+Full log: /tmp/gitsync-deep-final.log
+
+Test Case '-[SyncMDTests.SyncMDTests testBranchNameValidationAcceptsGitBranchSyntax]' passed (0.002 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testConfigurationRejectsInvalidBranchBeforeChangingRemoteOrCredentials]' passed (0.023 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testUnifiedDiffPreservesLinesForEveryFinalNewlineCombination]' passed (0.157 seconds).
+	 Executed 3 tests, with 0 failures (0 unexpected) in 0.182 (0.186) seconds
+	 Executed 3 tests, with 0 failures (0 unexpected) in 0.182 (0.186) seconds
+	 Executed 3 tests, with 0 failures (0 unexpected) in 0.182 (0.188) seconds
+Test Case '-[SyncMDUITests.SyncMDUITests testCallbackErrorAppearsOverEditorPreviewWithoutGoingBack]' passed (21.381 seconds).
+Test Case '-[SyncMDUITests.SyncMDUITests testGitCreationErrorsAppearOnChildScreenAndPreserveInput]' passed (32.904 seconds).
+Test Case '-[SyncMDUITests.SyncMDUITests testGitToolsFailureKeepsSheetDraftAndRejectedBranch]' passed (93.251 seconds).
+Test Case '-[SyncMDUITests.SyncMDUITests testSettingsRejectsInvalidBranchAndAllowsCorrection]' passed (33.161 seconds).
+	 Executed 4 tests, with 0 failures (0 unexpected) in 180.696 (180.713) seconds
+	 Executed 4 tests, with 0 failures (0 unexpected) in 180.696 (180.714) seconds
+	 Executed 4 tests, with 0 failures (0 unexpected) in 180.696 (180.715) seconds
+	/tmp/gitsync-ios-edge-fixes/Logs/Test/Test-Sync.md-2026.11.07_20-28-32--0400.xcresult
+** TEST SUCCEEDED **

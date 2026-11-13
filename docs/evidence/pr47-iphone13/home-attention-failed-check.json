@@ -1,0 +1,12 @@
+{
+  "message": "Step added to \"qa-pr47-parent-access-20261113\" e2e test — recorded, but the wait itself never held — `await-ui-element` reports an unmet condition by returning success:false instead of failing, so the step was written to the e2e test anyway. At replay an unmet wait FAILS the step and stops the run there, so re-record it once the condition can actually hold, and delete the failed step after `e2e-finish-recording` rather than mid-recording: over a link the in-memory copy is authoritative and the next append writes the step straight back, and without a link the recorder re-reads the file before each append, so an edit that renumbers the steps costs the finish the verdicts it would otherwise carry. The cross-tree re-probe was skipped: it asks whether a check that PASSED would survive conversion to `await:`/`assert:`, and this one did not pass",
+  "toolResult": {
+    "success": false,
+    "elapsed": 5000,
+    "note": "no element matched the selector before timeout",
+    "cause": "unmet"
+  },
+  "stepCount": 16,
+  "recorded": "16. tool: await-ui-element {\"condition\":\"visible\",\"selector\":{\"text\":\"Attention 1\",\"role\":\"Button\"}}",
+  "savedTo": "/tmp/gitsync-pr47-qa/.argent/e2e/qa-pr47-parent-access-20261113.yaml"
+}

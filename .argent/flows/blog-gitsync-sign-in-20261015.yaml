@@ -1,0 +1,15 @@
+steps:
+  - launch: bontecou.Sync-md
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: YOUR REPOS, ON YOUR IPHONE
+  - tap:
+      x: 0.5
+      y: 0.881
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: SIGN IN WITH GITHUB

@@ -1,0 +1,35 @@
+steps:
+  - tap:
+      text: Open command palette
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Select a command...
+        role: AXTextField
+  - tap:
+      text: Select a command...
+  - tool: keyboard
+    args:
+      text: "Git: Pull"
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Pull
+        role: AXStaticText
+  - tap:
+      text: Pull
+  - tap:
+      text: Expand
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: FromGitHub
+        role: AXStaticText
+      timeoutMs: 15000
+executionPrerequisite: Obsidian has the disposable
+  gitsync-obsidian-iphone-qa-20261014 vault open, imported GitSync.md
+  credentials, and the mobile action menu visible. GitHub main has the
+  remote-only FromGitHub.md note.

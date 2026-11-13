@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="shortcut_background_option">Run without opening GitSync.md</string>
+    <string name="shortcut_background_consent">Run each tap once in the background using this repository, branch and saved connection/account. Results are saved here and shown in notifications when allowed. Interrupted runs require another tap. You can revoke this authorization here.</string>
+    <string name="shortcut_background_channel">Launcher shortcut actions</string>
+    <string name="shortcut_background_running">Shortcut action running</string>
+    <string name="shortcut_background_complete">Shortcut action finished. Open repository actions to review the result.</string>
+    <string name="shortcut_background_attention">Shortcut needs attention. Open repository actions to review its state before trying again.</string>
+    <string name="shortcut_background_interrupted">Execution was interrupted. It will not run again automatically. Review the repository before tapping again.</string>
+    <string name="shortcut_results_unavailable">Saved shortcut results cannot be read. Authorization remains separate.</string>
+    <string name="shortcut_results_clear_scope">Delete the saved launcher shortcut and callback execution results. Their authorizations remain unchanged. Interrupted actions will not run again automatically.</string>
+</resources>

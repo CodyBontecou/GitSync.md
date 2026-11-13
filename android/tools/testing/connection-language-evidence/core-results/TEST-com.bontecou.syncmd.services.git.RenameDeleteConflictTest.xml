@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.git.RenameDeleteConflictTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-11-02T20:54:03" hostname="MacBook-Pro.local" time="0.443">
+  <properties/>
+  <testcase name="rename versus delete pauses for an explicit keep or delete on either side" classname="com.bontecou.syncmd.services.git.RenameDeleteConflictTest" time="0.281"/>
+  <testcase name="binary rename deletion keeps exact side bytes or deletes after review" classname="com.bontecou.syncmd.services.git.RenameDeleteConflictTest" time="0.071"/>
+  <testcase name="reviewed remote rename deletion blocks publication and retains remote head" classname="com.bontecou.syncmd.services.git.RenameDeleteConflictTest" time="0.091"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

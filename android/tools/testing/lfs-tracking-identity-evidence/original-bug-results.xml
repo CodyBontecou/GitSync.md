@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.git.lfs.LfsTrackingIdentityTest" tests="6" skipped="0" failures="5" errors="0" timestamp="2026-11-02T19:06:58" hostname="MacBook-Pro.local" time="0.525">
+  <properties/>
+  <testcase name="extensionChoiceRejectsIdenticalReplacementCheckout" classname="com.bontecou.syncmd.services.git.lfs.LfsTrackingIdentityTest" time="0.347">
+    <failure message="expected not to be: null" type="com.google.common.truth.AssertionErrorWithFacts">expected not to be: null
+	at app//com.bontecou.syncmd.services.git.lfs.LfsTrackingIdentityTest.rejectReplacement(LfsTrackingIdentityTest.kt:49)
+	at app//com.bontecou.syncmd.services.git.lfs.LfsTrackingIdentityTest.access$rejectReplacement(LfsTrackingIdentityTest.kt:12)
+	at app//com.bontecou.syncmd.services.git.lfs.LfsTrackingIdentityTest$rejectReplacement$1.invokeSuspend(LfsTrackingIdentityTest.kt)
+	at app//kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+	at app//kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:104)
+	at app//kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:277)
+	at app//kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:95)
+	at app//kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:69)
+	at app//kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source)
+	at app//kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:48)
+	at app//kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source)
+	at app//com.bontecou.syncmd.services.git.lfs.LfsTrackingIdentityTest.extensionChoiceRejectsIdenticalReplacementCheckout(LfsTrackingIdentityTest.kt:16)
+</failure>
+  </testcase>
+  <testcase name="exactChoiceRejectsChangedConfiguration" classname="com.bontecou.syncmd.services.git.lfs.LfsTrackingIdentityTest" time="0.039">
+    <failure message="expected to be true" type="com.google.common.truth.AssertionErrorWithFacts">expected to be true
+	at app//com.bontecou.syncmd.services.git.lfs.LfsTrackingIdentityTest.rejectConfig(LfsTrackingIdentityTest.kt:67)
+	at app//com.bontecou.syncmd.services.git.lfs.LfsTrackingIdentityTest.access$rejectConfig(LfsTrackingIdentityTest.kt:12)
+	at app//com.bontecou.syncmd.services.git.lfs.LfsTrackingIdentityTest$rejectConfig$1.invokeSuspend(LfsTrackingIdentityTest.kt)
+	at app//kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+	at app//kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:104)
+	at app//kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:277)
+	at app//kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:95)
+	at app//kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:69)
+	at app//kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source)
+	at app//kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:48)
+	at app//kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source)
+	at app//com.bontecou.syncmd.services.git.lfs.LfsTrackingIdentityTest.exactChoiceRejectsChangedConfiguration(LfsTrackingIdentityTest.kt:19)
+</failure>
+  </testcase>
+  <testcase name="exactChoiceRejectsIdenticalReplacementCheckout" classname="com.bontecou.syncmd.services.git.lfs.LfsTrackingIdentityTest" time="0.034">
+    <failure message="expected not to be: null" type="com.google.common.truth.AssertionErrorWithFacts">expected not to be: null
+	at app//com.bontecou.syncmd.services.git.lfs.LfsTrackingIdentityTest.rejectReplacement(LfsTrackingIdentityTest.kt:49)
+	at app//com.bontecou.syncmd.services.git.lfs.LfsTrackingIdentityTest.access$rejectReplacement(LfsTrackingIdentityTest.kt:12)
+	at app//com.bontecou.syncmd.services.git.lfs.LfsTrackingIdentityTest$rejectReplacement$1.invokeSuspend(LfsTrackingIdentityTest.kt)
+	at app//kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+	at app//kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:104)
+	at app//kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:277)
+	at app//kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:95)
+	at app//kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:69)
+	at app//kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source)
+	at app//kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:48)
+	at app//kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source)
+	at app//com.bontecou.syncmd.services.git.lfs.LfsTrackingIdentityTest.exactChoiceRejectsIdenticalReplacementCheckout(LfsTrackingIdentityTest.kt:15)
+</failure>
+  </testcase>
+  <testcase name="extensionChoiceRejectsIdenticalReplacementMetadata" classname="com.bontecou.syncmd.services.git.lfs.LfsTrackingIdentityTest" time="0.04">
+    <failure message="expected not to be: null" type="com.google.common.truth.AssertionErrorWithFacts">expected not to be: null
+	at app//com.bontecou.syncmd.services.git.lfs.LfsTrackingIdentityTest.rejectReplacement(LfsTrackingIdentityTest.kt:49)
+	at app//com.bontecou.syncmd.services.git.lfs.LfsTrackingIdentityTest.access$rejectReplacement(LfsTrackingIdentityTest.kt:12)
+	at app//com.bontecou.syncmd.services.git.lfs.LfsTrackingIdentityTest$rejectReplacement$1.invokeSuspend(LfsTrackingIdentityTest.kt)
+	at app//kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+	at app//kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:104)
+	at app//kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:277)
+	at app//kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:95)
+	at app//kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:69)
+	at app//kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source)
+	at app//kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:48)
+	at app//kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source)
+	at app//com.bontecou.syncmd.services.git.lfs.LfsTrackingIdentityTest.extensionChoiceRejectsIdenticalReplacementMetadata(LfsTrackingIdentityTest.kt:18)
+</failure>
+  </testcase>
+  <testcase name="exactChoiceRejectsIdenticalReplacementMetadata" classname="com.bontecou.syncmd.services.git.lfs.LfsTrackingIdentityTest" time="0.03">
+    <failure message="expected not to be: null" type="com.google.common.truth.AssertionErrorWithFacts">expected not to be: null
+	at app//com.bontecou.syncmd.services.git.lfs.LfsTrackingIdentityTest.rejectReplacement(LfsTrackingIdentityTest.kt:49)
+	at app//com.bontecou.syncmd.services.git.lfs.LfsTrackingIdentityTest.access$rejectReplacement(LfsTrackingIdentityTest.kt:12)
+	at app//com.bontecou.syncmd.services.git.lfs.LfsTrackingIdentityTest$rejectReplacement$1.invokeSuspend(LfsTrackingIdentityTest.kt)
+	at app//kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+	at app//kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:104)
+	at app//kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:277)
+	at app//kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:95)
+	at app//kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:69)
+	at app//kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source)
+	at app//kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:48)
+	at app//kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source)
+	at app//com.bontecou.syncmd.services.git.lfs.LfsTrackingIdentityTest.exactChoiceRejectsIdenticalReplacementMetadata(LfsTrackingIdentityTest.kt:17)
+</failure>
+  </testcase>
+  <testcase name="extensionChoiceRejectsChangedConfiguration" classname="com.bontecou.syncmd.services.git.lfs.LfsTrackingIdentityTest" time="0.034"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+]]></system-err>
+</testsuite>

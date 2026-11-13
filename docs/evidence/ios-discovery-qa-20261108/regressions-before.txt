@@ -1,0 +1,7 @@
+Test Case '-[SyncMDTests.SyncMDTests testDiscoveryReadsOriginFromLinkedWorktreeCommonConfig]' started.
+/Users/codybontecou/dev/gitsync.md/SyncMDTests/SyncMDTests.swift:1470: error: -[SyncMDTests.SyncMDTests testDiscoveryReadsOriginFromLinkedWorktreeCommonConfig] : XCTAssertEqual failed: ("nil") is not equal to ("Optional("https://example.invalid/qa/worktree.git")")
+/Users/codybontecou/dev/gitsync.md/SyncMDTests/SyncMDTests.swift:1472: error: -[SyncMDTests.SyncMDTests testDiscoveryReadsOriginFromLinkedWorktreeCommonConfig] : XCTAssertEqual failed: ("nil") is not equal to ("Optional("https://example.invalid/qa/worktree.git")")
+Test Case '-[SyncMDTests.SyncMDTests testDiscoveryReadsOriginFromLinkedWorktreeCommonConfig]' failed (0.359 seconds).
+	 Executed 1 test, with 2 failures (0 unexpected) in 0.359 (0.370) seconds
+	 Executed 1 test, with 2 failures (0 unexpected) in 0.359 (0.371) seconds
+	 Executed 1 test, with 2 failures (0 unexpected) in 0.359 (0.372) seconds

@@ -1,0 +1,306 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.11.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+
+> Configure project :app
+Play Console key not found at: /Users/codybontecou/.config/play-console/play-publisher-crested-drive-492000-u7.json
+Warning: SDK processing. This version only understands SDK XML versions up to 3 but an SDK XML file of version 4 was encountered. This can happen if you use versions of Android Studio and the command-line tools that were released at different times.
+WARNING: We recommend using a newer Android Gradle plugin to use compileSdk = 36
+
+This Android Gradle plugin (8.2.0) was tested up to compileSdk = 34.
+
+You are strongly encouraged to update your project to use a newer
+Android Gradle plugin that has been tested with compileSdk = 36.
+
+If you are already using the latest version of the Android Gradle plugin,
+you may need to wait until a newer version with support for compileSdk = 36 is available.
+
+To suppress this warning, add/update
+    android.suppressUnsupportedCompileSdk=36
+to this project's gradle.properties.
+
+> Task :core:checkKotlinGradlePluginConfigurationErrors
+> Task :core:compileKotlin
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/core/src/main/kotlin/com/bontecou/syncmd/services/git/DiscardReview.kt:83:21 The value 'true' assigned to 'var ownsPreparedIndex: Boolean defined in com.bontecou.syncmd.services.git.ReviewedDiscard.execute.`<anonymous>`' is never used
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/core/src/main/kotlin/com/bontecou/syncmd/services/git/LocalConflictRepository.kt:128:25 Name shadowed: detail
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/core/src/main/kotlin/com/bontecou/syncmd/services/git/RepositoryRebase.kt:118:111 Unnecessary non-null assertion (!!) on a non-null receiver of type String
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/core/src/main/kotlin/com/bontecou/syncmd/services/git/RepositoryRebase.kt:128:111 Unnecessary non-null assertion (!!) on a non-null receiver of type String
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/core/src/main/kotlin/com/bontecou/syncmd/services/git/lfs/LfsLockManager.kt:84:25 Variable 'supported' initializer is redundant
+
+> Task :core:compileJava
+> Task :core:processResources NO-SOURCE
+> Task :core:classes
+> Task :core:jar
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:checkKotlinGradlePluginConfigurationErrors
+> Task :app:generateDebugBuildConfig
+> Task :app:checkDebugAarMetadata
+> Task :app:generateDebugResValues
+> Task :app:mapDebugSourceSetPaths
+> Task :app:generateDebugResources
+> Task :app:mergeDebugResources
+> Task :app:packageDebugResources
+> Task :app:parseDebugLocalResources
+> Task :app:createDebugCompatibleScreenManifests
+> Task :app:extractDeepLinksDebug
+> Task :app:processDebugMainManifest
+> Task :app:processDebugManifest
+> Task :app:processDebugManifestForPackage
+> Task :app:processDebugResources
+> Task :app:kaptGenerateStubsDebugKotlin
+> Task :app:kaptDebugKotlin
+> Task :app:compileDebugKotlin
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/main/kotlin/com/bontecou/syncmd/automation/RepositoryCallbackGrants.kt:88:48 Conditional branch result of type JSONArray is implicitly cast to Any
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/main/kotlin/com/bontecou/syncmd/automation/RepositoryCallbackGrants.kt:88:126 Conditional branch result of type String is implicitly cast to Any
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/main/kotlin/com/bontecou/syncmd/observation/RepositoryObservations.kt:99:25 Variable 'available' initializer is redundant
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/ConnectionScreen.kt:75:130 Unnecessary safe call on a non-null receiver of type RepositoryCredentialStore.Summary?
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/ConnectionScreen.kt:75:176 Unnecessary safe call on a non-null receiver of type RepositoryCredentialStore.Summary?
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/ConnectionScreen.kt:77:80 Unnecessary safe call on a non-null receiver of type RepositoryCredentialStore.Summary?
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/ConnectionScreen.kt:80:91 Unnecessary safe call on a non-null receiver of type RepositoryCredentialStore.Summary?
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/ConnectionScreen.kt:156:109 Unnecessary safe call on a non-null receiver of type RepositoryCredentialStore.Summary?
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/ConnectionScreen.kt:178:79 Unnecessary safe call on a non-null receiver of type RepositoryCredentialStore.Summary?
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/RemoteCloneScreen.kt:73:9 Variable 'context' is never used
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/RemoteCloneScreen.kt:75:9 Variable 'registering' is never used
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/VaultScreen.kt:206:5 Parameter 'onOpenDiff' is never used
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/VaultScreen.kt:259:47 Condition 'status != null' is always 'false'
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/VaultScreen.kt:296:21 Condition 'status != null' is always 'false'
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/VaultScreen.kt:297:21 Unreachable code
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/VaultScreen.kt:297:25 Variable 'loaded' is never used
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/VaultScreen.kt:298:21 Unreachable code
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/VaultScreen.kt:299:21 Unreachable code
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/VaultScreen.kt:300:21 Unreachable code
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/VaultScreen.kt:442:16 Elvis operator (?:) always returns the left operand of non-nullable type Int?
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/main/kotlin/com/bontecou/syncmd/ui/theme/BrutalDesignSystem.kt:109:30 Parameter 'style' is never used
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/main/kotlin/com/bontecou/syncmd/ui/theme/Theme.kt:95:20 'setter for statusBarColor: Int' is deprecated. Deprecated in Java
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/main/kotlin/com/bontecou/syncmd/ui/theme/Theme.kt:96:20 'setter for navigationBarColor: Int' is deprecated. Deprecated in Java
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/CloneViewModel.kt:161:36 Unnecessary non-null assertion (!!) on a non-null receiver of type GitHubAccountSnapshot
+
+> Task :app:javaPreCompileDebug
+> Task :app:compileDebugJavaWithJavac
+> Task :app:hiltAggregateDepsDebug
+> Task :app:hiltJavaCompileDebug
+> Task :app:transformDebugClassesWithAsm
+> Task :app:bundleDebugClassesToRuntimeJar
+> Task :app:preDebugUnitTestBuild UP-TO-DATE
+> Task :app:processDebugJavaRes
+> Task :app:bundleDebugClassesToCompileJar
+> Task :app:kaptGenerateStubsDebugUnitTestKotlin
+
+> Task :app:kaptDebugUnitTestKotlin
+warning: The following options were not recognized by any processor: '[dagger.fastInit, dagger.hilt.android.internal.disableAndroidSuperclassValidation, dagger.hilt.android.internal.projectType, dagger.hilt.internal.useAggregatingRootProcessor, kapt.kotlin.generated]'
+
+> Task :app:compileDebugUnitTestKotlin
+> Task :app:javaPreCompileDebugUnitTest
+> Task :app:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :app:hiltAggregateDepsDebugUnitTest
+> Task :app:hiltJavaCompileDebugUnitTest NO-SOURCE
+> Task :app:processDebugUnitTestJavaRes
+> Task :app:transformDebugUnitTestClassesWithAsm
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+> Task :app:testDebugUnitTest
+> Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :app:mergeDebugShaders
+> Task :app:compileDebugShaders NO-SOURCE
+> Task :app:generateDebugAssets UP-TO-DATE
+> Task :app:mergeDebugAssets
+> Task :app:compressDebugAssets
+> Task :app:desugarDebugFileDependencies
+> Task :app:dexBuilderDebug
+> Task :app:mergeDebugGlobalSynthetics
+> Task :app:mergeDebugJavaResource
+> Task :app:checkDebugDuplicateClasses
+> Task :app:mergeExtDexDebug
+> Task :app:mergeLibDexDebug
+> Task :app:mergeProjectDexDebug
+> Task :app:mergeDebugJniLibFolders
+> Task :app:mergeDebugNativeLibs
+
+> Task :app:stripDebugDebugSymbols
+Unable to strip the following libraries, packaging them as they are: libdatastore_shared_counter.so.
+
+> Task :app:validateSigningDebug
+> Task :app:writeDebugAppMetadata
+> Task :app:writeDebugSigningConfigVersions
+> Task :app:packageDebug
+> Task :app:createDebugApkListingFileRedirect
+> Task :app:assembleDebug
+> Task :app:preDebugAndroidTestBuild SKIPPED
+> Task :app:processDebugAndroidTestManifest
+> Task :app:generateDebugAndroidTestBuildConfig
+> Task :app:checkDebugAndroidTestAarMetadata
+> Task :app:generateDebugAndroidTestResValues
+> Task :app:mapDebugAndroidTestSourceSetPaths
+> Task :app:generateDebugAndroidTestResources
+> Task :app:mergeDebugAndroidTestResources
+> Task :app:processDebugAndroidTestResources
+> Task :app:kaptGenerateStubsDebugAndroidTestKotlin
+
+> Task :app:kaptDebugAndroidTestKotlin
+warning: The following options were not recognized by any processor: '[dagger.fastInit, dagger.hilt.android.internal.disableAndroidSuperclassValidation, dagger.hilt.android.internal.projectType, dagger.hilt.internal.useAggregatingRootProcessor, kapt.kotlin.generated]'
+
+> Task :app:compileDebugAndroidTestKotlin
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/androidTest/kotlin/com/bontecou/syncmd/AppGuideStoreTest.kt:95:92 Unsafe use of a nullable receiver of type File?
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/androidTest/kotlin/com/bontecou/syncmd/BranchCheckoutDeviceTest.kt:54:42 Unsafe use of a nullable receiver of type File?
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/androidTest/kotlin/com/bontecou/syncmd/BranchCheckoutDeviceTest.kt:59:96 Unsafe use of a nullable receiver of type File?
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/androidTest/kotlin/com/bontecou/syncmd/BranchCheckoutDeviceTest.kt:61:9 Unsafe use of a nullable receiver of type File?
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/androidTest/kotlin/com/bontecou/syncmd/CloneCatalogFixture.kt:33:22 This declaration overrides deprecated member but not marked as deprecated itself. Please add @Deprecated annotation or suppress. See https://youtrack.jetbrains.com/issue/KT-47902 for details
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/androidTest/kotlin/com/bontecou/syncmd/CloneCompletionTest.kt:53:26 This declaration overrides deprecated member but not marked as deprecated itself. Please add @Deprecated annotation or suppress. See https://youtrack.jetbrains.com/issue/KT-47902 for details
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/androidTest/kotlin/com/bontecou/syncmd/ClonePublicationColdStartTest.kt:43:22 This declaration overrides deprecated member but not marked as deprecated itself. Please add @Deprecated annotation or suppress. See https://youtrack.jetbrains.com/issue/KT-47902 for details
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/androidTest/kotlin/com/bontecou/syncmd/CloneRecoveryManagementTest.kt:51:26 This declaration overrides deprecated member but not marked as deprecated itself. Please add @Deprecated annotation or suppress. See https://youtrack.jetbrains.com/issue/KT-47902 for details
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/androidTest/kotlin/com/bontecou/syncmd/FileErrorLanguageTest.kt:186:25 Unnecessary non-null assertion (!!) on a non-null receiver of type ActivityScenario<ComponentActivity>
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/androidTest/kotlin/com/bontecou/syncmd/FileNavigationTest.kt:1230:49 Unsafe use of a nullable receiver of type File?
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/androidTest/kotlin/com/bontecou/syncmd/FilesLanguageTest.kt:217:37 Unnecessary non-null assertion (!!) on a non-null receiver of type ActivityScenario<ComponentActivity>
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/androidTest/kotlin/com/bontecou/syncmd/FolderPublicationDeviceTest.kt:41:27 'getter for externalMediaDirs: Array<(out) File!>!' is deprecated. Deprecated in Java
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/androidTest/kotlin/com/bontecou/syncmd/FolderPublicationJournalDeviceTest.kt:151:29 Variable 'ready' initializer is redundant
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/androidTest/kotlin/com/bontecou/syncmd/HistoryViewModelTest.kt:62:60 The corresponding parameter in the supertype 'RemoteRepository' is named 'name'. This may cause problems when calling this function with named arguments.
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/androidTest/kotlin/com/bontecou/syncmd/LfsTransportDeviceTest.kt:37:29 'getter for externalMediaDirs: Array<(out) File!>!' is deprecated. Deprecated in Java
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/androidTest/kotlin/com/bontecou/syncmd/ObsidianConnectionTest.kt:183:32 'getter for externalMediaDirs: Array<(out) File!>!' is deprecated. Deprecated in Java
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/androidTest/kotlin/com/bontecou/syncmd/PullAllLanguageTest.kt:103:37 Enum argument can be null in Java, but exhaustive when contains no null branch
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/androidTest/kotlin/com/bontecou/syncmd/RebaseLanguageTest.kt:93:91 The corresponding parameter in the supertype 'Factory' is named 'modelClass'. This may cause problems when calling this function with named arguments.
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/androidTest/kotlin/com/bontecou/syncmd/RebaseLanguageTest.kt:192:25 Unnecessary non-null assertion (!!) on a non-null receiver of type ActivityScenario<ComponentActivity>
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/androidTest/kotlin/com/bontecou/syncmd/RebaseScreenTest.kt:102:82 Unsafe use of a nullable receiver of type File?
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/androidTest/kotlin/com/bontecou/syncmd/RebaseScreenTest.kt:210:48 Unsafe use of a nullable receiver of type File?
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/androidTest/kotlin/com/bontecou/syncmd/RebaseScreenTest.kt:211:57 Unsafe use of a nullable receiver of type File?
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/androidTest/kotlin/com/bontecou/syncmd/RenameModifyFixture.kt:22:13 Unsafe use of a nullable receiver of type File?
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryCallbackGrantTest.kt:38:29 'getter for externalMediaDirs: Array<(out) File!>!' is deprecated. Deprecated in Java
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryCallbackGrantTest.kt:42:26 This declaration overrides deprecated member but not marked as deprecated itself. Please add @Deprecated annotation or suppress. See https://youtrack.jetbrains.com/issue/KT-47902 for details
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryCallbackScreenTest.kt:280:53 Unsafe use of a nullable receiver of type File?
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryCallbackTransportTest.kt:162:13 Name shadowed: message
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryCallbackTransportTest.kt:212:91 Unnecessary non-null assertion (!!) on a non-null receiver of type String
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryCallbackTransportTest.kt:218:45 Unnecessary non-null assertion (!!) on a non-null receiver of type String
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryCallbackTransportTest.kt:230:45 Unnecessary non-null assertion (!!) on a non-null receiver of type String
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryLocationsTest.kt:303:13 Variable 'folder' is never used
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryMoveTest.kt:226:26 This declaration overrides deprecated member but not marked as deprecated itself. Please add @Deprecated annotation or suppress. See https://youtrack.jetbrains.com/issue/KT-47902 for details
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryMoveTest.kt:546:23 Variable 'granted' initializer is redundant
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryMoveTest.kt:548:36 Variable 'pickerError' initializer is redundant
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryShortcutLauncherTest.kt:222:27 'recycle(): Unit' is deprecated. Deprecated in Java
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/androidTest/kotlin/com/bontecou/syncmd/RepositoryShortcutLauncherTest.kt:363:75 Unnecessary non-null assertion (!!) on a non-null receiver of type LocaleManager
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/androidTest/kotlin/com/bontecou/syncmd/SafePullDeviceTest.kt:66:53 Unsafe use of a nullable receiver of type File?
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/androidTest/kotlin/com/bontecou/syncmd/StorageLanguageTest.kt:112:25 Unnecessary non-null assertion (!!) on a non-null receiver of type ActivityScenario<ComponentActivity>
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/androidTest/kotlin/com/bontecou/syncmd/UpstreamScreenTest.kt:47:26 This declaration overrides deprecated member but not marked as deprecated itself. Please add @Deprecated annotation or suppress. See https://youtrack.jetbrains.com/issue/KT-47902 for details
+
+> Task :app:javaPreCompileDebugAndroidTest
+> Task :app:compileDebugAndroidTestJavaWithJavac
+> Task :app:mergeDebugAndroidTestShaders
+> Task :app:compileDebugAndroidTestShaders NO-SOURCE
+> Task :app:generateDebugAndroidTestAssets UP-TO-DATE
+> Task :app:mergeDebugAndroidTestAssets
+> Task :app:compressDebugAndroidTestAssets
+> Task :app:desugarDebugAndroidTestFileDependencies
+> Task :app:hiltAggregateDepsDebugAndroidTest
+> Task :app:hiltJavaCompileDebugAndroidTest NO-SOURCE
+> Task :app:transformDebugAndroidTestClassesWithAsm
+> Task :app:dexBuilderDebugAndroidTest
+> Task :app:mergeDebugAndroidTestGlobalSynthetics
+> Task :app:processDebugAndroidTestJavaRes
+> Task :app:mergeDebugAndroidTestJavaResource
+> Task :app:checkDebugAndroidTestDuplicateClasses
+> Task :app:mergeExtDexDebugAndroidTest
+> Task :app:mergeLibDexDebugAndroidTest
+> Task :app:mergeProjectDexDebugAndroidTest
+> Task :app:mergeDebugAndroidTestJniLibFolders
+> Task :app:mergeDebugAndroidTestNativeLibs NO-SOURCE
+> Task :app:stripDebugAndroidTestDebugSymbols NO-SOURCE
+> Task :app:validateSigningDebugAndroidTest
+> Task :app:writeDebugAndroidTestSigningConfigVersions
+> Task :app:packageDebugAndroidTest
+> Task :app:createDebugAndroidTestApkListingFileRedirect
+> Task :app:assembleDebugAndroidTest
+> Task :app:buildKotlinToolingMetadata
+> Task :app:preReleaseBuild UP-TO-DATE
+> Task :app:generateReleaseBuildConfig
+> Task :app:checkReleaseAarMetadata
+> Task :app:generateReleaseResValues
+> Task :app:mapReleaseSourceSetPaths
+> Task :app:generateReleaseResources
+> Task :app:mergeReleaseResources
+> Task :app:packageReleaseResources
+> Task :app:parseReleaseLocalResources
+> Task :app:createReleaseCompatibleScreenManifests
+> Task :app:extractDeepLinksRelease
+> Task :app:processReleaseMainManifest
+> Task :app:processReleaseManifest
+> Task :app:processReleaseManifestForPackage
+> Task :app:processReleaseResources
+> Task :app:kaptGenerateStubsReleaseKotlin
+> Task :app:kaptReleaseKotlin
+
+> Task :app:compileReleaseKotlin
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/main/kotlin/com/bontecou/syncmd/automation/RepositoryCallbackGrants.kt:88:48 Conditional branch result of type JSONArray is implicitly cast to Any
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/main/kotlin/com/bontecou/syncmd/automation/RepositoryCallbackGrants.kt:88:126 Conditional branch result of type String is implicitly cast to Any
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/main/kotlin/com/bontecou/syncmd/observation/RepositoryObservations.kt:99:25 Variable 'available' initializer is redundant
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/ConnectionScreen.kt:75:130 Unnecessary safe call on a non-null receiver of type RepositoryCredentialStore.Summary?
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/ConnectionScreen.kt:75:176 Unnecessary safe call on a non-null receiver of type RepositoryCredentialStore.Summary?
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/ConnectionScreen.kt:77:80 Unnecessary safe call on a non-null receiver of type RepositoryCredentialStore.Summary?
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/ConnectionScreen.kt:80:91 Unnecessary safe call on a non-null receiver of type RepositoryCredentialStore.Summary?
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/ConnectionScreen.kt:156:109 Unnecessary safe call on a non-null receiver of type RepositoryCredentialStore.Summary?
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/ConnectionScreen.kt:178:79 Unnecessary safe call on a non-null receiver of type RepositoryCredentialStore.Summary?
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/RemoteCloneScreen.kt:73:9 Variable 'context' is never used
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/RemoteCloneScreen.kt:75:9 Variable 'registering' is never used
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/VaultScreen.kt:206:5 Parameter 'onOpenDiff' is never used
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/VaultScreen.kt:259:47 Condition 'status != null' is always 'false'
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/VaultScreen.kt:296:21 Condition 'status != null' is always 'false'
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/VaultScreen.kt:297:21 Unreachable code
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/VaultScreen.kt:297:25 Variable 'loaded' is never used
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/VaultScreen.kt:298:21 Unreachable code
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/VaultScreen.kt:299:21 Unreachable code
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/VaultScreen.kt:300:21 Unreachable code
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/VaultScreen.kt:442:16 Elvis operator (?:) always returns the left operand of non-nullable type Int?
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/main/kotlin/com/bontecou/syncmd/ui/theme/BrutalDesignSystem.kt:109:30 Parameter 'style' is never used
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/main/kotlin/com/bontecou/syncmd/ui/theme/Theme.kt:95:20 'setter for statusBarColor: Int' is deprecated. Deprecated in Java
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/main/kotlin/com/bontecou/syncmd/ui/theme/Theme.kt:96:20 'setter for navigationBarColor: Int' is deprecated. Deprecated in Java
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-move-lifecycle-snapshot-7674wxdl/app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/CloneViewModel.kt:161:36 Unnecessary non-null assertion (!!) on a non-null receiver of type GitHubAccountSnapshot
+
+> Task :app:javaPreCompileRelease
+> Task :app:compileReleaseJavaWithJavac
+> Task :app:extractProguardFiles
+> Task :app:hiltAggregateDepsRelease
+> Task :app:hiltJavaCompileRelease
+> Task :app:generateReleaseLintVitalReportModel
+> Task :app:lintVitalAnalyzeRelease
+> Task :app:lintVitalReportRelease
+> Task :app:lintVitalRelease
+> Task :app:mergeReleaseJniLibFolders
+> Task :app:mergeReleaseNativeLibs
+
+> Task :app:stripReleaseDebugSymbols
+Unable to strip the following libraries, packaging them as they are: libdatastore_shared_counter.so.
+
+> Task :app:extractReleaseNativeSymbolTables
+> Task :app:mergeReleaseNativeDebugMetadata NO-SOURCE
+> Task :app:checkReleaseDuplicateClasses
+> Task :app:mergeReleaseArtProfile
+> Task :app:transformReleaseClassesWithAsm
+> Task :app:expandReleaseArtProfileWildcards
+> Task :app:mergeReleaseGeneratedProguardFiles
+> Task :app:processReleaseJavaRes
+> Task :app:mergeReleaseJavaResource
+> Task :app:minifyReleaseWithR8
+> Task :app:compileReleaseArtProfile
+> Task :app:mergeReleaseShaders
+> Task :app:compileReleaseShaders NO-SOURCE
+> Task :app:generateReleaseAssets UP-TO-DATE
+> Task :app:mergeReleaseAssets
+> Task :app:compressReleaseAssets
+> Task :app:processApplicationManifestReleaseForBundle
+> Task :app:bundleReleaseResources
+> Task :app:shrinkReleaseRes
+> Task :app:optimizeReleaseResources
+> Task :app:collectReleaseDependencies
+> Task :app:sdkReleaseDependencyData
+> Task :app:validateSigningRelease
+> Task :app:writeReleaseAppMetadata
+> Task :app:writeReleaseSigningConfigVersions
+> Task :app:packageRelease
+> Task :app:createReleaseApkListingFileRedirect
+> Task :app:assembleRelease
+[Incubating] Problems report is available at: file:///tmp/syncmd-move-lifecycle-build/root/reports/problems/problems-report.html
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/8.11.1/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 5m 39s
+140 actionable tasks: 140 executed

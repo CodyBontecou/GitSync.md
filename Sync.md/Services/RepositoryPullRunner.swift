@@ -78,6 +78,8 @@ struct RepositoryPullRunner: Sendable {
             }
         } catch is CancellationError {
             return .cancelled
+        } catch let error as URLError where error.code == .cancelled {
+            return .cancelled
         } catch LocalGitError.sshHostKeyTrustRequired(let error) {
             return .authenticationOrTrustRequired(message: error.localizedDescription, trustError: error)
         } catch let error as LocalGitError {

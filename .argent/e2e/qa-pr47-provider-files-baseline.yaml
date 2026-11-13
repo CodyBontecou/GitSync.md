@@ -1,0 +1,26 @@
+steps:
+  - echo: 'Requires the owned empty On My iPhone/GitSync-PR47-QA-20261113 parent and isolated QA Documents/pr47-return-anchor. No unrelated folders are opened.'
+  - launch: com.apple.DocumentsApp
+  - await: { visible: { id: Browse View } }
+  - await: { idle: true }
+  - tap: { id: folder.fill, within: { id: DOC.browsingModeTabBar } }
+  - await: { visible: { id: DOC.sidebar.item.On My iPhone } }
+  - await: { idle: true }
+  - tap: { id: DOC.sidebar.item.On My iPhone }
+  - await: { visible: { id: 'GitSync-PR47-QA-20261113, Folder' } }
+  - await: { idle: true }
+  - tap: { id: 'GitSync-PR47-QA-20261113, Folder' }
+  - await: { visible: { text: 'GitSync-PR47-QA-20261113, Actions Menu', role: Button } }
+  - await: { idle: true }
+  - await: { visible: { text: Folder is Empty, role: StaticText } }
+  - tap: { id: folder.fill, within: { id: DOC.browsingModeTabBar } }
+  - await: { visible: { id: DOC.sidebar.item.On My iPhone } }
+  - await: { idle: true }
+  - tap: { id: DOC.sidebar.item.On My iPhone }
+  - await: { visible: { id: 'GitSync PR QA, Container' } }
+  - await: { idle: true }
+  - tap: { id: 'GitSync PR QA, Container' }
+  - await: { visible: { text: 'GitSync PR QA, Actions Menu', role: Button } }
+  - await: { idle: true }
+  - await: { visible: { id: 'git-tools-fixture, Folder' } }
+  - await: { visible: { id: 'pr47-return-anchor, Folder' } }

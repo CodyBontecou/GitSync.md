@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.git.ReplayCheckoutProtectionTest" tests="15" skipped="0" failures="0" errors="0" timestamp="2026-11-02T20:54:04" hostname="MacBook-Pro.local" time="3.936">
+  <properties/>
+  <testcase name="an external todo lock prevents retry without altering the plan or index" classname="com.bontecou.syncmd.services.git.ReplayCheckoutProtectionTest" time="0.173"/>
+  <testcase name="initial merge parent collision is refused before any replay state is created" classname="com.bontecou.syncmd.services.git.ReplayCheckoutProtectionTest" time="0.13"/>
+  <testcase name="an interrupted marker publication disables continue without consuming its lock" classname="com.bontecou.syncmd.services.git.ReplayCheckoutProtectionTest" time="0.197"/>
+  <testcase name="byte identical replacement metadata cannot use an older session but a fresh review remains portable" classname="com.bontecou.syncmd.services.git.ReplayCheckoutProtectionTest" time="0.271"/>
+  <testcase name="an unrelated ignored file does not prevent replay" classname="com.bontecou.syncmd.services.git.ReplayCheckoutProtectionTest" time="0.167"/>
+  <testcase name="invalid or linked parent mappings refuse advance and leave unrelated ignored bytes untouched" classname="com.bontecou.syncmd.services.git.ReplayCheckoutProtectionTest" time="0.251"/>
+  <testcase name="continue and skip preserve ignored data at the next replayed commit path" classname="com.bontecou.syncmd.services.git.ReplayCheckoutProtectionTest" time="0.533"/>
+  <testcase name="a linked checkout marker is never read or replaced by retry" classname="com.bontecou.syncmd.services.git.ReplayCheckoutProtectionTest" time="0.161"/>
+  <testcase name="merge preserving parent switch keeps ignored data created during the other parent conflict" classname="com.bontecou.syncmd.services.git.ReplayCheckoutProtectionTest" time="0.206"/>
+  <testcase name="an ignored linked parent survives replay and its external owned file is untouched" classname="com.bontecou.syncmd.services.git.ReplayCheckoutProtectionTest" time="0.155"/>
+  <testcase name="a queued retry survives a new service without duplicating the pick" classname="com.bontecou.syncmd.services.git.ReplayCheckoutProtectionTest" time="0.236"/>
+  <testcase name="retry after an earlier rewritten merge preserves its topology and previous resolution" classname="com.bontecou.syncmd.services.git.ReplayCheckoutProtectionTest" time="0.317"/>
+  <testcase name="a later tracked draft and changed replay metadata cannot acquire checkout retry" classname="com.bontecou.syncmd.services.git.ReplayCheckoutProtectionTest" time="0.63"/>
+  <testcase name="corrupt checkout recovery blocks continue and retry while preserving safe abort" classname="com.bontecou.syncmd.services.git.ReplayCheckoutProtectionTest" time="0.192"/>
+  <testcase name="begin preserves an ignored intermediate file or directory prefix and allows reviewed retry" classname="com.bontecou.syncmd.services.git.ReplayCheckoutProtectionTest" time="0.314"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

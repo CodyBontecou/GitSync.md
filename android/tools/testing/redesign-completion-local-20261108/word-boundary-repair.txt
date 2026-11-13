@@ -1,0 +1,50 @@
+es 3 / 3
+Completed es
+da 3 / 3
+Completed da
+ar 3 / 3
+Completed ar
+de 3 / 3
+Completed de
+fi 3 / 3
+Completed fi
+fr 3 / 3
+Completed fr
+he 3 / 3
+Completed he
+hi 3 / 3
+Completed hi
+it 3 / 3
+Completed it
+id 3 / 3
+Completed id
+hu 3 / 3
+Completed hu
+ja 3 / 3
+Completed ja
+nl 3 / 3
+Completed nl
+ko 3 / 3
+Completed ko
+nb 3 / 3
+Completed nb
+pl 3 / 3
+Completed pl
+ru 3 / 3
+Completed ru
+pt-BR 3 / 3
+Completed pt-BR
+sv 3 / 3
+Completed sv
+th 3 / 3
+Completed th
+tr 3 / 3
+Completed tr
+vi 3 / 3
+Completed vi
+uk 3 / 3
+Completed uk
+zh-Hans 3 / 3
+Completed zh-Hans
+zh-Hant 3 / 3
+Completed zh-Hant

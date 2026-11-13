@@ -1,3 +1,6 @@
+#if DEBUG
+import ScrawlKit
+#endif
 import AppIntents
 import SwiftUI
 import UIKit
@@ -41,9 +44,11 @@ struct Sync_mdApp: App {
     @UIApplicationDelegateAdaptor(SyncAppDelegate.self) private var appDelegate
     @State private var appState: AppState
     @State private var premiumRuntime: PremiumRuntime
-    @State private var assistForegroundReconciliationTask: Task<Void, Never>? = nil
+    @State private var appUnlock = AppUnlock()
+    @State private var foregroundSyncLifecycle: ForegroundSyncLifecycle
     @State private var pushRegistrationTask: Task<Void, Never>? = nil
     @Environment(\.scenePhase) private var scenePhase
+    @AppStorage(AppAppearance.storageKey) private var appearanceRaw = AppAppearance.system.rawValue
 
     init() {
         #if DEBUG
@@ -53,7 +58,14 @@ struct Sync_mdApp: App {
             Self.resetPersistedAuthAndReposForUITest()
         }
         #endif
+        #if DEBUG
+        let appState = MarketingDemoSeeder.bookmarkRecoveryAppStateIfRequested()
+            ?? MarketingDemoSeeder.pullCancellationAppStateIfRequested()
+            ?? MarketingDemoSeeder.externalRefreshAppStateIfRequested()
+            ?? MarketingDemoSeeder.checkoutRaceAppStateIfRequested() ?? AppState()
+        #else
         let appState = AppState()
+        #endif
         let coordinator = BackgroundSyncCoordinator(
             repositoryProvider: appState,
             conditionsProvider: SystemBackgroundSyncConditions()
@@ -66,7 +78,11 @@ struct Sync_mdApp: App {
             backgroundScheduler: backgroundScheduler
         )
         _premiumRuntime = State(initialValue: runtime)
+        _foregroundSyncLifecycle = State(initialValue: ForegroundSyncLifecycle(runtime: runtime))
         SyncRuntimeLocator.configure(state: appState)
+        if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil {
+            appState.startSyncStateServices(premiumRuntime: runtime)
+        }
         PushSyncNotificationBridge.shared.connect(runtime: runtime)
         if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil {
             SyncMDAppShortcutsProvider.updateAppShortcutParameters()
@@ -82,10 +98,23 @@ struct Sync_mdApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                #if DEBUG
+                .scrawl()
+                #endif
                 .environment(appState)
                 .environment(premiumRuntime)
+                .environment(appUnlock)
+                .preferredColorScheme(AppAppearance(rawValue: appearanceRaw)?.colorScheme)
+                .onChange(of: appearanceRaw, initial: true) { _, raw in
+                    // preferredColorScheme(nil) does not always hand control back
+                    // to the system; the window override does, sheets included.
+                    (AppAppearance(rawValue: raw) ?? .system).applyToWindows()
+                }
                 .task {
                     let isTestProcess = ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
+                    if !isTestProcess {
+                        appUnlock.start(hasExistingVaults: !appState.isDemoMode && !appState.repos.isEmpty)
+                    }
                     let isActiveLaunch = UIApplication.shared.applicationState == .active
                     if !isTestProcess, isActiveLaunch {
                         if FeatureFlags.gitSyncAssistEnabled {
@@ -93,9 +122,7 @@ struct Sync_mdApp: App {
                             // in the background. Do not start an all-repository
                             // foreground pass in that case; the APNs bridge runs
                             // a bounded targeted reconciliation instead.
-                            assistForegroundReconciliationTask = Task { @MainActor in
-                                await premiumRuntime.reconcileForeground()
-                            }
+                            foregroundSyncLifecycle.scenePhaseChanged(to: .active)
                         }
                         pushRegistrationTask = Task { @MainActor in
                             await PushSyncManager.shared.resumeRegistration(repos: appState.repos)
@@ -119,11 +146,24 @@ struct Sync_mdApp: App {
                     }
                 }
                 .onOpenURL { url in
+                    #if DEBUG
+                    if url.host == "scrawl" || url.host == "tether" { return }
+                    #endif
+                    if url.scheme == "syncmd", url.host == "obsidian", ["/connect", "/prepare"].contains(url.path) {
+                        appState.handleObsidianConnection(url)
+                        return
+                    }
                     // Widget deep link: one-tap full pull from the Home Screen.
                     if url.scheme == "syncmd", url.host == "pull-all" {
                         SyncRuntimeLocator.requestPullAll()
                         return
                     }
+                    // Vault widgets: syncmd://vault/<uuid> opens that vault.
+                    if url.scheme == "syncmd", url.host == "vault" {
+                        if let id = UUID(uuidString: url.lastPathComponent) { appState.vaultNavigationRequest = id }
+                        return
+                    }
+                    if url.scheme == "syncmd", url.host == "open" { return }
                     // x-callback-url from external triggers (e.g. a link tapped in Obsidian, or an iOS Shortcut)
                     // Format: syncmd://x-callback-url/<action>?repo=<name>&x-success=<url>
                     let handler = CallbackURLHandler(appState: appState)
@@ -132,10 +172,10 @@ struct Sync_mdApp: App {
                     }
                 }
         }
-        .onChange(of: scenePhase) { oldPhase, newPhase in
+        .onChange(of: scenePhase) { _, newPhase in
             if newPhase == .active {
                 #if DEBUG
-                guard !MarketingCapture.usesSeededData else { return }
+                guard !MarketingCapture.usesSeededData || MarketingCapture.allowsFixtureStatusRefresh else { return }
                 #endif
 
                 // Re-validate repos when returning to foreground —
@@ -147,11 +187,7 @@ struct Sync_mdApp: App {
                 // bounces through inactive/active (Control Center, app switcher).
                 appState.refreshClonedRepos(deferredBy: 0.5, skipIfRecentlyStartedWithin: 15)
                 if FeatureFlags.gitSyncAssistEnabled {
-                    // Never cancel-and-restart here: the runtime coalesces a
-                    // running pass and applies a short bounce cooldown.
-                    assistForegroundReconciliationTask = Task { @MainActor in
-                        await premiumRuntime.reconcileForeground()
-                    }
+                    foregroundSyncLifecycle.scenePhaseChanged(to: .active)
                 }
                 // Keep push-sync registration in sync with the current repo set.
                 pushRegistrationTask?.cancel()
@@ -160,9 +196,7 @@ struct Sync_mdApp: App {
                     await PushSyncManager.shared.refreshGitHubAppStatus()
                 }
             } else {
-                assistForegroundReconciliationTask?.cancel()
-                assistForegroundReconciliationTask = nil
-                premiumRuntime.cancelForegroundReconciliation()
+                foregroundSyncLifecycle.scenePhaseChanged(to: newPhase)
             }
         }
     }

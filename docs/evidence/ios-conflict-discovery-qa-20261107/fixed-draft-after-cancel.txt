@@ -1,0 +1,70 @@
+{
+  "tapped": true,
+  "timestampMs": 1794101568196
+}
+--- Screen after action ---
+Saved: /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/simserver-UZONx7/media/905329000-1794101568912.png
+--- Elements after action (describe) ---
+Source: ax-service
+Mode: flat
+Coordinates are normalized [0,1] fractions of the screen (x, y, width, height), not pixels.
+Pass them straight to gesture-tap / gesture-swipe / gesture-pinch, which expect this same space.
+To tap an element, use its centre: tap_x = frame.x + frame.width / 2, tap_y = frame.y + frame.height / 2.
+
+ROOT  AXGroup (0.000, 0.000, 1.000, 1.000)
+
+  AXGroup "Toolbar" id="Toolbar"  (0.000, 0.000, 1.000, 1.000)
+  AXButton "Keep this iPhone's version"  (0.080, 0.008, 0.841, 0.053)
+  AXButton "Back" id="BackButton"  (0.040, 0.071, 0.109, 0.050)
+  AXButton "Abort"  (0.823, 0.071, 0.128, 0.050)
+  AXStaticText "Resolve conflict"  (0.356, 0.085, 0.289, 0.023)
+  AXStaticText "Remote"  (0.122, 0.109, 0.129, 0.021)
+  AXStaticText "from UITest Seeder · just now"  (0.444, 0.111, 0.477, 0.016)
+  AXStaticText "# Shared Notes\nTheirs version — remote commit."  (0.109, 0.155, 0.602, 0.042)
+  AXButton "Keep the remote version"  (0.080, 0.222, 0.841, 0.053)
+  AXButton "Keep both"  (0.040, 0.305, 0.920, 0.053)
+  AXHeading "RESULT"  (0.080, 0.392, 0.109, 0.016)
+  AXStaticText "this is what gets staged"  (0.526, 0.392, 0.395, 0.016)
+  AXTextField value="# Shared Notes\n\nOurs version — local commit.\nTheirs version — remote commit.\n\nQA_MANUAL_FIXED_20261107 مرحبا 👩‍💻\n<<<<<<< literal note text\n" [focused]  (0.100, 0.431, 0.801, 0.194)
+  AXAdjustable "Vertical scroll bar, 1 page" value="0%"  (0.818, 0.431, 0.075, 0.208)
+  AXButton "Resolve"  (0.040, 0.551, 0.920, 0.064)
+  AXButton "From"  (0.000, 0.625, 0.333, 0.050)
+  AXGroup "Typing Predictions"  (0.000, 0.625, 1.000, 0.050)
+  AXButton "Of"  (0.333, 0.625, 0.333, 0.050)
+  AXButton "To"  (0.667, 0.625, 0.333, 0.050)
+  AXGroup "Q"  (0.012, 0.683, 0.098, 0.062)
+  AXGroup "W"  (0.109, 0.683, 0.099, 0.062)
+  AXGroup "E"  (0.208, 0.683, 0.098, 0.062)
+  AXGroup "R"  (0.306, 0.683, 0.099, 0.062)
+  AXGroup "T"  (0.405, 0.683, 0.098, 0.062)
+  AXGroup "Y"  (0.502, 0.683, 0.099, 0.062)
+  AXGroup "U"  (0.601, 0.683, 0.098, 0.062)
+  AXGroup "I"  (0.699, 0.683, 0.099, 0.062)
+  AXGroup "O"  (0.798, 0.683, 0.098, 0.062)
+  AXGroup "P"  (0.896, 0.683, 0.099, 0.062)
+  AXButton "Start from this iPhone"  (0.080, 0.687, 0.409, 0.050)
+  AXButton "Start from remote"  (0.508, 0.687, 0.347, 0.050)
+  AXGroup "A"  (0.061, 0.745, 0.098, 0.062)
+  AXGroup "S"  (0.158, 0.745, 0.099, 0.062)
+  AXGroup "D"  (0.257, 0.745, 0.098, 0.062)
+  AXGroup "F"  (0.355, 0.745, 0.099, 0.062)
+  AXGroup "G"  (0.454, 0.745, 0.098, 0.062)
+  AXGroup "H"  (0.551, 0.745, 0.099, 0.062)
+  AXGroup "J"  (0.650, 0.745, 0.098, 0.062)
+  AXGroup "K"  (0.748, 0.745, 0.099, 0.062)
+  AXGroup "L"  (0.847, 0.745, 0.098, 0.062)
+  AXButton "Resolve with this result"  (0.080, 0.751, 0.841, 0.064)
+  AXButton "shift" id="shift"  (0.012, 0.807, 0.128, 0.062)
+  AXGroup "Z"  (0.158, 0.807, 0.099, 0.062)
+  AXGroup "X"  (0.257, 0.807, 0.098, 0.062)
+  AXGroup "C"  (0.355, 0.807, 0.099, 0.062)
+  AXGroup "V"  (0.454, 0.807, 0.098, 0.062)
+  AXGroup "B"  (0.551, 0.807, 0.099, 0.062)
+  AXGroup "N"  (0.650, 0.807, 0.098, 0.062)
+  AXGroup "M"  (0.748, 0.807, 0.099, 0.062)
+  AXGroup "delete" id="delete"  (0.866, 0.807, 0.129, 0.062)
+  AXGroup "numbers" id="more"  (0.012, 0.868, 0.245, 0.062)
+  AXGroup "space" id="space"  (0.257, 0.868, 0.491, 0.062)
+  AXButton "return" id="Return"  (0.748, 0.868, 0.246, 0.062)
+  AXButton "Dictate" id="dictation"  (0.810, 0.921, 0.169, 0.079)
+  AXButton "Emoji"  (0.021, 0.922, 0.169, 0.078)

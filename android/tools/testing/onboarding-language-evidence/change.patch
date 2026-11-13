@@ -1,0 +1,3399 @@
+--- before/app/src/androidTest/assets/localization_expected.json
++++ after/app/src/androidTest/assets/localization_expected.json
+@@ -5868,6 +5868,96 @@
+       "arguments": 0
+     },
+     {
++      "name": "tide_onboarding_headline_notes",
++      "source": "Your notes.",
++      "arguments": 0
++    },
++    {
++      "name": "tide_onboarding_headline_git",
++      "source": "Real git.",
++      "arguments": 0
++    },
++    {
++      "name": "tide_onboarding_headline_step",
++      "source": "Always in step.",
++      "arguments": 0
++    },
++    {
++      "name": "tide_onboarding_welcome_body",
++      "source": "Clone any repo, write in Obsidian or anything else, and sync with one tap.",
++      "arguments": 0
++    },
++    {
++      "name": "tide_onboarding_rail_device",
++      "source": "this phone",
++      "arguments": 0
++    },
++    {
++      "name": "tide_onboarding_illustration",
++      "source": "Notes on your phone and commits on GitHub meeting at one sync point",
++      "arguments": 0
++    },
++    {
++      "name": "tide_onboarding_pat_subtitle",
++      "source": "Paste a GitHub token with repo access.",
++      "arguments": 0
++    },
++    {
++      "name": "tide_onboarding_show_token",
++      "source": "Show",
++      "arguments": 0
++    },
++    {
++      "name": "tide_onboarding_hide_token",
++      "source": "Hide",
++      "arguments": 0
++    },
++    {
++      "name": "tide_onboarding_create_pat",
++      "source": "Create a PAT on GitHub ↗",
++      "arguments": 0
++    },
++    {
++      "name": "tide_onboarding_save_title",
++      "source": "Default save",
++      "arguments": 0
++    },
++    {
++      "name": "tide_onboarding_save_muted",
++      "source": "location.",
++      "arguments": 0
++    },
++    {
++      "name": "tide_onboarding_save_subtitle",
++      "source": "Choose a different folder when cloning, or set a default in Settings.",
++      "arguments": 0
++    },
++    {
++      "name": "tide_onboarding_picker_title",
++      "source": "Pick a repo",
++      "arguments": 0
++    },
++    {
++      "name": "tide_onboarding_picker_no_matches",
++      "source": "No matches",
++      "arguments": 0
++    },
++    {
++      "name": "tide_onboarding_picker_clear",
++      "source": "Clear search",
++      "arguments": 0
++    },
++    {
++      "name": "tide_onboarding_clone_failed",
++      "source": "Clone failed",
++      "arguments": 0
++    },
++    {
++      "name": "tide_onboarding_publication_step",
++      "source": "Step %1$d of 3",
++      "arguments": 1
++    },
++    {
+       "name": "tide_home_state_synced",
+       "source": "Synced %1$s",
+       "arguments": 1
+@@ -8740,6 +8830,78 @@
+         "source": "خاصتهم"
+       },
+       {
++        "name": "tide_onboarding_clone_failed",
++        "source": "فشل الاستنساخ"
++      },
++      {
++        "name": "tide_onboarding_create_pat",
++        "source": "إنشاء رمز وصول شخصي على GitHub ↗"
++      },
++      {
++        "name": "tide_onboarding_headline_git",
++        "source": "Git حقيقي."
++      },
++      {
++        "name": "tide_onboarding_headline_notes",
++        "source": "ملاحظاتك."
++      },
++      {
++        "name": "tide_onboarding_headline_step",
++        "source": "متزامنة دائمًا."
++      },
++      {
++        "name": "tide_onboarding_hide_token",
++        "source": "إخفاء"
++      },
++      {
++        "name": "tide_onboarding_illustration",
++        "source": "ملاحظات على هاتفك والتزامات على GitHub تلتقي عند نقطة مزامنة واحدة"
++      },
++      {
++        "name": "tide_onboarding_pat_subtitle",
++        "source": "ألصق رمز GitHub يتيح الوصول إلى المستودعات."
++      },
++      {
++        "name": "tide_onboarding_picker_clear",
++        "source": "مسح البحث"
++      },
++      {
++        "name": "tide_onboarding_picker_no_matches",
++        "source": "لا نتائج مطابقة"
++      },
++      {
++        "name": "tide_onboarding_picker_title",
++        "source": "اختر مستودعًا"
++      },
++      {
++        "name": "tide_onboarding_publication_step",
++        "source": "الخطوة %1$d من ٣"
++      },
++      {
++        "name": "tide_onboarding_rail_device",
++        "source": "هذا الهاتف"
++      },
++      {
++        "name": "tide_onboarding_save_muted",
++        "source": "الافتراضي."
++      },
++      {
++        "name": "tide_onboarding_save_subtitle",
++        "source": "اختر مجلدًا مختلفًا عند الاستنساخ، أو عيّن مجلدًا افتراضيًا في الإعدادات."
++      },
++      {
++        "name": "tide_onboarding_save_title",
++        "source": "مكان الحفظ"
++      },
++      {
++        "name": "tide_onboarding_show_token",
++        "source": "إظهار"
++      },
++      {
++        "name": "tide_onboarding_welcome_body",
++        "source": "استنسخ أي مستودع، واكتب في Obsidian أو أي تطبيق آخر، وزامن بنقرة واحدة."
++      },
++      {
+         "name": "tide_settings_section_sync",
+         "source": "SYNC"
+       },
+@@ -13238,6 +13400,78 @@
+         "source": "Deres"
+       },
+       {
++        "name": "tide_onboarding_clone_failed",
++        "source": "Kloning mislykkedes"
++      },
++      {
++        "name": "tide_onboarding_create_pat",
++        "source": "Opret et PAT på GitHub ↗"
++      },
++      {
++        "name": "tide_onboarding_headline_git",
++        "source": "Ægte Git."
++      },
++      {
++        "name": "tide_onboarding_headline_notes",
++        "source": "Dine noter."
++      },
++      {
++        "name": "tide_onboarding_headline_step",
++        "source": "Altid i takt."
++      },
++      {
++        "name": "tide_onboarding_hide_token",
++        "source": "Skjul"
++      },
++      {
++        "name": "tide_onboarding_illustration",
++        "source": "Noter på din telefon og commits på GitHub mødes ved ét synkroniseringspunkt"
++      },
++      {
++        "name": "tide_onboarding_pat_subtitle",
++        "source": "Indsæt et GitHub-token med adgang til repositories."
++      },
++      {
++        "name": "tide_onboarding_picker_clear",
++        "source": "Ryd søgning"
++      },
++      {
++        "name": "tide_onboarding_picker_no_matches",
++        "source": "Ingen resultater"
++      },
++      {
++        "name": "tide_onboarding_picker_title",
++        "source": "Vælg et repository"
++      },
++      {
++        "name": "tide_onboarding_publication_step",
++        "source": "Trin %1$d af 3"
++      },
++      {
++        "name": "tide_onboarding_rail_device",
++        "source": "denne telefon"
++      },
++      {
++        "name": "tide_onboarding_save_muted",
++        "source": "til lagring."
++      },
++      {
++        "name": "tide_onboarding_save_subtitle",
++        "source": "Vælg en anden mappe ved kloning, eller angiv en standard i Indstillinger."
++      },
++      {
++        "name": "tide_onboarding_save_title",
++        "source": "Standardplacering"
++      },
++      {
++        "name": "tide_onboarding_show_token",
++        "source": "Vis"
++      },
++      {
++        "name": "tide_onboarding_welcome_body",
++        "source": "Klon et repository, skriv i Obsidian eller en anden app, og synkroniser med ét tryk."
++      },
++      {
+         "name": "tide_settings_section_sync",
+         "source": "SYNC"
+       },
+@@ -17736,6 +17970,78 @@
+         "source": "Deren"
+       },
+       {
++        "name": "tide_onboarding_clone_failed",
++        "source": "Klonen fehlgeschlagen"
++      },
++      {
++        "name": "tide_onboarding_create_pat",
++        "source": "PAT auf GitHub erstellen ↗"
++      },
++      {
++        "name": "tide_onboarding_headline_git",
++        "source": "Echtes Git."
++      },
++      {
++        "name": "tide_onboarding_headline_notes",
++        "source": "Deine Notizen."
++      },
++      {
++        "name": "tide_onboarding_headline_step",
++        "source": "Immer im Gleichklang."
++      },
++      {
++        "name": "tide_onboarding_hide_token",
++        "source": "Ausblenden"
++      },
++      {
++        "name": "tide_onboarding_illustration",
++        "source": "Notizen auf deinem Telefon und Commits auf GitHub treffen sich an einem Synchronisierungspunkt"
++      },
++      {
++        "name": "tide_onboarding_pat_subtitle",
++        "source": "Füge ein GitHub-Token mit Repository-Zugriff ein."
++      },
++      {
++        "name": "tide_onboarding_picker_clear",
++        "source": "Suche löschen"
++      },
++      {
++        "name": "tide_onboarding_picker_no_matches",
++        "source": "Keine Treffer"
++      },
++      {
++        "name": "tide_onboarding_picker_title",
++        "source": "Repository auswählen"
++      },
++      {
++        "name": "tide_onboarding_publication_step",
++        "source": "Schritt %1$d von 3"
++      },
++      {
++        "name": "tide_onboarding_rail_device",
++        "source": "dieses Telefon"
++      },
++      {
++        "name": "tide_onboarding_save_muted",
++        "source": "zum Speichern."
++      },
++      {
++        "name": "tide_onboarding_save_subtitle",
++        "source": "Wähle beim Klonen einen anderen Ordner oder lege einen Standard in den Einstellungen fest."
++      },
++      {
++        "name": "tide_onboarding_save_title",
++        "source": "Standardort"
++      },
++      {
++        "name": "tide_onboarding_show_token",
++        "source": "Anzeigen"
++      },
++      {
++        "name": "tide_onboarding_welcome_body",
++        "source": "Klone ein Repository, schreibe in Obsidian oder einer anderen App und synchronisiere mit einem Tippen."
++      },
++      {
+         "name": "tide_settings_section_sync",
+         "source": "SYNC"
+       },
+@@ -22234,6 +22540,78 @@
+         "source": "Suyo"
+       },
+       {
++        "name": "tide_onboarding_clone_failed",
++        "source": "Error al clonar"
++      },
++      {
++        "name": "tide_onboarding_create_pat",
++        "source": "Crear un PAT en GitHub ↗"
++      },
++      {
++        "name": "tide_onboarding_headline_git",
++        "source": "Git de verdad."
++      },
++      {
++        "name": "tide_onboarding_headline_notes",
++        "source": "Tus notas."
++      },
++      {
++        "name": "tide_onboarding_headline_step",
++        "source": "Siempre al día."
++      },
++      {
++        "name": "tide_onboarding_hide_token",
++        "source": "Ocultar"
++      },
++      {
++        "name": "tide_onboarding_illustration",
++        "source": "Notas en tu teléfono y commits en GitHub que se encuentran en un punto de sincronización"
++      },
++      {
++        "name": "tide_onboarding_pat_subtitle",
++        "source": "Pega un token de GitHub con acceso a repositorios."
++      },
++      {
++        "name": "tide_onboarding_picker_clear",
++        "source": "Borrar búsqueda"
++      },
++      {
++        "name": "tide_onboarding_picker_no_matches",
++        "source": "Sin coincidencias"
++      },
++      {
++        "name": "tide_onboarding_picker_title",
++        "source": "Elige un repositorio"
++      },
++      {
++        "name": "tide_onboarding_publication_step",
++        "source": "Paso %1$d de 3"
++      },
++      {
++        "name": "tide_onboarding_rail_device",
++        "source": "este teléfono"
++      },
++      {
++        "name": "tide_onboarding_save_muted",
++        "source": "de guardado predeterminada."
++      },
++      {
++        "name": "tide_onboarding_save_subtitle",
++        "source": "Elige otra carpeta al clonar o establece una predeterminada en Ajustes."
++      },
++      {
++        "name": "tide_onboarding_save_title",
++        "source": "Ubicación"
++      },
++      {
++        "name": "tide_onboarding_show_token",
++        "source": "Mostrar"
++      },
++      {
++        "name": "tide_onboarding_welcome_body",
++        "source": "Clona cualquier repositorio, escribe en Obsidian o en otra app y sincroniza con un toque."
++      },
++      {
+         "name": "tide_settings_section_sync",
+         "source": "SYNC"
+       },
+@@ -26732,6 +27110,78 @@
+         "source": "Heidän"
+       },
+       {
++        "name": "tide_onboarding_clone_failed",
++        "source": "Kloonaus epäonnistui"
++      },
++      {
++        "name": "tide_onboarding_create_pat",
++        "source": "Luo PAT GitHubissa ↗"
++      },
++      {
++        "name": "tide_onboarding_headline_git",
++        "source": "Aito Git."
++      },
++      {
++        "name": "tide_onboarding_headline_notes",
++        "source": "Muistiinpanosi."
++      },
++      {
++        "name": "tide_onboarding_headline_step",
++        "source": "Aina ajan tasalla."
++      },
++      {
++        "name": "tide_onboarding_hide_token",
++        "source": "Piilota"
++      },
++      {
++        "name": "tide_onboarding_illustration",
++        "source": "Puhelimesi muistiinpanot ja GitHubin commitit kohtaavat yhdessä synkronointipisteessä"
++      },
++      {
++        "name": "tide_onboarding_pat_subtitle",
++        "source": "Liitä GitHub-token, jolla on pääsy tietovarastoihin."
++      },
++      {
++        "name": "tide_onboarding_picker_clear",
++        "source": "Tyhjennä haku"
++      },
++      {
++        "name": "tide_onboarding_picker_no_matches",
++        "source": "Ei osumia"
++      },
++      {
++        "name": "tide_onboarding_picker_title",
++        "source": "Valitse tietovarasto"
++      },
++      {
++        "name": "tide_onboarding_publication_step",
++        "source": "Vaihe %1$d/3"
++      },
++      {
++        "name": "tide_onboarding_rail_device",
++        "source": "tämä puhelin"
++      },
++      {
++        "name": "tide_onboarding_save_muted",
++        "source": "tallennussijainti."
++      },
++      {
++        "name": "tide_onboarding_save_subtitle",
++        "source": "Valitse kloonatessa toinen kansio tai määritä oletuskansio asetuksissa."
++      },
++      {
++        "name": "tide_onboarding_save_title",
++        "source": "Oletusarvoinen"
++      },
++      {
++        "name": "tide_onboarding_show_token",
++        "source": "Näytä"
++      },
++      {
++        "name": "tide_onboarding_welcome_body",
++        "source": "Kloonaa mikä tahansa tietovarasto, kirjoita Obsidianissa tai muussa sovelluksessa ja synkronoi yhdellä napautuksella."
++      },
++      {
+         "name": "tide_settings_section_sync",
+         "source": "SYNC"
+       },
+@@ -31230,6 +31680,78 @@
+         "source": "Le leur"
+       },
+       {
++        "name": "tide_onboarding_clone_failed",
++        "source": "Échec du clonage"
++      },
++      {
++        "name": "tide_onboarding_create_pat",
++        "source": "Créer un PAT sur GitHub ↗"
++      },
++      {
++        "name": "tide_onboarding_headline_git",
++        "source": "Du vrai Git."
++      },
++      {
++        "name": "tide_onboarding_headline_notes",
++        "source": "Vos notes."
++      },
++      {
++        "name": "tide_onboarding_headline_step",
++        "source": "Toujours synchronisées."
++      },
++      {
++        "name": "tide_onboarding_hide_token",
++        "source": "Masquer"
++      },
++      {
++        "name": "tide_onboarding_illustration",
++        "source": "Les notes sur votre téléphone et les commits sur GitHub se rejoignent en un point de synchronisation"
++      },
++      {
++        "name": "tide_onboarding_pat_subtitle",
++        "source": "Collez un jeton GitHub avec accès aux dépôts."
++      },
++      {
++        "name": "tide_onboarding_picker_clear",
++        "source": "Effacer la recherche"
++      },
++      {
++        "name": "tide_onboarding_picker_no_matches",
++        "source": "Aucun résultat"
++      },
++      {
++        "name": "tide_onboarding_picker_title",
++        "source": "Choisir un dépôt"
++      },
++      {
++        "name": "tide_onboarding_publication_step",
++        "source": "Étape %1$d sur 3"
++      },
++      {
++        "name": "tide_onboarding_rail_device",
++        "source": "ce téléphone"
++      },
++      {
++        "name": "tide_onboarding_save_muted",
++        "source": "de stockage par défaut."
++      },
++      {
++        "name": "tide_onboarding_save_subtitle",
++        "source": "Choisissez un autre dossier lors du clonage ou définissez un dossier par défaut dans les Réglages."
++      },
++      {
++        "name": "tide_onboarding_save_title",
++        "source": "Emplacement"
++      },
++      {
++        "name": "tide_onboarding_show_token",
++        "source": "Afficher"
++      },
++      {
++        "name": "tide_onboarding_welcome_body",
++        "source": "Clonez un dépôt, écrivez dans Obsidian ou une autre app et synchronisez en un geste."
++      },
++      {
+         "name": "tide_settings_section_sync",
+         "source": "SYNC"
+       },
+@@ -35728,6 +36250,78 @@
+         "source": "שלהם"
+       },
+       {
++        "name": "tide_onboarding_clone_failed",
++        "source": "השכפול נכשל"
++      },
++      {
++        "name": "tide_onboarding_create_pat",
++        "source": "יצירת PAT ב-GitHub ↗"
++      },
++      {
++        "name": "tide_onboarding_headline_git",
++        "source": "Git אמיתי."
++      },
++      {
++        "name": "tide_onboarding_headline_notes",
++        "source": "ההערות שלך."
++      },
++      {
++        "name": "tide_onboarding_headline_step",
++        "source": "תמיד מסונכרנות."
++      },
++      {
++        "name": "tide_onboarding_hide_token",
++        "source": "הסתרה"
++      },
++      {
++        "name": "tide_onboarding_illustration",
++        "source": "הערות בטלפון שלך וקומיטים ב-GitHub נפגשים בנקודת סנכרון אחת"
++      },
++      {
++        "name": "tide_onboarding_pat_subtitle",
++        "source": "יש להדביק אסימון GitHub עם גישה למאגרים."
++      },
++      {
++        "name": "tide_onboarding_picker_clear",
++        "source": "ניקוי החיפוש"
++      },
++      {
++        "name": "tide_onboarding_picker_no_matches",
++        "source": "אין התאמות"
++      },
++      {
++        "name": "tide_onboarding_picker_title",
++        "source": "בחירת מאגר"
++      },
++      {
++        "name": "tide_onboarding_publication_step",
++        "source": "שלב %1$d מתוך 3"
++      },
++      {
++        "name": "tide_onboarding_rail_device",
++        "source": "הטלפון הזה"
++      },
++      {
++        "name": "tide_onboarding_save_muted",
++        "source": "כברירת מחדל."
++      },
++      {
++        "name": "tide_onboarding_save_subtitle",
++        "source": "אפשר לבחור תיקייה אחרת בעת השכפול, או לקבוע ברירת מחדל בהגדרות."
++      },
++      {
++        "name": "tide_onboarding_save_title",
++        "source": "מיקום שמירה"
++      },
++      {
++        "name": "tide_onboarding_show_token",
++        "source": "הצגה"
++      },
++      {
++        "name": "tide_onboarding_welcome_body",
++        "source": "אפשר לשכפל כל מאגר, לכתוב ב-Obsidian או בכל אפליקציה אחרת ולסנכרן בנגיעה אחת."
++      },
++      {
+         "name": "tide_settings_section_sync",
+         "source": "SYNC"
+       },
+@@ -40226,6 +40820,78 @@
+         "source": "उनका"
+       },
+       {
++        "name": "tide_onboarding_clone_failed",
++        "source": "क्लोन विफल"
++      },
++      {
++        "name": "tide_onboarding_create_pat",
++        "source": "GitHub पर PAT बनाएँ ↗"
++      },
++      {
++        "name": "tide_onboarding_headline_git",
++        "source": "असली Git।"
++      },
++      {
++        "name": "tide_onboarding_headline_notes",
++        "source": "आपके नोट्स।"
++      },
++      {
++        "name": "tide_onboarding_headline_step",
++        "source": "हमेशा साथ।"
++      },
++      {
++        "name": "tide_onboarding_hide_token",
++        "source": "छिपाएँ"
++      },
++      {
++        "name": "tide_onboarding_illustration",
++        "source": "आपके फ़ोन के नोट्स और GitHub के कमिट एक सिंक बिंदु पर मिलते हैं"
++      },
++      {
++        "name": "tide_onboarding_pat_subtitle",
++        "source": "रिपॉज़िटरी एक्सेस वाला GitHub टोकन पेस्ट करें।"
++      },
++      {
++        "name": "tide_onboarding_picker_clear",
++        "source": "खोज साफ़ करें"
++      },
++      {
++        "name": "tide_onboarding_picker_no_matches",
++        "source": "कोई मिलान नहीं"
++      },
++      {
++        "name": "tide_onboarding_picker_title",
++        "source": "रिपॉज़िटरी चुनें"
++      },
++      {
++        "name": "tide_onboarding_publication_step",
++        "source": "चरण %1$d / 3"
++      },
++      {
++        "name": "tide_onboarding_rail_device",
++        "source": "यह फ़ोन"
++      },
++      {
++        "name": "tide_onboarding_save_muted",
++        "source": "स्थान।"
++      },
++      {
++        "name": "tide_onboarding_save_subtitle",
++        "source": "क्लोन करते समय दूसरा फ़ोल्डर चुनें, या सेटिंग्स में डिफ़ॉल्ट तय करें।"
++      },
++      {
++        "name": "tide_onboarding_save_title",
++        "source": "डिफ़ॉल्ट सेव"
++      },
++      {
++        "name": "tide_onboarding_show_token",
++        "source": "दिखाएँ"
++      },
++      {
++        "name": "tide_onboarding_welcome_body",
++        "source": "कोई भी रिपॉज़िटरी क्लोन करें, Obsidian या किसी अन्य ऐप में लिखें और एक टैप में सिंक करें।"
++      },
++      {
+         "name": "tide_settings_section_sync",
+         "source": "SYNC"
+       },
+@@ -44724,6 +45390,78 @@
+         "source": "Övék"
+       },
+       {
++        "name": "tide_onboarding_clone_failed",
++        "source": "A klónozás sikertelen"
++      },
++      {
++        "name": "tide_onboarding_create_pat",
++        "source": "PAT létrehozása a GitHubon ↗"
++      },
++      {
++        "name": "tide_onboarding_headline_git",
++        "source": "Valódi Git."
++      },
++      {
++        "name": "tide_onboarding_headline_notes",
++        "source": "A jegyzeteid."
++      },
++      {
++        "name": "tide_onboarding_headline_step",
++        "source": "Mindig összhangban."
++      },
++      {
++        "name": "tide_onboarding_hide_token",
++        "source": "Elrejtés"
++      },
++      {
++        "name": "tide_onboarding_illustration",
++        "source": "A telefonodon lévő jegyzetek és a GitHub véglegesítései egy szinkronizálási ponton találkoznak"
++      },
++      {
++        "name": "tide_onboarding_pat_subtitle",
++        "source": "Illessz be egy tároló-hozzáféréssel rendelkező GitHub-tokent."
++      },
++      {
++        "name": "tide_onboarding_picker_clear",
++        "source": "Keresés törlése"
++      },
++      {
++        "name": "tide_onboarding_picker_no_matches",
++        "source": "Nincs találat"
++      },
++      {
++        "name": "tide_onboarding_picker_title",
++        "source": "Válassz tárolót"
++      },
++      {
++        "name": "tide_onboarding_publication_step",
++        "source": "%1$d. lépés a 3-ból"
++      },
++      {
++        "name": "tide_onboarding_rail_device",
++        "source": "ez a telefon"
++      },
++      {
++        "name": "tide_onboarding_save_muted",
++        "source": "mentési hely."
++      },
++      {
++        "name": "tide_onboarding_save_subtitle",
++        "source": "Klónozáskor válassz másik mappát, vagy állíts be alapértelmezettet a Beállításokban."
++      },
++      {
++        "name": "tide_onboarding_save_title",
++        "source": "Alapértelmezett"
++      },
++      {
++        "name": "tide_onboarding_show_token",
++        "source": "Megjelenítés"
++      },
++      {
++        "name": "tide_onboarding_welcome_body",
++        "source": "Klónozz egy tárolót, írj Obsidianban vagy más alkalmazásban, és szinkronizálj egy koppintással."
++      },
++      {
+         "name": "tide_settings_section_sync",
+         "source": "SYNC"
+       },
+@@ -49222,6 +49960,78 @@
+         "source": "Milik mereka"
+       },
+       {
++        "name": "tide_onboarding_clone_failed",
++        "source": "Klon gagal"
++      },
++      {
++        "name": "tide_onboarding_create_pat",
++        "source": "Buat PAT di GitHub ↗"
++      },
++      {
++        "name": "tide_onboarding_headline_git",
++        "source": "Git sungguhan."
++      },
++      {
++        "name": "tide_onboarding_headline_notes",
++        "source": "Catatan Anda."
++      },
++      {
++        "name": "tide_onboarding_headline_step",
++        "source": "Selalu selaras."
++      },
++      {
++        "name": "tide_onboarding_hide_token",
++        "source": "Sembunyikan"
++      },
++      {
++        "name": "tide_onboarding_illustration",
++        "source": "Catatan di ponsel Anda dan commit di GitHub bertemu di satu titik sinkronisasi"
++      },
++      {
++        "name": "tide_onboarding_pat_subtitle",
++        "source": "Tempel token GitHub dengan akses repositori."
++      },
++      {
++        "name": "tide_onboarding_picker_clear",
++        "source": "Hapus pencarian"
++      },
++      {
++        "name": "tide_onboarding_picker_no_matches",
++        "source": "Tidak ada kecocokan"
++      },
++      {
++        "name": "tide_onboarding_picker_title",
++        "source": "Pilih repositori"
++      },
++      {
++        "name": "tide_onboarding_publication_step",
++        "source": "Langkah %1$d dari 3"
++      },
++      {
++        "name": "tide_onboarding_rail_device",
++        "source": "ponsel ini"
++      },
++      {
++        "name": "tide_onboarding_save_muted",
++        "source": "default."
++      },
++      {
++        "name": "tide_onboarding_save_subtitle",
++        "source": "Pilih folder lain saat mengklon, atau tetapkan default di Pengaturan."
++      },
++      {
++        "name": "tide_onboarding_save_title",
++        "source": "Lokasi penyimpanan"
++      },
++      {
++        "name": "tide_onboarding_show_token",
++        "source": "Tampilkan"
++      },
++      {
++        "name": "tide_onboarding_welcome_body",
++        "source": "Klon repositori apa pun, tulis di Obsidian atau aplikasi lain, lalu sinkronkan dengan satu ketukan."
++      },
++      {
+         "name": "tide_settings_section_sync",
+         "source": "SYNC"
+       },
+@@ -53720,6 +54530,78 @@
+         "source": "Il loro"
+       },
+       {
++        "name": "tide_onboarding_clone_failed",
++        "source": "Clonazione non riuscita"
++      },
++      {
++        "name": "tide_onboarding_create_pat",
++        "source": "Crea un PAT su GitHub ↗"
++      },
++      {
++        "name": "tide_onboarding_headline_git",
++        "source": "Git, davvero."
++      },
++      {
++        "name": "tide_onboarding_headline_notes",
++        "source": "I tuoi appunti."
++      },
++      {
++        "name": "tide_onboarding_headline_step",
++        "source": "Sempre al passo."
++      },
++      {
++        "name": "tide_onboarding_hide_token",
++        "source": "Nascondi"
++      },
++      {
++        "name": "tide_onboarding_illustration",
++        "source": "Gli appunti sul telefono e i commit su GitHub si incontrano in un punto di sincronizzazione"
++      },
++      {
++        "name": "tide_onboarding_pat_subtitle",
++        "source": "Incolla un token GitHub con accesso ai repository."
++      },
++      {
++        "name": "tide_onboarding_picker_clear",
++        "source": "Cancella ricerca"
++      },
++      {
++        "name": "tide_onboarding_picker_no_matches",
++        "source": "Nessuna corrispondenza"
++      },
++      {
++        "name": "tide_onboarding_picker_title",
++        "source": "Scegli un repository"
++      },
++      {
++        "name": "tide_onboarding_publication_step",
++        "source": "Passaggio %1$d di 3"
++      },
++      {
++        "name": "tide_onboarding_rail_device",
++        "source": "questo telefono"
++      },
++      {
++        "name": "tide_onboarding_save_muted",
++        "source": "predefinita."
++      },
++      {
++        "name": "tide_onboarding_save_subtitle",
++        "source": "Scegli un’altra cartella durante la clonazione o imposta quella predefinita nelle Impostazioni."
++      },
++      {
++        "name": "tide_onboarding_save_title",
++        "source": "Posizione di salvataggio"
++      },
++      {
++        "name": "tide_onboarding_show_token",
++        "source": "Mostra"
++      },
++      {
++        "name": "tide_onboarding_welcome_body",
++        "source": "Clona qualsiasi repository, scrivi in Obsidian o in un’altra app e sincronizza con un tocco."
++      },
++      {
+         "name": "tide_settings_section_sync",
+         "source": "SYNC"
+       },
+@@ -58218,6 +59100,78 @@
+         "source": "相手側"
+       },
+       {
++        "name": "tide_onboarding_clone_failed",
++        "source": "クローンに失敗しました"
++      },
++      {
++        "name": "tide_onboarding_create_pat",
++        "source": "GitHub で PAT を作成 ↗"
++      },
++      {
++        "name": "tide_onboarding_headline_git",
++        "source": "本物の Git。"
++      },
++      {
++        "name": "tide_onboarding_headline_notes",
++        "source": "あなたのノート。"
++      },
++      {
++        "name": "tide_onboarding_headline_step",
++        "source": "いつも同期。"
++      },
++      {
++        "name": "tide_onboarding_hide_token",
++        "source": "非表示"
++      },
++      {
++        "name": "tide_onboarding_illustration",
++        "source": "スマートフォンのノートと GitHub のコミットが1つの同期ポイントで合流する図"
++      },
++      {
++        "name": "tide_onboarding_pat_subtitle",
++        "source": "リポジトリへのアクセス権がある GitHub トークンを貼り付けてください。"
++      },
++      {
++        "name": "tide_onboarding_picker_clear",
++        "source": "検索をクリア"
++      },
++      {
++        "name": "tide_onboarding_picker_no_matches",
++        "source": "一致する結果がありません"
++      },
++      {
++        "name": "tide_onboarding_picker_title",
++        "source": "リポジトリを選択"
++      },
++      {
++        "name": "tide_onboarding_publication_step",
++        "source": "ステップ %1$d / 3"
++      },
++      {
++        "name": "tide_onboarding_rail_device",
++        "source": "このスマートフォン"
++      },
++      {
++        "name": "tide_onboarding_save_muted",
++        "source": "場所。"
++      },
++      {
++        "name": "tide_onboarding_save_subtitle",
++        "source": "クローン時に別のフォルダーを選ぶか、設定で既定のフォルダーを指定できます。"
++      },
++      {
++        "name": "tide_onboarding_save_title",
++        "source": "既定の保存"
++      },
++      {
++        "name": "tide_onboarding_show_token",
++        "source": "表示"
++      },
++      {
++        "name": "tide_onboarding_welcome_body",
++        "source": "リポジトリをクローンし、Obsidian などのアプリで書いて、ワンタップで同期できます。"
++      },
++      {
+         "name": "tide_settings_section_sync",
+         "source": "SYNC"
+       },
+@@ -62716,6 +63670,78 @@
+         "source": "원격 버전"
+       },
+       {
++        "name": "tide_onboarding_clone_failed",
++        "source": "클론 실패"
++      },
++      {
++        "name": "tide_onboarding_create_pat",
++        "source": "GitHub에서 PAT 만들기 ↗"
++      },
++      {
++        "name": "tide_onboarding_headline_git",
++        "source": "진짜 Git."
++      },
++      {
++        "name": "tide_onboarding_headline_notes",
++        "source": "당신의 노트."
++      },
++      {
++        "name": "tide_onboarding_headline_step",
++        "source": "언제나 함께."
++      },
++      {
++        "name": "tide_onboarding_hide_token",
++        "source": "숨기기"
++      },
++      {
++        "name": "tide_onboarding_illustration",
++        "source": "휴대전화의 노트와 GitHub의 커밋이 하나의 동기화 지점에서 만나는 그림"
++      },
++      {
++        "name": "tide_onboarding_pat_subtitle",
++        "source": "저장소 접근 권한이 있는 GitHub 토큰을 붙여넣으세요."
++      },
++      {
++        "name": "tide_onboarding_picker_clear",
++        "source": "검색 지우기"
++      },
++      {
++        "name": "tide_onboarding_picker_no_matches",
++        "source": "일치하는 항목 없음"
++      },
++      {
++        "name": "tide_onboarding_picker_title",
++        "source": "저장소 선택"
++      },
++      {
++        "name": "tide_onboarding_publication_step",
++        "source": "%1$d/3단계"
++      },
++      {
++        "name": "tide_onboarding_rail_device",
++        "source": "이 휴대전화"
++      },
++      {
++        "name": "tide_onboarding_save_muted",
++        "source": "위치."
++      },
++      {
++        "name": "tide_onboarding_save_subtitle",
++        "source": "클론할 때 다른 폴더를 선택하거나 설정에서 기본 폴더를 지정하세요."
++      },
++      {
++        "name": "tide_onboarding_save_title",
++        "source": "기본 저장"
++      },
++      {
++        "name": "tide_onboarding_show_token",
++        "source": "표시"
++      },
++      {
++        "name": "tide_onboarding_welcome_body",
++        "source": "어떤 저장소든 클론하고 Obsidian이나 다른 앱에서 작성한 뒤 한 번의 탭으로 동기화하세요."
++      },
++      {
+         "name": "tide_settings_section_sync",
+         "source": "SYNC"
+       },
+@@ -67214,6 +68240,78 @@
+         "source": "Deres"
+       },
+       {
++        "name": "tide_onboarding_clone_failed",
++        "source": "Kloning mislyktes"
++      },
++      {
++        "name": "tide_onboarding_create_pat",
++        "source": "Opprett et PAT på GitHub ↗"
++      },
++      {
++        "name": "tide_onboarding_headline_git",
++        "source": "Ekte Git."
++      },
++      {
++        "name": "tide_onboarding_headline_notes",
++        "source": "Notatene dine."
++      },
++      {
++        "name": "tide_onboarding_headline_step",
++        "source": "Alltid i takt."
++      },
++      {
++        "name": "tide_onboarding_hide_token",
++        "source": "Skjul"
++      },
++      {
++        "name": "tide_onboarding_illustration",
++        "source": "Notater på telefonen din og commits på GitHub møtes i ett synkroniseringspunkt"
++      },
++      {
++        "name": "tide_onboarding_pat_subtitle",
++        "source": "Lim inn et GitHub-token med tilgang til repositories."
++      },
++      {
++        "name": "tide_onboarding_picker_clear",
++        "source": "Tøm søk"
++      },
++      {
++        "name": "tide_onboarding_picker_no_matches",
++        "source": "Ingen treff"
++      },
++      {
++        "name": "tide_onboarding_picker_title",
++        "source": "Velg et repository"
++      },
++      {
++        "name": "tide_onboarding_publication_step",
++        "source": "Trinn %1$d av 3"
++      },
++      {
++        "name": "tide_onboarding_rail_device",
++        "source": "denne telefonen"
++      },
++      {
++        "name": "tide_onboarding_save_muted",
++        "source": "lagringssted."
++      },
++      {
++        "name": "tide_onboarding_save_subtitle",
++        "source": "Velg en annen mappe ved kloning, eller angi en standard i Innstillinger."
++      },
++      {
++        "name": "tide_onboarding_save_title",
++        "source": "Standard"
++      },
++      {
++        "name": "tide_onboarding_show_token",
++        "source": "Vis"
++      },
++      {
++        "name": "tide_onboarding_welcome_body",
++        "source": "Klon et repository, skriv i Obsidian eller en annen app, og synkroniser med ett trykk."
++      },
++      {
+         "name": "tide_settings_section_sync",
+         "source": "SYNC"
+       },
+@@ -71712,6 +72810,78 @@
+         "source": "Hun"
+       },
+       {
++        "name": "tide_onboarding_clone_failed",
++        "source": "Klonen mislukt"
++      },
++      {
++        "name": "tide_onboarding_create_pat",
++        "source": "Maak een PAT op GitHub ↗"
++      },
++      {
++        "name": "tide_onboarding_headline_git",
++        "source": "Echte Git."
++      },
++      {
++        "name": "tide_onboarding_headline_notes",
++        "source": "Jouw notities."
++      },
++      {
++        "name": "tide_onboarding_headline_step",
++        "source": "Altijd gelijk."
++      },
++      {
++        "name": "tide_onboarding_hide_token",
++        "source": "Verbergen"
++      },
++      {
++        "name": "tide_onboarding_illustration",
++        "source": "Notities op je telefoon en commits op GitHub komen samen op één synchronisatiepunt"
++      },
++      {
++        "name": "tide_onboarding_pat_subtitle",
++        "source": "Plak een GitHub-token met toegang tot repositories."
++      },
++      {
++        "name": "tide_onboarding_picker_clear",
++        "source": "Zoekopdracht wissen"
++      },
++      {
++        "name": "tide_onboarding_picker_no_matches",
++        "source": "Geen resultaten"
++      },
++      {
++        "name": "tide_onboarding_picker_title",
++        "source": "Kies een repository"
++      },
++      {
++        "name": "tide_onboarding_publication_step",
++        "source": "Stap %1$d van 3"
++      },
++      {
++        "name": "tide_onboarding_rail_device",
++        "source": "deze telefoon"
++      },
++      {
++        "name": "tide_onboarding_save_muted",
++        "source": "opslaglocatie."
++      },
++      {
++        "name": "tide_onboarding_save_subtitle",
++        "source": "Kies bij het klonen een andere map of stel een standaardmap in via Instellingen."
++      },
++      {
++        "name": "tide_onboarding_save_title",
++        "source": "Standaard"
++      },
++      {
++        "name": "tide_onboarding_show_token",
++        "source": "Tonen"
++      },
++      {
++        "name": "tide_onboarding_welcome_body",
++        "source": "Kloon een repository, schrijf in Obsidian of een andere app en synchroniseer met één tik."
++      },
++      {
+         "name": "tide_settings_section_sync",
+         "source": "SYNC"
+       },
+@@ -76210,6 +77380,78 @@
+         "source": "Ich"
+       },
+       {
++        "name": "tide_onboarding_clone_failed",
++        "source": "Klonowanie nie powiodło się"
++      },
++      {
++        "name": "tide_onboarding_create_pat",
++        "source": "Utwórz PAT w GitHub ↗"
++      },
++      {
++        "name": "tide_onboarding_headline_git",
++        "source": "Prawdziwy Git."
++      },
++      {
++        "name": "tide_onboarding_headline_notes",
++        "source": "Twoje notatki."
++      },
++      {
++        "name": "tide_onboarding_headline_step",
++        "source": "Zawsze w zgodzie."
++      },
++      {
++        "name": "tide_onboarding_hide_token",
++        "source": "Ukryj"
++      },
++      {
++        "name": "tide_onboarding_illustration",
++        "source": "Notatki w telefonie i zatwierdzenia w GitHub spotykają się w jednym punkcie synchronizacji"
++      },
++      {
++        "name": "tide_onboarding_pat_subtitle",
++        "source": "Wklej token GitHub z dostępem do repozytoriów."
++      },
++      {
++        "name": "tide_onboarding_picker_clear",
++        "source": "Wyczyść wyszukiwanie"
++      },
++      {
++        "name": "tide_onboarding_picker_no_matches",
++        "source": "Brak wyników"
++      },
++      {
++        "name": "tide_onboarding_picker_title",
++        "source": "Wybierz repozytorium"
++      },
++      {
++        "name": "tide_onboarding_publication_step",
++        "source": "Krok %1$d z 3"
++      },
++      {
++        "name": "tide_onboarding_rail_device",
++        "source": "ten telefon"
++      },
++      {
++        "name": "tide_onboarding_save_muted",
++        "source": "zapisu."
++      },
++      {
++        "name": "tide_onboarding_save_subtitle",
++        "source": "Wybierz inny folder podczas klonowania lub ustaw domyślny w Ustawieniach."
++      },
++      {
++        "name": "tide_onboarding_save_title",
++        "source": "Domyślna lokalizacja"
++      },
++      {
++        "name": "tide_onboarding_show_token",
++        "source": "Pokaż"
++      },
++      {
++        "name": "tide_onboarding_welcome_body",
++        "source": "Sklonuj dowolne repozytorium, pisz w Obsidianie lub innej aplikacji i synchronizuj jednym stuknięciem."
++      },
++      {
+         "name": "tide_settings_section_sync",
+         "source": "SYNC"
+       },
+@@ -80708,6 +81950,78 @@
+         "source": "Deles"
+       },
+       {
++        "name": "tide_onboarding_clone_failed",
++        "source": "Falha ao clonar"
++      },
++      {
++        "name": "tide_onboarding_create_pat",
++        "source": "Criar um PAT no GitHub ↗"
++      },
++      {
++        "name": "tide_onboarding_headline_git",
++        "source": "Git de verdade."
++      },
++      {
++        "name": "tide_onboarding_headline_notes",
++        "source": "Suas notas."
++      },
++      {
++        "name": "tide_onboarding_headline_step",
++        "source": "Sempre em sintonia."
++      },
++      {
++        "name": "tide_onboarding_hide_token",
++        "source": "Ocultar"
++      },
++      {
++        "name": "tide_onboarding_illustration",
++        "source": "Notas no seu telefone e commits no GitHub se encontram em um ponto de sincronização"
++      },
++      {
++        "name": "tide_onboarding_pat_subtitle",
++        "source": "Cole um token do GitHub com acesso a repositórios."
++      },
++      {
++        "name": "tide_onboarding_picker_clear",
++        "source": "Limpar busca"
++      },
++      {
++        "name": "tide_onboarding_picker_no_matches",
++        "source": "Nenhum resultado"
++      },
++      {
++        "name": "tide_onboarding_picker_title",
++        "source": "Escolha um repositório"
++      },
++      {
++        "name": "tide_onboarding_publication_step",
++        "source": "Etapa %1$d de 3"
++      },
++      {
++        "name": "tide_onboarding_rail_device",
++        "source": "este telefone"
++      },
++      {
++        "name": "tide_onboarding_save_muted",
++        "source": "padrão."
++      },
++      {
++        "name": "tide_onboarding_save_subtitle",
++        "source": "Escolha outra pasta ao clonar ou defina uma pasta padrão nos Ajustes."
++      },
++      {
++        "name": "tide_onboarding_save_title",
++        "source": "Local de salvamento"
++      },
++      {
++        "name": "tide_onboarding_show_token",
++        "source": "Mostrar"
++      },
++      {
++        "name": "tide_onboarding_welcome_body",
++        "source": "Clone qualquer repositório, escreva no Obsidian ou em outro app e sincronize com um toque."
++      },
++      {
+         "name": "tide_settings_section_sync",
+         "source": "SYNC"
+       },
+@@ -85206,6 +86520,78 @@
+         "source": "Их"
+       },
+       {
++        "name": "tide_onboarding_clone_failed",
++        "source": "Не удалось клонировать"
++      },
++      {
++        "name": "tide_onboarding_create_pat",
++        "source": "Создать PAT на GitHub ↗"
++      },
++      {
++        "name": "tide_onboarding_headline_git",
++        "source": "Настоящий Git."
++      },
++      {
++        "name": "tide_onboarding_headline_notes",
++        "source": "Ваши заметки."
++      },
++      {
++        "name": "tide_onboarding_headline_step",
++        "source": "Всегда вместе."
++      },
++      {
++        "name": "tide_onboarding_hide_token",
++        "source": "Скрыть"
++      },
++      {
++        "name": "tide_onboarding_illustration",
++        "source": "Заметки на телефоне и коммиты на GitHub встречаются в одной точке синхронизации"
++      },
++      {
++        "name": "tide_onboarding_pat_subtitle",
++        "source": "Вставьте токен GitHub с доступом к репозиториям."
++      },
++      {
++        "name": "tide_onboarding_picker_clear",
++        "source": "Очистить поиск"
++      },
++      {
++        "name": "tide_onboarding_picker_no_matches",
++        "source": "Нет совпадений"
++      },
++      {
++        "name": "tide_onboarding_picker_title",
++        "source": "Выберите репозиторий"
++      },
++      {
++        "name": "tide_onboarding_publication_step",
++        "source": "Шаг %1$d из 3"
++      },
++      {
++        "name": "tide_onboarding_rail_device",
++        "source": "этот телефон"
++      },
++      {
++        "name": "tide_onboarding_save_muted",
++        "source": "по умолчанию."
++      },
++      {
++        "name": "tide_onboarding_save_subtitle",
++        "source": "Выберите другую папку при клонировании или задайте папку по умолчанию в настройках."
++      },
++      {
++        "name": "tide_onboarding_save_title",
++        "source": "Место сохранения"
++      },
++      {
++        "name": "tide_onboarding_show_token",
++        "source": "Показать"
++      },
++      {
++        "name": "tide_onboarding_welcome_body",
++        "source": "Клонируйте любой репозиторий, пишите в Obsidian или другом приложении и синхронизируйте одним касанием."
++      },
++      {
+         "name": "tide_settings_section_sync",
+         "source": "SYNC"
+       },
+@@ -89704,6 +91090,78 @@
+         "source": "Deras"
+       },
+       {
++        "name": "tide_onboarding_clone_failed",
++        "source": "Kloning misslyckades"
++      },
++      {
++        "name": "tide_onboarding_create_pat",
++        "source": "Skapa en PAT på GitHub ↗"
++      },
++      {
++        "name": "tide_onboarding_headline_git",
++        "source": "Riktig Git."
++      },
++      {
++        "name": "tide_onboarding_headline_notes",
++        "source": "Dina anteckningar."
++      },
++      {
++        "name": "tide_onboarding_headline_step",
++        "source": "Alltid i takt."
++      },
++      {
++        "name": "tide_onboarding_hide_token",
++        "source": "Dölj"
++      },
++      {
++        "name": "tide_onboarding_illustration",
++        "source": "Anteckningar på telefonen och commits på GitHub möts i en synkroniseringspunkt"
++      },
++      {
++        "name": "tide_onboarding_pat_subtitle",
++        "source": "Klistra in en GitHub-token med åtkomst till arkiv."
++      },
++      {
++        "name": "tide_onboarding_picker_clear",
++        "source": "Rensa sökning"
++      },
++      {
++        "name": "tide_onboarding_picker_no_matches",
++        "source": "Inga träffar"
++      },
++      {
++        "name": "tide_onboarding_picker_title",
++        "source": "Välj ett arkiv"
++      },
++      {
++        "name": "tide_onboarding_publication_step",
++        "source": "Steg %1$d av 3"
++      },
++      {
++        "name": "tide_onboarding_rail_device",
++        "source": "den här telefonen"
++      },
++      {
++        "name": "tide_onboarding_save_muted",
++        "source": "för lagring."
++      },
++      {
++        "name": "tide_onboarding_save_subtitle",
++        "source": "Välj en annan mapp när du klonar, eller ange en standardmapp i Inställningar."
++      },
++      {
++        "name": "tide_onboarding_save_title",
++        "source": "Standardplats"
++      },
++      {
++        "name": "tide_onboarding_show_token",
++        "source": "Visa"
++      },
++      {
++        "name": "tide_onboarding_welcome_body",
++        "source": "Klona ett arkiv, skriv i Obsidian eller en annan app och synkronisera med ett tryck."
++      },
++      {
+         "name": "tide_settings_section_sync",
+         "source": "SYNC"
+       },
+@@ -94202,6 +95660,78 @@
+         "source": "ของเขา"
+       },
+       {
++        "name": "tide_onboarding_clone_failed",
++        "source": "โคลนไม่สำเร็จ"
++      },
++      {
++        "name": "tide_onboarding_create_pat",
++        "source": "สร้าง PAT บน GitHub ↗"
++      },
++      {
++        "name": "tide_onboarding_headline_git",
++        "source": "Git ของจริง"
++      },
++      {
++        "name": "tide_onboarding_headline_notes",
++        "source": "โน้ตของคุณ"
++      },
++      {
++        "name": "tide_onboarding_headline_step",
++        "source": "ตรงกันเสมอ"
++      },
++      {
++        "name": "tide_onboarding_hide_token",
++        "source": "ซ่อน"
++      },
++      {
++        "name": "tide_onboarding_illustration",
++        "source": "โน้ตบนโทรศัพท์และคอมมิตบน GitHub มาพบกันที่จุดซิงค์เดียว"
++      },
++      {
++        "name": "tide_onboarding_pat_subtitle",
++        "source": "วางโทเค็น GitHub ที่มีสิทธิ์เข้าถึงที่เก็บ"
++      },
++      {
++        "name": "tide_onboarding_picker_clear",
++        "source": "ล้างการค้นหา"
++      },
++      {
++        "name": "tide_onboarding_picker_no_matches",
++        "source": "ไม่พบรายการที่ตรงกัน"
++      },
++      {
++        "name": "tide_onboarding_picker_title",
++        "source": "เลือกที่เก็บ"
++      },
++      {
++        "name": "tide_onboarding_publication_step",
++        "source": "ขั้นตอนที่ %1$d จาก 3"
++      },
++      {
++        "name": "tide_onboarding_rail_device",
++        "source": "โทรศัพท์นี้"
++      },
++      {
++        "name": "tide_onboarding_save_muted",
++        "source": "เริ่มต้น"
++      },
++      {
++        "name": "tide_onboarding_save_subtitle",
++        "source": "เลือกโฟลเดอร์อื่นขณะโคลน หรือตั้งค่าเริ่มต้นในการตั้งค่า"
++      },
++      {
++        "name": "tide_onboarding_save_title",
++        "source": "ตำแหน่งบันทึก"
++      },
++      {
++        "name": "tide_onboarding_show_token",
++        "source": "แสดง"
++      },
++      {
++        "name": "tide_onboarding_welcome_body",
++        "source": "โคลนที่เก็บใดก็ได้ เขียนใน Obsidian หรือแอปอื่น แล้วซิงค์ด้วยการแตะครั้งเดียว"
++      },
++      {
+         "name": "tide_settings_section_sync",
+         "source": "SYNC"
+       },
+@@ -98700,6 +100230,78 @@
+         "source": "Onlarınki"
+       },
+       {
++        "name": "tide_onboarding_clone_failed",
++        "source": "Klonlama başarısız"
++      },
++      {
++        "name": "tide_onboarding_create_pat",
++        "source": "GitHub’da PAT oluştur ↗"
++      },
++      {
++        "name": "tide_onboarding_headline_git",
++        "source": "Gerçek Git."
++      },
++      {
++        "name": "tide_onboarding_headline_notes",
++        "source": "Notlarınız."
++      },
++      {
++        "name": "tide_onboarding_headline_step",
++        "source": "Her zaman uyumlu."
++      },
++      {
++        "name": "tide_onboarding_hide_token",
++        "source": "Gizle"
++      },
++      {
++        "name": "tide_onboarding_illustration",
++        "source": "Telefonunuzdaki notlar ve GitHub’daki commit’ler tek bir eşitleme noktasında buluşur"
++      },
++      {
++        "name": "tide_onboarding_pat_subtitle",
++        "source": "Depo erişimi olan bir GitHub token’ı yapıştırın."
++      },
++      {
++        "name": "tide_onboarding_picker_clear",
++        "source": "Aramayı temizle"
++      },
++      {
++        "name": "tide_onboarding_picker_no_matches",
++        "source": "Eşleşme yok"
++      },
++      {
++        "name": "tide_onboarding_picker_title",
++        "source": "Depo seçin"
++      },
++      {
++        "name": "tide_onboarding_publication_step",
++        "source": "Adım %1$d / 3"
++      },
++      {
++        "name": "tide_onboarding_rail_device",
++        "source": "bu telefon"
++      },
++      {
++        "name": "tide_onboarding_save_muted",
++        "source": "konumu."
++      },
++      {
++        "name": "tide_onboarding_save_subtitle",
++        "source": "Klonlarken farklı bir klasör seçin veya Ayarlar’da varsayılanı belirleyin."
++      },
++      {
++        "name": "tide_onboarding_save_title",
++        "source": "Varsayılan kayıt"
++      },
++      {
++        "name": "tide_onboarding_show_token",
++        "source": "Göster"
++      },
++      {
++        "name": "tide_onboarding_welcome_body",
++        "source": "İstediğiniz depoyu klonlayın, Obsidian veya başka bir uygulamada yazın ve tek dokunuşla eşitleyin."
++      },
++      {
+         "name": "tide_settings_section_sync",
+         "source": "SYNC"
+       },
+@@ -103198,6 +104800,78 @@
+         "source": "Їхнє"
+       },
+       {
++        "name": "tide_onboarding_clone_failed",
++        "source": "Не вдалося клонувати"
++      },
++      {
++        "name": "tide_onboarding_create_pat",
++        "source": "Створити PAT на GitHub ↗"
++      },
++      {
++        "name": "tide_onboarding_headline_git",
++        "source": "Справжній Git."
++      },
++      {
++        "name": "tide_onboarding_headline_notes",
++        "source": "Ваші нотатки."
++      },
++      {
++        "name": "tide_onboarding_headline_step",
++        "source": "Завжди разом."
++      },
++      {
++        "name": "tide_onboarding_hide_token",
++        "source": "Приховати"
++      },
++      {
++        "name": "tide_onboarding_illustration",
++        "source": "Нотатки на телефоні й коміти на GitHub зустрічаються в одній точці синхронізації"
++      },
++      {
++        "name": "tide_onboarding_pat_subtitle",
++        "source": "Вставте токен GitHub із доступом до репозиторіїв."
++      },
++      {
++        "name": "tide_onboarding_picker_clear",
++        "source": "Очистити пошук"
++      },
++      {
++        "name": "tide_onboarding_picker_no_matches",
++        "source": "Немає збігів"
++      },
++      {
++        "name": "tide_onboarding_picker_title",
++        "source": "Виберіть репозиторій"
++      },
++      {
++        "name": "tide_onboarding_publication_step",
++        "source": "Крок %1$d із 3"
++      },
++      {
++        "name": "tide_onboarding_rail_device",
++        "source": "цей телефон"
++      },
++      {
++        "name": "tide_onboarding_save_muted",
++        "source": "за замовчуванням."
++      },
++      {
++        "name": "tide_onboarding_save_subtitle",
++        "source": "Виберіть іншу папку під час клонування або задайте типову в налаштуваннях."
++      },
++      {
++        "name": "tide_onboarding_save_title",
++        "source": "Місце збереження"
++      },
++      {
++        "name": "tide_onboarding_show_token",
++        "source": "Показати"
++      },
++      {
++        "name": "tide_onboarding_welcome_body",
++        "source": "Клонуйте будь-який репозиторій, пишіть в Obsidian чи іншому застосунку та синхронізуйте одним дотиком."
++      },
++      {
+         "name": "tide_settings_section_sync",
+         "source": "SYNC"
+       },
+@@ -107696,6 +109370,78 @@
+         "source": "Của họ"
+       },
+       {
++        "name": "tide_onboarding_clone_failed",
++        "source": "Clone thất bại"
++      },
++      {
++        "name": "tide_onboarding_create_pat",
++        "source": "Tạo PAT trên GitHub ↗"
++      },
++      {
++        "name": "tide_onboarding_headline_git",
++        "source": "Git thực thụ."
++      },
++      {
++        "name": "tide_onboarding_headline_notes",
++        "source": "Ghi chú của bạn."
++      },
++      {
++        "name": "tide_onboarding_headline_step",
++        "source": "Luôn đồng bộ."
++      },
++      {
++        "name": "tide_onboarding_hide_token",
++        "source": "Ẩn"
++      },
++      {
++        "name": "tide_onboarding_illustration",
++        "source": "Ghi chú trên điện thoại và commit trên GitHub gặp nhau tại một điểm đồng bộ"
++      },
++      {
++        "name": "tide_onboarding_pat_subtitle",
++        "source": "Dán token GitHub có quyền truy cập kho lưu trữ."
++      },
++      {
++        "name": "tide_onboarding_picker_clear",
++        "source": "Xóa tìm kiếm"
++      },
++      {
++        "name": "tide_onboarding_picker_no_matches",
++        "source": "Không có kết quả phù hợp"
++      },
++      {
++        "name": "tide_onboarding_picker_title",
++        "source": "Chọn kho lưu trữ"
++      },
++      {
++        "name": "tide_onboarding_publication_step",
++        "source": "Bước %1$d trên 3"
++      },
++      {
++        "name": "tide_onboarding_rail_device",
++        "source": "điện thoại này"
++      },
++      {
++        "name": "tide_onboarding_save_muted",
++        "source": "mặc định."
++      },
++      {
++        "name": "tide_onboarding_save_subtitle",
++        "source": "Chọn thư mục khác khi clone hoặc đặt thư mục mặc định trong Cài đặt."
++      },
++      {
++        "name": "tide_onboarding_save_title",
++        "source": "Vị trí lưu"
++      },
++      {
++        "name": "tide_onboarding_show_token",
++        "source": "Hiện"
++      },
++      {
++        "name": "tide_onboarding_welcome_body",
++        "source": "Clone bất kỳ kho nào, viết trong Obsidian hoặc ứng dụng khác và đồng bộ bằng một lần chạm."
++      },
++      {
+         "name": "tide_settings_section_sync",
+         "source": "SYNC"
+       },
+@@ -112194,6 +113940,78 @@
+         "source": "远程版本"
+       },
+       {
++        "name": "tide_onboarding_clone_failed",
++        "source": "克隆失败"
++      },
++      {
++        "name": "tide_onboarding_create_pat",
++        "source": "在 GitHub 上创建 PAT ↗"
++      },
++      {
++        "name": "tide_onboarding_headline_git",
++        "source": "真正的 Git。"
++      },
++      {
++        "name": "tide_onboarding_headline_notes",
++        "source": "你的笔记。"
++      },
++      {
++        "name": "tide_onboarding_headline_step",
++        "source": "始终同步。"
++      },
++      {
++        "name": "tide_onboarding_hide_token",
++        "source": "隐藏"
++      },
++      {
++        "name": "tide_onboarding_illustration",
++        "source": "手机上的笔记与 GitHub 上的提交在同一个同步点汇合"
++      },
++      {
++        "name": "tide_onboarding_pat_subtitle",
++        "source": "粘贴具有仓库访问权限的 GitHub 令牌。"
++      },
++      {
++        "name": "tide_onboarding_picker_clear",
++        "source": "清除搜索"
++      },
++      {
++        "name": "tide_onboarding_picker_no_matches",
++        "source": "没有匹配结果"
++      },
++      {
++        "name": "tide_onboarding_picker_title",
++        "source": "选择仓库"
++      },
++      {
++        "name": "tide_onboarding_publication_step",
++        "source": "第 %1$d 步，共 3 步"
++      },
++      {
++        "name": "tide_onboarding_rail_device",
++        "source": "此手机"
++      },
++      {
++        "name": "tide_onboarding_save_muted",
++        "source": "位置。"
++      },
++      {
++        "name": "tide_onboarding_save_subtitle",
++        "source": "克隆时选择其他文件夹，或在设置中指定默认文件夹。"
++      },
++      {
++        "name": "tide_onboarding_save_title",
++        "source": "默认保存"
++      },
++      {
++        "name": "tide_onboarding_show_token",
++        "source": "显示"
++      },
++      {
++        "name": "tide_onboarding_welcome_body",
++        "source": "克隆任意仓库，在 Obsidian 或其他应用中书写，轻点即可同步。"
++      },
++      {
+         "name": "tide_settings_section_sync",
+         "source": "SYNC"
+       },
+@@ -116690,6 +118508,78 @@
+       {
+         "name": "tide_merge_theirs_filename",
+         "source": "遠端版本"
++      },
++      {
++        "name": "tide_onboarding_clone_failed",
++        "source": "複製失敗"
++      },
++      {
++        "name": "tide_onboarding_create_pat",
++        "source": "在 GitHub 上建立 PAT ↗"
++      },
++      {
++        "name": "tide_onboarding_headline_git",
++        "source": "真正的 Git。"
++      },
++      {
++        "name": "tide_onboarding_headline_notes",
++        "source": "你的筆記。"
++      },
++      {
++        "name": "tide_onboarding_headline_step",
++        "source": "始終同步。"
++      },
++      {
++        "name": "tide_onboarding_hide_token",
++        "source": "隱藏"
++      },
++      {
++        "name": "tide_onboarding_illustration",
++        "source": "手機上的筆記與 GitHub 上的提交在同一個同步點匯合"
++      },
++      {
++        "name": "tide_onboarding_pat_subtitle",
++        "source": "貼上具有儲存庫存取權限的 GitHub 權杖。"
++      },
++      {
++        "name": "tide_onboarding_picker_clear",
++        "source": "清除搜尋"
++      },
++      {
++        "name": "tide_onboarding_picker_no_matches",
++        "source": "沒有符合的結果"
++      },
++      {
++        "name": "tide_onboarding_picker_title",
++        "source": "選擇儲存庫"
++      },
++      {
++        "name": "tide_onboarding_publication_step",
++        "source": "第 %1$d 步，共 3 步"
++      },
++      {
++        "name": "tide_onboarding_rail_device",
++        "source": "此手機"
++      },
++      {
++        "name": "tide_onboarding_save_muted",
++        "source": "位置。"
++      },
++      {
++        "name": "tide_onboarding_save_subtitle",
++        "source": "複製時選擇其他資料夾，或在設定中指定預設資料夾。"
++      },
++      {
++        "name": "tide_onboarding_save_title",
++        "source": "預設儲存"
++      },
++      {
++        "name": "tide_onboarding_show_token",
++        "source": "顯示"
++      },
++      {
++        "name": "tide_onboarding_welcome_body",
++        "source": "複製任意儲存庫，在 Obsidian 或其他 App 中書寫，輕點即可同步。"
+       },
+       {
+         "name": "tide_settings_section_sync",
+@@ -118374,24 +120264,6 @@
+     "tide_merge_upstream_unset_body",
+     "tide_merge_yours",
+     "tide_merge_yours_count",
+-    "tide_onboarding_clone_failed",
+-    "tide_onboarding_create_pat",
+-    "tide_onboarding_headline_git",
+-    "tide_onboarding_headline_notes",
+-    "tide_onboarding_headline_step",
+-    "tide_onboarding_hide_token",
+-    "tide_onboarding_illustration",
+-    "tide_onboarding_pat_subtitle",
+-    "tide_onboarding_picker_clear",
+-    "tide_onboarding_picker_no_matches",
+-    "tide_onboarding_picker_title",
+-    "tide_onboarding_publication_step",
+-    "tide_onboarding_rail_device",
+-    "tide_onboarding_save_muted",
+-    "tide_onboarding_save_subtitle",
+-    "tide_onboarding_save_title",
+-    "tide_onboarding_show_token",
+-    "tide_onboarding_welcome_body",
+     "tide_settings_not_signed_in",
+     "tide_settings_off",
+     "tide_settings_on",
+--- before/app/src/main/res/values-ar/ios_catalog_strings.xml
++++ after/app/src/main/res/values-ar/ios_catalog_strings.xml
+@@ -716,6 +716,24 @@
+     <string name="tide_merge_side_deleted" formatted="false">"محذوف"</string>
+     <string name="tide_merge_theirs" formatted="false">"خاصتهم"</string>
+     <string name="tide_merge_theirs_filename" formatted="false">"خاصتهم"</string>
++    <string name="tide_onboarding_clone_failed" formatted="false">"فشل الاستنساخ"</string>
++    <string name="tide_onboarding_create_pat" formatted="false">"إنشاء رمز وصول شخصي على GitHub ↗"</string>
++    <string name="tide_onboarding_headline_git" formatted="false">"Git حقيقي."</string>
++    <string name="tide_onboarding_headline_notes" formatted="false">"ملاحظاتك."</string>
++    <string name="tide_onboarding_headline_step" formatted="false">"متزامنة دائمًا."</string>
++    <string name="tide_onboarding_hide_token" formatted="false">"إخفاء"</string>
++    <string name="tide_onboarding_illustration" formatted="false">"ملاحظات على هاتفك والتزامات على GitHub تلتقي عند نقطة مزامنة واحدة"</string>
++    <string name="tide_onboarding_pat_subtitle" formatted="false">"ألصق رمز GitHub يتيح الوصول إلى المستودعات."</string>
++    <string name="tide_onboarding_picker_clear" formatted="false">"مسح البحث"</string>
++    <string name="tide_onboarding_picker_no_matches" formatted="false">"لا نتائج مطابقة"</string>
++    <string name="tide_onboarding_picker_title" formatted="false">"اختر مستودعًا"</string>
++    <string name="tide_onboarding_publication_step">"الخطوة %1$d من ٣"</string>
++    <string name="tide_onboarding_rail_device" formatted="false">"هذا الهاتف"</string>
++    <string name="tide_onboarding_save_muted" formatted="false">"الافتراضي."</string>
++    <string name="tide_onboarding_save_subtitle" formatted="false">"اختر مجلدًا مختلفًا عند الاستنساخ، أو عيّن مجلدًا افتراضيًا في الإعدادات."</string>
++    <string name="tide_onboarding_save_title" formatted="false">"مكان الحفظ"</string>
++    <string name="tide_onboarding_show_token" formatted="false">"إظهار"</string>
++    <string name="tide_onboarding_welcome_body" formatted="false">"استنسخ أي مستودع، واكتب في Obsidian أو أي تطبيق آخر، وزامن بنقرة واحدة."</string>
+     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
+     <string name="tide_vault_check_for_changes" formatted="false">"التحقق من التغييرات"</string>
+     <string name="tide_vault_conflict_detail" formatted="false">"توقفت عملية Git مؤقتًا. حلّ كل ملف متعارض للمتابعة."</string>
+--- before/app/src/main/res/values-b+zh+Hans/ios_catalog_strings.xml
++++ after/app/src/main/res/values-b+zh+Hans/ios_catalog_strings.xml
+@@ -716,6 +716,24 @@
+     <string name="tide_merge_side_deleted" formatted="false">"已删除"</string>
+     <string name="tide_merge_theirs" formatted="false">"远程版本"</string>
+     <string name="tide_merge_theirs_filename" formatted="false">"远程版本"</string>
++    <string name="tide_onboarding_clone_failed" formatted="false">"克隆失败"</string>
++    <string name="tide_onboarding_create_pat" formatted="false">"在 GitHub 上创建 PAT ↗"</string>
++    <string name="tide_onboarding_headline_git" formatted="false">"真正的 Git。"</string>
++    <string name="tide_onboarding_headline_notes" formatted="false">"你的笔记。"</string>
++    <string name="tide_onboarding_headline_step" formatted="false">"始终同步。"</string>
++    <string name="tide_onboarding_hide_token" formatted="false">"隐藏"</string>
++    <string name="tide_onboarding_illustration" formatted="false">"手机上的笔记与 GitHub 上的提交在同一个同步点汇合"</string>
++    <string name="tide_onboarding_pat_subtitle" formatted="false">"粘贴具有仓库访问权限的 GitHub 令牌。"</string>
++    <string name="tide_onboarding_picker_clear" formatted="false">"清除搜索"</string>
++    <string name="tide_onboarding_picker_no_matches" formatted="false">"没有匹配结果"</string>
++    <string name="tide_onboarding_picker_title" formatted="false">"选择仓库"</string>
++    <string name="tide_onboarding_publication_step">"第 %1$d 步，共 3 步"</string>
++    <string name="tide_onboarding_rail_device" formatted="false">"此手机"</string>
++    <string name="tide_onboarding_save_muted" formatted="false">"位置。"</string>
++    <string name="tide_onboarding_save_subtitle" formatted="false">"克隆时选择其他文件夹，或在设置中指定默认文件夹。"</string>
++    <string name="tide_onboarding_save_title" formatted="false">"默认保存"</string>
++    <string name="tide_onboarding_show_token" formatted="false">"显示"</string>
++    <string name="tide_onboarding_welcome_body" formatted="false">"克隆任意仓库，在 Obsidian 或其他应用中书写，轻点即可同步。"</string>
+     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
+     <string name="tide_vault_check_for_changes" formatted="false">"检查更改"</string>
+     <string name="tide_vault_conflict_detail" formatted="false">"Git 操作已暂停。请解决每个冲突文件以继续。"</string>
+--- before/app/src/main/res/values-b+zh+Hant/ios_catalog_strings.xml
++++ after/app/src/main/res/values-b+zh+Hant/ios_catalog_strings.xml
+@@ -716,6 +716,24 @@
+     <string name="tide_merge_side_deleted" formatted="false">"已刪除"</string>
+     <string name="tide_merge_theirs" formatted="false">"遠端版本"</string>
+     <string name="tide_merge_theirs_filename" formatted="false">"遠端版本"</string>
++    <string name="tide_onboarding_clone_failed" formatted="false">"複製失敗"</string>
++    <string name="tide_onboarding_create_pat" formatted="false">"在 GitHub 上建立 PAT ↗"</string>
++    <string name="tide_onboarding_headline_git" formatted="false">"真正的 Git。"</string>
++    <string name="tide_onboarding_headline_notes" formatted="false">"你的筆記。"</string>
++    <string name="tide_onboarding_headline_step" formatted="false">"始終同步。"</string>
++    <string name="tide_onboarding_hide_token" formatted="false">"隱藏"</string>
++    <string name="tide_onboarding_illustration" formatted="false">"手機上的筆記與 GitHub 上的提交在同一個同步點匯合"</string>
++    <string name="tide_onboarding_pat_subtitle" formatted="false">"貼上具有儲存庫存取權限的 GitHub 權杖。"</string>
++    <string name="tide_onboarding_picker_clear" formatted="false">"清除搜尋"</string>
++    <string name="tide_onboarding_picker_no_matches" formatted="false">"沒有符合的結果"</string>
++    <string name="tide_onboarding_picker_title" formatted="false">"選擇儲存庫"</string>
++    <string name="tide_onboarding_publication_step">"第 %1$d 步，共 3 步"</string>
++    <string name="tide_onboarding_rail_device" formatted="false">"此手機"</string>
++    <string name="tide_onboarding_save_muted" formatted="false">"位置。"</string>
++    <string name="tide_onboarding_save_subtitle" formatted="false">"複製時選擇其他資料夾，或在設定中指定預設資料夾。"</string>
++    <string name="tide_onboarding_save_title" formatted="false">"預設儲存"</string>
++    <string name="tide_onboarding_show_token" formatted="false">"顯示"</string>
++    <string name="tide_onboarding_welcome_body" formatted="false">"複製任意儲存庫，在 Obsidian 或其他 App 中書寫，輕點即可同步。"</string>
+     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
+     <string name="tide_vault_check_for_changes" formatted="false">"檢查變更"</string>
+     <string name="tide_vault_conflict_detail" formatted="false">"Git 操作已暫停。請解決每個衝突檔案以繼續。"</string>
+--- before/app/src/main/res/values-da/ios_catalog_strings.xml
++++ after/app/src/main/res/values-da/ios_catalog_strings.xml
+@@ -716,6 +716,24 @@
+     <string name="tide_merge_side_deleted" formatted="false">"slettet"</string>
+     <string name="tide_merge_theirs" formatted="false">"Deres"</string>
+     <string name="tide_merge_theirs_filename" formatted="false">"Deres"</string>
++    <string name="tide_onboarding_clone_failed" formatted="false">"Kloning mislykkedes"</string>
++    <string name="tide_onboarding_create_pat" formatted="false">"Opret et PAT på GitHub ↗"</string>
++    <string name="tide_onboarding_headline_git" formatted="false">"Ægte Git."</string>
++    <string name="tide_onboarding_headline_notes" formatted="false">"Dine noter."</string>
++    <string name="tide_onboarding_headline_step" formatted="false">"Altid i takt."</string>
++    <string name="tide_onboarding_hide_token" formatted="false">"Skjul"</string>
++    <string name="tide_onboarding_illustration" formatted="false">"Noter på din telefon og commits på GitHub mødes ved ét synkroniseringspunkt"</string>
++    <string name="tide_onboarding_pat_subtitle" formatted="false">"Indsæt et GitHub-token med adgang til repositories."</string>
++    <string name="tide_onboarding_picker_clear" formatted="false">"Ryd søgning"</string>
++    <string name="tide_onboarding_picker_no_matches" formatted="false">"Ingen resultater"</string>
++    <string name="tide_onboarding_picker_title" formatted="false">"Vælg et repository"</string>
++    <string name="tide_onboarding_publication_step">"Trin %1$d af 3"</string>
++    <string name="tide_onboarding_rail_device" formatted="false">"denne telefon"</string>
++    <string name="tide_onboarding_save_muted" formatted="false">"til lagring."</string>
++    <string name="tide_onboarding_save_subtitle" formatted="false">"Vælg en anden mappe ved kloning, eller angiv en standard i Indstillinger."</string>
++    <string name="tide_onboarding_save_title" formatted="false">"Standardplacering"</string>
++    <string name="tide_onboarding_show_token" formatted="false">"Vis"</string>
++    <string name="tide_onboarding_welcome_body" formatted="false">"Klon et repository, skriv i Obsidian eller en anden app, og synkroniser med ét tryk."</string>
+     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
+     <string name="tide_vault_check_for_changes" formatted="false">"Søg efter ændringer"</string>
+     <string name="tide_vault_conflict_detail" formatted="false">"Git-handlingen er sat på pause. Løs alle filer med konflikter for at fortsætte."</string>
+--- before/app/src/main/res/values-de/ios_catalog_strings.xml
++++ after/app/src/main/res/values-de/ios_catalog_strings.xml
+@@ -716,6 +716,24 @@
+     <string name="tide_merge_side_deleted" formatted="false">"gelöscht"</string>
+     <string name="tide_merge_theirs" formatted="false">"Deren"</string>
+     <string name="tide_merge_theirs_filename" formatted="false">"Deren"</string>
++    <string name="tide_onboarding_clone_failed" formatted="false">"Klonen fehlgeschlagen"</string>
++    <string name="tide_onboarding_create_pat" formatted="false">"PAT auf GitHub erstellen ↗"</string>
++    <string name="tide_onboarding_headline_git" formatted="false">"Echtes Git."</string>
++    <string name="tide_onboarding_headline_notes" formatted="false">"Deine Notizen."</string>
++    <string name="tide_onboarding_headline_step" formatted="false">"Immer im Gleichklang."</string>
++    <string name="tide_onboarding_hide_token" formatted="false">"Ausblenden"</string>
++    <string name="tide_onboarding_illustration" formatted="false">"Notizen auf deinem Telefon und Commits auf GitHub treffen sich an einem Synchronisierungspunkt"</string>
++    <string name="tide_onboarding_pat_subtitle" formatted="false">"Füge ein GitHub-Token mit Repository-Zugriff ein."</string>
++    <string name="tide_onboarding_picker_clear" formatted="false">"Suche löschen"</string>
++    <string name="tide_onboarding_picker_no_matches" formatted="false">"Keine Treffer"</string>
++    <string name="tide_onboarding_picker_title" formatted="false">"Repository auswählen"</string>
++    <string name="tide_onboarding_publication_step">"Schritt %1$d von 3"</string>
++    <string name="tide_onboarding_rail_device" formatted="false">"dieses Telefon"</string>
++    <string name="tide_onboarding_save_muted" formatted="false">"zum Speichern."</string>
++    <string name="tide_onboarding_save_subtitle" formatted="false">"Wähle beim Klonen einen anderen Ordner oder lege einen Standard in den Einstellungen fest."</string>
++    <string name="tide_onboarding_save_title" formatted="false">"Standardort"</string>
++    <string name="tide_onboarding_show_token" formatted="false">"Anzeigen"</string>
++    <string name="tide_onboarding_welcome_body" formatted="false">"Klone ein Repository, schreibe in Obsidian oder einer anderen App und synchronisiere mit einem Tippen."</string>
+     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
+     <string name="tide_vault_check_for_changes" formatted="false">"Auf Änderungen prüfen"</string>
+     <string name="tide_vault_conflict_detail" formatted="false">"Der Git-Vorgang ist pausiert. Löse die Konflikte in jeder betroffenen Datei, um fortzufahren."</string>
+--- before/app/src/main/res/values-es/ios_catalog_strings.xml
++++ after/app/src/main/res/values-es/ios_catalog_strings.xml
+@@ -716,6 +716,24 @@
+     <string name="tide_merge_side_deleted" formatted="false">"eliminado"</string>
+     <string name="tide_merge_theirs" formatted="false">"Suyo"</string>
+     <string name="tide_merge_theirs_filename" formatted="false">"Suyo"</string>
++    <string name="tide_onboarding_clone_failed" formatted="false">"Error al clonar"</string>
++    <string name="tide_onboarding_create_pat" formatted="false">"Crear un PAT en GitHub ↗"</string>
++    <string name="tide_onboarding_headline_git" formatted="false">"Git de verdad."</string>
++    <string name="tide_onboarding_headline_notes" formatted="false">"Tus notas."</string>
++    <string name="tide_onboarding_headline_step" formatted="false">"Siempre al día."</string>
++    <string name="tide_onboarding_hide_token" formatted="false">"Ocultar"</string>
++    <string name="tide_onboarding_illustration" formatted="false">"Notas en tu teléfono y commits en GitHub que se encuentran en un punto de sincronización"</string>
++    <string name="tide_onboarding_pat_subtitle" formatted="false">"Pega un token de GitHub con acceso a repositorios."</string>
++    <string name="tide_onboarding_picker_clear" formatted="false">"Borrar búsqueda"</string>
++    <string name="tide_onboarding_picker_no_matches" formatted="false">"Sin coincidencias"</string>
++    <string name="tide_onboarding_picker_title" formatted="false">"Elige un repositorio"</string>
++    <string name="tide_onboarding_publication_step">"Paso %1$d de 3"</string>
++    <string name="tide_onboarding_rail_device" formatted="false">"este teléfono"</string>
++    <string name="tide_onboarding_save_muted" formatted="false">"de guardado predeterminada."</string>
++    <string name="tide_onboarding_save_subtitle" formatted="false">"Elige otra carpeta al clonar o establece una predeterminada en Ajustes."</string>
++    <string name="tide_onboarding_save_title" formatted="false">"Ubicación"</string>
++    <string name="tide_onboarding_show_token" formatted="false">"Mostrar"</string>
++    <string name="tide_onboarding_welcome_body" formatted="false">"Clona cualquier repositorio, escribe en Obsidian o en otra app y sincroniza con un toque."</string>
+     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
+     <string name="tide_vault_check_for_changes" formatted="false">"Comprobar cambios"</string>
+     <string name="tide_vault_conflict_detail" formatted="false">"La operación de Git está en pausa. Resuelve cada archivo en conflicto para continuar."</string>
+--- before/app/src/main/res/values-fi/ios_catalog_strings.xml
++++ after/app/src/main/res/values-fi/ios_catalog_strings.xml
+@@ -716,6 +716,24 @@
+     <string name="tide_merge_side_deleted" formatted="false">"poistettu"</string>
+     <string name="tide_merge_theirs" formatted="false">"Heidän"</string>
+     <string name="tide_merge_theirs_filename" formatted="false">"Heidän"</string>
++    <string name="tide_onboarding_clone_failed" formatted="false">"Kloonaus epäonnistui"</string>
++    <string name="tide_onboarding_create_pat" formatted="false">"Luo PAT GitHubissa ↗"</string>
++    <string name="tide_onboarding_headline_git" formatted="false">"Aito Git."</string>
++    <string name="tide_onboarding_headline_notes" formatted="false">"Muistiinpanosi."</string>
++    <string name="tide_onboarding_headline_step" formatted="false">"Aina ajan tasalla."</string>
++    <string name="tide_onboarding_hide_token" formatted="false">"Piilota"</string>
++    <string name="tide_onboarding_illustration" formatted="false">"Puhelimesi muistiinpanot ja GitHubin commitit kohtaavat yhdessä synkronointipisteessä"</string>
++    <string name="tide_onboarding_pat_subtitle" formatted="false">"Liitä GitHub-token, jolla on pääsy tietovarastoihin."</string>
++    <string name="tide_onboarding_picker_clear" formatted="false">"Tyhjennä haku"</string>
++    <string name="tide_onboarding_picker_no_matches" formatted="false">"Ei osumia"</string>
++    <string name="tide_onboarding_picker_title" formatted="false">"Valitse tietovarasto"</string>
++    <string name="tide_onboarding_publication_step">"Vaihe %1$d/3"</string>
++    <string name="tide_onboarding_rail_device" formatted="false">"tämä puhelin"</string>
++    <string name="tide_onboarding_save_muted" formatted="false">"tallennussijainti."</string>
++    <string name="tide_onboarding_save_subtitle" formatted="false">"Valitse kloonatessa toinen kansio tai määritä oletuskansio asetuksissa."</string>
++    <string name="tide_onboarding_save_title" formatted="false">"Oletusarvoinen"</string>
++    <string name="tide_onboarding_show_token" formatted="false">"Näytä"</string>
++    <string name="tide_onboarding_welcome_body" formatted="false">"Kloonaa mikä tahansa tietovarasto, kirjoita Obsidianissa tai muussa sovelluksessa ja synkronoi yhdellä napautuksella."</string>
+     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
+     <string name="tide_vault_check_for_changes" formatted="false">"Tarkista muutokset"</string>
+     <string name="tide_vault_conflict_detail" formatted="false">"Git-toiminto on keskeytynyt. Ratkaise jokaisen ristiriitaisen tiedoston ristiriidat jatkaaksesi."</string>
+--- before/app/src/main/res/values-fr/ios_catalog_strings.xml
++++ after/app/src/main/res/values-fr/ios_catalog_strings.xml
+@@ -716,6 +716,24 @@
+     <string name="tide_merge_side_deleted" formatted="false">"supprimé"</string>
+     <string name="tide_merge_theirs" formatted="false">"Le leur"</string>
+     <string name="tide_merge_theirs_filename" formatted="false">"Le leur"</string>
++    <string name="tide_onboarding_clone_failed" formatted="false">"Échec du clonage"</string>
++    <string name="tide_onboarding_create_pat" formatted="false">"Créer un PAT sur GitHub ↗"</string>
++    <string name="tide_onboarding_headline_git" formatted="false">"Du vrai Git."</string>
++    <string name="tide_onboarding_headline_notes" formatted="false">"Vos notes."</string>
++    <string name="tide_onboarding_headline_step" formatted="false">"Toujours synchronisées."</string>
++    <string name="tide_onboarding_hide_token" formatted="false">"Masquer"</string>
++    <string name="tide_onboarding_illustration" formatted="false">"Les notes sur votre téléphone et les commits sur GitHub se rejoignent en un point de synchronisation"</string>
++    <string name="tide_onboarding_pat_subtitle" formatted="false">"Collez un jeton GitHub avec accès aux dépôts."</string>
++    <string name="tide_onboarding_picker_clear" formatted="false">"Effacer la recherche"</string>
++    <string name="tide_onboarding_picker_no_matches" formatted="false">"Aucun résultat"</string>
++    <string name="tide_onboarding_picker_title" formatted="false">"Choisir un dépôt"</string>
++    <string name="tide_onboarding_publication_step">"Étape %1$d sur 3"</string>
++    <string name="tide_onboarding_rail_device" formatted="false">"ce téléphone"</string>
++    <string name="tide_onboarding_save_muted" formatted="false">"de stockage par défaut."</string>
++    <string name="tide_onboarding_save_subtitle" formatted="false">"Choisissez un autre dossier lors du clonage ou définissez un dossier par défaut dans les Réglages."</string>
++    <string name="tide_onboarding_save_title" formatted="false">"Emplacement"</string>
++    <string name="tide_onboarding_show_token" formatted="false">"Afficher"</string>
++    <string name="tide_onboarding_welcome_body" formatted="false">"Clonez un dépôt, écrivez dans Obsidian ou une autre app et synchronisez en un geste."</string>
+     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
+     <string name="tide_vault_check_for_changes" formatted="false">"Rechercher des modifications"</string>
+     <string name="tide_vault_conflict_detail" formatted="false">"L’opération Git est en pause. Résolvez chaque fichier en conflit pour continuer."</string>
+--- before/app/src/main/res/values-hi/ios_catalog_strings.xml
++++ after/app/src/main/res/values-hi/ios_catalog_strings.xml
+@@ -716,6 +716,24 @@
+     <string name="tide_merge_side_deleted" formatted="false">"हटाया गया"</string>
+     <string name="tide_merge_theirs" formatted="false">"उनका"</string>
+     <string name="tide_merge_theirs_filename" formatted="false">"उनका"</string>
++    <string name="tide_onboarding_clone_failed" formatted="false">"क्लोन विफल"</string>
++    <string name="tide_onboarding_create_pat" formatted="false">"GitHub पर PAT बनाएँ ↗"</string>
++    <string name="tide_onboarding_headline_git" formatted="false">"असली Git।"</string>
++    <string name="tide_onboarding_headline_notes" formatted="false">"आपके नोट्स।"</string>
++    <string name="tide_onboarding_headline_step" formatted="false">"हमेशा साथ।"</string>
++    <string name="tide_onboarding_hide_token" formatted="false">"छिपाएँ"</string>
++    <string name="tide_onboarding_illustration" formatted="false">"आपके फ़ोन के नोट्स और GitHub के कमिट एक सिंक बिंदु पर मिलते हैं"</string>
++    <string name="tide_onboarding_pat_subtitle" formatted="false">"रिपॉज़िटरी एक्सेस वाला GitHub टोकन पेस्ट करें।"</string>
++    <string name="tide_onboarding_picker_clear" formatted="false">"खोज साफ़ करें"</string>
++    <string name="tide_onboarding_picker_no_matches" formatted="false">"कोई मिलान नहीं"</string>
++    <string name="tide_onboarding_picker_title" formatted="false">"रिपॉज़िटरी चुनें"</string>
++    <string name="tide_onboarding_publication_step">"चरण %1$d / 3"</string>
++    <string name="tide_onboarding_rail_device" formatted="false">"यह फ़ोन"</string>
++    <string name="tide_onboarding_save_muted" formatted="false">"स्थान।"</string>
++    <string name="tide_onboarding_save_subtitle" formatted="false">"क्लोन करते समय दूसरा फ़ोल्डर चुनें, या सेटिंग्स में डिफ़ॉल्ट तय करें।"</string>
++    <string name="tide_onboarding_save_title" formatted="false">"डिफ़ॉल्ट सेव"</string>
++    <string name="tide_onboarding_show_token" formatted="false">"दिखाएँ"</string>
++    <string name="tide_onboarding_welcome_body" formatted="false">"कोई भी रिपॉज़िटरी क्लोन करें, Obsidian या किसी अन्य ऐप में लिखें और एक टैप में सिंक करें।"</string>
+     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
+     <string name="tide_vault_check_for_changes" formatted="false">"बदलाव जाँचें"</string>
+     <string name="tide_vault_conflict_detail" formatted="false">"Git कार्रवाई रुकी हुई है। जारी रखने के लिए हर विरोध वाली फ़ाइल को सुलझाएँ।"</string>
+--- before/app/src/main/res/values-hu/ios_catalog_strings.xml
++++ after/app/src/main/res/values-hu/ios_catalog_strings.xml
+@@ -716,6 +716,24 @@
+     <string name="tide_merge_side_deleted" formatted="false">"törölve"</string>
+     <string name="tide_merge_theirs" formatted="false">"Övék"</string>
+     <string name="tide_merge_theirs_filename" formatted="false">"Övék"</string>
++    <string name="tide_onboarding_clone_failed" formatted="false">"A klónozás sikertelen"</string>
++    <string name="tide_onboarding_create_pat" formatted="false">"PAT létrehozása a GitHubon ↗"</string>
++    <string name="tide_onboarding_headline_git" formatted="false">"Valódi Git."</string>
++    <string name="tide_onboarding_headline_notes" formatted="false">"A jegyzeteid."</string>
++    <string name="tide_onboarding_headline_step" formatted="false">"Mindig összhangban."</string>
++    <string name="tide_onboarding_hide_token" formatted="false">"Elrejtés"</string>
++    <string name="tide_onboarding_illustration" formatted="false">"A telefonodon lévő jegyzetek és a GitHub véglegesítései egy szinkronizálási ponton találkoznak"</string>
++    <string name="tide_onboarding_pat_subtitle" formatted="false">"Illessz be egy tároló-hozzáféréssel rendelkező GitHub-tokent."</string>
++    <string name="tide_onboarding_picker_clear" formatted="false">"Keresés törlése"</string>
++    <string name="tide_onboarding_picker_no_matches" formatted="false">"Nincs találat"</string>
++    <string name="tide_onboarding_picker_title" formatted="false">"Válassz tárolót"</string>
++    <string name="tide_onboarding_publication_step">"%1$d. lépés a 3-ból"</string>
++    <string name="tide_onboarding_rail_device" formatted="false">"ez a telefon"</string>
++    <string name="tide_onboarding_save_muted" formatted="false">"mentési hely."</string>
++    <string name="tide_onboarding_save_subtitle" formatted="false">"Klónozáskor válassz másik mappát, vagy állíts be alapértelmezettet a Beállításokban."</string>
++    <string name="tide_onboarding_save_title" formatted="false">"Alapértelmezett"</string>
++    <string name="tide_onboarding_show_token" formatted="false">"Megjelenítés"</string>
++    <string name="tide_onboarding_welcome_body" formatted="false">"Klónozz egy tárolót, írj Obsidianban vagy más alkalmazásban, és szinkronizálj egy koppintással."</string>
+     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
+     <string name="tide_vault_check_for_changes" formatted="false">"Módosítások keresése"</string>
+     <string name="tide_vault_conflict_detail" formatted="false">"A Git-művelet szünetel. A folytatáshoz oldd fel az összes érintett fájl ütközéseit."</string>
+--- before/app/src/main/res/values-in/ios_catalog_strings.xml
++++ after/app/src/main/res/values-in/ios_catalog_strings.xml
+@@ -716,6 +716,24 @@
+     <string name="tide_merge_side_deleted" formatted="false">"dihapus"</string>
+     <string name="tide_merge_theirs" formatted="false">"Milik mereka"</string>
+     <string name="tide_merge_theirs_filename" formatted="false">"Milik mereka"</string>
++    <string name="tide_onboarding_clone_failed" formatted="false">"Klon gagal"</string>
++    <string name="tide_onboarding_create_pat" formatted="false">"Buat PAT di GitHub ↗"</string>
++    <string name="tide_onboarding_headline_git" formatted="false">"Git sungguhan."</string>
++    <string name="tide_onboarding_headline_notes" formatted="false">"Catatan Anda."</string>
++    <string name="tide_onboarding_headline_step" formatted="false">"Selalu selaras."</string>
++    <string name="tide_onboarding_hide_token" formatted="false">"Sembunyikan"</string>
++    <string name="tide_onboarding_illustration" formatted="false">"Catatan di ponsel Anda dan commit di GitHub bertemu di satu titik sinkronisasi"</string>
++    <string name="tide_onboarding_pat_subtitle" formatted="false">"Tempel token GitHub dengan akses repositori."</string>
++    <string name="tide_onboarding_picker_clear" formatted="false">"Hapus pencarian"</string>
++    <string name="tide_onboarding_picker_no_matches" formatted="false">"Tidak ada kecocokan"</string>
++    <string name="tide_onboarding_picker_title" formatted="false">"Pilih repositori"</string>
++    <string name="tide_onboarding_publication_step">"Langkah %1$d dari 3"</string>
++    <string name="tide_onboarding_rail_device" formatted="false">"ponsel ini"</string>
++    <string name="tide_onboarding_save_muted" formatted="false">"default."</string>
++    <string name="tide_onboarding_save_subtitle" formatted="false">"Pilih folder lain saat mengklon, atau tetapkan default di Pengaturan."</string>
++    <string name="tide_onboarding_save_title" formatted="false">"Lokasi penyimpanan"</string>
++    <string name="tide_onboarding_show_token" formatted="false">"Tampilkan"</string>
++    <string name="tide_onboarding_welcome_body" formatted="false">"Klon repositori apa pun, tulis di Obsidian atau aplikasi lain, lalu sinkronkan dengan satu ketukan."</string>
+     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
+     <string name="tide_vault_check_for_changes" formatted="false">"Periksa perubahan"</string>
+     <string name="tide_vault_conflict_detail" formatted="false">"Operasi Git dijeda. Selesaikan setiap berkas yang berkonflik untuk melanjutkan."</string>
+--- before/app/src/main/res/values-it/ios_catalog_strings.xml
++++ after/app/src/main/res/values-it/ios_catalog_strings.xml
+@@ -716,6 +716,24 @@
+     <string name="tide_merge_side_deleted" formatted="false">"eliminato"</string>
+     <string name="tide_merge_theirs" formatted="false">"Il loro"</string>
+     <string name="tide_merge_theirs_filename" formatted="false">"Il loro"</string>
++    <string name="tide_onboarding_clone_failed" formatted="false">"Clonazione non riuscita"</string>
++    <string name="tide_onboarding_create_pat" formatted="false">"Crea un PAT su GitHub ↗"</string>
++    <string name="tide_onboarding_headline_git" formatted="false">"Git, davvero."</string>
++    <string name="tide_onboarding_headline_notes" formatted="false">"I tuoi appunti."</string>
++    <string name="tide_onboarding_headline_step" formatted="false">"Sempre al passo."</string>
++    <string name="tide_onboarding_hide_token" formatted="false">"Nascondi"</string>
++    <string name="tide_onboarding_illustration" formatted="false">"Gli appunti sul telefono e i commit su GitHub si incontrano in un punto di sincronizzazione"</string>
++    <string name="tide_onboarding_pat_subtitle" formatted="false">"Incolla un token GitHub con accesso ai repository."</string>
++    <string name="tide_onboarding_picker_clear" formatted="false">"Cancella ricerca"</string>
++    <string name="tide_onboarding_picker_no_matches" formatted="false">"Nessuna corrispondenza"</string>
++    <string name="tide_onboarding_picker_title" formatted="false">"Scegli un repository"</string>
++    <string name="tide_onboarding_publication_step">"Passaggio %1$d di 3"</string>
++    <string name="tide_onboarding_rail_device" formatted="false">"questo telefono"</string>
++    <string name="tide_onboarding_save_muted" formatted="false">"predefinita."</string>
++    <string name="tide_onboarding_save_subtitle" formatted="false">"Scegli un’altra cartella durante la clonazione o imposta quella predefinita nelle Impostazioni."</string>
++    <string name="tide_onboarding_save_title" formatted="false">"Posizione di salvataggio"</string>
++    <string name="tide_onboarding_show_token" formatted="false">"Mostra"</string>
++    <string name="tide_onboarding_welcome_body" formatted="false">"Clona qualsiasi repository, scrivi in Obsidian o in un’altra app e sincronizza con un tocco."</string>
+     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
+     <string name="tide_vault_check_for_changes" formatted="false">"Controlla modifiche"</string>
+     <string name="tide_vault_conflict_detail" formatted="false">"L’operazione Git è in pausa. Risolvi ogni file in conflitto per continuare."</string>
+--- before/app/src/main/res/values-iw/ios_catalog_strings.xml
++++ after/app/src/main/res/values-iw/ios_catalog_strings.xml
+@@ -716,6 +716,24 @@
+     <string name="tide_merge_side_deleted" formatted="false">"נמחק"</string>
+     <string name="tide_merge_theirs" formatted="false">"שלהם"</string>
+     <string name="tide_merge_theirs_filename" formatted="false">"שלהם"</string>
++    <string name="tide_onboarding_clone_failed" formatted="false">"השכפול נכשל"</string>
++    <string name="tide_onboarding_create_pat" formatted="false">"יצירת PAT ב-GitHub ↗"</string>
++    <string name="tide_onboarding_headline_git" formatted="false">"Git אמיתי."</string>
++    <string name="tide_onboarding_headline_notes" formatted="false">"ההערות שלך."</string>
++    <string name="tide_onboarding_headline_step" formatted="false">"תמיד מסונכרנות."</string>
++    <string name="tide_onboarding_hide_token" formatted="false">"הסתרה"</string>
++    <string name="tide_onboarding_illustration" formatted="false">"הערות בטלפון שלך וקומיטים ב-GitHub נפגשים בנקודת סנכרון אחת"</string>
++    <string name="tide_onboarding_pat_subtitle" formatted="false">"יש להדביק אסימון GitHub עם גישה למאגרים."</string>
++    <string name="tide_onboarding_picker_clear" formatted="false">"ניקוי החיפוש"</string>
++    <string name="tide_onboarding_picker_no_matches" formatted="false">"אין התאמות"</string>
++    <string name="tide_onboarding_picker_title" formatted="false">"בחירת מאגר"</string>
++    <string name="tide_onboarding_publication_step">"שלב %1$d מתוך 3"</string>
++    <string name="tide_onboarding_rail_device" formatted="false">"הטלפון הזה"</string>
++    <string name="tide_onboarding_save_muted" formatted="false">"כברירת מחדל."</string>
++    <string name="tide_onboarding_save_subtitle" formatted="false">"אפשר לבחור תיקייה אחרת בעת השכפול, או לקבוע ברירת מחדל בהגדרות."</string>
++    <string name="tide_onboarding_save_title" formatted="false">"מיקום שמירה"</string>
++    <string name="tide_onboarding_show_token" formatted="false">"הצגה"</string>
++    <string name="tide_onboarding_welcome_body" formatted="false">"אפשר לשכפל כל מאגר, לכתוב ב-Obsidian או בכל אפליקציה אחרת ולסנכרן בנגיעה אחת."</string>
+     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
+     <string name="tide_vault_check_for_changes" formatted="false">"בדיקת שינויים"</string>
+     <string name="tide_vault_conflict_detail" formatted="false">"פעולת Git מושהית. פתור את ההתנגשויות בכל קובץ כדי להמשיך."</string>
+--- before/app/src/main/res/values-ja/ios_catalog_strings.xml
++++ after/app/src/main/res/values-ja/ios_catalog_strings.xml
+@@ -716,6 +716,24 @@
+     <string name="tide_merge_side_deleted" formatted="false">"削除"</string>
+     <string name="tide_merge_theirs" formatted="false">"相手側"</string>
+     <string name="tide_merge_theirs_filename" formatted="false">"相手側"</string>
++    <string name="tide_onboarding_clone_failed" formatted="false">"クローンに失敗しました"</string>
++    <string name="tide_onboarding_create_pat" formatted="false">"GitHub で PAT を作成 ↗"</string>
++    <string name="tide_onboarding_headline_git" formatted="false">"本物の Git。"</string>
++    <string name="tide_onboarding_headline_notes" formatted="false">"あなたのノート。"</string>
++    <string name="tide_onboarding_headline_step" formatted="false">"いつも同期。"</string>
++    <string name="tide_onboarding_hide_token" formatted="false">"非表示"</string>
++    <string name="tide_onboarding_illustration" formatted="false">"スマートフォンのノートと GitHub のコミットが1つの同期ポイントで合流する図"</string>
++    <string name="tide_onboarding_pat_subtitle" formatted="false">"リポジトリへのアクセス権がある GitHub トークンを貼り付けてください。"</string>
++    <string name="tide_onboarding_picker_clear" formatted="false">"検索をクリア"</string>
++    <string name="tide_onboarding_picker_no_matches" formatted="false">"一致する結果がありません"</string>
++    <string name="tide_onboarding_picker_title" formatted="false">"リポジトリを選択"</string>
++    <string name="tide_onboarding_publication_step">"ステップ %1$d / 3"</string>
++    <string name="tide_onboarding_rail_device" formatted="false">"このスマートフォン"</string>
++    <string name="tide_onboarding_save_muted" formatted="false">"場所。"</string>
++    <string name="tide_onboarding_save_subtitle" formatted="false">"クローン時に別のフォルダーを選ぶか、設定で既定のフォルダーを指定できます。"</string>
++    <string name="tide_onboarding_save_title" formatted="false">"既定の保存"</string>
++    <string name="tide_onboarding_show_token" formatted="false">"表示"</string>
++    <string name="tide_onboarding_welcome_body" formatted="false">"リポジトリをクローンし、Obsidian などのアプリで書いて、ワンタップで同期できます。"</string>
+     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
+     <string name="tide_vault_check_for_changes" formatted="false">"変更を確認"</string>
+     <string name="tide_vault_conflict_detail" formatted="false">"Gitの操作は一時停止中です。競合のある各ファイルを解決して続行してください。"</string>
+--- before/app/src/main/res/values-ko/ios_catalog_strings.xml
++++ after/app/src/main/res/values-ko/ios_catalog_strings.xml
+@@ -716,6 +716,24 @@
+     <string name="tide_merge_side_deleted" formatted="false">"삭제됨"</string>
+     <string name="tide_merge_theirs" formatted="false">"원격 버전"</string>
+     <string name="tide_merge_theirs_filename" formatted="false">"원격 버전"</string>
++    <string name="tide_onboarding_clone_failed" formatted="false">"클론 실패"</string>
++    <string name="tide_onboarding_create_pat" formatted="false">"GitHub에서 PAT 만들기 ↗"</string>
++    <string name="tide_onboarding_headline_git" formatted="false">"진짜 Git."</string>
++    <string name="tide_onboarding_headline_notes" formatted="false">"당신의 노트."</string>
++    <string name="tide_onboarding_headline_step" formatted="false">"언제나 함께."</string>
++    <string name="tide_onboarding_hide_token" formatted="false">"숨기기"</string>
++    <string name="tide_onboarding_illustration" formatted="false">"휴대전화의 노트와 GitHub의 커밋이 하나의 동기화 지점에서 만나는 그림"</string>
++    <string name="tide_onboarding_pat_subtitle" formatted="false">"저장소 접근 권한이 있는 GitHub 토큰을 붙여넣으세요."</string>
++    <string name="tide_onboarding_picker_clear" formatted="false">"검색 지우기"</string>
++    <string name="tide_onboarding_picker_no_matches" formatted="false">"일치하는 항목 없음"</string>
++    <string name="tide_onboarding_picker_title" formatted="false">"저장소 선택"</string>
++    <string name="tide_onboarding_publication_step">"%1$d/3단계"</string>
++    <string name="tide_onboarding_rail_device" formatted="false">"이 휴대전화"</string>
++    <string name="tide_onboarding_save_muted" formatted="false">"위치."</string>
++    <string name="tide_onboarding_save_subtitle" formatted="false">"클론할 때 다른 폴더를 선택하거나 설정에서 기본 폴더를 지정하세요."</string>
++    <string name="tide_onboarding_save_title" formatted="false">"기본 저장"</string>
++    <string name="tide_onboarding_show_token" formatted="false">"표시"</string>
++    <string name="tide_onboarding_welcome_body" formatted="false">"어떤 저장소든 클론하고 Obsidian이나 다른 앱에서 작성한 뒤 한 번의 탭으로 동기화하세요."</string>
+     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
+     <string name="tide_vault_check_for_changes" formatted="false">"변경 사항 확인"</string>
+     <string name="tide_vault_conflict_detail" formatted="false">"Git 작업이 일시 중지되었습니다. 계속하려면 충돌한 각 파일을 해결하세요."</string>
+--- before/app/src/main/res/values-nb/ios_catalog_strings.xml
++++ after/app/src/main/res/values-nb/ios_catalog_strings.xml
+@@ -716,6 +716,24 @@
+     <string name="tide_merge_side_deleted" formatted="false">"slettet"</string>
+     <string name="tide_merge_theirs" formatted="false">"Deres"</string>
+     <string name="tide_merge_theirs_filename" formatted="false">"Deres"</string>
++    <string name="tide_onboarding_clone_failed" formatted="false">"Kloning mislyktes"</string>
++    <string name="tide_onboarding_create_pat" formatted="false">"Opprett et PAT på GitHub ↗"</string>
++    <string name="tide_onboarding_headline_git" formatted="false">"Ekte Git."</string>
++    <string name="tide_onboarding_headline_notes" formatted="false">"Notatene dine."</string>
++    <string name="tide_onboarding_headline_step" formatted="false">"Alltid i takt."</string>
++    <string name="tide_onboarding_hide_token" formatted="false">"Skjul"</string>
++    <string name="tide_onboarding_illustration" formatted="false">"Notater på telefonen din og commits på GitHub møtes i ett synkroniseringspunkt"</string>
++    <string name="tide_onboarding_pat_subtitle" formatted="false">"Lim inn et GitHub-token med tilgang til repositories."</string>
++    <string name="tide_onboarding_picker_clear" formatted="false">"Tøm søk"</string>
++    <string name="tide_onboarding_picker_no_matches" formatted="false">"Ingen treff"</string>
++    <string name="tide_onboarding_picker_title" formatted="false">"Velg et repository"</string>
++    <string name="tide_onboarding_publication_step">"Trinn %1$d av 3"</string>
++    <string name="tide_onboarding_rail_device" formatted="false">"denne telefonen"</string>
++    <string name="tide_onboarding_save_muted" formatted="false">"lagringssted."</string>
++    <string name="tide_onboarding_save_subtitle" formatted="false">"Velg en annen mappe ved kloning, eller angi en standard i Innstillinger."</string>
++    <string name="tide_onboarding_save_title" formatted="false">"Standard"</string>
++    <string name="tide_onboarding_show_token" formatted="false">"Vis"</string>
++    <string name="tide_onboarding_welcome_body" formatted="false">"Klon et repository, skriv i Obsidian eller en annen app, og synkroniser med ett trykk."</string>
+     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
+     <string name="tide_vault_check_for_changes" formatted="false">"Se etter endringer"</string>
+     <string name="tide_vault_conflict_detail" formatted="false">"Git-handlingen er satt på pause. Løs alle filer med konflikter for å fortsette."</string>
+--- before/app/src/main/res/values-nl/ios_catalog_strings.xml
++++ after/app/src/main/res/values-nl/ios_catalog_strings.xml
+@@ -716,6 +716,24 @@
+     <string name="tide_merge_side_deleted" formatted="false">"verwijderd"</string>
+     <string name="tide_merge_theirs" formatted="false">"Hun"</string>
+     <string name="tide_merge_theirs_filename" formatted="false">"Hun"</string>
++    <string name="tide_onboarding_clone_failed" formatted="false">"Klonen mislukt"</string>
++    <string name="tide_onboarding_create_pat" formatted="false">"Maak een PAT op GitHub ↗"</string>
++    <string name="tide_onboarding_headline_git" formatted="false">"Echte Git."</string>
++    <string name="tide_onboarding_headline_notes" formatted="false">"Jouw notities."</string>
++    <string name="tide_onboarding_headline_step" formatted="false">"Altijd gelijk."</string>
++    <string name="tide_onboarding_hide_token" formatted="false">"Verbergen"</string>
++    <string name="tide_onboarding_illustration" formatted="false">"Notities op je telefoon en commits op GitHub komen samen op één synchronisatiepunt"</string>
++    <string name="tide_onboarding_pat_subtitle" formatted="false">"Plak een GitHub-token met toegang tot repositories."</string>
++    <string name="tide_onboarding_picker_clear" formatted="false">"Zoekopdracht wissen"</string>
++    <string name="tide_onboarding_picker_no_matches" formatted="false">"Geen resultaten"</string>
++    <string name="tide_onboarding_picker_title" formatted="false">"Kies een repository"</string>
++    <string name="tide_onboarding_publication_step">"Stap %1$d van 3"</string>
++    <string name="tide_onboarding_rail_device" formatted="false">"deze telefoon"</string>
++    <string name="tide_onboarding_save_muted" formatted="false">"opslaglocatie."</string>
++    <string name="tide_onboarding_save_subtitle" formatted="false">"Kies bij het klonen een andere map of stel een standaardmap in via Instellingen."</string>
++    <string name="tide_onboarding_save_title" formatted="false">"Standaard"</string>
++    <string name="tide_onboarding_show_token" formatted="false">"Tonen"</string>
++    <string name="tide_onboarding_welcome_body" formatted="false">"Kloon een repository, schrijf in Obsidian of een andere app en synchroniseer met één tik."</string>
+     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
+     <string name="tide_vault_check_for_changes" formatted="false">"Controleren op wijzigingen"</string>
+     <string name="tide_vault_conflict_detail" formatted="false">"De Git-bewerking is gepauzeerd. Los elk conflicterend bestand op om verder te gaan."</string>
+--- before/app/src/main/res/values-pl/ios_catalog_strings.xml
++++ after/app/src/main/res/values-pl/ios_catalog_strings.xml
+@@ -716,6 +716,24 @@
+     <string name="tide_merge_side_deleted" formatted="false">"usunięto"</string>
+     <string name="tide_merge_theirs" formatted="false">"Ich"</string>
+     <string name="tide_merge_theirs_filename" formatted="false">"Ich"</string>
++    <string name="tide_onboarding_clone_failed" formatted="false">"Klonowanie nie powiodło się"</string>
++    <string name="tide_onboarding_create_pat" formatted="false">"Utwórz PAT w GitHub ↗"</string>
++    <string name="tide_onboarding_headline_git" formatted="false">"Prawdziwy Git."</string>
++    <string name="tide_onboarding_headline_notes" formatted="false">"Twoje notatki."</string>
++    <string name="tide_onboarding_headline_step" formatted="false">"Zawsze w zgodzie."</string>
++    <string name="tide_onboarding_hide_token" formatted="false">"Ukryj"</string>
++    <string name="tide_onboarding_illustration" formatted="false">"Notatki w telefonie i zatwierdzenia w GitHub spotykają się w jednym punkcie synchronizacji"</string>
++    <string name="tide_onboarding_pat_subtitle" formatted="false">"Wklej token GitHub z dostępem do repozytoriów."</string>
++    <string name="tide_onboarding_picker_clear" formatted="false">"Wyczyść wyszukiwanie"</string>
++    <string name="tide_onboarding_picker_no_matches" formatted="false">"Brak wyników"</string>
++    <string name="tide_onboarding_picker_title" formatted="false">"Wybierz repozytorium"</string>
++    <string name="tide_onboarding_publication_step">"Krok %1$d z 3"</string>
++    <string name="tide_onboarding_rail_device" formatted="false">"ten telefon"</string>
++    <string name="tide_onboarding_save_muted" formatted="false">"zapisu."</string>
++    <string name="tide_onboarding_save_subtitle" formatted="false">"Wybierz inny folder podczas klonowania lub ustaw domyślny w Ustawieniach."</string>
++    <string name="tide_onboarding_save_title" formatted="false">"Domyślna lokalizacja"</string>
++    <string name="tide_onboarding_show_token" formatted="false">"Pokaż"</string>
++    <string name="tide_onboarding_welcome_body" formatted="false">"Sklonuj dowolne repozytorium, pisz w Obsidianie lub innej aplikacji i synchronizuj jednym stuknięciem."</string>
+     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
+     <string name="tide_vault_check_for_changes" formatted="false">"Sprawdź zmiany"</string>
+     <string name="tide_vault_conflict_detail" formatted="false">"Operacja Git jest wstrzymana. Rozwiąż konflikty w każdym pliku, aby kontynuować."</string>
+--- before/app/src/main/res/values-pt-rBR/ios_catalog_strings.xml
++++ after/app/src/main/res/values-pt-rBR/ios_catalog_strings.xml
+@@ -716,6 +716,24 @@
+     <string name="tide_merge_side_deleted" formatted="false">"excluído"</string>
+     <string name="tide_merge_theirs" formatted="false">"Deles"</string>
+     <string name="tide_merge_theirs_filename" formatted="false">"Deles"</string>
++    <string name="tide_onboarding_clone_failed" formatted="false">"Falha ao clonar"</string>
++    <string name="tide_onboarding_create_pat" formatted="false">"Criar um PAT no GitHub ↗"</string>
++    <string name="tide_onboarding_headline_git" formatted="false">"Git de verdade."</string>
++    <string name="tide_onboarding_headline_notes" formatted="false">"Suas notas."</string>
++    <string name="tide_onboarding_headline_step" formatted="false">"Sempre em sintonia."</string>
++    <string name="tide_onboarding_hide_token" formatted="false">"Ocultar"</string>
++    <string name="tide_onboarding_illustration" formatted="false">"Notas no seu telefone e commits no GitHub se encontram em um ponto de sincronização"</string>
++    <string name="tide_onboarding_pat_subtitle" formatted="false">"Cole um token do GitHub com acesso a repositórios."</string>
++    <string name="tide_onboarding_picker_clear" formatted="false">"Limpar busca"</string>
++    <string name="tide_onboarding_picker_no_matches" formatted="false">"Nenhum resultado"</string>
++    <string name="tide_onboarding_picker_title" formatted="false">"Escolha um repositório"</string>
++    <string name="tide_onboarding_publication_step">"Etapa %1$d de 3"</string>
++    <string name="tide_onboarding_rail_device" formatted="false">"este telefone"</string>
++    <string name="tide_onboarding_save_muted" formatted="false">"padrão."</string>
++    <string name="tide_onboarding_save_subtitle" formatted="false">"Escolha outra pasta ao clonar ou defina uma pasta padrão nos Ajustes."</string>
++    <string name="tide_onboarding_save_title" formatted="false">"Local de salvamento"</string>
++    <string name="tide_onboarding_show_token" formatted="false">"Mostrar"</string>
++    <string name="tide_onboarding_welcome_body" formatted="false">"Clone qualquer repositório, escreva no Obsidian ou em outro app e sincronize com um toque."</string>
+     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
+     <string name="tide_vault_check_for_changes" formatted="false">"Verificar alterações"</string>
+     <string name="tide_vault_conflict_detail" formatted="false">"A operação do Git está pausada. Resolva cada arquivo em conflito para continuar."</string>
+--- before/app/src/main/res/values-ru/ios_catalog_strings.xml
++++ after/app/src/main/res/values-ru/ios_catalog_strings.xml
+@@ -716,6 +716,24 @@
+     <string name="tide_merge_side_deleted" formatted="false">"удалено"</string>
+     <string name="tide_merge_theirs" formatted="false">"Их"</string>
+     <string name="tide_merge_theirs_filename" formatted="false">"Их"</string>
++    <string name="tide_onboarding_clone_failed" formatted="false">"Не удалось клонировать"</string>
++    <string name="tide_onboarding_create_pat" formatted="false">"Создать PAT на GitHub ↗"</string>
++    <string name="tide_onboarding_headline_git" formatted="false">"Настоящий Git."</string>
++    <string name="tide_onboarding_headline_notes" formatted="false">"Ваши заметки."</string>
++    <string name="tide_onboarding_headline_step" formatted="false">"Всегда вместе."</string>
++    <string name="tide_onboarding_hide_token" formatted="false">"Скрыть"</string>
++    <string name="tide_onboarding_illustration" formatted="false">"Заметки на телефоне и коммиты на GitHub встречаются в одной точке синхронизации"</string>
++    <string name="tide_onboarding_pat_subtitle" formatted="false">"Вставьте токен GitHub с доступом к репозиториям."</string>
++    <string name="tide_onboarding_picker_clear" formatted="false">"Очистить поиск"</string>
++    <string name="tide_onboarding_picker_no_matches" formatted="false">"Нет совпадений"</string>
++    <string name="tide_onboarding_picker_title" formatted="false">"Выберите репозиторий"</string>
++    <string name="tide_onboarding_publication_step">"Шаг %1$d из 3"</string>
++    <string name="tide_onboarding_rail_device" formatted="false">"этот телефон"</string>
++    <string name="tide_onboarding_save_muted" formatted="false">"по умолчанию."</string>
++    <string name="tide_onboarding_save_subtitle" formatted="false">"Выберите другую папку при клонировании или задайте папку по умолчанию в настройках."</string>
++    <string name="tide_onboarding_save_title" formatted="false">"Место сохранения"</string>
++    <string name="tide_onboarding_show_token" formatted="false">"Показать"</string>
++    <string name="tide_onboarding_welcome_body" formatted="false">"Клонируйте любой репозиторий, пишите в Obsidian или другом приложении и синхронизируйте одним касанием."</string>
+     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
+     <string name="tide_vault_check_for_changes" formatted="false">"Проверить изменения"</string>
+     <string name="tide_vault_conflict_detail" formatted="false">"Операция Git приостановлена. Разрешите конфликты в каждом файле, чтобы продолжить."</string>
+--- before/app/src/main/res/values-sv/ios_catalog_strings.xml
++++ after/app/src/main/res/values-sv/ios_catalog_strings.xml
+@@ -716,6 +716,24 @@
+     <string name="tide_merge_side_deleted" formatted="false">"borttagen"</string>
+     <string name="tide_merge_theirs" formatted="false">"Deras"</string>
+     <string name="tide_merge_theirs_filename" formatted="false">"Deras"</string>
++    <string name="tide_onboarding_clone_failed" formatted="false">"Kloning misslyckades"</string>
++    <string name="tide_onboarding_create_pat" formatted="false">"Skapa en PAT på GitHub ↗"</string>
++    <string name="tide_onboarding_headline_git" formatted="false">"Riktig Git."</string>
++    <string name="tide_onboarding_headline_notes" formatted="false">"Dina anteckningar."</string>
++    <string name="tide_onboarding_headline_step" formatted="false">"Alltid i takt."</string>
++    <string name="tide_onboarding_hide_token" formatted="false">"Dölj"</string>
++    <string name="tide_onboarding_illustration" formatted="false">"Anteckningar på telefonen och commits på GitHub möts i en synkroniseringspunkt"</string>
++    <string name="tide_onboarding_pat_subtitle" formatted="false">"Klistra in en GitHub-token med åtkomst till arkiv."</string>
++    <string name="tide_onboarding_picker_clear" formatted="false">"Rensa sökning"</string>
++    <string name="tide_onboarding_picker_no_matches" formatted="false">"Inga träffar"</string>
++    <string name="tide_onboarding_picker_title" formatted="false">"Välj ett arkiv"</string>
++    <string name="tide_onboarding_publication_step">"Steg %1$d av 3"</string>
++    <string name="tide_onboarding_rail_device" formatted="false">"den här telefonen"</string>
++    <string name="tide_onboarding_save_muted" formatted="false">"för lagring."</string>
++    <string name="tide_onboarding_save_subtitle" formatted="false">"Välj en annan mapp när du klonar, eller ange en standardmapp i Inställningar."</string>
++    <string name="tide_onboarding_save_title" formatted="false">"Standardplats"</string>
++    <string name="tide_onboarding_show_token" formatted="false">"Visa"</string>
++    <string name="tide_onboarding_welcome_body" formatted="false">"Klona ett arkiv, skriv i Obsidian eller en annan app och synkronisera med ett tryck."</string>
+     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
+     <string name="tide_vault_check_for_changes" formatted="false">"Sök efter ändringar"</string>
+     <string name="tide_vault_conflict_detail" formatted="false">"Git-åtgärden är pausad. Lös varje filkonflikt för att fortsätta."</string>
+--- before/app/src/main/res/values-th/ios_catalog_strings.xml
++++ after/app/src/main/res/values-th/ios_catalog_strings.xml
+@@ -716,6 +716,24 @@
+     <string name="tide_merge_side_deleted" formatted="false">"ลบแล้ว"</string>
+     <string name="tide_merge_theirs" formatted="false">"ของเขา"</string>
+     <string name="tide_merge_theirs_filename" formatted="false">"ของเขา"</string>
++    <string name="tide_onboarding_clone_failed" formatted="false">"โคลนไม่สำเร็จ"</string>
++    <string name="tide_onboarding_create_pat" formatted="false">"สร้าง PAT บน GitHub ↗"</string>
++    <string name="tide_onboarding_headline_git" formatted="false">"Git ของจริง"</string>
++    <string name="tide_onboarding_headline_notes" formatted="false">"โน้ตของคุณ"</string>
++    <string name="tide_onboarding_headline_step" formatted="false">"ตรงกันเสมอ"</string>
++    <string name="tide_onboarding_hide_token" formatted="false">"ซ่อน"</string>
++    <string name="tide_onboarding_illustration" formatted="false">"โน้ตบนโทรศัพท์และคอมมิตบน GitHub มาพบกันที่จุดซิงค์เดียว"</string>
++    <string name="tide_onboarding_pat_subtitle" formatted="false">"วางโทเค็น GitHub ที่มีสิทธิ์เข้าถึงที่เก็บ"</string>
++    <string name="tide_onboarding_picker_clear" formatted="false">"ล้างการค้นหา"</string>
++    <string name="tide_onboarding_picker_no_matches" formatted="false">"ไม่พบรายการที่ตรงกัน"</string>
++    <string name="tide_onboarding_picker_title" formatted="false">"เลือกที่เก็บ"</string>
++    <string name="tide_onboarding_publication_step">"ขั้นตอนที่ %1$d จาก 3"</string>
++    <string name="tide_onboarding_rail_device" formatted="false">"โทรศัพท์นี้"</string>
++    <string name="tide_onboarding_save_muted" formatted="false">"เริ่มต้น"</string>
++    <string name="tide_onboarding_save_subtitle" formatted="false">"เลือกโฟลเดอร์อื่นขณะโคลน หรือตั้งค่าเริ่มต้นในการตั้งค่า"</string>
++    <string name="tide_onboarding_save_title" formatted="false">"ตำแหน่งบันทึก"</string>
++    <string name="tide_onboarding_show_token" formatted="false">"แสดง"</string>
++    <string name="tide_onboarding_welcome_body" formatted="false">"โคลนที่เก็บใดก็ได้ เขียนใน Obsidian หรือแอปอื่น แล้วซิงค์ด้วยการแตะครั้งเดียว"</string>
+     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
+     <string name="tide_vault_check_for_changes" formatted="false">"ตรวจหาการเปลี่ยนแปลง"</string>
+     <string name="tide_vault_conflict_detail" formatted="false">"การดำเนินการ Git หยุดชั่วคราว แก้ไขไฟล์ที่ขัดแย้งแต่ละไฟล์เพื่อดำเนินการต่อ"</string>
+--- before/app/src/main/res/values-tr/ios_catalog_strings.xml
++++ after/app/src/main/res/values-tr/ios_catalog_strings.xml
+@@ -716,6 +716,24 @@
+     <string name="tide_merge_side_deleted" formatted="false">"silindi"</string>
+     <string name="tide_merge_theirs" formatted="false">"Onlarınki"</string>
+     <string name="tide_merge_theirs_filename" formatted="false">"Onlarınki"</string>
++    <string name="tide_onboarding_clone_failed" formatted="false">"Klonlama başarısız"</string>
++    <string name="tide_onboarding_create_pat" formatted="false">"GitHub’da PAT oluştur ↗"</string>
++    <string name="tide_onboarding_headline_git" formatted="false">"Gerçek Git."</string>
++    <string name="tide_onboarding_headline_notes" formatted="false">"Notlarınız."</string>
++    <string name="tide_onboarding_headline_step" formatted="false">"Her zaman uyumlu."</string>
++    <string name="tide_onboarding_hide_token" formatted="false">"Gizle"</string>
++    <string name="tide_onboarding_illustration" formatted="false">"Telefonunuzdaki notlar ve GitHub’daki commit’ler tek bir eşitleme noktasında buluşur"</string>
++    <string name="tide_onboarding_pat_subtitle" formatted="false">"Depo erişimi olan bir GitHub token’ı yapıştırın."</string>
++    <string name="tide_onboarding_picker_clear" formatted="false">"Aramayı temizle"</string>
++    <string name="tide_onboarding_picker_no_matches" formatted="false">"Eşleşme yok"</string>
++    <string name="tide_onboarding_picker_title" formatted="false">"Depo seçin"</string>
++    <string name="tide_onboarding_publication_step">"Adım %1$d / 3"</string>
++    <string name="tide_onboarding_rail_device" formatted="false">"bu telefon"</string>
++    <string name="tide_onboarding_save_muted" formatted="false">"konumu."</string>
++    <string name="tide_onboarding_save_subtitle" formatted="false">"Klonlarken farklı bir klasör seçin veya Ayarlar’da varsayılanı belirleyin."</string>
++    <string name="tide_onboarding_save_title" formatted="false">"Varsayılan kayıt"</string>
++    <string name="tide_onboarding_show_token" formatted="false">"Göster"</string>
++    <string name="tide_onboarding_welcome_body" formatted="false">"İstediğiniz depoyu klonlayın, Obsidian veya başka bir uygulamada yazın ve tek dokunuşla eşitleyin."</string>
+     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
+     <string name="tide_vault_check_for_changes" formatted="false">"Değişiklikleri denetle"</string>
+     <string name="tide_vault_conflict_detail" formatted="false">"Git işlemi duraklatıldı. Devam etmek için çakışan her dosyayı çözün."</string>
+--- before/app/src/main/res/values-uk/ios_catalog_strings.xml
++++ after/app/src/main/res/values-uk/ios_catalog_strings.xml
+@@ -716,6 +716,24 @@
+     <string name="tide_merge_side_deleted" formatted="false">"видалено"</string>
+     <string name="tide_merge_theirs" formatted="false">"Їхнє"</string>
+     <string name="tide_merge_theirs_filename" formatted="false">"Їхнє"</string>
++    <string name="tide_onboarding_clone_failed" formatted="false">"Не вдалося клонувати"</string>
++    <string name="tide_onboarding_create_pat" formatted="false">"Створити PAT на GitHub ↗"</string>
++    <string name="tide_onboarding_headline_git" formatted="false">"Справжній Git."</string>
++    <string name="tide_onboarding_headline_notes" formatted="false">"Ваші нотатки."</string>
++    <string name="tide_onboarding_headline_step" formatted="false">"Завжди разом."</string>
++    <string name="tide_onboarding_hide_token" formatted="false">"Приховати"</string>
++    <string name="tide_onboarding_illustration" formatted="false">"Нотатки на телефоні й коміти на GitHub зустрічаються в одній точці синхронізації"</string>
++    <string name="tide_onboarding_pat_subtitle" formatted="false">"Вставте токен GitHub із доступом до репозиторіїв."</string>
++    <string name="tide_onboarding_picker_clear" formatted="false">"Очистити пошук"</string>
++    <string name="tide_onboarding_picker_no_matches" formatted="false">"Немає збігів"</string>
++    <string name="tide_onboarding_picker_title" formatted="false">"Виберіть репозиторій"</string>
++    <string name="tide_onboarding_publication_step">"Крок %1$d із 3"</string>
++    <string name="tide_onboarding_rail_device" formatted="false">"цей телефон"</string>
++    <string name="tide_onboarding_save_muted" formatted="false">"за замовчуванням."</string>
++    <string name="tide_onboarding_save_subtitle" formatted="false">"Виберіть іншу папку під час клонування або задайте типову в налаштуваннях."</string>
++    <string name="tide_onboarding_save_title" formatted="false">"Місце збереження"</string>
++    <string name="tide_onboarding_show_token" formatted="false">"Показати"</string>
++    <string name="tide_onboarding_welcome_body" formatted="false">"Клонуйте будь-який репозиторій, пишіть в Obsidian чи іншому застосунку та синхронізуйте одним дотиком."</string>
+     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
+     <string name="tide_vault_check_for_changes" formatted="false">"Перевірити зміни"</string>
+     <string name="tide_vault_conflict_detail" formatted="false">"Операцію Git призупинено. Вирішіть конфлікти в кожному файлі, щоб продовжити."</string>
+--- before/app/src/main/res/values-vi/ios_catalog_strings.xml
++++ after/app/src/main/res/values-vi/ios_catalog_strings.xml
+@@ -716,6 +716,24 @@
+     <string name="tide_merge_side_deleted" formatted="false">"đã xóa"</string>
+     <string name="tide_merge_theirs" formatted="false">"Của họ"</string>
+     <string name="tide_merge_theirs_filename" formatted="false">"Của họ"</string>
++    <string name="tide_onboarding_clone_failed" formatted="false">"Clone thất bại"</string>
++    <string name="tide_onboarding_create_pat" formatted="false">"Tạo PAT trên GitHub ↗"</string>
++    <string name="tide_onboarding_headline_git" formatted="false">"Git thực thụ."</string>
++    <string name="tide_onboarding_headline_notes" formatted="false">"Ghi chú của bạn."</string>
++    <string name="tide_onboarding_headline_step" formatted="false">"Luôn đồng bộ."</string>
++    <string name="tide_onboarding_hide_token" formatted="false">"Ẩn"</string>
++    <string name="tide_onboarding_illustration" formatted="false">"Ghi chú trên điện thoại và commit trên GitHub gặp nhau tại một điểm đồng bộ"</string>
++    <string name="tide_onboarding_pat_subtitle" formatted="false">"Dán token GitHub có quyền truy cập kho lưu trữ."</string>
++    <string name="tide_onboarding_picker_clear" formatted="false">"Xóa tìm kiếm"</string>
++    <string name="tide_onboarding_picker_no_matches" formatted="false">"Không có kết quả phù hợp"</string>
++    <string name="tide_onboarding_picker_title" formatted="false">"Chọn kho lưu trữ"</string>
++    <string name="tide_onboarding_publication_step">"Bước %1$d trên 3"</string>
++    <string name="tide_onboarding_rail_device" formatted="false">"điện thoại này"</string>
++    <string name="tide_onboarding_save_muted" formatted="false">"mặc định."</string>
++    <string name="tide_onboarding_save_subtitle" formatted="false">"Chọn thư mục khác khi clone hoặc đặt thư mục mặc định trong Cài đặt."</string>
++    <string name="tide_onboarding_save_title" formatted="false">"Vị trí lưu"</string>
++    <string name="tide_onboarding_show_token" formatted="false">"Hiện"</string>
++    <string name="tide_onboarding_welcome_body" formatted="false">"Clone bất kỳ kho nào, viết trong Obsidian hoặc ứng dụng khác và đồng bộ bằng một lần chạm."</string>
+     <string name="tide_settings_section_sync" formatted="false">"SYNC"</string>
+     <string name="tide_vault_check_for_changes" formatted="false">"Kiểm tra thay đổi"</string>
+     <string name="tide_vault_conflict_detail" formatted="false">"Thao tác Git đã tạm dừng. Giải quyết từng tệp xung đột để tiếp tục."</string>
+--- before/tools/localization/README.md
++++ after/tools/localization/README.md
+@@ -6,8 +6,8 @@
+ 
+ Coverage is intentionally explicit: the complete current base inventory contains
+ 1,288 translatable string keys and nineteen plural resources. Each non-English
+-locale has 1,124 translated string keys and all nineteen translated plural resources;
+-164 strings remain untranslated. All three tools share discovery
++locale has 1,142 translated string keys and all nineteen translated plural resources;
++146 strings remain untranslated. All three tools share discovery
+ of every XML filename under base `values`, including `strings_*.xml` and arbitrary
+ names. Style entries do not count as strings. Coverage still does not include all
+ raw conditional/model/default copy, and native/linguistic acceptance remains open.
+--- before/tools/localization/android_workflow_overrides.json
++++ after/tools/localization/android_workflow_overrides.json
+@@ -28108,6 +28108,548 @@
+         "zh-Hant": "盡可能快轉"
+       },
+       "notes": "BranchDialog maps these to FF_ONLY, NO_FF and FF respectively. Translate the selected merge policy; do not imply publication or promise a new commit when already up to date."
++    },
++    "tide_onboarding_headline_notes": {
++      "source": "Your notes.",
++      "localizations": {
++        "ar": "ملاحظاتك.",
++        "da": "Dine noter.",
++        "de": "Deine Notizen.",
++        "es": "Tus notas.",
++        "fi": "Muistiinpanosi.",
++        "fr": "Vos notes.",
++        "he": "ההערות שלך.",
++        "hi": "आपके नोट्स।",
++        "hu": "A jegyzeteid.",
++        "id": "Catatan Anda.",
++        "it": "I tuoi appunti.",
++        "ja": "あなたのノート。",
++        "ko": "당신의 노트.",
++        "nb": "Notatene dine.",
++        "nl": "Jouw notities.",
++        "pl": "Twoje notatki.",
++        "pt-BR": "Suas notas.",
++        "ru": "Ваши заметки.",
++        "sv": "Dina anteckningar.",
++        "th": "โน้ตของคุณ",
++        "tr": "Notlarınız.",
++        "uk": "Ваші нотатки.",
++        "vi": "Ghi chú của bạn.",
++        "zh-Hans": "你的笔记。",
++        "zh-Hant": "你的筆記。"
++      }
++    },
++    "tide_onboarding_headline_git": {
++      "source": "Real git.",
++      "localizations": {
++        "ar": "Git حقيقي.",
++        "da": "Ægte Git.",
++        "de": "Echtes Git.",
++        "es": "Git de verdad.",
++        "fi": "Aito Git.",
++        "fr": "Du vrai Git.",
++        "he": "Git אמיתי.",
++        "hi": "असली Git।",
++        "hu": "Valódi Git.",
++        "id": "Git sungguhan.",
++        "it": "Git, davvero.",
++        "ja": "本物の Git。",
++        "ko": "진짜 Git.",
++        "nb": "Ekte Git.",
++        "nl": "Echte Git.",
++        "pl": "Prawdziwy Git.",
++        "pt-BR": "Git de verdade.",
++        "ru": "Настоящий Git.",
++        "sv": "Riktig Git.",
++        "th": "Git ของจริง",
++        "tr": "Gerçek Git.",
++        "uk": "Справжній Git.",
++        "vi": "Git thực thụ.",
++        "zh-Hans": "真正的 Git。",
++        "zh-Hant": "真正的 Git。"
++      }
++    },
++    "tide_onboarding_headline_step": {
++      "source": "Always in step.",
++      "localizations": {
++        "ar": "متزامنة دائمًا.",
++        "da": "Altid i takt.",
++        "de": "Immer im Gleichklang.",
++        "es": "Siempre al día.",
++        "fi": "Aina ajan tasalla.",
++        "fr": "Toujours synchronisées.",
++        "he": "תמיד מסונכרנות.",
++        "hi": "हमेशा साथ।",
++        "hu": "Mindig összhangban.",
++        "id": "Selalu selaras.",
++        "it": "Sempre al passo.",
++        "ja": "いつも同期。",
++        "ko": "언제나 함께.",
++        "nb": "Alltid i takt.",
++        "nl": "Altijd gelijk.",
++        "pl": "Zawsze w zgodzie.",
++        "pt-BR": "Sempre em sintonia.",
++        "ru": "Всегда вместе.",
++        "sv": "Alltid i takt.",
++        "th": "ตรงกันเสมอ",
++        "tr": "Her zaman uyumlu.",
++        "uk": "Завжди разом.",
++        "vi": "Luôn đồng bộ.",
++        "zh-Hans": "始终同步。",
++        "zh-Hant": "始終同步。"
++      }
++    },
++    "tide_onboarding_welcome_body": {
++      "source": "Clone any repo, write in Obsidian or anything else, and sync with one tap.",
++      "localizations": {
++        "ar": "استنسخ أي مستودع، واكتب في Obsidian أو أي تطبيق آخر، وزامن بنقرة واحدة.",
++        "da": "Klon et repository, skriv i Obsidian eller en anden app, og synkroniser med ét tryk.",
++        "de": "Klone ein Repository, schreibe in Obsidian oder einer anderen App und synchronisiere mit einem Tippen.",
++        "es": "Clona cualquier repositorio, escribe en Obsidian o en otra app y sincroniza con un toque.",
++        "fi": "Kloonaa mikä tahansa tietovarasto, kirjoita Obsidianissa tai muussa sovelluksessa ja synkronoi yhdellä napautuksella.",
++        "fr": "Clonez un dépôt, écrivez dans Obsidian ou une autre app et synchronisez en un geste.",
++        "he": "אפשר לשכפל כל מאגר, לכתוב ב-Obsidian או בכל אפליקציה אחרת ולסנכרן בנגיעה אחת.",
++        "hi": "कोई भी रिपॉज़िटरी क्लोन करें, Obsidian या किसी अन्य ऐप में लिखें और एक टैप में सिंक करें।",
++        "hu": "Klónozz egy tárolót, írj Obsidianban vagy más alkalmazásban, és szinkronizálj egy koppintással.",
++        "id": "Klon repositori apa pun, tulis di Obsidian atau aplikasi lain, lalu sinkronkan dengan satu ketukan.",
++        "it": "Clona qualsiasi repository, scrivi in Obsidian o in un’altra app e sincronizza con un tocco.",
++        "ja": "リポジトリをクローンし、Obsidian などのアプリで書いて、ワンタップで同期できます。",
++        "ko": "어떤 저장소든 클론하고 Obsidian이나 다른 앱에서 작성한 뒤 한 번의 탭으로 동기화하세요.",
++        "nb": "Klon et repository, skriv i Obsidian eller en annen app, og synkroniser med ett trykk.",
++        "nl": "Kloon een repository, schrijf in Obsidian of een andere app en synchroniseer met één tik.",
++        "pl": "Sklonuj dowolne repozytorium, pisz w Obsidianie lub innej aplikacji i synchronizuj jednym stuknięciem.",
++        "pt-BR": "Clone qualquer repositório, escreva no Obsidian ou em outro app e sincronize com um toque.",
++        "ru": "Клонируйте любой репозиторий, пишите в Obsidian или другом приложении и синхронизируйте одним касанием.",
++        "sv": "Klona ett arkiv, skriv i Obsidian eller en annan app och synkronisera med ett tryck.",
++        "th": "โคลนที่เก็บใดก็ได้ เขียนใน Obsidian หรือแอปอื่น แล้วซิงค์ด้วยการแตะครั้งเดียว",
++        "tr": "İstediğiniz depoyu klonlayın, Obsidian veya başka bir uygulamada yazın ve tek dokunuşla eşitleyin.",
++        "uk": "Клонуйте будь-який репозиторій, пишіть в Obsidian чи іншому застосунку та синхронізуйте одним дотиком.",
++        "vi": "Clone bất kỳ kho nào, viết trong Obsidian hoặc ứng dụng khác và đồng bộ bằng một lần chạm.",
++        "zh-Hans": "克隆任意仓库，在 Obsidian 或其他应用中书写，轻点即可同步。",
++        "zh-Hant": "複製任意儲存庫，在 Obsidian 或其他 App 中書寫，輕點即可同步。"
++      }
++    },
++    "tide_onboarding_rail_device": {
++      "source": "this phone",
++      "localizations": {
++        "ar": "هذا الهاتف",
++        "da": "denne telefon",
++        "de": "dieses Telefon",
++        "es": "este teléfono",
++        "fi": "tämä puhelin",
++        "fr": "ce téléphone",
++        "he": "הטלפון הזה",
++        "hi": "यह फ़ोन",
++        "hu": "ez a telefon",
++        "id": "ponsel ini",
++        "it": "questo telefono",
++        "ja": "このスマートフォン",
++        "ko": "이 휴대전화",
++        "nb": "denne telefonen",
++        "nl": "deze telefoon",
++        "pl": "ten telefon",
++        "pt-BR": "este telefone",
++        "ru": "этот телефон",
++        "sv": "den här telefonen",
++        "th": "โทรศัพท์นี้",
++        "tr": "bu telefon",
++        "uk": "цей телефон",
++        "vi": "điện thoại này",
++        "zh-Hans": "此手机",
++        "zh-Hant": "此手機"
++      }
++    },
++    "tide_onboarding_illustration": {
++      "source": "Notes on your phone and commits on GitHub meeting at one sync point",
++      "localizations": {
++        "ar": "ملاحظات على هاتفك والتزامات على GitHub تلتقي عند نقطة مزامنة واحدة",
++        "da": "Noter på din telefon og commits på GitHub mødes ved ét synkroniseringspunkt",
++        "de": "Notizen auf deinem Telefon und Commits auf GitHub treffen sich an einem Synchronisierungspunkt",
++        "es": "Notas en tu teléfono y commits en GitHub que se encuentran en un punto de sincronización",
++        "fi": "Puhelimesi muistiinpanot ja GitHubin commitit kohtaavat yhdessä synkronointipisteessä",
++        "fr": "Les notes sur votre téléphone et les commits sur GitHub se rejoignent en un point de synchronisation",
++        "he": "הערות בטלפון שלך וקומיטים ב-GitHub נפגשים בנקודת סנכרון אחת",
++        "hi": "आपके फ़ोन के नोट्स और GitHub के कमिट एक सिंक बिंदु पर मिलते हैं",
++        "hu": "A telefonodon lévő jegyzetek és a GitHub véglegesítései egy szinkronizálási ponton találkoznak",
++        "id": "Catatan di ponsel Anda dan commit di GitHub bertemu di satu titik sinkronisasi",
++        "it": "Gli appunti sul telefono e i commit su GitHub si incontrano in un punto di sincronizzazione",
++        "ja": "スマートフォンのノートと GitHub のコミットが1つの同期ポイントで合流する図",
++        "ko": "휴대전화의 노트와 GitHub의 커밋이 하나의 동기화 지점에서 만나는 그림",
++        "nb": "Notater på telefonen din og commits på GitHub møtes i ett synkroniseringspunkt",
++        "nl": "Notities op je telefoon en commits op GitHub komen samen op één synchronisatiepunt",
++        "pl": "Notatki w telefonie i zatwierdzenia w GitHub spotykają się w jednym punkcie synchronizacji",
++        "pt-BR": "Notas no seu telefone e commits no GitHub se encontram em um ponto de sincronização",
++        "ru": "Заметки на телефоне и коммиты на GitHub встречаются в одной точке синхронизации",
++        "sv": "Anteckningar på telefonen och commits på GitHub möts i en synkroniseringspunkt",
++        "th": "โน้ตบนโทรศัพท์และคอมมิตบน GitHub มาพบกันที่จุดซิงค์เดียว",
++        "tr": "Telefonunuzdaki notlar ve GitHub’daki commit’ler tek bir eşitleme noktasında buluşur",
++        "uk": "Нотатки на телефоні й коміти на GitHub зустрічаються в одній точці синхронізації",
++        "vi": "Ghi chú trên điện thoại và commit trên GitHub gặp nhau tại một điểm đồng bộ",
++        "zh-Hans": "手机上的笔记与 GitHub 上的提交在同一个同步点汇合",
++        "zh-Hant": "手機上的筆記與 GitHub 上的提交在同一個同步點匯合"
++      }
++    },
++    "tide_onboarding_pat_subtitle": {
++      "source": "Paste a GitHub token with repo access.",
++      "localizations": {
++        "ar": "ألصق رمز GitHub يتيح الوصول إلى المستودعات.",
++        "da": "Indsæt et GitHub-token med adgang til repositories.",
++        "de": "Füge ein GitHub-Token mit Repository-Zugriff ein.",
++        "es": "Pega un token de GitHub con acceso a repositorios.",
++        "fi": "Liitä GitHub-token, jolla on pääsy tietovarastoihin.",
++        "fr": "Collez un jeton GitHub avec accès aux dépôts.",
++        "he": "יש להדביק אסימון GitHub עם גישה למאגרים.",
++        "hi": "रिपॉज़िटरी एक्सेस वाला GitHub टोकन पेस्ट करें।",
++        "hu": "Illessz be egy tároló-hozzáféréssel rendelkező GitHub-tokent.",
++        "id": "Tempel token GitHub dengan akses repositori.",
++        "it": "Incolla un token GitHub con accesso ai repository.",
++        "ja": "リポジトリへのアクセス権がある GitHub トークンを貼り付けてください。",
++        "ko": "저장소 접근 권한이 있는 GitHub 토큰을 붙여넣으세요.",
++        "nb": "Lim inn et GitHub-token med tilgang til repositories.",
++        "nl": "Plak een GitHub-token met toegang tot repositories.",
++        "pl": "Wklej token GitHub z dostępem do repozytoriów.",
++        "pt-BR": "Cole um token do GitHub com acesso a repositórios.",
++        "ru": "Вставьте токен GitHub с доступом к репозиториям.",
++        "sv": "Klistra in en GitHub-token med åtkomst till arkiv.",
++        "th": "วางโทเค็น GitHub ที่มีสิทธิ์เข้าถึงที่เก็บ",
++        "tr": "Depo erişimi olan bir GitHub token’ı yapıştırın.",
++        "uk": "Вставте токен GitHub із доступом до репозиторіїв.",
++        "vi": "Dán token GitHub có quyền truy cập kho lưu trữ.",
++        "zh-Hans": "粘贴具有仓库访问权限的 GitHub 令牌。",
++        "zh-Hant": "貼上具有儲存庫存取權限的 GitHub 權杖。"
++      }
++    },
++    "tide_onboarding_show_token": {
++      "source": "Show",
++      "localizations": {
++        "ar": "إظهار",
++        "da": "Vis",
++        "de": "Anzeigen",
++        "es": "Mostrar",
++        "fi": "Näytä",
++        "fr": "Afficher",
++        "he": "הצגה",
++        "hi": "दिखाएँ",
++        "hu": "Megjelenítés",
++        "id": "Tampilkan",
++        "it": "Mostra",
++        "ja": "表示",
++        "ko": "표시",
++        "nb": "Vis",
++        "nl": "Tonen",
++        "pl": "Pokaż",
++        "pt-BR": "Mostrar",
++        "ru": "Показать",
++        "sv": "Visa",
++        "th": "แสดง",
++        "tr": "Göster",
++        "uk": "Показати",
++        "vi": "Hiện",
++        "zh-Hans": "显示",
++        "zh-Hant": "顯示"
++      }
++    },
++    "tide_onboarding_hide_token": {
++      "source": "Hide",
++      "localizations": {
++        "ar": "إخفاء",
++        "da": "Skjul",
++        "de": "Ausblenden",
++        "es": "Ocultar",
++        "fi": "Piilota",
++        "fr": "Masquer",
++        "he": "הסתרה",
++        "hi": "छिपाएँ",
++        "hu": "Elrejtés",
++        "id": "Sembunyikan",
++        "it": "Nascondi",
++        "ja": "非表示",
++        "ko": "숨기기",
++        "nb": "Skjul",
++        "nl": "Verbergen",
++        "pl": "Ukryj",
++        "pt-BR": "Ocultar",
++        "ru": "Скрыть",
++        "sv": "Dölj",
++        "th": "ซ่อน",
++        "tr": "Gizle",
++        "uk": "Приховати",
++        "vi": "Ẩn",
++        "zh-Hans": "隐藏",
++        "zh-Hant": "隱藏"
++      }
++    },
++    "tide_onboarding_create_pat": {
++      "source": "Create a PAT on GitHub ↗",
++      "localizations": {
++        "ar": "إنشاء رمز وصول شخصي على GitHub ↗",
++        "da": "Opret et PAT på GitHub ↗",
++        "de": "PAT auf GitHub erstellen ↗",
++        "es": "Crear un PAT en GitHub ↗",
++        "fi": "Luo PAT GitHubissa ↗",
++        "fr": "Créer un PAT sur GitHub ↗",
++        "he": "יצירת PAT ב-GitHub ↗",
++        "hi": "GitHub पर PAT बनाएँ ↗",
++        "hu": "PAT létrehozása a GitHubon ↗",
++        "id": "Buat PAT di GitHub ↗",
++        "it": "Crea un PAT su GitHub ↗",
++        "ja": "GitHub で PAT を作成 ↗",
++        "ko": "GitHub에서 PAT 만들기 ↗",
++        "nb": "Opprett et PAT på GitHub ↗",
++        "nl": "Maak een PAT op GitHub ↗",
++        "pl": "Utwórz PAT w GitHub ↗",
++        "pt-BR": "Criar um PAT no GitHub ↗",
++        "ru": "Создать PAT на GitHub ↗",
++        "sv": "Skapa en PAT på GitHub ↗",
++        "th": "สร้าง PAT บน GitHub ↗",
++        "tr": "GitHub’da PAT oluştur ↗",
++        "uk": "Створити PAT на GitHub ↗",
++        "vi": "Tạo PAT trên GitHub ↗",
++        "zh-Hans": "在 GitHub 上创建 PAT ↗",
++        "zh-Hant": "在 GitHub 上建立 PAT ↗"
++      }
++    },
++    "tide_onboarding_save_title": {
++      "source": "Default save",
++      "localizations": {
++        "ar": "مكان الحفظ",
++        "da": "Standardplacering",
++        "de": "Standardort",
++        "es": "Ubicación",
++        "fi": "Oletusarvoinen",
++        "fr": "Emplacement",
++        "he": "מיקום שמירה",
++        "hi": "डिफ़ॉल्ट सेव",
++        "hu": "Alapértelmezett",
++        "id": "Lokasi penyimpanan",
++        "it": "Posizione di salvataggio",
++        "ja": "既定の保存",
++        "ko": "기본 저장",
++        "nb": "Standard",
++        "nl": "Standaard",
++        "pl": "Domyślna lokalizacja",
++        "pt-BR": "Local de salvamento",
++        "ru": "Место сохранения",
++        "sv": "Standardplats",
++        "th": "ตำแหน่งบันทึก",
++        "tr": "Varsayılan kayıt",
++        "uk": "Місце збереження",
++        "vi": "Vị trí lưu",
++        "zh-Hans": "默认保存",
++        "zh-Hant": "預設儲存"
++      },
++      "notes": "Paired split headline, rendered title then muted on the next line. Read both localized fragments together in that order."
++    },
++    "tide_onboarding_save_muted": {
++      "source": "location.",
++      "localizations": {
++        "ar": "الافتراضي.",
++        "da": "til lagring.",
++        "de": "zum Speichern.",
++        "es": "de guardado predeterminada.",
++        "fi": "tallennussijainti.",
++        "fr": "de stockage par défaut.",
++        "he": "כברירת מחדל.",
++        "hi": "स्थान।",
++        "hu": "mentési hely.",
++        "id": "default.",
++        "it": "predefinita.",
++        "ja": "場所。",
++        "ko": "위치.",
++        "nb": "lagringssted.",
++        "nl": "opslaglocatie.",
++        "pl": "zapisu.",
++        "pt-BR": "padrão.",
++        "ru": "по умолчанию.",
++        "sv": "för lagring.",
++        "th": "เริ่มต้น",
++        "tr": "konumu.",
++        "uk": "за замовчуванням.",
++        "vi": "mặc định.",
++        "zh-Hans": "位置。",
++        "zh-Hant": "位置。"
++      },
++      "notes": "Paired split headline, rendered title then muted on the next line. Read both localized fragments together in that order."
++    },
++    "tide_onboarding_save_subtitle": {
++      "source": "Choose a different folder when cloning, or set a default in Settings.",
++      "localizations": {
++        "ar": "اختر مجلدًا مختلفًا عند الاستنساخ، أو عيّن مجلدًا افتراضيًا في الإعدادات.",
++        "da": "Vælg en anden mappe ved kloning, eller angiv en standard i Indstillinger.",
++        "de": "Wähle beim Klonen einen anderen Ordner oder lege einen Standard in den Einstellungen fest.",
++        "es": "Elige otra carpeta al clonar o establece una predeterminada en Ajustes.",
++        "fi": "Valitse kloonatessa toinen kansio tai määritä oletuskansio asetuksissa.",
++        "fr": "Choisissez un autre dossier lors du clonage ou définissez un dossier par défaut dans les Réglages.",
++        "he": "אפשר לבחור תיקייה אחרת בעת השכפול, או לקבוע ברירת מחדל בהגדרות.",
++        "hi": "क्लोन करते समय दूसरा फ़ोल्डर चुनें, या सेटिंग्स में डिफ़ॉल्ट तय करें।",
++        "hu": "Klónozáskor válassz másik mappát, vagy állíts be alapértelmezettet a Beállításokban.",
++        "id": "Pilih folder lain saat mengklon, atau tetapkan default di Pengaturan.",
++        "it": "Scegli un’altra cartella durante la clonazione o imposta quella predefinita nelle Impostazioni.",
++        "ja": "クローン時に別のフォルダーを選ぶか、設定で既定のフォルダーを指定できます。",
++        "ko": "클론할 때 다른 폴더를 선택하거나 설정에서 기본 폴더를 지정하세요.",
++        "nb": "Velg en annen mappe ved kloning, eller angi en standard i Innstillinger.",
++        "nl": "Kies bij het klonen een andere map of stel een standaardmap in via Instellingen.",
++        "pl": "Wybierz inny folder podczas klonowania lub ustaw domyślny w Ustawieniach.",
++        "pt-BR": "Escolha outra pasta ao clonar ou defina uma pasta padrão nos Ajustes.",
++        "ru": "Выберите другую папку при клонировании или задайте папку по умолчанию в настройках.",
++        "sv": "Välj en annan mapp när du klonar, eller ange en standardmapp i Inställningar.",
++        "th": "เลือกโฟลเดอร์อื่นขณะโคลน หรือตั้งค่าเริ่มต้นในการตั้งค่า",
++        "tr": "Klonlarken farklı bir klasör seçin veya Ayarlar’da varsayılanı belirleyin.",
++        "uk": "Виберіть іншу папку під час клонування або задайте типову в налаштуваннях.",
++        "vi": "Chọn thư mục khác khi clone hoặc đặt thư mục mặc định trong Cài đặt.",
++        "zh-Hans": "克隆时选择其他文件夹，或在设置中指定默认文件夹。",
++        "zh-Hant": "複製時選擇其他資料夾，或在設定中指定預設資料夾。"
++      }
++    },
++    "tide_onboarding_picker_title": {
++      "source": "Pick a repo",
++      "localizations": {
++        "ar": "اختر مستودعًا",
++        "da": "Vælg et repository",
++        "de": "Repository auswählen",
++        "es": "Elige un repositorio",
++        "fi": "Valitse tietovarasto",
++        "fr": "Choisir un dépôt",
++        "he": "בחירת מאגר",
++        "hi": "रिपॉज़िटरी चुनें",
++        "hu": "Válassz tárolót",
++        "id": "Pilih repositori",
++        "it": "Scegli un repository",
++        "ja": "リポジトリを選択",
++        "ko": "저장소 선택",
++        "nb": "Velg et repository",
++        "nl": "Kies een repository",
++        "pl": "Wybierz repozytorium",
++        "pt-BR": "Escolha um repositório",
++        "ru": "Выберите репозиторий",
++        "sv": "Välj ett arkiv",
++        "th": "เลือกที่เก็บ",
++        "tr": "Depo seçin",
++        "uk": "Виберіть репозиторій",
++        "vi": "Chọn kho lưu trữ",
++        "zh-Hans": "选择仓库",
++        "zh-Hant": "選擇儲存庫"
++      }
++    },
++    "tide_onboarding_picker_no_matches": {
++      "source": "No matches",
++      "localizations": {
++        "ar": "لا نتائج مطابقة",
++        "da": "Ingen resultater",
++        "de": "Keine Treffer",
++        "es": "Sin coincidencias",
++        "fi": "Ei osumia",
++        "fr": "Aucun résultat",
++        "he": "אין התאמות",
++        "hi": "कोई मिलान नहीं",
++        "hu": "Nincs találat",
++        "id": "Tidak ada kecocokan",
++        "it": "Nessuna corrispondenza",
++        "ja": "一致する結果がありません",
++        "ko": "일치하는 항목 없음",
++        "nb": "Ingen treff",
++        "nl": "Geen resultaten",
++        "pl": "Brak wyników",
++        "pt-BR": "Nenhum resultado",
++        "ru": "Нет совпадений",
++        "sv": "Inga träffar",
++        "th": "ไม่พบรายการที่ตรงกัน",
++        "tr": "Eşleşme yok",
++        "uk": "Немає збігів",
++        "vi": "Không có kết quả phù hợp",
++        "zh-Hans": "没有匹配结果",
++        "zh-Hant": "沒有符合的結果"
++      }
++    },
++    "tide_onboarding_picker_clear": {
++      "source": "Clear search",
++      "localizations": {
++        "ar": "مسح البحث",
++        "da": "Ryd søgning",
++        "de": "Suche löschen",
++        "es": "Borrar búsqueda",
++        "fi": "Tyhjennä haku",
++        "fr": "Effacer la recherche",
++        "he": "ניקוי החיפוש",
++        "hi": "खोज साफ़ करें",
++        "hu": "Keresés törlése",
++        "id": "Hapus pencarian",
++        "it": "Cancella ricerca",
++        "ja": "検索をクリア",
++        "ko": "검색 지우기",
++        "nb": "Tøm søk",
++        "nl": "Zoekopdracht wissen",
++        "pl": "Wyczyść wyszukiwanie",
++        "pt-BR": "Limpar busca",
++        "ru": "Очистить поиск",
++        "sv": "Rensa sökning",
++        "th": "ล้างการค้นหา",
++        "tr": "Aramayı temizle",
++        "uk": "Очистити пошук",
++        "vi": "Xóa tìm kiếm",
++        "zh-Hans": "清除搜索",
++        "zh-Hant": "清除搜尋"
++      }
++    },
++    "tide_onboarding_clone_failed": {
++      "source": "Clone failed",
++      "localizations": {
++        "ar": "فشل الاستنساخ",
++        "da": "Kloning mislykkedes",
++        "de": "Klonen fehlgeschlagen",
++        "es": "Error al clonar",
++        "fi": "Kloonaus epäonnistui",
++        "fr": "Échec du clonage",
++        "he": "השכפול נכשל",
++        "hi": "क्लोन विफल",
++        "hu": "A klónozás sikertelen",
++        "id": "Klon gagal",
++        "it": "Clonazione non riuscita",
++        "ja": "クローンに失敗しました",
++        "ko": "클론 실패",
++        "nb": "Kloning mislyktes",
++        "nl": "Klonen mislukt",
++        "pl": "Klonowanie nie powiodło się",
++        "pt-BR": "Falha ao clonar",
++        "ru": "Не удалось клонировать",
++        "sv": "Kloning misslyckades",
++        "th": "โคลนไม่สำเร็จ",
++        "tr": "Klonlama başarısız",
++        "uk": "Не вдалося клонувати",
++        "vi": "Clone thất bại",
++        "zh-Hans": "克隆失败",
++        "zh-Hant": "複製失敗"
++      }
++    },
++    "tide_onboarding_publication_step": {
++      "source": "Step %1$d of 3",
++      "localizations": {
++        "ar": "الخطوة %1$d من ٣",
++        "da": "Trin %1$d af 3",
++        "de": "Schritt %1$d von 3",
++        "es": "Paso %1$d de 3",
++        "fi": "Vaihe %1$d/3",
++        "fr": "Étape %1$d sur 3",
++        "he": "שלב %1$d מתוך 3",
++        "hi": "चरण %1$d / 3",
++        "hu": "%1$d. lépés a 3-ból",
++        "id": "Langkah %1$d dari 3",
++        "it": "Passaggio %1$d di 3",
++        "ja": "ステップ %1$d / 3",
++        "ko": "%1$d/3단계",
++        "nb": "Trinn %1$d av 3",
++        "nl": "Stap %1$d van 3",
++        "pl": "Krok %1$d z 3",
++        "pt-BR": "Etapa %1$d de 3",
++        "ru": "Шаг %1$d из 3",
++        "sv": "Steg %1$d av 3",
++        "th": "ขั้นตอนที่ %1$d จาก 3",
++        "tr": "Adım %1$d / 3",
++        "uk": "Крок %1$d із 3",
++        "vi": "Bước %1$d trên 3",
++        "zh-Hans": "第 %1$d 步，共 3 步",
++        "zh-Hant": "第 %1$d 步，共 3 步"
++      }
+     }
+   },
+   "plurals": {
+--- before/tools/localization/coverage.json
++++ after/tools/localization/coverage.json
+@@ -28,7 +28,7 @@
+     "zh-Hant"
+   ],
+   "base_strings": 1288,
+-  "translated_per_language": 1124,
++  "translated_per_language": 1142,
+   "mapped": {
+     "account_removal_subject": "android_overrides",
+     "background_active": "android_overrides",
+@@ -746,6 +746,24 @@
+     "tide_merge_side_deleted": "deleted",
+     "tide_merge_theirs": "Theirs",
+     "tide_merge_theirs_filename": "Theirs",
++    "tide_onboarding_clone_failed": "android_overrides",
++    "tide_onboarding_create_pat": "android_overrides",
++    "tide_onboarding_headline_git": "android_overrides",
++    "tide_onboarding_headline_notes": "android_overrides",
++    "tide_onboarding_headline_step": "android_overrides",
++    "tide_onboarding_hide_token": "android_overrides",
++    "tide_onboarding_illustration": "android_overrides",
++    "tide_onboarding_pat_subtitle": "android_overrides",
++    "tide_onboarding_picker_clear": "android_overrides",
++    "tide_onboarding_picker_no_matches": "android_overrides",
++    "tide_onboarding_picker_title": "android_overrides",
++    "tide_onboarding_publication_step": "android_overrides",
++    "tide_onboarding_rail_device": "android_overrides",
++    "tide_onboarding_save_muted": "android_overrides",
++    "tide_onboarding_save_subtitle": "android_overrides",
++    "tide_onboarding_save_title": "android_overrides",
++    "tide_onboarding_show_token": "android_overrides",
++    "tide_onboarding_welcome_body": "android_overrides",
+     "tide_settings_section_sync": "SYNC",
+     "tide_vault_check_for_changes": "android_overrides",
+     "tide_vault_conflict_detail": "android_overrides",
+@@ -1204,24 +1222,6 @@
+     "tide_merge_upstream_unset_body",
+     "tide_merge_yours",
+     "tide_merge_yours_count",
+-    "tide_onboarding_clone_failed",
+-    "tide_onboarding_create_pat",
+-    "tide_onboarding_headline_git",
+-    "tide_onboarding_headline_notes",
+-    "tide_onboarding_headline_step",
+-    "tide_onboarding_hide_token",
+-    "tide_onboarding_illustration",
+-    "tide_onboarding_pat_subtitle",
+-    "tide_onboarding_picker_clear",
+-    "tide_onboarding_picker_no_matches",
+-    "tide_onboarding_picker_title",
+-    "tide_onboarding_publication_step",
+-    "tide_onboarding_rail_device",
+-    "tide_onboarding_save_muted",
+-    "tide_onboarding_save_subtitle",
+-    "tide_onboarding_save_title",
+-    "tide_onboarding_show_token",
+-    "tide_onboarding_welcome_body",
+     "tide_settings_not_signed_in",
+     "tide_settings_off",
+     "tide_settings_on",

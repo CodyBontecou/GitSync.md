@@ -1,0 +1,27 @@
+Gitsync.md gerçek Git iş akışlarını Android'e getirir. GitHub'ı bağlayın, depoları uygulama depolama alanına klonlayın, değişiklikleri inceleyin ve kodu ya da markdown dosyalarını telefonunuzdan güvenle senkronize edin.
+
+GERÇEK DEPOLAR İÇİN TASARLANDI
+- OAuth veya kişisel erişim belirteciyle oturum açtıktan sonra GitHub depolarına göz atın
+- Projeleri doğrudan Android uygulama depolama alanına klonlayın
+- Sistemde git ikili dosyası gerektirmeden Git işlemleri çalıştırın
+
+GÜVENLE SENKRONİZE EDİN
+- Branch'i, temiz veya değişmiş durumu, stage'e alınmış ve izlenmeyen dosyaları görün
+- Depo durumunu kontrol ettikten sonra güvenle pull yapın
+- Değişiklikleri atmadan veya commit etmeden önce satır satır diff'leri inceleyin
+- Yerel değişiklikleri commit edip uzak depoya push edin
+
+YEREL GIT ARAÇ SETİ
+- Dosyaları tek tek stage'e alın veya stage'den çıkarın
+- Branch oluşturun, değiştirin, merge edin ve silin
+- Çakışmaları ours, theirs veya manuel seçimle çözün
+- Geçmişi görüntüleyin, stash oluşturup geri yükleyin ve tag'leri yönetin
+
+MOBİL İÇİN TASARLANDI
+- Hızlı Jetpack Compose arayüzü
+- Koyu ve açık mod
+- Android uyumluluğu için uygulama depolama alanına klonlama
+- Ücretsiz indirme, Google Play üzerinden tek seferlik Tam Erişim uygulama içi satın alımı
+- Reklam yok, abonelik yok
+
+Gitsync.md; geliştiriciler, yazarlar ve Android'de GitHub tabanlı dosyaları yöneten herkes için tasarlandı. Özel depolar için GitHub ile oturum açın veya kişisel erişim belirteci girin. Belirteçler cihazınızda yerel olarak saklanır.

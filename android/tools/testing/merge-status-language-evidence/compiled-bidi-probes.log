@@ -1,0 +1,2 @@
+Twelve JDK Bidi probes preserve identifier payloads and the outer LTR remote/branch separator, including Unicode identifiers and Arabic digits.
+Internal RTL runs/path separators and Android/Compose rendering are not qualified.

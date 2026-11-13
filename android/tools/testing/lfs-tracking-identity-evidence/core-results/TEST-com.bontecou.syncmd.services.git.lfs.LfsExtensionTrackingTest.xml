@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.git.lfs.LfsExtensionTrackingTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-11-02T19:09:04" hostname="MacBook-Pro.local" time="0.293">
+  <properties/>
+  <testcase name="root nested and global explicit choices survive extension tracking" classname="com.bontecou.syncmd.services.git.lfs.LfsExtensionTrackingTest" time="0.031"/>
+  <testcase name="changed unselected affected file invalidates confirmation and preserves index" classname="com.bontecou.syncmd.services.git.lfs.LfsExtensionTrackingTest" time="0.014"/>
+  <testcase name="review previews exact case variants and unchanged tracked siblings without writing until apply" classname="com.bontecou.syncmd.services.git.lfs.LfsExtensionTrackingTest" time="0.049"/>
+  <testcase name="new matching file invalidates confirmation without creating attributes" classname="com.bontecou.syncmd.services.git.lfs.LfsExtensionTrackingTest" time="0.014"/>
+  <testcase name="large unknown extension stays an exact path alongside recognized extension rules" classname="com.bontecou.syncmd.services.git.lfs.LfsExtensionTrackingTest" time="0.146"/>
+  <testcase name="global and nested rule edits invalidate confirmation even when selected bytes stay unchanged" classname="com.bontecou.syncmd.services.git.lfs.LfsExtensionTrackingTest" time="0.025"/>
+  <testcase name="same commit on another branch invalidates both exact and extension choices" classname="com.bontecou.syncmd.services.git.lfs.LfsExtensionTrackingTest" time="0.014"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

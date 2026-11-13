@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.ui.viewmodels.RepositoryMoveConsentTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-11-03T01:43:21" hostname="MacBook-Pro.local" time="0.245">
+  <properties/>
+  <testcase name="currentCrossVolumeReviewRetainsExactOriginal" classname="com.bontecou.syncmd.ui.viewmodels.RepositoryMoveConsentTest" time="0.098"/>
+  <testcase name="anotherDestinationDoesNotRetargetOldConfirmation" classname="com.bontecou.syncmd.ui.viewmodels.RepositoryMoveConsentTest" time="0.024"/>
+  <testcase name="currentReviewMovesExactlyItsCheckout" classname="com.bontecou.syncmd.ui.viewmodels.RepositoryMoveConsentTest" time="0.036"/>
+  <testcase name="mismatchedMetadataCannotMove" classname="com.bontecou.syncmd.ui.viewmodels.RepositoryMoveConsentTest" time="0.022"/>
+  <testcase name="equalReplacementReviewRevokesOldConfirmation" classname="com.bontecou.syncmd.ui.viewmodels.RepositoryMoveConsentTest" time="0.02"/>
+  <testcase name="clearedReviewCannotMoveAfterWaitingForSourceLease" classname="com.bontecou.syncmd.ui.viewmodels.RepositoryMoveConsentTest" time="0.023"/>
+  <testcase name="anotherRepositoryDoesNotRetargetOldConfirmation" classname="com.bontecou.syncmd.ui.viewmodels.RepositoryMoveConsentTest" time="0.021"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

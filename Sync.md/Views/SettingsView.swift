@@ -25,7 +25,9 @@ struct SettingsView: View {
     @State private var showDeleteFilesConfirm = false
     @State private var showFolderPicker = false
     @State private var showCopiedToast = false
-    @State private var showMoveLocationPicker = false
+    @State private var showReauthorizePicker = false
+    @State private var reauthorizeError: String?
+    @State private var showReauthorizeError = false
     @State private var moveError: String? = nil
     @State private var showMoveError = false
     @State private var validationMessage: String? = nil
@@ -35,6 +37,9 @@ struct SettingsView: View {
     @State private var assistNetworkPolicy: RepoAssistNetworkPolicy = .any
     @State private var assistPowerPolicy: RepoAssistPowerPolicy = .any
     @State private var isManagingAssist = false
+    @State private var isPinned = false
+    @State private var displayName = ""
+    @State private var showStopTracking = false
 
     private var repo: RepoConfig? { state.repo(id: repoID) }
     private var canDeleteLocalFiles: Bool { repo?.isGitSyncManagedStorage == true }
@@ -42,199 +47,33 @@ struct SettingsView: View {
     private var canUseGitHubPAT: Bool { parsedRemote?.isGitHub == true && parsedRemote?.isSSH == false }
     private var repoPathForConfirmation: String {
         let displayPath = state.vaultDisplayPath(for: repoID)
-        return displayPath.isEmpty ? state.vaultURL(for: repoID).path : displayPath
+        return displayPath.isEmpty ? (state.vaultURL(for: repoID)?.path ?? "") : displayPath
+    }
+    /// Mono eyebrow above the headline: owner/repo when a remote is set.
+    private var repoIdentifier: String {
+        if let remote = GitRemoteURL.parse(repo?.repoURL ?? "") { return remote.displayPath }
+        return repo?.vaultFolderName ?? vaultName
     }
 
     var body: some View {
         NavigationStack {
             ZStack {
-                Color.brutalBg.ignoresSafeArea()
+                Tide.paper.ignoresSafeArea()
 
                 ScrollView {
-                    VStack(spacing: 12) {
-                        // Repository Section
-                        settingsSection(title: String(localized: "Repository")) {
-                            VStack(spacing: 0) {
-                                VStack(alignment: .leading, spacing: 8) {
-                                    HStack {
-                                        Text(String(localized: "URL").uppercased())
-                                            .bType(.monoCaption, weight: .medium)
-                                            .foregroundStyle(Color.brutalText)
-                                            .tracking(1)
-                                        Spacer()
-                                        Button {
-                                            if !repoURL.isEmpty {
-                                                UIPasteboard.general.string = repoURL
-                                                withAnimation { showCopiedToast = true }
-                                                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                                                    withAnimation { showCopiedToast = false }
-                                                }
-                                            }
-                                        } label: {
-                                            Text(showCopiedToast ? String(localized: "Copied!") : String(localized: "Copy"))
-                                                .bType(.monoCaption)
-                                                .foregroundStyle(showCopiedToast ? Color.brutalSuccess : Color.brutalAccent)
-                                                // Compact text link, 44x44pt hit target.
-                                                .frame(minWidth: 44, minHeight: 44)
-                                                .contentShape(Rectangle())
-                                        }
-                                        .buttonStyle(.plain)
-                                        .disabled(repoURL.isEmpty)
-                                        .accessibilityHint(String(localized: "Copies the repository URL to the clipboard"))
-                                    }
+                    VStack(alignment: .leading, spacing: 0) {
+                        header
+                            .padding(.horizontal, 20)
+                            .padding(.top, 2)
 
-                                    TextField("https://host/user/repo or git@host:user/repo.git", text: $repoURL)
-                                        .bType(.mono, weight: .regular)
-                                        .autocorrectionDisabled()
-                                        .textInputAutocapitalization(.never)
-                                        .foregroundStyle(Color.brutalText)
-                                }
-                                .padding(.horizontal, 16)
-                                .padding(.vertical, 13)
-                                .onChange(of: repoURL) { _, newValue in
-                                    configureAuthDefaults(for: newValue)
-                                }
-
-                                if !repoURL.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && GitRemoteURL.parse(repoURL) == nil {
-                                    BDivider().padding(.horizontal, 16)
-                                    HStack(spacing: 6) {
-                                        BBadge(text: String(localized: "INVALID URL"), style: .error)
-                                        Text(String(localized: "Use HTTPS, SSH, git://, file://, or owner/repo."))
-                                            .bType(.monoSm, weight: .regular)
-                                            .foregroundStyle(Color.brutalError)
-                                    }
-                                    .padding(.horizontal, 16)
-                                    .padding(.vertical, 10)
-                                }
-
-                                BDivider().padding(.horizontal, 16)
-
-                                settingsInputRow(label: String(localized: "Branch")) {
-                                    TextField("main", text: $branch)
-                                        .bType(.mono, weight: .regular)
-                                        .multilineTextAlignment(.trailing)
-                                        .autocorrectionDisabled()
-                                        .textInputAutocapitalization(.never)
-                                        .foregroundStyle(Color.brutalText)
-                                }
-                            }
-                        }
-
-                        authenticationSection
-
-                        // Git Author Section
-                        settingsSection(title: String(localized: "Git Author")) {
-                            VStack(spacing: 0) {
-                                settingsInputRow(label: String(localized: "Name")) {
-                                    TextField("Your Name", text: $authorName)
-                                        .bType(.mono, weight: .regular)
-                                        .multilineTextAlignment(.trailing)
-                                        .foregroundStyle(Color.brutalText)
-                                }
-
-                                BDivider().padding(.horizontal, 16)
-
-                                settingsInputRow(label: String(localized: "Email")) {
-                                    TextField("you@example.com", text: $authorEmail)
-                                        .bType(.mono, weight: .regular)
-                                        .multilineTextAlignment(.trailing)
-                                        .autocorrectionDisabled()
-                                        .textInputAutocapitalization(.never)
-                                        .foregroundStyle(Color.brutalText)
-                                }
-                            }
-                        }
-
-                        // Storage Section
-                        settingsSection(title: String(localized: "Storage")) {
-                            VStack(spacing: 0) {
-                                if state.isUsingCustomLocation(for: repoID) {
-                                    settingsFieldRow(label: String(localized: "Location")) {
-                                        Text(state.vaultURL(for: repoID).lastPathComponent)
-                                            .bType(.mono, weight: .regular)
-                                            .foregroundStyle(Color.brutalText)
-                                    }
-
-                                    BDivider().padding(.horizontal, 16)
-
-                                    settingsFieldRow(label: String(localized: "Path")) {
-                                        Text(state.vaultDisplayPath(for: repoID))
-                                            .bType(.monoSm, weight: .regular)
-                                            .foregroundStyle(Color.brutalText)
-                                            .lineLimit(1)
-                                            .truncationMode(.middle)
-                                    }
-                                } else {
-                                    settingsFieldRow(label: String(localized: "Folder")) {
-                                        Text(vaultName)
-                                            .bType(.mono, weight: .regular)
-                                            .foregroundStyle(Color.brutalText)
-                                    }
-
-                                    BDivider().padding(.horizontal, 16)
-
-                                    settingsFieldRow(label: String(localized: "Path")) {
-                                        Text(String(localized: "On My iPhone › GitSync.md › \(vaultName)"))
-                                            .bType(.monoSm, weight: .regular)
-                                            .foregroundStyle(Color.brutalText)
-                                            .lineLimit(1)
-                                    }
-                                }
-
-                                BDivider().padding(.horizontal, 16)
-
-                                Button {
-                                    showMoveLocationPicker = true
-                                } label: {
-                                    HStack {
-                                        Text(String(localized: "Move Vault").uppercased())
-                                            .bType(.monoCaption)
-                                            .foregroundStyle(Color.brutalAccent)
-                                            .tracking(1)
-                                        Spacer()
-                                        Image(systemName: "folder.badge.plus")
-                                            .bType(.monoSm, weight: .regular)
-                                            .foregroundStyle(Color.brutalAccent)
-                                    }
-                                    .padding(.horizontal, 16)
-                                    .padding(.vertical, 13)
-                                    // Full-row action, ≥44pt-tall hit target.
-                                    .frame(minHeight: 44)
-                                    .contentShape(Rectangle())
-                                }
-                                .buttonStyle(.plain)
-                            }
-                        }
-
-                        // Sync Info Section
-                        if let repo = repo, repo.isCloned {
-                            settingsSection(title: String(localized: "Sync Info")) {
-                                VStack(spacing: 0) {
-                                    settingsFieldRow(label: String(localized: "Last Sync")) {
-                                        Text(repo.gitState.lastSyncDate == .distantPast
-                                             ? String(localized: "Never")
-                                             : relativeDate(repo.gitState.lastSyncDate))
-                                            .bType(.monoSm, weight: .regular)
-                                            .foregroundStyle(Color.brutalText)
-                                    }
-
-                                    BDivider().padding(.horizontal, 16)
-
-                                    settingsFieldRow(label: String(localized: "Commit SHA")) {
-                                        Text(String(repo.gitState.commitSHA.prefix(7)))
-                                            .bType(.monoSm)
-                                            .foregroundStyle(Color.brutalText)
-                                    }
-
-                                    BDivider().padding(.horizontal, 16)
-
-                                    settingsFieldRow(label: String(localized: "Files")) {
-                                        Text("\(repo.gitState.blobSHAs.count)")
-                                            .bType(.monoSm, weight: .regular)
-                                            .foregroundStyle(Color.brutalText)
-                                    }
-                                }
-                            }
+                        if let error = state.vaultAccessErrors[repoID] {
+                            TideInlineWarning(text: error.localizedDescription)
+                                .padding(.horizontal, Tide.gutter)
+                                .padding(.top, 18)
+                        } else if let repo = repo, repo.isCloned {
+                            healthCard(repo)
+                                .padding(.horizontal, Tide.gutter)
+                                .padding(.top, 18)
                         }
 
                         // Background Sync remains optional and never changes
@@ -242,70 +81,99 @@ struct SettingsView: View {
                         // Hidden behind the legacy gitSyncAssistEnabled feature flag until the
                         // tier is ready to ship.
                         if FeatureFlags.gitSyncAssistEnabled {
-                            settingsSection(title: String(localized: "Background Sync")) {
-                                VStack(spacing: 0) {
-                                    Toggle("Include in Background Sync", isOn: $includeInAutomaticSync)
-                                        .frame(minHeight: 44)
-                                        .padding(.horizontal, 16)
+                            backgroundSyncSection
+                        }
 
-                                    if !premiumRuntime.automaticallySyncAllRepositories {
-                                        BDivider().padding(.horizontal, 16)
-                                        Text("Background Sync is off. This inclusion choice is saved and will apply the next time you enable it in App Settings → Background Sync.")
-                                            .bType(.monoCaption, weight: .regular)
-                                            .frame(maxWidth: .infinity, alignment: .leading)
-                                            .padding(16)
-                                    }
+                        thisVaultSection
 
-                                    BDivider().padding(.horizontal, 16)
-
-                                    Picker("Network", selection: $assistNetworkPolicy) {
-                                        Text("Any connection").tag(RepoAssistNetworkPolicy.any)
-                                        Text("Wi-Fi only").tag(RepoAssistNetworkPolicy.wifiOnly)
-                                    }
-                                    .frame(minHeight: 44)
-                                    .padding(.horizontal, 16)
-
-                                    BDivider().padding(.horizontal, 16)
-
-                                    Picker("Power", selection: $assistPowerPolicy) {
-                                        Text("Any power state").tag(RepoAssistPowerPolicy.any)
-                                        Text("External power only").tag(RepoAssistPowerPolicy.externalPowerOnly)
-                                    }
-                                    .frame(minHeight: 44)
-                                    .padding(.horizontal, 16)
-
-                                    if let assist = repo?.assist {
-                                        BDivider().padding(.horizontal, 16)
-                                        VStack(alignment: .leading, spacing: 5) {
-                                            Text("STATUS: \(assistInclusionTitle(assist).uppercased())")
-                                                .bType(.monoCaption)
-                                            if let message = assist.enrollmentMessage {
-                                                Text(message).bType(.monoCaption, weight: .regular)
+                        // Repository Section
+                        settingsSection(title: String(localized: "Repository")) {
+                            VStack(alignment: .leading, spacing: 6) {
+                                HStack {
+                                    Text("Remote URL")
+                                        .font(TideFont.body)
+                                        .foregroundStyle(Tide.ink)
+                                    Spacer()
+                                    Button {
+                                        if !repoURL.isEmpty {
+                                            UIPasteboard.general.string = repoURL
+                                            withAnimation { showCopiedToast = true }
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                                                withAnimation { showCopiedToast = false }
                                             }
-                                            Text("Health: \(assistHealthTitle(assist.health))").bType(.monoCaption, weight: .regular)
-                                            if let message = assist.health.message { Text(message).bType(.monoCaption, weight: .regular) }
-                                            if let date = assist.health.lastAttemptDate { Text("Last sync attempt \(relativeDate(date))").font(.caption) }
-                                            Button("Sync now") {
-                                                Task {
-                                                    isManagingAssist = true
-                                                    await premiumRuntime.reconcileNow()
-                                                    isManagingAssist = false
-                                                }
-                                            }
-                                            .frame(minWidth: 44, minHeight: 44, alignment: .leading)
-                                            .contentShape(Rectangle())
-                                            .disabled(isManagingAssist || !premiumRuntime.automaticallySyncAllRepositories)
-                                            .padding(.top, 4)
                                         }
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                        .padding(16)
+                                    } label: {
+                                        Text(showCopiedToast ? String(localized: "Copied!") : String(localized: "Copy"))
+                                            .font(TideFont.sans(14, .medium, relativeTo: .subheadline))
+                                            .foregroundStyle(showCopiedToast ? Tide.synced : Tide.behind)
+                                            // Compact text link, 44x44pt hit target.
+                                            .frame(minWidth: 44, minHeight: 44)
+                                            .contentShape(Rectangle())
                                     }
-
-                                    Text("Uses this repository's configured branch and the installation's independent automatic-pull and automatic-push choices. Pulls stay clean fast-forwards. Push-only mode validates remote state without updating the worktree. Publishing may stage, commit, and push local edits only after separate consent. Concurrent remote edits, divergence, authentication/trust requirements, or the wrong branch stop automation.")
-                                        .bType(.monoCaption, weight: .regular)
-                                        .foregroundStyle(Color.brutalText)
-                                        .padding(16)
+                                    .buttonStyle(.plain)
+                                    .disabled(repoURL.isEmpty)
+                                    .accessibilityHint(String(localized: "Copies the repository URL to the clipboard"))
                                 }
+
+                                TextField("https://host/user/repo or git@host:user/repo.git", text: $repoURL)
+                                    .font(TideFont.mono(14, relativeTo: .subheadline))
+                                    .autocorrectionDisabled()
+                                    .textInputAutocapitalization(.never)
+                                    .foregroundStyle(Tide.ink)
+                                    .padding(.bottom, 8)
+                            }
+                            .padding(.leading, 18)
+                            .padding(.trailing, 8)
+                            .padding(.vertical, 4)
+                            .onChange(of: repoURL) { _, newValue in
+                                configureAuthDefaults(for: newValue)
+                            }
+
+                            if !repoURL.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && GitRemoteURL.parse(repoURL) == nil {
+                                rowSeparator
+                                HStack(spacing: 8) {
+                                    BBadge(text: String(localized: "INVALID URL"), style: .error)
+                                    Text(String(localized: "Use HTTPS, SSH, git://, file://, or owner/repo."))
+                                        .font(TideFont.sans(13, relativeTo: .footnote))
+                                        .foregroundStyle(Tide.danger)
+                                }
+                                .padding(.horizontal, 18)
+                                .padding(.vertical, 12)
+                            }
+
+                            rowSeparator
+
+                            settingsInputRow(label: String(localized: "Branch")) {
+                                TextField("main", text: $branch)
+                                    .accessibilityIdentifier("repositorySettings.branch")
+                                    .font(TideFont.mono(14, relativeTo: .subheadline))
+                                    .multilineTextAlignment(.trailing)
+                                    .autocorrectionDisabled()
+                                    .textInputAutocapitalization(.never)
+                                    .foregroundStyle(Tide.ink)
+                            }
+                        }
+
+                        authenticationSection
+
+                        // Git Author Section
+                        settingsSection(title: String(localized: "Git author")) {
+                            settingsInputRow(label: String(localized: "Name")) {
+                                TextField("Your Name", text: $authorName)
+                                    .font(TideFont.sans(15, relativeTo: .subheadline))
+                                    .multilineTextAlignment(.trailing)
+                                    .foregroundStyle(Tide.ink)
+                            }
+
+                            rowSeparator
+
+                            settingsInputRow(label: String(localized: "Email")) {
+                                TextField("you@example.com", text: $authorEmail)
+                                    .font(TideFont.mono(14, relativeTo: .subheadline))
+                                    .multilineTextAlignment(.trailing)
+                                    .autocorrectionDisabled()
+                                    .textInputAutocapitalization(.never)
+                                    .foregroundStyle(Tide.ink)
                             }
                         }
 
@@ -323,62 +191,81 @@ struct SettingsView: View {
                             NavigationLink {
                                 DebugLogView()
                             } label: {
-                                HStack {
-                                    Text(String(localized: "View Debug Log").uppercased())
-                                        .bType(.monoCaption)
-                                        .foregroundStyle(Color.brutalText)
-                                        .tracking(1)
+                                HStack(spacing: 10) {
+                                    Text("Debug log")
+                                        .font(TideFont.body)
+                                        .foregroundStyle(Tide.ink)
                                     Spacer()
                                     logCountBadge
                                     Image(systemName: "chevron.right")
-                                        .bType(.monoCaption, weight: .semibold)
-                                        .foregroundStyle(Color.brutalTextFaint)
+                                        .font(.system(size: 12, weight: .semibold))
+                                        .foregroundStyle(Tide.inkFaint)
+                                        .accessibilityHidden(true)
                                 }
-                                .padding(.horizontal, 16)
-                                .padding(.vertical, 13)
+                                .padding(.horizontal, 18)
                                 // Full-row link, ≥44pt-tall hit target.
-                                .frame(minHeight: 44)
+                                .frame(maxWidth: .infinity, minHeight: 52)
                                 .contentShape(Rectangle())
                             }
                             .buttonStyle(.plain)
                         }
 
-                        // Remove / Delete
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text(String(localized: "Removing from GitSync.md keeps the files on this device."))
-                                .bType(.monoCaption, weight: .regular)
-                                .foregroundStyle(Color.brutalText)
+                        // Stop tracking / Remove / Delete
+                        VStack(spacing: 8) {
+                            if repo?.isCloned == true {
+                                Button {
+                                    showStopTracking = true
+                                } label: {
+                                    Text(String(localized: "Stop tracking — keep files"))
+                                        .font(TideFont.sans(15, .medium, relativeTo: .subheadline))
+                                        .foregroundStyle(Tide.ink)
+                                        .frame(maxWidth: .infinity, minHeight: 50)
+                                        .background(Capsule().fill(Tide.card))
+                                        .contentShape(Capsule())
+                                }
+                                .buttonStyle(.plain)
+                                .accessibilityHint(String(localized: "Removes Git from the folder and keeps your notes"))
+                            }
 
-                            BDestructiveButton(title: String(localized: "Remove from GitSync.md")) {
+                            BSecondaryButton(title: String(localized: "Remove from GitSync.md — keep files")) {
                                 showRemoveConfirm = true
                             }
 
                             if canDeleteLocalFiles {
-                                BDestructiveButton(title: String(localized: "Delete Local Files")) {
+                                Button(role: .destructive) {
                                     showDeleteFilesConfirm = true
+                                } label: {
+                                    Text("Remove & delete local files…")
+                                        .font(TideFont.sans(15, .medium, relativeTo: .subheadline))
+                                        .foregroundStyle(Tide.danger)
+                                        .frame(maxWidth: .infinity, minHeight: 50)
+                                        .background(Capsule().strokeBorder(Tide.danger.opacity(0.3), lineWidth: 1))
+                                        .contentShape(Capsule())
                                 }
+                                .buttonStyle(.plain)
                             }
+
+                            Text(String(localized: "Stop tracking removes the .git folder. Removing from GitSync.md only forgets the vault; both keep your files."))
+                                .font(TideFont.mono(11))
+                                .foregroundStyle(Tide.inkFaint)
+                                .multilineTextAlignment(.center)
+                                .frame(maxWidth: .infinity)
+                                .padding(.top, 2)
                         }
-                        .padding(.horizontal, 20)
-                        .padding(.top, 8)
+                        .padding(.horizontal, Tide.gutter)
+                        .padding(.top, 26)
                     }
-                    .padding(.top, 12)
-                    .padding(.bottom, 40)
+                    .padding(.bottom, 30)
                 }
                 .scrollIndicators(.hidden)
             }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text(String(localized: "Settings").uppercased())
-                        .bType(.monoSm, weight: .black)
-                        .foregroundStyle(Color.brutalText)
-                        .tracking(3)
-                }
                 ToolbarItem(placement: .cancellationAction) {
                     Button(String(localized: "Cancel")) {
                         dismiss()
                     }
+                    .tint(Tide.ink)
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button(isSaving ? String(localized: "Saving…") : String(localized: "Save")) {
@@ -391,6 +278,7 @@ struct SettingsView: View {
                         }
                     }
                     .fontWeight(.semibold)
+                    .tint(Tide.ink)
                     .disabled(isSaving)
                 }
             }
@@ -423,7 +311,10 @@ struct SettingsView: View {
                     includeInAutomaticSync = !repo.assist.excludedFromAutomaticSync
                     assistNetworkPolicy = repo.assist.networkPolicy
                     assistPowerPolicy = repo.assist.powerPolicy
+                    isPinned = repo.isPinned
+                    displayName = repo.displayName
                 }
+                Task { await state.refreshVaultMeta(repoID: repoID, forceLFS: true) }
                 if FeatureFlags.gitSyncAssistEnabled {
                     Task { await premiumRuntime.prepareForSettings() }
                 }
@@ -433,6 +324,12 @@ struct SettingsView: View {
                 dismiss()
             }
             #endif
+            .sheet(isPresented: $showStopTracking, onDismiss: {
+                // Stopping tracking unregisters the vault; close its settings too.
+                if repo == nil { dismiss() }
+            }) {
+                if let repo { RemoveGitTrackingView(repo: repo) } else { RemoveGitTrackingView() }
+            }
             .alert("Remove from GitSync.md?", isPresented: $showRemoveConfirm) {
                 Button("Cancel", role: .cancel) {}
                 Button("Remove", role: .destructive) {
@@ -449,14 +346,20 @@ struct SettingsView: View {
             } message: {
                 Text("This will permanently delete:\n\(repoPathForConfirmation)\n\nThis cannot be undone.")
             }
-            .fileImporter(
-                isPresented: $showMoveLocationPicker,
-                allowedContentTypes: [.folder],
-                allowsMultipleSelection: false
-            ) { result in
-                if case .success(let urls) = result, let url = urls.first {
-                    moveVault(to: url)
+            .fileImporter(isPresented: $showReauthorizePicker, allowedContentTypes: [.folder]) { (result: Result<URL, Error>) in
+                do {
+                    try state.reauthorizeVaultLocation(result.get(), for: repoID)
+                } catch let error as CocoaError where error.code == .userCancelled {
+                    // Cancelling the native picker is not a failed recovery.
+                } catch {
+                    reauthorizeError = error.localizedDescription
+                    showReauthorizeError = true
                 }
+            }
+            .alert("Reauthorization Failed", isPresented: $showReauthorizeError) {
+                Button("OK", role: .cancel) {}
+            } message: {
+                Text(reauthorizeError ?? String(localized: "Unknown error"))
             }
             .alert("Move Failed", isPresented: $showMoveError) {
                 Button("OK", role: .cancel) {}
@@ -471,137 +374,452 @@ struct SettingsView: View {
         }
     }
 
+    // MARK: - Header & health
+
+    private var header: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            if !repoIdentifier.isEmpty {
+                Text(repoIdentifier)
+                    .font(TideFont.meta)
+                    .foregroundStyle(Tide.inkFaint)
+                    .lineLimit(1)
+                    .truncationMode(.middle)
+            }
+            Text(String(localized: "Vault settings"))
+                .tideDisplay(34)
+                .accessibilityAddTraits(.isHeader)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    private func healthCard(_ repo: RepoConfig) -> some View {
+        VStack(alignment: .leading, spacing: 0) {
+            HStack {
+                Text("Health")
+                    .font(TideFont.sans(16, .semibold, relativeTo: .headline))
+                    .foregroundStyle(Tide.ink)
+                    .accessibilityAddTraits(.isHeader)
+                Spacer()
+                if FeatureFlags.gitSyncAssistEnabled {
+                    healthBadge(repo.assist.health)
+                }
+            }
+
+            HStack(spacing: 8) {
+                let meta = state.vaultMetaByRepo[repoID]
+                statTile(value: meta?.trackedFileCount.map(String.init) ?? "—", label: String(localized: "files"))
+                let lfsBytes = meta?.lfsBytes ?? 0
+                statTile(
+                    value: lfsBytes > 0 ? ByteCountFormatter.string(fromByteCount: lfsBytes, countStyle: .file) : "—",
+                    label: String(localized: "LFS")
+                )
+                let errors = RepoErrorJournal.count(repoID: repoID)
+                statTile(value: "\(errors)", label: String(localized: "errors · 7d"), tint: errors > 0 ? Tide.danger : Tide.ink)
+            }
+            .padding(.top, 14)
+
+            // A fetch counts as contact with the remote even before the first full sync.
+            let lastContact = max(repo.gitState.lastSyncDate, state.vaultMetaByRepo[repoID]?.lastFetchDate ?? .distantPast)
+            Text(String(localized: "commit \(String(repo.gitState.commitSHA.prefix(7))) · synced \(shortRelativeDate(lastContact))"))
+                .font(TideFont.mono(11))
+                .foregroundStyle(Tide.inkFaint)
+                .padding(.top, 12)
+
+            if FeatureFlags.gitSyncAssistEnabled, let date = repo.assist.health.lastAttemptDate {
+                Text("Last sync attempt \(relativeDate(date))")
+                    .font(TideFont.mono(11))
+                    .foregroundStyle(Tide.inkFaint)
+                    .padding(.top, 4)
+            }
+        }
+        .padding(.horizontal, 18)
+        .padding(.vertical, 16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(RoundedRectangle(cornerRadius: Tide.radiusCard, style: .continuous).fill(Tide.card))
+    }
+
+    private func statTile(value: String, label: String, mono: Bool = false, tint: Color = Tide.ink) -> some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(value)
+                .font(mono ? TideFont.mono(16, .semibold, relativeTo: .title3)
+                           : TideFont.sans(20, .semibold, relativeTo: .title3))
+                .tracking(mono ? 0 : -0.6)
+                .foregroundStyle(tint)
+                .lineLimit(1)
+                .minimumScaleFactor(0.6)
+                .frame(minHeight: 26, alignment: .leading)
+            Text(label)
+                .font(TideFont.mono(10.5))
+                .foregroundStyle(Tide.inkFaint)
+                .lineLimit(1)
+        }
+        .padding(.horizontal, 12)
+        .padding(.vertical, 10)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(RoundedRectangle(cornerRadius: 14, style: .continuous).fill(Tide.paper))
+        .accessibilityElement(children: .combine)
+    }
+
+    private func healthBadge(_ health: RepoAssistHealth) -> some View {
+        let tint: Color
+        let icon: String?
+        switch health.kind {
+        case .updated, .upToDate: tint = Tide.synced; icon = "checkmark"
+        case .attention: tint = Tide.ahead; icon = "exclamationmark"
+        case .failed: tint = Tide.danger; icon = "xmark"
+        case .never, .deferred: tint = Tide.inkMid; icon = nil
+        }
+        return HStack(spacing: 5) {
+            if let icon {
+                Image(systemName: icon)
+                    .font(.system(size: 11, weight: .bold))
+                    .accessibilityHidden(true)
+            }
+            Text(assistHealthTitle(health))
+                .font(TideFont.metaStrong)
+        }
+        .foregroundStyle(tint)
+        .accessibilityElement(children: .combine)
+    }
+
+    // MARK: - This vault
+
+    private var thisVaultSection: some View {
+        settingsSection(title: String(localized: "This vault")) {
+            Toggle(isOn: $isPinned) {
+                Text("Pin to top of Home")
+                    .font(TideFont.body)
+                    .foregroundStyle(Tide.ink)
+            }
+            .tint(Tide.synced)
+            .padding(.horizontal, 18)
+            .frame(minHeight: 56)
+
+            rowSeparator
+
+            settingsInputRow(label: String(localized: "Display name")) {
+                TextField(repo?.repoName ?? "", text: $displayName)
+                    .font(TideFont.sans(15, relativeTo: .subheadline))
+                    .multilineTextAlignment(.trailing)
+                    .autocorrectionDisabled()
+                    .foregroundStyle(Tide.ink)
+                    .submitLabel(.done)
+            }
+
+            rowSeparator
+
+            NavigationLink {
+                VaultFolderScreen(repoID: repoID, onMove: moveVault(to:))
+            } label: {
+                HStack(spacing: 12) {
+                    Text("Folder")
+                        .font(TideFont.body)
+                        .foregroundStyle(Tide.ink)
+                    Spacer(minLength: 8)
+                    Text(state.vaultFolderBreadcrumb(repoID: repoID).joined(separator: " › "))
+                        .font(TideFont.sans(14, relativeTo: .subheadline))
+                        .foregroundStyle(Tide.inkMid)
+                        .lineLimit(1)
+                        .truncationMode(.head)
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundStyle(Tide.inkFaint)
+                        .accessibilityHidden(true)
+                }
+                .padding(.horizontal, 18)
+                .frame(maxWidth: .infinity, minHeight: 52)
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+
+            if state.isUsingCustomLocation(for: repoID) {
+                rowSeparator
+                reauthorizationControls
+            }
+        }
+    }
+
+    private var reauthorizationControls: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Button { showReauthorizePicker = true } label: {
+                Label(String(localized: "Reauthorize Folder"), systemImage: "folder.badge.questionmark")
+                    .font(TideFont.body)
+                    .foregroundStyle(Tide.ink)
+                    .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
+                    .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .disabled(isSaving || state.isSyncing)
+            .accessibilityIdentifier("repository.reauthorizeFolder")
+            .accessibilityHint("Select the original folder, or the original parent folder used for cloning or discovery. No files will be moved or cloned.")
+            Text("Select the original folder (or the original parent used for cloning or discovery). This only renews access; it does not move, delete, or clone files.")
+                .font(TideFont.sans(13, relativeTo: .footnote))
+                .foregroundStyle(Tide.inkMid)
+        }
+        .padding(.horizontal, 18)
+        .padding(.vertical, 12)
+    }
+
+    // MARK: - Background Sync
+
+    private var backgroundSyncSection: some View {
+        settingsSection(title: String(localized: "Background Sync")) {
+            Toggle(isOn: $includeInAutomaticSync) {
+                Text("Include in Background Sync")
+                    .font(TideFont.body)
+                    .foregroundStyle(Tide.ink)
+            }
+            .tint(Tide.synced)
+            .padding(.horizontal, 18)
+            .frame(minHeight: 56)
+
+            if !premiumRuntime.automaticallySyncAllRepositories {
+                Text("Background Sync is off. This inclusion choice is saved and will apply the next time you enable it in App Settings → Background Sync.")
+                    .font(TideFont.sans(12.5, relativeTo: .footnote))
+                    .foregroundStyle(Tide.inkMid)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, 18)
+                    .padding(.bottom, 14)
+            }
+
+            rowSeparator
+
+            pickerRow(label: String(localized: "Network")) {
+                Picker("Network", selection: $assistNetworkPolicy) {
+                    Text("Any connection").tag(RepoAssistNetworkPolicy.any)
+                    Text("Wi-Fi only").tag(RepoAssistNetworkPolicy.wifiOnly)
+                }
+            }
+
+            rowSeparator
+
+            pickerRow(label: String(localized: "Power")) {
+                Picker("Power", selection: $assistPowerPolicy) {
+                    Text("Any power state").tag(RepoAssistPowerPolicy.any)
+                    Text("External power only").tag(RepoAssistPowerPolicy.externalPowerOnly)
+                }
+            }
+
+            if let assist = repo?.assist {
+                rowSeparator
+                VStack(alignment: .leading, spacing: 5) {
+                    HStack {
+                        Text("Status")
+                            .font(TideFont.body)
+                            .foregroundStyle(Tide.ink)
+                        Spacer()
+                        Text(assistInclusionTitle(assist))
+                            .font(TideFont.mono(12, .semibold))
+                            .foregroundStyle(Tide.inkMid)
+                    }
+                    if let message = assist.enrollmentMessage {
+                        Text(message)
+                            .font(TideFont.sans(12.5, relativeTo: .footnote))
+                            .foregroundStyle(Tide.inkMid)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                    Text("Health: \(assistHealthTitle(assist.health))")
+                        .font(TideFont.mono(11))
+                        .foregroundStyle(Tide.inkFaint)
+                    if let message = assist.health.message {
+                        Text(message)
+                            .font(TideFont.sans(12.5, relativeTo: .footnote))
+                            .foregroundStyle(Tide.inkMid)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                    Button {
+                        Task {
+                            isManagingAssist = true
+                            await premiumRuntime.reconcileNow()
+                            isManagingAssist = false
+                        }
+                    } label: {
+                        Text("Sync now")
+                            .font(TideFont.sans(14, .semibold, relativeTo: .subheadline))
+                            .foregroundStyle(Tide.ink)
+                            .padding(.horizontal, 16)
+                            .frame(minWidth: 44, minHeight: 40)
+                            .background(Capsule().strokeBorder(Color.brutalBorderSoft, lineWidth: 1))
+                            .frame(minHeight: 44)
+                            .contentShape(Capsule())
+                    }
+                    .buttonStyle(.plain)
+                    .disabled(isManagingAssist || !premiumRuntime.automaticallySyncAllRepositories)
+                    .opacity(isManagingAssist || !premiumRuntime.automaticallySyncAllRepositories ? 0.4 : 1)
+                    .padding(.top, 6)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal, 18)
+                .padding(.vertical, 14)
+            }
+
+            rowSeparator
+
+            Text("Uses this repository's configured branch and the installation's independent automatic-pull and automatic-push choices. Pulls stay clean fast-forwards. Push-only mode validates remote state without updating the worktree. Publishing may stage, commit, and push local edits only after separate consent. Concurrent remote edits, divergence, authentication/trust requirements, or the wrong branch stop automation.")
+                .font(TideFont.sans(12.5, relativeTo: .footnote))
+                .foregroundStyle(Tide.inkMid)
+                .lineSpacing(2)
+                .fixedSize(horizontal: false, vertical: true)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal, 18)
+                .padding(.vertical, 14)
+        }
+    }
+
+    private func pickerRow<P: View>(label: String, @ViewBuilder picker: () -> P) -> some View {
+        HStack(spacing: 12) {
+            Text(label)
+                .font(TideFont.body)
+                .foregroundStyle(Tide.ink)
+            Spacer(minLength: 8)
+            picker()
+                .labelsHidden()
+                .pickerStyle(.menu)
+                .tint(Tide.inkMid)
+        }
+        .padding(.leading, 18)
+        .padding(.trailing, 8)
+        .frame(minHeight: 52)
+    }
+
     // MARK: - Authentication
 
     private var authenticationSection: some View {
         let isSSH = parsedRemote?.isSSH == true
 
         return settingsSection(title: String(localized: "Authentication")) {
-            VStack(spacing: 0) {
-                if canUseGitHubPAT && state.isSignedIn {
-                    authOption(
-                        method: .gitHubPAT,
-                        icon: "🐙",
-                        title: String(localized: "GitHub Account"),
-                        subtitle: String(localized: "Use your signed-in GitHub token")
-                    )
-                    BDivider().padding(.horizontal, 16)
-                }
-
+            if canUseGitHubPAT && state.isSignedIn {
                 authOption(
-                    method: .none,
-                    icon: "🌐",
-                    title: String(localized: "No Authentication"),
-                    subtitle: isSSH ? String(localized: "Only works for public SSH remotes") : String(localized: "Public repositories and file remotes")
+                    method: .gitHubPAT,
+                    icon: "person.crop.circle",
+                    title: String(localized: "GitHub Account"),
+                    subtitle: String(localized: "Use your signed-in GitHub token")
                 )
-
-                BDivider().padding(.horizontal, 16)
-
-                authOption(
-                    method: .httpsToken,
-                    icon: "🔑",
-                    title: String(localized: "HTTPS Token / Password"),
-                    subtitle: String(localized: "GitLab, Gitea, Bitbucket, or self-hosted HTTPS")
-                )
-
-                BDivider().padding(.horizontal, 16)
-
-                authOption(
-                    method: .sshKey,
-                    icon: "🗝️",
-                    title: String(localized: "SSH Private Key"),
-                    subtitle: String(localized: "For git@host:owner/repo.git or ssh:// remotes")
-                )
-
-                authFields
+                rowSeparator
             }
+
+            authOption(
+                method: .none,
+                icon: "globe",
+                title: String(localized: "No Authentication"),
+                subtitle: isSSH ? String(localized: "Only works for public SSH remotes") : String(localized: "Public repositories and file remotes")
+            )
+
+            rowSeparator
+
+            authOption(
+                method: .httpsToken,
+                icon: "key",
+                title: String(localized: "HTTPS Token / Password"),
+                subtitle: String(localized: "GitLab, Gitea, Bitbucket, or self-hosted HTTPS")
+            )
+
+            rowSeparator
+
+            authOption(
+                method: .sshKey,
+                icon: "lock.shield",
+                title: String(localized: "SSH Private Key"),
+                subtitle: String(localized: "For git@host:owner/repo.git or ssh:// remotes")
+            )
+
+            authFields
         }
     }
 
     private func authOption(method: GitAuthMethod, icon: String, title: String, subtitle: String) -> some View {
-        Button {
+        let isSelected = authMethod == method
+        return Button {
             authMethod = method
             if method == .sshKey && authUsername.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
                 authUsername = parsedRemote?.username ?? "git"
             }
         } label: {
             HStack(spacing: 12) {
-                // Decorative provider emoji (fixed 32pt column) — fixed
-                // size per Issue #16's decorative allowance.
-                Text(icon)
-                    .font(.system(size: 18))
-                    .frame(width: 32)
+                Image(systemName: icon)
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundStyle(Tide.ink)
+                    .frame(width: 26, height: 26)
+                    .background(RoundedRectangle(cornerRadius: 8).fill(Tide.well))
+                    .accessibilityHidden(true)
 
                 VStack(alignment: .leading, spacing: 2) {
                     Text(title)
-                        .bType(.bodySm, weight: .semibold)
-                        .foregroundStyle(Color.brutalText)
+                        .font(TideFont.body)
+                        .foregroundStyle(Tide.ink)
                     Text(subtitle)
-                        .bType(.monoSm, weight: .regular)
-                        .foregroundStyle(Color.brutalText)
+                        .font(TideFont.sans(12.5, relativeTo: .footnote))
+                        .foregroundStyle(Tide.inkMid)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
 
-                Spacer()
+                Spacer(minLength: 8)
 
-                if authMethod == method {
-                    BBadge(text: String(localized: "selected"), style: .success)
+                if isSelected {
+                    Image(systemName: "checkmark")
+                        .font(.system(size: 14, weight: .bold))
+                        .foregroundStyle(Tide.synced)
+                        .accessibilityHidden(true)
                 }
             }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 14)
+            .padding(.horizontal, 18)
+            .padding(.vertical, 13)
+            .frame(maxWidth: .infinity, minHeight: 52, alignment: .leading)
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 
     @ViewBuilder
     private var authFields: some View {
         switch authMethod {
         case .gitHubPAT:
-            BDivider().padding(.horizontal, 16)
+            rowSeparator
             authHelpRow(String(localized: "Using the GitHub token from your account. Sign out or choose another method to use a different provider."))
 
         case .none:
-            BDivider().padding(.horizontal, 16)
+            rowSeparator
             authHelpRow(String(localized: "GitSync.md will not provide credentials. Choose this for public remotes or local file remotes."))
 
         case .httpsToken:
-            BDivider().padding(.horizontal, 16)
+            rowSeparator
             VStack(spacing: 0) {
                 settingsInputRow(label: String(localized: "Username")) {
                     TextField(parsedRemote?.username ?? "username", text: $authUsername)
-                        .bType(.mono, weight: .regular)
+                        .font(TideFont.mono(14, relativeTo: .subheadline))
                         .multilineTextAlignment(.trailing)
                         .autocorrectionDisabled()
                         .textInputAutocapitalization(.never)
-                        .foregroundStyle(Color.brutalText)
+                        .foregroundStyle(Tide.ink)
                 }
 
-                BDivider().padding(.horizontal, 16)
+                rowSeparator
 
                 settingsInputRow(label: String(localized: "Token")) {
                     SecureField("token or password", text: $authPassword)
-                        .bType(.mono, weight: .regular)
+                        .font(TideFont.mono(14, relativeTo: .subheadline))
                         .multilineTextAlignment(.trailing)
                         .autocorrectionDisabled()
                         .textInputAutocapitalization(.never)
-                        .foregroundStyle(Color.brutalText)
+                        .foregroundStyle(Tide.ink)
                 }
             }
 
         case .sshKey:
-            BDivider().padding(.horizontal, 16)
+            rowSeparator
             VStack(spacing: 0) {
                 settingsInputRow(label: String(localized: "SSH User")) {
                     TextField(parsedRemote?.username ?? "git", text: $authUsername)
-                        .bType(.mono, weight: .regular)
+                        .font(TideFont.mono(14, relativeTo: .subheadline))
                         .multilineTextAlignment(.trailing)
                         .autocorrectionDisabled()
                         .textInputAutocapitalization(.never)
-                        .foregroundStyle(Color.brutalText)
+                        .foregroundStyle(Tide.ink)
                 }
 
-                BDivider().padding(.horizontal, 16)
+                rowSeparator
 
                 multilineSecretField(
                     label: String(localized: "Private Key"),
@@ -610,18 +828,18 @@ struct SettingsView: View {
                     footer: String(localized: "Stored in Keychain. Paste an OpenSSH private key; passphrase is optional.")
                 )
 
-                BDivider().padding(.horizontal, 16)
+                rowSeparator
 
                 settingsInputRow(label: String(localized: "Passphrase")) {
                     SecureField("optional", text: $sshPassphrase)
-                        .bType(.mono, weight: .regular)
+                        .font(TideFont.mono(14, relativeTo: .subheadline))
                         .multilineTextAlignment(.trailing)
                         .autocorrectionDisabled()
                         .textInputAutocapitalization(.never)
-                        .foregroundStyle(Color.brutalText)
+                        .foregroundStyle(Tide.ink)
                 }
 
-                BDivider().padding(.horizontal, 16)
+                rowSeparator
 
                 multilineSecretField(
                     label: String(localized: "Public Key"),
@@ -636,35 +854,40 @@ struct SettingsView: View {
     private func authHelpRow(_ message: String) -> some View {
         HStack(alignment: .top, spacing: 8) {
             Image(systemName: "info.circle")
-                .bType(.monoCaption, weight: .regular)
-                .foregroundStyle(Color.brutalText)
+                .font(.system(size: 13, weight: .medium))
+                .foregroundStyle(Tide.inkFaint)
+                .padding(.top, 1)
+                .accessibilityHidden(true)
             Text(message)
-                .bType(.monoSm, weight: .regular)
-                .foregroundStyle(Color.brutalText)
-            Spacer()
+                .font(TideFont.sans(12.5, relativeTo: .footnote))
+                .foregroundStyle(Tide.inkMid)
+                .fixedSize(horizontal: false, vertical: true)
+            Spacer(minLength: 0)
         }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 12)
+        .padding(.horizontal, 18)
+        .padding(.vertical, 14)
     }
 
     private func multilineSecretField(label: String, text: Binding<String>, minHeight: CGFloat, footer: String) -> some View {
-        VStack(alignment: .leading, spacing: 6) {
-            Text(label.uppercased())
-                .bType(.monoCaption, weight: .medium)
-                .foregroundStyle(Color.brutalText)
-                .tracking(1)
+        VStack(alignment: .leading, spacing: 8) {
+            Text(label)
+                .font(TideFont.body)
+                .foregroundStyle(Tide.ink)
             TextEditor(text: text)
-                .bType(.monoSm, weight: .regular)
+                .font(TideFont.mono(12, relativeTo: .footnote))
+                .foregroundStyle(Tide.ink)
                 .frame(minHeight: minHeight)
                 .scrollContentBackground(.hidden)
                 .padding(8)
-                .background(Color.brutalSurface)
-                .overlay(Rectangle().strokeBorder(Color.brutalBorder, lineWidth: 1))
+                .background(RoundedRectangle(cornerRadius: 14, style: .continuous).fill(Tide.paper))
+                .overlay(RoundedRectangle(cornerRadius: 14, style: .continuous).strokeBorder(Tide.line, lineWidth: 1))
+                .accessibilityLabel(label)
             Text(footer)
-                .bType(.monoCaption, weight: .regular)
-                .foregroundStyle(Color.brutalText)
+                .font(TideFont.sans(12, relativeTo: .caption))
+                .foregroundStyle(Tide.inkFaint)
         }
-        .padding(16)
+        .padding(.horizontal, 18)
+        .padding(.vertical, 14)
     }
 
     private func moveVault(to url: URL) {
@@ -701,55 +924,70 @@ struct SettingsView: View {
 
     private func settingsSection<Content: View>(title: String, @ViewBuilder content: () -> Content) -> some View {
         VStack(alignment: .leading, spacing: 8) {
-            BSectionHeader(title: title)
+            TideSectionLabel(title: title)
+                .accessibilityAddTraits(.isHeader)
                 .padding(.horizontal, 20)
 
-            BCard(padding: 0) {
+            VStack(spacing: 0) {
                 content()
             }
-            .padding(.horizontal, 20)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(RoundedRectangle(cornerRadius: Tide.radiusCard, style: .continuous).fill(Tide.card))
+            .clipShape(RoundedRectangle(cornerRadius: Tide.radiusCard, style: .continuous))
+            .padding(.horizontal, Tide.gutter)
         }
+        .padding(.top, 18)
+    }
+
+    /// Hairline between rows inside a grouped card.
+    private var rowSeparator: some View {
+        Rectangle().fill(Tide.line).frame(height: 1).padding(.horizontal, 18)
     }
 
     private func settingsFieldRow<Content: View>(label: String, @ViewBuilder content: () -> Content) -> some View {
-        HStack {
-            Text(label.uppercased())
-                .bType(.monoCaption, weight: .medium)
-                .foregroundStyle(Color.brutalText)
-                .tracking(1)
-            Spacer()
+        HStack(spacing: 12) {
+            Text(label)
+                .font(TideFont.body)
+                .foregroundStyle(Tide.ink)
+            Spacer(minLength: 8)
             content()
         }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 13)
+        .padding(.horizontal, 18)
+        .frame(minHeight: 52)
     }
 
     private func settingsInputRow<Content: View>(label: String, @ViewBuilder content: () -> Content) -> some View {
-        HStack {
-            Text(label.uppercased())
-                .bType(.monoCaption, weight: .medium)
-                .foregroundStyle(Color.brutalText)
-                .tracking(1)
-            Spacer()
+        HStack(spacing: 12) {
+            Text(label)
+                .font(TideFont.body)
+                .foregroundStyle(Tide.ink)
+            Spacer(minLength: 8)
             content()
-                .frame(width: 160)
+                .frame(maxWidth: 200)
         }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 13)
+        .padding(.horizontal, 18)
+        .frame(minHeight: 52)
     }
 
     @ViewBuilder
     private var logCountBadge: some View {
         let errorCount = DebugLogger.shared.entries.filter { $0.level == .error }.count
         if errorCount > 0 {
-            Text("\(errorCount)")
-                .bType(.monoCaption)
-                .foregroundStyle(Color.brutalError)
-                .padding(.horizontal, 6)
-                .padding(.vertical, 2)
-                .background(Color.brutalError.opacity(0.12))
-                .overlay(Rectangle().strokeBorder(Color.brutalError.opacity(0.3), lineWidth: 1))
+            BBadge(text: "\(errorCount)", style: .error)
+                .accessibilityLabel(String(localized: "\(errorCount) errors"))
+        } else {
+            Text(String(localized: "\(DebugLogger.shared.entries.count) entries"))
+                .font(TideFont.mono(12))
+                .foregroundStyle(Tide.inkMid)
         }
+    }
+
+    private func shortRelativeDate(_ date: Date) -> String {
+        if date == .distantPast { return String(localized: "never") }
+        if date.timeIntervalSinceNow > -60 { return String(localized: "now") }
+        let fmt = RelativeDateTimeFormatter()
+        fmt.unitsStyle = .abbreviated
+        return fmt.localizedString(for: date, relativeTo: Date())
     }
 
     // MARK: - Helpers
@@ -874,6 +1112,14 @@ struct SettingsView: View {
             return showValidation(String(localized: "Please enter a valid Git remote URL."))
         }
 
+        if let issue = GitBranchName.validationMessage(trimmedBranch.isEmpty ? "main" : trimmedBranch) {
+            return showValidation(issue)
+        }
+
+        if let identityIssue = GitIdentityValidation.nameIssue(trimmedName) ?? GitIdentityValidation.emailIssue(trimmedEmail) {
+            return showValidation(identityIssue)
+        }
+
         if authMethod == .gitHubPAT && (!canUseGitHubPAT || !state.isSignedIn) {
             return showValidation(String(localized: "GitHub Account authentication is only available for GitHub HTTPS repositories while signed in."))
         }
@@ -919,7 +1165,9 @@ struct SettingsView: View {
         }
         // Persist repository configuration and local policy first. Relay
         // reconciliation observes only the completed local state.
+        state.setCustomDisplayName(displayName, repoID: repoID)
         state.updateRepo(id: repoID) { repo in
+            repo.isPinned = isPinned
             repo.assist.selectedBranch = trimmedBranch.isEmpty ? "main" : trimmedBranch
             repo.assist.networkPolicy = assistNetworkPolicy
             repo.assist.powerPolicy = assistPowerPolicy

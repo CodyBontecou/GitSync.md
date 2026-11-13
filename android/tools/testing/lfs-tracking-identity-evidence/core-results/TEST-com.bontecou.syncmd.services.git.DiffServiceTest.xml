@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.git.DiffServiceTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-11-02T19:08:30" hostname="MacBook-Pro.local" time="0.456">
+  <properties/>
+  <testcase name="commit with message commits staged files" classname="com.bontecou.syncmd.services.git.DiffServiceTest" time="0.076"/>
+  <testcase name="getStatus returns modified files" classname="com.bontecou.syncmd.services.git.DiffServiceTest" time="0.074"/>
+  <testcase name="getStatus returns empty list for clean repository" classname="com.bontecou.syncmd.services.git.DiffServiceTest" time="0.075"/>
+  <testcase name="stageFile and unstageFile toggle file status" classname="com.bontecou.syncmd.services.git.DiffServiceTest" time="0.073"/>
+  <testcase name="getFileDiff returns diff for specific file" classname="com.bontecou.syncmd.services.git.DiffServiceTest" time="0.078"/>
+  <testcase name="stageAll stages all modified files" classname="com.bontecou.syncmd.services.git.DiffServiceTest" time="0.08"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

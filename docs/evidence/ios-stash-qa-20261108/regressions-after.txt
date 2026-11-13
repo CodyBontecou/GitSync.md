@@ -1,0 +1,11 @@
+Test Case '-[SyncMDTests.SyncMDTests testAppStateDropStashDelegatesToGitRepository]' started.
+Test Case '-[SyncMDTests.SyncMDTests testAppStateDropStashDelegatesToGitRepository]' passed (0.024 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testMissingDisplayedStashCannotMutateReplacement]' started.
+Test Case '-[SyncMDTests.SyncMDTests testMissingDisplayedStashCannotMutateReplacement]' passed (0.049 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testStashActionsFollowDisplayedIdentityAfterExternalInsertion]' started.
+Test Case '-[SyncMDTests.SyncMDTests testStashActionsFollowDisplayedIdentityAfterExternalInsertion]' passed (0.015 seconds).
+	 Executed 3 tests, with 0 failures (0 unexpected) in 0.088 (0.104) seconds
+	 Executed 3 tests, with 0 failures (0 unexpected) in 0.088 (0.105) seconds
+	 Executed 3 tests, with 0 failures (0 unexpected) in 0.088 (0.106) seconds
+	/tmp/gitsync-ios-navigation-fixes/Logs/Test/Test-Sync.md-2026.11.08_09-11-55--0400.xcresult
+** TEST SUCCEEDED **

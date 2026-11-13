@@ -1,0 +1,729 @@
+{
+ "reviewed": [
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/automation/BackgroundCallbackDelivery.kt",
+   "text": "Too many callback requests",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/automation/PullAllBackgroundRuns.kt",
+   "text": "Could not save Pull All summary",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/automation/PullAllBackgroundRuns.kt",
+   "text": "Pull All is already running",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/automation/PullAllBackgroundRuns.kt",
+   "text": "Saved Pull All summary is incompatible and was preserved",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/automation/PullAllBackgroundRuns.kt",
+   "text": "Stop Pull All before clearing its summary",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/automation/PullAllBackgroundRuns.kt",
+   "text": "Unsupported summary value",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/automation/PullAllCatalog.kt",
+   "text": "Reconnect the original repository folder",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/automation/PullAllCatalog.kt",
+   "text": "Repository settings need repair",
+   "count": 2
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/automation/RepositoryCallbackGrants.kt",
+   "text": "Authorization could not be saved",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/automation/RepositoryCallbackGrants.kt",
+   "text": "Authorization data is incompatible and was preserved",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/automation/RepositoryCallbackGrants.kt",
+   "text": "Authorization is unavailable",
+   "count": 2
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/automation/RepositoryCallbackGrants.kt",
+   "text": "Authorized links changed. Refresh before making changes.",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/automation/RepositoryCallbackGrants.kt",
+   "text": "Authorized links could not be reset",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/automation/RepositoryCallbackGrants.kt",
+   "text": "Background results return only after a notification tap",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/automation/RepositoryCallbackGrants.kt",
+   "text": "Cannot identify the moved repository",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/automation/RepositoryCallbackGrants.kt",
+   "text": "Review the current repository again",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/automation/RepositoryCallbackGrants.kt",
+   "text": "Unsupported saved authorization value",
+   "count": 2
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/automation/RepositoryShortcutRunService.kt",
+   "text": "Background execution was not authorized",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/automation/RepositoryShortcutRuns.kt",
+   "text": "A shortcut is still running",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/automation/RepositoryShortcutRuns.kt",
+   "text": "Could not save shortcut execution",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/automation/RepositoryShortcutRuns.kt",
+   "text": "Shortcut execution is unavailable",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/automation/RepositoryShortcutService.kt",
+   "text": "Reconnect this repository's GitHub account",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/automation/RepositoryShortcutService.kt",
+   "text": "Review the current repository before creating a shortcut",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/automation/RepositoryShortcutService.kt",
+   "text": "Shortcut authorization is inactive",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/automation/RepositoryShortcutService.kt",
+   "text": "The shortcut account assignment changed",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/automation/RepositoryShortcutService.kt",
+   "text": "Verify the GitHub account before continuing",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/automation/RepositoryShortcutStore.kt",
+   "text": "Cannot identify the moved repository",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/automation/RepositoryShortcutStore.kt",
+   "text": "Could not save shortcut authorization",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/automation/RepositoryShortcutStore.kt",
+   "text": "Remove unused shortcut authorizations before adding more",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/automation/RepositoryShortcutStore.kt",
+   "text": "Shortcut authorization is incompatible; its saved record was preserved",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/automation/RepositoryShortcutStore.kt",
+   "text": "Shortcut authorization is unavailable",
+   "count": 3
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/automation/RepositoryShortcutStore.kt",
+   "text": "Shortcut recovery could not be saved",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/background/BackgroundSyncBackend.kt",
+   "text": "Repository changed. Review it again.",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/background/BackgroundSyncStore.kt",
+   "text": "Background Sync data changed. Reload first.",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/background/BackgroundSyncStore.kt",
+   "text": "Background Sync settings changed",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/background/BackgroundSyncStore.kt",
+   "text": "Background Sync settings need storage recovery",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/background/BackgroundSyncStore.kt",
+   "text": "Could not reset Background Sync settings",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/background/BackgroundSyncStore.kt",
+   "text": "Could not save Background Sync settings",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/background/BackgroundSyncStore.kt",
+   "text": "Invalid preferences value",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/observation/RepositoryObservations.kt",
+   "text": "Directory identity unavailable",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/observation/RepositoryObservations.kt",
+   "text": "Folder identity unavailable",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/obsidian/ObsidianConnections.kt",
+   "text": "Could not save connection",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/obsidian/ObsidianConnections.kt",
+   "text": "Invalid preparation fingerprint",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/obsidian/ObsidianConnections.kt",
+   "text": "The moved Git metadata changed; review its Obsidian connection",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/obsidian/ObsidianConnections.kt",
+   "text": "Unknown connection",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/onboarding/AppGuideStore.kt",
+   "text": "Could not save app guide progress",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/push/FirebasePushPlatform.kt",
+   "text": "Notification registration unavailable",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/push/FirebasePushPlatform.kt",
+   "text": "Push unavailable",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/push/PushStateStore.kt",
+   "text": "Push preferences could not be saved",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/push/PushSyncBackend.kt",
+   "text": "Expired notification",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/push/PushSyncBackend.kt",
+   "text": "GitHub connection is not ready",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/push/PushSyncBackend.kt",
+   "text": "Notification registration unavailable",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/push/PushSyncBackend.kt",
+   "text": "Pull needs retry",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/push/PushSyncBackend.kt",
+   "text": "Push consent changed",
+   "count": 3
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/push/PushSyncBackend.kt",
+   "text": "Push registration unavailable",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/push/PushSyncBackend.kt",
+   "text": "Push service unavailable",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/push/PushSyncJobs.kt",
+   "text": "Missing event",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/security/GitHubAccounts.kt",
+   "text": "Account reference needs repair",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/security/LfsEndpointStore.kt",
+   "text": "Could not persist LFS endpoint approvals",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/security/LfsEndpointStore.kt",
+   "text": "LFS endpoint approval is too large",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/security/LfsEndpointStore.kt",
+   "text": "SSH authorization review requires an SSH remote and HTTP LFS endpoint",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/security/LfsEndpointStore.kt",
+   "text": "Saved LFS endpoint approvals cannot be opened. Reset them in Settings.",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/security/SshHostKeyStore.kt",
+   "text": "Could not persist SSH server trust",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/security/SshHostKeyStore.kt",
+   "text": "Could not persist the SSH trust change",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/services/github/GitHubAuthManager.kt",
+   "text": "Account is disconnected",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/services/github/GitHubAuthManager.kt",
+   "text": "Account is unavailable",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/services/github/GitHubAuthManager.kt",
+   "text": "Legacy GitHub credentials could not be removed. Retry secure storage.",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/services/github/GitHubAuthManager.kt",
+   "text": "Secure GitHub migration could not be verified",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/services/github/GitHubAuthManager.kt",
+   "text": "Select a GitHub account",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/services/github/GitHubAuthManager.kt",
+   "text": "Sign in to GitHub",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/storage/RepositoryMoveMetadata.kt",
+   "text": "Repository move review changed. Review the destination again before moving it.",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/components/BranchDialog.kt",
+   "text": "HEAD",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/components/BranchList.kt",
+   "text": "${branch.lastCommit?.take(7)} · ${branch.lastCommitMessage}",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/components/CommitItem.kt",
+   "text": "Daily note\\n\\nWritten on the train.",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/components/CommitList.kt",
+   "text": "Daily note",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/components/CommitList.kt",
+   "text": "Reorganise ideas",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/components/FolderLocationField.kt",
+   "text": "HTTPS, SSH, git:// or file://.",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/components/RebaseQuantities.kt",
+   "text": "$localText · $upstreamText",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/components/RepositoryOverviewRow.kt",
+   "text": "$label: $value",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/components/StashList.kt",
+   "text": "Before the big rename",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/components/TagList.kt",
+   "text": "First release",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/AppTourScreen.kt",
+   "text": "GitHub",
+   "count": 2
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/AppTourScreen.kt",
+   "text": "dot$i",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/CloneScreen.kt",
+   "text": "$owner/",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/CloneScreen.kt",
+   "text": "GitHub",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/ConnectionScreen.kt",
+   "text": "${entry.remote} · $role\\n${entry.url}",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/DiagnosticsScreen.kt",
+   "text": "$count",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/DiagnosticsScreen.kt",
+   "text": "${entry.operation.label()} · ${entry.outcome.label()}",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/DiagnosticsScreen.kt",
+   "text": "No label for an absent reason",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/DiffScreen.kt",
+   "text": "+$added",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/DiffScreen.kt",
+   "text": "Could not read the index.",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/DiffScreen.kt",
+   "text": "−$removed",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/GitScreen.kt",
+   "text": "$count",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/GitScreen.kt",
+   "text": "$stagedCount/${files.size}",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/GitScreen.kt",
+   "text": "+$additions",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/GitScreen.kt",
+   "text": "Branches",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/GitScreen.kt",
+   "text": "First release",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/GitScreen.kt",
+   "text": "No local changes",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/GitScreen.kt",
+   "text": "Push rejected: fetch first",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/GitScreen.kt",
+   "text": "Stash",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/GitScreen.kt",
+   "text": "Tags",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/GitScreen.kt",
+   "text": "−$deletions",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/HistoryScreen.kt",
+   "text": "Add Nov 1 daily note",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/HistoryScreen.kt",
+   "text": "Draft speaker tagging idea",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/HistoryScreen.kt",
+   "text": "Merge draft/pipeline into main",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/HistoryScreen.kt",
+   "text": "vault backup",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/LfsFileSummary.kt",
+   "text": "$size · $cache",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/LfsScreen.kt",
+   "text": "Git LFS",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/LoginScreen.kt",
+   "text": "@$login",
+   "count": 2
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/LoginScreen.kt",
+   "text": "GitHub",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/LoginScreen.kt",
+   "text": "GitSync.md",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/PushSyncScreen.kt",
+   "text": "@${installation.login}",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/RebaseScreen.kt",
+   "text": "${plan.upstream} · ${plan.upstreamHead.take(12)}",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/RebaseScreen.kt",
+   "text": "Commit or stash all local changes before rebasing.",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/RepoPickerScreen.kt",
+   "text": "${repo.ownerLogin} · ⎇ ${repo.defaultBranch}",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/RepoPickerScreen.kt",
+   "text": "GitHub rate limit reached.",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/RepoPickerScreen.kt",
+   "text": "★ ${repo.stargazersCount}",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/RepositoryPickerIdentity.kt",
+   "text": "@$login",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/SettingsScreen.kt",
+   "text": "@${account.login} · GitHub",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/SettingsScreen.kt",
+   "text": "Language settings are unavailable on this device.",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/SshTrustScreen.kt",
+   "text": "${key.host}:${key.port}",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/VaultScreen.kt",
+   "text": "$badge",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/VaultScreen.kt",
+   "text": "$count",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/theme/BrutalDesignSystem.kt",
+   "text": "$badge",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/theme/Tide.kt",
+   "text": "$badge",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/theme/Tide.kt",
+   "text": "GitSync.md",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/theme/Tide.kt",
+   "text": "dot$i",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/util/ResumedNavigation.kt",
+   "text": "Main looper unavailable",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/util/ResumedNavigation.kt",
+   "text": "Unreachable",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/CloneViewModel.kt",
+   "text": "Clone attempt $attempt/$maxAttempts path=$localPath",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/CloneViewModel.kt",
+   "text": "Clone failed repo=$repoFullName path=$localPath message=${error?.message}",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/CloneViewModel.kt",
+   "text": "Clone request changed",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/CloneViewModel.kt",
+   "text": "Clone succeeded repo=$repoFullName path=$localPath",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/CloneViewModel.kt",
+   "text": "Cloning was interrupted. Retry or reconnect its folder.",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/CloneViewModel.kt",
+   "text": "Retrying clone after transient failure: ${error?.message}",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/CloneViewModel.kt",
+   "text": "Starting clone repo=$repoFullName url=$cloneUrl path=$localPath",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/RemoteCloneViewModel.kt",
+   "text": "No saved remote address",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/RemoteCloneViewModel.kt",
+   "text": "Saved connection changed",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/RemoteCloneViewModel.kt",
+   "text": "Saved connection changed during cloning",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/RemoteCloneViewModel.kt",
+   "text": "Saved connection is unavailable",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/RemoteCloneViewModel.kt",
+   "text": "Saved credentials changed during cloning",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/RepositoryDeletionReview.kt",
+   "text": "Repository deletion review changed. Review the clone again before deleting it.",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/ResolveLocalChangesViewModel.kt",
+   "text": "Commit message cannot be empty",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/ResolveLocalChangesViewModel.kt",
+   "text": "The selected repository changed. Review local changes again.",
+   "count": 1
+  },
+  {
+   "file": "app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/TrackingRemovalRequest.kt",
+   "text": "Tracking-removal review changed. Review the repository and backup choice again.",
+   "count": 1
+  }
+ ]
+}

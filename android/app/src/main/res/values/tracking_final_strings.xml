@@ -1,0 +1,3 @@
+<resources>
+    <string name="tracking_remove_permanent_title">Permanently remove Git history?</string>
+</resources>

@@ -1,0 +1,6 @@
+Test Case '-[SyncMDTests.SyncMDTests testAppStateAbortMergeDelegatesToGitRepository]' started.
+/Users/codybontecou/dev/gitsync.md/SyncMDTests/SyncMDTests.swift:4679: error: -[SyncMDTests.SyncMDTests testAppStateAbortMergeDelegatesToGitRepository] : XCTAssertNil failed: "PullOutcomeState(kind: Sync_md.PullOutcomeKind.diverged, message: "Merge has conflicts — tap a conflicted file to resolve", date: 2026-11-08 01:35:25 +0000)" - A successful abort must remove the stale conflict instruction
+Test Case '-[SyncMDTests.SyncMDTests testAppStateAbortMergeDelegatesToGitRepository]' failed (0.202 seconds).
+	 Executed 1 test, with 1 failure (0 unexpected) in 0.202 (0.205) seconds
+	 Executed 1 test, with 1 failure (0 unexpected) in 0.202 (0.205) seconds
+	 Executed 1 test, with 1 failure (0 unexpected) in 0.202 (0.207) seconds

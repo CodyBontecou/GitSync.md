@@ -1,0 +1,59 @@
+steps:
+  - tap:
+      text: main · syncmd-uitest-fixtures/git-tools-fixture
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: vault.reauthorizeFolder
+  - tap:
+      id: vault.reauthorizeFolder
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Vault settings
+  - tool: gesture-swipe
+    args:
+      fromX: 0.5
+      fromY: 0.85
+      toX: 0.5
+      toY: 0.3
+      durationMs: 400
+      momentum: false
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: repository.reauthorizeFolder
+  - tap:
+      text: Reauthorize Folder
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: Browse View (Picker)
+  - tap:
+      id: folder.fill
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: DOC.sidebar.item.On My iPhone
+  - tap:
+      text: Cancel
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: repository.reauthorizeFolder
+  - tap:
+      text: Cancel
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: vault.reauthorizeFolder
+executionPrerequisite: QA Home shows owned unavailable fixture after successful
+  provider round trip; fixture safely returned to isolated Documents; resume
+  inventory only.

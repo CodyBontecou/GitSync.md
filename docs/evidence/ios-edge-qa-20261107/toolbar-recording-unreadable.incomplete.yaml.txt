@@ -1,0 +1,21 @@
+steps:
+  - echo: Launch a clean local Git fixture on an isolated simulator; no account or
+      network required.
+  - launch:
+      native: bontecou.Sync-md
+      ios:
+        app: bontecou.Sync-md
+        args:
+          - -SignedOutUITest
+          - -UITestGitToolsFixture
+          - clean
+          - -AppleLanguages
+          - (en)
+          - -AppleLocale
+          - en_US
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: home.addRepository
+      timeoutMs: 10000

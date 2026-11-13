@@ -190,8 +190,8 @@ Use redacted GitHub delivery references; do not include repository identity.
 
 | Gate | URL / evidence reference | Result |
 |---|---|---|
-| Premium-aware privacy policy is live | `https://gitsyncmd.app/privacy.html` | ☐ Pass ☐ Fail |
-| Premium-aware terms are live | `https://gitsyncmd.app/terms.html` | ☐ Pass ☐ Fail |
+| Premium-aware privacy policy is live | `https://gitsync.md/privacy.html` | ☐ Pass ☐ Fail |
+| Premium-aware terms are live | `https://gitsync.md/terms.html` | ☐ Pass ☐ Fail |
 | App links open those exact pages | | ☐ Pass ☐ Fail |
 | Published content matches the reviewed local source/hash | | ☐ Pass ☐ Fail |
 

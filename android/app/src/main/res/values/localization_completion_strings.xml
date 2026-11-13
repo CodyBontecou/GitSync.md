@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="l10n_save_default_author">Could not save the default author</string>
+    <string name="l10n_save_vault_preferences">Could not save vault preferences</string>
+    <string name="l10n_unsupported_vault_preference">Unsupported vault preference</string>
+    <string name="l10n_background_unavailable">Background Sync is unavailable</string>
+    <string name="l10n_save_conditions">Could not save Background Sync conditions</string>
+    <string name="l10n_save_ssh_key">Could not save this phone’s SSH key</string>
+    <string name="l10n_save_theme">Could not save the theme</string>
+    <string name="l10n_push_local_branch">Switch to a local branch before pushing</string>
+    <string name="l10n_not_vault_file">Not a file in this vault</string>
+    <string name="l10n_vault_settings_failed">Could not update vault settings</string>
+    <string name="l10n_count">%1$d</string>
+    <string name="l10n_added_count">+%1$d</string>
+    <string name="l10n_removed_count">−%1$d</string>
+    <string name="l10n_meta_pair">%1$s · %2$s</string>
+    <string name="l10n_a11y_pair">%1$s, %2$s</string>
+    <string name="l10n_clone_preview_error">Authentication failed. Sign in again and retry.</string>
+</resources>

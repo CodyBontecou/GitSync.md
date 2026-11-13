@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "reason": "The current iOS catalog no longer matched these Android labels. Preserve the translations previously carried by the verified 847-key Android test artifact while Android continues to use the same English source. Workflow overrides enforce that source on each import.",
+  "previous_ios_catalog_sha256": "ef25055161a2bb49d2d024bd6771f24d049b26a179712afc233f092c16830b1a",
+  "catalog_sha256_at_migration": "097bf7764dbd42562147c65afa7c52a6f6cde920444fe95c9182335f191db5da",
+  "verified_android_test_apk_sha256": "6e4b625ef0e4f5b49bc51f0bcbad16d031934ee8643fc7260840264d960e10a8",
+  "artifact_member": "assets/localization_expected.json",
+  "normalization": "Adapt Swift formatter placeholders to the unchanged Android source argument positions/types; do not retranslate wording.",
+  "labels": {
+    "publication_adopt": {
+      "android_source": "Use repository",
+      "localizations_sha256": "721a4e1361654dd4729e5f9d2c8bb3a15a9eff06f249901078a984c3c85d77d3"
+    },
+    "publication_adopt_title": {
+      "android_source": "Use this repository?",
+      "localizations_sha256": "54d7697aeadaf378b4f4c9e7ef6e009a0b848ee65f29748c5fc0fe9343deeb8c"
+    },
+    "ui_dismiss_48845bff": {
+      "android_source": "Dismiss",
+      "localizations_sha256": "c4157595d6a94243464f37fc602669227304d1b64ffe8d34a42a2fff54667706"
+    },
+    "ui_reconnect_bf8a9eab": {
+      "android_source": "Reconnect",
+      "localizations_sha256": "8245ff68a97855eec359670d7abe07be26c25d58fdbb3b5b216432466cf6274f"
+    },
+    "ui_remove_git_tracking_d3e1065f": {
+      "android_source": "Remove Git tracking",
+      "localizations_sha256": "b8f874c254fe20723da172a88c84681fac821089a4cfd26a99f5442e9952d93a"
+    }
+  }
+}

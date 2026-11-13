@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Board 29 list widget: wordmark and last update, up to four vaults with status, "Pull all repositories". -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/vault_list_root" android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:padding="16dp" android:background="@drawable/widget_m3_surface">
+    <LinearLayout android:id="@+id/vault_list_header" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal" android:gravity="center_vertical">
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:importantForAccessibility="no"
+            android:text="gitsync" android:textSize="16sp" android:fontFamily="sans-serif-medium" android:textStyle="bold" android:textColor="@color/widget_m3_on" />
+        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:importantForAccessibility="no"
+            android:text=".md" android:textSize="16sp" android:fontFamily="sans-serif-medium" android:textStyle="bold" android:textColor="@color/widget_m3_primary" />
+        <TextView android:id="@+id/vault_list_updated" android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:textSize="11sp" android:fontFamily="@font/roboto_mono_regular" android:textColor="@color/widget_m3_on_var" />
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:layout_marginTop="8dp"
+        android:orientation="vertical">
+        <TextView android:id="@+id/vault_list_empty" android:layout_width="match_parent" android:layout_height="wrap_content" android:visibility="gone"
+            android:text="@string/widget_m3_no_vaults" android:textSize="14sp" android:textColor="@color/widget_m3_on_var" />
+    <LinearLayout android:id="@+id/vault_list_row_1" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="vertical" android:visibility="gone">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="40dp"
+            android:orientation="horizontal" android:gravity="center_vertical">
+            <TextView android:id="@+id/vault_list_name_1" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                android:maxLines="1" android:ellipsize="end" android:textSize="14sp" android:fontFamily="sans-serif-medium" android:textColor="@color/widget_m3_on" />
+            <TextView android:id="@+id/vault_list_ok_1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:visibility="gone"
+                android:background="@drawable/widget_m3_badge_ok" android:paddingStart="8dp" android:paddingEnd="8dp" android:paddingTop="2dp" android:paddingBottom="2dp"
+                android:text="@string/widget_m3_in_sync" android:textSize="12sp" android:fontFamily="sans-serif-medium" android:textStyle="bold" android:textColor="@color/widget_m3_on_okc" />
+            <TextView android:id="@+id/vault_list_ahead_1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:visibility="gone"
+                android:background="@drawable/widget_m3_badge_ahead" android:paddingStart="8dp" android:paddingEnd="8dp" android:paddingTop="2dp" android:paddingBottom="2dp"
+                android:textSize="12sp" android:fontFamily="@font/roboto_mono_semibold" android:textColor="@color/widget_m3_on_tc" />
+            <TextView android:id="@+id/vault_list_behind_1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:visibility="gone"
+                android:background="@drawable/widget_m3_badge_behind" android:paddingStart="8dp" android:paddingEnd="8dp" android:paddingTop="2dp" android:paddingBottom="2dp"
+                android:textSize="12sp" android:fontFamily="@font/roboto_mono_semibold" android:textColor="@color/widget_m3_on_pc" />
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout android:id="@+id/vault_list_row_2" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="vertical" android:visibility="gone">
+        <FrameLayout android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/widget_m3_outline_var" />
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="40dp"
+            android:orientation="horizontal" android:gravity="center_vertical">
+            <TextView android:id="@+id/vault_list_name_2" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                android:maxLines="1" android:ellipsize="end" android:textSize="14sp" android:fontFamily="sans-serif-medium" android:textColor="@color/widget_m3_on" />
+            <TextView android:id="@+id/vault_list_ok_2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:visibility="gone"
+                android:background="@drawable/widget_m3_badge_ok" android:paddingStart="8dp" android:paddingEnd="8dp" android:paddingTop="2dp" android:paddingBottom="2dp"
+                android:text="@string/widget_m3_in_sync" android:textSize="12sp" android:fontFamily="sans-serif-medium" android:textStyle="bold" android:textColor="@color/widget_m3_on_okc" />
+            <TextView android:id="@+id/vault_list_ahead_2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:visibility="gone"
+                android:background="@drawable/widget_m3_badge_ahead" android:paddingStart="8dp" android:paddingEnd="8dp" android:paddingTop="2dp" android:paddingBottom="2dp"
+                android:textSize="12sp" android:fontFamily="@font/roboto_mono_semibold" android:textColor="@color/widget_m3_on_tc" />
+            <TextView android:id="@+id/vault_list_behind_2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:visibility="gone"
+                android:background="@drawable/widget_m3_badge_behind" android:paddingStart="8dp" android:paddingEnd="8dp" android:paddingTop="2dp" android:paddingBottom="2dp"
+                android:textSize="12sp" android:fontFamily="@font/roboto_mono_semibold" android:textColor="@color/widget_m3_on_pc" />
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout android:id="@+id/vault_list_row_3" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="vertical" android:visibility="gone">
+        <FrameLayout android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/widget_m3_outline_var" />
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="40dp"
+            android:orientation="horizontal" android:gravity="center_vertical">
+            <TextView android:id="@+id/vault_list_name_3" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                android:maxLines="1" android:ellipsize="end" android:textSize="14sp" android:fontFamily="sans-serif-medium" android:textColor="@color/widget_m3_on" />
+            <TextView android:id="@+id/vault_list_ok_3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:visibility="gone"
+                android:background="@drawable/widget_m3_badge_ok" android:paddingStart="8dp" android:paddingEnd="8dp" android:paddingTop="2dp" android:paddingBottom="2dp"
+                android:text="@string/widget_m3_in_sync" android:textSize="12sp" android:fontFamily="sans-serif-medium" android:textStyle="bold" android:textColor="@color/widget_m3_on_okc" />
+            <TextView android:id="@+id/vault_list_ahead_3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:visibility="gone"
+                android:background="@drawable/widget_m3_badge_ahead" android:paddingStart="8dp" android:paddingEnd="8dp" android:paddingTop="2dp" android:paddingBottom="2dp"
+                android:textSize="12sp" android:fontFamily="@font/roboto_mono_semibold" android:textColor="@color/widget_m3_on_tc" />
+            <TextView android:id="@+id/vault_list_behind_3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:visibility="gone"
+                android:background="@drawable/widget_m3_badge_behind" android:paddingStart="8dp" android:paddingEnd="8dp" android:paddingTop="2dp" android:paddingBottom="2dp"
+                android:textSize="12sp" android:fontFamily="@font/roboto_mono_semibold" android:textColor="@color/widget_m3_on_pc" />
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout android:id="@+id/vault_list_row_4" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="vertical" android:visibility="gone">
+        <FrameLayout android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/widget_m3_outline_var" />
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="40dp"
+            android:orientation="horizontal" android:gravity="center_vertical">
+            <TextView android:id="@+id/vault_list_name_4" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                android:maxLines="1" android:ellipsize="end" android:textSize="14sp" android:fontFamily="sans-serif-medium" android:textColor="@color/widget_m3_on" />
+            <TextView android:id="@+id/vault_list_ok_4" android:layout_width="wrap_content" android:layout_height="wrap_content" android:visibility="gone"
+                android:background="@drawable/widget_m3_badge_ok" android:paddingStart="8dp" android:paddingEnd="8dp" android:paddingTop="2dp" android:paddingBottom="2dp"
+                android:text="@string/widget_m3_in_sync" android:textSize="12sp" android:fontFamily="sans-serif-medium" android:textStyle="bold" android:textColor="@color/widget_m3_on_okc" />
+            <TextView android:id="@+id/vault_list_ahead_4" android:layout_width="wrap_content" android:layout_height="wrap_content" android:visibility="gone"
+                android:background="@drawable/widget_m3_badge_ahead" android:paddingStart="8dp" android:paddingEnd="8dp" android:paddingTop="2dp" android:paddingBottom="2dp"
+                android:textSize="12sp" android:fontFamily="@font/roboto_mono_semibold" android:textColor="@color/widget_m3_on_tc" />
+            <TextView android:id="@+id/vault_list_behind_4" android:layout_width="wrap_content" android:layout_height="wrap_content" android:visibility="gone"
+                android:background="@drawable/widget_m3_badge_behind" android:paddingStart="8dp" android:paddingEnd="8dp" android:paddingTop="2dp" android:paddingBottom="2dp"
+                android:textSize="12sp" android:fontFamily="@font/roboto_mono_semibold" android:textColor="@color/widget_m3_on_pc" />
+        </LinearLayout>
+    </LinearLayout>
+    </LinearLayout>
+    <LinearLayout android:id="@+id/vault_list_pull" android:layout_width="match_parent" android:layout_height="44dp" android:layout_marginTop="10dp"
+        android:orientation="horizontal" android:gravity="center" android:background="@drawable/widget_m3_button"
+        android:clickable="true" android:focusable="true" android:contentDescription="@string/widget_m3_pull_all_repositories">
+        <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_widget_m3_down" android:importantForAccessibility="no" />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="8dp" android:importantForAccessibility="no"
+            android:text="@string/widget_m3_pull_all_repositories" android:textSize="14sp" android:fontFamily="sans-serif-medium" android:textStyle="bold" android:textColor="@color/widget_m3_on_pc" />
+    </LinearLayout>
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="6dp" android:gravity="center"
+        android:text="@string/pull_all_widget_subtitle" android:textSize="11sp" android:textColor="@color/widget_m3_on_var" />
+</LinearLayout>

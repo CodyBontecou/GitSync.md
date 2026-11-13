@@ -1,0 +1,2 @@
+Argent selected qa/selected in Add Vault, cloned from the owned local file remote, and opened the resulting vault.
+Filesystem read before cleanup of Documents/qa-remote-2/.git/HEAD: ref: refs/heads/qa/selected

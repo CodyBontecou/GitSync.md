@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.files.RepositoryFileIssueTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-11-02T19:08:27" hostname="MacBook-Pro.local" time="0.101">
+  <properties/>
+  <testcase name="typed path and name failures retain protected bytes" classname="com.bontecou.syncmd.services.files.RepositoryFileIssueTest" time="0.034"/>
+  <testcase name="real duplicate and missing paths have stable recovery reasons" classname="com.bontecou.syncmd.services.files.RepositoryFileIssueTest" time="0.032"/>
+  <testcase name="platform failures classify by type without inspecting or displaying raw messages" classname="com.bontecou.syncmd.services.files.RepositoryFileIssueTest" time="0.0"/>
+  <testcase name="oversized draft and changed file failures leave original bytes and no temporary writes" classname="com.bontecou.syncmd.services.files.RepositoryFileIssueTest" time="0.035"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

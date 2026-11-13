@@ -1,0 +1,61 @@
+steps:
+  - echo: Launch isolated native parent-grant fixture with a malformed saved
+      bookmark; expect retained repository and access recovery, never a
+      re-clone.
+  - launch:
+      native: bontecou.Sync-md.prqa
+      ios:
+        app: bontecou.Sync-md.prqa
+        args:
+          - -UITestGitToolsFixture
+          - bookmark-parent
+          - -AppleLanguages
+          - (en)
+          - -AppleLocale
+          - en_US
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: home.addRepository
+  - echo: Home currently misreports All in sync despite an unresolved grant; retain
+      as a defect. Open the fixture to verify actual recovery UI.
+  - tap:
+      text: git-tools-fixture, main · Never, in sync
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: vault.reauthorizeFolder
+  - echo: Unavailable Vault retains metadata; open its Settings recovery route
+      without cloning.
+  - tap:
+      id: vault.reauthorizeFolder
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Vault settings
+  - echo: Cancel Settings without editing; return to the unavailable Vault.
+  - tap:
+      text: Cancel
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: vault.reauthorizeFolder
+  - echo: Return Home. An unavailable cloned vault must count as Attention, not in
+      sync.
+  - tap:
+      id: BackButton
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: home.addRepository
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Attention 1
+        role: Button

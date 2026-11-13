@@ -1,0 +1,41 @@
+Source: xcuitest-runner
+Mode: nested
+Coordinates are normalized [0,1] fractions of the screen (x, y, width, height), not pixels.
+Pass them straight to gesture-tap / gesture-swipe / gesture-pinch, which expect this same space.
+To tap an element, use its centre: tap_x = frame.x + frame.width / 2, tap_y = frame.y + frame.height / 2.
+
+ROOT  Application (0.000, 0.000, 1.000, 1.000)
+
+  NavigationBar id="_TtGC7SwiftUI32NavigationStackHosting"  (0.000, 0.051, 1.000, 0.058)
+    AXStaticText "GitSync.md"  (0.056, 0.065, 0.196, 0.020)
+    AXButton "Search vaults" id="home.search"  (0.625, 0.063, 0.049, 0.023)
+      AXImage "Search" id="magnifyingglass"  (0.625, 0.063, 0.049, 0.023)
+    AXButton "Sign in with GitHub"  (0.766, 0.064, 0.047, 0.021)
+      AXImage "GitHubLogo"  (0.766, 0.064, 0.047, 0.021)
+    AXButton "App Settings"  (0.865, 0.062, 0.055, 0.025)
+      AXImage "Gear Shape" id="gearshape"  (0.865, 0.062, 0.055, 0.025)
+  AXStaticText "Join the Discord community."  (0.075, 0.129, 0.474, 0.043)
+    AXStaticText "Join the GitSync.md Discord"  (0.075, 0.129, 0.474, 0.021)
+    AXStaticText "Tips, beta builds, feature votes."  (0.075, 0.152, 0.460, 0.020)
+  AXButton "Join"  (0.702, 0.126, 0.129, 0.048)
+  AXButton "Dismiss Discord banner" id="xmark"  (0.850, 0.126, 0.103, 0.048)
+  ScrollView [scrollable]  (0.000, 0.187, 1.000, 0.686)
+    AXStaticText "1 vault\nneeds you., 0 in sync"  (0.047, 0.195, 0.423, 0.135)
+      AXStaticText "1 vault\nneeds you."  (0.047, 0.195, 0.423, 0.107)
+      AXStaticText "0 in sync"  (0.047, 0.313, 0.152, 0.017)
+    ScrollView [scrollable]  (0.037, 0.352, 0.925, 0.048)
+      AXButton "All 1" [selected]  (0.047, 0.352, 0.122, 0.048)
+      AXButton "Attention 1"  (0.188, 0.352, 0.245, 0.048)
+        AXStaticText "Attention 1"  (0.188, 0.352, 0.245, 0.048)
+      AXButton "Pinned"  (0.452, 0.352, 0.164, 0.048)
+    AXButton "git-tools-fixture, main · syncmd-uitest-fixtures/git-tools-fixture, paused, Folder Access Unavailable"  (0.037, 0.416, 0.925, 0.118)
+      AXStaticText "git-tools-fixture"  (0.079, 0.436, 0.326, 0.027)
+      AXStaticText "paused"  (0.798, 0.441, 0.101, 0.017)
+      AXStaticText "main · syncmd-uitest-fixtures/git-tools-fixture"  (0.079, 0.466, 0.623, 0.017)
+      AXStaticText "Folder Access Unavailable"  (0.083, 0.498, 0.474, 0.017)
+      AXImage "Folder With A Question Mark Badge" id="folder.badge.questionmark"  (0.083, 0.499, 0.039, 0.013)
+  AXButton "Sync all vaults, 0 to pull, 0 to push" id="home.syncAll" [disabled]  (0.037, 0.886, 0.762, 0.065)
+    AXStaticText "Sync all" [disabled]  (0.093, 0.907, 0.141, 0.023)
+    AXStaticText "↓0 ↑0" [disabled]  (0.664, 0.909, 0.084, 0.017)
+  AXButton "Add vault" id="home.addRepository"  (0.822, 0.886, 0.140, 0.065)
+  Toolbar "Toolbar" id="Toolbar"  (0.000, 0.000, 1.000, 1.000)

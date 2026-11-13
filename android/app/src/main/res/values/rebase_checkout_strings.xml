@@ -1,0 +1,3 @@
+<resources>
+    <string name="rebase_checkout_review_required">Checkout recovery changed or is unreadable. Review your local work before using a Git tool or aborting the rebase.</string>
+</resources>

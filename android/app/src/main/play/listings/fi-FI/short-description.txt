@@ -1,0 +1,1 @@
+Kloonaa, commitoi, pullaa ja pushaa GitHub-repoja Androidilla.

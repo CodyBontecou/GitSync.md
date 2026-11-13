@@ -1,0 +1,11 @@
+{
+  "workingFiles": {
+    "README.md": "158e071592c9d5f60017f4066f1001cde4e524025eeb12056e1520be55a40626",
+    "notes/hello.md": "5ab916feae5a783b01559a48df2a67dcd5a1729cc0f0708beac5ce48fd2e0eae"
+  },
+  "head": "ref: refs/heads/main\n",
+  "main": "c868799d8dc9a3564d6cd1e38985913f6ce6adab\n",
+  "fetchHead": "c868799d8dc9a3564d6cd1e38985913f6ce6adab\t\tbranch 'main' of /private/var/mobile/Containers/Data/Application/1AAC1836-809E-4F19-89D7-2BF28E9CDA98/tmp/syncmd-uitest-fixtures/git-tools-fixture.git\n",
+  "indexSHA256": "0f94f5d0425c5cf30b012fa2336a5aa847bb74aa4d015946edd9cccd65db3930",
+  "stagedDiffEmpty": true
+}

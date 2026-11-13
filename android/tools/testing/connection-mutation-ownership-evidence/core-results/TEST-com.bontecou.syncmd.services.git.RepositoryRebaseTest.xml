@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.git.RepositoryRebaseTest" tests="18" skipped="0" failures="0" errors="0" timestamp="2026-11-02T20:54:09" hostname="MacBook-Pro.local" time="2.818">
+  <properties/>
+  <testcase name="active conflict planning identifies operation recovery and preserves the paused session" classname="com.bontecou.syncmd.services.git.RepositoryRebaseTest" time="0.152"/>
+  <testcase name="detached planning identifies local branch recovery without fetching" classname="com.bontecou.syncmd.services.git.RepositoryRebaseTest" time="0.105"/>
+  <testcase name="abort returns exact original head and working contents without contacting remote" classname="com.bontecou.syncmd.services.git.RepositoryRebaseTest" time="0.165"/>
+  <testcase name="deleted remote branch cannot rebase using a stale tracking ref" classname="com.bontecou.syncmd.services.git.RepositoryRebaseTest" time="0.127"/>
+  <testcase name="merge topology survives replay" classname="com.bontecou.syncmd.services.git.RepositoryRebaseTest" time="0.159"/>
+  <testcase name="empty resolution requires explicit skip instead of silently losing the local commit" classname="com.bontecou.syncmd.services.git.RepositoryRebaseTest" time="0.14"/>
+  <testcase name="conflict resumes from git metadata in a new service after staged manual resolution" classname="com.bontecou.syncmd.services.git.RepositoryRebaseTest" time="0.147"/>
+  <testcase name="abort preserves unrelated untracked files" classname="com.bontecou.syncmd.services.git.RepositoryRebaseTest" time="0.136"/>
+  <testcase name="changed original branch is preserved even after refreshing the paused session" classname="com.bontecou.syncmd.services.git.RepositoryRebaseTest" time="0.146"/>
+  <testcase name="changed account policy invalidates a reviewed rebase" classname="com.bontecou.syncmd.services.git.RepositoryRebaseTest" time="0.121"/>
+  <testcase name="clean rebase disables implicit stashing without rewriting user configuration" classname="com.bontecou.syncmd.services.git.RepositoryRebaseTest" time="0.13"/>
+  <testcase name="stale abort cannot discard a later conflict edit" classname="com.bontecou.syncmd.services.git.RepositoryRebaseTest" time="0.126"/>
+  <testcase name="missing upstream remote or branch and local upstream share typed connection recovery" classname="com.bontecou.syncmd.services.git.RepositoryRebaseTest" time="0.301"/>
+  <testcase name="dirty tree branch changes and changed upstream invalidate review before rewriting" classname="com.bontecou.syncmd.services.git.RepositoryRebaseTest" time="0.136"/>
+  <testcase name="abort never overwrites a new untracked file at an original tracked path" classname="com.bontecou.syncmd.services.git.RepositoryRebaseTest" time="0.195"/>
+  <testcase name="clean rebase replays local commits and never pushes" classname="com.bontecou.syncmd.services.git.RepositoryRebaseTest" time="0.197"/>
+  <testcase name="dirty planning and newly dirty reviewed plans retain typed recovery and all local work" classname="com.bontecou.syncmd.services.git.RepositoryRebaseTest" time="0.118"/>
+  <testcase name="delete modify conflict can accept an absent upstream side" classname="com.bontecou.syncmd.services.git.RepositoryRebaseTest" time="0.216"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

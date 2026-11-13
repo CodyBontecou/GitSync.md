@@ -1,0 +1,38 @@
+
+com.bontecou.syncmd.FileNavigationTest:
+Error in newNoteFormSurvivesActivityRecreationWithItsTemplate(com.bontecou.syncmd.FileNavigationTest):
+androidx.compose.ui.test.ComposeTimeoutException: Condition still not satisfied after 10000 ms
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$AndroidComposeUiTestImpl.waitUntil(ComposeUiTest.android.kt:427)
+	at androidx.compose.ui.test.junit4.AndroidComposeTestRule.waitUntil(AndroidComposeTestRule.android.kt:306)
+	at com.bontecou.syncmd.FileNavigationTest.awaitTag(FileNavigationTest.kt:172)
+	at com.bontecou.syncmd.FileNavigationTest.awaitTag$default(FileNavigationTest.kt:172)
+	at com.bontecou.syncmd.FileNavigationTest.newNoteFormSurvivesActivityRecreationWithItsTemplate(FileNavigationTest.kt:581)
+
+Error in stashDropRequiresConfirmationAndCancelPreservesItsExactObject(com.bontecou.syncmd.FileNavigationTest):
+androidx.compose.ui.test.ComposeTimeoutException: Condition still not satisfied after 10000 ms
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$AndroidComposeUiTestImpl.waitUntil(ComposeUiTest.android.kt:427)
+	at androidx.compose.ui.test.junit4.AndroidComposeTestRule.waitUntil(AndroidComposeTestRule.android.kt:306)
+	at com.bontecou.syncmd.FileNavigationTest.awaitTag(FileNavigationTest.kt:172)
+	at com.bontecou.syncmd.FileNavigationTest.awaitTag$default(FileNavigationTest.kt:172)
+	at com.bontecou.syncmd.FileNavigationTest.stashDropRequiresConfirmationAndCancelPreservesItsExactObject(FileNavigationTest.kt:597)
+
+
+Time: 34.049
+There were 2 failures:
+1) newNoteFormSurvivesActivityRecreationWithItsTemplate(com.bontecou.syncmd.FileNavigationTest)
+androidx.compose.ui.test.ComposeTimeoutException: Condition still not satisfied after 10000 ms
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$AndroidComposeUiTestImpl.waitUntil(ComposeUiTest.android.kt:427)
+	at androidx.compose.ui.test.junit4.AndroidComposeTestRule.waitUntil(AndroidComposeTestRule.android.kt:306)
+	at com.bontecou.syncmd.FileNavigationTest.awaitTag(FileNavigationTest.kt:172)
+	at com.bontecou.syncmd.FileNavigationTest.awaitTag$default(FileNavigationTest.kt:172)
+	at com.bontecou.syncmd.FileNavigationTest.newNoteFormSurvivesActivityRecreationWithItsTemplate(FileNavigationTest.kt:581)
+2) stashDropRequiresConfirmationAndCancelPreservesItsExactObject(com.bontecou.syncmd.FileNavigationTest)
+androidx.compose.ui.test.ComposeTimeoutException: Condition still not satisfied after 10000 ms
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$AndroidComposeUiTestImpl.waitUntil(ComposeUiTest.android.kt:427)
+	at androidx.compose.ui.test.junit4.AndroidComposeTestRule.waitUntil(AndroidComposeTestRule.android.kt:306)
+	at com.bontecou.syncmd.FileNavigationTest.awaitTag(FileNavigationTest.kt:172)
+	at com.bontecou.syncmd.FileNavigationTest.awaitTag$default(FileNavigationTest.kt:172)
+	at com.bontecou.syncmd.FileNavigationTest.stashDropRequiresConfirmationAndCancelPreservesItsExactObject(FileNavigationTest.kt:597)
+
+FAILURES!!!
+Tests run: 2,  Failures: 2

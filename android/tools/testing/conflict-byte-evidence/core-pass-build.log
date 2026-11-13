@@ -1,0 +1,87 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.11.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+
+> Configure project :app
+Play Console key not found at: /Users/codybontecou/.config/play-console/play-publisher-crested-drive-492000-u7.json
+Warning: SDK processing. This version only understands SDK XML versions up to 3 but an SDK XML file of version 4 was encountered. This can happen if you use versions of Android Studio and the command-line tools that were released at different times.
+WARNING: We recommend using a newer Android Gradle plugin to use compileSdk = 36
+
+This Android Gradle plugin (8.2.0) was tested up to compileSdk = 34.
+
+You are strongly encouraged to update your project to use a newer
+Android Gradle plugin that has been tested with compileSdk = 36.
+
+If you are already using the latest version of the Android Gradle plugin,
+you may need to wait until a newer version with support for compileSdk = 36 is available.
+
+To suppress this warning, add/update
+    android.suppressUnsupportedCompileSdk=36
+to this project's gradle.properties.
+
+> Task :core:checkKotlinGradlePluginConfigurationErrors
+
+> Task :core:compileKotlin
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-conflict-bytes-snapshot-rswqri2x/core/src/main/kotlin/com/bontecou/syncmd/services/git/DiscardReview.kt:83:21 The value 'true' assigned to 'var ownsPreparedIndex: Boolean defined in com.bontecou.syncmd.services.git.ReviewedDiscard.execute.`<anonymous>`' is never used
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-conflict-bytes-snapshot-rswqri2x/core/src/main/kotlin/com/bontecou/syncmd/services/git/LocalConflictRepository.kt:128:25 Name shadowed: detail
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-conflict-bytes-snapshot-rswqri2x/core/src/main/kotlin/com/bontecou/syncmd/services/git/RepositoryRebase.kt:118:111 Unnecessary non-null assertion (!!) on a non-null receiver of type String
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-conflict-bytes-snapshot-rswqri2x/core/src/main/kotlin/com/bontecou/syncmd/services/git/RepositoryRebase.kt:128:111 Unnecessary non-null assertion (!!) on a non-null receiver of type String
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-conflict-bytes-snapshot-rswqri2x/core/src/main/kotlin/com/bontecou/syncmd/services/git/lfs/LfsLockManager.kt:84:25 Variable 'supported' initializer is redundant
+
+> Task :core:compileJava
+> Task :core:processResources NO-SOURCE
+> Task :core:classes
+> Task :core:jar
+> Task :core:compileTestKotlin
+> Task :core:compileTestJava NO-SOURCE
+> Task :core:processTestResources NO-SOURCE
+> Task :core:testClasses UP-TO-DATE
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+> Task :core:test
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:checkKotlinGradlePluginConfigurationErrors
+> Task :app:generateDebugBuildConfig
+> Task :app:checkDebugAarMetadata
+> Task :app:generateDebugResValues
+> Task :app:mapDebugSourceSetPaths
+> Task :app:generateDebugResources
+> Task :app:mergeDebugResources
+> Task :app:packageDebugResources
+> Task :app:parseDebugLocalResources
+> Task :app:createDebugCompatibleScreenManifests
+> Task :app:extractDeepLinksDebug
+> Task :app:processDebugMainManifest
+> Task :app:processDebugManifest
+> Task :app:processDebugManifestForPackage
+> Task :app:processDebugResources
+> Task :app:kaptGenerateStubsDebugKotlin
+> Task :app:kaptDebugKotlin
+
+> Task :app:compileDebugKotlin
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-conflict-bytes-snapshot-rswqri2x/app/src/main/kotlin/com/bontecou/syncmd/automation/RepositoryCallbackGrants.kt:88:48 Conditional branch result of type JSONArray is implicitly cast to Any
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-conflict-bytes-snapshot-rswqri2x/app/src/main/kotlin/com/bontecou/syncmd/automation/RepositoryCallbackGrants.kt:88:126 Conditional branch result of type String is implicitly cast to Any
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-conflict-bytes-snapshot-rswqri2x/app/src/main/kotlin/com/bontecou/syncmd/observation/RepositoryObservations.kt:99:25 Variable 'available' initializer is redundant
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-conflict-bytes-snapshot-rswqri2x/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/ConnectionScreen.kt:75:130 Unnecessary safe call on a non-null receiver of type RepositoryCredentialStore.Summary?
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-conflict-bytes-snapshot-rswqri2x/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/ConnectionScreen.kt:75:176 Unnecessary safe call on a non-null receiver of type RepositoryCredentialStore.Summary?
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-conflict-bytes-snapshot-rswqri2x/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/ConnectionScreen.kt:77:80 Unnecessary safe call on a non-null receiver of type RepositoryCredentialStore.Summary?
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-conflict-bytes-snapshot-rswqri2x/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/ConnectionScreen.kt:80:91 Unnecessary safe call on a non-null receiver of type RepositoryCredentialStore.Summary?
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-conflict-bytes-snapshot-rswqri2x/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/ConnectionScreen.kt:156:109 Unnecessary safe call on a non-null receiver of type RepositoryCredentialStore.Summary?
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-conflict-bytes-snapshot-rswqri2x/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/ConnectionScreen.kt:178:79 Unnecessary safe call on a non-null receiver of type RepositoryCredentialStore.Summary?
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-conflict-bytes-snapshot-rswqri2x/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/RemoteCloneScreen.kt:73:9 Variable 'context' is never used
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-conflict-bytes-snapshot-rswqri2x/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/RemoteCloneScreen.kt:75:9 Variable 'registering' is never used
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-conflict-bytes-snapshot-rswqri2x/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/VaultScreen.kt:206:5 Parameter 'onOpenDiff' is never used
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-conflict-bytes-snapshot-rswqri2x/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/VaultScreen.kt:259:47 Condition 'status != null' is always 'false'
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-conflict-bytes-snapshot-rswqri2x/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/VaultScreen.kt:296:21 Condition 'status != null' is always 'false'
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-conflict-bytes-snapshot-rswqri2x/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/VaultScreen.kt:297:21 Unreachable code
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-conflict-bytes-snapshot-rswqri2x/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/VaultScreen.kt:297:25 Variable 'loaded' is never used
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-conflict-bytes-snapshot-rswqri2x/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/VaultScreen.kt:298:21 Unreachable code
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-conflict-bytes-snapshot-rswqri2x/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/VaultScreen.kt:299:21 Unreachable code
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-conflict-bytes-snapshot-rswqri2x/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/VaultScreen.kt:300:21 Unreachable code
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-conflict-bytes-snapshot-rswqri2x/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/VaultScreen.kt:442:16 Elvis operator (?:) always returns the left operand of non-nullable type Int?
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-conflict-bytes-snapshot-rswqri2x/app/src/main/kotlin/com/bontecou/syncmd/ui/theme/BrutalDesignSystem.kt:109:30 Parameter 'style' is never used
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-conflict-bytes-snapshot-rswqri2x/app/src/main/kotlin/com/bontecou/syncmd/ui/theme/Theme.kt:95:20 'setter for statusBarColor: Int' is deprecated. Deprecated in Java
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-conflict-bytes-snapshot-rswqri2x/app/src/main/kotlin/com/bontecou/syncmd/ui/theme/Theme.kt:96:20 'setter for navigationBarColor: Int' is deprecated. Deprecated in Java
+w: file:///private/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-conflict-bytes-snapshot-rswqri2x/app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/CloneViewModel.kt:161:36 Unnecessary non-null assertion (!!) on a non-null receiver of type GitHubAccountSnapshot
+
+> Task :app:javaPreCompileDebug
+> Task :app:compileDebugJavaWithJavac

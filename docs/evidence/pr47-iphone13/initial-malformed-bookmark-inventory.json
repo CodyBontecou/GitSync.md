@@ -1,0 +1,34 @@
+[
+  {
+    "gitState" : {
+      "lastSyncDate" : "0001-01-01T00:00:00Z",
+      "blobSHAs" : {
+
+      },
+      "branch" : "main",
+      "treeSHA" : "",
+      "commitSHA" : "c868799d8dc9a3564d6cd1e38985913f6ce6adab"
+    },
+    "customLocationIsParent" : true,
+    "repoURL" : "file:\/\/\/private\/var\/mobile\/Containers\/Data\/Application\/764388CC-1E3C-44F0-82F4-90308848F5E4\/tmp\/syncmd-uitest-fixtures\/git-tools-fixture.git",
+    "authUsername" : "",
+    "branch" : "main",
+    "isPinned" : false,
+    "assist" : {
+      "powerPolicy" : "any",
+      "enrollmentStatus" : "disabled",
+      "excludedFromAutomaticSync" : false,
+      "networkPolicy" : "any",
+      "health" : {
+        "kind" : "never"
+      },
+      "enabled" : false
+    },
+    "authorEmail" : "developer@example.com",
+    "id" : "96839A03-0A9F-47CB-A37F-A1047F0785A4",
+    "authMethod" : "none",
+    "customVaultBookmarkData" : "UFI0NyBkZWxpYmVyYXRlbHkgbWFsZm9ybWVkIGJvb2ttYXJr",
+    "authorName" : "Sample Developer",
+    "vaultFolderName" : "git-tools-fixture"
+  }
+]

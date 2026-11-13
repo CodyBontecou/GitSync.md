@@ -1,0 +1,34 @@
+steps:
+  - launch:
+      ios:
+        app: bontecou.Sync-md.prqa
+        args: [-UITestGitToolsFixture, bookmark-parent, -AppleLanguages, '(en)', -AppleLocale, en_US]
+  - await: { visible: { text: Attention 1, role: Button } }
+  - await: { idle: true }
+  - await: { visible: { text: Folder Access Unavailable, role: StaticText } }
+  - tap: { text: 'git-tools-fixture, main · syncmd-uitest-fixtures/git-tools-fixture, paused, Folder Access Unavailable', role: Button }
+  - await: { visible: { id: vault.reauthorizeFolder } }
+  - await: { idle: true }
+  - tap: { id: vault.reauthorizeFolder }
+  - await: { visible: { text: Vault settings } }
+  - await: { idle: true }
+  - scroll-to: { target: { id: repository.reauthorizeFolder } }
+  - await: { visible: { id: repository.reauthorizeFolder } }
+  - await: { idle: true }
+  - await:
+      text:
+        in: { id: repositorySettings.branch }
+        equals: main
+  - tap: { id: repository.reauthorizeFolder }
+  - await: { visible: { id: 'Browse View (Picker)' } }
+  - await: { idle: true }
+  - await: { visible: { text: Cancel, role: Button } }
+  - tap: { text: Cancel, role: Button, within: { id: FullDocumentManagerViewControllerNavigationBar } }
+  - await: { visible: { id: repository.reauthorizeFolder } }
+  - await: { idle: true }
+  - tap: { text: Cancel, role: Button }
+  - await: { visible: { id: vault.reauthorizeFolder } }
+  - await: { idle: true }
+  - tap: { id: BackButton }
+  - await: { visible: { text: Attention 1, role: Button } }
+  - await: { idle: true }

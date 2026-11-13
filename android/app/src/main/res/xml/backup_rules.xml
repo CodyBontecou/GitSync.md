@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Android Auto Backup rules (API 23–30).
+
+  The one-time unlock state (syncmd_purchase_prefs.xml) is kept so a buyer stays
+  unlocked after a reinstall; Google Play re-verifies the purchase on launch. We exclude the main app prefs to avoid restoring
+  stale auth tokens, selected-repo paths, or repository lists that may no longer
+  be valid on the reinstalled device.
+-->
+<full-backup-content>
+    <!-- Exclude auth tokens and volatile app state -->
+    <exclude domain="sharedpref" path="sync_md_prefs.xml" />
+    <exclude domain="sharedpref" path="repository_credentials.xml" />
+    <exclude domain="sharedpref" path="repository_shortcuts.xml" />
+        <exclude domain="sharedpref" path="repository_shortcut_runs.xml" />
+        <exclude domain="sharedpref" path="pull_all_background_runs.xml" />
+    <exclude domain="sharedpref" path="repository_callback_grants.xml" />
+    <exclude domain="sharedpref" path="obsidian_connections.xml" />
+    <exclude domain="sharedpref" path="push_sync_state.xml" />
+    <exclude domain="sharedpref" path="background_sync.xml" />
+    <exclude domain="database" path="androidx.work.workdb" />
+    <exclude domain="sharedpref" path="ssh_known_hosts.xml" />
+        <exclude domain="sharedpref" path="lfs_endpoint_approvals.xml" />
+    <exclude domain="sharedpref" path="repository_locations.xml" />
+        <exclude domain="sharedpref" path="github_session.xml" />
+</full-backup-content>

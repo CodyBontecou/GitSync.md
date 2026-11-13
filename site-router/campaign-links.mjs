@@ -129,7 +129,7 @@ export function buildAppStoreUrl(link, env = {}) {
   return target.toString();
 }
 
-export function starterCampaignLinks(baseUrl = "https://gitsyncmd.app") {
+export function starterCampaignLinks(baseUrl = "https://gitsync.md") {
   return starterSlugs
     .map((slug) => parseCampaignSlug(slug))
     .filter(Boolean)

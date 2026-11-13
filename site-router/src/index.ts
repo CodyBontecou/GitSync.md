@@ -1,4 +1,4 @@
-const CANONICAL_HOST = "gitsyncmd.app";
+const CANONICAL_HOST = "gitsync.md";
 const UPSTREAM_HOST = "syncmd.pages.dev";
 const APP_STORE_ID = "6758960270";
 const DEFAULT_APP_STORE_URL = `https://apps.apple.com/us/app/gitsync-md/id${APP_STORE_ID}`;
@@ -20,6 +20,7 @@ type CampaignLink = {
 };
 
 type Env = {
+  SERVE_DOMAIN_ALIASES?: string;
   APP_STORE_BASE_URL?: string;
   APPLE_PROVIDER_TOKEN?: string;
   CPP_OBSIDIAN_PPID?: string;
@@ -266,7 +267,26 @@ async function handleCampaignRedirect(request: Request, env: Env, ctx: Execution
   return new Response(null, { status: 302, headers });
 }
 
-function proxyToUpstream(request: Request): Promise<Response> {
+export function prefersMarkdown(accept: string): boolean {
+  const ranges = accept.toLowerCase().split(",").map(part => {
+    const [type, ...parameters] = part.trim().split(";");
+    const q = parameters.find(parameter => parameter.trim().startsWith("q="));
+    const quality = q ? Number(q.trim().slice(2)) : 1;
+    return { type: type.trim(), quality: Number.isFinite(quality) && quality >= 0 && quality <= 1 ? quality : 0 };
+  });
+  // Negotiate Markdown only when explicitly requested, never for a browser wildcard.
+  if (!ranges.some(range => range.type === "text/markdown" && range.quality > 0)) return false;
+  const quality = (type: string): number => {
+    for (const match of [type, "text/*", "*/*"]) {
+      const matching = ranges.filter(range => range.type === match);
+      if (matching.length) return Math.max(...matching.map(range => range.quality));
+    }
+    return 0;
+  };
+  return quality("text/markdown") >= quality("text/html");
+}
+
+async function proxyToUpstream(request: Request): Promise<Response> {
   const upstreamUrl = new URL(request.url);
   upstreamUrl.hostname = UPSTREAM_HOST;
   upstreamUrl.protocol = "https:";
@@ -274,18 +294,63 @@ function proxyToUpstream(request: Request): Promise<Response> {
   const upstreamRequest = new Request(upstreamUrl.toString(), request);
   upstreamRequest.headers.set("X-Forwarded-Host", CANONICAL_HOST);
   upstreamRequest.headers.set("X-Forwarded-Proto", "https");
+  const markdown = (request.method === "GET" || request.method === "HEAD") &&
+    prefersMarkdown(request.headers.get("accept") || "");
+  if (markdown) {
+    // A Markdown validator must not cause the HTML representation to return 304.
+    upstreamRequest.headers.delete("if-none-match");
+    upstreamRequest.headers.delete("if-modified-since");
+  }
 
-  return fetch(upstreamRequest);
+  const upstream = await fetch(upstreamRequest);
+  if (!(upstream.headers.get("content-type") || "").includes("text/html") && upstream.status !== 304) {
+    return upstream;
+  }
+
+  let response = upstream;
+  if (markdown && (upstream.status === 200 || upstream.status === 404)) {
+    const path = upstreamUrl.pathname;
+    const markdownUrl = new URL(upstreamUrl);
+    markdownUrl.pathname = upstream.status === 404 ? "/404.md" :
+      path.endsWith("/") ? `${path}index.md` : path.replace(/\.html$/, "") + ".md";
+    const markdownRequest = new Request(markdownUrl, upstreamRequest);
+    const asset = await fetch(markdownRequest);
+    if (asset.status === 200) {
+      await upstream.body?.cancel();
+      const headers = new Headers(asset.headers);
+      headers.set("content-type", "text/markdown; charset=utf-8");
+      headers.set("cache-control", "public, max-age=0, must-revalidate");
+      if (upstream.status === 404) headers.set("x-robots-tag", "noindex");
+      response = new Response(asset.body, { status: upstream.status, headers });
+    } else {
+      // A mismatched deploy must not turn a real HTML page into a missing document.
+      await asset.body?.cancel();
+    }
+  }
+
+  const headers = new Headers(response.headers);
+  const vary = (headers.get("vary") || "").split(",").map(value => value.trim()).filter(Boolean);
+  if (!vary.some(value => value === "*" || value.toLowerCase() === "accept")) vary.push("Accept");
+  headers.set("vary", vary.join(", "));
+  return new Response(response.body, { status: response.status, statusText: response.statusText, headers });
 }
 
 export default {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
+    // During cutover staging or rollback, both domains must remain reachable.
+    const serveAliases = env.SERVE_DOMAIN_ALIASES === "true";
 
-    if (url.hostname !== CANONICAL_HOST) {
-      url.hostname = CANONICAL_HOST;
+    if ((!serveAliases && url.hostname !== CANONICAL_HOST) || url.protocol !== "https:") {
+      if (!serveAliases) url.hostname = CANONICAL_HOST;
       url.protocol = "https:";
-      return Response.redirect(url.toString(), 301);
+      return new Response(null, {
+        status: serveAliases ? 302 : 301,
+        headers: {
+          location: url.toString(),
+          ...(serveAliases ? { "cache-control": "no-store" } : {}),
+        },
+      });
     }
 
     if (url.pathname === "/health") {

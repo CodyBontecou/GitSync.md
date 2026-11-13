@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.git.RepositoryRemoteMergeTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-11-02T19:08:52" hostname="MacBook-Pro.local" time="1.567">
+  <properties/>
+  <testcase name="unconfirmed push keeps merge and explicit retry publishes the same commit" classname="com.bontecou.syncmd.services.git.RepositoryRemoteMergeTest" time="0.146"/>
+  <testcase name="fast forward needs no author and local only never publishes" classname="com.bontecou.syncmd.services.git.RepositoryRemoteMergeTest" time="0.098"/>
+  <testcase name="merge and push publishes the exact result without publishing tags" classname="com.bontecou.syncmd.services.git.RepositoryRemoteMergeTest" time="0.124"/>
+  <testcase name="changed remote after review is rejected without changing head index or local files" classname="com.bontecou.syncmd.services.git.RepositoryRemoteMergeTest" time="0.139"/>
+  <testcase name="conflicts are persistent and never pushed then existing conflict completion resolves them" classname="com.bontecou.syncmd.services.git.RepositoryRemoteMergeTest" time="0.115"/>
+  <testcase name="unconfirmed retry rejects a later local commit instead of publishing it" classname="com.bontecou.syncmd.services.git.RepositoryRemoteMergeTest" time="0.118"/>
+  <testcase name="already ahead branch can explicitly publish without another merge or commit" classname="com.bontecou.syncmd.services.git.RepositoryRemoteMergeTest" time="0.141"/>
+  <testcase name="review has no checkout side effects and confirmed local merge preserves two parents and author" classname="com.bontecou.syncmd.services.git.RepositoryRemoteMergeTest" time="0.109"/>
+  <testcase name="head config credentials and author are revalidated after review" classname="com.bontecou.syncmd.services.git.RepositoryRemoteMergeTest" time="0.376"/>
+  <testcase name="local changes during author resolution cannot enter the reviewed merge" classname="com.bontecou.syncmd.services.git.RepositoryRemoteMergeTest" time="0.097"/>
+  <testcase name="credential change while preparing push keeps merge without publishing" classname="com.bontecou.syncmd.services.git.RepositoryRemoteMergeTest" time="0.104"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

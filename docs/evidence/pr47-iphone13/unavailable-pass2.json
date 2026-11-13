@@ -1,0 +1,249 @@
+{
+  "e2eTest": "qa-pr47-unavailable-recovery",
+  "flow": "qa-pr47-unavailable-recovery",
+  "device": "00008110-00046CC63CA0401E",
+  "executionPrerequisite": "",
+  "ok": true,
+  "passed": 27,
+  "failed": 0,
+  "skipped": 0,
+  "errored": 0,
+  "steps": [
+    {
+      "index": 0,
+      "kind": "launch",
+      "e2eTest": "qa-pr47-unavailable-recovery",
+      "status": "pass",
+      "durationMs": 1939,
+      "flow": "qa-pr47-unavailable-recovery"
+    },
+    {
+      "index": 1,
+      "kind": "await",
+      "e2eTest": "qa-pr47-unavailable-recovery",
+      "target": "visible \"Attention 1\" role=Button",
+      "status": "pass",
+      "durationMs": 161,
+      "flow": "qa-pr47-unavailable-recovery"
+    },
+    {
+      "index": 2,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-unavailable-recovery",
+      "status": "pass",
+      "durationMs": 1961,
+      "flow": "qa-pr47-unavailable-recovery"
+    },
+    {
+      "index": 3,
+      "kind": "await",
+      "e2eTest": "qa-pr47-unavailable-recovery",
+      "target": "visible \"Folder Access Unavailable\" role=StaticText",
+      "status": "pass",
+      "durationMs": 115,
+      "flow": "qa-pr47-unavailable-recovery"
+    },
+    {
+      "index": 4,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-unavailable-recovery",
+      "target": "\"git-tools-fixture, main · syncmd-uitest-fixtures/git-tools-fixture, paused, Folder Access Unavailable\" role=Button",
+      "status": "pass",
+      "durationMs": 1016,
+      "flow": "qa-pr47-unavailable-recovery"
+    },
+    {
+      "index": 5,
+      "kind": "await",
+      "e2eTest": "qa-pr47-unavailable-recovery",
+      "target": "visible id=vault.reauthorizeFolder",
+      "status": "pass",
+      "durationMs": 139,
+      "flow": "qa-pr47-unavailable-recovery"
+    },
+    {
+      "index": 6,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-unavailable-recovery",
+      "status": "pass",
+      "durationMs": 1806,
+      "flow": "qa-pr47-unavailable-recovery"
+    },
+    {
+      "index": 7,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-unavailable-recovery",
+      "target": "id=vault.reauthorizeFolder",
+      "status": "pass",
+      "durationMs": 862,
+      "flow": "qa-pr47-unavailable-recovery"
+    },
+    {
+      "index": 8,
+      "kind": "await",
+      "e2eTest": "qa-pr47-unavailable-recovery",
+      "target": "visible \"Vault settings\"",
+      "status": "pass",
+      "durationMs": 239,
+      "flow": "qa-pr47-unavailable-recovery"
+    },
+    {
+      "index": 9,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-unavailable-recovery",
+      "status": "pass",
+      "durationMs": 2188,
+      "flow": "qa-pr47-unavailable-recovery"
+    },
+    {
+      "index": 10,
+      "kind": "scroll-to",
+      "e2eTest": "qa-pr47-unavailable-recovery",
+      "target": "id=repository.reauthorizeFolder",
+      "status": "pass",
+      "durationMs": 5331,
+      "flow": "qa-pr47-unavailable-recovery"
+    },
+    {
+      "index": 11,
+      "kind": "await",
+      "e2eTest": "qa-pr47-unavailable-recovery",
+      "target": "visible id=repository.reauthorizeFolder",
+      "status": "pass",
+      "durationMs": 139,
+      "flow": "qa-pr47-unavailable-recovery"
+    },
+    {
+      "index": 12,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-unavailable-recovery",
+      "status": "pass",
+      "durationMs": 1604,
+      "flow": "qa-pr47-unavailable-recovery"
+    },
+    {
+      "index": 13,
+      "kind": "await",
+      "e2eTest": "qa-pr47-unavailable-recovery",
+      "target": "id=repositorySettings.branch equals \"main\"",
+      "status": "pass",
+      "durationMs": 178,
+      "flow": "qa-pr47-unavailable-recovery"
+    },
+    {
+      "index": 14,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-unavailable-recovery",
+      "target": "id=repository.reauthorizeFolder",
+      "status": "pass",
+      "durationMs": 1390,
+      "flow": "qa-pr47-unavailable-recovery"
+    },
+    {
+      "index": 15,
+      "kind": "await",
+      "e2eTest": "qa-pr47-unavailable-recovery",
+      "target": "visible id=Browse View (Picker)",
+      "status": "pass",
+      "durationMs": 169,
+      "flow": "qa-pr47-unavailable-recovery"
+    },
+    {
+      "index": 16,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-unavailable-recovery",
+      "status": "pass",
+      "durationMs": 2371,
+      "flow": "qa-pr47-unavailable-recovery"
+    },
+    {
+      "index": 17,
+      "kind": "await",
+      "e2eTest": "qa-pr47-unavailable-recovery",
+      "target": "visible \"Cancel\" role=Button",
+      "status": "pass",
+      "durationMs": 211,
+      "flow": "qa-pr47-unavailable-recovery"
+    },
+    {
+      "index": 18,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-unavailable-recovery",
+      "target": "\"Cancel\" role=Button within (id=FullDocumentManagerViewControllerNavigationBar)",
+      "status": "pass",
+      "durationMs": 1764,
+      "flow": "qa-pr47-unavailable-recovery"
+    },
+    {
+      "index": 19,
+      "kind": "await",
+      "e2eTest": "qa-pr47-unavailable-recovery",
+      "target": "visible id=repository.reauthorizeFolder",
+      "status": "pass",
+      "durationMs": 677,
+      "flow": "qa-pr47-unavailable-recovery"
+    },
+    {
+      "index": 20,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-unavailable-recovery",
+      "status": "pass",
+      "durationMs": 1556,
+      "flow": "qa-pr47-unavailable-recovery"
+    },
+    {
+      "index": 21,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-unavailable-recovery",
+      "target": "\"Cancel\" role=Button",
+      "status": "pass",
+      "durationMs": 1434,
+      "flow": "qa-pr47-unavailable-recovery"
+    },
+    {
+      "index": 22,
+      "kind": "await",
+      "e2eTest": "qa-pr47-unavailable-recovery",
+      "target": "visible id=vault.reauthorizeFolder",
+      "status": "pass",
+      "durationMs": 518,
+      "flow": "qa-pr47-unavailable-recovery"
+    },
+    {
+      "index": 23,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-unavailable-recovery",
+      "status": "pass",
+      "durationMs": 1355,
+      "flow": "qa-pr47-unavailable-recovery"
+    },
+    {
+      "index": 24,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-unavailable-recovery",
+      "target": "id=BackButton",
+      "status": "pass",
+      "durationMs": 946,
+      "flow": "qa-pr47-unavailable-recovery"
+    },
+    {
+      "index": 25,
+      "kind": "await",
+      "e2eTest": "qa-pr47-unavailable-recovery",
+      "target": "visible \"Attention 1\" role=Button",
+      "status": "pass",
+      "durationMs": 132,
+      "flow": "qa-pr47-unavailable-recovery"
+    },
+    {
+      "index": 26,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-unavailable-recovery",
+      "status": "pass",
+      "durationMs": 1962,
+      "flow": "qa-pr47-unavailable-recovery"
+    }
+  ],
+  "startedAt": 1794595504435,
+  "durationMs": 32165
+}
