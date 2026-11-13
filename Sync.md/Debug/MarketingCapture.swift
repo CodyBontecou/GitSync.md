@@ -205,6 +205,21 @@ final class MarketingCaptureCoordinator {
 @MainActor
 enum MarketingDemoSeeder {
 
+    /// Exercise a real post-ref SAFE-checkout race through the normal foreground
+    /// runner. The fixture has no credentials/network and never loads user repos.
+    static func checkoutRaceAppStateIfRequested() -> AppState? {
+        guard MarketingCapture.gitToolsUITestScenario == "checkout-incomplete" else { return nil }
+        return AppState(gitRepositoryFactory: { url in
+            LocalGitService(localURL: url, pullOnlyBeforeFinalCheckout: {
+                guard url.lastPathComponent == "git-tools-fixture" else { return }
+                try? "# Hello\n\nPR45 concurrent local edit preserved.\n".write(
+                    to: url.appendingPathComponent("notes/hello.md"), atomically: true, encoding: .utf8
+                )
+            })
+        }, reposFileURL: FileManager.default.temporaryDirectory.appendingPathComponent("pr45-qa/repos.json"),
+           loadPersistedState: false)
+    }
+
     static func seed(into state: AppState) {
         // UI-test local-git fixture modes (Issue #19 clone-flow and
         // conflict-resolver slices). These build REAL on-disk git fixtures and
@@ -529,7 +544,7 @@ enum MarketingDemoSeeder {
                     message: "Local note"
                 )
             }
-            if scenario == "behind" || scenario == "diverged" {
+            if scenario == "behind" || scenario == "diverged" || scenario == "checkout-incomplete" {
                 files["notes/hello.md"] = Data("# Hello\n\nUpdated remote note.\n".utf8)
                 try UITestGitFixtures.commitToBare(atPath: remotePath, files: files, message: "Remote note")
                 try UITestGitFixtures.fetchOrigin(atPath: vaultURL.path)
@@ -572,7 +587,7 @@ enum MarketingDemoSeeder {
             let syncState: RepoSyncState
             switch scenario {
             case "ahead": syncState = .ahead
-            case "behind": syncState = .behind
+            case "behind", "checkout-incomplete": syncState = .behind
             case "diverged": syncState = .diverged
             default: syncState = .upToDate
             }
@@ -679,7 +694,14 @@ enum UITestGitFixtures {
 
     /// Simulator processes (app and UI-test runner) share the host `/tmp`, so
     /// a fixed absolute path is addressable from both sides.
-    static let rootPath = "/tmp/syncmd-uitest-fixtures"
+    static var rootPath: String {
+        #if targetEnvironment(simulator)
+        return "/tmp/syncmd-uitest-fixtures"
+        #else
+        // Physical apps cannot write the simulator's host-shared /tmp path.
+        return FileManager.default.temporaryDirectory.appendingPathComponent("syncmd-uitest-fixtures").path
+        #endif
+    }
 
     static var cloneBareRemotePath: String { rootPath + "/bare-remote.git" }
     static var conflictBareRemotePath: String { rootPath + "/conflict-fixture.git" }
