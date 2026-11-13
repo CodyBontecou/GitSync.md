@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.publication.GitHubFolderPublisherTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2026-11-02T19:22:21" hostname="MacBook-Pro.local" time="0.086">
+  <properties/>
+  <testcase name="empty repository conflict is accepted only with exact message and fresh metadata access" classname="com.bontecou.syncmd.services.publication.GitHubFolderPublisherTest" time="0.008"/>
+  <testcase name="malformed or mismatched creation acknowledgement remains unknown" classname="com.bontecou.syncmd.services.publication.GitHubFolderPublisherTest" time="0.018"/>
+  <testcase name="known creation rejections and rate limits expose only static messages" classname="com.bontecou.syncmd.services.publication.GitHubFolderPublisherTest" time="0.015"/>
+  <testcase name="complete paginated namespace includes tags and later branches" classname="com.bontecou.syncmd.services.publication.GitHubFolderPublisherTest" time="0.004"/>
+  <testcase name="pagination cannot escape the repository repeat a page or duplicate identities" classname="com.bontecou.syncmd.services.publication.GitHubFolderPublisherTest" time="0.005"/>
+  <testcase name="account identity mismatch stops before repository creation" classname="com.bontecou.syncmd.services.publication.GitHubFolderPublisherTest" time="0.002"/>
+  <testcase name="repository 404 is unavailable and branch 404 needs readable references" classname="com.bontecou.syncmd.services.publication.GitHubFolderPublisherTest" time="0.003"/>
+  <testcase name="private and public creation send explicit visibility without initializing remote history" classname="com.bontecou.syncmd.services.publication.GitHubFolderPublisherTest" time="0.005"/>
+  <testcase name="redirect server error timeout and wrong success status never confirm creation" classname="com.bontecou.syncmd.services.publication.GitHubFolderPublisherTest" time="0.014"/>
+  <testcase name="a dropped creation reply is never automatically replayed by the HTTP stack" classname="com.bontecou.syncmd.services.publication.GitHubFolderPublisherTest" time="0.004"/>
+  <testcase name="exact Unicode branch reference is encoded and prefix matches cannot substitute for it" classname="com.bontecou.syncmd.services.publication.GitHubFolderPublisherTest" time="0.003"/>
+  <testcase name="bad tokens duplicate identities and oversized replies fail before any ambiguous reuse" classname="com.bontecou.syncmd.services.publication.GitHubFolderPublisherTest" time="0.005"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[Nov 02, 2026 3:22:22 PM sun.net.httpserver.ExchangeImpl sendResponseHeaders
+WARNING: sendResponseHeaders: rCode = 204: forcing contentLen = -1
+]]></system-err>
+</testsuite>

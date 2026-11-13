@@ -1,0 +1,27 @@
+Gitsync.md tuo aidot Git-työnkulut Androidille. Yhdistä GitHub, kloonaa repositorioita sovelluksen tallennustilaan, tarkastele muutoksia ja synkronoi koodia tai markdownia turvallisesti puhelimellasi.
+
+TEHTY OIKEILLE REPOILLE
+- Selaa GitHub-repositorioita kirjauduttuasi OAuthilla tai henkilökohtaisella käyttötunnuksella
+- Kloonaa projektit suoraan Android-sovelluksen tallennustilaan
+- Suorita Git-toimintoja ilman järjestelmän git-ohjelmaa
+
+SYNKRONOI LUOTTAVAISIN MIELIN
+- Näe branch, puhdas tai muutettu tila, stagetut tiedostot ja seuraamattomat tiedostot
+- Pullaa turvallisesti repositorion tilan tarkistamisen jälkeen
+- Tarkastele diffejä rivi riviltä ennen muutosten hylkäämistä tai commitoimista
+- Commitoi ja pushaa paikalliset muutokset takaisin remoteen
+
+PAIKALLINEN GIT-TYÖKALUPAKKI
+- Stageta ja unstageta yksittäisiä tiedostoja
+- Luo, vaihda, mergeä ja poista brancheja
+- Ratkaise konfliktit valinnoilla ours, theirs tai manuaalisesti
+- Selaa historiaa, luo ja palauta stasheja sekä hallitse tageja
+
+SUUNNITELTU MOBIILIIN
+- Nopea Jetpack Compose -käyttöliittymä
+- Tumma ja vaalea tila
+- Kloonaussijainti sovelluksen tallennustilassa Android-yhteensopivuuden vuoksi
+- Ilmainen lataus ja kertaluonteinen Täysi käyttöoikeus -sovellusosto Google Playn kautta
+- Ei mainoksia eikä tilauksia
+
+Gitsync.md on tehty kehittäjille, kirjoittajille ja kaikille, jotka hallitsevat GitHubiin tallennettuja tiedostoja Androidilla. Yksityisiä repositorioita varten kirjaudu GitHubilla tai anna henkilökohtainen käyttötunnus. Tunnukset tallennetaan paikallisesti laitteellesi.

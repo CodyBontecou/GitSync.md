@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.repositories.RepositoryIdentityTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-11-02T20:54:57" hostname="MacBook-Pro.local" time="0.084">
+  <properties/>
+  <testcase name="invalid identities stale reviews and locks preserve config" classname="com.bontecou.syncmd.services.repositories.RepositoryIdentityTest" time="0.04"/>
+  <testcase name="author edit preserves files index refs and remote and applies to future commits" classname="com.bontecou.syncmd.services.repositories.RepositoryIdentityTest" time="0.044"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

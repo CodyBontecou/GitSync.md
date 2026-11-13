@@ -1,6 +1,6 @@
 import { buildAppStoreUrl, defaultEnv, starterCampaignLinks } from "../campaign-links.mjs";
 
-const baseUrl = process.env.CAMPAIGN_BASE_URL || "https://gitsyncmd.app";
+const baseUrl = process.env.CAMPAIGN_BASE_URL || "https://gitsync.md";
 const env = { ...defaultEnv, ...process.env };
 const rows = starterCampaignLinks(baseUrl).map((link) => ({
   shortlink: link.shortlink,

@@ -1,0 +1,9 @@
+Test Case '-[SyncMDTests.SyncMDTests testFileHistoryIncludesModeOnlyChanges]' started.
+/Users/codybontecou/dev/gitsync.md/SyncMDTests/SyncMDTests.swift:5177: error: -[SyncMDTests.SyncMDTests testFileHistoryIncludesModeOnlyChanges] : XCTAssertEqual failed: ("["Add file"]") is not equal to ("["Make executable", "Add file"]")
+Test Case '-[SyncMDTests.SyncMDTests testFileHistoryIncludesModeOnlyChanges]' failed (0.361 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testFileHistoryPreservesDecomposedUnicodePath]' started.
+/Users/codybontecou/dev/gitsync.md/SyncMDTests/SyncMDTests.swift:5195: error: -[SyncMDTests.SyncMDTests testFileHistoryPreservesDecomposedUnicodePath] : XCTAssertEqual failed: ("[]") is not equal to ("["Decomposed filename"]")
+Test Case '-[SyncMDTests.SyncMDTests testFileHistoryPreservesDecomposedUnicodePath]' failed (0.057 seconds).
+	 Executed 2 tests, with 2 failures (0 unexpected) in 0.418 (0.423) seconds
+	 Executed 2 tests, with 2 failures (0 unexpected) in 0.418 (0.424) seconds
+	 Executed 2 tests, with 2 failures (0 unexpected) in 0.418 (0.425) seconds

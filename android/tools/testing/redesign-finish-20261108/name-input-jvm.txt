@@ -1,0 +1,6 @@
+Portable JVM compilation: production NameInput.kt + existing NameInputTest.kt, cached Kotlin 2.2.0 / Java 17. No Gradle or device.
+JUnit version 4.13.2
+.
+Time: 0.019
+
+OK (1 test)

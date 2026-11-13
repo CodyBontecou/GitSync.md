@@ -1,0 +1,34 @@
+name: Obsidian companion
+on:
+  pull_request:
+    paths: ['obsidian-plugin/**', 'Sync.md/Services/ObsidianCredentialHandoff.swift', '.github/workflows/obsidian-connect.yml']
+  push:
+    branches: [main]
+    paths: ['obsidian-plugin/**', 'Sync.md/Services/ObsidianCredentialHandoff.swift', '.github/workflows/obsidian-connect.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: macos-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: obsidian-plugin
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm test
+      - run: npm run release:prepare
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gitsync-connect-release-candidate
+          path: |
+            obsidian-plugin/dist/main.js
+            obsidian-plugin/dist/manifest.json
+            obsidian-plugin/dist/gitsync-connect.zip
+            obsidian-plugin/dist/gitsync-connect-source.zip
+            obsidian-plugin/dist/SHA256SUMS
+          if-no-files-found: error

@@ -174,7 +174,7 @@
 | # | Feature | Tier | Evidence |
 |---|---|---|---|
 | 14.1 | OAuth server (Vercel functions) for GitHub sign-in; client-side state CSRF validation | Dev | `oauth-server/`, `OAuthService.parseCallbackURL` |
-| 14.2 | Marketing site (gitsyncmd.app: 9 feature cards, x-callback docs, privacy, terms, Obsidian blog posts) | Dev | `site/` |
+| 14.2 | Marketing site (gitsync.md: 9 feature cards, x-callback docs, privacy, terms, Obsidian blog posts) | Dev | `site/` |
 | 14.3 | Site-router Worker: canonical-domain proxy + `/v/<slug>` campaign shortlinks → App Store CPP attribution (5 platforms × angles, D1 click telemetry, provider token) | Dev | `site-router/` |
 | 14.4 | CI: XCTest gate (143 tests), build-number guard (timestamp format), premium-workers matrix (typecheck/tests/migrations), release announce + review-state tracking, Claude agent CI | Dev | `.github/workflows/` (6 workflows) |
 | 14.5 | fastlane distribution, App Store metadata/images pipelines, pricing scripts | Dev | `fastlane/`, `scripts/` |

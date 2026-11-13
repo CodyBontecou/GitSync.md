@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.diagnostics.DiagnosticStoreTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-11-02T19:21:11" hostname="MacBook-Pro.local" time="0.177">
+  <properties/>
+  <testcase name="symlink log cannot read or replace another file" classname="com.bontecou.syncmd.services.diagnostics.DiagnosticStoreTest" time="0.007"/>
+  <testcase name="concurrent producers do not overwrite each other" classname="com.bontecou.syncmd.services.diagnostics.DiagnosticStoreTest" time="0.052"/>
+  <testcase name="bounded log survives restart and clearing is durable" classname="com.bontecou.syncmd.services.diagnostics.DiagnosticStoreTest" time="0.005"/>
+  <testcase name="actual Git actions record outcomes without repository names file paths commit messages or exception text" classname="com.bontecou.syncmd.services.diagnostics.DiagnosticStoreTest" time="0.073"/>
+  <testcase name="failed persistence keeps the last committed entries and reports failure" classname="com.bontecou.syncmd.services.diagnostics.DiagnosticStoreTest" time="0.002"/>
+  <testcase name="byte limit bounds persisted data independently of entry count" classname="com.bontecou.syncmd.services.diagnostics.DiagnosticStoreTest" time="0.028"/>
+  <testcase name="diagnostic storage failure never changes a Git action outcome" classname="com.bontecou.syncmd.services.diagnostics.DiagnosticStoreTest" time="0.001"/>
+  <testcase name="failed Result thrown cancellation and completed Git attention have truthful severity" classname="com.bontecou.syncmd.services.diagnostics.DiagnosticStoreTest" time="0.004"/>
+  <testcase name="unreadable or oversized file remains intact until explicit clear" classname="com.bontecou.syncmd.services.diagnostics.DiagnosticStoreTest" time="0.003"/>
+  <testcase name="restart removes only owned regular temporary files and retains committed log" classname="com.bontecou.syncmd.services.diagnostics.DiagnosticStoreTest" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

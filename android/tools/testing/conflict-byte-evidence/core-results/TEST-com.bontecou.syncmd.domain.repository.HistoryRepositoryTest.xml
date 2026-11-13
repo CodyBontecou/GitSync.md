@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.domain.repository.HistoryRepositoryTest" tests="14" skipped="0" failures="0" errors="0" timestamp="2026-11-03T00:55:31" hostname="MacBook-Pro.local" time="1.081">
+  <properties/>
+  <testcase name="createTag creates new tag" classname="com.bontecou.syncmd.domain.repository.HistoryRepositoryTest" time="0.073"/>
+  <testcase name="listStashes shows saved stashes" classname="com.bontecou.syncmd.domain.repository.HistoryRepositoryTest" time="0.075"/>
+  <testcase name="getHistory returns list of commits" classname="com.bontecou.syncmd.domain.repository.HistoryRepositoryTest" time="0.072"/>
+  <testcase name="stashSave creates new stash" classname="com.bontecou.syncmd.domain.repository.HistoryRepositoryTest" time="0.072"/>
+  <testcase name="stashApply applies stash without removing it" classname="com.bontecou.syncmd.domain.repository.HistoryRepositoryTest" time="0.073"/>
+  <testcase name="listStashes returns empty list when no stashes" classname="com.bontecou.syncmd.domain.repository.HistoryRepositoryTest" time="0.08"/>
+  <testcase name="stashDrop removes stash without applying" classname="com.bontecou.syncmd.domain.repository.HistoryRepositoryTest" time="0.091"/>
+  <testcase name="listTags shows created tags" classname="com.bontecou.syncmd.domain.repository.HistoryRepositoryTest" time="0.086"/>
+  <testcase name="getHistory respects maxCommits limit" classname="com.bontecou.syncmd.domain.repository.HistoryRepositoryTest" time="0.075"/>
+  <testcase name="deleteTag removes tag" classname="com.bontecou.syncmd.domain.repository.HistoryRepositoryTest" time="0.074"/>
+  <testcase name="listTags returns empty list when no tags" classname="com.bontecou.syncmd.domain.repository.HistoryRepositoryTest" time="0.075"/>
+  <testcase name="getCommit returns specific commit" classname="com.bontecou.syncmd.domain.repository.HistoryRepositoryTest" time="0.079"/>
+  <testcase name="stashPop applies and removes stash" classname="com.bontecou.syncmd.domain.repository.HistoryRepositoryTest" time="0.078"/>
+  <testcase name="revertCommit with CREATE_NEW_COMMIT creates new commit" classname="com.bontecou.syncmd.domain.repository.HistoryRepositoryTest" time="0.077"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,194 @@
+{
+  "new_keys": [
+    "tide_settings_signed_in",
+    "tide_settings_not_signed_in",
+    "tide_settings_section_new_clones",
+    "tide_settings_sign_out_title",
+    "tide_settings_sign_out_message",
+    "tide_settings_this_account",
+    "tide_settings_version_line",
+    "tide_settings_on",
+    "tide_settings_off"
+  ],
+  "new_values": 225,
+  "mapped_settings_strings": 10,
+  "formatted_values": 50,
+  "unformatted_values": 175,
+  "locales": {
+    "ar": {
+      "qualifier": "ar",
+      "verified_values": 9,
+      "formatted_values": 2,
+      "unformatted_values": 7,
+      "xml_sha256": "e55dbd8fc8c4ae4015b791a863740e708877547a5ba7fc5135ea7096cc2b0af2"
+    },
+    "da": {
+      "qualifier": "da",
+      "verified_values": 9,
+      "formatted_values": 2,
+      "unformatted_values": 7,
+      "xml_sha256": "02972cf9a42be97628d625b94813ad4b3cc67170d02ff6008b2a2e3e1e58d352"
+    },
+    "de": {
+      "qualifier": "de",
+      "verified_values": 9,
+      "formatted_values": 2,
+      "unformatted_values": 7,
+      "xml_sha256": "38962903088f099a7e1c8ad70500f062b93e1ae2cdc4f9f476753fe0a36644a6"
+    },
+    "es": {
+      "qualifier": "es",
+      "verified_values": 9,
+      "formatted_values": 2,
+      "unformatted_values": 7,
+      "xml_sha256": "5dfd99cd3813be5460eec0ac3a53f47af25d656236900c8e6cf6453210670b8a"
+    },
+    "fi": {
+      "qualifier": "fi",
+      "verified_values": 9,
+      "formatted_values": 2,
+      "unformatted_values": 7,
+      "xml_sha256": "40105ff92ee5212c640f17276024e03d569bdd13ce144434178f239024deff98"
+    },
+    "fr": {
+      "qualifier": "fr",
+      "verified_values": 9,
+      "formatted_values": 2,
+      "unformatted_values": 7,
+      "xml_sha256": "2e37287f5dfa74b849ec475d59d65e36e630d822672ad7de32b0101cbc6ce015"
+    },
+    "he": {
+      "qualifier": "iw",
+      "verified_values": 9,
+      "formatted_values": 2,
+      "unformatted_values": 7,
+      "xml_sha256": "10c7f8aebde03d565c2d7f524d7787f15bbaa8b7d5324dfa5195f3af42971f45"
+    },
+    "hi": {
+      "qualifier": "hi",
+      "verified_values": 9,
+      "formatted_values": 2,
+      "unformatted_values": 7,
+      "xml_sha256": "535ac32987aa51030e5fcbec1ae5af54e8a339286be430798f551af1c669d60c"
+    },
+    "hu": {
+      "qualifier": "hu",
+      "verified_values": 9,
+      "formatted_values": 2,
+      "unformatted_values": 7,
+      "xml_sha256": "6758bc4aecb9a78bb591c84e30571288a3d357b9bd93f67e4632a36d92ddf9e3"
+    },
+    "id": {
+      "qualifier": "in",
+      "verified_values": 9,
+      "formatted_values": 2,
+      "unformatted_values": 7,
+      "xml_sha256": "e603f679f3af30c55447a52dd3923e802a8aedafbfd3b5cae99606332a100567"
+    },
+    "it": {
+      "qualifier": "it",
+      "verified_values": 9,
+      "formatted_values": 2,
+      "unformatted_values": 7,
+      "xml_sha256": "8c0a39cff3fd58f7dd02b8c679438798c4f83be457f58b0d2abf42b4a5a9d34c"
+    },
+    "ja": {
+      "qualifier": "ja",
+      "verified_values": 9,
+      "formatted_values": 2,
+      "unformatted_values": 7,
+      "xml_sha256": "f7fe3dd1bfaf7e43d61f5cdc7b32ce749db7123aca0fc3e657dbcd377b07d253"
+    },
+    "ko": {
+      "qualifier": "ko",
+      "verified_values": 9,
+      "formatted_values": 2,
+      "unformatted_values": 7,
+      "xml_sha256": "2994d3d64321f71e7e8c29647fc7ab3718a839b6b155ed0d965d37cd6dade395"
+    },
+    "nb": {
+      "qualifier": "nb",
+      "verified_values": 9,
+      "formatted_values": 2,
+      "unformatted_values": 7,
+      "xml_sha256": "7c14f1b7cdc7ba64e3903f4a52b7096a7b1cc1d47aba89a8f29792bf25872ca8"
+    },
+    "nl": {
+      "qualifier": "nl",
+      "verified_values": 9,
+      "formatted_values": 2,
+      "unformatted_values": 7,
+      "xml_sha256": "b76428ecfaab3f91f8d103934695aef8370e5aaaf5d1820d3b3963d9fc9b0871"
+    },
+    "pl": {
+      "qualifier": "pl",
+      "verified_values": 9,
+      "formatted_values": 2,
+      "unformatted_values": 7,
+      "xml_sha256": "ac659d298702f8c933f6c4946c60c907916b17362517a4b4237e8a69cfe7a3a8"
+    },
+    "pt-BR": {
+      "qualifier": "pt-rBR",
+      "verified_values": 9,
+      "formatted_values": 2,
+      "unformatted_values": 7,
+      "xml_sha256": "3790bb9159ee68d36d7af277b541cad7c1ff5b49c4fcfca2bd380dac4273defe"
+    },
+    "ru": {
+      "qualifier": "ru",
+      "verified_values": 9,
+      "formatted_values": 2,
+      "unformatted_values": 7,
+      "xml_sha256": "f21d436e71b8eab3557de804beb4aa543b7216bbe9e2f1c3cd54a39114ec5446"
+    },
+    "sv": {
+      "qualifier": "sv",
+      "verified_values": 9,
+      "formatted_values": 2,
+      "unformatted_values": 7,
+      "xml_sha256": "b76af79830f41c23380d6068cfcd99e6008b1ad79af03991e5221fd2db9ee65e"
+    },
+    "th": {
+      "qualifier": "th",
+      "verified_values": 9,
+      "formatted_values": 2,
+      "unformatted_values": 7,
+      "xml_sha256": "b9bab07d6abd668442d6d1e5a2a0d7903c4380cee9f05f5bca2adf36f388a9e1"
+    },
+    "tr": {
+      "qualifier": "tr",
+      "verified_values": 9,
+      "formatted_values": 2,
+      "unformatted_values": 7,
+      "xml_sha256": "ab93e9695e50703cb2b54167e2772fc577bc0fa1139d7b704cd9c46efbc1739e"
+    },
+    "uk": {
+      "qualifier": "uk",
+      "verified_values": 9,
+      "formatted_values": 2,
+      "unformatted_values": 7,
+      "xml_sha256": "a3a6f4497916ae6e728b9769be72acdc8d68db4ff710240244c1cec61add5854"
+    },
+    "vi": {
+      "qualifier": "vi",
+      "verified_values": 9,
+      "formatted_values": 2,
+      "unformatted_values": 7,
+      "xml_sha256": "802657169ee7388861c2b272e1820da9308677a8d55d13e7fe5697685fffc925"
+    },
+    "zh-Hans": {
+      "qualifier": "b+zh+Hans",
+      "verified_values": 9,
+      "formatted_values": 2,
+      "unformatted_values": 7,
+      "xml_sha256": "df37ddd11c28757d582ffa8a1e990a983686ed194a406ccd895ff089ba95dd76"
+    },
+    "zh-Hant": {
+      "qualifier": "b+zh+Hant",
+      "verified_values": 9,
+      "formatted_values": 2,
+      "unformatted_values": 7,
+      "xml_sha256": "040005f9ee5e3b90390a4f8fa5716afed6bfc3d2dcfa30dfc4f36d0b7c0acd0d"
+    }
+  }
+}

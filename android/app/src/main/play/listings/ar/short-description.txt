@@ -1,0 +1,1 @@
+استنسخ مستودعات GitHub ونفّذ commit وpull وpush على Android.

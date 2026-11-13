@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.git.SshAuthenticationTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-11-03T00:56:21" hostname="MacBook-Pro.local" time="0.903">
+  <properties/>
+  <testcase name="SSH keys cannot answer HTTP challenges and endpoint mismatch fails before connecting" classname="com.bontecou.syncmd.services.git.SshAuthenticationTest" time="0.002"/>
+  <testcase name="SSH addresses retain path semantics and normalize host and port" classname="com.bontecou.syncmd.services.git.SshAuthenticationTest" time="0.001"/>
+  <testcase name="SSH rejects implicit usernames secrets traversal controls and unrelated schemes" classname="com.bontecou.syncmd.services.git.SshAuthenticationTest" time="0.0"/>
+  <testcase name="modern encrypted Ed25519 and RSA keys validate with matching public keys" classname="com.bontecou.syncmd.services.git.SshAuthenticationTest" time="0.368"/>
+  <testcase name="host fingerprint matches OpenSSH SHA256 convention" classname="com.bontecou.syncmd.services.git.SshAuthenticationTest" time="0.001"/>
+  <testcase name="wrong passphrase mismatched public key malformed and weak keys are rejected" classname="com.bontecou.syncmd.services.git.SshAuthenticationTest" time="0.53"/>
+  <testcase name="pack commands preserve scoped paths including SCP IPv6 without allowing command injection" classname="com.bontecou.syncmd.services.git.SshAuthenticationTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

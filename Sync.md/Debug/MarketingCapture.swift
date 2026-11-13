@@ -52,6 +52,28 @@ enum MarketingCapture {
         return args[idx + 1]
     }
 
+    /// Repositories the picker lists under `-UITestGitHubRepos`.
+    static var sampleGitHubRepos: [GitHubRepo] {
+        func repo(_ id: Int64, _ owner: String, _ name: String, private isPrivate: Bool,
+                  sizeKB: Int, language: String?, daysAgo: Double) -> GitHubRepo {
+            let updated = ISO8601DateFormatter().string(from: Date().addingTimeInterval(-daysAgo * 86_400))
+            return GitHubRepo(
+                id: id, name: name, fullName: "\(owner)/\(name)", description: nil,
+                isPrivate: isPrivate, htmlURL: "https://github.com/\(owner)/\(name)",
+                defaultBranch: "main", updatedAt: updated,
+                owner: GitHubRepo.Owner(login: owner), size: sizeKB, language: language
+            )
+        }
+        return [
+            repo(1, "sample-developer", "second-brain", private: true, sizeKB: 2_400, language: nil, daysAgo: 0.1),
+            repo(2, "sample-developer", "reading-vault", private: true, sizeKB: 4_100, language: nil, daysAgo: 3),
+            repo(3, "sample-developer", "work-notes", private: true, sizeKB: 215_000, language: "Markdown", daysAgo: 7),
+            repo(4, "sample-developer", "vault-templates", private: false, sizeKB: 18, language: nil, daysAgo: 60),
+            repo(5, "sample-developer", "dotfiles", private: false, sizeKB: 6, language: "Shell", daysAgo: 240),
+            repo(6, "sample-org", "team-handbook", private: true, sizeKB: 9_800, language: nil, daysAgo: 2),
+        ]
+    }
+
     // MARK: Locale
 
     static var localeFolder: String {
@@ -435,6 +457,16 @@ enum MarketingDemoSeeder {
                 )
         } catch {
             assertionFailure("Could not create seeded file-browser data: \(error)")
+        }
+
+        // Offline stand-ins for GitHub-backed flows, so UI tests and QA can
+        // reach them without an account or network.
+        if ProcessInfo.processInfo.arguments.contains("-UITestGitHubRepos") {
+            state.gitHubRepos = MarketingCapture.sampleGitHubRepos
+        }
+        if ProcessInfo.processInfo.arguments.contains("-UITestAuthExpired") {
+            let cloned = state.repos.filter(\.isCloned).map(\.id)
+            Task { @MainActor in state.markAuthExpired(repoIDs: cloned) }
         }
     }
 

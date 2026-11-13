@@ -1,0 +1,6 @@
+steps:
+  - tap:
+      x: 0.435
+      y: 0.136
+executionPrerequisite: Settings default-location document picker in Obsidian
+  folder, More menu open. Create isolated QA parent folder.

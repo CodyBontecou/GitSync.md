@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.repositories.RepositoryConnectionTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-11-03T00:57:18" hostname="MacBook-Pro.local" time="0.245">
+  <properties/>
+  <testcase name="failed credential persistence never publishes prepared config" classname="com.bontecou.syncmd.services.repositories.RepositoryConnectionTest" time="0.051"/>
+  <testcase name="repository without origin gets a fetch mapping and upstream without creating a commit" classname="com.bontecou.syncmd.services.repositories.RepositoryConnectionTest" time="0.014"/>
+  <testcase name="noncooperating config change during credential save is preserved" classname="com.bontecou.syncmd.services.repositories.RepositoryConnectionTest" time="0.054"/>
+  <testcase name="connection edit preserves index files refs and other remote config" classname="com.bontecou.syncmd.services.repositories.RepositoryConnectionTest" time="0.065"/>
+  <testcase name="stale plan or config lock never calls credential mutation" classname="com.bontecou.syncmd.services.repositories.RepositoryConnectionTest" time="0.061"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

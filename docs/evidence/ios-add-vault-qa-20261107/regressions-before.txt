@@ -1,0 +1,19 @@
+Full log: /tmp/gitsync-add-vault-before.log
+
+/Users/codybontecou/dev/gitsync.md/SyncMDTests/SyncMDTests.swift:125: error: -[SyncMDTests.SyncMDTests testAppStateCloneHonorsConfiguredNonDefaultBranchAndContents] : XCTAssertEqual failed: ("Optional("master")") is not equal to ("Optional("qa/selected")")
+/Users/codybontecou/dev/gitsync.md/SyncMDTests/SyncMDTests.swift:126: error: -[SyncMDTests.SyncMDTests testAppStateCloneHonorsConfiguredNonDefaultBranchAndContents] : XCTAssertEqual failed: ("Optional("b00c9faaa9fe9c2430e9926ecbd8ca41bdb16cee")") is not equal to ("Optional("f1539152584d45c39739889f0b877a05f129cd6b")")
+/Users/codybontecou/dev/gitsync.md/SyncMDTests/SyncMDTests.swift:127: error: -[SyncMDTests.SyncMDTests testAppStateCloneHonorsConfiguredNonDefaultBranchAndContents] : XCTAssertEqual failed: ("default branch") is not equal to ("selected branch")
+Test Case '-[SyncMDTests.SyncMDTests testAppStateCloneHonorsConfiguredNonDefaultBranchAndContents]' failed (1.413 seconds).
+/Users/codybontecou/dev/gitsync.md/SyncMDTests/SyncMDTests.swift:141: error: -[SyncMDTests.SyncMDTests testVaultPreflightRejectsMissingBranchInsteadOfPassingIt] : XCTAssertNotEqual failed: ("ready") is equal to ("ready") - A nonexistent branch must not pass preflight
+/Users/codybontecou/dev/gitsync.md/SyncMDTests/SyncMDTests.swift:142: error: -[SyncMDTests.SyncMDTests testVaultPreflightRejectsMissingBranchInsteadOfPassingIt] : XCTAssertEqual failed: ("Optional(Sync_md.VaultPreflight.Status.passed)") is not equal to ("Optional(Sync_md.VaultPreflight.Status.failed)")
+Test Case '-[SyncMDTests.SyncMDTests testVaultPreflightRejectsMissingBranchInsteadOfPassingIt]' failed (0.051 seconds).
+	 Executed 2 tests, with 5 failures (0 unexpected) in 1.464 (1.472) seconds
+	 Executed 2 tests, with 5 failures (0 unexpected) in 1.464 (1.473) seconds
+	 Executed 2 tests, with 5 failures (0 unexpected) in 1.464 (1.476) seconds
+/Users/codybontecou/dev/gitsync.md/SyncMDUITests/SyncMDUITests.swift:146: error: -[SyncMDUITests.SyncMDUITests testCloneFormRejectsInvalidBranchThenClonesSelectedBranch] : XCTAssertFalse failed - Malformed branch must be rejected before preflight or clone
+Test Case '-[SyncMDUITests.SyncMDUITests testCloneFormRejectsInvalidBranchThenClonesSelectedBranch]' failed (20.448 seconds).
+	 Executed 1 test, with 1 failure (0 unexpected) in 20.448 (20.456) seconds
+	 Executed 1 test, with 1 failure (0 unexpected) in 20.448 (20.457) seconds
+	 Executed 1 test, with 1 failure (0 unexpected) in 20.448 (20.461) seconds
+	/tmp/gitsync-ios-navigation-fixes/Logs/Test/Test-Sync.md-2026.11.07_21-33-20--0400.xcresult
+** TEST FAILED **

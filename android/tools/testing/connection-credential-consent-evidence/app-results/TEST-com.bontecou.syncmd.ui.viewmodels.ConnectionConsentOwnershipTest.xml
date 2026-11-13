@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.ui.viewmodels.ConnectionConsentOwnershipTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-11-02T21:24:07" hostname="MacBook-Pro.local" time="1.654">
+  <properties/>
+  <testcase name="queuedRemovalRejectsRepositorySwitch" classname="com.bontecou.syncmd.ui.viewmodels.ConnectionConsentOwnershipTest" time="1.26"/>
+  <testcase name="oldDialogCannotRemoveAnotherRepositoriesCredentials" classname="com.bontecou.syncmd.ui.viewmodels.ConnectionConsentOwnershipTest" time="0.089"/>
+  <testcase name="changedGitConfigBlocksRemoval" classname="com.bontecou.syncmd.ui.viewmodels.ConnectionConsentOwnershipTest" time="0.077"/>
+  <testcase name="sameFolderReloadRevokesOldDialog" classname="com.bontecou.syncmd.ui.viewmodels.ConnectionConsentOwnershipTest" time="0.084"/>
+  <testcase name="currentConsentRemovesOnlyReviewedCredentialAssignment" classname="com.bontecou.syncmd.ui.viewmodels.ConnectionConsentOwnershipTest" time="0.077"/>
+  <testcase name="queuedRemovalRejectsSameFolderReload" classname="com.bontecou.syncmd.ui.viewmodels.ConnectionConsentOwnershipTest" time="0.065"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+]]></system-err>
+</testsuite>

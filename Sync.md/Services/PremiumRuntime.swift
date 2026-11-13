@@ -252,7 +252,10 @@ final class PremiumRuntime {
         guard automaticPushWakeIsAllowed else { return .ignored }
         let repoIDs = repositoryIDs(matching: event)
         guard !repoIDs.isEmpty else { return .ignored }
-        return await coordinator.reconcilePush(repoIDs: repoIDs, hintID: event.hintID)
+        let startedAt = Date()
+        let results = await coordinator.reconcilePushResults(repoIDs: repoIDs, hintID: event.hintID)
+        recordRun(trigger: .push, results: results, startedAt: startedAt, budget: 30)
+        return BackgroundSyncCoordinator.summarize(results)
     }
 
     /// Called when Apple's remote-notification execution budget expires.
@@ -289,17 +292,24 @@ final class PremiumRuntime {
     private func handleBackgroundProcessing(_ task: any PremiumBackgroundProcessingTask) {
         updateBackgroundProcessingSchedule()
         let execution = PremiumBackgroundProcessingExecution(task: task, coordinator: coordinator)
+        let budget = task.kind?.approximateBudget
         execution.start { [weak self] in
             guard let self else { return false }
-            return await self.processBackgroundProcessing()
+            return await self.processBackgroundProcessing(budget: budget)
         }
     }
 
-    private func processBackgroundProcessing() async -> Bool {
+    private func processBackgroundProcessing(budget: TimeInterval? = nil) async -> Bool {
         guard !Task.isCancelled,
               automaticallyPullRemoteChanges || automaticallyPushLocalChanges else { return !Task.isCancelled }
         guard automaticOperationsAllowed else { return false }
+        // BGTask can cold-launch before any scene or settings refresh. Restore
+        // current inclusion and configured branches before selecting Git work.
+        await reconcileAutomaticRepositories()
+        guard automaticOperationsAllowed else { return false }
+        let startedAt = Date()
         let results = await coordinator.reconcileProcessing()
+        recordRun(trigger: .scheduled, results: results, startedAt: startedAt, budget: budget)
         guard !Task.isCancelled else { return false }
         return !results.values.contains(where: \.isFailure)
     }
@@ -350,8 +360,87 @@ final class PremiumRuntime {
         guard automaticOperationsAllowed else { coordinator.cancelAll(); return }
         await reconcileAutomaticRepositories()
         guard automaticOperationsAllowed else { coordinator.cancelAll(); return }
-        _ = await coordinator.reconcileForeground()
+        let startedAt = Date()
+        let results = await coordinator.reconcileForeground()
+        recordRun(trigger: .foreground, results: results, startedAt: startedAt, budget: nil)
         passFinished = !Task.isCancelled
+    }
+
+    // MARK: - Run records
+
+    /// Persists a run record and writes the debug log. Background runs (BGTask,
+    /// APNs) are always recorded; foreground passes only when something
+    /// happened, so app activations don't flood the ring buffer with no-ops.
+    private func recordRun(
+        trigger: BackgroundSyncRunRecord.Trigger,
+        results: [UUID: BackgroundSyncDisposition],
+        startedAt: Date,
+        budget: TimeInterval?
+    ) {
+        let names = results.keys.map { id in
+            (id, repositoryProvider?.assistRepository(id: id)?.displayName ?? String(localized: "Repository"))
+        }
+        let outcomes = names
+            .compactMap { id, name in
+                results[id].flatMap { BackgroundSyncRunRecord.VaultOutcome(repoName: name, disposition: $0) }
+            }
+            .sorted { $0.repoName.localizedStandardCompare($1.repoName) == .orderedAscending }
+        let isBackground = trigger != .foreground
+        guard isBackground || outcomes.contains(where: { $0.kind != .nothingNew }) else { return }
+        let run = BackgroundSyncRunRecord(
+            date: startedAt,
+            trigger: trigger,
+            duration: Date().timeIntervalSince(startedAt),
+            budget: budget,
+            outcomes: outcomes
+        )
+        BackgroundSyncRunStore.shared.record(run)
+        Self.log(run)
+    }
+
+    private static func log(_ run: BackgroundSyncRunRecord) {
+        let isBackground = run.trigger != .foreground
+        let logger = DebugLogger.shared
+        for outcome in run.outcomes {
+            switch outcome.kind {
+            case .error:
+                logger.error("background-sync", outcome.detail ?? String(localized: "Background Sync failed."),
+                             repo: outcome.repoName, background: isBackground)
+            case .skipped:
+                logger.warning("background-sync",
+                               String(localized: "skipped: \(outcome.detail ?? String(localized: "needs attention"))"),
+                               repo: outcome.repoName, background: isBackground)
+            case .pulled, .pushed, .pulledAndPushed:
+                let parts = [outcome.pulled ? String(localized: "pulled") : nil,
+                             outcome.pushed ? String(localized: "pushed") : nil].compactMap { $0 }
+                logger.info("background-sync", parts.joined(separator: " · "),
+                            repo: outcome.repoName, background: isBackground)
+            case .nothingNew:
+                break
+            }
+        }
+        guard isBackground else { return }
+        // One summary line per background run:
+        // "pulled 2 · pushed 1 · 4.8s of 30s budget".
+        var parts: [String] = []
+        if run.didTransferData {
+            if run.pulledCount > 0 { parts.append(String(localized: "pulled \(run.pulledCount)")) }
+            if run.pushedCount > 0 { parts.append(String(localized: "pushed \(run.pushedCount)")) }
+        } else if run.outcomes.isEmpty {
+            parts.append(String(localized: "no vaults included"))
+        } else {
+            parts.append(String(localized: "\(run.outcomes.count) vaults, nothing new"))
+        }
+        let elapsed = String(format: "%.1fs", run.duration)
+        if let budget = run.budget {
+            parts.append(String(localized: "\(elapsed) of \(Int(budget))s budget"))
+        } else {
+            parts.append(elapsed)
+        }
+        let level: LogLevel = run.errorCount > 0 ? .error : (run.skippedCount > 0 ? .warning : .info)
+        let source = run.trigger == .push ? String(localized: "push wake") : String(localized: "scheduled")
+        logger.log(level, category: "background-sync", parts.joined(separator: " · "),
+                   detail: source, background: true)
     }
 
     /// Settings-side refresh: brings per-repository assist flags in line with

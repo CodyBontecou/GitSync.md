@@ -1,0 +1,11 @@
+<resources>
+    <string name="callback_background_consent">Run each use of this link once without opening GitSync.md, using the reviewed repository, branch and saved connection/account. Results are saved in Repository actions. When notifications are allowed, tap the completed notification to return the result to the approved calling app. Automatic return is unavailable in this mode. After process interruption, review the repository and use the link again; interrupted actions never restart automatically.</string>
+    <string name="callback_background_busy">Another action was already running. This callback did not run. Use the link again after it finishes.</string>
+    <string name="callback_background_channel">Authorized callback actions</string>
+    <string name="callback_background_running">Authorized callback running</string>
+    <string name="callback_background_complete">Callback finished. Tap to return the result to the approved calling app.</string>
+    <string name="callback_background_complete_no_return">Callback finished. Open Repository actions to review the saved result.</string>
+    <string name="callback_background_attention">Callback needs attention. Review its saved result in Repository actions. Tap to return an available result.</string>
+    <string name="callback_background_return_expired">This callback result is unavailable or its authorization changed. Review Repository actions before using the link again.</string>
+    <string name="callback_background_results_unavailable">Saved callback results cannot be read. Authorizations remain separate. Clearing results also clears launcher shortcut results.</string>
+</resources>

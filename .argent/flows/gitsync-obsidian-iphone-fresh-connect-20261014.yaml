@@ -1,0 +1,40 @@
+steps:
+  - tap:
+      text: gitsync-obsidian-iphone-qa-20261014
+  - tool: gesture-swipe
+    args:
+      fromX: 0.36
+      fromY: 0.85
+      toX: 0.36
+      toY: 0.3
+      momentum: false
+  - tap:
+      text: Manage vaults...
+  - tool: gesture-swipe
+    args:
+      fromX: 0.5
+      fromY: 0.85
+      toX: 0.5
+      toY: 0.23
+      momentum: false
+  - launch: md.obsidian
+  - tap:
+      text: gitsync-obsidian-qa-fixed-20261014
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Open vault
+  - tap:
+      text: Open vault
+  - tap:
+      text: Trust author and enable plugins
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Obsidian Git is connected to GitSync.md.
+      timeoutMs: 10000
+executionPrerequisite: Obsidian has the original disposable QA vault open with
+  its Files sidebar expanded. The fresh fixed QA vault was cloned locally with
+  GitSync.md.

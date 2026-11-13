@@ -1,0 +1,7 @@
+<resources>
+    <string name="discard_review_all">Tracked changes and new files listed below will be permanently discarded. Ignored files are kept.</string>
+    <string name="discard_review_unborn">There is no commit yet. This clears staging for the listed files and keeps their contents.</string>
+    <string name="discard_review_operation">This also abandons the active Git operation.</string>
+    <string name="discard_review_empty">There are no changes to discard.</string>
+    <string name="discard_clear_staging">Clear staging</string>
+</resources>

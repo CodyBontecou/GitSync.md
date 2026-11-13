@@ -9,6 +9,8 @@ struct GitControlSheet: View {
     @State private var commitMessage = ""
     @State private var diffDestination: DiffDestination? = nil
     @State private var conflictEditorDestination: ConflictEditorDestination? = nil
+    @State private var isCreatingBranch = false
+    @State private var isCreatingTag = false
     @State private var newBranchName = ""
     @State private var mergeCommitMessage = ""
     @State private var stashMessage = ""
@@ -31,55 +33,57 @@ struct GitControlSheet: View {
     private var stashes: [GitStashEntry] { state.stashesByRepo[repoID] ?? [] }
     private var tags: [GitTag] { state.tagsByRepo[repoID] ?? [] }
 
+    // Commit flow mode
+    private var inMerge: Bool { conflictSession.kind == .merge }
+    private var inRebase: Bool { conflictSession.kind == .rebase }
+    private var inConflictOperation: Bool { inMerge || inRebase }
+    private var canPushCurrentBranch: Bool {
+        !inConflictOperation && stagedCount == 0 && changeCount == 0 && syncState == .ahead
+    }
+
     var body: some View {
         NavigationStack {
             ZStack {
-                Color.brutalBg.ignoresSafeArea()
+                Tide.paper.ignoresSafeArea()
 
                 ScrollView {
-                    VStack(spacing: 12) {
-                        statusCard
-                        branchesCard
-                        if hasConflictSession { conflictCenterCard }
-                        changesCard
-                        stashCard
-                        tagCard
-                        fetchCard
-                        pullCard
-                        pullRebaseCard
-                        pushCard
-
-                        if isThisRepoSyncing {
-                            progressCard.transition(.scale(scale: 0.97).combined(with: .opacity))
-                        }
+                    VStack(alignment: .leading, spacing: 0) {
+                        header
+                        if hasConflictSession { conflictCenterSection }
+                        commitSection
+                        currentBranchCard
+                        branchesSection
+                        stashSection
+                        tagSection
+                        remoteSection
                     }
-                        .padding(.horizontal, 20)
-                        .padding(.top, 12)
-                        .padding(.bottom, 40)
-                    }
-                    .scrollIndicators(.hidden)
+                    .padding(.horizontal, Tide.gutter)
+                    .padding(.top, 4)
+                    .padding(.bottom, 28)
                 }
+                .scrollIndicators(.hidden)
+                .scrollDismissesKeyboard(.interactively)
+                .safeAreaInset(edge: .bottom, spacing: 0) { commitBar }
+            }
             .navigationBarTitleDisplayMode(.inline)
+            .toolbarBackground(Tide.paper, for: .navigationBar)
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     Text(String(localized: "Git Tools"))
-                        .font(.system(size: 14, weight: .black, design: .monospaced))
-                        .foregroundStyle(Color.brutalText)
-                        .tracking(4)
+                        .font(TideFont.sans(17, .semibold, relativeTo: .headline))
+                        .foregroundStyle(Tide.ink)
+                        .accessibilityAddTraits(.isHeader)
                 }
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Close") {
+                    Button {
                         dismiss()
+                    } label: {
+                        Text(String(localized: "Close"))
+                            .font(TideFont.sans(15, relativeTo: .body))
+                            .foregroundStyle(Tide.inkMid)
+                            .frame(minHeight: 44)
                     }
                 }
-            }
-            .alert("Error", isPresented: Binding(
-                get: { state.showError },
-                set: { state.showError = $0 }
-            )) {
-                Button("OK", role: .cancel) {}
-            } message: {
-                Text(state.lastError ?? String(localized: "Unknown error"))
             }
             .alert("Use Git LFS?", isPresented: Binding(
                 get: { state.pendingLFSAutoTrackingConfirmation != nil },
@@ -120,446 +124,186 @@ struct GitControlSheet: View {
             }
             #endif
         }
+        .appErrorAlert()
     }
 
-    // MARK: - Status Card
+    // MARK: - Header
 
-    private var statusCard: some View {
-        BCard(padding: 0) {
-            VStack(spacing: 0) {
-                HStack {
-                    BSectionHeader(title: String(localized: "Repository Status"))
-                    Spacer()
-                }
-                .padding(.horizontal, 16)
-                .padding(.top, 14)
-                .padding(.bottom, 10)
-
-
-                VStack(spacing: 0) {
-                    if let repo = repo {
-                        statusDataRow(label: String(localized: "Branch"), value: repo.gitState.branch, mono: true)
-                        BDivider()
-                        statusDataRow(label: String(localized: "Last Sync"), value: lastSyncText)
-                        BDivider()
-                        statusDataRow(label: String(localized: "Commit SHA"), value: String(repo.gitState.commitSHA.prefix(7)), mono: true)
-                        BDivider()
-                    }
-
-                    HStack {
-                        Text(String(localized: "Local Changes").uppercased())
-                            .font(.system(size: 14, weight: .medium, design: .monospaced))
-                            .foregroundStyle(Color.brutalText)
-                            .tracking(1)
-                        Spacer()
-                        if changeCount > 0 {
-                            BBadge(text: "\(changeCount) \(String(localized: "Files").lowercased())", style: .accent)
-                        } else {
-                            Text(String(localized: "None"))
-                                .font(.system(size: 14, design: .monospaced))
-                                .foregroundStyle(Color.brutalText)
-                        }
-                    }
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 12)
-                }
+    private var header: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            if let repo {
+                Text("\(repo.displayName) → \(currentBranchShortName)")
+                    .font(TideFont.mono(12, relativeTo: .footnote))
+                    .foregroundStyle(Tide.inkMid)
+                    .lineLimit(1)
+                    .truncationMode(.middle)
             }
+            Text(headline)
+                .tideDisplay(30)
+                .lineLimit(2)
+                .minimumScaleFactor(0.7)
+                .accessibilityAddTraits(.isHeader)
         }
+        .padding(.horizontal, 4)
+        .padding(.top, 6)
     }
 
-    private var lastSyncText: String {
-        guard let repo else { return String(localized: "Never") }
-        if repo.gitState.lastSyncDate == .distantPast { return String(localized: "Never") }
-        if repo.gitState.lastSyncDate.timeIntervalSinceNow > -1 { return String(localized: "just now") }
-        let fmt = RelativeDateTimeFormatter()
-        fmt.unitsStyle = .abbreviated
-        return fmt.localizedString(for: repo.gitState.lastSyncDate, relativeTo: Date())
+    private var headline: String {
+        if inMerge { return String(localized: "Complete merge") }
+        if inRebase { return String(localized: "Continue rebase") }
+        if canPushCurrentBranch { return String(localized: "Ready to push") }
+        if stagedCount == 1 { return String(localized: "Commit 1 file") }
+        if stagedCount > 1 { return String(localized: "Commit \(stagedCount) files") }
+        if changeCount > 0 { return String(localized: "Choose what to commit") }
+        return String(localized: "Nothing to commit")
     }
 
-    private func statusDataRow(label: String, value: String, mono: Bool = false) -> some View {
-        HStack {
-            Text(label.uppercased())
-                .font(.system(size: 14, weight: .medium, design: .monospaced))
-                .foregroundStyle(Color.brutalText)
-                .tracking(1)
-            Spacer()
-            Text(value)
-                .font(mono
-                    ? .system(size: 13, weight: .medium, design: .monospaced)
-                    : .system(size: 13, weight: .medium)
+    // MARK: - Commit
+
+    private var commitSection: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            if !inRebase && !canPushCurrentBranch {
+                TideSectionLabel(title: inMerge ? String(localized: "Merge message") : String(localized: "Message"))
+                    .padding(.horizontal, 4)
+                    .padding(.top, 20)
+
+                TextField(
+                    inMerge ? String(localized: "Merge commit message…") : String(localized: "Commit message…"),
+                    text: $commitMessage,
+                    axis: .vertical
                 )
-                .foregroundStyle(Color.brutalText)
-        }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 12)
-    }
-
-    // MARK: - Branches Card
-
-    private var branchesCard: some View {
-        BCard(padding: 0) {
-            VStack(spacing: 0) {
-                HStack {
-                    BSectionHeader(title: String(localized: "Branches"))
-                    Spacer()
-                    BBadge(text: currentBranchShortName, style: .accent)
-                }
+                .accessibilityIdentifier("gitTools.commitMessage")
+                .font(TideFont.sans(17, .medium, relativeTo: .body))
+                .foregroundStyle(Tide.ink)
+                .lineLimit(3...5)
                 .padding(.horizontal, 16)
-                .padding(.top, 14)
-                .padding(.bottom, 10)
+                .padding(.vertical, 14)
+                .background(RoundedRectangle(cornerRadius: 18, style: .continuous).fill(Tide.card))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 18, style: .continuous)
+                        .strokeBorder(Tide.ink, lineWidth: 1.5)
+                )
+                .padding(.top, 8)
+            }
 
-
-                // Create branch
-                HStack(spacing: 8) {
-                    TextField("new-branch-name", text: $newBranchName)
-                        .textInputAutocapitalization(.never)
-                        .autocorrectionDisabled()
-                        .font(.system(size: 13, design: .monospaced))
-                        .padding(.horizontal, 10)
-                        .padding(.vertical, 9)
-                        .background(Color.brutalSurface)
-
+            HStack(alignment: .center) {
+                TideSectionLabel(title: String(localized: "Included"))
+                if stagedCount > 0 {
+                    Text("\(stagedCount)/\(statusEntries.count)")
+                        .font(TideFont.section)
+                        .foregroundStyle(Tide.inkFaint)
+                }
+                Spacer()
+                if !unstagedEntries.isEmpty {
                     Button {
-                        let name = newBranchName.trimmingCharacters(in: .whitespacesAndNewlines)
-                        guard !name.isEmpty else { return }
-                        Task {
-                            await state.createBranch(repoID: repoID, name: name)
-                            newBranchName = ""
-                        }
+                        Task { await state.stageAllChanges(repoID: repoID) }
                     } label: {
-                        Text(String(localized: "Create").uppercased())
-                            .font(.system(size: 14, weight: .bold, design: .monospaced))
-                            .foregroundStyle(Color(.systemBackground))
-                            .tracking(1)
-                            .padding(.horizontal, 12)
-                            .padding(.vertical, 9)
-                            .background(newBranchName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || state.isSyncing
-                                        ? Color.primary.opacity(0.3)
-                                        : Color.primary)
-                            // Hit target ≥44pt tall; filled visual stays compact.
-                            .frame(minHeight: 44)
+                        Text(String(localized: "Stage all"))
+                            .font(TideFont.sans(14, .medium, relativeTo: .subheadline))
+                            .foregroundStyle(Tide.ink)
+                            .frame(minWidth: 44, minHeight: 44)
                             .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
-                    .disabled(newBranchName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || state.isSyncing)
-                }
-                .padding(.horizontal, 16)
-                .padding(.vertical, 12)
-
-                if !localBranches.isEmpty {
-
-                    VStack(spacing: 0) {
-                        ForEach(Array(localBranches.enumerated()), id: \.element.id) { index, branch in
-                            branchRow(branch)
-                            if index < localBranches.count - 1 {
-                                BDivider().padding(.horizontal, 16)
-                            }
-                        }
-                    }
-                    .padding(.vertical, 4)
-                }
-
-                if let detached = branchInventory.detachedHeadOID {
-                    HStack(spacing: 6) {
-                        BBadge(text: String(localized: "Detached Head"), style: .warning)
-                        Text(String(detached.prefix(7)))
-                            .font(.system(size: 13, design: .monospaced))
-                            .foregroundStyle(Color.brutalText)
-                        Spacer()
-                    }
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 10)
+                    .disabled(state.isSyncing)
+                    .opacity(state.isSyncing ? 0.4 : 1)
                 }
             }
-        }
-    }
+            .frame(minHeight: 44)
+            .padding(.horizontal, 4)
+            .padding(.top, 12)
 
-    private func branchRow(_ branch: GitBranchInfo) -> some View {
-        HStack(spacing: 8) {
-            VStack(alignment: .leading, spacing: 2) {
-                Text(branch.shortName)
-                    .font(.system(size: 13, weight: .semibold, design: .monospaced))
-                    .foregroundStyle(Color.brutalText)
-                if let upstream = branch.upstreamShortName {
-                    Text(upstream)
-                        .font(.system(size: 14, design: .monospaced))
-                        .foregroundStyle(Color.brutalText)
-                }
-            }
-
-            Spacer()
-
-            if branch.isCurrent {
-                BBadge(text: String(localized: "Current"), style: .success)
-            } else {
-                HStack(spacing: 8) {
-                    smallActionButton(String(localized: "Switch").uppercased()) {
-                        Task { await state.switchBranch(repoID: repoID, name: branch.shortName) }
-                    }
-                    smallActionButton(String(localized: "Merge").uppercased()) {
-                        Task { await state.mergeBranch(repoID: repoID, from: branch.shortName) }
-                    }
-                    smallActionButton("✕", isDestructive: true) {
-                        Task { await state.deleteBranch(repoID: repoID, name: branch.shortName) }
-                    }
-                }
-            }
-        }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 12)
-        .disabled(state.isSyncing)
-    }
-
-    // MARK: - Conflict Center Card
-
-    private var conflictCenterCard: some View {
-        BCard(padding: 0) {
-            VStack(spacing: 0) {
-                HStack {
-                    BSectionHeader(title: String(localized: "Conflict Center"))
-                    Spacer()
-                    BBadge(text: conflictSession.kind.rawValue, style: .error)
-                }
-                .padding(.horizontal, 16)
-                .padding(.top, 14)
-                .padding(.bottom, 10)
-
-
-                if conflictSession.unmergedPaths.isEmpty {
-                    Text(conflictSession.kind == .rebase
-                         ? String(localized: "All conflicts resolved. Continue or abort the rebase.")
-                         : String(localized: "All conflicts resolved. Complete or abort the merge."))
-                        .font(.system(size: 14, design: .monospaced))
-                        .foregroundStyle(Color.brutalText)
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 12)
-                } else {
-                    VStack(spacing: 0) {
-                        ForEach(Array(conflictSession.unmergedPaths.enumerated()), id: \.element) { index, path in
-                            conflictRow(path: path)
-                            if index < conflictSession.unmergedPaths.count - 1 {
-                                BDivider().padding(.horizontal, 16)
-                            }
-                        }
-                    }
-                }
-
-                if conflictSession.kind == .merge {
-
-                    VStack(spacing: 8) {
-                        HStack(spacing: 8) {
-                            TextField("Merge commit message", text: $mergeCommitMessage)
-                                .font(.system(size: 13, design: .monospaced))
-                                .padding(.horizontal, 10)
-                                .padding(.vertical, 9)
-                                .background(Color.brutalSurface)
-                                .disabled(state.isSyncing)
-
-                            Button {
-                                Task {
-                                    await state.completeMerge(repoID: repoID, message: mergeCommitMessage)
-                                    mergeCommitMessage = ""
-                                }
-                            } label: {
-                                Text(String(localized: "Complete").uppercased())
-                                    .font(.system(size: 14, weight: .bold, design: .monospaced))
-                                    .foregroundStyle(Color(.systemBackground))
-                                    .tracking(1)
-                                    .padding(.horizontal, 12)
-                                    .padding(.vertical, 9)
-                                    .background(!conflictSession.unmergedPaths.isEmpty || state.isSyncing
-                                                ? Color.brutalSuccess.opacity(0.3) : Color.brutalSuccess)
-                                    // Hit target ≥44pt tall; filled visual stays compact.
-                                    .frame(minHeight: 44)
-                                    .contentShape(Rectangle())
-                            }
-                            .buttonStyle(.plain)
-                            .disabled(!conflictSession.unmergedPaths.isEmpty || state.isSyncing)
-                        }
-
-                        Button {
-                            Task { await state.abortMerge(repoID: repoID) }
-                        } label: {
-                            HStack(spacing: 6) {
-                                Image(systemName: "xmark")
-                                    .font(.system(size: 13, weight: .bold))
-                                    .accessibilityHidden(true)
-                                Text(String(localized: "Abort Merge").uppercased())
-                                    .font(.system(size: 13, weight: .bold, design: .monospaced))
-                                    .tracking(1)
-                            }
-                            .foregroundStyle(Color.brutalError)
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 10)
-                            .overlay(Rectangle().strokeBorder(Color.brutalError.opacity(0.4), lineWidth: 1))
-                            .frame(minHeight: 44)
-                            .contentShape(Rectangle())
-                        }
-                        .buttonStyle(.plain)
-                        .disabled(state.isSyncing)
-                    }
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 12)
-                } else if conflictSession.kind == .rebase {
-                    VStack(spacing: 8) {
-                        Button {
-                            Task { await state.continueRebase(repoID: repoID) }
-                        } label: {
-                            Text(String(localized: "Continue Rebase").uppercased())
-                                .font(.system(size: 14, weight: .bold, design: .monospaced))
-                                .foregroundStyle(Color(.systemBackground))
-                                .tracking(1)
-                                .frame(maxWidth: .infinity)
-                                .padding(.vertical, 10)
-                                .background(!conflictSession.unmergedPaths.isEmpty || state.isSyncing
-                                            ? Color.brutalSuccess.opacity(0.3) : Color.brutalSuccess)
-                                // Hit target ≥44pt tall; filled visual stays compact.
-                                .frame(minHeight: 44)
-                                .contentShape(Rectangle())
-                        }
-                        .buttonStyle(.plain)
-                        .disabled(!conflictSession.unmergedPaths.isEmpty || state.isSyncing)
-
-                        Button {
-                            Task { await state.abortRebase(repoID: repoID) }
-                        } label: {
-                            HStack(spacing: 6) {
-                                Image(systemName: "xmark")
-                                    .font(.system(size: 13, weight: .bold))
-                                    .accessibilityHidden(true)
-                                Text(String(localized: "Abort Rebase").uppercased())
-                                    .font(.system(size: 13, weight: .bold, design: .monospaced))
-                                    .tracking(1)
-                            }
-                            .foregroundStyle(Color.brutalError)
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 10)
-                            .overlay(Rectangle().strokeBorder(Color.brutalError.opacity(0.4), lineWidth: 1))
-                            .frame(minHeight: 44)
-                            .contentShape(Rectangle())
-                        }
-                        .buttonStyle(.plain)
-                        .disabled(state.isSyncing)
-                    }
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 12)
-                }
-            }
-        }
-    }
-
-    private func conflictRow(path: String) -> some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text(path)
-                .font(.system(size: 14, weight: .semibold, design: .monospaced))
-                .foregroundStyle(Color.brutalText)
-                .lineLimit(1)
-                .truncationMode(.middle)
-
-            HStack(spacing: 8) {
-                smallActionButton(String(localized: "Ours").uppercased()) {
-                    Task { await state.resolveConflictFile(repoID: repoID, path: path, strategy: .ours) }
-                }
-                smallActionButton(String(localized: "Theirs").uppercased()) {
-                    Task { await state.resolveConflictFile(repoID: repoID, path: path, strategy: .theirs) }
-                }
-                smallActionButton(String(localized: "Edit").uppercased()) {
-                    conflictEditorDestination = ConflictEditorDestination(repoID: repoID, path: path)
-                }
-                smallActionButton(String(localized: "Diff").uppercased()) {
-                    openDiff(for: path)
-                }
-            }
-        }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 12)
-        .disabled(state.isSyncing)
-    }
-
-    // MARK: - Changes Card
-
-    private var changesCard: some View {
-        BCard(padding: 0) {
-            VStack(spacing: 0) {
-                HStack {
-                    BSectionHeader(title: String(localized: "Changes"))
-                    Spacer()
-                    if stagedCount > 0 {
-                        BBadge(text: "\(stagedCount) \(String(localized: "staged"))", style: .success)
-                    }
-                }
-                .padding(.horizontal, 16)
-                .padding(.top, 14)
-                .padding(.bottom, 10)
-
-
-                if sortedEntries.isEmpty {
+            if sortedEntries.isEmpty {
+                TideCard(padding: 16, radius: 20) {
                     Text(String(localized: "No local changes"))
-                        .font(.system(size: 14, design: .monospaced))
-                        .foregroundStyle(Color.brutalText)
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 12)
-                } else {
-                    let entries = sortedEntries
-                    let hasUnstagedEntries = entries.contains { $0.workTreeStatus != nil }
-
-                    if hasUnstagedEntries {
-                        HStack {
-                            Spacer()
-                            smallActionButton(String(localized: "Stage All").uppercased()) {
-                                Task { await state.stageAllChanges(repoID: repoID) }
-                            }
-                        }
-                        .padding(.horizontal, 16)
-                        .padding(.bottom, 8)
-                        .disabled(state.isSyncing)
-                    }
-
-                    LazyVStack(spacing: 0) {
-                        ForEach(Array(entries.enumerated()), id: \.element.id) { index, entry in
-                            changeRow(entry)
-                            if index < entries.count - 1 {
-                                BDivider().padding(.horizontal, 16)
-                            }
-                        }
+                        .font(TideFont.sans(15, relativeTo: .subheadline))
+                        .foregroundStyle(Tide.inkMid)
+                }
+            } else {
+                let entries = sortedEntries
+                LazyVStack(spacing: 0) {
+                    ForEach(Array(entries.enumerated()), id: \.element.id) { index, entry in
+                        changeRow(entry)
+                        if index < entries.count - 1 { BDivider() }
                     }
                 }
+                .padding(.horizontal, 16)
+                .padding(.vertical, 2)
+                .background(RoundedRectangle(cornerRadius: 20, style: .continuous).fill(Tide.card))
             }
+
+            Text(commitStatusText)
+                .font(TideFont.meta)
+                .foregroundStyle(commitStatusTint)
+                .padding(.horizontal, 4)
+                .padding(.top, 10)
         }
+    }
+
+    private var commitStatusText: String {
+        if inConflictOperation {
+            return conflictSession.hasConflicts
+                ? String(localized: "\(conflictSession.unmergedPaths.count) conflicts to resolve")
+                : String(localized: "All conflicts resolved")
+        }
+        if canPushCurrentBranch { return String(localized: "Local branch has commits ready to push") }
+        return stagedCount == 1 ? String(localized: "1 file staged") : String(localized: "\(stagedCount) files staged")
+    }
+
+    private var commitStatusTint: Color {
+        guard inConflictOperation else { return Tide.inkFaint }
+        return conflictSession.hasConflicts ? Tide.danger : Tide.synced
     }
 
     private func changeRow(_ entry: GitStatusEntry) -> some View {
-        HStack(spacing: 10) {
-            VStack(alignment: .leading, spacing: 3) {
-                Text(entry.path)
-                    .font(.system(size: 14, weight: .semibold, design: .monospaced))
-                    .foregroundStyle(Color.brutalText)
-                    .lineLimit(1)
-                    .truncationMode(.middle)
-
-                Text(changeSummary(for: entry))
-                    .font(.system(size: 14, design: .monospaced))
-                    .foregroundStyle(Color.brutalText)
-            }
-
-            Spacer(minLength: 8)
-
-            smallActionButton(entry.indexStatus != nil ? String(localized: "Unstage").uppercased() : String(localized: "Stage").uppercased()) {
+        let url = URL(fileURLWithPath: entry.path)
+        let directory = url.deletingLastPathComponent().relativePath
+        let staged = entry.indexStatus != nil
+        return HStack(spacing: 4) {
+            StageCheckbox(isStaged: staged, isPartial: staged && entry.workTreeStatus != nil) {
                 Task {
-                    if entry.indexStatus != nil {
+                    if staged {
                         await state.unstageFile(repoID: repoID, path: entry.path, oldPath: entry.oldPath)
                     } else {
                         await state.stageFile(repoID: repoID, path: entry.path, oldPath: entry.oldPath)
                     }
                 }
             }
+            .padding(.leading, -11)
+            .accessibilityLabel(staged
+                                ? String(localized: "Unstage \(url.lastPathComponent)")
+                                : String(localized: "Stage \(url.lastPathComponent)"))
 
-            smallActionButton(String(localized: "Diff").uppercased()) {
+            Button {
                 openDiff(for: entry.path)
+            } label: {
+                HStack(spacing: 8) {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(url.lastPathComponent)
+                            .font(TideFont.body)
+                            .foregroundStyle(entry.workTreeStatus == .deleted || entry.indexStatus == .deleted ? Tide.inkMid : Tide.ink)
+                            .lineLimit(1)
+                            .truncationMode(.middle)
+                        Text((directory == "." ? "" : directory + "/ · ") + changeSummary(for: entry))
+                            .font(TideFont.mono(11))
+                            .foregroundStyle(entry.isConflicted ? Tide.danger : Tide.inkFaint)
+                            .lineLimit(1)
+                            .truncationMode(.head)
+                    }
+                    Spacer(minLength: 8)
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 13, weight: .semibold))
+                        .foregroundStyle(Tide.inkFaint)
+                        .accessibilityHidden(true)
+                }
+                .padding(.vertical, 11)
+                .frame(minHeight: 44)
+                .contentShape(Rectangle())
             }
+            .buttonStyle(.plain)
+            .accessibilityElement(children: .combine)
+            .accessibilityHint(String(localized: "Shows the diff"))
         }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 12)
         .disabled(state.isSyncing)
     }
 
@@ -584,444 +328,688 @@ struct GitControlSheet: View {
         }
     }
 
-    // MARK: - Tag Card
+    // MARK: - Commit bar (pinned primary action)
 
-    private var tagCard: some View {
-        BCard(padding: 0) {
-            VStack(spacing: 0) {
+    private var commitBar: some View {
+        let title: String
+        let accessibilityTitle: String
+        if inMerge {
+            title = String(localized: "Complete merge")
+            accessibilityTitle = title
+        } else if inRebase {
+            title = String(localized: "Continue rebase")
+            accessibilityTitle = title
+        } else if canPushCurrentBranch {
+            title = String(localized: "Push current branch")
+            accessibilityTitle = title
+        } else {
+            title = String(localized: "Commit & push")
+            accessibilityTitle = stagedCount == 1
+                ? String(localized: "Push 1 file")
+                : String(localized: "Push \(stagedCount) files")
+        }
+        let showsCount = !inConflictOperation && !canPushCurrentBranch
+        let buttonDisabled = state.isSyncing
+            || (!inConflictOperation && !canPushCurrentBranch && stagedCount == 0)
+            || (inConflictOperation && conflictSession.hasConflicts)
+
+        return VStack(spacing: 10) {
+            if isThisRepoSyncing {
+                HStack(spacing: 10) {
+                    ProgressView().controlSize(.small).tint(Tide.ink)
+                    Text(state.syncProgress)
+                        .font(TideFont.meta)
+                        .foregroundStyle(Tide.inkMid)
+                        .lineLimit(1)
+                    Spacer(minLength: 0)
+                }
+                .padding(.horizontal, 6)
+                .transition(.opacity)
+            }
+
+            Button {
+                Task {
+                    let ok: Bool
+                    if canPushCurrentBranch {
+                        ok = await state.pushCurrentBranch(repoID: repoID)
+                    } else {
+                        ok = await state.push(repoID: repoID, message: commitMessage)
+                    }
+                    if ok {
+                        commitMessage = ""
+                        dismiss()
+                    }
+                }
+            } label: {
+                HStack(spacing: 10) {
+                    if inConflictOperation {
+                        Image(systemName: "checkmark")
+                            .font(.system(size: 15, weight: .bold))
+                            .accessibilityHidden(true)
+                    }
+                    Text(title).font(TideFont.sans(17, .semibold, relativeTo: .body))
+                    if showsCount, stagedCount > 0 {
+                        Text("↑\(stagedCount)")
+                            .font(TideFont.mono(12, .medium))
+                            .foregroundStyle(Tide.paper.opacity(0.72))
+                    }
+                }
+                .foregroundStyle(buttonDisabled ? Tide.inkMid : Tide.paper)
+                .frame(maxWidth: .infinity, minHeight: 60)
+                .background(Capsule().fill(buttonDisabled ? Color.brutalBorderSoft : Tide.ink))
+                .contentShape(Capsule())
+            }
+            .buttonStyle(.plain)
+            .disabled(buttonDisabled)
+            .accessibilityLabel(accessibilityTitle)
+        }
+        .padding(.horizontal, Tide.gutter)
+        .padding(.top, 10)
+        .padding(.bottom, 8)
+        .background(Tide.paper.ignoresSafeArea(edges: .bottom))
+        .animation(.easeOut(duration: 0.2), value: isThisRepoSyncing)
+    }
+
+    // MARK: - Current branch
+
+    private var currentBranchCard: some View {
+        TideCard(padding: 18) {
+            VStack(alignment: .leading, spacing: 10) {
+                HStack(alignment: .center, spacing: 12) {
+                    VStack(alignment: .leading, spacing: 4) {
+                        TideSectionLabel(title: String(localized: "Current branch"))
+                        Text(repo?.gitState.branch ?? currentBranchShortName)
+                            .font(TideFont.mono(22, .semibold, relativeTo: .title2))
+                            .foregroundStyle(Tide.ink)
+                            .lineLimit(1)
+                            .truncationMode(.middle)
+                    }
+                    Spacer(minLength: 8)
+                    BBadge(text: syncStateLabel, style: syncStateBadge)
+                }
+
+                if let repo {
+                    Text(String(repo.gitState.commitSHA.prefix(7)) + " · " + (repo.gitState.lastSyncDate == .distantPast
+                         ? String(localized: "not synced yet")
+                         : String(localized: "synced \(lastSyncText)")))
+                        .font(TideFont.mono(12, relativeTo: .footnote))
+                        .foregroundStyle(Tide.inkMid)
+                }
+
                 HStack {
-                    BSectionHeader(title: String(localized: "Tags"))
+                    Text(String(localized: "Local changes"))
+                        .font(TideFont.sans(14, relativeTo: .subheadline))
+                        .foregroundStyle(Tide.inkMid)
                     Spacer()
-                    if !tags.isEmpty {
-                        BBadge(text: "\(tags.count)", style: .default)
-                    }
+                    Text(changeCount > 0
+                         ? (changeCount == 1 ? String(localized: "1 file") : String(localized: "\(changeCount) files"))
+                         : String(localized: "None"))
+                        .font(TideFont.mono(13, .semibold, relativeTo: .footnote))
+                        .foregroundStyle(changeCount > 0 ? Tide.ahead : Tide.inkMid)
                 }
-                .padding(.horizontal, 16)
-                .padding(.top, 14)
-                .padding(.bottom, 10)
+                .accessibilityElement(children: .combine)
+            }
+        }
+        .padding(.top, 24)
+    }
 
+    private var syncStateLabel: String {
+        switch syncState {
+        case .upToDate: String(localized: "Up to date")
+        case .ahead: String(localized: "Ahead")
+        case .behind: String(localized: "Behind")
+        case .diverged: String(localized: "Diverged")
+        case .unknown: String(localized: "Not checked")
+        }
+    }
 
-                VStack(spacing: 8) {
-                    TextField("tag-name (e.g. v1.0.0)", text: $newTagName)
-                        .textInputAutocapitalization(.never)
-                        .autocorrectionDisabled()
-                        .font(.system(size: 13, design: .monospaced))
-                        .padding(.horizontal, 10)
-                        .padding(.vertical, 9)
-                        .background(Color.brutalSurface)
+    private var syncStateBadge: BBadge.BBadgeStyle {
+        switch syncState {
+        case .upToDate: .success
+        case .ahead, .diverged: .warning
+        case .behind: .accent
+        case .unknown: .default
+        }
+    }
 
-                    HStack(spacing: 8) {
-                        TextField("Annotation message (optional)", text: $newTagMessage)
-                            .font(.system(size: 13, design: .monospaced))
-                            .padding(.horizontal, 10)
-                            .padding(.vertical, 9)
-                            .background(Color.brutalSurface)
+    private var lastSyncText: String {
+        guard let repo else { return String(localized: "Never") }
+        if repo.gitState.lastSyncDate == .distantPast { return String(localized: "Never") }
+        if repo.gitState.lastSyncDate.timeIntervalSinceNow > -1 { return String(localized: "just now") }
+        let fmt = RelativeDateTimeFormatter()
+        fmt.unitsStyle = .abbreviated
+        return fmt.localizedString(for: repo.gitState.lastSyncDate, relativeTo: Date())
+    }
 
-                        Button {
-                            let name = newTagName.trimmingCharacters(in: .whitespacesAndNewlines)
-                            guard !name.isEmpty else { return }
-                            let msg = newTagMessage.trimmingCharacters(in: .whitespacesAndNewlines)
-                            Task {
-                                await state.createTag(repoID: repoID, name: name, message: msg.isEmpty ? nil : msg)
-                                newTagName = ""
-                                newTagMessage = ""
-                            }
-                        } label: {
-                            Text(String(localized: "Create").uppercased())
-                                .font(.system(size: 14, weight: .bold, design: .monospaced))
-                                .foregroundStyle(Color(.systemBackground))
-                                .tracking(1)
-                                .padding(.horizontal, 12)
-                                .padding(.vertical, 9)
-                                .background(newTagName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || state.isSyncing
-                                            ? Color.primary.opacity(0.3) : Color.primary)
-                                // Hit target ≥44pt tall; filled visual stays compact.
-                                .frame(minHeight: 44)
-                                .contentShape(Rectangle())
-                        }
-                        .buttonStyle(.plain)
-                        .disabled(newTagName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || state.isSyncing)
-                    }
-                }
-                .padding(.horizontal, 16)
-                .padding(.vertical, 12)
+    // MARK: - Branches
 
-                if !tags.isEmpty {
-                    VStack(spacing: 0) {
-                        ForEach(Array(tags.enumerated()), id: \.element.id) { index, tag in
-                            tagRow(tag: tag)
-                            if index < tags.count - 1 {
-                                BDivider().padding(.horizontal, 16)
-                            }
+    private var branchesSection: some View {
+        toolSection(String(localized: "Branches"), count: localBranches.count) {
+            HStack(spacing: 8) {
+                ToolField(placeholder: String(localized: "new-branch-name"), text: $newBranchName, mono: true)
+                ToolPill(title: String(localized: "Create"), style: .filled(Tide.ink)) {
+                    let submitted = newBranchName
+                    let name = submitted.trimmingCharacters(in: .whitespacesAndNewlines)
+                    guard !name.isEmpty, !isCreatingBranch else { return }
+                    isCreatingBranch = true
+                    Task {
+                        defer { isCreatingBranch = false }
+                        if await state.createBranch(repoID: repoID, name: name), newBranchName == submitted {
+                            newBranchName = ""
                         }
                     }
+                }
+                .disabled(newBranchName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || state.isSyncing || isCreatingBranch)
+            }
+            .padding(.vertical, 12)
+
+            ForEach(localBranches, id: \.id) { branch in
+                BDivider()
+                branchRow(branch)
+            }
+
+            if let detached = branchInventory.detachedHeadOID {
+                BDivider()
+                HStack(spacing: 8) {
+                    BBadge(text: String(localized: "Detached Head"), style: .warning)
+                    Text(String(detached.prefix(7)))
+                        .font(TideFont.mono(13, relativeTo: .footnote))
+                        .foregroundStyle(Tide.inkMid)
+                    Spacer()
+                }
+                .frame(minHeight: 50)
+            }
+        }
+    }
+
+    private func branchRow(_ branch: GitBranchInfo) -> some View {
+        HStack(spacing: 6) {
+            VStack(alignment: .leading, spacing: 2) {
+                Text(branch.shortName)
+                    .font(TideFont.mono(14, .semibold, relativeTo: .subheadline))
+                    .foregroundStyle(Tide.ink)
+                    .lineLimit(1)
+                    .truncationMode(.middle)
+                if let upstream = branch.upstreamShortName {
+                    Text(upstream)
+                        .font(TideFont.mono(11))
+                        .foregroundStyle(Tide.inkFaint)
+                        .lineLimit(1)
+                        .truncationMode(.middle)
+                }
+            }
+
+            Spacer(minLength: 6)
+
+            if branch.isCurrent {
+                BBadge(text: String(localized: "Current"), style: .success)
+            } else {
+                ToolPill(title: String(localized: "Switch")) {
+                    Task { await state.switchBranch(repoID: repoID, name: branch.shortName) }
+                }
+                ToolPill(title: String(localized: "Merge")) {
+                    Task { await state.mergeBranch(repoID: repoID, from: branch.shortName) }
+                }
+                ToolIconButton(systemImage: "trash", label: String(localized: "Delete branch \(branch.shortName)")) {
+                    Task { await state.deleteBranch(repoID: repoID, name: branch.shortName) }
+                }
+            }
+        }
+        .padding(.vertical, 8)
+        .frame(minHeight: 50)
+        .disabled(state.isSyncing)
+    }
+
+    // MARK: - Conflict center
+
+    private var conflictCenterSection: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                TideSectionLabel(title: String(localized: "Conflict Center"))
+                    .accessibilityAddTraits(.isHeader)
+                Spacer()
+                BBadge(text: conflictSession.kind.rawValue, style: .error)
+            }
+            .padding(.horizontal, 4)
+
+            VStack(alignment: .leading, spacing: 0) {
+                if conflictSession.unmergedPaths.isEmpty {
+                    Text(conflictSession.kind == .rebase
+                         ? String(localized: "All conflicts resolved. Continue or abort the rebase.")
+                         : String(localized: "All conflicts resolved. Complete or abort the merge."))
+                        .font(TideFont.sans(15, relativeTo: .subheadline))
+                        .foregroundStyle(Tide.synced)
+                        .padding(.vertical, 14)
                 } else {
-                    Text(String(localized: "No tags in this repository"))
-                        .font(.system(size: 14, design: .monospaced))
-                        .foregroundStyle(Color.brutalText)
-                        .padding(.horizontal, 16)
-                        .padding(.bottom, 12)
+                    ForEach(Array(conflictSession.unmergedPaths.enumerated()), id: \.element) { index, path in
+                        if index > 0 { BDivider() }
+                        conflictRow(path: path)
+                    }
+                }
+
+                BDivider()
+
+                if conflictSession.kind == .merge {
+                    VStack(spacing: 8) {
+                        HStack(spacing: 8) {
+                            ToolField(placeholder: String(localized: "Merge commit message"), text: $mergeCommitMessage)
+                                .disabled(state.isSyncing)
+                            ToolPill(title: String(localized: "Complete"), style: .filled(Tide.synced)) {
+                                Task {
+                                    await state.completeMerge(repoID: repoID, message: mergeCommitMessage)
+                                    mergeCommitMessage = ""
+                                }
+                            }
+                            .disabled(!conflictSession.unmergedPaths.isEmpty || state.isSyncing)
+                        }
+                        ToolPill(title: String(localized: "Abort merge"), style: .destructive, fullWidth: true) {
+                            Task { await state.abortMerge(repoID: repoID) }
+                        }
+                        .disabled(state.isSyncing)
+                    }
+                    .padding(.vertical, 12)
+                } else if conflictSession.kind == .rebase {
+                    VStack(spacing: 8) {
+                        ToolPill(title: String(localized: "Continue rebase"), style: .filled(Tide.synced), fullWidth: true) {
+                            Task { await state.continueRebase(repoID: repoID) }
+                        }
+                        .disabled(!conflictSession.unmergedPaths.isEmpty || state.isSyncing)
+                        ToolPill(title: String(localized: "Abort rebase"), style: .destructive, fullWidth: true) {
+                            Task { await state.abortRebase(repoID: repoID) }
+                        }
+                        .disabled(state.isSyncing)
+                    }
+                    .padding(.vertical, 12)
+                }
+            }
+            .padding(.horizontal, 16)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(RoundedRectangle(cornerRadius: Tide.radiusCard, style: .continuous).fill(Tide.card))
+            .overlay(
+                RoundedRectangle(cornerRadius: Tide.radiusCard, style: .continuous)
+                    .strokeBorder(Tide.danger.opacity(0.35), lineWidth: 1)
+            )
+        }
+        .padding(.top, 20)
+    }
+
+    private func conflictRow(path: String) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(path)
+                .font(TideFont.mono(13, .semibold, relativeTo: .footnote))
+                .foregroundStyle(Tide.ink)
+                .lineLimit(1)
+                .truncationMode(.middle)
+
+            HStack(spacing: 6) {
+                ToolPill(title: String(localized: "Ours")) {
+                    Task { await state.resolveConflictFile(repoID: repoID, path: path, strategy: .ours) }
+                }
+                ToolPill(title: String(localized: "Theirs")) {
+                    Task { await state.resolveConflictFile(repoID: repoID, path: path, strategy: .theirs) }
+                }
+                ToolPill(title: String(localized: "Edit")) {
+                    conflictEditorDestination = ConflictEditorDestination(repoID: repoID, path: path)
+                }
+                ToolPill(title: String(localized: "Diff")) {
+                    openDiff(for: path)
+                }
+            }
+        }
+        .padding(.vertical, 10)
+        .disabled(state.isSyncing)
+    }
+
+    // MARK: - Stash
+
+    private var stashSection: some View {
+        toolSection(String(localized: "Stash"), count: stashes.count) {
+            HStack(spacing: 8) {
+                ToolField(placeholder: String(localized: "Stash message (optional)…"), text: $stashMessage, plain: true)
+                ToolPill(title: String(localized: "Save"), style: .filled(Tide.ink)) {
+                    let msg = stashMessage.trimmingCharacters(in: .whitespacesAndNewlines)
+                    Task {
+                        await state.saveStash(repoID: repoID, message: msg, includeUntracked: true)
+                        stashMessage = ""
+                    }
+                }
+                .disabled(changeCount == 0 || state.isSyncing)
+            }
+            .padding(.vertical, 12)
+
+            if changeCount == 0 && stashes.isEmpty {
+                Text(String(localized: "No local changes to stash"))
+                    .font(TideFont.meta)
+                    .foregroundStyle(Tide.inkFaint)
+                    .padding(.bottom, 14)
+            }
+
+            ForEach(stashes, id: \.id) { entry in
+                BDivider()
+                stashRow(entry: entry)
+            }
+        }
+    }
+
+    private func stashRow(entry: GitStashEntry) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text("stash@{\(entry.index)}")
+                .font(TideFont.mono(12, .semibold))
+                .foregroundStyle(Tide.inkMid)
+            Text(entry.message)
+                .font(TideFont.sans(15, .medium, relativeTo: .subheadline))
+                .foregroundStyle(Tide.ink)
+                .lineLimit(2)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+            HStack(spacing: 6) {
+                ToolPill(title: String(localized: "Apply")) {
+                    Task { await state.applyStash(repoID: repoID, index: entry.index, expectedOID: entry.oid) }
+                }
+                ToolPill(title: String(localized: "Pop")) {
+                    Task { await state.popStash(repoID: repoID, index: entry.index, expectedOID: entry.oid) }
+                }
+                Spacer()
+                ToolIconButton(systemImage: "trash", label: String(localized: "Drop stash@{\(entry.index)}")) {
+                    Task { await state.dropStash(repoID: repoID, index: entry.index, expectedOID: entry.oid) }
+                }
+            }
+        }
+        .padding(.vertical, 10)
+        .disabled(state.isSyncing)
+    }
+
+    // MARK: - Tags
+
+    private var tagSection: some View {
+        toolSection(String(localized: "Tags"), count: tags.count) {
+            VStack(spacing: 8) {
+                ToolField(placeholder: String(localized: "tag-name (e.g. v1.0.0)"), text: $newTagName, mono: true)
+                HStack(spacing: 8) {
+                    ToolField(placeholder: String(localized: "Annotation message (optional)"), text: $newTagMessage)
+                    ToolPill(title: String(localized: "Create"), style: .filled(Tide.ink)) {
+                        let submittedName = newTagName
+                        let submittedMessage = newTagMessage
+                        let name = submittedName
+                        guard !name.isEmpty, !isCreatingTag else { return }
+                        let msg = submittedMessage.trimmingCharacters(in: .whitespacesAndNewlines)
+                        isCreatingTag = true
+                        Task {
+                            defer { isCreatingTag = false }
+                            if await state.createTag(repoID: repoID, name: name, message: msg.isEmpty ? nil : msg) {
+                                if newTagName == submittedName { newTagName = "" }
+                                if newTagMessage == submittedMessage { newTagMessage = "" }
+                            }
+                        }
+                    }
+                    .disabled(newTagName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || state.isSyncing || isCreatingTag)
+                }
+            }
+            .padding(.vertical, 12)
+
+            if tags.isEmpty {
+                Text(String(localized: "No tags in this repository"))
+                    .font(TideFont.meta)
+                    .foregroundStyle(Tide.inkFaint)
+                    .padding(.bottom, 14)
+            } else {
+                ForEach(tags, id: \.id) { tag in
+                    BDivider()
+                    tagRow(tag: tag)
                 }
             }
         }
     }
 
     private func tagRow(tag: GitTag) -> some View {
-        HStack(spacing: 8) {
+        HStack(spacing: 6) {
             VStack(alignment: .leading, spacing: 3) {
                 HStack(spacing: 6) {
                     Text(tag.shortName)
-                        .font(.system(size: 13, weight: .bold, design: .monospaced))
-                        .foregroundStyle(Color.brutalText)
-                    BBadge(text: tag.kind == .annotated ? String(localized: "annotated") : String(localized: "light"), style: tag.kind == .annotated ? .accent : .default)
+                        .font(TideFont.mono(14, .semibold, relativeTo: .subheadline))
+                        .foregroundStyle(Tide.ink)
+                        .lineLimit(1)
+                    BBadge(text: tag.kind == .annotated ? String(localized: "annotated") : String(localized: "light"),
+                           style: tag.kind == .annotated ? .accent : .default)
                 }
                 if let message = tag.message, !message.isEmpty {
                     Text(message)
-                        .font(.system(size: 13, design: .monospaced))
-                        .foregroundStyle(Color.brutalText)
+                        .font(TideFont.sans(14, relativeTo: .subheadline))
+                        .foregroundStyle(Tide.inkMid)
                         .lineLimit(1)
                 }
                 Text(String(tag.targetOID.prefix(7)))
-                    .font(.system(size: 14, design: .monospaced))
-                    .foregroundStyle(Color.brutalText)
+                    .font(TideFont.mono(11))
+                    .foregroundStyle(Tide.inkFaint)
             }
 
-            Spacer(minLength: 8)
+            Spacer(minLength: 6)
 
-            smallActionButton(String(localized: "Push").uppercased()) {
+            ToolPill(title: String(localized: "Push")) {
                 Task { await state.pushTag(repoID: repoID, name: tag.shortName) }
             }
-            smallActionButton("✕", isDestructive: true) {
+            ToolIconButton(systemImage: "trash", label: String(localized: "Delete tag \(tag.shortName)")) {
                 Task { await state.deleteTag(repoID: repoID, name: tag.shortName) }
             }
         }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 12)
+        .padding(.vertical, 10)
         .disabled(state.isSyncing)
     }
 
-    // MARK: - Stash Card
+    // MARK: - Remote
 
-    private var stashCard: some View {
-        BCard(padding: 0) {
-            VStack(spacing: 0) {
-                HStack {
-                    BSectionHeader(title: String(localized: "Stash"))
-                    Spacer()
-                    if !stashes.isEmpty {
-                        BBadge(text: "\(stashes.count)", style: .default)
-                    }
+    private var remoteSection: some View {
+        toolSection(String(localized: "Remote"), count: nil) {
+            remoteRow(icon: "arrow.triangle.2.circlepath",
+                      title: String(localized: "Fetch"),
+                      subtitle: String(localized: "Check remote for new commits")) {
+                Task { await state.fetchRemote(repoID: repoID) }
+            }
+            BDivider()
+            remoteRow(icon: "arrow.down",
+                      title: String(localized: "Pull"),
+                      subtitle: String(localized: "Fetch and apply remote changes")) {
+                Task {
+                    let ok = await state.pull(repoID: repoID)
+                    if ok { dismiss() }
                 }
-                .padding(.horizontal, 16)
-                .padding(.top, 14)
-                .padding(.bottom, 10)
-
-
-                HStack(spacing: 8) {
-                    TextField("Stash message (optional)…", text: $stashMessage)
-                        .textInputAutocapitalization(.never)
-                        .autocorrectionDisabled()
-                        .font(.system(size: 13, design: .monospaced))
-                        .padding(.horizontal, 10)
-                        .padding(.vertical, 9)
-                        .background(Color.brutalSurface)
-
-                    Button {
-                        let msg = stashMessage.trimmingCharacters(in: .whitespacesAndNewlines)
-                        Task {
-                            await state.saveStash(repoID: repoID, message: msg, includeUntracked: true)
-                            stashMessage = ""
-                        }
-                    } label: {
-                        Text(String(localized: "Save").uppercased())
-                            .font(.system(size: 14, weight: .bold, design: .monospaced))
-                            .foregroundStyle(Color(.systemBackground))
-                            .tracking(1)
-                            .padding(.horizontal, 12)
-                            .padding(.vertical, 9)
-                            .background(changeCount == 0 || state.isSyncing ? Color.primary.opacity(0.3) : Color.primary)
-                            // Hit target ≥44pt tall; filled visual stays compact.
-                            .frame(minHeight: 44)
-                            .contentShape(Rectangle())
-                    }
-                    .buttonStyle(.plain)
-                    .disabled(changeCount == 0 || state.isSyncing)
-                }
-                .padding(.horizontal, 16)
-                .padding(.vertical, 12)
-
-                if changeCount == 0 && stashes.isEmpty {
-                    Text(String(localized: "No local changes to stash"))
-                        .font(.system(size: 14, design: .monospaced))
-                        .foregroundStyle(Color.brutalText)
-                        .padding(.horizontal, 16)
-                        .padding(.bottom, 12)
-                }
-
-                if !stashes.isEmpty {
-                    VStack(spacing: 0) {
-                        ForEach(Array(stashes.enumerated()), id: \.element.id) { index, entry in
-                            stashRow(entry: entry)
-                            if index < stashes.count - 1 {
-                                BDivider().padding(.horizontal, 16)
-                            }
-                        }
-                    }
+            }
+            BDivider()
+            remoteRow(icon: "arrow.down.to.line",
+                      title: String(localized: "Pull with Rebase"),
+                      subtitle: String(localized: "Replay local commits on top of remote")) {
+                Task {
+                    let ok = await state.pullWithRebase(repoID: repoID)
+                    if ok { dismiss() }
                 }
             }
         }
     }
 
-    private func stashRow(entry: GitStashEntry) -> some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("stash@{\(entry.index)}")
-                .font(.system(size: 14, weight: .medium, design: .monospaced))
-                .foregroundStyle(Color.brutalText)
-            Text(entry.message)
-                .font(.system(size: 13, design: .monospaced))
-                .foregroundStyle(Color.brutalText)
-                .lineLimit(2)
-                .frame(maxWidth: .infinity, alignment: .leading)
-
-            HStack(spacing: 8) {
-                smallActionButton(String(localized: "Apply").uppercased()) {
-                    Task { await state.applyStash(repoID: repoID, index: entry.index) }
-                }
-                smallActionButton(String(localized: "Pop").uppercased()) {
-                    Task { await state.popStash(repoID: repoID, index: entry.index) }
-                }
-                Spacer()
-                smallActionButton("✕", isDestructive: true) {
-                    Task { await state.dropStash(repoID: repoID, index: entry.index) }
-                }
-            }
-        }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 12)
-        .disabled(state.isSyncing)
-    }
-
-    // MARK: - Fetch Card
-
-    private var fetchCard: some View {
-        Button {
-            Task { await state.fetchRemote(repoID: repoID) }
-        } label: {
-            BCard(padding: 0) {
-                BActionRow(icon: "↕", title: String(localized: "Fetch"), subtitle: String(localized: "Check remote for new commits"))
-            }
-        }
-        .buttonStyle(.plain)
-        .disabled(state.isSyncing)
-        .opacity(state.isSyncing ? 0.45 : 1)
-    }
-
-    // MARK: - Pull Card
-
-    private var pullCard: some View {
-        Button {
-            Task {
-                let ok = await state.pull(repoID: repoID)
-                if ok { dismiss() }
-            }
-        } label: {
-            BCard(padding: 0) {
-                BActionRow(icon: "⬇", title: String(localized: "Pull"), subtitle: String(localized: "Fetch and apply remote changes"))
-            }
-        }
-        .buttonStyle(.plain)
-        .disabled(state.isSyncing)
-        .opacity(state.isSyncing ? 0.45 : 1)
-    }
-
-    private var pullRebaseCard: some View {
-        Button {
-            Task {
-                let ok = await state.pullWithRebase(repoID: repoID)
-                if ok { dismiss() }
-            }
-        } label: {
-            BCard(padding: 0) {
-                BActionRow(icon: "↧", title: String(localized: "Pull with Rebase"), subtitle: String(localized: "Replay local commits on top of remote"))
-            }
-        }
-        .buttonStyle(.plain)
-        .disabled(state.isSyncing)
-        .opacity(state.isSyncing ? 0.45 : 1)
-    }
-
-    // MARK: - Push Card
-
-    private var pushCard: some View {
-        let inMerge = conflictSession.kind == .merge
-        let inRebase = conflictSession.kind == .rebase
-        let inConflictOperation = inMerge || inRebase
-        let canPushCurrentBranch = !inConflictOperation && stagedCount == 0 && changeCount == 0 && syncState == .ahead
-        let title: String
-        if inMerge {
-            title = String(localized: "Complete Merge")
-        } else if inRebase {
-            title = String(localized: "Continue Rebase")
-        } else if canPushCurrentBranch {
-            title = String(localized: "Push Current Branch")
-        } else {
-            title = String(localized: "Commit & Push")
-        }
-        let subtitle: String
-        if inMerge {
-            subtitle = String(localized: "Finalize the merge with a commit and push")
-        } else if inRebase {
-            subtitle = String(localized: "Continue replaying local commits")
-        } else if canPushCurrentBranch {
-            subtitle = String(localized: "Push committed local changes to remote")
-        } else {
-            subtitle = String(localized: "Commit staged changes and push to remote")
-        }
-        let placeholder = inMerge
-            ? String(localized: "Merge commit message…")
-            : String(localized: "Commit message…")
-        let buttonLabel: String
-        if inMerge {
-            buttonLabel = String(localized: "Complete Merge").uppercased()
-        } else if inRebase {
-            buttonLabel = String(localized: "Continue Rebase").uppercased()
-        } else if canPushCurrentBranch {
-            buttonLabel = String(localized: "Push Current Branch").uppercased()
-        } else if stagedCount == 1 {
-            buttonLabel = String(localized: "Push 1 File").uppercased()
-        } else {
-            buttonLabel = String(localized: "Push \(stagedCount) Files").uppercased()
-        }
-        let buttonDisabled = state.isSyncing
-            || (!inConflictOperation && !canPushCurrentBranch && stagedCount == 0)
-            || (inConflictOperation && conflictSession.hasConflicts)
-
-        return BCard(padding: 0) {
-            VStack(spacing: 0) {
-                HStack(spacing: 12) {
-                    Text("⬆")
-                        .font(.system(size: 20))
-                        .frame(width: 32)
-
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text(title)
-                            .font(.system(size: 16, weight: .semibold))
-                            .foregroundStyle(Color.brutalText)
-                        Text(subtitle)
-                            .font(.system(size: 14, design: .monospaced))
-                            .foregroundStyle(Color.brutalText)
-                    }
-                    Spacer()
-                }
-                .padding(.horizontal, 16)
-                .padding(.vertical, 14)
-
-
-                // Commit message
-                if !inRebase && !canPushCurrentBranch {
-                    TextField(placeholder, text: $commitMessage, axis: .vertical)
-                        .font(.system(size: 15, design: .monospaced))
-                        .lineLimit(1...4)
-                        .padding(13)
-                        .background(Color.brutalSurface)
-                }
-
-
-                HStack {
-                    if inConflictOperation {
-                        Text(conflictSession.hasConflicts
-                             ? String(localized: "\(conflictSession.unmergedPaths.count) conflicts to resolve")
-                             : String(localized: "All conflicts resolved"))
-                            .font(.system(size: 13, design: .monospaced))
-                            .foregroundStyle(conflictSession.hasConflicts ? Color.brutalError : Color.brutalSuccess)
-                    } else if canPushCurrentBranch {
-                        Text(String(localized: "Local branch has commits ready to push"))
-                            .font(.system(size: 13, design: .monospaced))
-                            .foregroundStyle(Color.brutalText)
-                    } else {
-                        Text(stagedCount == 1 ? String(localized: "1 file staged") : String(localized: "\(stagedCount) files staged"))
-                            .font(.system(size: 13, design: .monospaced))
-                            .foregroundStyle(Color.brutalText)
-                    }
-                    Spacer()
-                }
-                .padding(.horizontal, 16)
-                .padding(.vertical, 10)
-
-
-                Button {
-                    Task {
-                        let ok: Bool
-                        if canPushCurrentBranch {
-                            ok = await state.pushCurrentBranch(repoID: repoID)
-                        } else {
-                            ok = await state.push(repoID: repoID, message: commitMessage)
-                        }
-                        if ok {
-                            commitMessage = ""
-                            dismiss()
-                        }
-                    }
-                } label: {
-                    HStack(spacing: 8) {
-                        Image(systemName: inConflictOperation ? "checkmark" : "arrow.up")
-                            .font(.system(size: 14, weight: .bold))
-                            .accessibilityHidden(true)
-                        Text(buttonLabel)
-                            .font(.system(size: 14, weight: .bold, design: .monospaced))
-                            .tracking(1)
-                    }
-                    .foregroundStyle(Color(.systemBackground))
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 16)
-                    .background(buttonDisabled ? Color.primary.opacity(0.3) : Color.primary)
-                }
-                .buttonStyle(.plain)
-                .disabled(buttonDisabled)
-            }
-        }
-    }
-
-    // MARK: - Progress Card
-
-    private var progressCard: some View {
-        BCard(padding: 14, bg: .brutalSurface) {
+    private func remoteRow(icon: String, title: String, subtitle: String, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
             HStack(spacing: 12) {
-                ProgressView()
-                    .controlSize(.small)
-                    .tint(Color.brutalAccent)
-                Text(state.syncProgress.uppercased())
-                    .font(.system(size: 13, weight: .medium, design: .monospaced))
-                    .foregroundStyle(Color.brutalText)
-                    .tracking(1)
-                Spacer()
+                Image(systemName: icon)
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundStyle(Tide.ink)
+                    .frame(width: 30, height: 30)
+                    .background(RoundedRectangle(cornerRadius: 9, style: .continuous).fill(Tide.well))
+                    .accessibilityHidden(true)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(title)
+                        .font(TideFont.body)
+                        .foregroundStyle(Tide.ink)
+                    Text(subtitle)
+                        .font(TideFont.mono(11))
+                        .foregroundStyle(Tide.inkFaint)
+                }
+                Spacer(minLength: 0)
             }
+            .padding(.vertical, 10)
+            .frame(minHeight: 56)
+            .contentShape(Rectangle())
         }
+        .buttonStyle(.plain)
+        .accessibilityElement(children: .combine)
+        .disabled(state.isSyncing)
+        .opacity(state.isSyncing ? 0.45 : 1)
     }
 
     // MARK: - Helpers
 
+    /// Mono section label (with an optional mono count) above a white card
+    /// whose rows are separated by hairlines.
+    private func toolSection<Content: View>(
+        _ title: String,
+        count: Int?,
+        @ViewBuilder content: () -> Content
+    ) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                TideSectionLabel(title: title)
+                    .accessibilityAddTraits(.isHeader)
+                Spacer()
+                if let count, count > 0 {
+                    Text("\(count)")
+                        .font(TideFont.mono(12, relativeTo: .caption))
+                        .foregroundStyle(Tide.inkMid)
+                }
+            }
+            .padding(.horizontal, 4)
+
+            VStack(alignment: .leading, spacing: 0) {
+                content()
+            }
+            .padding(.horizontal, 16)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(RoundedRectangle(cornerRadius: Tide.radiusCard, style: .continuous).fill(Tide.card))
+        }
+        .padding(.top, 22)
+    }
+
     private func openDiff(for path: String) {
         diffDestination = DiffDestination(repoID: repoID, path: path)
     }
+}
 
-    private func smallActionButton(_ title: String, isDestructive: Bool = false, action: @escaping () -> Void) -> some View {
+// MARK: - Local Tide controls
+
+/// Checkbox-style stage toggle: filled = staged, minus = partially staged.
+private struct StageCheckbox: View {
+    let isStaged: Bool
+    let isPartial: Bool
+    let action: () -> Void
+    @Environment(\.isEnabled) private var isEnabled
+
+    var body: some View {
+        Button(action: action) {
+            ZStack {
+                RoundedRectangle(cornerRadius: 6, style: .continuous)
+                    .fill(isStaged ? Tide.ink : Color.clear)
+                RoundedRectangle(cornerRadius: 6, style: .continuous)
+                    .strokeBorder(isStaged ? Tide.ink : Tide.inkFaint, lineWidth: 1.5)
+                if isStaged {
+                    Image(systemName: isPartial ? "minus" : "checkmark")
+                        .font(.system(size: 12, weight: .bold))
+                        .foregroundStyle(Tide.paper)
+                }
+            }
+            .frame(width: 22, height: 22)
+            .frame(width: 44, height: 44)
+            .contentShape(Rectangle())
+            .opacity(isEnabled ? 1 : 0.4)
+        }
+        .buttonStyle(.plain)
+        .accessibilityValue(isStaged ? String(localized: "staged") : "")
+    }
+}
+
+/// Compact pill (36pt visual) inside a 44pt hit target.
+private struct ToolPill: View {
+    enum Style { case outline, destructive, filled(Color) }
+
+    let title: String
+    var style: Style = .outline
+    var fullWidth = false
+    let action: () -> Void
+    @Environment(\.isEnabled) private var isEnabled
+
+    var body: some View {
         Button(action: action) {
             Text(title)
-                .font(.system(size: 14, weight: .bold, design: .monospaced))
-                .foregroundStyle(isDestructive ? Color.brutalError : Color.brutalText)
-                .tracking(1)
-                .padding(.horizontal, 9)
-                .padding(.vertical, 6)
-                .overlay(
-                    Rectangle()
-                        .strokeBorder(isDestructive ? Color.brutalError.opacity(0.4) : Color.brutalBorder, lineWidth: 1)
-                )
-                // Compact visual, 44pt hit target: the frame expands the
-                // tappable area around the small chip without changing it.
+                .font(TideFont.sans(14, .medium, relativeTo: .subheadline))
+                .foregroundStyle(foreground)
+                .lineLimit(1)
+                .padding(.horizontal, 14)
+                .frame(maxWidth: fullWidth ? .infinity : nil, minHeight: 36)
+                .background(background)
+                .opacity(isEnabled ? 1 : 0.4)
                 .frame(minWidth: 44, minHeight: 44)
                 .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
+    }
+
+    private var foreground: Color {
+        switch style {
+        case .outline: Tide.ink
+        case .destructive: Tide.danger
+        case .filled: Tide.paper
+        }
+    }
+
+    @ViewBuilder private var background: some View {
+        switch style {
+        case .outline: Capsule().strokeBorder(Color.brutalBorderSoft, lineWidth: 1)
+        case .destructive: Capsule().strokeBorder(Tide.danger.opacity(0.35), lineWidth: 1)
+        case .filled(let tint): Capsule().fill(tint)
+        }
+    }
+}
+
+/// Icon-only destructive action with a 44pt hit target.
+private struct ToolIconButton: View {
+    let systemImage: String
+    let label: String
+    let action: () -> Void
+    @Environment(\.isEnabled) private var isEnabled
+
+    var body: some View {
+        Button(role: .destructive, action: action) {
+            Image(systemName: systemImage)
+                .font(.system(size: 14, weight: .medium))
+                .foregroundStyle(Tide.danger)
+                .frame(width: 44, height: 44)
+                .contentShape(Rectangle())
+                .opacity(isEnabled ? 1 : 0.4)
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(label)
+    }
+}
+
+/// Rounded input on a white card (mono for git names).
+private struct ToolField: View {
+    let placeholder: String
+    @Binding var text: String
+    var mono = false
+    /// No autocapitalization or autocorrection (git names, stash messages).
+    var plain = false
+    @FocusState private var isFocused: Bool
+
+    var body: some View {
+        TextField(placeholder, text: $text)
+            .textInputAutocapitalization(mono || plain ? .never : .sentences)
+            .autocorrectionDisabled(mono || plain)
+            .focused($isFocused)
+            .font(mono ? TideFont.mono(14, relativeTo: .subheadline) : TideFont.sans(15, relativeTo: .subheadline))
+            .foregroundStyle(Tide.ink)
+            .padding(.horizontal, 14)
+            .frame(minHeight: 44)
+            .background(RoundedRectangle(cornerRadius: 14, style: .continuous).fill(Tide.paper))
+            .overlay(
+                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                    .strokeBorder(isFocused ? Tide.ink : Tide.line, lineWidth: isFocused ? 1.5 : 1)
+            )
     }
 }

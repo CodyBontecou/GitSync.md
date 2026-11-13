@@ -570,19 +570,45 @@ struct GitHubRepo: Codable, Identifiable {
     let defaultBranch: String
     let updatedAt: String?
     let owner: Owner
+    /// Repository size reported by GitHub, in kilobytes (approximate; it
+    /// counts packed history, not the checked-out working tree).
+    var size: Int? = nil
+    /// Primary linguist language. Markdown-only note vaults usually report
+    /// `nil` because linguist does not count prose as a language.
+    var language: String? = nil
 
     struct Owner: Codable {
         let login: String
     }
 
     enum CodingKeys: String, CodingKey {
-        case id, name, description, owner
+        case id, name, description, owner, size, language
         case fullName = "full_name"
         case isPrivate = "private"
         case htmlURL = "html_url"
         case defaultBranch = "default_branch"
         case updatedAt = "updated_at"
     }
+
+    /// Approximate size in bytes, when GitHub reported one.
+    var sizeInBytes: Int64? {
+        guard let size, size > 0 else { return nil }
+        return Int64(size) * 1024
+    }
+
+    /// Name-based hint that this repository holds notes rather than code.
+    var hasNotesLikeName: Bool {
+        let lowered = name.lowercased()
+        return Self.notesNameHints.contains { lowered.contains($0) }
+    }
+
+    /// Prose-only repositories report no language, or Markdown.
+    var hasProseLanguage: Bool {
+        guard let language else { return true }
+        return language.caseInsensitiveCompare("Markdown") == .orderedSame
+    }
+
+    static let notesNameHints = ["vault", "notes", "obsidian", "journal", "zettel", "wiki", "brain", "garden", "notebook", "diary"]
 }
 
 extension GitHubService {
@@ -626,6 +652,89 @@ extension GitHubService {
         }
     }
 
+    /// Fetch the repositories the authenticated user has starred (up to 1,000).
+    static func fetchStarredRepos(token: String) async throws -> [GitHubRepo] {
+        var currentPage = 1
+        var result: [GitHubRepo] = []
+        while currentPage <= 10 {
+            var components = URLComponents(string: "https://api.github.com/user/starred")!
+            components.queryItems = [
+                URLQueryItem(name: "sort", value: "updated"),
+                URLQueryItem(name: "direction", value: "desc"),
+                URLQueryItem(name: "per_page", value: "100"),
+                URLQueryItem(name: "page", value: "\(currentPage)"),
+            ]
+            var req = URLRequest(url: components.url!)
+            req.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+            req.setValue("application/vnd.github+json", forHTTPHeaderField: "Accept")
+            let (data, response) = try await URLSession.shared.data(for: req)
+            guard let http = response as? HTTPURLResponse else {
+                throw GitHubError.apiError(0, String(localized: "Invalid response"))
+            }
+            guard http.statusCode == 200 else {
+                throw repositoryLookupError(
+                    statusCode: http.statusCode,
+                    headers: http.allHeaderFields.reduce(into: [String: String]()) { $0["\($1.key)"] = "\($1.value)" },
+                    body: data
+                )
+            }
+            let repositories = try JSONDecoder().decode([GitHubRepo].self, from: data)
+            result.append(contentsOf: repositories)
+            guard repositories.count == 100 else { return result }
+            currentPage += 1
+        }
+        return result
+    }
+
+    /// `true` when `owner/name` already exists and is visible to `token`,
+    /// `false` when GitHub answers 404. Other failures throw.
+    static func repositoryExists(owner: String, name: String, token: String) async throws -> Bool {
+        let status = try await statusCode(pathSegments: ["repos", owner, name], token: token)
+        switch status {
+        case 200...299: return true
+        case 404: return false
+        case 401: throw GitHubError.unauthorized
+        case 403, 429: throw GitHubError.rateLimited
+        default: throw GitHubError.apiError(status, String(localized: "Could not check the repository name."))
+        }
+    }
+
+    /// `true` when the repository's default branch has a top-level `.obsidian`
+    /// folder (an Obsidian vault). 404 means no such folder.
+    static func hasObsidianFolder(owner: String, name: String, token: String) async throws -> Bool {
+        let status = try await statusCode(pathSegments: ["repos", owner, name, "contents", ".obsidian"], token: token)
+        switch status {
+        case 200...299: return true
+        case 404: return false
+        case 401: throw GitHubError.unauthorized
+        case 403, 429: throw GitHubError.rateLimited
+        default: throw GitHubError.apiError(status, String(localized: "Could not read the repository contents."))
+        }
+    }
+
+    /// Issues an authenticated GET and returns only the HTTP status code.
+    private static func statusCode(pathSegments: [String], token: String) async throws -> Int {
+        var components = URLComponents()
+        components.scheme = "https"
+        components.host = "api.github.com"
+        // Percent-encode each segment so names cannot inject path components.
+        let allowed = CharacterSet.urlPathAllowed.subtracting(CharacterSet(charactersIn: "/"))
+        components.percentEncodedPath = "/" + pathSegments
+            .map { $0.addingPercentEncoding(withAllowedCharacters: allowed) ?? $0 }
+            .joined(separator: "/")
+        guard let url = components.url else { throw GitHubError.invalidURL }
+        var req = URLRequest(url: url)
+        req.httpMethod = "GET"
+        req.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        req.setValue("application/vnd.github+json", forHTTPHeaderField: "Accept")
+        req.setValue("2022-11-28", forHTTPHeaderField: "X-GitHub-Api-Version")
+        let (_, response) = try await URLSession.shared.data(for: req)
+        guard let http = response as? HTTPURLResponse else {
+            throw GitHubError.apiError(0, String(localized: "Invalid response"))
+        }
+        return http.statusCode
+    }
+
     static func repositoryLookupError(
         statusCode: Int,
         headers: [String: String],
@@ -666,5 +775,187 @@ extension GitHubService {
         }
         let emails = try JSONDecoder().decode([Email].self, from: data)
         return emails.first(where: { $0.primary })?.email ?? emails.first?.email
+    }
+}
+
+// MARK: - Pre-clone check
+
+/// What GitSync.md learns about a GitHub repository before cloning it, from
+/// metadata only (repository, tree and `.gitattributes`); no note contents
+/// are downloaded.
+struct GitHubRepoPreflight: Equatable, Sendable {
+    /// `nil` when GitHub did not report permissions for this token.
+    var canPush: Bool?
+    var defaultBranch: String
+    var sizeInBytes: Int64?
+    /// Files on the default branch; `nil` for an empty repository.
+    var fileCount: Int?
+    /// GitHub truncated the tree listing, so `fileCount` is a lower bound.
+    var fileCountIsPartial: Bool = false
+    /// Files matching a `filter=lfs` rule in `.gitattributes`.
+    var lfsFileCount: Int = 0
+    var hasObsidianFolder: Bool = false
+    var hasObsidianGitPlugin: Bool = false
+    var isEmpty: Bool = false
+
+    /// The check found nothing that would stop a normal two-way sync.
+    var isReady: Bool { canPush != false }
+}
+
+extension GitHubService {
+
+    private struct PreflightRepoResponse: Decodable {
+        struct Permissions: Decodable {
+            let push: Bool?
+            let maintain: Bool?
+            let admin: Bool?
+        }
+        let defaultBranch: String?
+        let size: Int?
+        let permissions: Permissions?
+
+        enum CodingKeys: String, CodingKey {
+            case size, permissions
+            case defaultBranch = "default_branch"
+        }
+    }
+
+    private struct PreflightTreeResponse: Decodable {
+        let tree: [GitTreeEntry]
+        let truncated: Bool?
+    }
+
+    /// Runs the pre-clone check for `owner/name`. `onRepository` reports the
+    /// first answer (access, branch, size) before the tree is listed. The
+    /// tree is read from `branch` when given, else the default branch.
+    static func preflight(
+        owner: String,
+        name: String,
+        token: String,
+        branch chosenBranch: String? = nil,
+        onRepository: (@MainActor @Sendable (GitHubRepoPreflight) -> Void)? = nil
+    ) async throws -> GitHubRepoPreflight {
+        let (repoData, repoStatus) = try await preflightGET(["repos", owner, name], token: token)
+        try throwIfPreflightFailed(status: repoStatus, data: repoData)
+        let repoInfo = try JSONDecoder().decode(PreflightRepoResponse.self, from: repoData)
+        let branch = repoInfo.defaultBranch ?? "main"
+        let permissions = repoInfo.permissions
+        var result = GitHubRepoPreflight(
+            canPush: permissions.map { ($0.push ?? false) || ($0.maintain ?? false) || ($0.admin ?? false) },
+            defaultBranch: branch,
+            sizeInBytes: repoInfo.size.flatMap { $0 > 0 ? Int64($0) * 1024 : nil }
+        )
+        if let onRepository { await onRepository(result) }
+
+        let (treeData, treeStatus) = try await preflightGET(
+            ["repos", owner, name, "git", "trees", chosenBranch ?? branch],
+            query: [URLQueryItem(name: "recursive", value: "1")],
+            token: token
+        )
+        // 409 / 404 on the tree: an empty repository with no commits yet.
+        if treeStatus == 409 || treeStatus == 404 {
+            result.isEmpty = true
+            result.fileCount = 0
+            return result
+        }
+        try throwIfPreflightFailed(status: treeStatus, data: treeData)
+        let tree = try JSONDecoder().decode(PreflightTreeResponse.self, from: treeData)
+
+        var patterns: [String] = []
+        if let attributes = tree.tree.first(where: { $0.path == ".gitattributes" && $0.type == "blob" }) {
+            let (blobData, blobStatus) = try await preflightGET(
+                ["repos", owner, name, "git", "blobs", attributes.sha], token: token
+            )
+            if (200...299).contains(blobStatus),
+               let blob = try? JSONDecoder().decode(GitBlob.self, from: blobData),
+               blob.encoding == "base64",
+               let decoded = Data(base64Encoded: blob.content, options: .ignoreUnknownCharacters),
+               let text = String(data: decoded, encoding: .utf8) {
+                patterns = lfsPatterns(fromGitAttributes: text)
+            }
+        }
+        applyTree(tree.tree, truncated: tree.truncated ?? false, lfsPatterns: patterns, to: &result)
+        return result
+    }
+
+    /// Fills file count, LFS and Obsidian facts from a recursive tree listing.
+    static func applyTree(
+        _ entries: [GitTreeEntry],
+        truncated: Bool,
+        lfsPatterns: [String],
+        to result: inout GitHubRepoPreflight
+    ) {
+        let blobs = entries.filter { $0.type == "blob" }
+        result.fileCount = blobs.count
+        result.fileCountIsPartial = truncated
+        result.isEmpty = entries.isEmpty
+        result.hasObsidianFolder = entries.contains { $0.path == ".obsidian" || $0.path.hasPrefix(".obsidian/") }
+        result.hasObsidianGitPlugin = entries.contains {
+            $0.path == ".obsidian/plugins/obsidian-git" || $0.path.hasPrefix(".obsidian/plugins/obsidian-git/")
+        }
+        guard !lfsPatterns.isEmpty else {
+            result.lfsFileCount = 0
+            return
+        }
+        result.lfsFileCount = blobs.filter { matchesLFSPattern(path: $0.path, patterns: lfsPatterns) }.count
+    }
+
+    /// Patterns from `.gitattributes` lines that set `filter=lfs`.
+    static func lfsPatterns(fromGitAttributes text: String) -> [String] {
+        text.split(whereSeparator: \.isNewline).compactMap { rawLine in
+            let line = rawLine.trimmingCharacters(in: .whitespaces)
+            guard !line.isEmpty, !line.hasPrefix("#") else { return nil }
+            let fields = line.split(whereSeparator: { $0 == " " || $0 == "\t" }).map(String.init)
+            guard let pattern = fields.first, fields.dropFirst().contains("filter=lfs") else { return nil }
+            return pattern
+        }
+    }
+
+    /// gitattributes-style match: a pattern without a slash matches the file
+    /// name at any depth; one with a slash matches the path from the root.
+    static func matchesLFSPattern(path: String, patterns: [String]) -> Bool {
+        let fileName = (path as NSString).lastPathComponent
+        return patterns.contains { rawPattern in
+            var pattern = rawPattern
+            if pattern.hasPrefix("/") { pattern.removeFirst() }
+            if pattern.hasSuffix("/**") {
+                let prefix = String(pattern.dropLast(3))
+                return path.hasPrefix(prefix + "/")
+            }
+            if pattern.contains("/") {
+                return fnmatch(pattern, path, 0) == 0
+            }
+            return fnmatch(pattern, fileName, 0) == 0
+        }
+    }
+
+    private static func throwIfPreflightFailed(status: Int, data: Data) throws {
+        guard !(200...299).contains(status) else { return }
+        throw repositoryLookupError(statusCode: status, headers: [:], body: data)
+    }
+
+    private static func preflightGET(
+        _ pathSegments: [String],
+        query: [URLQueryItem] = [],
+        token: String
+    ) async throws -> (Data, Int) {
+        var components = URLComponents()
+        components.scheme = "https"
+        components.host = "api.github.com"
+        let allowed = CharacterSet.urlPathAllowed.subtracting(CharacterSet(charactersIn: "/"))
+        components.percentEncodedPath = "/" + pathSegments
+            .map { $0.addingPercentEncoding(withAllowedCharacters: allowed) ?? $0 }
+            .joined(separator: "/")
+        if !query.isEmpty { components.queryItems = query }
+        guard let url = components.url else { throw GitHubError.invalidURL }
+        var req = URLRequest(url: url)
+        req.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        req.setValue("application/vnd.github+json", forHTTPHeaderField: "Accept")
+        req.setValue("2022-11-28", forHTTPHeaderField: "X-GitHub-Api-Version")
+        let (data, response) = try await URLSession.shared.data(for: req)
+        guard let http = response as? HTTPURLResponse else {
+            throw GitHubError.apiError(0, String(localized: "Invalid response"))
+        }
+        return (data, http.statusCode)
     }
 }

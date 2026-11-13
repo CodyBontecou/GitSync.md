@@ -1,0 +1,53 @@
+
+com.bontecou.syncmd.FileNavigationTest:
+Error in stashConflictHeroResolvesWithoutCreatingAMergeCommit(com.bontecou.syncmd.FileNavigationTest):
+androidx.compose.ui.test.ComposeTimeoutException: Condition still not satisfied after 10000 ms
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$AndroidComposeUiTestImpl.waitUntil(ComposeUiTest.android.kt:427)
+	at androidx.compose.ui.test.junit4.AndroidComposeTestRule.waitUntil(AndroidComposeTestRule.android.kt:306)
+	at com.bontecou.syncmd.FileNavigationTest.awaitTag(FileNavigationTest.kt:172)
+	at com.bontecou.syncmd.FileNavigationTest.awaitTag$default(FileNavigationTest.kt:172)
+	at com.bontecou.syncmd.FileNavigationTest.stashConflictHeroResolvesWithoutCreatingAMergeCommit(FileNavigationTest.kt:606)
+
+Error in conflictedRowKeepsItsRequestedPathAcrossRecreation(com.bontecou.syncmd.FileNavigationTest):
+androidx.compose.ui.test.ComposeTimeoutException: Condition still not satisfied after 10000 ms
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$AndroidComposeUiTestImpl.waitUntil(ComposeUiTest.android.kt:427)
+	at androidx.compose.ui.test.junit4.AndroidComposeTestRule.waitUntil(AndroidComposeTestRule.android.kt:306)
+	at com.bontecou.syncmd.FileNavigationTest.awaitTag(FileNavigationTest.kt:172)
+	at com.bontecou.syncmd.FileNavigationTest.awaitTag$default(FileNavigationTest.kt:172)
+	at com.bontecou.syncmd.FileNavigationTest.conflictedRowKeepsItsRequestedPathAcrossRecreation(FileNavigationTest.kt:633)
+
+Error in gitTabResolvesStandaloneStashConflictByKeepingDeletion(com.bontecou.syncmd.FileNavigationTest):
+androidx.compose.ui.test.ComposeTimeoutException: Condition still not satisfied after 10000 ms
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$AndroidComposeUiTestImpl.waitUntil(ComposeUiTest.android.kt:427)
+	at androidx.compose.ui.test.junit4.AndroidComposeTestRule.waitUntil(AndroidComposeTestRule.android.kt:306)
+	at com.bontecou.syncmd.FileNavigationTest.tapWhenReady(FileNavigationTest.kt:185)
+	at com.bontecou.syncmd.FileNavigationTest.tapWhenReady$default(FileNavigationTest.kt:184)
+	at com.bontecou.syncmd.FileNavigationTest.gitTabResolvesStandaloneStashConflictByKeepingDeletion(FileNavigationTest.kt:619)
+
+
+Time: 41.994
+There were 3 failures:
+1) stashConflictHeroResolvesWithoutCreatingAMergeCommit(com.bontecou.syncmd.FileNavigationTest)
+androidx.compose.ui.test.ComposeTimeoutException: Condition still not satisfied after 10000 ms
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$AndroidComposeUiTestImpl.waitUntil(ComposeUiTest.android.kt:427)
+	at androidx.compose.ui.test.junit4.AndroidComposeTestRule.waitUntil(AndroidComposeTestRule.android.kt:306)
+	at com.bontecou.syncmd.FileNavigationTest.awaitTag(FileNavigationTest.kt:172)
+	at com.bontecou.syncmd.FileNavigationTest.awaitTag$default(FileNavigationTest.kt:172)
+	at com.bontecou.syncmd.FileNavigationTest.stashConflictHeroResolvesWithoutCreatingAMergeCommit(FileNavigationTest.kt:606)
+2) conflictedRowKeepsItsRequestedPathAcrossRecreation(com.bontecou.syncmd.FileNavigationTest)
+androidx.compose.ui.test.ComposeTimeoutException: Condition still not satisfied after 10000 ms
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$AndroidComposeUiTestImpl.waitUntil(ComposeUiTest.android.kt:427)
+	at androidx.compose.ui.test.junit4.AndroidComposeTestRule.waitUntil(AndroidComposeTestRule.android.kt:306)
+	at com.bontecou.syncmd.FileNavigationTest.awaitTag(FileNavigationTest.kt:172)
+	at com.bontecou.syncmd.FileNavigationTest.awaitTag$default(FileNavigationTest.kt:172)
+	at com.bontecou.syncmd.FileNavigationTest.conflictedRowKeepsItsRequestedPathAcrossRecreation(FileNavigationTest.kt:633)
+3) gitTabResolvesStandaloneStashConflictByKeepingDeletion(com.bontecou.syncmd.FileNavigationTest)
+androidx.compose.ui.test.ComposeTimeoutException: Condition still not satisfied after 10000 ms
+	at androidx.compose.ui.test.AndroidComposeUiTestEnvironment$AndroidComposeUiTestImpl.waitUntil(ComposeUiTest.android.kt:427)
+	at androidx.compose.ui.test.junit4.AndroidComposeTestRule.waitUntil(AndroidComposeTestRule.android.kt:306)
+	at com.bontecou.syncmd.FileNavigationTest.tapWhenReady(FileNavigationTest.kt:185)
+	at com.bontecou.syncmd.FileNavigationTest.tapWhenReady$default(FileNavigationTest.kt:184)
+	at com.bontecou.syncmd.FileNavigationTest.gitTabResolvesStandaloneStashConflictByKeepingDeletion(FileNavigationTest.kt:619)
+
+FAILURES!!!
+Tests run: 3,  Failures: 3

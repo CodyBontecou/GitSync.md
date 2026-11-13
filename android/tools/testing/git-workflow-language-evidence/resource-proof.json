@@ -1,0 +1,295 @@
+{
+  "new_keys": [
+    "ui_1_s_characters_bde60398",
+    "ui_1_s_lines_2_s_bytes_c30a0cd1",
+    "ui_file_1_s_9fdb0f6d",
+    "ui_resolved_content_69213720",
+    "ui_resolving_1_s_5e8ada92",
+    "ui_ours_1_s_bytes_e7da423a",
+    "ui_theirs_1_s_bytes_70028ef3",
+    "ui_edit_the_content_here_to_manually_resolve_1985871d",
+    "ui_this_will_keep_your_version_of_the_file_a9475bb6",
+    "ui_this_will_use_the_incoming_version_of_the_96940ba5",
+    "ui_this_will_use_your_manually_edited_content_86084831",
+    "ui_are_you_sure_you_want_to_abort_this_merge_a64d6e49",
+    "ui_this_will_discard_all_progress_and_return_a2f7aabf",
+    "ui_please_resolve_all_conflicts_before_comple_9be0a6e5",
+    "ui_there_are_still_1_s_unresolved_conflicts_9ce41fa3",
+    "ui_all_conflicts_have_been_resolved_proceed_w_ed0a737a",
+    "ui_using_strategy_1_s_6c76b5ef",
+    "ui_apply_stash_008c67fe",
+    "ui_pop_stash_2adc4302",
+    "ui_drop_stash_969bf549",
+    "ui_revert_commit_a2d355f7",
+    "ui_hash_a9106914",
+    "ui_metadata_b17f2c85",
+    "ui_parents_1_s_914efbd0",
+    "ui_no_changes_to_display_11be6ffc",
+    "ui_open_git_lfs_f7aff155",
+    "ui_push_blocked_by_lfs_locks_e4e28836"
+  ],
+  "new_values": 675,
+  "formatted_values": 225,
+  "unformatted_values": 450,
+  "production_references": {
+    "ui_1_s_characters_bde60398": [
+      "app/src/main/kotlin/com/bontecou/syncmd/ui/components/ConflictViewer.kt:102"
+    ],
+    "ui_1_s_lines_2_s_bytes_c30a0cd1": [
+      "app/src/main/kotlin/com/bontecou/syncmd/ui/components/ConflictViewer.kt:155"
+    ],
+    "ui_file_1_s_9fdb0f6d": [
+      "app/src/main/kotlin/com/bontecou/syncmd/ui/components/ConflictResolutionDialog.kt:57"
+    ],
+    "ui_resolved_content_69213720": [
+      "app/src/main/kotlin/com/bontecou/syncmd/ui/components/ConflictViewer.kt:93"
+    ],
+    "ui_resolving_1_s_5e8ada92": [
+      "app/src/main/kotlin/com/bontecou/syncmd/ui/components/ConflictViewer.kt:62"
+    ],
+    "ui_ours_1_s_bytes_e7da423a": [
+      "app/src/main/kotlin/com/bontecou/syncmd/ui/components/ConflictList.kt:133"
+    ],
+    "ui_theirs_1_s_bytes_70028ef3": [
+      "app/src/main/kotlin/com/bontecou/syncmd/ui/components/ConflictList.kt:138"
+    ],
+    "ui_edit_the_content_here_to_manually_resolve_1985871d": [
+      "app/src/main/kotlin/com/bontecou/syncmd/ui/components/ConflictViewer.kt:95"
+    ],
+    "ui_this_will_keep_your_version_of_the_file_a9475bb6": [
+      "app/src/main/kotlin/com/bontecou/syncmd/ui/components/ConflictResolutionDialog.kt:51"
+    ],
+    "ui_this_will_use_the_incoming_version_of_the_96940ba5": [
+      "app/src/main/kotlin/com/bontecou/syncmd/ui/components/ConflictResolutionDialog.kt:52"
+    ],
+    "ui_this_will_use_your_manually_edited_content_86084831": [
+      "app/src/main/kotlin/com/bontecou/syncmd/ui/components/ConflictResolutionDialog.kt:53"
+    ],
+    "ui_are_you_sure_you_want_to_abort_this_merge_a64d6e49": [
+      "app/src/main/kotlin/com/bontecou/syncmd/ui/components/ConflictResolutionDialog.kt:131"
+    ],
+    "ui_this_will_discard_all_progress_and_return_a2f7aabf": [
+      "app/src/main/kotlin/com/bontecou/syncmd/ui/components/ConflictResolutionDialog.kt:132"
+    ],
+    "ui_please_resolve_all_conflicts_before_comple_9be0a6e5": [
+      "app/src/main/kotlin/com/bontecou/syncmd/ui/components/ConflictResolutionDialog.kt:107"
+    ],
+    "ui_there_are_still_1_s_unresolved_conflicts_9ce41fa3": [
+      "app/src/main/kotlin/com/bontecou/syncmd/ui/components/ConflictResolutionDialog.kt:103"
+    ],
+    "ui_all_conflicts_have_been_resolved_proceed_w_ed0a737a": [
+      "app/src/main/kotlin/com/bontecou/syncmd/ui/components/ConflictResolutionDialog.kt:100"
+    ],
+    "ui_using_strategy_1_s_6c76b5ef": [
+      "app/src/main/kotlin/com/bontecou/syncmd/ui/components/ConflictResolutionDialog.kt:64"
+    ],
+    "ui_apply_stash_008c67fe": [
+      "app/src/main/kotlin/com/bontecou/syncmd/ui/components/StashList.kt:128"
+    ],
+    "ui_pop_stash_2adc4302": [
+      "app/src/main/kotlin/com/bontecou/syncmd/ui/components/StashList.kt:133"
+    ],
+    "ui_drop_stash_969bf549": [
+      "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/GitScreen.kt:1296",
+      "app/src/main/kotlin/com/bontecou/syncmd/ui/components/StashList.kt:139"
+    ],
+    "ui_revert_commit_a2d355f7": [
+      "app/src/main/kotlin/com/bontecou/syncmd/ui/components/CommitItem.kt:89"
+    ],
+    "ui_hash_a9106914": [
+      "app/src/main/kotlin/com/bontecou/syncmd/ui/components/CommitItem.kt:116"
+    ],
+    "ui_metadata_b17f2c85": [
+      "app/src/main/kotlin/com/bontecou/syncmd/ui/components/CommitItem.kt:115"
+    ],
+    "ui_parents_1_s_914efbd0": [
+      "app/src/main/kotlin/com/bontecou/syncmd/ui/components/CommitItem.kt:123"
+    ],
+    "ui_no_changes_to_display_11be6ffc": [
+      "app/src/main/kotlin/com/bontecou/syncmd/ui/components/DiffViewer.kt:251"
+    ],
+    "ui_open_git_lfs_f7aff155": [
+      "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/GitScreen.kt:727"
+    ],
+    "ui_push_blocked_by_lfs_locks_e4e28836": [
+      "app/src/main/kotlin/com/bontecou/syncmd/ui/screens/GitScreen.kt:826"
+    ]
+  },
+  "locales": {
+    "ar": {
+      "qualifier": "ar",
+      "verified_values": 27,
+      "formatted_values": 9,
+      "unformatted_values": 18,
+      "xml_sha256": "ef7a5313388a94d1086ae26f35b70b918ff305d3304375d48996e352911c0bb9"
+    },
+    "da": {
+      "qualifier": "da",
+      "verified_values": 27,
+      "formatted_values": 9,
+      "unformatted_values": 18,
+      "xml_sha256": "34a774b85d6d9dbf2645844cd56f0b2d3b970a58336dbe44e0dccaa8e73e9322"
+    },
+    "de": {
+      "qualifier": "de",
+      "verified_values": 27,
+      "formatted_values": 9,
+      "unformatted_values": 18,
+      "xml_sha256": "07cc13b3bd4ca137655345be038fddb91b9e590d01b11156deb77c6274bf6f7b"
+    },
+    "es": {
+      "qualifier": "es",
+      "verified_values": 27,
+      "formatted_values": 9,
+      "unformatted_values": 18,
+      "xml_sha256": "02dd129859d2f0155dc402e3315b4e9c15803575e457d829f4dde7f167aa28c7"
+    },
+    "fi": {
+      "qualifier": "fi",
+      "verified_values": 27,
+      "formatted_values": 9,
+      "unformatted_values": 18,
+      "xml_sha256": "72670e83b395776e3c3b11ab8c0cec9ce466546e8d2ffaba4561a990302609cc"
+    },
+    "fr": {
+      "qualifier": "fr",
+      "verified_values": 27,
+      "formatted_values": 9,
+      "unformatted_values": 18,
+      "xml_sha256": "fbe2ec049fe602db33dca95678e4cdb0f0ef9cdc7a56884753912bab3d8d3aa0"
+    },
+    "he": {
+      "qualifier": "iw",
+      "verified_values": 27,
+      "formatted_values": 9,
+      "unformatted_values": 18,
+      "xml_sha256": "0d0d1063b7234cf0aec3c2451b85bb11f03336003995030535dc41137c560084"
+    },
+    "hi": {
+      "qualifier": "hi",
+      "verified_values": 27,
+      "formatted_values": 9,
+      "unformatted_values": 18,
+      "xml_sha256": "68676959a05eeb383ba7fd2970c037e10f7769a351b319e72699fca905c650bc"
+    },
+    "hu": {
+      "qualifier": "hu",
+      "verified_values": 27,
+      "formatted_values": 9,
+      "unformatted_values": 18,
+      "xml_sha256": "21df9f3b216dce33cc8fa3e913aad4a685e311c0cfffb4fd5911a6bd89aed9c4"
+    },
+    "id": {
+      "qualifier": "in",
+      "verified_values": 27,
+      "formatted_values": 9,
+      "unformatted_values": 18,
+      "xml_sha256": "586d1b0baf49dd026353760dbfcd4078fb47c917834bf5039a338473a3aed5f6"
+    },
+    "it": {
+      "qualifier": "it",
+      "verified_values": 27,
+      "formatted_values": 9,
+      "unformatted_values": 18,
+      "xml_sha256": "fc45439b3f9010a7f60f5b31d44cd8a5e9c42cfa79d8a1e2c3523628172a7fd0"
+    },
+    "ja": {
+      "qualifier": "ja",
+      "verified_values": 27,
+      "formatted_values": 9,
+      "unformatted_values": 18,
+      "xml_sha256": "f35719d65cb4c7f7791ffda7c6f919d0f2ac5707671bc24a79fe257d2866e7a2"
+    },
+    "ko": {
+      "qualifier": "ko",
+      "verified_values": 27,
+      "formatted_values": 9,
+      "unformatted_values": 18,
+      "xml_sha256": "a6975d8196447ac0a286c70e646ac1df546080b86610fe54b196ced7034ee4da"
+    },
+    "nb": {
+      "qualifier": "nb",
+      "verified_values": 27,
+      "formatted_values": 9,
+      "unformatted_values": 18,
+      "xml_sha256": "a8c38d9e07ef859aefd59006161b5bf17bb552f12b829e42ee20e58561aabd76"
+    },
+    "nl": {
+      "qualifier": "nl",
+      "verified_values": 27,
+      "formatted_values": 9,
+      "unformatted_values": 18,
+      "xml_sha256": "85de6cb65528d4a06a9b20341ae931f0c46e03e7f8f4ee395d83299efb0639ce"
+    },
+    "pl": {
+      "qualifier": "pl",
+      "verified_values": 27,
+      "formatted_values": 9,
+      "unformatted_values": 18,
+      "xml_sha256": "763242caf99eb5b5ca178c2cd87fe311fe2311326269a0a32401017cc2845b67"
+    },
+    "pt-BR": {
+      "qualifier": "pt-rBR",
+      "verified_values": 27,
+      "formatted_values": 9,
+      "unformatted_values": 18,
+      "xml_sha256": "7eb8bed4dbc9f8f0ba3cdcceeee44958da151e5d16787fb484db6f061769c7b6"
+    },
+    "ru": {
+      "qualifier": "ru",
+      "verified_values": 27,
+      "formatted_values": 9,
+      "unformatted_values": 18,
+      "xml_sha256": "1b45d4f9f45d2586f2363db3f20f1350f852b08b82bf46666ad02a293ec7f39c"
+    },
+    "sv": {
+      "qualifier": "sv",
+      "verified_values": 27,
+      "formatted_values": 9,
+      "unformatted_values": 18,
+      "xml_sha256": "bd3533313a71ddbb44df4d5bcaa6605e1bb6411a3f705361de3d07b0022625b7"
+    },
+    "th": {
+      "qualifier": "th",
+      "verified_values": 27,
+      "formatted_values": 9,
+      "unformatted_values": 18,
+      "xml_sha256": "494a0990bdddc4a15b3a493c5dbe5fdcc90474c11a6b31d9d2ee9158f4376f4e"
+    },
+    "tr": {
+      "qualifier": "tr",
+      "verified_values": 27,
+      "formatted_values": 9,
+      "unformatted_values": 18,
+      "xml_sha256": "bf427a448fdd0be449c1e5996831188ec095920dd4b2b9351d5f8d6604524896"
+    },
+    "uk": {
+      "qualifier": "uk",
+      "verified_values": 27,
+      "formatted_values": 9,
+      "unformatted_values": 18,
+      "xml_sha256": "b934b708753f2ea49299322c71049b1e29edc3fb5a322147bee9e74050972810"
+    },
+    "vi": {
+      "qualifier": "vi",
+      "verified_values": 27,
+      "formatted_values": 9,
+      "unformatted_values": 18,
+      "xml_sha256": "d6c9703928f4a05685ad7b4b4e3159545d604110f2df7e3cbd86eef090a4ad22"
+    },
+    "zh-Hans": {
+      "qualifier": "b+zh+Hans",
+      "verified_values": 27,
+      "formatted_values": 9,
+      "unformatted_values": 18,
+      "xml_sha256": "fc65eedb34b5fde2b9bc82faaa9236ac3db09bf8d284be51d9617c03ac6cfe47"
+    },
+    "zh-Hant": {
+      "qualifier": "b+zh+Hant",
+      "verified_values": 27,
+      "formatted_values": 9,
+      "unformatted_values": 18,
+      "xml_sha256": "9b6e3055cce8902780fedeb7aa537f5a65c6808c648860815f7899cc6a3d1e6f"
+    }
+  }
+}

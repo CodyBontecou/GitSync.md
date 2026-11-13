@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.push.PushSyncProtocolTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-11-02T19:22:22" hostname="MacBook-Pro.local" time="0.003">
+  <properties/>
+  <testcase name="hintsPreserveBranchButNormalizeRepositoryAndTreatHeadAsMetadata" classname="com.bontecou.syncmd.services.push.PushSyncProtocolTest" time="0.0"/>
+  <testcase name="malformedOrOversizedHintsCannotChooseRepositoriesOrRefs" classname="com.bontecou.syncmd.services.push.PushSyncProtocolTest" time="0.001"/>
+  <testcase name="androidRegistrationIsExplicitBoundedAndDeterministic" classname="com.bontecou.syncmd.services.push.PushSyncProtocolTest" time="0.0"/>
+  <testcase name="githubAppStartAndCallbackRequireTheExactStateAndOrigins" classname="com.bontecou.syncmd.services.push.PushSyncProtocolTest" time="0.001"/>
+  <testcase name="existingInstallationRequiresPinnedPkceOAuthAndAnOrdinaryAccountName" classname="com.bontecou.syncmd.services.push.PushSyncProtocolTest" time="0.0"/>
+  <testcase name="enrollmentAcceptsOnlyOrdinaryGithubRemotesWithoutEmbeddedHttpsSecrets" classname="com.bontecou.syncmd.services.push.PushSyncProtocolTest" time="0.0"/>
+  <testcase name="installationsRequireUniqueImmutableIdsAndGithubManagementUrls" classname="com.bontecou.syncmd.services.push.PushSyncProtocolTest" time="0.001"/>
+  <testcase name="installationNumbersRejectFractionsCoercionAndWrappingInEitherField" classname="com.bontecou.syncmd.services.push.PushSyncProtocolTest" time="0.0"/>
+  <testcase name="installationNumbersRetainTheFullLongRangeAndExactIntegralExponents" classname="com.bontecou.syncmd.services.push.PushSyncProtocolTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

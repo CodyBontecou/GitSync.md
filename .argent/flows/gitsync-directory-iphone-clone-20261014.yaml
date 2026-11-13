@@ -1,0 +1,32 @@
+steps:
+  - tap:
+      text: ENTER URL MANUALLY
+  - tap:
+      role: AXTextField
+  - tool: keyboard
+    args:
+      text: https://github.com/CodyBontecou/gitsync-directory-qa-20261014.git
+  - tool: gesture-swipe
+    args:
+      fromX: 0.5
+      fromY: 0.86
+      toX: 0.5
+      toY: 0.3
+      momentum: false
+  - tool: gesture-swipe
+    args:
+      fromX: 0.5
+      fromY: 0.58
+      toX: 0.5
+      toY: 0.2
+      momentum: false
+  - tap:
+      text: CHANGE LOCATION
+  - tap:
+      text: CHANGE LOCATION
+  - tap:
+      text: Cancel
+  - tap:
+      id: DOCPicker.actionButton
+executionPrerequisite: GitSync.md Add Repository screen, signed in to GitHub;
+  disposable directory QA repository exists.

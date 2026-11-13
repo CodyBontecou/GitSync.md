@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.ui.viewmodels.MoveCompletionDeliveryTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2026-11-03T01:54:41" hostname="MacBook-Pro.local" time="0.162">
+  <properties/>
+  <testcase name="destroyedLifecycleDoesNotConsumeCompletion" classname="com.bontecou.syncmd.ui.viewmodels.MoveCompletionDeliveryTest" time="0.031"/>
+  <testcase name="aDifferentRouteCannotReceiveAnOldExecutionCompletion" classname="com.bontecou.syncmd.ui.viewmodels.MoveCompletionDeliveryTest" time="0.014"/>
+  <testcase name="replacementOwnerForSavedRouteCanReceivePendingCompletion" classname="com.bontecou.syncmd.ui.viewmodels.MoveCompletionDeliveryTest" time="0.014"/>
+  <testcase name="completionBetweenRecreatedOwnersRemainsBoundToSavedRoute" classname="com.bontecou.syncmd.ui.viewmodels.MoveCompletionDeliveryTest" time="0.014"/>
+  <testcase name="completionWaitsForResumeAndDoesNotReplayOnLaterResume" classname="com.bontecou.syncmd.ui.viewmodels.MoveCompletionDeliveryTest" time="0.017"/>
+  <testcase name="successfulReviewClearsItsRequestErrorAndClaimRevokesLateFailure" classname="com.bontecou.syncmd.ui.viewmodels.MoveCompletionDeliveryTest" time="0.013"/>
+  <testcase name="departedScreenFailureCannotAppearOnReplacement" classname="com.bontecou.syncmd.ui.viewmodels.MoveCompletionDeliveryTest" time="0.001"/>
+  <testcase name="completionDuringBackgroundWaitsForForeground" classname="com.bontecou.syncmd.ui.viewmodels.MoveCompletionDeliveryTest" time="0.015"/>
+  <testcase name="cancelledCollectorLeavesReceiptForNextResumedCollector" classname="com.bontecou.syncmd.ui.viewmodels.MoveCompletionDeliveryTest" time="0.015"/>
+  <testcase name="openingDifferentRouteDropsAlreadyPendingCompletion" classname="com.bontecou.syncmd.ui.viewmodels.MoveCompletionDeliveryTest" time="0.013"/>
+  <testcase name="copiedReceiptAndRepeatedCompletionCannotReplayNavigation" classname="com.bontecou.syncmd.ui.viewmodels.MoveCompletionDeliveryTest" time="0.014"/>
+  <testcase name="staleFailureCannotOverwriteNewRequestError" classname="com.bontecou.syncmd.ui.viewmodels.MoveCompletionDeliveryTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

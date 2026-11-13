@@ -1,0 +1,27 @@
+{
+  "packageName": "md.gitsync.md",
+  "locale": "en-US",
+  "listingUrl": "https://play.google.com/console/u/0/developers/8478281120215349264/app/4974948497047165182/store-listings/default/edit",
+  "publishingUrl": "https://play.google.com/console/u/0/developers/8478281120215349264/app/4974948497047165182/publishing",
+  "savedAtUTC": "2026-10-27T10:15:26.092826+00:00",
+  "uploaded": true,
+  "saved": true,
+  "submittedForReview": true,
+  "pendingChanges": [
+    "Phone screenshots",
+    "Feature graphic"
+  ],
+  "phoneScreenshotCount": 5,
+  "orderedFiles": [
+    "phone-screenshots/01-clone-real-repos-1080x1920.png",
+    "phone-screenshots/02-repo-health-1080x1920.png",
+    "phone-screenshots/03-git-control-1080x1920.png",
+    "phone-screenshots/04-line-by-line-diff-1080x1920.png",
+    "phone-screenshots/05-ready-to-push-1080x1920.png"
+  ],
+  "featureGraphic": "feature-graphic.png",
+  "submittedAtUTC": "2026-10-27T10:20:47.004388+00:00",
+  "status": "Changes in review; Google quick checks running",
+  "managedPublishing": false,
+  "publishAutomaticallyAfterApproval": true
+}

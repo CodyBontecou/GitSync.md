@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Shared dialog and list component copy (ui/components). -->
+<resources>
+    <string name="dialogs_timestamp_unknown">Unknown</string>
+    <string name="dialogs_error_title">Error</string>
+    <string name="dialogs_warning_title">Warning</string>
+    <string name="dialogs_success_title">Success</string>
+    <string name="dialogs_info_title">Information</string>
+    <string name="dialogs_error_repository_not_found">Repository not found at: %1$s\n\nCheck the path and try again.</string>
+    <string name="dialogs_error_dirty_work_tree">Cannot perform this operation with uncommitted changes.\n\nCommit or stash your changes first.</string>
+    <plurals name="dialogs_error_merge_conflicts">
+        <item quantity="one">Merge has %1$d unresolved conflicts.\n\nResolve them before completing the merge.</item>
+        <item quantity="other">Merge has %1$d unresolved conflicts.\n\nResolve them before completing the merge.</item>
+    </plurals>
+    <string name="dialogs_error_network">Network error. Check your connection and try again.</string>
+    <string name="dialogs_error_invalid_repository">This doesn\'t appear to be a valid Git repository.\n\nEnsure the path points to a .git folder or a working directory.</string>
+    <string name="dialogs_error_commit_failed">Commit failed: %1$s</string>
+    <string name="dialogs_error_push_failed">Push failed: %1$s</string>
+    <string name="dialogs_error_pull_failed">Pull failed: %1$s</string>
+    <string name="dialogs_error_branch_exists">Branch \'%1$s\' already exists.\n\nChoose a different name.</string>
+    <string name="dialogs_error_cannot_delete_current_branch">Cannot delete the current branch.\n\nSwitch to another branch first.</string>
+    <string name="dialogs_error_invalid_branch_name">Invalid branch name.\n\nUse alphanumeric characters, hyphens, and underscores.</string>
+</resources>

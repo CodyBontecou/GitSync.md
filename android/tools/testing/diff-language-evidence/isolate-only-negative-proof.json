@@ -1,0 +1,6 @@
+{
+  "source_snapshot": "/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/syncmd-diff-language-snapshot-w0joz132",
+  "exit_code": 1,
+  "first_case_rejected": "Arabic zero counts without separator LRM",
+  "scope": "JDK-only negative control; not a production Android regression"
+}

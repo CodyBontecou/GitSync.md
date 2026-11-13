@@ -10,6 +10,8 @@ enum RepositoryPullResult: Sendable, Equatable {
     case authenticationOrTrustRequired(message: String, trustError: GitLFSSSHHostKeyTrustError?)
     case wrongBranch(expected: String, actual: String)
     case unavailable(message: String)
+    /// The pull stopped before updating the checkout; not a Git failure.
+    case cancelled
     case failed(message: String)
 
     var completedWithoutAttention: Bool {
@@ -40,6 +42,7 @@ struct RepositoryPullRunner: Sendable {
         expectedBranch: String? = nil
     ) async -> RepositoryPullResult {
         do {
+            try Task.checkCancellation()
             // Fetch, classification, and optional fast-forward are returned as
             // one typed result from one serialized repository operation.
             let execution = try await repository.executePullOnly(pat: credentials, expectedBranch: expectedBranch)
@@ -68,6 +71,10 @@ struct RepositoryPullRunner: Sendable {
             case .remoteBranchMissing:
                 return .remoteBranchMissing(branch: plan.branch)
             }
+        } catch is CancellationError {
+            return .cancelled
+        } catch let error as URLError where error.code == .cancelled {
+            return .cancelled
         } catch LocalGitError.sshHostKeyTrustRequired(let error) {
             return .authenticationOrTrustRequired(message: error.localizedDescription, trustError: error)
         } catch let error as LocalGitError {

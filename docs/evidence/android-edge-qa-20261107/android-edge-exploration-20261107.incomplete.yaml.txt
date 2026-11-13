@@ -1,0 +1,15 @@
+steps:
+  - launch: com.bontecou.syncmd.debug
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Add a vault
+  - tap:
+      x: 0.45
+      y: 0.35
+  - echo: Open the existing synthetic VoxVault fixture; expect its changes screen.
+      Requires fixture vault and qa-note.md; no sync or publish.
+  - tap:
+      x: 0.45
+      y: 0.35

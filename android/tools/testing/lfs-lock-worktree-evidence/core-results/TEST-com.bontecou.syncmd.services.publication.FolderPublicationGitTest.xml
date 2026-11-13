@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.publication.FolderPublicationGitTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-11-02T19:22:19" hostname="MacBook-Pro.local" time="0.439">
+  <properties/>
+  <testcase name="ordinary bare lookalike names remain normal content and size estimates are bounded" classname="com.bontecou.syncmd.services.publication.FolderPublicationGitTest" time="0.012"/>
+  <testcase name="corrupt marker and altered saved blobs are not adopted" classname="com.bontecou.syncmd.services.publication.FolderPublicationGitTest" time="0.057"/>
+  <testcase name="changes to unselected files new files ignored rules and executable bits invalidate review before metadata" classname="com.bontecou.syncmd.services.publication.FolderPublicationGitTest" time="0.049"/>
+  <testcase name="inspection leaves no metadata and suggests only eligible nonsensitive nonignored files" classname="com.bontecou.syncmd.services.publication.FolderPublicationGitTest" time="0.009"/>
+  <testcase name="different workflow and foreign history never replace prepared metadata" classname="com.bontecou.syncmd.services.publication.FolderPublicationGitTest" time="0.061"/>
+  <testcase name="owned partial preparation resumes after an index lock without rewriting the commit" classname="com.bontecou.syncmd.services.publication.FolderPublicationGitTest" time="0.078"/>
+  <testcase name="insufficient storage does not create metadata" classname="com.bontecou.syncmd.services.publication.FolderPublicationGitTest" time="0.012"/>
+  <testcase name="existing broken enclosing nested and symlink metadata are preserved" classname="com.bontecou.syncmd.services.publication.FolderPublicationGitTest" time="0.006"/>
+  <testcase name="preparation commits exact reviewed bytes mode and empty files while exclusions survive stage all" classname="com.bontecou.syncmd.services.publication.FolderPublicationGitTest" time="0.061"/>
+  <testcase name="oversized conversion and pointer files cannot enter the initial commit" classname="com.bontecou.syncmd.services.publication.FolderPublicationGitTest" time="0.034"/>
+  <testcase name="recovery recognizes only the deterministic commit and preserves newer staged work" classname="com.bontecou.syncmd.services.publication.FolderPublicationGitTest" time="0.058"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

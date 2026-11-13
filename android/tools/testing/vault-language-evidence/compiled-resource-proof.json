@@ -1,0 +1,54 @@
+{
+  "debug": {
+    "apk_sha256": "8e51893715adbf6abaffb03540b55ccd9b171874f5b40fb2bb73c7406eaf7db5",
+    "resource_dump_sha256": "5170d1e362983537d83e53e0706d376c8b5c47eb380a3a9d0bc1786d6afb4e9a",
+    "values": {
+      "ar/tide_vault_yours": {
+        "resource_header": "resource 0x7f110435 string/tide_vault_yours",
+        "value_line": "(ar) \"المحلي: ⁦↑%1$d⁩\"",
+        "ltr_isolate_verified": true
+      },
+      "he/tide_vault_yours": {
+        "resource_header": "resource 0x7f110435 string/tide_vault_yours",
+        "value_line": "(iw) \"מקומיים: ⁦↑%1$d⁩\"",
+        "ltr_isolate_verified": true
+      },
+      "ar/tide_vault_from_remote": {
+        "resource_header": "resource 0x7f110420 string/tide_vault_from_remote",
+        "value_line": "(ar) \"من المستودع البعيد: ⁦↓%1$d⁩\"",
+        "ltr_isolate_verified": true
+      },
+      "he/tide_vault_from_remote": {
+        "resource_header": "resource 0x7f110420 string/tide_vault_from_remote",
+        "value_line": "(iw) \"מהמאגר המרוחק: ⁦↓%1$d⁩\"",
+        "ltr_isolate_verified": true
+      }
+    }
+  },
+  "release": {
+    "apk_sha256": "aaadc761938b98d6faa76daca79d372b2cef2b8d7630882676734848de8e6589",
+    "resource_dump_sha256": "f38e74952bcd9315bc9bdee973bc192d6b960ed3714fc07839019913be7c66f4",
+    "values": {
+      "ar/tide_vault_yours": {
+        "resource_header": "resource 0x7f110435 string/tide_vault_yours",
+        "value_line": "(ar) \"المحلي: ⁦↑%1$d⁩\"",
+        "ltr_isolate_verified": true
+      },
+      "he/tide_vault_yours": {
+        "resource_header": "resource 0x7f110435 string/tide_vault_yours",
+        "value_line": "(iw) \"מקומיים: ⁦↑%1$d⁩\"",
+        "ltr_isolate_verified": true
+      },
+      "ar/tide_vault_from_remote": {
+        "resource_header": "resource 0x7f110420 string/tide_vault_from_remote",
+        "value_line": "(ar) \"من المستودع البعيد: ⁦↓%1$d⁩\"",
+        "ltr_isolate_verified": true
+      },
+      "he/tide_vault_from_remote": {
+        "resource_header": "resource 0x7f110420 string/tide_vault_from_remote",
+        "value_line": "(iw) \"מהמאגר המרוחק: ⁦↓%1$d⁩\"",
+        "ltr_isolate_verified": true
+      }
+    }
+  }
+}

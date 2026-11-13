@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.ui.viewmodels.TrackingRemovalRequestTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-11-03T01:32:09" hostname="MacBook-Pro.local" time="0.504">
+  <properties/>
+  <testcase name="anotherRepositoryReviewCannotRetargetAnOldConfirmation" classname="com.bontecou.syncmd.ui.viewmodels.TrackingRemovalRequestTest" time="0.116"/>
+  <testcase name="currentConfirmationCanExplicitlyDeclineBackup" classname="com.bontecou.syncmd.ui.viewmodels.TrackingRemovalRequestTest" time="0.062"/>
+  <testcase name="currentConfirmationKeepsItsReviewedBackupChoice" classname="com.bontecou.syncmd.ui.viewmodels.TrackingRemovalRequestTest" time="0.099"/>
+  <testcase name="queuedConfirmationRejectsSameFolderRereview" classname="com.bontecou.syncmd.ui.viewmodels.TrackingRemovalRequestTest" time="0.056"/>
+  <testcase name="queuedConfirmationRejectsCancelledReview" classname="com.bontecou.syncmd.ui.viewmodels.TrackingRemovalRequestTest" time="0.057"/>
+  <testcase name="queuedConfirmationRejectsAnotherRepositoryReview" classname="com.bontecou.syncmd.ui.viewmodels.TrackingRemovalRequestTest" time="0.113"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

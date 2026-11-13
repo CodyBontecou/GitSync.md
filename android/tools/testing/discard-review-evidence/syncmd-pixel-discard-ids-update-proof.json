@@ -1,0 +1,18 @@
+{
+  "package": "md.gitsync.md",
+  "serial": "2C061FDH200CJN",
+  "prior_apk_sha256": "91d239803bb67b4e82396200d462ad54d9dcb0b1461825ed7ed4e2613b227ac5",
+  "new_apk_sha256": "fd606b2d6fad19fb6927092d99b6ebe9898a4caa1a74726e45dfa505031f0ea1",
+  "signing_match": true,
+  "build_proof": "/tmp/syncmd-discard-resource-id-proof.json",
+  "installed_at": "2026-11-02T18:09:37.040176+00:00",
+  "in_place_update": true,
+  "app_data_cleared": false,
+  "permissions_pregranted": false,
+  "install_result": "Success",
+  "installed_apk_verified": true,
+  "saved_link_visible_after_update": true,
+  "native_form_e2e_passed": false,
+  "live_webhook_qualified": false,
+  "saved_link_evidence": "tools/testing/discard-review-evidence/push-link-preserved.png"
+}

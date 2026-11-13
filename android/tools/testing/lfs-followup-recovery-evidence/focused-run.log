@@ -1,0 +1,99 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.11.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+
+> Configure project :app
+Play Console key not found at: /Users/codybontecou/.config/play-console/play-publisher-crested-drive-492000-u7.json
+Warning: SDK processing. This version only understands SDK XML versions up to 3 but an SDK XML file of version 4 was encountered. This can happen if you use versions of Android Studio and the command-line tools that were released at different times.
+WARNING: We recommend using a newer Android Gradle plugin to use compileSdk = 36
+
+This Android Gradle plugin (8.2.0) was tested up to compileSdk = 34.
+
+You are strongly encouraged to update your project to use a newer
+Android Gradle plugin that has been tested with compileSdk = 36.
+
+If you are already using the latest version of the Android Gradle plugin,
+you may need to wait until a newer version with support for compileSdk = 36 is available.
+
+To suppress this warning, add/update
+    android.suppressUnsupportedCompileSdk=36
+to this project's gradle.properties.
+
+> Task :core:checkKotlinGradlePluginConfigurationErrors
+> Task :core:compileKotlin UP-TO-DATE
+> Task :core:compileJava UP-TO-DATE
+> Task :core:processResources NO-SOURCE
+> Task :core:classes UP-TO-DATE
+> Task :core:jar UP-TO-DATE
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:checkKotlinGradlePluginConfigurationErrors
+> Task :app:generateDebugBuildConfig UP-TO-DATE
+> Task :app:checkDebugAarMetadata UP-TO-DATE
+> Task :app:generateDebugResValues UP-TO-DATE
+> Task :app:mapDebugSourceSetPaths
+> Task :app:generateDebugResources UP-TO-DATE
+> Task :app:mergeDebugResources
+> Task :app:packageDebugResources
+> Task :app:parseDebugLocalResources
+> Task :app:createDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksDebug UP-TO-DATE
+> Task :app:processDebugMainManifest UP-TO-DATE
+> Task :app:processDebugManifest UP-TO-DATE
+> Task :app:processDebugManifestForPackage UP-TO-DATE
+> Task :app:processDebugResources
+> Task :app:kaptGenerateStubsDebugKotlin
+> Task :app:kaptDebugKotlin
+
+> Task :app:compileDebugKotlin
+w: file:///Users/codybontecou/dev/sync-md-android/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/CloneScreen.kt:64:9 Variable 'context' is never used
+w: file:///Users/codybontecou/dev/sync-md-android/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/GitScreen.kt:326:142 Unnecessary non-null assertion (!!) on a non-null receiver of type RepositoryStatus
+w: file:///Users/codybontecou/dev/sync-md-android/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/GitScreen.kt:329:92 Unnecessary non-null assertion (!!) on a non-null receiver of type RepositoryStatus
+w: file:///Users/codybontecou/dev/sync-md-android/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/GitScreen.kt:333:94 Unnecessary non-null assertion (!!) on a non-null receiver of type RepositoryStatus
+w: file:///Users/codybontecou/dev/sync-md-android/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/GitScreen.kt:367:25 Name shadowed: currentBranch
+w: file:///Users/codybontecou/dev/sync-md-android/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/GitScreen.kt:460:78 Unnecessary safe call on a non-null receiver of type RepositorySelection?
+w: file:///Users/codybontecou/dev/sync-md-android/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/GitScreen.kt:461:78 Unnecessary safe call on a non-null receiver of type RepositorySelection?
+w: file:///Users/codybontecou/dev/sync-md-android/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/GitScreen.kt:462:78 Unnecessary safe call on a non-null receiver of type RepositorySelection?
+w: file:///Users/codybontecou/dev/sync-md-android/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/GitScreen.kt:493:60 Unnecessary safe call on a non-null receiver of type RepositorySelection?
+w: file:///Users/codybontecou/dev/sync-md-android/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/GitScreen.kt:505:64 Unnecessary safe call on a non-null receiver of type RepositorySelection?
+w: file:///Users/codybontecou/dev/sync-md-android/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/GitScreen.kt:757:25 Name shadowed: historyContext
+w: file:///Users/codybontecou/dev/sync-md-android/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/GitScreen.kt:761:25 Name shadowed: changeCount
+w: file:///Users/codybontecou/dev/sync-md-android/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/GitScreen.kt:831:25 Name shadowed: historyContext
+w: file:///Users/codybontecou/dev/sync-md-android/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/RemoteCloneScreen.kt:57:9 Variable 'context' is never used
+w: file:///Users/codybontecou/dev/sync-md-android/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/RemoteCloneScreen.kt:59:9 Variable 'registering' is never used
+w: file:///Users/codybontecou/dev/sync-md-android/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/VaultScreen.kt:213:52 Unnecessary non-null assertion (!!) on a non-null receiver of type String
+w: file:///Users/codybontecou/dev/sync-md-android/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/VaultScreen.kt:329:45 Condition 'status != null' is always 'true'
+w: file:///Users/codybontecou/dev/sync-md-android/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/VaultScreen.kt:331:163 Unnecessary non-null assertion (!!) on a non-null receiver of type RepositoryStatus
+w: file:///Users/codybontecou/dev/sync-md-android/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/VaultScreen.kt:333:156 Unnecessary non-null assertion (!!) on a non-null receiver of type RepositoryStatus
+w: file:///Users/codybontecou/dev/sync-md-android/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/VaultScreen.kt:335:154 Unnecessary non-null assertion (!!) on a non-null receiver of type RepositoryStatus
+w: file:///Users/codybontecou/dev/sync-md-android/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/VaultScreen.kt:337:157 Unnecessary non-null assertion (!!) on a non-null receiver of type RepositoryStatus
+
+> Task :app:javaPreCompileDebug UP-TO-DATE
+> Task :app:compileDebugJavaWithJavac
+> Task :app:hiltAggregateDepsDebug UP-TO-DATE
+> Task :app:hiltJavaCompileDebug
+> Task :app:transformDebugClassesWithAsm
+> Task :app:bundleDebugClassesToRuntimeJar
+> Task :app:preDebugUnitTestBuild UP-TO-DATE
+> Task :app:processDebugJavaRes UP-TO-DATE
+> Task :app:bundleDebugClassesToCompileJar
+> Task :app:kaptGenerateStubsDebugUnitTestKotlin
+> Task :app:kaptDebugUnitTestKotlin
+> Task :app:compileDebugUnitTestKotlin
+> Task :app:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :app:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :app:hiltAggregateDepsDebugUnitTest UP-TO-DATE
+> Task :app:hiltJavaCompileDebugUnitTest NO-SOURCE
+> Task :app:processDebugUnitTestJavaRes UP-TO-DATE
+> Task :app:transformDebugUnitTestClassesWithAsm
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+> Task :app:testDebugUnitTest
+[Incubating] Problems report is available at: file:///Users/codybontecou/dev/sync-md-android/build/reports/problems/problems-report.html
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/8.11.1/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 35s
+37 actionable tasks: 20 executed, 17 up-to-date

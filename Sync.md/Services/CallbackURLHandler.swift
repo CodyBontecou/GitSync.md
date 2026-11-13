@@ -40,7 +40,7 @@ final class CallbackURLHandler {
 
     /// Returns `true` if the URL is an x-callback-url that this handler should process.
     func canHandle(_ url: URL) -> Bool {
-        url.scheme == "syncmd" && url.host == "x-callback-url"
+        url.scheme?.lowercased() == "syncmd" && url.host?.lowercased() == "x-callback-url"
     }
 
     /// Parse the incoming URL, navigate to the repo, and execute the action.
@@ -63,7 +63,12 @@ final class CallbackURLHandler {
             return
         }
 
-        guard let repo = appState.repos.first(where: { $0.vaultFolderName == repoName }) else {
+        let matches = appState.repos.filter { $0.vaultFolderName == repoName }
+        guard matches.count <= 1 else {
+            redirectError(from: components, message: String(localized: "More than one vault is named '\(repoName)'. Open the intended vault in GitSync.md to run this action."))
+            return
+        }
+        guard let repo = matches.first else {
             redirectError(from: components, message: String(localized: "Repository '\(repoName)' not found in GitSync.md"))
             return
         }
@@ -197,8 +202,10 @@ final class CallbackURLHandler {
                 errorParams.merge(callbackError.params, uniquingKeysWith: { current, _ in current })
             }
 
-            try? await Task.sleep(for: .seconds(2))
-            redirect(to: errorURL ?? successURL, params: errorParams)
+            // Never report a failure to x-success. Without x-error the caller
+            // stays here, so keep the error banner up long enough to read.
+            try? await Task.sleep(for: .seconds(errorURL == nil ? 5 : 2))
+            redirect(to: errorURL, params: errorParams)
 
             try? await Task.sleep(for: .milliseconds(300))
             appState.callbackResult = nil
@@ -230,6 +237,7 @@ final class CallbackURLHandler {
         case .status:
             let branch = params["branch"] ?? "?"
             let changes = params["changes"] ?? "0"
+            if changes == "1" { return String(localized: "\(branch) · 1 change") }
             return String(localized: "\(branch) · \(changes) changes")
         }
     }
@@ -272,6 +280,8 @@ final class CallbackURLHandler {
                 params: ["updated": "false"],
                 errorMessage: String(localized: "Expected branch '\(expected)', but '\(actual)' is checked out.")
             )
+        case .cancelled:
+            return .init(params: ["updated": "false"], errorMessage: String(localized: "Cancelled"))
         case .authenticationOrTrustRequired(let message, _),
              .unavailable(let message),
              .failed(let message):
@@ -327,7 +337,7 @@ final class CallbackURLHandler {
     // MARK: - Git Operations
 
     /// Carries an already-localized failure message and any completed-work
-    /// metadata out to x-error (or the x-success fallback).
+    /// metadata out to x-error.
     private struct CallbackActionError: LocalizedError {
         let message: String
         let params: [String: String]
@@ -359,7 +369,12 @@ final class CallbackURLHandler {
 
     private func redirectError(from components: URLComponents, message: String) {
         let params = Self.queryDict(from: components)
-        let errorURL = params["x-error"] ?? params["x-success"]
+        guard let errorURL = params["x-error"] else {
+            // No error callback: say so in the app instead of failing
+            // silently, and never open x-success for a failure.
+            appState.showError(message: message, category: "x-callback")
+            return
+        }
         let action = components.path.trimmingCharacters(in: CharacterSet(charactersIn: "/"))
         var errorParams = [
             "status": "error",

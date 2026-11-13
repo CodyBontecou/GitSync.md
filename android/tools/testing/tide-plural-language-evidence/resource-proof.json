@@ -1,0 +1,22 @@
+{
+  "keys": [
+    "tide_git_headline_commit",
+    "tide_git_files_staged",
+    "tide_git_conflicts_to_resolve",
+    "tide_home_headline_attention",
+    "tide_home_headline_ready",
+    "tide_home_start_github_count",
+    "tide_vault_changes_on_phone",
+    "tide_vault_conflicts_to_resolve"
+  ],
+  "counts": {
+    "forms": 528,
+    "counted_forms": 396,
+    "separate_count_labels": 132,
+    "headline_linebreak_forms": 132
+  },
+  "format_argument_types_verified": true,
+  "generated_forms_and_categories_verified": true,
+  "literal_backslash_newlines_absent": true,
+  "native_execution": false
+}

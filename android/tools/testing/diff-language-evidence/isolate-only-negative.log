@@ -1,0 +1,2 @@
+Exception in thread "main" java.lang.AssertionError: Signed segment not LTR
+	at DiffSummaryBidiProbe.main(DiffSummaryBidiProbe.java:16)

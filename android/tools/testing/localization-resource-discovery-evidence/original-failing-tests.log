@@ -1,0 +1,21 @@
+FF
+======================================================================
+FAIL: test_extractor_reuses_existing_key_from_arbitrary_xml_filename (test_resource_discovery.ResourceDiscoveryTest)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/codybontecou/dev/sync-md-android/tools/localization/test_resource_discovery.py", line 71, in test_extractor_reuses_existing_key_from_arbitrary_xml_filename
+    self.assertIn('new resources: 0', captured.getvalue())
+AssertionError: 'new resources: 0' not found in 'Visible copy occurrences: 1 files: 1 new resources: 1\n'
+
+======================================================================
+FAIL: test_import_and_native_expectations_cover_all_resource_filenames (test_resource_discovery.ResourceDiscoveryTest)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/codybontecou/dev/sync-md-android/tools/localization/test_resource_discovery.py", line 49, in test_import_and_native_expectations_cover_all_resource_filenames
+    self.assertEqual(3, coverage['base_strings'])
+AssertionError: 3 != 1
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.008s
+
+FAILED (failures=2)

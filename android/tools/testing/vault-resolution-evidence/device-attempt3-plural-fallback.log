@@ -1,0 +1,30 @@
+
+com.bontecou.syncmd.VaultResolveDeviceTest:...
+com.bontecou.syncmd.LocalizationTest:
+Error in translatedPluralsFollowAndroidRulesInEverySupportedLanguage(com.bontecou.syncmd.LocalizationTest):
+java.util.MissingFormatArgumentException: Format specifier '%2$s'
+	at java.util.Formatter.format(Formatter.java:2709)
+	at java.util.Formatter.format(Formatter.java:2640)
+	at java.lang.String.format(String.java:4078)
+	at android.content.res.Resources.getQuantityString(Resources.java:621)
+	at com.bontecou.syncmd.LocalizationTest.translatedPluralsFollowAndroidRulesInEverySupportedLanguage(LocalizationTest.kt:142)
+......
+com.bontecou.syncmd.RepositoryOperationScreenTest:.
+com.bontecou.syncmd.RepositoryMoveTest:...........folder_picker_confirmation=use this folder; completion=allow
+folder_picker_confirmation=use this folder; completion=allow
+.........
+
+Time: 53.878
+There was 1 failure:
+1) translatedPluralsFollowAndroidRulesInEverySupportedLanguage(com.bontecou.syncmd.LocalizationTest)
+java.util.MissingFormatArgumentException: Format specifier '%2$s'
+	at java.util.Formatter.format(Formatter.java:2709)
+	at java.util.Formatter.format(Formatter.java:2640)
+	at java.lang.String.format(String.java:4078)
+	at android.content.res.Resources.getQuantityString(Resources.java:621)
+	at com.bontecou.syncmd.LocalizationTest.translatedPluralsFollowAndroidRulesInEverySupportedLanguage(LocalizationTest.kt:142)
+
+FAILURES!!!
+Tests run: 31,  Failures: 1
+
+

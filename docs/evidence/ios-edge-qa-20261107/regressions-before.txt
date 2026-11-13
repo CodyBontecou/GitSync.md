@@ -1,0 +1,16 @@
+Test Suite 'Selected tests' started at 2026-11-07 19:09:10.498.
+Test Suite 'SyncMDUITests.xctest' started at 2026-11-07 19:09:10.499.
+Test Suite 'SyncMDUITests' started at 2026-11-07 19:09:10.499.
+Test Case '-[SyncMDUITests.SyncMDUITests testEditorRenameRejectsTraversalAndAllowsCorrection]' started.
+/Users/codybontecou/dev/gitsync.md/SyncMDUITests/SyncMDUITests.swift:74: error: -[SyncMDUITests.SyncMDUITests testEditorRenameRejectsTraversalAndAllowsCorrection] : XCTAssertFalse failed - Traversal must be blocked in the rename modal
+Test Case '-[SyncMDUITests.SyncMDUITests testEditorRenameRejectsTraversalAndAllowsCorrection]' failed (25.190 seconds).
+Test Case '-[SyncMDUITests.SyncMDUITests testGitCreationErrorsAppearOnChildScreenAndPreserveInput]' started.
+/Users/codybontecou/dev/gitsync.md/SyncMDUITests/SyncMDUITests.swift:44: error: -[SyncMDUITests.SyncMDUITests testGitCreationErrorsAppearOnChildScreenAndPreserveInput] : XCTAssertTrue failed - Rejection must appear before navigating Back
+Test Case '-[SyncMDUITests.SyncMDUITests testGitCreationErrorsAppearOnChildScreenAndPreserveInput]' failed (24.185 seconds).
+Test Suite 'SyncMDUITests' failed at 2026-11-07 19:09:59.898.
+	 Executed 2 tests, with 2 failures (0 unexpected) in 49.375 (49.399) seconds
+Test Suite 'SyncMDUITests.xctest' failed at 2026-11-07 19:09:59.899.
+	 Executed 2 tests, with 2 failures (0 unexpected) in 49.375 (49.400) seconds
+Test Suite 'Selected tests' failed at 2026-11-07 19:09:59.899.
+	 Executed 2 tests, with 2 failures (0 unexpected) in 49.375 (49.401) seconds
+** TEST FAILED **
