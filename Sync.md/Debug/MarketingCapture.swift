@@ -209,6 +209,10 @@ enum MarketingDemoSeeder {
     /// runner. The fixture has no credentials/network and never loads user repos.
     static func checkoutRaceAppStateIfRequested() -> AppState? {
         guard MarketingCapture.gitToolsUITestScenario == "checkout-incomplete" else { return nil }
+        let inventoryURL = FileManager.default.temporaryDirectory.appendingPathComponent("pr45-qa/repos.json")
+        // Every launch starts from one fixture inventory, rather than merging
+        // random IDs from prior runs into the persistence store after Pull.
+        try? FileManager.default.removeItem(at: inventoryURL)
         return AppState(gitRepositoryFactory: { url in
             LocalGitService(localURL: url, pullOnlyBeforeFinalCheckout: {
                 guard url.lastPathComponent == "git-tools-fixture" else { return }
@@ -216,8 +220,7 @@ enum MarketingDemoSeeder {
                     to: url.appendingPathComponent("notes/hello.md"), atomically: true, encoding: .utf8
                 )
             })
-        }, reposFileURL: FileManager.default.temporaryDirectory.appendingPathComponent("pr45-qa/repos.json"),
-           loadPersistedState: false)
+        }, reposFileURL: inventoryURL, loadPersistedState: false)
     }
 
     static func seed(into state: AppState) {
