@@ -36,6 +36,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.displayCutoutPadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -1609,6 +1610,7 @@ fun M3BottomActionBar(modifier: Modifier = Modifier, content: @Composable Column
             .background(c.surface)
             .m3TopDivider(true, c.outlineVar)
             .navigationBarsPadding()
+            .displayCutoutPadding()
             .padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 20.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
         content = content,
@@ -1619,7 +1621,7 @@ fun M3BottomActionBar(modifier: Modifier = Modifier, content: @Composable Column
 @Composable
 fun M3BottomToolbar(modifier: Modifier = Modifier, content: @Composable RowScope.() -> Unit) {
     Row(
-        modifier.fillMaxWidth().background(M3.colors.c).navigationBarsPadding().heightIn(min = 80.dp).padding(horizontal = 16.dp),
+        modifier.fillMaxWidth().background(M3.colors.c).navigationBarsPadding().displayCutoutPadding().heightIn(min = 80.dp).padding(horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         content = content,
@@ -1628,18 +1630,9 @@ fun M3BottomToolbar(modifier: Modifier = Modifier, content: @Composable RowScope
 
 // ─── Modal host, sheet, dialog ──────────────────────────────────────────────
 
-@Composable
-private fun m3SystemBarPadding(): PaddingValues {
-    val view = LocalView.current
-    val density = LocalDensity.current
-    val insets = view.rootWindowInsets?.let { androidx.core.view.WindowInsetsCompat.toWindowInsetsCompat(it, view) }
-        ?.getInsets(androidx.core.view.WindowInsetsCompat.Type.systemBars())
-    return with(density) { PaddingValues(top = (insets?.top ?: 0).toDp(), bottom = (insets?.bottom ?: 0).toDp()) }
-}
-
 /** A full-window dialog with the design scrim that keeps the caller's locale, direction and density. */
 @Composable
-private fun M3ModalHost(
+internal fun M3ModalHost(
     onDismissRequest: () -> Unit,
     dismissOnClickOutside: Boolean,
     dismissOnBackPress: Boolean,
@@ -1651,7 +1644,7 @@ private fun M3ModalHost(
     val parentDirection = LocalLayoutDirection.current
     val parentDensity = LocalDensity.current
     val tide = LocalTideColors.current
-    val bars = m3SystemBarPadding()
+    val activityView = LocalView.current
     Dialog(
         onDismissRequest = onDismissRequest,
         properties = DialogProperties(
@@ -1666,13 +1659,18 @@ private fun M3ModalHost(
             LocalDensity provides parentDensity,
             LocalTideColors provides tide,
         ) {
+            // Measure after layout, in screen coordinates: activity insets may be
+            // unavailable during first composition, and dialog windows can extend
+            // past the activity's safe bounds (especially with three-button nav).
+            val bars = com.bontecou.syncmd.ui.screens.rememberDialogBars(activityView)
             Box(
                 Modifier
                     .fillMaxSize()
+                    .then(bars.tracker)
                     .background(M3.colors.scrim)
                     .pointerInput(dismissOnClickOutside) { if (dismissOnClickOutside) detectTapGestures { onDismissRequest() } },
                 contentAlignment = alignment,
-            ) { content(bars) }
+            ) { content(bars.padding) }
         }
     }
 }
@@ -1695,7 +1693,10 @@ fun M3ModalSheet(
 ) {
     M3ModalHost(onDismissRequest, dismissOnClickOutside, dismissOnBackPress, Alignment.BottomCenter) { bars ->
         M3SheetSurface(
-            modifier.statusBarsPadding().padding(top = bars.calculateTopPadding() + 48.dp).imePadding(),
+            modifier.statusBarsPadding().padding(
+                PaddingValues.Absolute(left = bars.calculateLeftPadding(LocalLayoutDirection.current),
+                    right = bars.calculateRightPadding(LocalLayoutDirection.current), top = bars.calculateTopPadding() + 48.dp),
+            ).imePadding(),
             title, titleMeta, footer, bottomInset = bars.calculateBottomPadding(), content = content,
         )
     }
@@ -1760,7 +1761,7 @@ fun M3Dialog(
     M3ModalHost(onDismissRequest, dismissOnClickOutside, dismissOnBackPress, Alignment.Center) { bars ->
         M3DialogSurface(
             title,
-            modifier.padding(top = bars.calculateTopPadding(), bottom = bars.calculateBottomPadding()).statusBarsPadding().navigationBarsPadding()
+            modifier.padding(bars).statusBarsPadding().navigationBarsPadding()
                 .padding(horizontal = 24.dp, vertical = 24.dp).imePadding(),
             icon, iconTint, text, stackedActions, content, actions,
         )
@@ -2159,7 +2160,7 @@ private fun M3NavIndicator(@DrawableRes icon: Int, selected: Boolean, badge: Str
 /** Navigation bar: 80dp on the c container, items share the width (pads for the system navigation bar). */
 @Composable
 fun M3NavigationBar(modifier: Modifier = Modifier, content: @Composable RowScope.() -> Unit) {
-    Row(modifier.fillMaxWidth().background(M3.colors.c).navigationBarsPadding().height(80.dp), content = content)
+    Row(modifier.fillMaxWidth().background(M3.colors.c).navigationBarsPadding().displayCutoutPadding().height(80.dp), content = content)
 }
 
 /** Navigation bar item: indicator over a 12/16 label (700 on when selected, 500 onVar otherwise), 4dp gap. */

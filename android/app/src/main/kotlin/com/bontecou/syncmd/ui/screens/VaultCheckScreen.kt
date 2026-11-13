@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.ui.draw.clip
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.absolutePadding
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -343,17 +344,28 @@ internal fun rememberDialogBars(fallbackView: android.view.View): DialogBars {
     // insets nor its size can be trusted.
     fun measure(coords: androidx.compose.ui.layout.LayoutCoordinates) {
         val insets = activityView.rootWindowInsets?.let { androidx.core.view.WindowInsetsCompat.toWindowInsetsCompat(it, activityView) }
-            ?.getInsets(androidx.core.view.WindowInsetsCompat.Type.systemBars()) ?: return
+            ?.getInsets(androidx.core.view.WindowInsetsCompat.Type.systemBars() or androidx.core.view.WindowInsetsCompat.Type.displayCutout()) ?: return
         val screen = activityView.rootView
         if (screen.height == 0 || coords.size.height == 0) return
         val screenAt = IntArray(2).also(screen::getLocationOnScreen)
         val windowAt = IntArray(2).also(dialogView.rootView::getLocationOnScreen)
+        val contentLeft = windowAt[0] + coords.positionInWindow().x.toInt()
         val contentTop = windowAt[1] + coords.positionInWindow().y.toInt()
+        val contentRight = contentLeft + coords.size.width
         val contentBottom = contentTop + coords.size.height
+        val safeLeft = screenAt[0] + insets.left
         val safeTop = screenAt[1] + insets.top
+        val safeRight = screenAt[0] + screen.width - insets.right
         val safeBottom = screenAt[1] + screen.height - insets.bottom
         val next = with(density) {
-            PaddingValues(top = (safeTop - contentTop).coerceAtLeast(0).toDp(), bottom = (contentBottom - safeBottom).coerceAtLeast(0).toDp())
+            // Physical edges: in landscape the navigation bar may be on either
+            // side, and the dialog can extend beyond the activity's viewport.
+            PaddingValues.Absolute(
+                left = (safeLeft - contentLeft).coerceAtLeast(0).toDp(),
+                top = (safeTop - contentTop).coerceAtLeast(0).toDp(),
+                right = (contentRight - safeRight).coerceAtLeast(0).toDp(),
+                bottom = (contentBottom - safeBottom).coerceAtLeast(0).toDp(),
+            )
         }
         if (next != padding) padding = next
     }
@@ -370,7 +382,13 @@ internal fun rememberDialogBars(fallbackView: android.view.View): DialogBars {
 @Composable
 internal fun Modifier.dialogSystemBarPadding(activityView: android.view.View, top: Boolean = true): Modifier {
     val bars = rememberDialogBars(activityView)
-    return this.then(bars.tracker).padding(top = if (top) bars.padding.calculateTopPadding() else 0.dp, bottom = bars.padding.calculateBottomPadding())
+    val direction = LocalLayoutDirection.current
+    return this.then(bars.tracker).absolutePadding(
+        left = bars.padding.calculateLeftPadding(direction),
+        right = bars.padding.calculateRightPadding(direction),
+        top = if (top) bars.padding.calculateTopPadding() else 0.dp,
+        bottom = bars.padding.calculateBottomPadding(),
+    )
 }
 
 @Composable

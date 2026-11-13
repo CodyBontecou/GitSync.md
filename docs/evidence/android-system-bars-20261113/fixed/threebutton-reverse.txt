@@ -1,0 +1,27 @@
+INSTRUMENTATION_STATUS: stream=M3_SHEET largeDark=false actualFontScale=1.0 action=[408.0,912.0,582.0,1017.0] safe=[126,74,2264,1080] clears=true
+INSTRUMENTATION_STATUS: stream=M3_SHEET largeDark=true actualFontScale=1.6 action=[408.0,912.0,649.0,1017.0] safe=[126,74,2264,1080] clears=true
+INSTRUMENTATION_STATUS: stream=M3_DIALOG largeDark=false actualFontScale=1.0 action=[1693.0,849.0,1867.0,954.0] safe=[126,74,2264,1080] clears=true
+INSTRUMENTATION_STATUS: stream=M3_DIALOG largeDark=true actualFontScale=1.6 action=[1626.0,849.0,1867.0,954.0] safe=[126,74,2264,1080] clears=true
+INSTRUMENTATION_STATUS: stream=TIDE_DIALOG largeDark=false actualFontScale=1.0 action=[1239.0,933.0,1413.0,1038.0] safe=[126,74,2264,1080] clears=true
+INSTRUMENTATION_STATUS: stream=TIDE_DIALOG largeDark=true actualFontScale=1.6 action=[1206.0,933.0,1447.0,1038.0] safe=[126,74,2264,1080] clears=true
+INSTRUMENTATION_STATUS: stream=TIDE_SHEET largeDark=false actualFontScale=1.0 action=[1239.0,933.0,1413.0,1038.0] safe=[126,74,2264,1080] clears=true
+INSTRUMENTATION_STATUS: stream=TIDE_SHEET largeDark=true actualFontScale=1.6 action=[1206.0,933.0,1447.0,1038.0] safe=[126,74,2264,1080] clears=true
+INSTRUMENTATION_STATUS: stream=SSH_DIALOG largeDark=false actualFontScale=1.0 action=[1693.0,849.0,1867.0,954.0] safe=[126,74,2264,1080] clears=true
+INSTRUMENTATION_STATUS: stream=SSH_DIALOG largeDark=true actualFontScale=1.6 action=[1626.0,849.0,1867.0,954.0] safe=[126,74,2264,1080] clears=true
+INSTRUMENTATION_STATUS: stream=SSH_REVIEW largeDark=false actualFontScale=1.0 action=[1322.0,849.0,1867.0,954.0] safe=[126,74,2264,1080] clears=true
+INSTRUMENTATION_STATUS: stream=SSH_REVIEW largeDark=true actualFontScale=1.6 action=[1067.0,849.0,1867.0,954.0] safe=[126,74,2264,1080] clears=true
+INSTRUMENTATION_STATUS: stream=DISCARD largeDark=false actualFontScale=1.0 action=[1311.0,828.0,1547.0,954.0] safe=[126,74,2264,1080] clears=true
+INSTRUMENTATION_STATUS: stream=DISCARD largeDark=true actualFontScale=1.6 action=[1100.0,828.0,1442.0,954.0] safe=[126,74,2264,1080] clears=true
+INSTRUMENTATION_STATUS: stream=VAULT_CHECK largeDark=false actualFontScale=1.0 action=[168.0,870.0,2222.0,1017.0] safe=[126,74,2264,1080] clears=true
+INSTRUMENTATION_STATUS: stream=VAULT_CHECK largeDark=true actualFontScale=1.6 action=[168.0,870.0,2222.0,1017.0] safe=[126,74,2264,1080] clears=true
+INSTRUMENTATION_STATUS: stream=UNLOCK largeDark=false actualFontScale=1.0 action=[1421.0,975.0,1588.0,1080.0] safe=[126,74,2264,1080] clears=true
+INSTRUMENTATION_STATUS: stream=UNLOCK largeDark=true actualFontScale=1.6 action=[1476.0,975.0,1706.0,1080.0] safe=[126,74,2264,1080] clears=true
+INSTRUMENTATION_STATUS: stream=BOTTOM_ACTION largeDark=false actualFontScale=1.0 action=[168.0,922.0,342.0,1027.0] safe=[126,74,2264,1080] clears=true
+INSTRUMENTATION_STATUS: stream=BOTTOM_ACTION largeDark=true actualFontScale=1.6 action=[168.0,922.0,409.0,1027.0] safe=[126,74,2264,1080] clears=true
+INSTRUMENTATION_STATUS: stream=TOOLBAR largeDark=false actualFontScale=1.0 action=[168.0,923.0,342.0,1028.0] safe=[126,74,2264,1080] clears=true
+INSTRUMENTATION_STATUS: stream=TOOLBAR largeDark=true actualFontScale=1.6 action=[168.0,923.0,409.0,1028.0] safe=[126,74,2264,1080] clears=true
+INSTRUMENTATION_STATUS: stream=NAVIGATION largeDark=false actualFontScale=1.0 action=[1729.0,870.0,2264.0,1080.0] safe=[126,74,2264,1080] clears=true
+INSTRUMENTATION_STATUS: stream=NAVIGATION largeDark=true actualFontScale=1.6 action=[1729.0,870.0,2264.0,1080.0] safe=[126,74,2264,1080] clears=true
+INSTRUMENTATION_STATUS: stream=WIDGET_PICKER largeDark=false actualFontScale=1.0 action=[168.0,849.0,2222.0,996.0] safe=[126,74,2264,1080] clears=true
+INSTRUMENTATION_STATUS: stream=WIDGET_PICKER largeDark=true actualFontScale=1.6 action=[168.0,849.0,2222.0,996.0] safe=[126,74,2264,1080] clears=true
+OK (13 tests)
