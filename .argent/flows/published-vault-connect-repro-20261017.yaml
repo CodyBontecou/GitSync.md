@@ -1,0 +1,23 @@
+steps:
+  - tool: launch-app
+    args:
+      bundleId: md.obsidian
+  - tool: gesture-swipe
+    args:
+      fromX: 0.5
+      fromY: 0.25
+      toX: 0.5
+      toY: 0.65
+      momentum: false
+  - await:
+      visible: { text: Connect this vault }
+      timeout: 3000
+  - await: { idle: true }
+  - tap:
+      text: Connect this vault
+  - assert:
+      visible:
+        text: Could not start the connection. Enable Obsidian Git and check that this vault was cloned with GitSync.md.
+executionPrerequisite: "Physical iPhone: Showcase vault open in Obsidian at the
+  Hello note, sidebars and settings closed; Git 2.41.1 and GitSync.md Connect
+  0.1.2 enabled; connection metadata missing."

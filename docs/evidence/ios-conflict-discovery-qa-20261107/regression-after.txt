@@ -1,0 +1,9 @@
+Test Case '-[SyncMDUITests.SyncMDUITests testConflictManualDraftSurvivesRepeatedEntryAndCancelledResolution]' started.
+Test Case '-[SyncMDUITests.SyncMDUITests testConflictManualDraftSurvivesRepeatedEntryAndCancelledResolution]' passed (19.458 seconds).
+Test Case '-[SyncMDUITests.SyncMDUITests testConflictResolverControlsDiscoverableAndKeepTheirsClearsConflict]' started.
+Test Case '-[SyncMDUITests.SyncMDUITests testConflictResolverControlsDiscoverableAndKeepTheirsClearsConflict]' passed (30.272 seconds).
+	 Executed 2 tests, with 0 failures (0 unexpected) in 49.730 (49.732) seconds
+	 Executed 2 tests, with 0 failures (0 unexpected) in 49.730 (49.733) seconds
+	 Executed 2 tests, with 0 failures (0 unexpected) in 49.730 (49.734) seconds
+	/tmp/gitsync-ios-edge-fixes/Logs/Test/Test-Sync.md-2026.11.07_21-30-02--0400.xcresult
+** TEST SUCCEEDED **

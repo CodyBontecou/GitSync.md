@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Home (board 01 Main · home) -->
+    <string name="m3home_add_vault">Add a vault</string>
+    <string name="m3home_settings_signed_in">Settings, signed in as %1$s</string>
+    <string name="m3home_settings">Settings</string>
+    <plurals name="m3home_headline_attention">
+        <item quantity="one">%1$d vault</item>
+        <item quantity="other">%1$d vaults</item>
+    </plurals>
+    <plurals name="m3home_headline_attention_accent">
+        <item quantity="one">%1$s needs you.</item>
+        <item quantity="other">%1$s need you.</item>
+    </plurals>
+    <plurals name="m3home_headline_ready">
+        <item quantity="one">%1$d vault</item>
+        <item quantity="other">%1$d vaults</item>
+    </plurals>
+    <string name="m3home_headline_ready_accent">in sync.</string>
+    <string name="m3home_meta_in_sync">%1$d in sync</string>
+    <string name="m3home_meta_checking">checking %1$d</string>
+    <string name="m3home_meta_checked">checked %1$s</string>
+    <string name="m3home_meta_never_checked">not checked yet</string>
+    <string name="m3home_filter_all">All %1$d</string>
+    <string name="m3home_filter_attention">Attention %1$d</string>
+    <string name="m3home_filter_pinned">Pinned</string>
+    <string name="m3home_filter_empty_attention">Nothing needs you. Every vault is in sync.</string>
+    <string name="m3home_filter_empty_pinned">No pinned vaults yet. Long-press a vault and choose Pin to top.</string>
+
+    <!-- Pinned card -->
+    <string name="m3home_pinned">Pinned</string>
+    <string name="m3home_rail_phone">Phone</string>
+    <string name="m3home_rail_github">GitHub</string>
+    <string name="m3home_rail_remote">Remote</string>
+
+    <!-- Row badges and meta -->
+    <string name="m3home_badge_in_sync">In sync</string>
+    <string name="m3home_badge_to_push">↑%1$d to push</string>
+    <string name="m3home_badge_to_pull">↓%1$d to pull</string>
+    <string name="m3home_badge_both">↓%1$d ↑%2$d</string>
+    <plurals name="m3home_badge_edited">
+        <item quantity="one">%1$d edited</item>
+        <item quantity="other">%1$d edited</item>
+    </plurals>
+    <string name="m3home_badge_checking">Checking</string>
+    <string name="m3home_badge_unreadable">Can’t read</string>
+    <string name="m3home_badge_needs_you">Needs you</string>
+    <string name="m3home_badge_sync_failed">Didn’t sync</string>
+    <string name="m3home_badge_local_only">Local only</string>
+    <string name="m3home_badge_syncing">Syncing</string>
+    <string name="m3home_meta_lfs">%1$s LFS</string>
+    <string name="m3home_meta_not_synced">not synced yet</string>
+    <string name="m3home_meta_unreadable">can’t read this folder</string>
+    <string name="m3home_meta_loading">checking…</string>
+
+    <!-- Relative times -->
+    <string name="m3home_time_now">just now</string>
+    <string name="m3home_time_minutes_short">%1$dm ago</string>
+    <string name="m3home_time_minutes_long">%1$d min ago</string>
+    <string name="m3home_time_hours">%1$dh ago</string>
+    <string name="m3home_time_yesterday">yesterday</string>
+    <string name="m3home_time_days">%1$dd ago</string>
+
+    <!-- Row menu -->
+    <string name="m3home_pin">Pin to top</string>
+    <string name="m3home_unpin">Unpin</string>
+    <string name="m3home_remove">Remove from gitsync.md</string>
+    <string name="m3home_row_actions">Vault actions</string>
+    <string name="m3home_pin_failed">Couldn’t save the pin. Try again.</string>
+
+    <!-- Sync all -->
+    <string name="m3home_sync_all">Sync all</string>
+    <string name="m3home_sync_all_meta">↓%1$d ↑%2$d</string>
+    <string name="m3home_syncing">Syncing</string>
+    <string name="m3home_syncing_meta">%1$d of %2$d</string>
+    <string name="m3home_sync_done">Synced · pulled %1$d · pushed %2$d</string>
+    <plurals name="m3home_sync_nothing_local">
+        <item quantity="one">Nothing to sync. %1$d vault is local-only (no remote).</item>
+        <item quantity="other">Nothing to sync. These %1$d vaults are local-only (no remote).</item>
+    </plurals>
+    <string name="m3home_sync_failed">Couldn’t sync %1$s</string>
+    <string name="m3home_sync_busy">Pull all is already running. Try again when it finishes.</string>
+    <string name="m3home_sync_start_failed">Sync all couldn’t start. Check your vault list in Settings.</string>
+
+    <!-- Offline (board 23) -->
+    <string name="m3home_offline_headline">Keep writing.</string>
+    <string name="m3home_offline_accent">We’ll catch up.</string>
+    <string name="m3home_offline_meta">no connection · last checked %1$s</string>
+    <string name="m3home_offline_meta_never">no connection</string>
+    <string name="m3home_offline_queued">↑%1$d queued</string>
+    <string name="m3home_offline_last_known">last known: in sync</string>
+    <string name="m3home_offline_last_known_behind">last known: ↓%1$d</string>
+    <string name="m3home_offline_row_meta">%1$s · synced %2$s</string>
+    <string name="m3home_offline_fab">Syncs when online</string>
+
+    <!-- Sign-in expired (board 24) -->
+    <string name="m3home_auth_kicker">GitHub sign-in expired · %1$s</string>
+    <string name="m3home_auth_headline">Sync is paused.</string>
+    <string name="m3home_auth_body">Your notes are safe on this phone. Nothing was lost.</string>
+    <plurals name="m3home_auth_waiting">
+        <item quantity="one">%1$d vault is waiting.</item>
+        <item quantity="other">%1$d vaults are waiting.</item>
+    </plurals>
+    <string name="m3home_auth_sign_in">Sign in with GitHub</string>
+    <string name="m3home_auth_waiting_label">Waiting on sign-in</string>
+    <string name="m3home_auth_unaffected_label">Unaffected</string>
+    <string name="m3home_auth_held">↑%1$d held</string>
+    <string name="m3home_auth_paused">Paused</string>
+    <string name="m3home_auth_row_meta">%1$s · last synced %2$s</string>
+    <string name="m3home_cred_ssh">SSH key</string>
+    <string name="m3home_cred_token">token</string>
+    <string name="m3home_cred_github">GitHub account</string>
+    <string name="m3home_cred_public">public</string>
+    <string name="m3home_cred_local">on this phone</string>
+    <string name="m3home_session_dismiss">Dismiss</string>
+
+    <!-- Empty Home (board 11) -->
+    <string name="m3home_empty_title">No vaults yet.</string>
+    <string name="m3home_empty_signed_in">signed in as @%1$s</string>
+    <string name="m3home_empty_rail_nothing">nothing to sync</string>
+    <string name="m3home_empty_rail_description">Phone and GitHub, nothing to sync yet</string>
+    <string name="m3home_start_with">Start with</string>
+    <string name="m3home_start_github">Clone from GitHub</string>
+    <string name="m3home_start_github_detail">pick one of your repositories</string>
+    <string name="m3home_start_url">Paste a URL</string>
+    <string name="m3home_start_url_detail">any Git remote, public or private</string>
+    <string name="m3home_start_local">Find clones on this phone</string>
+    <string name="m3home_start_local_detail">Obsidian, MGit, Termux…</string>
+    <string name="m3home_start_publish">Publish a folder</string>
+    <string name="m3home_start_publish_detail">turns a folder into a new repository</string>
+    <string name="m3home_add_first">Add your first vault</string>
+
+    <!-- Onboarding (Editor board 10) -->
+    <string name="m3home_onboarding_rail">Notes on your phone and commits on GitHub meeting at one sync point</string>
+    <string name="m3home_onboarding_this_phone">this phone</string>
+    <string name="m3home_onboarding_headline">Your notes.\nReal git.</string>
+    <string name="m3home_onboarding_accent">Always in step.</string>
+    <string name="m3home_onboarding_body">Clone any repo, write in Obsidian or anything else, and sync with one tap.</string>
+    <string name="m3home_onboarding_github">Continue with GitHub</string>
+    <string name="m3home_onboarding_other">SSH, token or another host</string>
+    <string name="m3home_onboarding_demo">Look around with a demo vault</string>
+    <string name="m3home_onboarding_save_error">Couldn’t save your choice. Try again.</string>
+
+    <!-- How it works (tour content, reused by About &amp; help) -->
+    <string name="m3home_how_title">How it works</string>
+</resources>

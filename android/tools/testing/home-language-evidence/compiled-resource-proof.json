@@ -1,0 +1,23 @@
+{
+  "artifacts": {
+    "debug": {
+      "resource_header": "resource 0x7f1103ad string/tide_home_signed_in_as",
+      "rtl_values": [
+        "(ar) \"تم تسجيل الدخول باسم ‎@%1$s‎\"",
+        "(iw) \"מחובר בתור ‎@%1$s‎\""
+      ],
+      "literal_lrm_bounds_preserved": true,
+      "resource_dump_sha256": "9c02de7adc279ddbc3ef2a65e5ceaaf4f19d2e05d959520d36353697bbaf00a8"
+    },
+    "release": {
+      "resource_header": "resource 0x7f1103ad string/tide_home_signed_in_as",
+      "rtl_values": [
+        "(ar) \"تم تسجيل الدخول باسم ‎@%1$s‎\"",
+        "(iw) \"מחובר בתור ‎@%1$s‎\""
+      ],
+      "literal_lrm_bounds_preserved": true,
+      "resource_dump_sha256": "515efa1916c8745c701f9198b635b5c0e215d4421ffd906eb03459413850f57f"
+    }
+  },
+  "android_rendering_executed": false
+}

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.github.SignOutConsentTest" tests="14" skipped="0" failures="0" errors="0" timestamp="2026-11-02T23:56:53" hostname="MacBook-Pro.local" time="0.95">
+  <properties/>
+  <testcase name="sameTokenSessionRefreshRevokesOldConsent" classname="com.bontecou.syncmd.services.github.SignOutConsentTest" time="0.87"/>
+  <testcase name="dismissedDialogCannotSignOut" classname="com.bontecou.syncmd.services.github.SignOutConsentTest" time="0.038"/>
+  <testcase name="staleButtonCannotReplaceCurrentDialog" classname="com.bontecou.syncmd.services.github.SignOutConsentTest" time="0.008"/>
+  <testcase name="rejectedStoreCheckDoesNotCancelCurrentProfileLoad" classname="com.bontecou.syncmd.services.github.SignOutConsentTest" time="0.005"/>
+  <testcase name="persistenceFailurePreservesSessionAndAllowsFreshReview" classname="com.bontecou.syncmd.services.github.SignOutConsentTest" time="0.002"/>
+  <testcase name="currentConsentDisconnectsOnlyReviewedAccountAndKeepsAssignments" classname="com.bontecou.syncmd.services.github.SignOutConsentTest" time="0.002"/>
+  <testcase name="oldDialogCannotConfirmOrDismissNewReview" classname="com.bontecou.syncmd.services.github.SignOutConsentTest" time="0.004"/>
+  <testcase name="externalPersistedAccountSwitchIsRejectedInsideStoreUpdate" classname="com.bontecou.syncmd.services.github.SignOutConsentTest" time="0.002"/>
+  <testcase name="switchedSessionDismissesDialogAndRetainsCurrentRequests" classname="com.bontecou.syncmd.services.github.SignOutConsentTest" time="0.004"/>
+  <testcase name="switchingAccountsRejectsOldConsent" classname="com.bontecou.syncmd.services.github.SignOutConsentTest" time="0.003"/>
+  <testcase name="currentDialogConfirmsOnlyOnce" classname="com.bontecou.syncmd.services.github.SignOutConsentTest" time="0.004"/>
+  <testcase name="externalSameAccountTokenReplacementIsRetained" classname="com.bontecou.syncmd.services.github.SignOutConsentTest" time="0.002"/>
+  <testcase name="reviewCannotBeUsedWithAnotherManager" classname="com.bontecou.syncmd.services.github.SignOutConsentTest" time="0.003"/>
+  <testcase name="switchingAwayAndBackDoesNotRestoreConsent" classname="com.bontecou.syncmd.services.github.SignOutConsentTest" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,20 @@
+steps:
+  - launch:
+      native: bontecou.Sync-md
+      ios:
+        app: bontecou.Sync-md
+        args:
+          - -SignedOutUITest
+          - -UITestConflictFixture
+          - -AppleLanguages
+          - (en)
+          - -AppleLocale
+          - en_US
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: home.search
+  - tap:
+      x: 0.5
+      y: 0.522

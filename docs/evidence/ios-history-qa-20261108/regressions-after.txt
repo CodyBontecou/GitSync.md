@@ -1,0 +1,13 @@
+Test Case '-[SyncMDTests.SyncMDTests testFileHistoryIncludesModeOnlyChanges]' started.
+Test Case '-[SyncMDTests.SyncMDTests testFileHistoryIncludesModeOnlyChanges]' passed (0.132 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testFileHistoryPreservesDecomposedUnicodePath]' started.
+Test Case '-[SyncMDTests.SyncMDTests testFileHistoryPreservesDecomposedUnicodePath]' passed (0.025 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testLocalGitServiceCommitDetailIncludesParentAndChangedFiles]' started.
+Test Case '-[SyncMDTests.SyncMDTests testLocalGitServiceCommitDetailIncludesParentAndChangedFiles]' passed (0.053 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testLocalGitServiceCommitHistoryReturnsDeterministicPages]' started.
+Test Case '-[SyncMDTests.SyncMDTests testLocalGitServiceCommitHistoryReturnsDeterministicPages]' passed (0.069 seconds).
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.278 (0.288) seconds
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.278 (0.289) seconds
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.278 (0.290) seconds
+	/tmp/gitsync-ios-navigation-fixes/Logs/Test/Test-Sync.md-2026.11.08_08-17-44--0400.xcresult
+** TEST SUCCEEDED **

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Tide redesign copy for Home (vault list) and Pull All. English only. -->
+<resources>
+    <!-- Home headline -->
+
+    <!-- Filters -->
+
+    <!-- Vault card state pills -->
+    <string name="tide_home_state_checking">Checking…</string>
+    <string name="tide_home_state_unreadable">Needs a look</string>
+
+    <!-- Empty state -->
+</resources>

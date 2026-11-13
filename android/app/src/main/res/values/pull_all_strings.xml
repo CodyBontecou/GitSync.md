@@ -1,0 +1,18 @@
+<resources>
+    <string name="pull_all_title">Pull All</string>
+    <string name="pull_all_back">Back</string>
+    <string name="pull_all_stop">Stop Pull All</string>
+    <string name="pull_all_stopping">Stopping after the current operation…</string>
+    <string name="pull_all_failed">Pull All could not start. Check repository settings and retry.</string>
+    <string name="pull_all_empty">No local repositories to pull. Clone or import a repository first.</string>
+    <string name="pull_all_progress">%1$d of %2$d repositories checked</string>
+    <string name="pull_all_current">No incoming changes</string>
+    <string name="pull_all_attention">Pull completed; some LFS contents need download. Open Git LFS to retry.</string>
+    <string name="pull_all_widget_description">Fetch and fast-forward all local repositories without opening GitSync.md.</string>
+    <string name="pull_all_widget_subtitle">Fetch and fast-forward only</string>
+    <color name="pull_all_widget_background">#FBF8F3</color>
+    <color name="pull_all_widget_text">#1C1B1A</color>
+    <color name="pull_all_widget_text_variant">#4A4850</color>
+    <color name="pull_all_widget_tonal">#DEE1FF</color>
+    <color name="pull_all_widget_on_tonal">#00164F</color>
+</resources>

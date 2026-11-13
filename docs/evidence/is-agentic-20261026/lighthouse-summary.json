@@ -1,0 +1,35 @@
+[
+  {
+    "path": "/",
+    "url": "https://gitsync.md/",
+    "scores": {
+      "performance": 100,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "failed": []
+  },
+  {
+    "path": "/about",
+    "url": "https://gitsync.md/about",
+    "scores": {
+      "performance": 100,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "failed": []
+  },
+  {
+    "path": "/contact",
+    "url": "https://gitsync.md/contact",
+    "scores": {
+      "performance": 100,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "failed": []
+  }
+]

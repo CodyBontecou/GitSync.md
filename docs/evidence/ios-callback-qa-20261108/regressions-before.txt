@@ -1,0 +1,12 @@
+Test Case '-[SyncMDTests.SyncMDTests testCallbackRejectsAmbiguousVaultNameBeforeNavigationOrWork]' started.
+/Users/codybontecou/dev/gitsync.md/SyncMDTests/SyncMDTests.swift:43: error: -[SyncMDTests.SyncMDTests testCallbackRejectsAmbiguousVaultNameBeforeNavigationOrWork] : XCTAssertTrue failed
+/Users/codybontecou/dev/gitsync.md/SyncMDTests/SyncMDTests.swift:44: error: -[SyncMDTests.SyncMDTests testCallbackRejectsAmbiguousVaultNameBeforeNavigationOrWork] : XCTAssertNil failed: "78607027-8681-4F58-9877-CA950B0FC161"
+/Users/codybontecou/dev/gitsync.md/SyncMDTests/SyncMDTests.swift:45: error: -[SyncMDTests.SyncMDTests testCallbackRejectsAmbiguousVaultNameBeforeNavigationOrWork] : XCTAssertFalse failed
+Test Case '-[SyncMDTests.SyncMDTests testCallbackRejectsAmbiguousVaultNameBeforeNavigationOrWork]' failed (0.292 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testCallbackRoutingAcceptsCaseInsensitiveSchemeAndHost]' started.
+/Users/codybontecou/dev/gitsync.md/SyncMDTests/SyncMDTests.swift:22: error: -[SyncMDTests.SyncMDTests testCallbackRoutingAcceptsCaseInsensitiveSchemeAndHost] : XCTAssertTrue failed - SYNCMD://X-CALLBACK-URL/status
+/Users/codybontecou/dev/gitsync.md/SyncMDTests/SyncMDTests.swift:22: error: -[SyncMDTests.SyncMDTests testCallbackRoutingAcceptsCaseInsensitiveSchemeAndHost] : XCTAssertTrue failed - SyncMd://X-Callback-Url/status
+Test Case '-[SyncMDTests.SyncMDTests testCallbackRoutingAcceptsCaseInsensitiveSchemeAndHost]' failed (0.003 seconds).
+	 Executed 2 tests, with 5 failures (0 unexpected) in 0.296 (0.301) seconds
+	 Executed 2 tests, with 5 failures (0 unexpected) in 0.296 (0.305) seconds
+	 Executed 2 tests, with 5 failures (0 unexpected) in 0.296 (0.306) seconds

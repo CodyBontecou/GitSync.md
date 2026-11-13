@@ -1,0 +1,9 @@
+{
+  "branch": "sample-branch",
+  "head": "ee3af927e65eae3f4d0056f20a9b9fa2d3c14a2a",
+  "status": "DU notes.md",
+  "unmerged": "100644 a9321e5095a68e9013b575e21b6e926c411570db 1\tnotes.md\n100644 c7219e2f4a282fe41df3a5702de563028001bca0 3\tnotes.md",
+  "stashes": "8ecd5c87fc891701b175311ddc559d28f1d29a00 QA 🧪 مرحبا — stash 20261107 long-message-long-message-long-message-long-message-long-message-long-message-long-message-long-message-long-message-long-message-long-message-long-message-long-message-long-message-long-message-long-message-long-message-long-message-",
+  "notes_sha256": "bc3ad6601b5cddca007a3d4b4205bbd28059158ba87c344f06bc4c83dafde624",
+  "merge_head_exists": false
+}

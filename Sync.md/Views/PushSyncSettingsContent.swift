@@ -1,5 +1,7 @@
 import SwiftUI
 
+/// Push Sync rows, laid out for a grouped Tide card (18pt row insets,
+/// hairline separators). Callers own the card container.
 struct PushSyncSettingsContent: View {
     enum Scope {
         case global
@@ -12,39 +14,47 @@ struct PushSyncSettingsContent: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            Toggle("Notify when GitHub changes", isOn: Binding(
+            Toggle(isOn: Binding(
                 get: { manager.isEnabled },
                 set: { enabled in
                     Task { await manager.setEnabled(enabled) }
                 }
-            ))
-            .frame(minHeight: 44)
-            .padding(.horizontal, 16)
+            )) {
+                Text("Notify when GitHub changes")
+                    .font(TideFont.body)
+                    .foregroundStyle(Tide.ink)
+            }
+            .tint(Tide.synced)
+            .padding(.horizontal, 18)
+            .frame(minHeight: 56)
 
             if manager.isEnabled {
-                BDivider().padding(.horizontal, 16)
+                separator
 
                 if manager.isLoadingGitHubAppStatus || manager.isRegistering {
                     HStack(spacing: 10) {
-                        ProgressView()
+                        ProgressView().controlSize(.small).tint(Tide.ink)
                         Text("Checking GitHub connection…")
-                            .bType(.monoCaption, weight: .regular)
+                            .font(TideFont.sans(13, relativeTo: .footnote))
+                            .foregroundStyle(Tide.inkMid)
                         Spacer()
                     }
-                    .padding(16)
+                    .padding(.horizontal, 18)
+                    .frame(minHeight: 52)
                 } else {
                     if manager.linkedGitHubInstallations.isEmpty {
                         Text("Connect GitHub to finish setup. Push events cannot arrive until an account or organization is connected.")
-                            .bType(.monoCaption, weight: .semibold)
-                            .foregroundStyle(Color.brutalWarning)
+                            .font(TideFont.sans(13, .medium, relativeTo: .footnote))
+                            .foregroundStyle(Tide.ahead)
+                            .fixedSize(horizontal: false, vertical: true)
                             .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(.horizontal, 16)
-                            .padding(.top, 12)
+                            .padding(.horizontal, 18)
+                            .padding(.top, 14)
                     }
 
                     ForEach(manager.linkedGitHubInstallations) { installation in
                         installationRow(installation)
-                        BDivider().padding(.horizontal, 16)
+                        separator
                     }
 
                     Button {
@@ -52,25 +62,26 @@ struct PushSyncSettingsContent: View {
                     } label: {
                         HStack(spacing: 10) {
                             if manager.isConnectingGitHubApp {
-                                ProgressView()
+                                ProgressView().controlSize(.small).tint(Tide.behind)
                             } else {
                                 Image(systemName: manager.linkedGitHubInstallations.isEmpty
                                       ? "link.badge.plus"
                                       : "arrow.trianglehead.2.clockwise.rotate.90")
+                                    .font(.system(size: 14, weight: .semibold))
                                     .accessibilityHidden(true)
                             }
                             Text(manager.linkedGitHubInstallations.isEmpty
-                                 ? "CONNECT GITHUB"
-                                 : "ADD OR UPDATE GITHUB ACCESS")
-                                .bType(.monoCaption, weight: .bold)
-                                .tracking(1)
+                                 ? String(localized: "Connect GitHub")
+                                 : String(localized: "Add or update GitHub access"))
+                                .font(TideFont.sans(15, .semibold, relativeTo: .subheadline))
                             Spacer()
                             Image(systemName: "arrow.up.right")
+                                .font(.system(size: 12, weight: .semibold))
                                 .accessibilityHidden(true)
                         }
-                        .foregroundStyle(Color.brutalAccent)
-                        .padding(.horizontal, 16)
-                        .frame(minHeight: 48)
+                        .foregroundStyle(Tide.behind)
+                        .padding(.horizontal, 18)
+                        .frame(minHeight: 52)
                         .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
@@ -80,40 +91,50 @@ struct PushSyncSettingsContent: View {
             }
 
             if let error = manager.lastError {
-                BDivider().padding(.horizontal, 16)
+                separator
                 Text(error)
-                    .bType(.monoCaption, weight: .regular)
-                    .foregroundStyle(.red)
+                    .font(TideFont.sans(13, relativeTo: .footnote))
+                    .foregroundStyle(Tide.danger)
+                    .fixedSize(horizontal: false, vertical: true)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(16)
+                    .padding(.horizontal, 18)
+                    .padding(.vertical, 14)
             }
 
-            if let date = manager.lastRegistrationDate {
-                Text("Notification device registered \(relativeDate(date))")
-                    .bType(.monoCaption, weight: .regular)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.horizontal, 16)
-                    .padding(.top, 8)
-            }
+            separator
 
-            Text(disclosure)
-                .bType(.monoCaption, weight: .regular)
-                .foregroundStyle(Color.brutalText)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(16)
+            VStack(alignment: .leading, spacing: 8) {
+                if let date = manager.lastRegistrationDate {
+                    Text("Notification device registered \(relativeDate(date))")
+                        .font(TideFont.mono(11))
+                        .foregroundStyle(Tide.inkFaint)
+                }
+
+                Text(disclosure)
+                    .font(TideFont.sans(12.5, relativeTo: .footnote))
+                    .foregroundStyle(Tide.inkMid)
+                    .lineSpacing(2)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.horizontal, 18)
+            .padding(.vertical, 14)
+
+            separator
 
             Link(destination: URL(string: "https://github.com/settings/installations")!) {
                 HStack {
-                    Text("MANAGE INSTALLED GITHUB APPS")
-                        .bType(.monoCaption, weight: .bold)
-                        .tracking(1)
+                    Text("Manage installed GitHub apps")
+                        .font(TideFont.body)
                     Spacer()
                     Image(systemName: "arrow.up.right")
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundStyle(Tide.inkFaint)
                         .accessibilityHidden(true)
                 }
-                .foregroundStyle(Color.brutalAccent)
-                .padding(.horizontal, 16)
-                .frame(minHeight: 44)
+                .foregroundStyle(Tide.ink)
+                .padding(.horizontal, 18)
+                .frame(minHeight: 52)
                 .contentShape(Rectangle())
             }
             .accessibilityHint(String(localized: "Opens GitHub to change repository access or uninstall the GitSync.md GitHub App."))
@@ -130,31 +151,38 @@ struct PushSyncSettingsContent: View {
         }
     }
 
+    private var separator: some View {
+        Rectangle().fill(Tide.line).frame(height: 1).padding(.horizontal, 18)
+    }
+
     @ViewBuilder
     private func installationRow(_ installation: PushSyncGitHubInstallation) -> some View {
-        HStack(alignment: .top, spacing: 12) {
+        HStack(alignment: .center, spacing: 12) {
             Image(systemName: installation.accountType == "Organization" ? "building.2" : "person.crop.circle")
-                .foregroundStyle(installation.isSuspended ? Color.brutalError : Color.brutalSuccess)
+                .font(.system(size: 14, weight: .semibold))
+                .foregroundStyle(installation.isSuspended ? Tide.danger : Tide.synced)
+                .frame(width: 26, height: 26)
+                .background(RoundedRectangle(cornerRadius: 8).fill(Tide.well))
                 .accessibilityHidden(true)
-            VStack(alignment: .leading, spacing: 3) {
+            VStack(alignment: .leading, spacing: 2) {
                 Text("@\(installation.accountLogin)")
-                    .bType(.monoSm, weight: .semibold)
-                    .foregroundStyle(Color.brutalText)
+                    .font(TideFont.mono(13, .semibold, relativeTo: .footnote))
+                    .foregroundStyle(Tide.ink)
                 Text(installation.isSuspended
-                     ? "Access suspended on GitHub"
+                     ? String(localized: "Access suspended on GitHub")
                      : installation.coversAllRepositories
-                        ? "All repositories, including future repositories"
-                        : "Selected repositories")
-                    .bType(.monoCaption, weight: .regular)
-                    .foregroundStyle(installation.isSuspended ? Color.brutalError : Color.brutalTextFaint)
+                        ? String(localized: "All repositories, including future repositories")
+                        : String(localized: "Selected repositories"))
+                    .font(TideFont.sans(12.5, relativeTo: .footnote))
+                    .foregroundStyle(installation.isSuspended ? Tide.danger : Tide.inkMid)
+                    .fixedSize(horizontal: false, vertical: true)
             }
-            Spacer()
-            VStack(alignment: .trailing, spacing: 0) {
+            Spacer(minLength: 8)
+            HStack(spacing: 4) {
                 Link(destination: installation.htmlURL) {
-                    Text("MANAGE")
-                        .bType(.monoCaption, weight: .bold)
-                        .tracking(1)
-                        .foregroundStyle(Color.brutalAccent)
+                    Text("Manage")
+                        .font(TideFont.sans(14, .medium, relativeTo: .subheadline))
+                        .foregroundStyle(Tide.behind)
                         .frame(minWidth: 44, minHeight: 44)
                         .contentShape(Rectangle())
                 }
@@ -163,10 +191,9 @@ struct PushSyncSettingsContent: View {
                 Button {
                     pendingRemoval = installation
                 } label: {
-                    Text("REMOVE")
-                        .bType(.monoCaption, weight: .bold)
-                        .tracking(1)
-                        .foregroundStyle(Color.brutalError)
+                    Text("Remove")
+                        .font(TideFont.sans(14, .medium, relativeTo: .subheadline))
+                        .foregroundStyle(Tide.danger)
                         .frame(minWidth: 44, minHeight: 44)
                         .contentShape(Rectangle())
                 }
@@ -174,8 +201,8 @@ struct PushSyncSettingsContent: View {
                 .accessibilityLabel(String(localized: "Remove @\(installation.accountLogin) from this device"))
             }
         }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 10)
+        .padding(.horizontal, 18)
+        .padding(.vertical, 6)
     }
 
     private var disclosure: String {

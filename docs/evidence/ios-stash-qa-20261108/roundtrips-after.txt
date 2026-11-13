@@ -1,0 +1,13 @@
+Test Case '-[SyncMDTests.SyncMDTests testAppStateSaveApplyPopStashDelegatesToGitRepository]' started.
+Test Case '-[SyncMDTests.SyncMDTests testAppStateSaveApplyPopStashDelegatesToGitRepository]' passed (0.071 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testLocalGitServiceStashDropRemovesWithoutApplying]' started.
+Test Case '-[SyncMDTests.SyncMDTests testLocalGitServiceStashDropRemovesWithoutApplying]' passed (0.220 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testLocalGitServiceStashPopRemovesEntry]' started.
+Test Case '-[SyncMDTests.SyncMDTests testLocalGitServiceStashPopRemovesEntry]' passed (0.068 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testLocalGitServiceStashSaveAndApplyRoundtrip]' started.
+Test Case '-[SyncMDTests.SyncMDTests testLocalGitServiceStashSaveAndApplyRoundtrip]' passed (0.062 seconds).
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.420 (0.434) seconds
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.420 (0.435) seconds
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.420 (0.436) seconds
+	/tmp/gitsync-ios-navigation-fixes/Logs/Test/Test-Sync.md-2026.11.08_09-13-49--0400.xcresult
+** TEST SUCCEEDED **

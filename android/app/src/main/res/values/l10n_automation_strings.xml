@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Automation copy (launcher shortcuts, Pull All, background and push sync). -->
+<resources>
+    <!-- Pinned shortcut label: action name, then repository name. -->
+    <string name="automation_shortcut_label">%1$s: %2$s</string>
+</resources>

@@ -167,9 +167,11 @@ The public API is defined by `GitRepositoryProtocol` (~45 methods). All operatio
 
 1. **Name**: `discardChanges(path:)`, `discardAllChanges()`
 2. **Mechanics**:
-   - Single: untracked → delete from disk; tracked → unstage to HEAD (`git_reset_default`) then `git_checkout_head(FORCE, pathspec)`; staged-new files removed from disk.
-   - All: unborn HEAD → clear index; else `git_reset(GIT_RESET_HARD)` + REMOVE_UNTRACKED.
-3. **Source**: lines ~2596–2746.
+   - Both acquire the conventional index lock **before touching files**, with a cancellation-aware wait of up to two seconds for a competing writer, then refresh the index. Persistent locks are left intact and reported with recovery guidance; they are never automatically deleted.
+   - Single: restore only the exact selected path's index entry from HEAD, or remove it for staged-new/untracked files; serialize the desired index before FORCE checkout/deletion, then atomically publish it. Other files' staging is preserved, including changes written while waiting for the lock.
+   - All: serialize an exact HEAD-tree index, FORCE checkout + REMOVE_UNTRACKED, then atomically publish the prepared index without moving HEAD. Unborn HEAD only clears staging and preserves files, matching the existing behavior.
+   - Checkout uses NO_REFRESH + DONT_WRITE_INDEX so libgit2 does not re-lock the shared index. Once file mutation starts, index publication finishes even if the caller is cancelled.
+3. **Source**: `LocalGitService.performDiscardChanges`, `GitIndexFileLock`.
 
 ## 22. Stash (list/save/apply/pop/drop)
 

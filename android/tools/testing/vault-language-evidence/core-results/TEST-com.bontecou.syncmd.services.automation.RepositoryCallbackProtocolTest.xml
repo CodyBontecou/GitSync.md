@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.automation.RepositoryCallbackProtocolTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-11-02T20:53:34" hostname="MacBook-Pro.local" time="0.014">
+  <properties/>
+  <testcase name="pull attention reports the completed update without claiming success" classname="com.bontecou.syncmd.services.automation.RepositoryCallbackProtocolTest" time="0.005"/>
+  <testcase name="push no changes is an error while sync no changes is successful and skipped" classname="com.bontecou.syncmd.services.automation.RepositoryCallbackProtocolTest" time="0.0"/>
+  <testcase name="partial completion is an error and retains the commit and completed pull receipt" classname="com.bontecou.syncmd.services.automation.RepositoryCallbackProtocolTest" time="0.002"/>
+  <testcase name="parses the iOS contract preserving literal plus Unicode and caller state" classname="com.bontecou.syncmd.services.automation.RepositoryCallbackProtocolTest" time="0.001"/>
+  <testcase name="rejects duplicate ambiguous malformed and credential-bearing request data" classname="com.bontecou.syncmd.services.automation.RepositoryCallbackProtocolTest" time="0.004"/>
+  <testcase name="result parameters replace forged reserved fields and preserve state and fragment" classname="com.bontecou.syncmd.services.automation.RepositoryCallbackProtocolTest" time="0.001"/>
+  <testcase name="valid request errors remain reviewable and use the error or success fallback" classname="com.bontecou.syncmd.services.automation.RepositoryCallbackProtocolTest" time="0.001"/>
+  <testcase name="rejects executable local and recursive return destinations" classname="com.bontecou.syncmd.services.automation.RepositoryCallbackProtocolTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

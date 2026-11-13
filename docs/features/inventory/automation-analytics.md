@@ -45,7 +45,7 @@ Actions (`CallbackAction`): `pull`, `push`, `sync`, `status`.
 Request params:
 - `repo` (required) — matched against `RepoConfig.vaultFolderName`.
 - `message` (optional) — commit message for push/sync; default "Update from GitSync.md".
-- `x-success`, `x-error` — callbacks; on error with no `x-error`, error params appended to `x-success`.
+- `x-success`, `x-error` — callbacks; on error with no `x-error`, nothing is opened (x-success is never used for failures) and the error is shown in the app.
 
 ### x-success response params
 All: `action`, `status=ok`, plus:
@@ -55,13 +55,13 @@ All: `action`, `status=ok`, plus:
 - `status`: `branch`, `sha`, `changes` (count).
 
 ### x-error response params
-`action`, `status=error`, `message` (localizedDescription). Completed-work metadata is preserved when applicable: pull attention after an update includes `sha` + `updated=true`; a saved-but-unpublished push commit includes `sha` + `commit_saved=true`; sync failures include `pull_updated` and any known SHA. Pre-flight errors (unknown action, missing `repo`, repo not found, not cloned) redirect to `x-error ?? x-success` with `status`/`message` only. No numeric error codes.
+`action`, `status=error`, `message` (localizedDescription). Completed-work metadata is preserved when applicable: pull attention after an update includes `sha` + `updated=true`; a saved-but-unpublished push commit includes `sha` + `commit_saved=true`; sync failures include `pull_updated` and any known SHA. Pre-flight errors (unknown action, missing `repo`, repo not found, not cloned) redirect to `x-error` with `status`/`message` only; without `x-error` they show an in-app error. No numeric error codes.
 
 ### Behavior on trigger
 1. Navigate to repo's VaultView (`callbackNavigateToRepoID`), set `isSyncing`/`syncingRepoID`/`syncProgress` ("Pulling from remote…", "Committing & pushing…", "Syncing…", "Reading status…").
 2. After the navigation pause, execute Git work under repository serialization. Pull routes through the typed `AppState.pullOnly`/`RepositoryPullResult` boundary; sync uses the same configured-branch composed reconciliation lease as App Intents; pull and push cannot interleave with another operation.
 3. Push staging checks `conflictSession()` before stage-all, performs settle/re-stage passes, and proceeds only with staged changes and no remaining stageable worktree changes. Active operations/unmerged index state and incomplete staging fail closed.
-4. Success: banner ~1.5s → redirect (params appended to existing queryItems) → cleanup 300ms. Error: banner ~2s → redirect `x-error ?? x-success`.
+4. Success: banner ~1.5s → redirect (params appended to existing queryItems) → cleanup 300ms. Error: banner ~2s → redirect `x-error` (no `x-error`: banner ~5s, no redirect).
 
 ## 3. Background Sync (legacy internal `Assist` identifiers)
 

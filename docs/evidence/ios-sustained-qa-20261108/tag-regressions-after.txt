@@ -1,0 +1,17 @@
+Test Case '-[SyncMDTests.SyncMDTests testAppStateRejectsTagControlsBeforeDelegation]' started.
+Test Case '-[SyncMDTests.SyncMDTests testAppStateRejectsTagControlsBeforeDelegation]' passed (0.030 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testLocalGitServiceTagAnnotatedCreateListDelete]' started.
+Test Case '-[SyncMDTests.SyncMDTests testLocalGitServiceTagAnnotatedCreateListDelete]' passed (0.112 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testLocalGitServiceTagDuplicateThrows]' started.
+Test Case '-[SyncMDTests.SyncMDTests testLocalGitServiceTagDuplicateThrows]' passed (0.032 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testLocalGitServiceTagLightweightCreateListDelete]' started.
+Test Case '-[SyncMDTests.SyncMDTests testLocalGitServiceTagLightweightCreateListDelete]' passed (0.034 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testTagNamesRejectControlsBeforeNativeMutation]' started.
+Test Case '-[SyncMDTests.SyncMDTests testTagNamesRejectControlsBeforeNativeMutation]' passed (0.032 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testTagNameValidationSupportsUnicodeAndRejectsMalformedRefs]' started.
+Test Case '-[SyncMDTests.SyncMDTests testTagNameValidationSupportsUnicodeAndRejectsMalformedRefs]' passed (0.001 seconds).
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.240 (0.249) seconds
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.240 (0.249) seconds
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.240 (0.250) seconds
+	/tmp/gitsync-ios-navigation-fixes/Logs/Test/Test-Sync.md-2026.11.08_14-29-17--0400.xcresult
+** TEST SUCCEEDED **

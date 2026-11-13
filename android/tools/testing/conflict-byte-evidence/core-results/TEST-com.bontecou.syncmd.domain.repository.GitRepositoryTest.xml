@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.domain.repository.GitRepositoryTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-11-03T00:55:31" hostname="MacBook-Pro.local" time="0.005">
+  <properties/>
+  <testcase name="pull detects merge commits when needed" classname="com.bontecou.syncmd.domain.repository.GitRepositoryTest" time="0.0"/>
+  <testcase name="pull succeeds when repo is clean" classname="com.bontecou.syncmd.domain.repository.GitRepositoryTest" time="0.001"/>
+  <testcase name="pull blocks when repo is dirty" classname="com.bontecou.syncmd.domain.repository.GitRepositoryTest" time="0.0"/>
+  <testcase name="getStatus returns all modified files" classname="com.bontecou.syncmd.domain.repository.GitRepositoryTest" time="0.0"/>
+  <testcase name="clone fails with network error when simulated" classname="com.bontecou.syncmd.domain.repository.GitRepositoryTest" time="0.001"/>
+  <testcase name="clone fails with local error when simulated" classname="com.bontecou.syncmd.domain.repository.GitRepositoryTest" time="0.0"/>
+  <testcase name="push succeeds when repo is clean" classname="com.bontecou.syncmd.domain.repository.GitRepositoryTest" time="0.001"/>
+  <testcase name="clone returns success with valid credentials" classname="com.bontecou.syncmd.domain.repository.GitRepositoryTest" time="0.0"/>
+  <testcase name="push fails when repo is dirty" classname="com.bontecou.syncmd.domain.repository.GitRepositoryTest" time="0.0"/>
+  <testcase name="getStatus returns empty list for clean repo" classname="com.bontecou.syncmd.domain.repository.GitRepositoryTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

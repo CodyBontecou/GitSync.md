@@ -51,7 +51,7 @@ The iOS client independently accepts only an HTTPS `github.com` installation URL
 Create one **public** GitHub App owned by the production operator with these settings:
 
 - **GitHub App name:** `GitSync.md Push Sync` (or the configured production name)
-- **Homepage URL:** `https://gitsyncmd.app/`
+- **Homepage URL:** `https://gitsync.md/`
 - **Setup URL:** `https://syncmd-push.costream.workers.dev/v1/github-app/setup`
 - **Redirect on update:** enabled, so an existing installation can complete a device-bound connection
 - **Callback URL:** `https://syncmd-push.costream.workers.dev/v1/github-app/oauth/callback`
@@ -141,3 +141,36 @@ Use the project-local Wrangler version. Review generated bindings before every d
 Production no longer accepts manual repository webhooks. Activation was completed by linking and owner-verifying the public GitHub App, validating natural App push delivery and on-device background reconciliation, removing the four migration hooks, rejecting a correctly signed retired-secret probe, and then removing the retired secret and delivery path. Only the stale-index deletion code remains so later registration or unlink requests can clean keys created by older relay versions.
 
 Uninstalling or suspending the GitHub App updates all indexed linked devices through signed installation lifecycle events. A signed deletion writes a 90-day tombstone before route cleanup; callbacks check it both before proof and after linking, and later registration/status repair drops any stale link. Removing a link in GitSync.md affects only that device; users manage repository selection or uninstall the App on GitHub.
+
+
+## Android / FCM delivery
+
+Android clients register with `platform: "android"` and an FCM registration token.
+Legacy requests with no platform (and explicit `ios` requests) retain APNs behavior.
+The same GitHub installation ownership proofs and repository/branch routing apply
+to both platforms. Android registration returns 503 until FCM is configured.
+
+Set **FCM_SERVICE_ACCOUNT_JSON** as a Worker secret containing a dedicated
+Firebase service account JSON credential for the Android project. Do not put it
+in vars, source, logs or command arguments. Its project must be the personal
+GitSync Firebase project `gitsync-md-android-20261028`, with only messaging-send
+permissions needed for this relay. Do not use a CPI account/project or attach
+a billing account as part of this setup. The Android SDK configurations are
+public client resources in the Android repository; they contain no server key.
+
+FCM uses scoped RS256 OAuth assertions and the HTTP v1 endpoint. One sender per
+webhook shares one OAuth exchange across its fan-out. Responses are bounded,
+redirects are refused, and failures never log provider response bodies or tokens.
+Only typed UNREGISTERED responses prune an Android registration; permission,
+project, payload and transient failures preserve opt-in for a later retry.
+Package restrictions separate md.gitsync.md and md.gitsync.md.debug delivery.
+Data-only hints carry no Git credentials and trigger Android's own visible
+notification and durable pull-only worker. The hint SHA is metadata, never an
+authoritative checkout target. FCM delivery remains best effort; notification
+taps reconcile the configured upstream again.
+
+Android throttle keys hash the FCM token so long tokens remain within KV key
+limits. The tests cover JWT signatures/scope, request-scoped OAuth reuse, typed
+pruning, unavailable registration, GitHub ownership rejection and branch-specific
+throttling, alongside all APNs regressions. Run npm test and npm run typecheck.
+No production deployment or credential upload is implied by a local test pass.

@@ -1,0 +1,8 @@
+Full log: /tmp/gitsync-deep-draft-final.log
+
+Test Case '-[SyncMDUITests.SyncMDUITests testGitToolsFailureKeepsSheetDraftAndRejectedBranch]' passed (31.975 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 31.975 (31.977) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 31.975 (31.978) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 31.975 (31.979) seconds
+	/tmp/gitsync-ios-edge-fixes/Logs/Test/Test-Sync.md-2026.11.07_20-32-56--0400.xcresult
+** TEST SUCCEEDED **

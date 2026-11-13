@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.publication.FolderPublicationGateTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-11-03T00:57:12" hostname="MacBook-Pro.local" time="0.02">
+  <properties/>
+  <testcase name="private review protects ancestors and descendants before any metadata exists and permit is path scoped" classname="com.bontecou.syncmd.services.publication.FolderPublicationGateTest" time="0.016"/>
+  <testcase name="partial ownership marker blocks ordinary operations before initialization writes config" classname="com.bontecou.syncmd.services.publication.FolderPublicationGateTest" time="0.001"/>
+  <testcase name="unreadable private journal cannot silently unlock unrelated operations" classname="com.bontecou.syncmd.services.publication.FolderPublicationGateTest" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

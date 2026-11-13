@@ -1,0 +1,203 @@
+{
+  "new_keys": [
+    "tide_onboarding_headline_notes",
+    "tide_onboarding_headline_git",
+    "tide_onboarding_headline_step",
+    "tide_onboarding_welcome_body",
+    "tide_onboarding_rail_device",
+    "tide_onboarding_illustration",
+    "tide_onboarding_pat_subtitle",
+    "tide_onboarding_show_token",
+    "tide_onboarding_hide_token",
+    "tide_onboarding_create_pat",
+    "tide_onboarding_save_title",
+    "tide_onboarding_save_muted",
+    "tide_onboarding_save_subtitle",
+    "tide_onboarding_picker_title",
+    "tide_onboarding_picker_no_matches",
+    "tide_onboarding_picker_clear",
+    "tide_onboarding_clone_failed",
+    "tide_onboarding_publication_step"
+  ],
+  "new_values": 450,
+  "mapped_onboarding_strings": 18,
+  "integer_formatted_values": 25,
+  "unformatted_values": 425,
+  "locales": {
+    "ar": {
+      "qualifier": "ar",
+      "verified_values": 18,
+      "integer_formatted_values": 1,
+      "unformatted_values": 17,
+      "xml_sha256": "73e92d2f938e9da8d1e41f9ca5ef29bf915cbc954b358690420cfecc378ad7f3"
+    },
+    "da": {
+      "qualifier": "da",
+      "verified_values": 18,
+      "integer_formatted_values": 1,
+      "unformatted_values": 17,
+      "xml_sha256": "a9f004cad12f37abf19d3e9994716ed89ae02e119ed57e8512a6a1c0621404d7"
+    },
+    "de": {
+      "qualifier": "de",
+      "verified_values": 18,
+      "integer_formatted_values": 1,
+      "unformatted_values": 17,
+      "xml_sha256": "4e5756e6c1b7a2ab9380811728abf9f9140695d6c0bbed9470008dea87c0a4b9"
+    },
+    "es": {
+      "qualifier": "es",
+      "verified_values": 18,
+      "integer_formatted_values": 1,
+      "unformatted_values": 17,
+      "xml_sha256": "cbaf91b3ca97972b46b3bd52abfda80cb7933ca7b3ef1ebea0d3ade481f38b1b"
+    },
+    "fi": {
+      "qualifier": "fi",
+      "verified_values": 18,
+      "integer_formatted_values": 1,
+      "unformatted_values": 17,
+      "xml_sha256": "8da9df5dbb51b2bd008211134c1a3077019493d64a9f02391176dadb36633e8c"
+    },
+    "fr": {
+      "qualifier": "fr",
+      "verified_values": 18,
+      "integer_formatted_values": 1,
+      "unformatted_values": 17,
+      "xml_sha256": "e4a1d84be6dc40397a9364810ca8b949450e0b12bbd796eb40272dc6d915144d"
+    },
+    "he": {
+      "qualifier": "iw",
+      "verified_values": 18,
+      "integer_formatted_values": 1,
+      "unformatted_values": 17,
+      "xml_sha256": "65a354ae8f43b1225e936ec3ff8df429ae67af53fd63562afbc9d628b58d06b6"
+    },
+    "hi": {
+      "qualifier": "hi",
+      "verified_values": 18,
+      "integer_formatted_values": 1,
+      "unformatted_values": 17,
+      "xml_sha256": "70941b84b80b5b6608cb561c3b75d27d76d84820d2ab433f6accec0679fd2839"
+    },
+    "hu": {
+      "qualifier": "hu",
+      "verified_values": 18,
+      "integer_formatted_values": 1,
+      "unformatted_values": 17,
+      "xml_sha256": "0958e101d56342865cb3387156437e1405f64d557ce6e7d20b93f2d41082144c"
+    },
+    "id": {
+      "qualifier": "in",
+      "verified_values": 18,
+      "integer_formatted_values": 1,
+      "unformatted_values": 17,
+      "xml_sha256": "04d2981a58a9e8ec949e51843320983ff0da07655663533929af8b20e7bdc936"
+    },
+    "it": {
+      "qualifier": "it",
+      "verified_values": 18,
+      "integer_formatted_values": 1,
+      "unformatted_values": 17,
+      "xml_sha256": "4e6af772b6abd0159db2a263dc4e337bc37e7933f65d4f00bdc96a75416bdddc"
+    },
+    "ja": {
+      "qualifier": "ja",
+      "verified_values": 18,
+      "integer_formatted_values": 1,
+      "unformatted_values": 17,
+      "xml_sha256": "4d416400415a611adffc6f71db3c6cff2b32105a26a6190e53ccd2262e5027e3"
+    },
+    "ko": {
+      "qualifier": "ko",
+      "verified_values": 18,
+      "integer_formatted_values": 1,
+      "unformatted_values": 17,
+      "xml_sha256": "e5f6c6ebb3f1b58f25a8fe959a992d7944a097b9df88c8c9e46cd5e5da5a7bd8"
+    },
+    "nb": {
+      "qualifier": "nb",
+      "verified_values": 18,
+      "integer_formatted_values": 1,
+      "unformatted_values": 17,
+      "xml_sha256": "8d506fcac4c5f39df9b97872f9003b01d7b85a8757c0aab9759c5272530e8ce6"
+    },
+    "nl": {
+      "qualifier": "nl",
+      "verified_values": 18,
+      "integer_formatted_values": 1,
+      "unformatted_values": 17,
+      "xml_sha256": "a4847c4f2e5d6dfd5bb5f3c1be9ec21272950d856cff4532ef22ce18576df882"
+    },
+    "pl": {
+      "qualifier": "pl",
+      "verified_values": 18,
+      "integer_formatted_values": 1,
+      "unformatted_values": 17,
+      "xml_sha256": "25b42e3d57b7453acb1572522df00b33f2705f49b5d27ef31023df9844a14881"
+    },
+    "pt-BR": {
+      "qualifier": "pt-rBR",
+      "verified_values": 18,
+      "integer_formatted_values": 1,
+      "unformatted_values": 17,
+      "xml_sha256": "82b6d1396937922f0fffd03a9fb4e7f6a82ce232163c3793a7881cc850a60bc9"
+    },
+    "ru": {
+      "qualifier": "ru",
+      "verified_values": 18,
+      "integer_formatted_values": 1,
+      "unformatted_values": 17,
+      "xml_sha256": "c1311ed4d9369d66e685848e84bb547b70aa91564dea2c96df05bbd310f27192"
+    },
+    "sv": {
+      "qualifier": "sv",
+      "verified_values": 18,
+      "integer_formatted_values": 1,
+      "unformatted_values": 17,
+      "xml_sha256": "dd0b6e8d3491698dc5a22699b6ab602c7f145dfe52aa8145bd4bb7a972c6b2e0"
+    },
+    "th": {
+      "qualifier": "th",
+      "verified_values": 18,
+      "integer_formatted_values": 1,
+      "unformatted_values": 17,
+      "xml_sha256": "f53d6a168bfb7aabc371a0fafe2eab8e18303bb9ca78382e0f456e22ca182985"
+    },
+    "tr": {
+      "qualifier": "tr",
+      "verified_values": 18,
+      "integer_formatted_values": 1,
+      "unformatted_values": 17,
+      "xml_sha256": "4d29714c2aa0cb2ab641df155792b5685a351c530f77fbde34e380e5ac9129b2"
+    },
+    "uk": {
+      "qualifier": "uk",
+      "verified_values": 18,
+      "integer_formatted_values": 1,
+      "unformatted_values": 17,
+      "xml_sha256": "49022d32bfff7e96a301117d2e8df5bc2a33e6e2761325a90945e5a063b0af98"
+    },
+    "vi": {
+      "qualifier": "vi",
+      "verified_values": 18,
+      "integer_formatted_values": 1,
+      "unformatted_values": 17,
+      "xml_sha256": "cf9139c51fd27a05d3a9117e83582d4c73e1979511b5a68b368b3203e6b5d4de"
+    },
+    "zh-Hans": {
+      "qualifier": "b+zh+Hans",
+      "verified_values": 18,
+      "integer_formatted_values": 1,
+      "unformatted_values": 17,
+      "xml_sha256": "cc952e121642ecbeeda9011544860a8d8c2c3c8d746b16a49bad9f46172bf001"
+    },
+    "zh-Hant": {
+      "qualifier": "b+zh+Hant",
+      "verified_values": 18,
+      "integer_formatted_values": 1,
+      "unformatted_values": 17,
+      "xml_sha256": "83513247e4b72d23ef3e192c5b89cddd34b154a1bc0341b4ff43ea20313f7a8c"
+    }
+  }
+}

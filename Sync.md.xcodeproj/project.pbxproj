@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		aa5e0001000000000000000f /* PullAllControlIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = aa5e0001000000000000000e /* PullAllControlIntent.swift */; };
 		aa5e00010000000000000010 /* PullAllControlIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = aa5e0001000000000000000e /* PullAllControlIntent.swift */; };
+		aa5e00010000000000000021 /* SyncSharedModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = aa5e00010000000000000020 /* SyncSharedModels.swift */; };
+		aa5e00010000000000000022 /* SyncSharedModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = aa5e00010000000000000020 /* SyncSharedModels.swift */; };
+		aa5e00010000000000000024 /* SyncSharedIntents.swift in Sources */ = {isa = PBXBuildFile; fileRef = aa5e00010000000000000023 /* SyncSharedIntents.swift */; };
+		aa5e00010000000000000025 /* SyncSharedIntents.swift in Sources */ = {isa = PBXBuildFile; fileRef = aa5e00010000000000000023 /* SyncSharedIntents.swift */; };
 		aa5e00010000000000000007 /* SyncWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = aa5e00010000000000000001 /* SyncWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		1273715551CDF043029317F6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CB8CE527D5D632A5D9E9D3D /* Foundation.framework */; };
 		336367C9178D693793FC2E54 /* SyncMDTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFF8C7BFA87748C739EB8101 /* SyncMDTests.swift */; };
@@ -18,6 +22,12 @@
 		9B1CC33021E2FBF384971478 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CB8CE527D5D632A5D9E9D3D /* Foundation.framework */; };
 		AA2001002FAA000100AA0001 /* Citadel in Frameworks */ = {isa = PBXBuildFile; productRef = AA2001002FAA000100AA0002 /* Citadel */; };
 		AA3001002FAA000100AA0001 /* Notelet in Frameworks */ = {isa = PBXBuildFile; productRef = AA3001002FAA000100AA0002 /* Notelet */; };
+		F01D00000000000000000001 /* FolderGitServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F01D00000000000000000004 /* FolderGitServiceTests.swift */; };
+		F01D00000000000000000002 /* GitHubRepositoryPublisherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F01D00000000000000000005 /* GitHubRepositoryPublisherTests.swift */; };
+		A9B1C0DE0000000000000001 /* AppUnlockStoreKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B1C0DE0000000000000002 /* AppUnlockStoreKitTests.swift */; };
+		F01D00000000000000000003 /* FolderPublicationCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F01D00000000000000000006 /* FolderPublicationCoordinatorTests.swift */; };
+		D37A00000000000000000001 /* GitTrackingRemovalServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D37A00000000000000000002 /* GitTrackingRemovalServiceTests.swift */; };
+		9CD1AECAC93040D2B54FBBA0 /* ScrawlKit in Frameworks */ = {isa = PBXBuildFile; productRef = 46264ADB53B34F9387065A9C /* ScrawlKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +70,8 @@
 
 /* Begin PBXFileReference section */
 		aa5e0001000000000000000e /* PullAllControlIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PullAllControlIntent.swift; sourceTree = "<group>"; };
+		aa5e00010000000000000020 /* SyncSharedModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncSharedModels.swift; sourceTree = "<group>"; };
+		aa5e00010000000000000023 /* SyncSharedIntents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncSharedIntents.swift; sourceTree = "<group>"; };
 		aa5e00010000000000000001 /* SyncWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SyncWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		0443B75C1B0FB847251F8B3F /* SyncMDTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SyncMDTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		14BC444D5A4EC7FC963A5422 /* SyncMDUITests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SyncMDUITests.swift; sourceTree = "<group>"; };
@@ -68,6 +80,11 @@
 		DFF8C7BFA87748C739EB8101 /* SyncMDTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SyncMDTests.swift; sourceTree = "<group>"; };
 		B6C100000000000000000002 /* BackgroundProcessingSchedulerTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BackgroundProcessingSchedulerTests.swift; sourceTree = "<group>"; };
 		E70D88DABEB05A34746D5412 /* SyncMDUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SyncMDUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F01D00000000000000000004 /* FolderGitServiceTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FolderGitServiceTests.swift; sourceTree = "<group>"; };
+		F01D00000000000000000005 /* GitHubRepositoryPublisherTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GitHubRepositoryPublisherTests.swift; sourceTree = "<group>"; };
+		A9B1C0DE0000000000000002 /* AppUnlockStoreKitTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppUnlockStoreKitTests.swift; sourceTree = "<group>"; };
+		F01D00000000000000000006 /* FolderPublicationCoordinatorTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FolderPublicationCoordinatorTests.swift; sourceTree = "<group>"; };
+		D37A00000000000000000002 /* GitTrackingRemovalServiceTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GitTrackingRemovalServiceTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -128,6 +145,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9CD1AECAC93040D2B54FBBA0 /* ScrawlKit in Frameworks */,
 				AA2001002FAA000100AA0001 /* Citadel in Frameworks */,
 				AA3001002FAA000100AA0001 /* Notelet in Frameworks */,
 				62C953FE2F397E44001F79DF /* Clibgit2 in Frameworks */,
@@ -150,6 +168,11 @@
 			children = (
 				DFF8C7BFA87748C739EB8101 /* SyncMDTests.swift */,
 				B6C100000000000000000002 /* BackgroundProcessingSchedulerTests.swift */,
+				F01D00000000000000000006 /* FolderPublicationCoordinatorTests.swift */,
+				F01D00000000000000000005 /* GitHubRepositoryPublisherTests.swift */,
+				A9B1C0DE0000000000000002 /* AppUnlockStoreKitTests.swift */,
+				F01D00000000000000000004 /* FolderGitServiceTests.swift */,
+				D37A00000000000000000002 /* GitTrackingRemovalServiceTests.swift */,
 			);
 			name = SyncMDTests;
 			path = SyncMDTests;
@@ -176,6 +199,8 @@
 			isa = PBXGroup;
 			children = (
 				aa5e0001000000000000000e /* PullAllControlIntent.swift */,
+				aa5e00010000000000000020 /* SyncSharedModels.swift */,
+				aa5e00010000000000000023 /* SyncSharedIntents.swift */,
 			);
 			path = SharedSources;
 			sourceTree = "<group>";
@@ -270,6 +295,7 @@
 			);
 			name = Sync.md;
 			packageProductDependencies = (
+				46264ADB53B34F9387065A9C /* ScrawlKit */,
 				62C951C12F3A0001001F79DF /* Clibgit2 */,
 				AA2001002FAA000100AA0002 /* Citadel */,
 				AA3001002FAA000100AA0002 /* Notelet */,
@@ -359,6 +385,7 @@
 			mainGroup = 62C9518D2F393029001F79DF;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
+				6C8CB2E47A7145E1A993E5B7 /* XCRemoteSwiftPackageReference "scrawl" */,
 				62C951C02F3A0001001F79DF /* XCLocalSwiftPackageReference "Clibgit2" */,
 				AA2001002FAA000100AA0003 /* XCRemoteSwiftPackageReference "Citadel" */,
 				AA3001002FAA000100AA0003 /* XCRemoteSwiftPackageReference "Notelet" */,
@@ -422,6 +449,11 @@
 			files = (
 				336367C9178D693793FC2E54 /* SyncMDTests.swift in Sources */,
 				B6C100000000000000000001 /* BackgroundProcessingSchedulerTests.swift in Sources */,
+				F01D00000000000000000003 /* FolderPublicationCoordinatorTests.swift in Sources */,
+				F01D00000000000000000002 /* GitHubRepositoryPublisherTests.swift in Sources */,
+				A9B1C0DE0000000000000001 /* AppUnlockStoreKitTests.swift in Sources */,
+				F01D00000000000000000001 /* FolderGitServiceTests.swift in Sources */,
+				D37A00000000000000000001 /* GitTrackingRemovalServiceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -430,6 +462,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				aa5e00010000000000000010 /* PullAllControlIntent.swift in Sources */,
+				aa5e00010000000000000022 /* SyncSharedModels.swift in Sources */,
+				aa5e00010000000000000025 /* SyncSharedIntents.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -438,6 +472,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				aa5e0001000000000000000f /* PullAllControlIntent.swift in Sources */,
+				aa5e00010000000000000021 /* SyncSharedModels.swift in Sources */,
+				aa5e00010000000000000024 /* SyncSharedIntents.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -471,7 +507,7 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_ENTITLEMENTS = SyncWidget/SyncWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 202608291050;
+				CURRENT_PROJECT_VERSION = 202611071310;
 				DEVELOPMENT_TEAM = 67KC823C9A;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = SyncWidget/Info.plist;
@@ -481,7 +517,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.6.0;
+				MARKETING_VERSION = 3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = bontecou.Sync-md.widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -500,7 +536,7 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_ENTITLEMENTS = SyncWidget/SyncWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 202608291050;
+				CURRENT_PROJECT_VERSION = 202611071310;
 					DEVELOPMENT_TEAM = 67KC823C9A;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = SyncWidget/Info.plist;
@@ -510,7 +546,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.6.0;
+				MARKETING_VERSION = 3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = bontecou.Sync-md.widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -684,11 +720,12 @@
 		};
 		62C951A22F39302A001F79DF /* Debug */ = {
 	buildSettings = {
+		IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 		"ASSETCATALOG_COMPILER_APPICON_NAME" = AppIcon;
 		"ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME" = AccentColor;
 		"CODE_SIGN_ENTITLEMENTS" = "Sync.md/Sync_md.entitlements";
 		"CODE_SIGN_STYLE" = Automatic;
-		"CURRENT_PROJECT_VERSION" = 202608291050;
+		"CURRENT_PROJECT_VERSION" = 202611071310;
 		"DEVELOPMENT_TEAM" = 67KC823C9A;
 		"ENABLE_PREVIEWS" = YES;
 		"GENERATE_INFOPLIST_FILE" = YES;
@@ -702,7 +739,7 @@
 			"$(inherited)",
 			"@executable_path/Frameworks",
 		);
-		"MARKETING_VERSION" = "2.6.0";
+		"MARKETING_VERSION" = 3.0;
 		"PRODUCT_BUNDLE_IDENTIFIER" = "bontecou.Sync-md";
 		"PRODUCT_NAME" = "$(TARGET_NAME)";
 		"STRING_CATALOG_GENERATE_SYMBOLS" = YES;
@@ -722,7 +759,7 @@
 		"ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME" = AccentColor;
 		"CODE_SIGN_ENTITLEMENTS" = "Sync.md/Sync_md.entitlements";
 		"CODE_SIGN_STYLE" = Automatic;
-		"CURRENT_PROJECT_VERSION" = 202608291050;
+		"CURRENT_PROJECT_VERSION" = 202611071310;
 		"DEVELOPMENT_TEAM" = 67KC823C9A;
 		"ENABLE_PREVIEWS" = YES;
 		"GENERATE_INFOPLIST_FILE" = YES;
@@ -736,7 +773,7 @@
 			"$(inherited)",
 			"@executable_path/Frameworks",
 		);
-		"MARKETING_VERSION" = "2.6.0";
+		"MARKETING_VERSION" = 3.0;
 		"PRODUCT_BUNDLE_IDENTIFIER" = "bontecou.Sync-md";
 		"PRODUCT_NAME" = "$(TARGET_NAME)";
 		"STRING_CATALOG_GENERATE_SYMBOLS" = YES;
@@ -758,7 +795,7 @@
 				DEVELOPMENT_TEAM = 67KC823C9A;
 				GENERATE_INFOPLIST_FILE = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "bontecou.Sync-mdTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -775,7 +812,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 67KC823C9A;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "bontecou.Sync-mdUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -858,6 +895,14 @@
 				kind = branch;
 			};
 		};
+		6C8CB2E47A7145E1A993E5B7 /* XCRemoteSwiftPackageReference "scrawl" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kitlangton/scrawl";
+			requirement = {
+				kind = revision;
+				revision = 6d4fa333475ef5170c4df683e306480f8618b95a;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -874,6 +919,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = AA3001002FAA000100AA0003 /* XCRemoteSwiftPackageReference "Notelet" */;
 			productName = Notelet;
+		};
+		46264ADB53B34F9387065A9C /* ScrawlKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6C8CB2E47A7145E1A993E5B7 /* XCRemoteSwiftPackageReference "scrawl" */;
+			productName = ScrawlKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

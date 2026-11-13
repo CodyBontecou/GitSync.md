@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.git.lfs.LfsPushLocksTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-11-02T19:22:17" hostname="MacBook-Pro.local" time="0.22">
+  <properties/>
+  <testcase name="intermediate changes remain protected when the final contents are reverted" classname="com.bontecou.syncmd.services.git.lfs.LfsPushLocksTest" time="0.021"/>
+  <testcase name="committed opt out is respected and old locked content is protected during removal of its rules" classname="com.bontecou.syncmd.services.git.lfs.LfsPushLocksTest" time="0.035"/>
+  <testcase name="new destination and annotated tags include quoted Unicode and tab paths" classname="com.bontecou.syncmd.services.git.lfs.LfsPushLocksTest" time="0.088"/>
+  <testcase name="rename deletion and force rewind protect both old and new paths" classname="com.bontecou.syncmd.services.git.lfs.LfsPushLocksTest" time="0.021"/>
+  <testcase name="source branch tree rules cannot be bypassed through current worktree info or global rules" classname="com.bontecou.syncmd.services.git.lfs.LfsPushLocksTest" time="0.023"/>
+  <testcase name="unknown advertised object requires fetch instead of using stale cached tracking state" classname="com.bontecou.syncmd.services.git.lfs.LfsPushLocksTest" time="0.012"/>
+  <testcase name="new refs exclude already published history while branch updates still check net tree changes" classname="com.bontecou.syncmd.services.git.lfs.LfsPushLocksTest" time="0.02"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

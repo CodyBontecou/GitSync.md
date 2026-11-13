@@ -7,6 +7,8 @@ struct ContentView: View {
     @State private var showContent = true
 
     var body: some View {
+        @Bindable var state = state
+
         Group {
             if state.hasCompletedOnboarding || !state.repos.isEmpty {
                 RepoListView()
@@ -29,6 +31,7 @@ struct ContentView: View {
             }
         }
         .animation(.spring(duration: 0.35, bounce: 0.12), value: state.isBackgroundSyncing)
+        .overlay { TideToastHost() }
         .onAppear {
             #if DEBUG
             if MarketingCapture.usesSeededData {
@@ -71,11 +74,17 @@ struct ContentView: View {
         } message: {
             Text(state.pendingSSHHostKeyTrustRequest?.message ?? "")
         }
+        .appErrorAlert(isRoot: true)
         .onChange(of: state.shouldRequestReview) { _, shouldRequest in
             if shouldRequest {
                 state.shouldRequestReview = false
                 // Small delay so the clone-complete UI settles before the review prompt appears
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    // Re-check: a callback banner, alert, or sync may have
+                    // started meanwhile, or the app may have left the foreground.
+                    guard state.canPresentReviewPrompt,
+                          UIApplication.shared.applicationState == .active else { return }
+                    state.markReviewRequested()
                     requestReview()
                 }
             }

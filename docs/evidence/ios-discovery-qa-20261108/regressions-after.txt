@@ -1,0 +1,17 @@
+Test Case '-[SyncMDTests.SyncMDTests testDiscoveryDeduplicatesCanonicalPathsAcrossScanSources]' started.
+Test Case '-[SyncMDTests.SyncMDTests testDiscoveryDeduplicatesCanonicalPathsAcrossScanSources]' passed (0.012 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testDiscoveryReadsOriginFromLinkedWorktreeCommonConfig]' started.
+Test Case '-[SyncMDTests.SyncMDTests testDiscoveryReadsOriginFromLinkedWorktreeCommonConfig]' passed (0.181 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testGitRepoScannerFindsWorkingCopiesWithRelativePathsAndRemotes]' started.
+Test Case '-[SyncMDTests.SyncMDTests testGitRepoScannerFindsWorkingCopiesWithRelativePathsAndRemotes]' passed (0.016 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testGitRepoScannerMarksContainerResultsAndRespectsDepthLimit]' started.
+Test Case '-[SyncMDTests.SyncMDTests testGitRepoScannerMarksContainerResultsAndRespectsDepthLimit]' passed (0.010 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testGitRepoScannerPreservesRelativePathThroughSymlinkedRootAncestor]' started.
+Test Case '-[SyncMDTests.SyncMDTests testGitRepoScannerPreservesRelativePathThroughSymlinkedRootAncestor]' passed (0.005 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testGitRepoScannerReturnsGrantRootWhenRootItselfIsARepository]' started.
+Test Case '-[SyncMDTests.SyncMDTests testGitRepoScannerReturnsGrantRootWhenRootItselfIsARepository]' passed (0.004 seconds).
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.229 (0.239) seconds
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.229 (0.240) seconds
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.229 (0.241) seconds
+	/tmp/gitsync-ios-navigation-fixes/Logs/Test/Test-Sync.md-2026.11.08_08-38-34--0400.xcresult
+** TEST SUCCEEDED **

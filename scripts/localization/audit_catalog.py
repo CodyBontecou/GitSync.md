@@ -118,8 +118,11 @@ def main() -> None:
                         "translation": dict(placeholders(value)),
                     }
                 )
+            # A term is required only where the source uses it as a word of
+            # its own: "origin" must survive, the "origin" in "original" need not.
             missing_terms = [
-                term for term in STRICT_PROTECTED_TERMS if term in source and term not in value
+                term for term in STRICT_PROTECTED_TERMS
+                if re.search(rf"(?<![A-Za-z]){re.escape(term)}(?![A-Za-z])", source) and term not in value
             ]
             if missing_terms:
                 failures["protectedTerms"].append(

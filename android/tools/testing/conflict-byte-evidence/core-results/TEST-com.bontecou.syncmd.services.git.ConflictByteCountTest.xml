@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.git.ConflictByteCountTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-11-03T00:55:54" hostname="MacBook-Pro.local" time="0.18">
+  <properties/>
+  <testcase name="deletedCurrentSideHasNoInventedZeroByteBlob" classname="com.bontecou.syncmd.services.git.ConflictByteCountTest" time="0.015"/>
+  <testcase name="unicodeAndCrLfCountsComeFromTheCompleteIndexedBlob" classname="com.bontecou.syncmd.services.git.ConflictByteCountTest" time="0.011"/>
+  <testcase name="oversizedBlobSizeIsAvailableWithoutATextPreview" classname="com.bontecou.syncmd.services.git.ConflictByteCountTest" time="0.04"/>
+  <testcase name="presentEmptyBlobIsZeroNotDeleted" classname="com.bontecou.syncmd.services.git.ConflictByteCountTest" time="0.018"/>
+  <testcase name="invalidUtf8StillHasExactBlobSizes" classname="com.bontecou.syncmd.services.git.ConflictByteCountTest" time="0.012"/>
+  <testcase name="legacyTextFallbackAndUnknownMetadataStayDistinct" classname="com.bontecou.syncmd.services.git.ConflictByteCountTest" time="0.001"/>
+  <testcase name="lfsReportsGitPointerBlobSizeNotHydratedAssetSize" classname="com.bontecou.syncmd.services.git.ConflictByteCountTest" time="0.013"/>
+  <testcase name="gitlinkHasNoFileBlobSize" classname="com.bontecou.syncmd.services.git.ConflictByteCountTest" time="0.013"/>
+  <testcase name="deletedIncomingSideHasNoInventedZeroByteBlob" classname="com.bontecou.syncmd.services.git.ConflictByteCountTest" time="0.014"/>
+  <testcase name="binarySizesDoNotDependOnUnavailableText" classname="com.bontecou.syncmd.services.git.ConflictByteCountTest" time="0.043"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

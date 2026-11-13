@@ -1,0 +1,60 @@
+Test Suite 'Selected tests' started at 2026-11-07 19:14:26.856.
+Test Suite 'SyncMDTests.xctest' started at 2026-11-07 19:14:26.857.
+Test Suite 'NameValidationTests' started at 2026-11-07 19:14:26.857.
+Test Case '-[SyncMDTests.NameValidationTests testCloneTargetConflictProtectsOtherVaultsAndForeignRepositories]' started.
+Test Case '-[SyncMDTests.NameValidationTests testCloneTargetConflictProtectsOtherVaultsAndForeignRepositories]' passed (0.007 seconds).
+Test Case '-[SyncMDTests.NameValidationTests testCloneTargetKeepsAnyFolderThatIsNotThisVaultsRepository]' started.
+Test Case '-[SyncMDTests.NameValidationTests testCloneTargetKeepsAnyFolderThatIsNotThisVaultsRepository]' passed (0.011 seconds).
+Test Case '-[SyncMDTests.NameValidationTests testCommitSuggestionKeepsDottedDateWithoutExtension]' started.
+Test Case '-[SyncMDTests.NameValidationTests testCommitSuggestionKeepsDottedDateWithoutExtension]' passed (0.003 seconds).
+Test Case '-[SyncMDTests.NameValidationTests testGitHubShorthandRejectsDotSegments]' started.
+Test Case '-[SyncMDTests.NameValidationTests testGitHubShorthandRejectsDotSegments]' passed (0.001 seconds).
+Test Case '-[SyncMDTests.NameValidationTests testGitIdentityValidation]' started.
+Test Case '-[SyncMDTests.NameValidationTests testGitIdentityValidation]' passed (0.001 seconds).
+Test Case '-[SyncMDTests.NameValidationTests testNoteFileNameAppendsMarkdownUnlessTextExtension]' started.
+Test Case '-[SyncMDTests.NameValidationTests testNoteFileNameAppendsMarkdownUnlessTextExtension]' passed (0.000 seconds).
+Test Case '-[SyncMDTests.NameValidationTests testPushBytesSanitizerDropsUnreliableAndImplausibleValues]' started.
+Test Case '-[SyncMDTests.NameValidationTests testPushBytesSanitizerDropsUnreliableAndImplausibleValues]' passed (0.000 seconds).
+Test Case '-[SyncMDTests.NameValidationTests testVaultFolderContainmentRejectsEscapesAndParentItself]' started.
+Test Case '-[SyncMDTests.NameValidationTests testVaultFolderContainmentRejectsEscapesAndParentItself]' passed (0.001 seconds).
+Test Case '-[SyncMDTests.NameValidationTests testVaultFolderNameRejectsTraversalSeparatorsAndReservedNames]' started.
+Test Case '-[SyncMDTests.NameValidationTests testVaultFolderNameRejectsTraversalSeparatorsAndReservedNames]' passed (0.000 seconds).
+Test Case '-[SyncMDTests.NameValidationTests testVaultFolderNameUniqueAppendsNumericSuffix]' started.
+Test Case '-[SyncMDTests.NameValidationTests testVaultFolderNameUniqueAppendsNumericSuffix]' passed (0.000 seconds).
+Test Suite 'NameValidationTests' passed at 2026-11-07 19:14:26.884.
+	 Executed 10 tests, with 0 failures (0 unexpected) in 0.023 (0.027) seconds
+Test Suite 'SyncMDTests' started at 2026-11-07 19:14:26.884.
+Test Case '-[SyncMDTests.SyncMDTests testAppStateCreateSwitchDeleteBranchDelegatesToGitRepository]' started.
+Test Case '-[SyncMDTests.SyncMDTests testAppStateCreateSwitchDeleteBranchDelegatesToGitRepository]' passed (0.009 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testAppStateTagLifecycleDelegatesToGitRepository]' started.
+Test Case '-[SyncMDTests.SyncMDTests testAppStateTagLifecycleDelegatesToGitRepository]' passed (0.003 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testEditorRenameMutationRejectsCollisionAndStaleBytesThenAcceptsUnicode]' started.
+Test Case '-[SyncMDTests.SyncMDTests testEditorRenameMutationRejectsCollisionAndStaleBytesThenAcceptsUnicode]' passed (0.008 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testEditorRenameMutationRejectsSourceReachedThroughEscapingSymlink]' started.
+Test Case '-[SyncMDTests.SyncMDTests testEditorRenameMutationRejectsSourceReachedThroughEscapingSymlink]' passed (0.002 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testEditorRenameMutationRejectsTraversalAndInvalidNamesWithoutChangingBytes]' started.
+Test Case '-[SyncMDTests.SyncMDTests testEditorRenameMutationRejectsTraversalAndInvalidNamesWithoutChangingBytes]' passed (0.001 seconds).
+Test Suite 'SyncMDTests' passed at 2026-11-07 19:14:26.909.
+	 Executed 5 tests, with 0 failures (0 unexpected) in 0.023 (0.025) seconds
+Test Suite 'SyncMDTests.xctest' passed at 2026-11-07 19:14:26.909.
+	 Executed 15 tests, with 0 failures (0 unexpected) in 0.047 (0.052) seconds
+Test Suite 'Selected tests' passed at 2026-11-07 19:14:26.909.
+	 Executed 15 tests, with 0 failures (0 unexpected) in 0.047 (0.053) seconds
+Test Suite 'Selected tests' started at 2026-11-07 19:14:29.800.
+Test Suite 'SyncMDUITests.xctest' started at 2026-11-07 19:14:29.800.
+Test Suite 'SyncMDUITests' started at 2026-11-07 19:14:29.800.
+Test Case '-[SyncMDUITests.SyncMDUITests testCallbackErrorAppearsOverEditorPreviewWithoutGoingBack]' started.
+Test Case '-[SyncMDUITests.SyncMDUITests testCallbackErrorAppearsOverEditorPreviewWithoutGoingBack]' passed (15.253 seconds).
+Test Case '-[SyncMDUITests.SyncMDUITests testEditorRenameRejectsTraversalAndAllowsCorrection]' started.
+Test Case '-[SyncMDUITests.SyncMDUITests testEditorRenameRejectsTraversalAndAllowsCorrection]' passed (18.707 seconds).
+Test Case '-[SyncMDUITests.SyncMDUITests testFileEditorSaveFlowPersistsEditToSeededFile]' started.
+Test Case '-[SyncMDUITests.SyncMDUITests testFileEditorSaveFlowPersistsEditToSeededFile]' passed (27.811 seconds).
+Test Case '-[SyncMDUITests.SyncMDUITests testGitCreationErrorsAppearOnChildScreenAndPreserveInput]' started.
+Test Case '-[SyncMDUITests.SyncMDUITests testGitCreationErrorsAppearOnChildScreenAndPreserveInput]' passed (25.596 seconds).
+Test Suite 'SyncMDUITests' passed at 2026-11-07 19:15:57.171.
+	 Executed 4 tests, with 0 failures (0 unexpected) in 87.367 (87.370) seconds
+Test Suite 'SyncMDUITests.xctest' passed at 2026-11-07 19:15:57.171.
+	 Executed 4 tests, with 0 failures (0 unexpected) in 87.367 (87.371) seconds
+Test Suite 'Selected tests' passed at 2026-11-07 19:15:57.172.
+	 Executed 4 tests, with 0 failures (0 unexpected) in 87.367 (87.372) seconds
+** TEST SUCCEEDED **

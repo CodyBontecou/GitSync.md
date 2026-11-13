@@ -1,0 +1,2 @@
+Five explicit-locale JDK casing probes passed with English default. Legacy root casing differs and introduces combining dots.
+This does not execute Compose or resolve Android configuration.

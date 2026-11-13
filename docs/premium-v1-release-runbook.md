@@ -66,7 +66,7 @@ Background Sync was an **optional** auto-renewable subscription layered on the e
 1. Create the subscription group and both products. Add display names/descriptions and localized prices.
 2. Configure subscription grace period if desired; the app treats StoreKit's verified `Transaction.currentEntitlements` as authoritative.
 3. Add the App Store Server Notification v2 endpoint: `/v1/app-store/notifications`.
-4. Complete App Privacy answers using `docs/premium-v1-app-privacy.md`; reconcile the shipped `PrivacyInfo.xcprivacy`, existing first-party onboarding analytics, and Background Sync; publish and verify `site/privacy.html` at `https://gitsyncmd.app/privacy.html` and `site/terms.html` at `https://gitsyncmd.app/terms.html`.
+4. Complete App Privacy answers using `docs/premium-v1-app-privacy.md`; reconcile the shipped `PrivacyInfo.xcprivacy`, existing first-party onboarding analytics, and Background Sync; publish and verify `site/privacy.html` at `https://gitsync.md/privacy.html` and `site/terms.html` at `https://gitsync.md/terms.html`.
 5. Add review notes from the section below and provide a sandbox test account/product configuration.
 6. Do not configure the app's relay URL until the authorized relay and certificate-validating verifier pass staging checks.
 

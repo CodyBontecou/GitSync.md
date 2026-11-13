@@ -12,6 +12,10 @@ struct DiscoveredRepo: Identifiable, Hashable {
     /// `true` when the repository lives inside the app's own container
     /// (GitSync.md storage) rather than a user-granted folder.
     let isInsideAppContainer: Bool
+    /// Checked-out branch, filled in by `GitRepoScanner.withWorkingTreeStatus`.
+    var branch: String? = nil
+    /// Number of changed working-tree entries (0 = clean), when read.
+    var changeCount: Int? = nil
 
     /// Stable identity: the working copy's canonical absolute path. This keeps
     /// the same repository identical when one scan uses a symlinked path (for
@@ -150,5 +154,53 @@ enum GitRepoScanner {
     static func discoverRepositoriesInAppContainer(maxDepth: Int = defaultMaxDepth) -> [DiscoveredRepo] {
         let documents = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
         return discoverRepositories(root: documents, maxDepth: maxDepth, isInsideAppContainer: true)
+    }
+
+    /// Reads each repository's branch and working-tree change count with a
+    /// read-only libgit2 status. Repositories that cannot be opened keep `nil`
+    /// fields. Callers outside the app container must hold the security scope.
+    static func withWorkingTreeStatus(_ repositories: [DiscoveredRepo]) async -> [DiscoveredRepo] {
+        var result: [DiscoveredRepo] = []
+        result.reserveCapacity(repositories.count)
+        for var repo in repositories {
+            if Task.isCancelled { result.append(repo); continue }
+            if let info = try? await LocalGitService(localURL: repo.url).repoInfo() {
+                repo.branch = info.branch
+                repo.changeCount = info.changeCount
+            }
+            result.append(repo)
+        }
+        return result
+    }
+}
+
+/// Folders the user granted to "Find clones" before, remembered as
+/// security-scoped bookmarks so the next automatic scan covers them too
+/// (for example On My iPhone › Obsidian).
+enum DiscoveryScanRootStore {
+    static let defaultsKey = "repoDiscovery.grantedRootBookmarks"
+    static let maximumRoots = 4
+
+    static func load(defaults: UserDefaults = .standard) -> [Data] {
+        (defaults.array(forKey: defaultsKey) as? [Data]) ?? []
+    }
+
+    /// Adds `bookmark` for `url`, replacing an earlier bookmark of the same
+    /// folder and keeping the most recent `maximumRoots`.
+    static func remember(_ bookmark: Data, for url: URL, defaults: UserDefaults = .standard) {
+        let path = AppState.canonicalFilePath(for: url)
+        var bookmarks = load(defaults: defaults).filter { data in
+            var stale = false
+            guard let resolved = try? URL(resolvingBookmarkData: data, options: [], relativeTo: nil, bookmarkDataIsStale: &stale) else {
+                return false
+            }
+            return AppState.canonicalFilePath(for: resolved) != path
+        }
+        bookmarks.insert(bookmark, at: 0)
+        defaults.set(Array(bookmarks.prefix(maximumRoots)), forKey: defaultsKey)
+    }
+
+    static func forget(_ bookmark: Data, defaults: UserDefaults = .standard) {
+        defaults.set(load(defaults: defaults).filter { $0 != bookmark }, forKey: defaultsKey)
     }
 }

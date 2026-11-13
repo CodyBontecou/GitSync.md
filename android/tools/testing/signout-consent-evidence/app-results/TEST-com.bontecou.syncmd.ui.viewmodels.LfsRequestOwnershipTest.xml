@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.ui.viewmodels.LfsRequestOwnershipTest" tests="14" skipped="0" failures="0" errors="0" timestamp="2026-11-02T23:56:55" hostname="MacBook-Pro.local" time="0.55">
+  <properties/>
+  <testcase name="cachedHydrationSuccessSurvivesFailedFollowupInspection" classname="com.bontecou.syncmd.ui.viewmodels.LfsRequestOwnershipTest" time="0.091"/>
+  <testcase name="supersededQueuedLoadDoesNotInspectThePreviousRepositoryAfterItsLeaseOpens" classname="com.bontecou.syncmd.ui.viewmodels.LfsRequestOwnershipTest" time="0.038"/>
+  <testcase name="queuedCachedHydrationKeepsTheOldPointerAfterRepositorySwitch" classname="com.bontecou.syncmd.ui.viewmodels.LfsRequestOwnershipTest" time="0.041"/>
+  <testcase name="unsupportedOwnershipAndReadOnlyRefreshesRetainTypedStatusWithoutWrites" classname="com.bontecou.syncmd.ui.viewmodels.LfsRequestOwnershipTest" time="0.032"/>
+  <testcase name="clearingViewModelRevokesNonCancellableQueuedLockWrite" classname="com.bontecou.syncmd.ui.viewmodels.LfsRequestOwnershipTest" time="0.03"/>
+  <testcase name="currentOwnerLockWriteRunsOnceAndReleasesItsBusyState" classname="com.bontecou.syncmd.ui.viewmodels.LfsRequestOwnershipTest" time="0.026"/>
+  <testcase name="extensionTrackingSuccessSurvivesFailedFollowupInspection" classname="com.bontecou.syncmd.ui.viewmodels.LfsRequestOwnershipTest" time="0.043"/>
+  <testcase name="sameRepositoryExplicitReloadSupersedesAQueuedTrackingChoice" classname="com.bontecou.syncmd.ui.viewmodels.LfsRequestOwnershipTest" time="0.028"/>
+  <testcase name="exactTrackingSuccessSurvivesFailedFollowupInspection" classname="com.bontecou.syncmd.ui.viewmodels.LfsRequestOwnershipTest" time="0.034"/>
+  <testcase name="queuedExactTrackingDoesNotWriteThePreviouslySelectedRepository" classname="com.bontecou.syncmd.ui.viewmodels.LfsRequestOwnershipTest" time="0.034"/>
+  <testcase name="queuedExtensionRulesDoNotOutliveTheirScreenOwner" classname="com.bontecou.syncmd.ui.viewmodels.LfsRequestOwnershipTest" time="0.04"/>
+  <testcase name="initialInspectionAndTrackingPlanComeFromOneSerializedSnapshot" classname="com.bontecou.syncmd.ui.viewmodels.LfsRequestOwnershipTest" time="0.045"/>
+  <testcase name="currentOwnerCanApplyOnceAndPublishItsFreshPlan" classname="com.bontecou.syncmd.ui.viewmodels.LfsRequestOwnershipTest" time="0.032"/>
+  <testcase name="queuedLockCreationDoesNotContactServerAfterRepositorySwitch" classname="com.bontecou.syncmd.ui.viewmodels.LfsRequestOwnershipTest" time="0.035"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

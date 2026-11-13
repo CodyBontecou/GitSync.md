@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   exchangeGitHubOAuthCode,
+  findExistingInstallation,
   githubAppConfigurationIsPresent,
   githubAppJWT,
   installationIDFrom,
@@ -182,5 +183,86 @@ describe("GitHub App configuration", () => {
       GITHUB_APP_CALLBACK_URL: "http://push.example.test/v1/github-app/oauth/callback",
     })).toBe(false);
     expect(githubAppConfigurationIsPresent({ ...env(), GITHUB_APP_CLIENT_SECRET: "" })).toBe(false);
+  });
+});
+
+
+describe("Existing GitHub App installation lookup", () => {
+  const installation = (changes: Record<string, unknown> = {}) => ({
+    id: 123, app_id: 123456, account: { id: 42, login: "octocat", type: "User" },
+    suspended_at: null, ...changes,
+  });
+  it("finds this app's personal installation without authorizing or modifying it", async () => {
+    const pair = await testKeyPair();
+    const fetchMock = vi.fn().mockResolvedValue(new Response(JSON.stringify(installation())));
+    vi.stubGlobal("fetch", fetchMock);
+    expect(await findExistingInstallation(env(pair.privatePEM), "Octocat")).toBe(123);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(fetchMock.mock.calls[0][0]).toBe("https://api.github.com/users/Octocat/installation");
+    expect(fetchMock.mock.calls[0][1]).toMatchObject({ redirect: "manual" });
+    expect(fetchMock.mock.calls[0][1].signal).toBeDefined();
+  });
+  it("checks organizations only after a missing personal installation", async () => {
+    const pair = await testKeyPair();
+    const fetchMock = vi.fn().mockResolvedValueOnce(new Response(null, { status: 404 }))
+      .mockResolvedValueOnce(new Response(JSON.stringify(installation({ account: { id: 84, login: "octo-org", type: "Organization" } }))));
+    vi.stubGlobal("fetch", fetchMock);
+    expect(await findExistingInstallation(env(pair.privatePEM), "octo-org")).toBe(123);
+    expect(fetchMock.mock.calls.map((call) => call[0])).toEqual([
+      "https://api.github.com/users/octo-org/installation", "https://api.github.com/orgs/octo-org/installation",
+    ]);
+  });
+  it("accepts an organization returned by the users endpoint without a second request", async () => {
+    const pair = await testKeyPair();
+    const fetchMock = vi.fn().mockResolvedValue(new Response(JSON.stringify(installation({ account: { id: 84, login: "octo-org", type: "Organization" } }))));
+    vi.stubGlobal("fetch", fetchMock);
+    expect(await findExistingInstallation(env(pair.privatePEM), "octo-org")).toBe(123);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
+  it("rejects a personal account returned by the organizations endpoint", async () => {
+    const pair = await testKeyPair();
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValueOnce(new Response(null, { status: 404 }))
+      .mockResolvedValueOnce(new Response(JSON.stringify(installation()))));
+    await expect(findExistingInstallation(env(pair.privatePEM), "octocat")).rejects.toThrow("GitHubInstallationResponseInvalid");
+  });
+  it("rejects path injection before any network access", async () => {
+    const fetchMock = vi.fn(); vi.stubGlobal("fetch", fetchMock);
+    for (const login of ["../octocat", "octocat?x=1", "octocat/other", "@octocat", ""]) {
+      await expect(findExistingInstallation(env(), login)).rejects.toThrow("GitHubInstallationLoginInvalid");
+    }
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+  it("rejects a different app, owner, account type, suspension or invalid ID", async () => {
+    const pair = await testKeyPair();
+    for (const change of [
+      { app_id: 987 }, { account: { id: 42, login: "other", type: "User" } },
+      { account: { id: 0, login: "octocat", type: "User" } },
+      { account: { id: 42, login: "octocat", type: "Bot" } },
+      { suspended_at: "2026-11-02" }, { id: 0 }, { id: "123" },
+    ]) {
+      vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response(JSON.stringify(installation(change)))));
+      await expect(findExistingInstallation(env(pair.privatePEM), "octocat")).rejects.toThrow("GitHubInstallationResponseInvalid");
+    }
+  });
+  it("bounds advertised and streamed response sizes", async () => {
+    const pair = await testKeyPair();
+    for (const response of [new Response("{}", { headers: { "content-length": "65537" } }), new Response("x".repeat(65537))]) {
+      vi.stubGlobal("fetch", vi.fn().mockResolvedValue(response));
+      await expect(findExistingInstallation(env(pair.privatePEM), "octocat")).rejects.toThrow("GitHubInstallationResponseInvalid");
+    }
+  });
+  it("rejects redirects without forwarding the app credential", async () => {
+    const pair = await testKeyPair();
+    const fetchMock = vi.fn().mockResolvedValue(new Response(null, { status: 302, headers: { location: "https://unexpected.example/" } }));
+    vi.stubGlobal("fetch", fetchMock);
+    await expect(findExistingInstallation(env(pair.privatePEM), "octocat")).rejects.toThrow("GitHubInstallationLookupFailed");
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(fetchMock.mock.calls[0][1]).toMatchObject({ redirect: "manual" });
+  });
+  it("fails closed on API failure and does not fall back after an authorization error", async () => {
+    const pair = await testKeyPair();
+    const fetchMock = vi.fn().mockResolvedValue(new Response(null, { status: 403 })); vi.stubGlobal("fetch", fetchMock);
+    await expect(findExistingInstallation(env(pair.privatePEM), "octocat")).rejects.toThrow("GitHubInstallationLookupFailed");
+    expect(fetchMock).toHaveBeenCalledTimes(1);
   });
 });

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.git.StagingParityIntegrationTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-11-03T00:56:28" hostname="MacBook-Pro.local" time="0.26">
+  <properties/>
+  <testcase name="blank and no-change commits never create history" classname="com.bontecou.syncmd.services.git.StagingParityIntegrationTest" time="0.023"/>
+  <testcase name="staging paths cannot escape into metadata or another folder" classname="com.bontecou.syncmd.services.git.StagingParityIntegrationTest" time="0.01"/>
+  <testcase name="staged content remains visible when the working tree matches HEAD again" classname="com.bontecou.syncmd.services.git.StagingParityIntegrationTest" time="0.025"/>
+  <testcase name="stage all includes added modified and deleted files but respects ignores" classname="com.bontecou.syncmd.services.git.StagingParityIntegrationTest" time="0.054"/>
+  <testcase name="binary and pure rename paths retain exact metadata without patch-header guesses" classname="com.bontecou.syncmd.services.git.StagingParityIntegrationTest" time="0.02"/>
+  <testcase name="staged deletion and recreated working file stay separate" classname="com.bontecou.syncmd.services.git.StagingParityIntegrationTest" time="0.013"/>
+  <testcase name="unborn branch unstage keeps working files and initial commit includes only staged files" classname="com.bontecou.syncmd.services.git.StagingParityIntegrationTest" time="0.036"/>
+  <testcase name="staged and unstaged versions are separate and local commit preserves the later edits" classname="com.bontecou.syncmd.services.git.StagingParityIntegrationTest" time="0.032"/>
+  <testcase name="status counts partial paths once and includes both unstaged and staged deletions" classname="com.bontecou.syncmd.services.git.StagingParityIntegrationTest" time="0.023"/>
+  <testcase name="stage and unstage rename update both paths" classname="com.bontecou.syncmd.services.git.StagingParityIntegrationTest" time="0.024"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

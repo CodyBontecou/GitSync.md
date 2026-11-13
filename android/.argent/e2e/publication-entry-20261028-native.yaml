@@ -1,0 +1,25 @@
+# Smoke prerequisite: English UI, completed first-run tour, acknowledged release notes.
+# Leaves the debug app at repository home; no account, folder or Git mutation.
+steps:
+  - echo: Restart GitSync debug. Expect repository home with the publication entry;
+      no account or folder will be changed.
+  - launch: md.gitsync.md.debug
+  - await: { visible: { text: Clone from URL } }
+  - await: { idle: true }
+  - echo: On repository home, open Publish a folder. Expect the publication scope
+      and saved-progress screen.
+  - tap:
+      text: Publish a folder
+  - await:
+      visible:
+        text: Choose a local folder, review its files and prepare a local commit.
+          Publishing then creates a repository in your personal GitHub account
+          and uploads that saved commit.
+  - await: { idle: true }
+  - await: { visible: { text: Back } }
+  - echo: On publication start, use Back. Expect repository home without changing
+      accounts, folders or Git state.
+  - tap:
+      text: Back
+  - await: { visible: { text: Clone from URL } }
+  - await: { idle: true }

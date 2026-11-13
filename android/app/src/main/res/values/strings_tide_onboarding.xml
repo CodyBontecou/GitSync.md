@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Tide onboarding + add-a-vault copy (iOS OnboardingView / SetupView / RepoPickerView / FolderPublicationView). -->
+    <string name="tide_onboarding_picker_no_matches">No matches</string>
+    <string name="tide_onboarding_picker_clear">Clear search</string>
+</resources>

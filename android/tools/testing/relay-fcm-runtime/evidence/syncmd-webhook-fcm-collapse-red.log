@@ -1,0 +1,28 @@
+
+ RUN  v5.0.5 /private/tmp/syncmd-existing-installation-relay
+
+ ❯ src/fcm.test.ts (6 tests | 1 failed) 57ms
+   ❯ FCM HTTP v1 transport (6)
+     × accepts the actual relay collapse ID and rejects malformed or oversized keys before authorization 11ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/fcm.test.ts > FCM HTTP v1 transport > accepts the actual relay collapse ID and rejects malformed or oversized keys before authorization
+Error: FcmNotificationInvalid
+ ❯ FcmSender.send src/fcm.ts:96:114
+     94|         || /[\u0000-\u001f\u007f]/.test(notification.branch)
+     95|         || notification.title.length > 256 || notification.body.length…
+     96|         || notification.head !== undefined && !/^(?:[a-f0-9]{40}|[a-f0…
+       |                                                                                                                  ^
+     97|     this.authorization ??= this.authorize();
+     98|     const authorization = await this.authorization;
+ ❯ src/fcm.test.ts:27:52
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 passed (6)
+   Start at  12:36:40
+   Duration  193ms (tests 70%, transform 18%, import 9%, worker 2%)
+

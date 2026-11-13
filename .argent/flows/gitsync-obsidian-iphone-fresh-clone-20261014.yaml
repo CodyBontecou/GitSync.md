@@ -1,0 +1,35 @@
+steps:
+  - launch: bontecou.Sync-md
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: GITSYNC.MD
+  - tap:
+      text: +, ADD REPOSITORY
+  - tap:
+      text: ENTER URL MANUALLY
+  - tap:
+      role: AXTextField
+  - tool: keyboard
+    args:
+      text: https://github.com/CodyBontecou/gitsync-obsidian-qa-fixed-20261014.git
+  - tool: keyboard
+    args:
+      key: enter
+  - tool: gesture-swipe
+    args:
+      fromX: 0.5
+      fromY: 0.84
+      toX: 0.5
+      toY: 0.23
+      momentum: false
+  - tap:
+      text: ADD & CLONE REPOSITORY
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: fabe7dd
+        role: AXStaticText
+      timeoutMs: 30000

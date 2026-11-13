@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.git.RecursiveRenameMergeTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-11-02T19:21:26" hostname="MacBook-Pro.local" time="1.183">
+  <properties/>
+  <testcase name="equally resolved conflicting ancestors preserve independent rename edits in either direction" classname="com.bontecou.syncmd.services.git.RecursiveRenameMergeTest" time="0.239"/>
+  <testcase name="conflicting virtual ancestor text still reconstructs a single exact split rename" classname="com.bontecou.syncmd.services.git.RecursiveRenameMergeTest" time="0.129"/>
+  <testcase name="stable virtual base labels do not replace the final content conflict labels" classname="com.bontecou.syncmd.services.git.RecursiveRenameMergeTest" time="0.106"/>
+  <testcase name="reviewed remote merge publishes exactly the recursive rename result" classname="com.bontecou.syncmd.services.git.RecursiveRenameMergeTest" time="0.15"/>
+  <testcase name="virtual base split rename conflicts reconstruct one verified filename choice without mutating reads" classname="com.bontecou.syncmd.services.git.RecursiveRenameMergeTest" time="0.244"/>
+  <testcase name="recursive virtual bases retain independent edits through either rename orientation" classname="com.bontecou.syncmd.services.git.RecursiveRenameMergeTest" time="0.215"/>
+  <testcase name="recursive checkout preview refuses an ignored incoming rename destination without changing files or index" classname="com.bontecou.syncmd.services.git.RecursiveRenameMergeTest" time="0.1"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

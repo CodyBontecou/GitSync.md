@@ -1,0 +1,9 @@
+steps:
+  - echo: Reopen Git Tools to test whether an invalid branch action preserves an
+      unsent commit draft.
+  - tap:
+      x: 0.8905
+      y: 0.0965
+executionPrerequisite: Git Tools error has been dismissed; dirty local
+  git-tools-fixture vault is open on its Git tab on the isolated iOS QA
+  simulator.

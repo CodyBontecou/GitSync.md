@@ -1,0 +1,1 @@
+Native source expectations: 197 English strings, 25 locales

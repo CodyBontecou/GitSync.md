@@ -188,7 +188,14 @@ final class SyncAppDelegate: NSObject, UIApplicationDelegate, UNUserNotification
         _ center: UNUserNotificationCenter,
         didReceive response: UNNotificationResponse
     ) async {
-        let fullName = response.notification.request.content.userInfo["repo"] as? String
+        let userInfo = response.notification.request.content.userInfo
+        // Local "<vault> was updated" alert after a background pull: just
+        // open the vault; the pull already happened.
+        if let vaultID = (userInfo["vaultID"] as? String).flatMap(UUID.init(uuidString:)) {
+            await MainActor.run { SyncRuntimeLocator.reveal(repoID: vaultID) }
+            return
+        }
+        let fullName = userInfo["repo"] as? String
         await MainActor.run {
             SyncRuntimeLocator.handlePushNotificationTap(fullName: fullName)
         }

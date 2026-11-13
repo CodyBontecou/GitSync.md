@@ -1,0 +1,127 @@
+# English Pixel/Gboard with a saved Push Sync link. No authorization is submitted.
+# Explicit --device rebinds recorded, scoped helper resets.
+steps:
+- echo: English production GitSync.md is onboarded with its existing Push Sync connection. Restart and
+    inspect the saved link, then enter the public owner name without submitting another authorization.
+- launch: md.gitsync.md
+- tool: stop-all-simulator-servers
+  args:
+    devices:
+    - 2C061FDH200CJN
+- await:
+    visible:
+      text: Clone from URL
+    timeout: 5000
+- await:
+    idle: true
+- tap:
+    text: ⚙
+- tool: stop-all-simulator-servers
+  args:
+    devices:
+    - 2C061FDH200CJN
+- echo: Settings is open. Open Push Sync; expect the preserved registered-device and connection controls.
+- await:
+    visible:
+      text: PUSH SYNC
+    timeout: 5000
+- await:
+    idle: true
+- tap:
+    text: PUSH SYNC
+- tool: stop-all-simulator-servers
+  args:
+    devices:
+    - 2C061FDH200CJN
+- await:
+    visible:
+      text: Notification device registered.
+    timeout: 5000
+- await:
+    idle: true
+- tool: stop-all-simulator-servers
+  args:
+    devices:
+    - 2C061FDH200CJN
+- await:
+    visible:
+      text: Remove connection
+    timeout: 5000
+- await:
+    idle: true
+- echo: The registered connection remains visible. Expand the existing-installation form and enter the
+    public owner name; do not submit GitHub authorization.
+- tap:
+    text: Already installed the GitHub App?
+- tool: stop-all-simulator-servers
+  args:
+    devices:
+    - 2C061FDH200CJN
+- await:
+    visible:
+      text: GitHub username or organization
+    timeout: 5000
+- await:
+    idle: true
+- type:
+    into:
+      text: GitHub username or organization
+    text: CodyBontecou
+    submit: false
+- tool: stop-all-simulator-servers
+  args:
+    devices:
+    - 2C061FDH200CJN
+- await:
+    text:
+      in:
+        role: TextField
+      equals: CodyBontecou
+    timeout: 5000
+- await:
+    visible:
+      id: com.google.android.inputmethod.latin:id/key_pos_ime_action
+    timeout: 5000
+- tool: keyboard
+  args:
+    key: enter
+- tool: stop-all-simulator-servers
+  args:
+    devices:
+    - 2C061FDH200CJN
+- await:
+    hidden:
+      id: com.google.android.inputmethod.latin:id/key_pos_ime_action
+    timeout: 5000
+- await:
+    text:
+      in:
+        role: TextField
+      equals: CodyBontecou
+    timeout: 5000
+- await:
+    visible:
+      text: Connect existing installation
+    timeout: 5000
+- await:
+    idle: true
+- await:
+    visible:
+      role: TextField
+    timeout: 5000
+- tap:
+    text: Already installed the GitHub App?
+- tool: stop-all-simulator-servers
+  args:
+    devices:
+    - 2C061FDH200CJN
+- await:
+    hidden:
+      role: TextField
+    timeout: 5000
+- await:
+    visible:
+      text: Remove connection
+    timeout: 5000
+- await:
+    idle: true

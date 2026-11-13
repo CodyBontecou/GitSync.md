@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.ui.screens.NameValidationTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-11-07T21:52:26" hostname="MacBook-Pro.local" time="0.014">
+  <properties/>
+  <testcase name="separators and dot names get their own messages" classname="com.bontecou.syncmd.ui.screens.NameValidationTest" time="0.009"/>
+  <testcase name="length counts UTF-8 bytes of the final file name including md" classname="com.bontecou.syncmd.ui.screens.NameValidationTest" time="0.001"/>
+  <testcase name="ordinary note names pass" classname="com.bontecou.syncmd.ui.screens.NameValidationTest" time="0.001"/>
+  <testcase name="remote clone display names refuse path-like names but allow dot repos" classname="com.bontecou.syncmd.ui.screens.NameValidationTest" time="0.002"/>
+  <testcase name="clone location preview names the folder the clone really gets" classname="com.bontecou.syncmd.ui.screens.NameValidationTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
