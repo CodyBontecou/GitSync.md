@@ -5,7 +5,7 @@ Refs #39. This is a presentation/typed-outcome fix, not a diagnosis of what canc
 ## Contract
 
 - `RepositoryPullRunner` checks cancellation before calling the repository and maps a thrown `CancellationError` to `.cancelled`. It does not retry, authenticate, repair, or classify this as success.
-- Foreground pull records a `.cancelled` warning with localized interruption/retry guidance, not a raw error alert. The existing defer clears `isSyncing` and `syncingRepoID`. The legacy Boolean pull contract returns false for cancellation.
+- Explicit foreground Pull controls request a `.cancelled` warning with localized interruption/retry guidance, not a raw error alert. The default cancellation feedback remains silent for lifecycle/refresh work, preserving main's quiet-refresh contract. The existing defer clears `isSyncing` and `syncingRepoID`. The legacy Boolean pull contract returns false for cancellation.
 - Callbacks return `updated=false`, no SHA, and localized guidance on the existing error channel. Shortcuts distinguish interruption from failed/successful pulls and include guidance in single/multiple-repository dialogs.
 - Pull-then-push stops on cancellation. Background pull cancellation is deferred, retaining prior success date/SHA rather than reporting authentication, corruption, failure, or success.
 - A successful working-copy update is never overwritten by a later cancellation check. Existing `.updatedWithAttention(..., .cancelledAfterUpdate)` retains the new SHA and hydration attention; no unconditional retry is introduced.
@@ -13,7 +13,7 @@ Refs #39. This is a presentation/typed-outcome fix, not a diagnosis of what canc
 
 ## Criterion-to-test mapping
 
-All tests are in `SyncMDTests/SyncMDTests.swift`, already registered in the Xcode project's test target. `.github/workflows/xctest.yml` executes the entire target on a GitHub-hosted macOS/iPhone simulator and compiles Release resources. It has read-only contents permissions, cancellation concurrency, and a 30-minute timeout.
+All tests are in `SyncMDTests/SyncMDTests.swift`, already registered in the Xcode project's test target. `.github/workflows/xctest.yml` executes the entire target on a GitHub-hosted macOS/iPhone simulator and compiles Release resources. It has read-only contents permissions, cancellation concurrency, and the protected combined 45-minute unit/Release timeout.
 
 | Issue criterion | Behavioral evidence |
 | --- | --- |
@@ -25,8 +25,12 @@ All tests are in `SyncMDTests/SyncMDTests.swift`, already registered in the Xcod
 | No follow-up publication or false background failure | `testSyncStopsBeforePushWhenPullIsCancelled`, `testBackgroundPullCancellationIsDeferredWithoutFailureOrSuccess` |
 | Updated-with-attention/new SHA preserved | `testAppStateCancellationAfterUpdateRetainsSHAAndAttention` cancels a task after execution starts but returns the service's post-update result; existing `testRepositoryPullRunnerReturnsNewSHAWithPostUpdateAttention` covers `.cancelledAfterUpdate` plus other attention cases; existing foreground/background post-update tests remain included |
 
+## Physical QA follow-up
+
+See `docs/pr44-iphone13-qa.md` and `docs/evidence/pr44-iphone13/`: actual iPhone13 native queued cancellation/manual retry passed 45/45 steps twice, with exact native Git/index/note preservation and only legitimate FETCH_HEAD change on retry. Local full signed 528 unit/native + five UI tests passed before the DEBUG fixture cold-start adjustment; its selected UI test passed after adjustment. Final-source signed528 unit/native and five feature UI tests subsequently passed in separately scoped runs; wider unrelated UI run was intentionally interrupted and is not counted as complete. These observations do not reproduce the original cancellation cause or replace actual OS-host/LFS/human linguistic gates below.
+
 ## Reproduction limits and remaining QA
 
-No local build/test/device run was performed in the source-only Linux issue lane. The live issue reports an earlier isolated characterization of the real runner on main and 2.5.4; that is issue-provided evidence, not a device reproduction by this change. The cancellation origin (user action, OS lifetime, or another cause) is unknown and must not be guessed.
+No local build/test/device run was performed in the original source-only Linux issue lane. The live issue reports an earlier isolated characterization of the real runner on main and 2.5.4; that is issue-provided evidence, not a device reproduction by this change. The cancellation origin (user action, OS lifetime, or another cause) is unknown and must not be guessed.
 
 Cloud XCTest validates deterministic cancellation and presentation models; it does not reproduce the original physical-device incident or exercise real Shortcuts/URL-callback host apps. Before completing the issue, verify on-device cancellation/foreground interruption and manual retry with local edits preserved, warning rendering/cleared spinner, Shortcuts and callback error-channel wording, and post-update LFS attention with the new SHA. Human linguistic review of the new non-English catalog translations (including count grammar/RTL layout) is also required. Keep the PR draft and issue open while these gates remain. CI run URLs and tested head SHA are recorded in the PR and lane report, not inferred from source inspection.

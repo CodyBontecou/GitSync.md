@@ -250,7 +250,11 @@ enum MarketingDemoSeeder {
         precondition(Bundle.main.bundleIdentifier == "bontecou.Sync-md.prqa")
         let inventoryURL = FileManager.default.temporaryDirectory.appendingPathComponent("pr44-qa/repos.json")
         try? FileManager.default.removeItem(at: inventoryURL)
-        return AppState(reposFileURL: inventoryURL, loadPersistedState: false)
+        let state = AppState(reposFileURL: inventoryURL, loadPersistedState: false)
+        // Seed before ContentView chooses onboarding vs Home. Relying on its
+        // onAppear races that first routing decision on physical cold launches.
+        seedUITestGitToolsFixture(into: state, scenario: "pull-cancel")
+        return state
     }
 
     /// External-client fixtures must not load or reconcile the user's inventory.
@@ -300,6 +304,10 @@ enum MarketingDemoSeeder {
             state.hasCompletedOnboarding = true
             state.hasSeenOnboarding = true
             state.isDemoMode = false
+            return
+        }
+        if MarketingCapture.gitToolsUITestScenario == "pull-cancel" {
+            // The isolated initializer already seeded this native working copy.
             return
         }
         if let scenario = MarketingCapture.gitToolsUITestScenario {
