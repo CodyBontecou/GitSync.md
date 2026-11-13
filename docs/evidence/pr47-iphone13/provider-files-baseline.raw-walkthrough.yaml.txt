@@ -1,0 +1,67 @@
+steps:
+  - launch: com.apple.DocumentsApp
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: Browse View
+  - tap:
+      id: folder.fill
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: DOC.sidebar.item.On My iPhone
+  - tap:
+      id: DOC.sidebar.item.On My iPhone
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: GitSync-PR47-QA-20261113, Folder
+  - tap:
+      text: GitSync-PR47-QA-20261113
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: GitSync-PR47-QA-20261113, Actions Menu
+        role: Button
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Folder is Empty
+        role: StaticText
+  - tap:
+      id: folder.fill
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: DOC.sidebar.item.On My iPhone
+  - tap:
+      id: DOC.sidebar.item.On My iPhone
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: GitSync PR QA, Container
+  - tap:
+      text: GitSync PR QA
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: GitSync PR QA, Actions Menu
+        role: Button
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: git-tools-fixture, Folder
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: pr47-return-anchor, Folder

@@ -1,0 +1,1211 @@
+{
+  "e2eTest": "qa-pr47-provider-tail-diagnostic",
+  "flow": "qa-pr47-provider-tail-diagnostic",
+  "device": "00008110-00046CC63CA0401E",
+  "executionPrerequisite": "",
+  "ok": true,
+  "passed": 129,
+  "failed": 0,
+  "skipped": 0,
+  "errored": 0,
+  "steps": [
+    {
+      "index": 0,
+      "kind": "echo",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "status": "pass",
+      "message": "Diagnostic continuation only. Requires already-moved external QA fixture and malformed private parent bookmark; does NOT seed or count as full QA proof.",
+      "durationMs": 0,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 1,
+      "kind": "launch",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "status": "pass",
+      "durationMs": 2172,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 2,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "visible \"Attention 1\" role=Button",
+      "status": "pass",
+      "durationMs": 168,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 3,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "status": "pass",
+      "warning": "the screen settled, but a small part of it was still changing while it did — a spinner, a caret, a progress dot. If it is a loading spinner then the screen had not finished loading, and stillness cannot tell those apart: look at what is moving, and gate the next action on the element the loading produces rather than on this settle.",
+      "durationMs": 1505,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 4,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "\"main · syncmd-uitest-fixtures/git-tools-fixture\"",
+      "status": "pass",
+      "durationMs": 1060,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 5,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "visible id=vault.reauthorizeFolder",
+      "status": "pass",
+      "durationMs": 137,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 6,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "status": "pass",
+      "durationMs": 2003,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 7,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "id=vault.reauthorizeFolder",
+      "status": "pass",
+      "durationMs": 945,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 8,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "visible \"Vault settings\"",
+      "status": "pass",
+      "durationMs": 185,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 9,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "status": "pass",
+      "durationMs": 2351,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 10,
+      "kind": "scroll-to",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "id=repository.reauthorizeFolder",
+      "status": "pass",
+      "durationMs": 4601,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 11,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "visible id=repository.reauthorizeFolder",
+      "status": "pass",
+      "durationMs": 133,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 12,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "status": "pass",
+      "durationMs": 1660,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 13,
+      "kind": "echo",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "status": "pass",
+      "message": "Reject an intentionally wrong child selection without changing saved configuration.",
+      "durationMs": 0,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 14,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "id=repository.reauthorizeFolder",
+      "status": "pass",
+      "durationMs": 1256,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 15,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "visible id=Browse View (Picker)",
+      "status": "pass",
+      "durationMs": 688,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 16,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "status": "pass",
+      "durationMs": 2447,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 17,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "id=folder.fill within (id=DOC.browsingModeTabBar)",
+      "status": "pass",
+      "durationMs": 1876,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 18,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "visible id=DOC.sidebar.item.On My iPhone",
+      "status": "pass",
+      "durationMs": 342,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 19,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "status": "pass",
+      "durationMs": 2655,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 20,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "id=DOC.sidebar.item.On My iPhone",
+      "status": "pass",
+      "durationMs": 2172,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 21,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "visible id=GitSync-PR47-QA-20261113, Folder",
+      "status": "pass",
+      "durationMs": 377,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 22,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "status": "pass",
+      "durationMs": 2723,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 23,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "id=GitSync-PR47-QA-20261113, Folder",
+      "status": "pass",
+      "durationMs": 2120,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 24,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "visible id=DOC.browsingRoot Source: com.apple.FileProvider.LocalStorage, Title: GitSync-PR47-QA-20261113",
+      "status": "pass",
+      "durationMs": 859,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 25,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "status": "pass",
+      "durationMs": 1819,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 26,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "id=git-tools-fixture, Folder",
+      "status": "pass",
+      "durationMs": 1883,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 27,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "visible id=DOC.browsingRoot Source: com.apple.FileProvider.LocalStorage, Title: git-tools-fixture",
+      "status": "pass",
+      "durationMs": 807,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 28,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "status": "pass",
+      "durationMs": 1858,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 29,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "id=DOCPicker.actionButton",
+      "status": "pass",
+      "durationMs": 1939,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 30,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "visible \"Reauthorization Failed\" role=Alert",
+      "status": "pass",
+      "durationMs": 635,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 31,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "status": "pass",
+      "durationMs": 2281,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 32,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "\"OK\" role=Button",
+      "status": "pass",
+      "durationMs": 1228,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 33,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "visible id=repository.reauthorizeFolder",
+      "status": "pass",
+      "durationMs": 1794,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 34,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "status": "pass",
+      "durationMs": 1663,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 35,
+      "kind": "echo",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "status": "pass",
+      "message": "Renew with the actual external parent and preserve the configured main branch.",
+      "durationMs": 0,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 36,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "id=repository.reauthorizeFolder",
+      "status": "pass",
+      "durationMs": 1256,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 37,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "visible id=Browse View (Picker)",
+      "status": "pass",
+      "durationMs": 212,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 38,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "status": "pass",
+      "durationMs": 2521,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 39,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "id=folder.fill within (id=DOC.browsingModeTabBar)",
+      "status": "pass",
+      "durationMs": 1899,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 40,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "visible id=DOC.sidebar.item.On My iPhone",
+      "status": "pass",
+      "durationMs": 334,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 41,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "status": "pass",
+      "durationMs": 1827,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 42,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "id=DOC.sidebar.item.On My iPhone",
+      "status": "pass",
+      "durationMs": 2114,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 43,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "visible id=GitSync-PR47-QA-20261113, Folder",
+      "status": "pass",
+      "durationMs": 383,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 44,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "status": "pass",
+      "durationMs": 2603,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 45,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "id=GitSync-PR47-QA-20261113, Folder",
+      "status": "pass",
+      "durationMs": 2115,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 46,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "visible id=DOC.browsingRoot Source: com.apple.FileProvider.LocalStorage, Title: GitSync-PR47-QA-20261113",
+      "status": "pass",
+      "durationMs": 842,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 47,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "status": "pass",
+      "durationMs": 1796,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 48,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "id=DOCPicker.actionButton",
+      "status": "pass",
+      "durationMs": 1880,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 49,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "visible \"GitSync-PR47-QA-20261113 › git-tools-fixture\" role=StaticText",
+      "status": "pass",
+      "durationMs": 777,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 50,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "status": "pass",
+      "durationMs": 1734,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 51,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "id=repositorySettings.branch equals \"main\"",
+      "status": "pass",
+      "durationMs": 201,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 52,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "\"Cancel\" role=Button",
+      "status": "pass",
+      "durationMs": 1325,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 53,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "visible id=vault.title",
+      "status": "pass",
+      "durationMs": 551,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 54,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "status": "pass",
+      "durationMs": 1529,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 55,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "visible \"README.md, modified\" role=Button",
+      "status": "pass",
+      "durationMs": 132,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 56,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "hidden id=vault.reauthorizeFolder",
+      "status": "pass",
+      "durationMs": 99,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 57,
+      "kind": "launch",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "status": "pass",
+      "durationMs": 2199,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 58,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "visible \"Attention 1\" role=Button",
+      "status": "pass",
+      "durationMs": 171,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 59,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "status": "pass",
+      "warning": "the screen settled, but a small part of it was still changing while it did — a spinner, a caret, a progress dot. If it is a loading spinner then the screen had not finished loading, and stillness cannot tell those apart: look at what is moving, and gate the next action on the element the loading produces rather than on this settle.",
+      "durationMs": 1593,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 60,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "\"main · syncmd-uitest-fixtures/git-tools-fixture\"",
+      "status": "pass",
+      "durationMs": 1187,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 61,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "visible id=vault.title",
+      "status": "pass",
+      "durationMs": 134,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 62,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "status": "pass",
+      "durationMs": 2225,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 63,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "visible \"README.md, modified\" role=Button",
+      "status": "pass",
+      "durationMs": 132,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 64,
+      "kind": "launch",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "status": "pass",
+      "durationMs": 2171,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 65,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "visible \"GitSync-PR47-QA-20261113, Actions Menu\" role=Button",
+      "status": "pass",
+      "durationMs": 227,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 66,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "status": "pass",
+      "durationMs": 1672,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 67,
+      "kind": "long-press",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "id=git-tools-fixture, Folder",
+      "status": "pass",
+      "durationMs": 1952,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 68,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "visible id=pencil",
+      "status": "pass",
+      "durationMs": 129,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 69,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "status": "pass",
+      "warning": "the screen settled, but a small part of it was still changing while it did — a spinner, a caret, a progress dot. If it is a loading spinner then the screen had not finished loading, and stillness cannot tell those apart: look at what is moving, and gate the next action on the element the loading produces rather than on this settle.",
+      "durationMs": 1719,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 70,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "id=pencil",
+      "status": "pass",
+      "durationMs": 3310,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 71,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "visible id=DOC.inlineRenameField",
+      "status": "pass",
+      "durationMs": 1124,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 72,
+      "kind": "echo",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "status": "pass",
+      "message": "Native Rename auto-focuses and selects the full name; retain raw keyboard to avoid collapsing its selection with an extra focus tap.",
+      "durationMs": 0,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 73,
+      "kind": "tool",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "status": "pass",
+      "tool": "keyboard",
+      "result": {
+        "typed": "git-tools-fixture-moved",
+        "keys": 23
+      },
+      "args": {
+        "text": "git-tools-fixture-moved",
+        "udid": "00008110-00046CC63CA0401E"
+      },
+      "durationMs": 2035,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 74,
+      "kind": "tool",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "status": "pass",
+      "tool": "keyboard",
+      "result": {
+        "typed": "enter",
+        "keys": 1
+      },
+      "args": {
+        "key": "enter",
+        "udid": "00008110-00046CC63CA0401E"
+      },
+      "durationMs": 641,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 75,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "visible id=git-tools-fixture-moved, Folder",
+      "status": "pass",
+      "durationMs": 134,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 76,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "status": "pass",
+      "durationMs": 1594,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 77,
+      "kind": "launch",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "status": "pass",
+      "durationMs": 2161,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 78,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "visible \"Attention 1\" role=Button",
+      "status": "pass",
+      "durationMs": 168,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 79,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "status": "pass",
+      "durationMs": 1501,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 80,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "visible \"Folder Access Unavailable\" role=StaticText",
+      "status": "pass",
+      "durationMs": 127,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 81,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "\"main · syncmd-uitest-fixtures/git-tools-fixture\"",
+      "status": "pass",
+      "durationMs": 1218,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 82,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "visible id=vault.reauthorizeFolder",
+      "status": "pass",
+      "durationMs": 115,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 83,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "status": "pass",
+      "durationMs": 2025,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 84,
+      "kind": "launch",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "status": "pass",
+      "durationMs": 2135,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 85,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "visible id=git-tools-fixture-moved, Folder",
+      "status": "pass",
+      "durationMs": 220,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 86,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "status": "pass",
+      "durationMs": 1662,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 87,
+      "kind": "long-press",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "id=git-tools-fixture-moved, Folder",
+      "status": "pass",
+      "durationMs": 1954,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 88,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "visible id=pencil",
+      "status": "pass",
+      "durationMs": 117,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 89,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "status": "pass",
+      "durationMs": 2355,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 90,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "id=pencil",
+      "status": "pass",
+      "durationMs": 3310,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 91,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "visible id=DOC.inlineRenameField",
+      "status": "pass",
+      "durationMs": 1138,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 92,
+      "kind": "tool",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "status": "pass",
+      "tool": "keyboard",
+      "result": {
+        "typed": "git-tools-fixture",
+        "keys": 17
+      },
+      "args": {
+        "text": "git-tools-fixture",
+        "udid": "00008110-00046CC63CA0401E"
+      },
+      "durationMs": 1849,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 93,
+      "kind": "tool",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "status": "pass",
+      "tool": "keyboard",
+      "result": {
+        "typed": "enter",
+        "keys": 1
+      },
+      "args": {
+        "key": "enter",
+        "udid": "00008110-00046CC63CA0401E"
+      },
+      "durationMs": 735,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 94,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "visible id=git-tools-fixture, Folder",
+      "status": "pass",
+      "durationMs": 111,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 95,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "status": "pass",
+      "durationMs": 1705,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 96,
+      "kind": "launch",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "status": "pass",
+      "durationMs": 2222,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 97,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "visible \"Attention 1\" role=Button",
+      "status": "pass",
+      "durationMs": 167,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 98,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "status": "pass",
+      "durationMs": 2318,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 99,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "\"main · syncmd-uitest-fixtures/git-tools-fixture\"",
+      "status": "pass",
+      "durationMs": 1056,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 100,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "visible id=vault.title",
+      "status": "pass",
+      "durationMs": 146,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 101,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "status": "pass",
+      "durationMs": 2319,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 102,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "visible \"README.md, modified\" role=Button",
+      "status": "pass",
+      "durationMs": 141,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 103,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "visible \"Pull\" role=Button",
+      "status": "pass",
+      "durationMs": 98,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 104,
+      "kind": "echo",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "status": "pass",
+      "message": "Native Pull must finish up-to-date without publishing the dirty note.",
+      "durationMs": 0,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 105,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "\"Pull\" role=Button",
+      "status": "pass",
+      "durationMs": 1298,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 106,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "visible \"Already up to date\" role=StaticText",
+      "status": "pass",
+      "durationMs": 103,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 107,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "status": "pass",
+      "durationMs": 2890,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 108,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "visible \"README.md, modified\" role=Button",
+      "status": "pass",
+      "durationMs": 134,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 109,
+      "kind": "launch",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "status": "pass",
+      "durationMs": 2191,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 110,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "visible id=git-tools-fixture, Folder",
+      "status": "pass",
+      "durationMs": 231,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 111,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "status": "pass",
+      "durationMs": 1687,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 112,
+      "kind": "long-press",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "id=git-tools-fixture, Folder",
+      "status": "pass",
+      "durationMs": 1957,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 113,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "visible \"Move\" role=Button",
+      "status": "pass",
+      "durationMs": 122,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 114,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "status": "pass",
+      "durationMs": 2422,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 115,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "id=folder.fill",
+      "status": "pass",
+      "durationMs": 3317,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 116,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "visible id=Browse View (Picker)",
+      "status": "pass",
+      "durationMs": 113,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 117,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "status": "pass",
+      "durationMs": 2487,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 118,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "id=BackButton",
+      "status": "pass",
+      "durationMs": 1537,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 119,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "visible id=GitSync PR QA, Container",
+      "status": "pass",
+      "durationMs": 246,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 120,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "status": "pass",
+      "durationMs": 2685,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 121,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "id=BackButton",
+      "status": "pass",
+      "durationMs": 1561,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 122,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "visible id=DOC.sidebar.item.On My iPhone",
+      "status": "pass",
+      "durationMs": 291,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 123,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "status": "pass",
+      "durationMs": 1952,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 124,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "id=DOC.sidebar.item.On My iPhone",
+      "status": "pass",
+      "durationMs": 1547,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 125,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "visible id=GitSync PR QA, Container",
+      "status": "pass",
+      "durationMs": 312,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 126,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "status": "pass",
+      "durationMs": 2714,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 127,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "id=GitSync PR QA, Container",
+      "status": "pass",
+      "durationMs": 1839,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 128,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "visible id=pr47-return-anchor, Folder",
+      "status": "pass",
+      "durationMs": 247,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 129,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "status": "pass",
+      "durationMs": 2452,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 130,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "hidden id=git-tools-fixture, Folder",
+      "status": "pass",
+      "durationMs": 175,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 131,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "id=DOCPicker.actionButton",
+      "status": "pass",
+      "durationMs": 1626,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 132,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "target": "visible \"Folder is Empty\" role=StaticText",
+      "status": "pass",
+      "durationMs": 522,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    },
+    {
+      "index": 133,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-provider-tail-diagnostic",
+      "status": "pass",
+      "durationMs": 1612,
+      "flow": "qa-pr47-provider-tail-diagnostic"
+    }
+  ],
+  "startedAt": 1794600218340,
+  "durationMs": 174178
+}

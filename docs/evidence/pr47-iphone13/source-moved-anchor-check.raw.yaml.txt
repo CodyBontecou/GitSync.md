@@ -1,0 +1,14 @@
+steps:
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: pr47-return-anchor, Folder
+  - tool: await-ui-element
+    args:
+      condition: hidden
+      selector:
+        identifier: git-tools-fixture, Folder
+executionPrerequisite: Files foreground in isolated GitSync PR QA Documents
+  after moving only git-tools-fixture to external QA parent; return anchor
+  remains.
