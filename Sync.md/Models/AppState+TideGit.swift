@@ -273,8 +273,9 @@ extension AppState {
     // MARK: - File history & commit lookup
 
     func fileHistory(repoID: UUID, path: String, limit: Int = 50) async -> [GitCommitSummary] {
-        guard let repo = repo(id: repoID), repo.isCloned, !isDemoMode else { return [] }
-        let service = LocalGitService(localURL: vaultURL(for: repoID))
+        guard let repo = repo(id: repoID), repo.isCloned, !isDemoMode,
+              let url = vaultURL(for: repoID) else { return [] }
+        let service = LocalGitService(localURL: url)
         guard service.hasGitDirectory else { return [] }
         do {
             return try await service.fileHistory(path: path, limit: limit)
@@ -287,8 +288,9 @@ extension AppState {
     /// The commit that brought in the remote side of an in-progress merge or
     /// rebase (falls back to the upstream tip).
     func remoteSideCommit(repoID: UUID) async -> GitCommitSummary? {
-        guard let repo = repo(id: repoID), repo.isCloned, !isDemoMode else { return nil }
-        let service = LocalGitService(localURL: vaultURL(for: repoID))
+        guard let repo = repo(id: repoID), repo.isCloned, !isDemoMode,
+              let url = vaultURL(for: repoID) else { return nil }
+        let service = LocalGitService(localURL: url)
         guard service.hasGitDirectory else { return nil }
         for revision in ["MERGE_HEAD", "REBASE_HEAD", "@{upstream}", "origin/\(repo.gitState.branch)"] {
             if let summary = try? await service.commitSummary(revision: revision) { return summary }
@@ -315,9 +317,9 @@ extension AppState {
     @discardableResult
     func fetchLFSFile(repoID: UUID, path: String) async -> Bool {
         guard let repo = repo(id: repoID), repo.isCloned, !isDemoMode else { return false }
-        let localURL = vaultURL(for: repoID)
         let credentials = remoteCredentials(for: repo)
         do {
+            let localURL = try requireVaultURL(for: repoID)
             let repository = try serializedRepository(repoID: repoID)
             let result = try await repository.withLease { _ in
                 try await GitLFSService(localURL: localURL, credentials: credentials)

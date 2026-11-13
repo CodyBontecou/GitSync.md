@@ -605,9 +605,10 @@ struct RepoPickerView: View {
         )
 
         let repoID = config.id
-        let gitDirectory = state.vaultURL(for: repoID).appendingPathComponent(".git", isDirectory: true)
+        let gitDirectory = state.vaultURL(for: repoID)?.appendingPathComponent(".git", isDirectory: true)
         cloneTask = Task { @MainActor in
             let poller = Task { @MainActor in
+                guard let gitDirectory else { return }
                 while !Task.isCancelled {
                     let bytes = await Task.detached(priority: .utility) {
                         Self.directorySize(gitDirectory)
@@ -624,7 +625,10 @@ struct RepoPickerView: View {
             let succeeded = state.repo(id: repoID)?.gitState.commitSHA.isEmpty == false
             guard cloning?.repoID == repoID else { return }
             if succeeded {
-                cloning?.receivedBytes = max(cloning?.receivedBytes ?? 0, Self.directorySize(gitDirectory))
+                if let root = state.vaultURL(for: repoID) {
+                    cloning?.receivedBytes = max(cloning?.receivedBytes ?? 0,
+                                                 Self.directorySize(root.appendingPathComponent(".git", isDirectory: true)))
+                }
                 cloning?.finished = true
                 try? await Task.sleep(for: .milliseconds(600))
                 // Only close the flow when the user is still watching it.

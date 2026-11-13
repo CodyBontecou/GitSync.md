@@ -896,8 +896,12 @@ struct ConflictEditorView: View {
                 let base = result.ancestor?.content.flatMap { String(data: $0, encoding: .utf8) }
                 chunks = TideTextDiff.merge(base: base, ours: oursString, theirs: theirsString)
             }
-            let fileURL = state.vaultURL(for: repoID).appendingPathComponent(path)
-            localModified = (try? fileURL.resourceValues(forKeys: [.contentModificationDateKey]))?.contentModificationDate
+            if let root = state.vaultURL(for: repoID) {
+                let fileURL = root.appendingPathComponent(path)
+                localModified = (try? fileURL.resourceValues(forKeys: [.contentModificationDateKey]))?.contentModificationDate
+            } else {
+                localModified = nil
+            }
             if state.conflictSessionByRepo[repoID] == nil {
                 await state.loadConflictSession(repoID: repoID)
             }

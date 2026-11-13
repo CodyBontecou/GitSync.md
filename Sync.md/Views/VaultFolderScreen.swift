@@ -46,6 +46,7 @@ struct VaultFolderScreen: View {
                 }
             }
             .buttonStyle(.plain)
+            .disabled(!state.hasLocalRepositoryAccess(repoID: repoID))
             .padding(.top, 14)
 
             Text(String(localized: "Moving keeps history and settings. Pick the folder the vault should live in."))
@@ -81,7 +82,8 @@ struct VaultFolderScreen: View {
     }
 
     private func openInFiles() {
-        let rawPath = state.vaultURL(for: repoID).path
+        guard let url = state.vaultURLForOperation(for: repoID) else { return }
+        let rawPath = url.path
         let path = rawPath.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? rawPath
         if let url = URL(string: "shareddocuments://\(path)"), UIApplication.shared.canOpenURL(url) {
             UIApplication.shared.open(url)

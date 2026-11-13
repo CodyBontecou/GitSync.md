@@ -92,7 +92,7 @@ extension GitShortcutRunner {
 
     static func status(id: String) async throws -> String {
         let (state, repo) = try resolveRepo(id: id)
-        let service = LocalGitService(localURL: state.vaultURL(for: repo.id))
+        let service = LocalGitService(localURL: try state.requireVaultURL(for: repo.id))
         let info = try await service.repoInfo()
         let counts = await service.localAheadBehind()
 

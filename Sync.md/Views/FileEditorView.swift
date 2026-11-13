@@ -53,9 +53,12 @@ struct FileEditorView: View {
     private var language: SyntaxLanguage { SyntaxLanguage.detect(fileExtension: liveURL.pathExtension) }
 
     private var renameIssue: String? {
+        guard let repository = state.vaultURL(for: repoID) else {
+            return AppState.VaultAccessError.unavailableFolder.localizedDescription
+        }
         do {
             _ = try RepositoryFileRename.destination(
-                for: liveURL, name: renameText, in: state.vaultURL(for: repoID)
+                for: liveURL, name: renameText, in: repository
             )
             return nil
         } catch { return error.localizedDescription }
@@ -64,7 +67,8 @@ struct FileEditorView: View {
     /// Path of the open file relative to the vault root, symlinks resolved on
     /// both sides (the vault URL comes back through /var -> /private/var).
     private var relativePath: String? {
-        let base = state.vaultURL(for: repoID).resolvingSymlinksInPath().standardizedFileURL.pathComponents
+        guard let repository = state.vaultURL(for: repoID) else { return nil }
+        let base = repository.resolvingSymlinksInPath().standardizedFileURL.pathComponents
         let file = liveURL.resolvingSymlinksInPath().standardizedFileURL.pathComponents
         guard file.count > base.count, Array(file.prefix(base.count)) == base else { return nil }
         return file.dropFirst(base.count).joined(separator: "/")
@@ -362,6 +366,7 @@ struct FileEditorView: View {
     // MARK: - Operations
 
     private func loadContent() {
+        guard state.vaultURLForOperation(for: repoID) != nil else { return }
         guard let data = try? Data(contentsOf: liveURL) else {
             isBinary = true
             return
@@ -411,7 +416,7 @@ struct FileEditorView: View {
         let expected = loadedBytes
         let savedContent = content
         let destination = liveURL
-        let repositoryURL = state.vaultURL(for: repoID)
+        guard let repositoryURL = state.vaultURLForOperation(for: repoID) else { return }
         isSaving = true
 
         Task {
@@ -448,7 +453,7 @@ struct FileEditorView: View {
         showDeleteConfirm = false
         let expected = loadedBytes
         let destination = liveURL
-        let repositoryURL = state.vaultURL(for: repoID)
+        guard let repositoryURL = state.vaultURLForOperation(for: repoID) else { return }
         Task {
             do {
                 try await RepositoryOperationCoordinator.shared.withRepository(at: repositoryURL) {
@@ -464,12 +469,12 @@ struct FileEditorView: View {
 
     private func performRename() {
         let trimmed = renameText.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !isSaving, !isRenaming, trimmed != fileName, renameIssue == nil else { return }
+        guard !isSaving, !isRenaming, trimmed != fileName, renameIssue == nil,
+              let repository = state.vaultURLForOperation(for: repoID) else { return }
         autosaveTask?.cancel()
         isRenaming = true
         let source = liveURL
         let expected = loadedBytes
-        let repository = state.vaultURL(for: repoID)
         Task {
             defer {
                 isRenaming = false

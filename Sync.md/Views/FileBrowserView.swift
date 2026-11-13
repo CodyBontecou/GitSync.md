@@ -130,14 +130,20 @@ struct FileBrowserListing: View {
     @State private var openAfterCreate: FileEditorDestination?
     @State private var operationError: String?
 
-    private var vaultURL: URL { state.vaultURL(for: repoID) }
-    private var currentURL: URL {
-        relativePath.isEmpty ? vaultURL : vaultURL.appendingPathComponent(relativePath)
+    private var vaultURL: URL? { state.vaultURL(for: repoID) }
+    private var currentURL: URL? {
+        guard let vaultURL else { return nil }
+        return relativePath.isEmpty ? vaultURL : vaultURL.appendingPathComponent(relativePath)
     }
     private var statusEntries: [GitStatusEntry] { state.statusEntriesByRepo[repoID] ?? [] }
     private var vaultName: String { state.repo(id: repoID)?.displayName ?? String(localized: "Files") }
     /// "ideas/" — the folder new files land in, as a git path.
     private var folderLabel: String { relativePath.isEmpty ? "/" : relativePath + "/" }
+
+    private var unavailableContent: some View {
+        ContentUnavailableView(String(localized: "Folder Access Unavailable"), systemImage: "folder.badge.questionmark",
+                               description: Text(AppState.VaultAccessError.unavailableFolder.localizedDescription))
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -167,7 +173,7 @@ struct FileBrowserListing: View {
                     .padding(.top, 12)
             }
         }
-        .task(id: currentURL.standardizedFileURL.path) { loadItems() }
+        .task(id: currentURL?.standardizedFileURL.path) { loadItems() }
         // Returning from the editor: sizes and dates may have changed even
         // when git status (e.g. an already-untracked file) did not.
         .onAppear { loadItems() }
@@ -193,25 +199,36 @@ struct FileBrowserListing: View {
             }
         }
         .sheet(isPresented: $showNewFile) {
-            NewFileSheet(directoryURL: currentURL, folderLabel: folderLabel, vaultName: vaultName) { url, isFolder in
-                showNewFile = false
-                loadItems()
-                state.detectChanges(repoID: repoID)
-                if !isFolder {
-                    // Let the sheet finish dismissing before pushing the editor.
-                    Task {
-                        try? await Task.sleep(for: .milliseconds(350))
-                        openAfterCreate = FileEditorDestination(repoID: repoID, fileURL: url)
+            if let currentURL {
+                NewFileSheet(directoryURL: currentURL, folderLabel: folderLabel, vaultName: vaultName, accessIssue: {
+                    self.currentURL?.standardizedFileURL == currentURL.standardizedFileURL
+                        ? nil : AppState.VaultAccessError.unavailableFolder.localizedDescription
+                }) { url, isFolder in
+                    showNewFile = false
+                    loadItems()
+                    state.detectChanges(repoID: repoID)
+                    if !isFolder {
+                        // Let the sheet finish dismissing before pushing the editor.
+                        Task {
+                            try? await Task.sleep(for: .milliseconds(350))
+                            openAfterCreate = FileEditorDestination(repoID: repoID, fileURL: url)
+                        }
                     }
                 }
+            } else {
+                unavailableContent
             }
         }
         .sheet(item: Binding(get: { historyItem.map(HistoryTarget.init) }, set: { historyItem = $0?.item })) { target in
             FileHistorySheet(repoID: repoID, path: target.item.relativePath)
         }
         .sheet(item: Binding(get: { shareItem.map(HistoryTarget.init) }, set: { shareItem = $0?.item })) { target in
-            ActivityView(items: [target.item.url])
-                .presentationDetents([.medium, .large])
+            if state.hasLocalRepositoryAccess(repoID: repoID) {
+                ActivityView(items: [target.item.url])
+                    .presentationDetents([.medium, .large])
+            } else {
+                unavailableContent
+            }
         }
         .alert(
             deleteItem.map { String(localized: "Delete \"\($0.name)\"?") } ?? "",
@@ -457,6 +474,12 @@ struct FileBrowserListing: View {
     // MARK: Data Loading
 
     private func loadItems() {
+        guard let vaultURL, let currentURL else {
+            items = []
+            meta = [:]
+            loadErrorMessage = AppState.VaultAccessError.unavailableFolder.localizedDescription
+            return
+        }
         do {
             items = try FileBrowserView.listContents(of: currentURL, parentRelativePath: relativePath)
             loadErrorMessage = nil
@@ -590,6 +613,7 @@ struct FileBrowserListing: View {
         guard !trimmed.isEmpty else { return nil }
         if let issue = RepositoryItemName.validationMessage(name) { return issue }
         guard trimmed != item.name else { return nil }
+        guard let vaultURL else { return AppState.VaultAccessError.unavailableFolder.localizedDescription }
         do {
             _ = try RepositoryFileRename.destination(for: item.url, name: name, in: vaultURL)
             return nil
@@ -607,7 +631,7 @@ struct FileBrowserListing: View {
         guard !isRenaming, !trimmed.isEmpty, trimmed != item.name,
               renameConflict(for: item, name: name) == nil else { return }
         let source = item.url
-        let repositoryURL = vaultURL
+        guard let repositoryURL = state.vaultURLForOperation(for: repoID) else { return }
         isRenaming = true
         renameError = nil
         Task {
@@ -629,7 +653,7 @@ struct FileBrowserListing: View {
 
     private func performDelete(_ item: FileItem) {
         let target = item.url
-        let repositoryURL = vaultURL
+        guard let repositoryURL = state.vaultURLForOperation(for: repoID) else { return }
         Task {
             do {
                 try await RepositoryOperationCoordinator.shared.withRepository(at: repositoryURL) {

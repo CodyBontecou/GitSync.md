@@ -9,6 +9,7 @@ struct VaultWatchView: View {
     let repoID: UUID
 
     @State private var watcher = VaultFolderWatcher()
+    @State private var watchSession = UUID()
     @State private var fileActivity = VaultWatchFileActivity()
     private var modifiedAt: [String: Date] { fileActivity.dates }
     @State private var lastEventAt: Date?
@@ -35,7 +36,7 @@ struct VaultWatchView: View {
     private var repo: RepoConfig? { state.repo(id: repoID) }
     private var entries: [GitStatusEntry] { state.statusEntriesByRepo[repoID] ?? [] }
     private var changeCount: Int { state.changeCounts[repoID] ?? entries.count }
-    private var vaultURL: URL { state.vaultURL(for: repoID) }
+    private var vaultURL: URL? { state.vaultURL(for: repoID) }
 
     /// Most recently written first; files without a date keep path order.
     private var orderedEntries: [GitStatusEntry] {
@@ -87,7 +88,7 @@ struct VaultWatchView: View {
             if enabled { lastAutoCommittedActivity = nil; lastEventAt = lastEventAt ?? Date() }
         }
         .onChange(of: entries) { refreshModifiedDates() }
-        .task(id: repoID) { await run() }
+        .task(id: vaultURL) { await run() }
         .onDisappear { watcher.stop() }
     }
 
@@ -259,6 +260,11 @@ struct VaultWatchView: View {
         #if DEBUG
         guard !MarketingCapture.isActive else { return }
         #endif
+        let session = UUID()
+        watchSession = session
+        watcher.stop()
+        guard let vaultURL else { return }
+        defer { if watchSession == session { watcher.stop() } }
         watcher.start(url: vaultURL) {
             lastEventAt = Date()
             refreshStatus()
@@ -268,7 +274,7 @@ struct VaultWatchView: View {
         var lastFolderScan = Date()
         while !Task.isCancelled {
             try? await Task.sleep(for: Self.tick)
-            guard !Task.isCancelled else { break }
+            guard !Task.isCancelled, watchSession == session, self.vaultURL == vaultURL else { break }
             now = Date()
             refreshModifiedDates()
             if now.timeIntervalSince(lastStatusRefresh) >= Self.statusRefreshInterval {
@@ -282,7 +288,6 @@ struct VaultWatchView: View {
             }
             await autoCommitIfPaused()
         }
-        watcher.stop()
     }
 
     private func refreshStatus() {
@@ -293,7 +298,10 @@ struct VaultWatchView: View {
 
     /// Save times of the changed files (deleted files have none).
     private func refreshModifiedDates() {
-        let base = vaultURL
+        guard let base = vaultURL else {
+            fileActivity.update([:], observedAt: Date())
+            return
+        }
         var dates: [String: Date] = [:]
         for entry in entries {
             let url = base.appendingPathComponent(entry.path)

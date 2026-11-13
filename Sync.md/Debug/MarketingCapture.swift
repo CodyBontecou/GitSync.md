@@ -40,8 +40,14 @@ enum MarketingCapture {
         value(for: "-UITestGitToolsFixture")
     }
 
+    static var isBookmarkRecoveryFixture: Bool {
+        ["bookmark-direct", "bookmark-parent", "bookmark-discovery", "bookmark-resume"]
+            .contains(gitToolsUITestScenario ?? "")
+    }
+
     static var allowsFixtureStatusRefresh: Bool {
         gitToolsUITestScenario == "external-commit" || gitToolsUITestScenario == "external-branch"
+            || isBookmarkRecoveryFixture
     }
 
     static var usesSeededData: Bool {
@@ -209,9 +215,38 @@ final class MarketingCaptureCoordinator {
 @MainActor
 enum MarketingDemoSeeder {
 
+    /// Real native repository plus malformed persisted bookmark. Construction of
+    /// the returned state exercises Foundation resolution and normal cold-load
+    /// validation; resume deliberately keeps the renewed picker grant/inventory.
+    static func bookmarkRecoveryAppStateIfRequested() -> AppState? {
+        guard MarketingCapture.isBookmarkRecoveryFixture else { return nil }
+        #if !targetEnvironment(simulator)
+        precondition(Bundle.main.bundleIdentifier == "bontecou.Sync-md.prqa", "Bookmark QA requires the isolated QA app")
+        #endif
+        let inventoryURL = FileManager.default.temporaryDirectory.appendingPathComponent("pr47-qa/repos.json")
+        do {
+            if MarketingCapture.gitToolsUITestScenario != "bookmark-resume" {
+                try? FileManager.default.removeItem(at: inventoryURL)
+                let seed = AppState(reposFileURL: inventoryURL, loadPersistedState: false)
+                seedUITestGitToolsFixture(into: seed, scenario: "dirty")
+                guard var config = seed.repos.first else { preconditionFailure("Missing native bookmark fixture") }
+                config.customVaultBookmarkData = Data("PR47 deliberately malformed bookmark".utf8)
+                config.customLocationIsParent = MarketingCapture.gitToolsUITestScenario == "bookmark-parent"
+                config.customVaultRelativePath = MarketingCapture.gitToolsUITestScenario == "bookmark-discovery"
+                    ? "git-tools-fixture" : nil
+                try RepoPersistenceStore().replaceAll([config], at: inventoryURL)
+            }
+            precondition(FileManager.default.fileExists(atPath: inventoryURL.path), "Prepare the bookmark fixture before resuming")
+            return AppState(reposFileURL: inventoryURL)
+        } catch {
+            preconditionFailure("Could not prepare isolated bookmark fixture: \(error)")
+        }
+    }
+
     /// External-client fixtures must not load or reconcile the user's inventory.
     static func externalRefreshAppStateIfRequested() -> AppState? {
-        guard MarketingCapture.allowsFixtureStatusRefresh else { return nil }
+        guard MarketingCapture.gitToolsUITestScenario == "external-commit"
+                || MarketingCapture.gitToolsUITestScenario == "external-branch" else { return nil }
         let inventoryURL = FileManager.default.temporaryDirectory.appendingPathComponent("pr46-qa/repos.json")
         try? FileManager.default.removeItem(at: inventoryURL)
         return AppState(reposFileURL: inventoryURL, loadPersistedState: false)
@@ -248,6 +283,15 @@ enum MarketingDemoSeeder {
             return
         }
 
+        if MarketingCapture.isBookmarkRecoveryFixture {
+            // The app initializer already cold-loaded the private inventory.
+            // Re-seeding here would mask lost metadata and destroy recovery.
+            state.isSignedIn = false
+            state.hasCompletedOnboarding = true
+            state.hasSeenOnboarding = true
+            state.isDemoMode = false
+            return
+        }
         if let scenario = MarketingCapture.gitToolsUITestScenario {
             seedUITestGitToolsFixture(into: state, scenario: scenario)
             return

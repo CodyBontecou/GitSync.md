@@ -30,6 +30,9 @@ extension AppState {
     /// The registered repository whose working folder is `root`, if any.
     func repoID(forTrackingRoot root: URL) -> UUID? {
         let key = Self.canonicalFilePath(for: root)
-        return repos.first { Self.canonicalFilePath(for: vaultURL(for: $0.id)) == key }?.id
+        return repos.first {
+            guard let url = vaultURL(for: $0.id) else { return false }
+            return Self.canonicalFilePath(for: url) == key
+        }?.id
     }
 }

@@ -1,0 +1,16 @@
+steps:
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: GitSync PR QA, Actions Menu
+        role: Button
+  - tap:
+      id: BackButton
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: GitSync-PR47-QA-20261113, Folder
+executionPrerequisite: Files Move chooser is in GitSync PR QA Documents; only
+  git-tools-fixture is selected for move.

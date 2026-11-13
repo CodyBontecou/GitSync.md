@@ -1,0 +1,9 @@
+steps:
+  - launch:
+      ios:
+        app: bontecou.Sync-md.prqa
+        args: [-UITestGitToolsFixture, bookmark-parent, -AppleLanguages, '(en)', -AppleLocale, en_US]
+  - await: { visible: { text: Attention 1, role: Button } }
+  - await: { idle: true }
+  - run: qa-pr47-provider-files-baseline.yaml
+  - run: qa-pr47-parent-grant-loss.yaml

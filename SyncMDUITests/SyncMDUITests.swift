@@ -287,6 +287,25 @@ final class SyncMDUITests: XCTestCase {
         XCTAssertEqual(try String(contentsOf: worktree.appendingPathComponent("مرحبا 🌱.md"), encoding: .utf8), "# Git Tools Fixture\n\nBase note.\n")
     }
 
+    /// Unavailable grants need attention while preserving the real dirty fixture.
+    func testUnavailableBookmarkIsAttentionAndOffersNonDestructiveRecovery() throws {
+        let app = XCUIApplication()
+        app.launchArguments = signedOutLaunchArguments(extra: ["-UITestGitToolsFixture", "bookmark-parent"])
+        app.launch()
+        XCTAssertTrue(app.buttons["home.addRepository"].waitForExistence(timeout: 10))
+        let before = try gitToolsSnapshot()
+        XCTAssertTrue(app.buttons["Attention 1"].waitForExistence(timeout: 5), "An unavailable folder must never be counted as in sync")
+        let title = app.staticTexts.matching(identifier: "git-tools-fixture")
+        XCTAssertEqual(title.count, 1)
+        title.element.tap()
+        let recovery = app.buttons["vault.reauthorizeFolder"]
+        XCTAssertTrue(recovery.waitForExistence(timeout: 5))
+        XCTAssertGreaterThanOrEqual(recovery.frame.height, 44)
+        recovery.tap()
+        XCTAssertTrue(app.staticTexts["Vault settings"].waitForExistence(timeout: 5))
+        XCTAssertEqual(try gitToolsSnapshot(), before, "Unavailable access and opening recovery must not change any repository bytes")
+    }
+
     /// The fixture has a real clean index, a second branch, and a saved stash.
     /// Opening and closing the sheet must not change any repository bytes.
     func testExternalCommitRefreshShowsActualHEADWithoutChangingWorkingCopy() throws {

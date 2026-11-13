@@ -1,0 +1,1843 @@
+{
+  "e2eTest": "qa-pr47-provider-recovery-final",
+  "flow": "qa-pr47-provider-recovery-final",
+  "device": "00008110-00046CC63CA0401E",
+  "executionPrerequisite": "",
+  "ok": true,
+  "passed": 181,
+  "failed": 0,
+  "skipped": 0,
+  "errored": 0,
+  "steps": [
+    {
+      "index": 0,
+      "kind": "launch",
+      "e2eTest": "qa-pr47-provider-recovery-final",
+      "status": "pass",
+      "durationMs": 1889,
+      "flow": "qa-pr47-provider-recovery-final"
+    },
+    {
+      "index": 1,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-recovery-final",
+      "target": "visible \"Attention 1\" role=Button",
+      "status": "pass",
+      "durationMs": 169,
+      "flow": "qa-pr47-provider-recovery-final"
+    },
+    {
+      "index": 2,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-provider-recovery-final",
+      "status": "pass",
+      "warning": "the screen settled, but a small part of it was still changing while it did — a spinner, a caret, a progress dot. If it is a loading spinner then the screen had not finished loading, and stillness cannot tell those apart: look at what is moving, and gate the next action on the element the loading produces rather than on this settle.",
+      "durationMs": 1394,
+      "flow": "qa-pr47-provider-recovery-final"
+    },
+    {
+      "index": 3,
+      "kind": "run",
+      "status": "pass",
+      "e2eTest": "qa-pr47-provider-files-baseline",
+      "target": "qa-pr47-provider-files-baseline.yaml",
+      "durationMs": 2,
+      "flow": "qa-pr47-provider-files-baseline"
+    },
+    {
+      "index": 4,
+      "kind": "echo",
+      "e2eTest": "qa-pr47-provider-files-baseline",
+      "depth": 1,
+      "status": "pass",
+      "message": "Requires the owned empty On My iPhone/GitSync-PR47-QA-20261113 parent and isolated QA Documents/pr47-return-anchor. No unrelated folders are opened.",
+      "durationMs": 0,
+      "flow": "qa-pr47-provider-files-baseline"
+    },
+    {
+      "index": 5,
+      "kind": "launch",
+      "e2eTest": "qa-pr47-provider-files-baseline",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1759,
+      "flow": "qa-pr47-provider-files-baseline"
+    },
+    {
+      "index": 6,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-files-baseline",
+      "target": "visible id=Browse View",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 235,
+      "flow": "qa-pr47-provider-files-baseline"
+    },
+    {
+      "index": 7,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-provider-files-baseline",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1458,
+      "flow": "qa-pr47-provider-files-baseline"
+    },
+    {
+      "index": 8,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-provider-files-baseline",
+      "target": "id=folder.fill within (id=DOC.browsingModeTabBar)",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1200,
+      "flow": "qa-pr47-provider-files-baseline"
+    },
+    {
+      "index": 9,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-files-baseline",
+      "target": "visible id=DOC.sidebar.item.On My iPhone",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 251,
+      "flow": "qa-pr47-provider-files-baseline"
+    },
+    {
+      "index": 10,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-provider-files-baseline",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 2377,
+      "flow": "qa-pr47-provider-files-baseline"
+    },
+    {
+      "index": 11,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-provider-files-baseline",
+      "target": "id=DOC.sidebar.item.On My iPhone",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1375,
+      "flow": "qa-pr47-provider-files-baseline"
+    },
+    {
+      "index": 12,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-files-baseline",
+      "target": "visible id=GitSync-PR47-QA-20261113, Folder",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 284,
+      "flow": "qa-pr47-provider-files-baseline"
+    },
+    {
+      "index": 13,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-provider-files-baseline",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 2144,
+      "flow": "qa-pr47-provider-files-baseline"
+    },
+    {
+      "index": 14,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-provider-files-baseline",
+      "target": "id=GitSync-PR47-QA-20261113, Folder",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1449,
+      "flow": "qa-pr47-provider-files-baseline"
+    },
+    {
+      "index": 15,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-files-baseline",
+      "target": "visible \"GitSync-PR47-QA-20261113, Actions Menu\" role=Button",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 181,
+      "flow": "qa-pr47-provider-files-baseline"
+    },
+    {
+      "index": 16,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-provider-files-baseline",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 2091,
+      "flow": "qa-pr47-provider-files-baseline"
+    },
+    {
+      "index": 17,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-files-baseline",
+      "target": "visible \"Folder is Empty\" role=StaticText",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 147,
+      "flow": "qa-pr47-provider-files-baseline"
+    },
+    {
+      "index": 18,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-provider-files-baseline",
+      "target": "id=folder.fill within (id=DOC.browsingModeTabBar)",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1118,
+      "flow": "qa-pr47-provider-files-baseline"
+    },
+    {
+      "index": 19,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-files-baseline",
+      "target": "visible id=DOC.sidebar.item.On My iPhone",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 235,
+      "flow": "qa-pr47-provider-files-baseline"
+    },
+    {
+      "index": 20,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-provider-files-baseline",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 2295,
+      "flow": "qa-pr47-provider-files-baseline"
+    },
+    {
+      "index": 21,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-provider-files-baseline",
+      "target": "id=DOC.sidebar.item.On My iPhone",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1530,
+      "flow": "qa-pr47-provider-files-baseline"
+    },
+    {
+      "index": 22,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-files-baseline",
+      "target": "visible id=GitSync PR QA, Container",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 271,
+      "flow": "qa-pr47-provider-files-baseline"
+    },
+    {
+      "index": 23,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-provider-files-baseline",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 2349,
+      "flow": "qa-pr47-provider-files-baseline"
+    },
+    {
+      "index": 24,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-provider-files-baseline",
+      "target": "id=GitSync PR QA, Container",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1332,
+      "flow": "qa-pr47-provider-files-baseline"
+    },
+    {
+      "index": 25,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-files-baseline",
+      "target": "visible \"GitSync PR QA, Actions Menu\" role=Button",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 210,
+      "flow": "qa-pr47-provider-files-baseline"
+    },
+    {
+      "index": 26,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-provider-files-baseline",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 2156,
+      "flow": "qa-pr47-provider-files-baseline"
+    },
+    {
+      "index": 27,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-files-baseline",
+      "target": "visible id=git-tools-fixture, Folder",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 174,
+      "flow": "qa-pr47-provider-files-baseline"
+    },
+    {
+      "index": 28,
+      "kind": "await",
+      "e2eTest": "qa-pr47-provider-files-baseline",
+      "target": "visible id=pr47-return-anchor, Folder",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 135,
+      "flow": "qa-pr47-provider-files-baseline"
+    },
+    {
+      "index": 29,
+      "kind": "run",
+      "status": "pass",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "qa-pr47-parent-grant-loss.yaml",
+      "durationMs": 8,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 30,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "id=TopOverflowBarButtonItem",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1198,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 31,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "visible id=checkmark.circle",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 113,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 32,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 3259,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 33,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "id=checkmark.circle",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1208,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 34,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "visible \"Select Items\" role=StaticText",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 152,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 35,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 2722,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 36,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "id=git-tools-fixture, Folder",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1315,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 37,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "visible id=checkmark.circle.platter",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 183,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 38,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "\"Move\" role=Button",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1163,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 39,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "visible id=Browse View (Picker)",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 97,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 40,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 2224,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 41,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "visible \"GitSync PR QA, Actions Menu\" role=Button",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 185,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 42,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "id=BackButton",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1422,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 43,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "visible id=GitSync-PR47-QA-20261113, Folder",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 234,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 44,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 2322,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 45,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "id=GitSync-PR47-QA-20261113, Folder",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1705,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 46,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "visible id=DOC.browsingRoot Source: com.apple.FileProvider.LocalStorage, Title: GitSync-PR47-QA-20261113",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 688,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 47,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1473,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 48,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "id=DOCPicker.filenameTextField equals \"git-tools-fixture\"",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 159,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 49,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "id=DOCPicker.actionButton",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1317,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 50,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "visible id=pr47-return-anchor, Folder",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 587,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 51,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1481,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 52,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "hidden id=git-tools-fixture, Folder",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 163,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 53,
+      "kind": "launch",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1910,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 54,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "visible \"Attention 1\" role=Button",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 173,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 55,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1362,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 56,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "\"main · syncmd-uitest-fixtures/git-tools-fixture\"",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1023,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 57,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "visible id=vault.reauthorizeFolder",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 127,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 58,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1844,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 59,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "id=vault.reauthorizeFolder",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 961,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 60,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "visible \"Vault settings\"",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 212,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 61,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 2171,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 62,
+      "kind": "scroll-to",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "id=repository.reauthorizeFolder",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 4765,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 63,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "visible id=repository.reauthorizeFolder",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 137,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 64,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1534,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 65,
+      "kind": "echo",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "message": "Reject an intentionally wrong child selection without changing saved configuration.",
+      "durationMs": 0,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 66,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "id=repository.reauthorizeFolder",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1255,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 67,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "visible id=Browse View (Picker)",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 686,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 68,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 2334,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 69,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "id=folder.fill within (id=DOC.browsingModeTabBar)",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1917,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 70,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "visible id=DOC.sidebar.item.On My iPhone",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 327,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 71,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "warning": "the screen settled, but a small part of it was still changing while it did — a spinner, a caret, a progress dot. If it is a loading spinner then the screen had not finished loading, and stillness cannot tell those apart: look at what is moving, and gate the next action on the element the loading produces rather than on this settle.",
+      "durationMs": 1759,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 72,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "id=DOC.sidebar.item.On My iPhone",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 2084,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 73,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "visible id=GitSync-PR47-QA-20261113, Folder",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 379,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 74,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 2564,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 75,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "id=GitSync-PR47-QA-20261113, Folder",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 2089,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 76,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "visible id=DOC.browsingRoot Source: com.apple.FileProvider.LocalStorage, Title: GitSync-PR47-QA-20261113",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 864,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 77,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1708,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 78,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "id=git-tools-fixture, Folder",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1868,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 79,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "visible id=DOC.browsingRoot Source: com.apple.FileProvider.LocalStorage, Title: git-tools-fixture",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 805,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 80,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1706,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 81,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "id=DOCPicker.actionButton",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1901,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 82,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "visible \"Reauthorization Failed\" role=Alert",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 632,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 83,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 2074,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 84,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "\"OK\" role=Button",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1228,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 85,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "visible id=repository.reauthorizeFolder",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1803,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 86,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1549,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 87,
+      "kind": "echo",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "message": "Renew with the actual external parent and preserve the configured main branch.",
+      "durationMs": 0,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 88,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "id=repository.reauthorizeFolder",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1250,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 89,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "visible id=Browse View (Picker)",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 222,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 90,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 2380,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 91,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "id=folder.fill within (id=DOC.browsingModeTabBar)",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1857,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 92,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "visible id=DOC.sidebar.item.On My iPhone",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 340,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 93,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1723,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 94,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "id=DOC.sidebar.item.On My iPhone",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 2115,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 95,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "visible id=GitSync-PR47-QA-20261113, Folder",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 377,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 96,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 2543,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 97,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "id=GitSync-PR47-QA-20261113, Folder",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 2107,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 98,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "visible id=DOC.browsingRoot Source: com.apple.FileProvider.LocalStorage, Title: GitSync-PR47-QA-20261113",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 867,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 99,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1684,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 100,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "id=DOCPicker.actionButton",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1856,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 101,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "visible \"GitSync-PR47-QA-20261113 › git-tools-fixture\" role=StaticText",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 752,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 102,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 2915,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 103,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "id=repositorySettings.branch equals \"main\"",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 161,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 104,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "\"Cancel\" role=Button",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1602,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 105,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "visible id=vault.title",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 535,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 106,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1924,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 107,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "visible \"README.md, modified\" role=Button",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 117,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 108,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "hidden id=vault.reauthorizeFolder",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 87,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 109,
+      "kind": "launch",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1922,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 110,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "visible \"Attention 1\" role=Button",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 162,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 111,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1956,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 112,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "\"main · syncmd-uitest-fixtures/git-tools-fixture\"",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1049,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 113,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "visible id=vault.title",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 135,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 114,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1952,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 115,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "visible \"README.md, modified\" role=Button",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 116,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 116,
+      "kind": "launch",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1871,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 117,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "visible \"GitSync-PR47-QA-20261113, Actions Menu\" role=Button",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 212,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 118,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1442,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 119,
+      "kind": "long-press",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "id=git-tools-fixture, Folder",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 2092,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 120,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "visible id=pencil",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 129,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 121,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 2033,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 122,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "id=pencil",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 3281,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 123,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "visible id=DOC.inlineRenameField",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1141,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 124,
+      "kind": "echo",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "message": "Native Rename auto-focuses and selects the full name; retain raw keyboard to avoid collapsing its selection with an extra focus tap.",
+      "durationMs": 0,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 125,
+      "kind": "tool",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "tool": "keyboard",
+      "result": {
+        "typed": "git-tools-fixture-moved",
+        "keys": 23
+      },
+      "args": {
+        "text": "git-tools-fixture-moved",
+        "udid": "00008110-00046CC63CA0401E"
+      },
+      "durationMs": 1934,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 126,
+      "kind": "tool",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "tool": "keyboard",
+      "result": {
+        "typed": "enter",
+        "keys": 1
+      },
+      "args": {
+        "key": "enter",
+        "udid": "00008110-00046CC63CA0401E"
+      },
+      "durationMs": 640,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 127,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "visible id=git-tools-fixture-moved, Folder",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 137,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 128,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1475,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 129,
+      "kind": "launch",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1884,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 130,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "visible \"Attention 1\" role=Button",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 157,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 131,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1959,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 132,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "visible \"Folder Access Unavailable\" role=StaticText",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 120,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 133,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "\"main · syncmd-uitest-fixtures/git-tools-fixture\"",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 989,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 134,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "visible id=vault.reauthorizeFolder",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 125,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 135,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1800,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 136,
+      "kind": "launch",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1867,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 137,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "visible id=git-tools-fixture-moved, Folder",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 216,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 138,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1541,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 139,
+      "kind": "long-press",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "id=git-tools-fixture-moved, Folder",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1941,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 140,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "visible id=pencil",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 122,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 141,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 2119,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 142,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "id=pencil",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 3290,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 143,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "visible id=DOC.inlineRenameField",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1140,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 144,
+      "kind": "tool",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "tool": "keyboard",
+      "result": {
+        "typed": "git-tools-fixture",
+        "keys": 17
+      },
+      "args": {
+        "text": "git-tools-fixture",
+        "udid": "00008110-00046CC63CA0401E"
+      },
+      "durationMs": 1864,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 145,
+      "kind": "tool",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "tool": "keyboard",
+      "result": {
+        "typed": "enter",
+        "keys": 1
+      },
+      "args": {
+        "key": "enter",
+        "udid": "00008110-00046CC63CA0401E"
+      },
+      "durationMs": 624,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 146,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "visible id=git-tools-fixture, Folder",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 128,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 147,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1504,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 148,
+      "kind": "launch",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1908,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 149,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "visible \"Attention 1\" role=Button",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 163,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 150,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 2022,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 151,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "\"main · syncmd-uitest-fixtures/git-tools-fixture\"",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1065,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 152,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "visible id=vault.title",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 146,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 153,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 2013,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 154,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "visible \"README.md, modified\" role=Button",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 114,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 155,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "visible \"Pull\" role=Button",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 85,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 156,
+      "kind": "echo",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "message": "Native Pull must finish up-to-date without publishing the dirty note.",
+      "durationMs": 0,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 157,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "\"Pull\" role=Button",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1004,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 158,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "visible \"Already up to date\" role=StaticText",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 120,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 159,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 2488,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 160,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "visible \"README.md, modified\" role=Button",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 119,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 161,
+      "kind": "launch",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1900,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 162,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "visible id=git-tools-fixture, Folder",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 207,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 163,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1518,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 164,
+      "kind": "long-press",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "id=git-tools-fixture, Folder",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1938,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 165,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "visible \"Move\" role=Button",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 124,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 166,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 2109,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 167,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "id=folder.fill",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 3436,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 168,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "visible id=Browse View (Picker)",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 107,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 169,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 2207,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 170,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "id=BackButton",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1379,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 171,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "visible id=GitSync PR QA, Container",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 245,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 172,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 2395,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 173,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "id=BackButton",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1674,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 174,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "visible id=DOC.sidebar.item.On My iPhone",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 279,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 175,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1748,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 176,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "id=DOC.sidebar.item.On My iPhone",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1533,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 177,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "visible id=GitSync PR QA, Container",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 308,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 178,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 2396,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 179,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "id=GitSync PR QA, Container",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1541,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 180,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "visible id=pr47-return-anchor, Folder",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 250,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 181,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 2182,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 182,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "hidden id=git-tools-fixture, Folder",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 181,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 183,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "id=DOCPicker.actionButton",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1589,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 184,
+      "kind": "await",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "target": "visible \"Folder is Empty\" role=StaticText",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 554,
+      "flow": "qa-pr47-parent-grant-loss"
+    },
+    {
+      "index": 185,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-parent-grant-loss",
+      "depth": 1,
+      "status": "pass",
+      "durationMs": 1489,
+      "flow": "qa-pr47-parent-grant-loss"
+    }
+  ],
+  "startedAt": 1794601366279,
+  "durationMs": 222362
+}

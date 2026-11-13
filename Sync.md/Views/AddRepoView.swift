@@ -1126,8 +1126,8 @@ struct AddRepoView: View {
         AppState.canonicalFilePath(for: cloneParentURL.appendingPathComponent(name, isDirectory: true)).lowercased()
     }
 
-    private func vaultPath(for repoID: UUID) -> String {
-        AppState.canonicalFilePath(for: state.vaultURL(for: repoID)).lowercased()
+    private func vaultPath(for repoID: UUID) -> String? {
+        state.vaultURL(for: repoID).map { AppState.canonicalFilePath(for: $0).lowercased() }
     }
 
     private func isFolderNameTaken(_ name: String) -> Bool {

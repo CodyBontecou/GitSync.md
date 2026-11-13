@@ -25,6 +25,9 @@ struct SettingsView: View {
     @State private var showDeleteFilesConfirm = false
     @State private var showFolderPicker = false
     @State private var showCopiedToast = false
+    @State private var showReauthorizePicker = false
+    @State private var reauthorizeError: String?
+    @State private var showReauthorizeError = false
     @State private var moveError: String? = nil
     @State private var showMoveError = false
     @State private var validationMessage: String? = nil
@@ -44,7 +47,7 @@ struct SettingsView: View {
     private var canUseGitHubPAT: Bool { parsedRemote?.isGitHub == true && parsedRemote?.isSSH == false }
     private var repoPathForConfirmation: String {
         let displayPath = state.vaultDisplayPath(for: repoID)
-        return displayPath.isEmpty ? state.vaultURL(for: repoID).path : displayPath
+        return displayPath.isEmpty ? (state.vaultURL(for: repoID)?.path ?? "") : displayPath
     }
     /// Mono eyebrow above the headline: owner/repo when a remote is set.
     private var repoIdentifier: String {
@@ -63,7 +66,11 @@ struct SettingsView: View {
                             .padding(.horizontal, 20)
                             .padding(.top, 2)
 
-                        if let repo = repo, repo.isCloned {
+                        if let error = state.vaultAccessErrors[repoID] {
+                            TideInlineWarning(text: error.localizedDescription)
+                                .padding(.horizontal, Tide.gutter)
+                                .padding(.top, 18)
+                        } else if let repo = repo, repo.isCloned {
                             healthCard(repo)
                                 .padding(.horizontal, Tide.gutter)
                                 .padding(.top, 18)
@@ -339,6 +346,21 @@ struct SettingsView: View {
             } message: {
                 Text("This will permanently delete:\n\(repoPathForConfirmation)\n\nThis cannot be undone.")
             }
+            .fileImporter(isPresented: $showReauthorizePicker, allowedContentTypes: [.folder]) { (result: Result<URL, Error>) in
+                do {
+                    try state.reauthorizeVaultLocation(result.get(), for: repoID)
+                } catch let error as CocoaError where error.code == .userCancelled {
+                    // Cancelling the native picker is not a failed recovery.
+                } catch {
+                    reauthorizeError = error.localizedDescription
+                    showReauthorizeError = true
+                }
+            }
+            .alert("Reauthorization Failed", isPresented: $showReauthorizeError) {
+                Button("OK", role: .cancel) {}
+            } message: {
+                Text(reauthorizeError ?? String(localized: "Unknown error"))
+            }
             .alert("Move Failed", isPresented: $showMoveError) {
                 Button("OK", role: .cancel) {}
             } message: {
@@ -509,7 +531,33 @@ struct SettingsView: View {
                 .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
+
+            if state.isUsingCustomLocation(for: repoID) {
+                rowSeparator
+                reauthorizationControls
+            }
         }
+    }
+
+    private var reauthorizationControls: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Button { showReauthorizePicker = true } label: {
+                Label(String(localized: "Reauthorize Folder"), systemImage: "folder.badge.questionmark")
+                    .font(TideFont.body)
+                    .foregroundStyle(Tide.ink)
+                    .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
+                    .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .disabled(isSaving || state.isSyncing)
+            .accessibilityIdentifier("repository.reauthorizeFolder")
+            .accessibilityHint("Select the original folder, or the original parent folder used for cloning or discovery. No files will be moved or cloned.")
+            Text("Select the original folder (or the original parent used for cloning or discovery). This only renews access; it does not move, delete, or clone files.")
+                .font(TideFont.sans(13, relativeTo: .footnote))
+                .foregroundStyle(Tide.inkMid)
+        }
+        .padding(.horizontal, 18)
+        .padding(.vertical, 12)
     }
 
     // MARK: - Background Sync

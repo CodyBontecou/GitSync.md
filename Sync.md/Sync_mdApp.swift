@@ -59,7 +59,8 @@ struct Sync_mdApp: App {
         }
         #endif
         #if DEBUG
-        let appState = MarketingDemoSeeder.externalRefreshAppStateIfRequested()
+        let appState = MarketingDemoSeeder.bookmarkRecoveryAppStateIfRequested()
+            ?? MarketingDemoSeeder.externalRefreshAppStateIfRequested()
             ?? MarketingDemoSeeder.checkoutRaceAppStateIfRequested() ?? AppState()
         #else
         let appState = AppState()

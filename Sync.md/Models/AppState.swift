@@ -249,6 +249,36 @@ final class AppState {
 
     private var resolvedCustomURLs: [UUID: URL] = [:]
     private var accessingSecurityScope: Set<UUID> = []
+    var vaultAccessErrors: [UUID: VaultAccessError] = [:]
+
+    enum VaultAccessError: LocalizedError, Equatable {
+        case unresolvedBookmark, deniedScope, unavailableFolder, wrongFolder, persistenceFailed
+
+        var errorDescription: String? {
+            switch self {
+            case .unresolvedBookmark, .deniedScope, .unavailableFolder:
+                String(localized: "Folder access is unavailable. Reauthorize the original folder in Repository Settings. Your files and repository settings have been preserved.")
+            case .wrongFolder:
+                String(localized: "Select the original folder containing this repository. No files or settings were changed.")
+            case .persistenceFailed:
+                String(localized: "Could not save folder access. No files were changed.")
+            }
+        }
+    }
+
+    /// Injectable OS boundary; production uses Foundation bookmark and scope APIs.
+    struct VaultBookmarkAccess {
+        var resolve: (Data) throws -> (url: URL, isStale: Bool) = { data in
+            var stale = false
+            let url = try URL(resolvingBookmarkData: data, options: [], relativeTo: nil, bookmarkDataIsStale: &stale)
+            return (url, stale)
+        }
+        var start: (URL) -> Bool = { $0.startAccessingSecurityScopedResource() }
+        var stop: (URL) -> Void = { $0.stopAccessingSecurityScopedResource() }
+        var create: (URL) throws -> Data = { try $0.bookmarkData(options: [], includingResourceValuesForKeys: nil, relativeTo: nil) }
+    }
+
+    private let vaultBookmarkAccess: VaultBookmarkAccess
 
     // MARK: - Background Status Refresh
 
@@ -452,6 +482,7 @@ final class AppState {
         repoPersistenceStore: RepoPersistenceStore = .shared,
         reposFileURL: URL? = nil,
         loadPersistedState: Bool = true,
+        vaultBookmarkAccess: VaultBookmarkAccess = VaultBookmarkAccess(),
         folderPublicationCoordinator: FolderPublicationCoordinator? = nil,
         gitTrackingRemovalService: GitTrackingRemovalService = GitTrackingRemovalService(),
         commitCachePublicationHook: (@MainActor @Sendable (UUID, String?) async -> Void)? = nil
@@ -459,6 +490,7 @@ final class AppState {
         self.gitRepositoryFactory = { url in
             SerializedGitRepository(base: gitRepositoryFactory(url), localURL: url)
         }
+        self.vaultBookmarkAccess = vaultBookmarkAccess
         self.sshHostKeyTrustStore = sshHostKeyTrustStore
         self.repoPersistenceStore = repoPersistenceStore
         self.persistedReposURL = reposFileURL ?? Self.reposFileURL
@@ -702,8 +734,9 @@ final class AppState {
     }
 
     func serializedRepository(repoID: UUID) throws -> SerializedGitRepository {
+        let url = try requireVaultURL(for: repoID)
         guard repoIndex(id: repoID) != nil,
-              let repository = gitRepositoryFactory(vaultURL(for: repoID)) as? SerializedGitRepository else {
+              let repository = gitRepositoryFactory(url) as? SerializedGitRepository else {
             throw LocalGitError.notCloned
         }
         return repository
@@ -824,45 +857,40 @@ final class AppState {
     }
 
     func hasLocalRepositoryAccess(repoID: UUID) -> Bool {
-        guard let repo = repo(id: repoID), repo.customVaultBookmarkData != nil else { return true }
+        guard let repo = repo(id: repoID), vaultAccessErrors[repoID] == nil else { return false }
+        guard repo.customVaultBookmarkData != nil else { return true }
         guard let url = resolvedCustomURLs[repoID] else { return false }
         let homePath = Self.canonicalFilePath(for: URL(fileURLWithPath: NSHomeDirectory()))
         return accessingSecurityScope.contains(repoID)
             || Self.canonicalFilePath(for: url).hasPrefix(homePath + "/")
     }
 
-    func vaultURL(for repoID: UUID) -> URL {
+    /// Nil is intentional: an external bookmark must never fall back to Documents.
+    func vaultURL(for repoID: UUID) -> URL? {
+        guard let repo = repo(id: repoID), vaultAccessErrors[repoID] == nil else { return nil }
         if let customURL = resolvedCustomURLs[repoID] {
-            if let repo = repo(id: repoID), let relativePath = repo.customVaultRelativePath,
-               !relativePath.isEmpty {
-                // Repository discovered by scanning a user-granted folder: one
-                // bookmark anchors the grant root and the relative path
-                // locates the working copy beneath it. An empty relative path
-                // means the grant root is itself the working copy.
-                return customURL.appendingPathComponent(relativePath, isDirectory: true)
-            }
-            // When the bookmark points to a parent directory (clone to custom
-            // location), append the repo folder name — just like `git clone`.
-            if let repo = repo(id: repoID), repo.customLocationIsParent {
-                return customURL.appendingPathComponent(repo.vaultFolderName, isDirectory: true)
-            }
-            return customURL
+            return workingCopyURL(root: customURL, repo: repo)
         }
-        guard let repo = repo(id: repoID) else {
-            return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        }
-        if repo.customVaultBookmarkData != nil {
-            // Preserve the legacy nonoptional interface without returning a
-            // writable fallback working copy when the grant is unavailable.
-            // /dev/null is a file: its descendants cannot be opened or created.
-            return URL(fileURLWithPath: "/dev/null").appendingPathComponent(repoID.uuidString)
-        }
+        guard repo.customVaultBookmarkData == nil else { return nil }
         if let relativePath = repo.customVaultRelativePath {
             // Rediscovered working copy inside the app's own container,
             // possibly nested below Documents.
             return Self.appDocumentsDirectory.appendingPathComponent(relativePath, isDirectory: true)
         }
         return repo.defaultVaultURL
+    }
+
+    func requireVaultURL(for repoID: UUID) throws -> URL {
+        guard let url = vaultURL(for: repoID) else {
+            throw vaultAccessErrors[repoID] ?? VaultAccessError.unavailableFolder
+        }
+        return url
+    }
+
+    /// Nonthrowing UI operations stop before constructing a repository or touching files.
+    func vaultURLForOperation(for repoID: UUID) -> URL? {
+        do { return try requireVaultURL(for: repoID) }
+        catch { showError(message: error.localizedDescription); return nil }
     }
 
     func vaultDisplayPath(for repoID: UUID) -> String {
@@ -877,7 +905,9 @@ final class AppState {
             return customURL.path
         }
         guard let repo = repo(id: repoID) else { return "" }
-        if repo.customVaultBookmarkData != nil { return String(localized: "Folder access unavailable — reconnect the original folder") }
+        if repo.customVaultBookmarkData != nil {
+            return String(localized: "External folder — reauthorization required")
+        }
         if let relativePath = repo.customVaultRelativePath {
             return String(localized: "On My iPhone › GitSync.md › \(relativePath)").forThisDevice
         }
@@ -885,41 +915,62 @@ final class AppState {
     }
 
     func isUsingCustomLocation(for repoID: UUID) -> Bool {
-        resolvedCustomURLs[repoID] != nil
+        repo(id: repoID)?.customVaultBookmarkData != nil
     }
 
     // MARK: - Vault Location
 
-    func setCustomVaultLocation(_ url: URL, for repoID: UUID) {
-        // Stop any previous security-scoped access for this repo
-        clearCustomLocation(for: repoID)
-
-        guard url.startAccessingSecurityScopedResource() else { return }
-
-        guard let bookmark = try? url.bookmarkData(
-            options: [],
-            includingResourceValuesForKeys: nil,
-            relativeTo: nil
-        ) else {
-            url.stopAccessingSecurityScopedResource()
-            return
+    /// Re-select the original grant root, not a destination for a move/clone.
+    /// Parent and relative-path semantics, Git state and all local files stay intact.
+    func reauthorizeVaultLocation(_ url: URL, for repoID: UUID) throws {
+        guard let idx = repoIndex(id: repoID), repos[idx].customVaultBookmarkData != nil else {
+            throw VaultAccessError.wrongFolder
         }
-
-        if let idx = repoIndex(id: repoID) {
-            repos[idx].customVaultBookmarkData = bookmark
-            saveRepos()
+        guard vaultBookmarkAccess.start(url) else { throw VaultAccessError.deniedScope }
+        var adopted = false
+        defer { if !adopted { vaultBookmarkAccess.stop(url) } }
+        let original = repos[idx]
+        let target = workingCopyURL(root: url, repo: original)
+        let contents = try FileManager.default.contentsOfDirectory(atPath: target.path)
+        guard contents.contains(".git"), target.lastPathComponent == original.vaultFolderName else {
+            throw VaultAccessError.wrongFolder
         }
-
+        // Accept either a .git directory or a worktree/submodule .git file.
+        // The user explicitly selects the original folder; reauthorization
+        // must not require a remote (local-only repos are supported) or rewrite it.
+        let bookmark = try vaultBookmarkAccess.create(url)
+        repos[idx].customVaultBookmarkData = bookmark
+        guard saveRepos() else {
+            repos[idx] = original
+            throw VaultAccessError.persistenceFailed
+        }
+        releaseVaultScope(for: repoID)
         resolvedCustomURLs[repoID] = url
         accessingSecurityScope.insert(repoID)
+        vaultAccessErrors.removeValue(forKey: repoID)
+        adopted = true
+        detectChanges(repoID: repoID)
+    }
+
+    private func workingCopyURL(root: URL, repo: RepoConfig) -> URL {
+        if let path = repo.customVaultRelativePath, !path.isEmpty {
+            return root.appendingPathComponent(path, isDirectory: true)
+        }
+        return repo.customLocationIsParent
+            ? root.appendingPathComponent(repo.vaultFolderName, isDirectory: true) : root
+    }
+
+    private func releaseVaultScope(for repoID: UUID) {
+        clearCommitHistoryCache(for: repoID)
+        if accessingSecurityScope.remove(repoID) != nil, let url = resolvedCustomURLs[repoID] {
+            vaultBookmarkAccess.stop(url)
+        }
+        resolvedCustomURLs.removeValue(forKey: repoID)
     }
 
     func clearCustomLocation(for repoID: UUID) {
-        if accessingSecurityScope.contains(repoID), let url = resolvedCustomURLs[repoID] {
-            url.stopAccessingSecurityScopedResource()
-            accessingSecurityScope.remove(repoID)
-        }
-        resolvedCustomURLs.removeValue(forKey: repoID)
+        releaseVaultScope(for: repoID)
+        vaultAccessErrors.removeValue(forKey: repoID)
         if let idx = repoIndex(id: repoID) {
             repos[idx].customVaultBookmarkData = nil
             saveRepos()
@@ -939,7 +990,7 @@ final class AppState {
         }
 
         let repo = repos[idx]
-        let currentURL = vaultURL(for: repoID)
+        let currentURL = try requireVaultURL(for: repoID)
         let destinationURL = newParentURL.appendingPathComponent(repo.vaultFolderName, isDirectory: true)
 
         guard !FileManager.default.fileExists(atPath: destinationURL.path) else {
@@ -985,48 +1036,51 @@ final class AppState {
     }
 
     private func resolveVaultBookmark(for repoID: UUID) {
-        guard let repo = repo(id: repoID),
-              let bookmarkData = repo.customVaultBookmarkData else { return }
-
-        var isStale = false
-        guard let url = try? URL(
-            resolvingBookmarkData: bookmarkData,
-            options: [],
-            relativeTo: nil,
-            bookmarkDataIsStale: &isStale
-        ) else { return }
-
-        if url.startAccessingSecurityScopedResource() {
-            accessingSecurityScope.insert(repoID)
+        guard let repo = repo(id: repoID), let data = repo.customVaultBookmarkData else { return }
+        releaseVaultScope(for: repoID)
+        guard let resolved = try? vaultBookmarkAccess.resolve(data) else {
+            vaultAccessErrors[repoID] = .unresolvedBookmark
+            return
         }
-        resolvedCustomURLs[repoID] = url
-
-        if isStale {
-            if let newBookmark = try? url.bookmarkData(
-                options: [],
-                includingResourceValuesForKeys: nil,
-                relativeTo: nil
-            ), let idx = repoIndex(id: repoID) {
-                repos[idx].customVaultBookmarkData = newBookmark
-                saveRepos()
-            }
+        guard vaultBookmarkAccess.start(resolved.url) else {
+            vaultAccessErrors[repoID] = .deniedScope
+            return
         }
+        accessingSecurityScope.insert(repoID)
+        resolvedCustomURLs[repoID] = resolved.url
+        vaultAccessErrors.removeValue(forKey: repoID)
+        if resolved.isStale, let bookmark = try? vaultBookmarkAccess.create(resolved.url),
+           let idx = repoIndex(id: repoID) {
+            repos[idx].customVaultBookmarkData = bookmark
+            if !saveRepos() { repos[idx].customVaultBookmarkData = data }
+        }
+    }
+
+    /// A false hasGitDirectory is not proof of deletion in a File Provider folder.
+    private func preserveUnavailableExternalRepo(_ repo: RepoConfig) -> Bool {
+        guard repo.customVaultBookmarkData != nil else { return false }
+        vaultAccessErrors[repo.id] = .unavailableFolder
+        clearCommitHistoryCache(for: repo.id)
+        return true
     }
 
     // MARK: - Filesystem Validation
 
-    /// Check all repos marked as cloned and reset any whose `.git` directory
-    /// has been deleted from the filesystem (e.g. via Files app).
+    /// Reset missing app-managed clones only. For external providers, a failed
+    /// existence check cannot distinguish deletion from access loss/offline state.
     func validateClonedRepos() {
         if isDemoMode { return }
         var didChange = false
         for (index, repo) in repos.enumerated() where repo.isCloned {
-            guard hasLocalRepositoryAccess(repoID: repo.id) else { continue }
-            let vaultDir = vaultURL(for: repo.id)
-            if repo.customVaultBookmarkData != nil && !FileManager.default.isReadableFile(atPath: vaultDir.path) { continue }
+            guard hasLocalRepositoryAccess(repoID: repo.id), let vaultDir = vaultURL(for: repo.id) else { continue }
+            if repo.customVaultBookmarkData != nil && !FileManager.default.isReadableFile(atPath: vaultDir.path) {
+                _ = preserveUnavailableExternalRepo(repo)
+                continue
+            }
             let gitService = gitRepositoryFactory(vaultDir)
 
             if !gitService.hasGitDirectory {
+                if preserveUnavailableExternalRepo(repo) { continue }
                 repos[index].gitState = .empty
                 changeCounts[repo.id] = 0
                 statusEntriesByRepo[repo.id] = []
@@ -1076,10 +1130,11 @@ final class AppState {
     func detectChanges(repoID: UUID, skipIfRecentlyStartedWithin interval: TimeInterval? = nil) {
         guard let repo = repo(id: repoID), repo.isCloned else { return }
         if isDemoMode { return }
-        let vaultDir = vaultURL(for: repoID)
+        guard let vaultDir = vaultURL(for: repoID) else { return }
         let gitService = gitRepositoryFactory(vaultDir)
 
         guard gitService.hasGitDirectory else {
+            if preserveUnavailableExternalRepo(repo) { return }
             // .git directory was removed — reset cloned state
             if let idx = repoIndex(id: repoID) {
                 repos[idx].gitState = .empty
@@ -1120,6 +1175,7 @@ final class AppState {
             do {
                 let info = try await gitService.repoInfo()
                 let isStale = startedGeneration != (repoMutationGeneration[repoID] ?? 0)
+                    || vaultURL(for: repoID) != vaultDir || !hasLocalRepositoryAccess(repoID: repoID)
                 if !isStale, let idx = repoIndex(id: repoID) {
                     // A shared working copy can be committed or switched by another
                     // Git client. Adopt its observed HEAD, not the configured sync
@@ -1151,6 +1207,7 @@ final class AppState {
                 }
             } catch {
                 let isStale = startedGeneration != (repoMutationGeneration[repoID] ?? 0)
+                    || vaultURL(for: repoID) != vaultDir || !hasLocalRepositoryAccess(repoID: repoID)
                 if !isStale {
                     changeCounts[repoID] = 0
                     statusEntriesByRepo[repoID] = []
@@ -1177,7 +1234,7 @@ final class AppState {
     func fetchRemote(repoID: UUID) async {
         guard let repo = repo(id: repoID), repo.isCloned else { return }
         if isDemoMode { return }
-        let vaultDir = vaultURL(for: repoID)
+        guard let vaultDir = vaultURLForOperation(for: repoID) else { return }
         let gitService = gitRepositoryFactory(vaultDir)
         guard gitService.hasGitDirectory else { return }
         do {
@@ -1198,7 +1255,7 @@ final class AppState {
             return
         }
 
-        let vaultDir = vaultURL(for: repoID)
+        guard let vaultDir = vaultURLForOperation(for: repoID) else { return }
         let gitService = gitRepositoryFactory(vaultDir)
 
         guard gitService.hasGitDirectory else {
@@ -1224,7 +1281,7 @@ final class AppState {
             return
         }
 
-        let vaultDir = vaultURL(for: repoID)
+        guard let vaultDir = vaultURLForOperation(for: repoID) else { return }
         let gitService = gitRepositoryFactory(vaultDir)
 
         guard gitService.hasGitDirectory else {
@@ -1250,7 +1307,7 @@ final class AppState {
             return
         }
 
-        let vaultDir = vaultURL(for: repoID)
+        guard let vaultDir = vaultURLForOperation(for: repoID) else { return }
         let gitService = gitRepositoryFactory(vaultDir)
 
         guard gitService.hasGitDirectory else {
@@ -1270,7 +1327,7 @@ final class AppState {
         guard let repo = repo(id: repoID), repo.isCloned else { return }
         if isDemoMode { return }
 
-        let vaultDir = vaultURL(for: repoID)
+        guard let vaultDir = vaultURLForOperation(for: repoID) else { return }
         let gitService = gitRepositoryFactory(vaultDir)
 
         guard gitService.hasGitDirectory else {
@@ -1292,7 +1349,7 @@ final class AppState {
         guard let repo = repo(id: repoID), repo.isCloned else { return nil }
         if isDemoMode { return nil }
 
-        let vaultDir = vaultURL(for: repoID)
+        guard let vaultDir = vaultURLForOperation(for: repoID) else { return nil }
         let gitService = gitRepositoryFactory(vaultDir)
 
         guard gitService.hasGitDirectory else { return nil }
@@ -1314,7 +1371,7 @@ final class AppState {
         guard let repo = repo(id: repoID), repo.isCloned else { return }
         if isDemoMode { return }
 
-        let vaultDir = vaultURL(for: repoID)
+        guard let vaultDir = vaultURLForOperation(for: repoID) else { return }
         let gitService = gitRepositoryFactory(vaultDir)
 
         guard gitService.hasGitDirectory else {
@@ -1541,8 +1598,8 @@ final class AppState {
     /// blocked hydration at clone time (the clone itself already finished).
     func retryLFSHydration(repoID: UUID) async {
         guard let repo = repo(id: repoID), repo.isCloned else { return }
-
-        let gitService = gitRepositoryFactory(vaultURL(for: repoID))
+        guard let url = vaultURLForOperation(for: repoID) else { return }
+        let gitService = gitRepositoryFactory(url)
         do {
             let result = try await gitService.hydrateLFSObjects(pat: authPayload(for: repo))
             if result.checkedOutCount > 0 {
@@ -1574,7 +1631,7 @@ final class AppState {
             return
         }
 
-        let vaultDir = vaultURL(for: repoID)
+        guard let vaultDir = vaultURLForOperation(for: repoID) else { return }
         let gitService = gitRepositoryFactory(vaultDir)
 
         guard gitService.hasGitDirectory else {
@@ -1594,7 +1651,7 @@ final class AppState {
         guard let repo = repo(id: repoID), repo.isCloned else { return }
         if isDemoMode { return }
 
-        let vaultDir = vaultURL(for: repoID)
+        guard let vaultDir = vaultURLForOperation(for: repoID) else { return }
         let gitService = gitRepositoryFactory(vaultDir)
 
         guard gitService.hasGitDirectory else {
@@ -1632,7 +1689,7 @@ final class AppState {
         guard let repo = repo(id: repoID), repo.isCloned else { return }
         if isDemoMode { return }
 
-        let vaultDir = vaultURL(for: repoID)
+        guard let vaultDir = vaultURLForOperation(for: repoID) else { return }
         let gitService = gitRepositoryFactory(vaultDir)
 
         guard gitService.hasGitDirectory else {
@@ -1661,7 +1718,7 @@ final class AppState {
         guard let repo = repo(id: repoID), repo.isCloned else { return }
         if isDemoMode { return }
 
-        let vaultDir = vaultURL(for: repoID)
+        guard let vaultDir = vaultURLForOperation(for: repoID) else { return }
         let gitService = gitRepositoryFactory(vaultDir)
 
         guard gitService.hasGitDirectory else {
@@ -1690,7 +1747,7 @@ final class AppState {
         guard let repo = repo(id: repoID), repo.isCloned else { return }
         if isDemoMode { return }
 
-        let vaultDir = vaultURL(for: repoID)
+        guard let vaultDir = vaultURLForOperation(for: repoID) else { return }
         let gitService = gitRepositoryFactory(vaultDir)
 
         guard gitService.hasGitDirectory else {
@@ -1722,7 +1779,7 @@ final class AppState {
             return
         }
 
-        let vaultDir = vaultURL(for: repoID)
+        guard let vaultDir = vaultURLForOperation(for: repoID) else { return }
         let gitService = gitRepositoryFactory(vaultDir)
 
         guard gitService.hasGitDirectory else {
@@ -1749,7 +1806,7 @@ final class AppState {
         }
         let name = name.trimmingCharacters(in: .whitespacesAndNewlines)
 
-        let vaultDir = vaultURL(for: repoID)
+        guard let vaultDir = vaultURLForOperation(for: repoID) else { return false }
         let gitService = gitRepositoryFactory(vaultDir)
 
         guard gitService.hasGitDirectory else {
@@ -1777,7 +1834,7 @@ final class AppState {
         guard let repo = repo(id: repoID), repo.isCloned else { return }
         if isDemoMode { return }
 
-        let vaultDir = vaultURL(for: repoID)
+        guard let vaultDir = vaultURLForOperation(for: repoID) else { return }
         let gitService = gitRepositoryFactory(vaultDir)
 
         guard gitService.hasGitDirectory else {
@@ -1797,7 +1854,7 @@ final class AppState {
         guard let repo = repo(id: repoID), repo.isCloned else { return }
         if isDemoMode { return }
 
-        let vaultDir = vaultURL(for: repoID)
+        guard let vaultDir = vaultURLForOperation(for: repoID) else { return }
         let gitService = gitRepositoryFactory(vaultDir)
 
         guard gitService.hasGitDirectory else {
@@ -1826,7 +1883,7 @@ final class AppState {
             return
         }
 
-        let vaultDir = vaultURL(for: repoID)
+        guard let vaultDir = vaultURLForOperation(for: repoID) else { return }
         let gitService = gitRepositoryFactory(vaultDir)
 
         guard gitService.hasGitDirectory else {
@@ -1852,7 +1909,8 @@ final class AppState {
         let isCurrent = {
             self.commitCacheEpochByRepo[repoID] == epoch &&
             self.historyRequestByRepo[repoID] == request &&
-            self.repo(id: repoID)?.isCloned == true && !self.isDemoMode
+            self.repo(id: repoID)?.isCloned == true && !self.isDemoMode &&
+            self.hasLocalRepositoryAccess(repoID: repoID)
         }
 
         do {
@@ -1879,7 +1937,7 @@ final class AppState {
         let trimmedOID = oid.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmedOID.isEmpty else { return }
 
-        let vaultDir = vaultURL(for: repoID)
+        guard let vaultDir = vaultURLForOperation(for: repoID) else { return }
         let gitService = gitRepositoryFactory(vaultDir)
 
         guard gitService.hasGitDirectory else { return }
@@ -1896,7 +1954,8 @@ final class AppState {
         let isCurrent = {
             self.commitCacheEpochByRepo[repoID] == epoch &&
             self.detailRequestByRepo[repoID]?[trimmedOID] == request &&
-            self.repo(id: repoID)?.isCloned == true && !self.isDemoMode
+            self.repo(id: repoID)?.isCloned == true && !self.isDemoMode &&
+            self.hasLocalRepositoryAccess(repoID: repoID)
         }
         do {
             let detail = try await gitService.commitDetail(oid: trimmedOID)
@@ -1917,7 +1976,7 @@ final class AppState {
         guard let repo = repo(id: repoID), repo.isCloned else { return false }
         if isDemoMode { return false }
 
-        let vaultDir = vaultURL(for: repoID)
+        guard let vaultDir = vaultURLForOperation(for: repoID) else { return false }
         let gitService = gitRepositoryFactory(vaultDir)
 
         guard gitService.hasGitDirectory else {
@@ -1960,7 +2019,7 @@ final class AppState {
         guard let repo = repo(id: repoID), repo.isCloned else { return }
         if isDemoMode { return }
 
-        let vaultDir = vaultURL(for: repoID)
+        guard let vaultDir = vaultURLForOperation(for: repoID) else { return }
         let gitService = gitRepositoryFactory(vaultDir)
 
         guard gitService.hasGitDirectory else {
@@ -1978,7 +2037,8 @@ final class AppState {
 
     func mergeBranch(repoID: UUID, from branchName: String) async {
         guard let repo = repo(id: repoID), repo.isCloned, !isDemoMode else { return }
-        let gitService = gitRepositoryFactory(vaultURL(for: repoID))
+        guard let url = vaultURLForOperation(for: repoID) else { return }
+        let gitService = gitRepositoryFactory(url)
         guard gitService.hasGitDirectory else {
             showError(message: LocalGitError.notCloned.localizedDescription)
             return
@@ -2079,7 +2139,8 @@ final class AppState {
 
     func revertCommit(repoID: UUID, oid: String, message: String = "") async {
         guard let repo = repo(id: repoID), repo.isCloned, !isDemoMode else { return }
-        let gitService = gitRepositoryFactory(vaultURL(for: repoID))
+        guard let url = vaultURLForOperation(for: repoID) else { return }
+        let gitService = gitRepositoryFactory(url)
         guard gitService.hasGitDirectory else {
             showError(message: LocalGitError.notCloned.localizedDescription)
             return
@@ -2182,7 +2243,7 @@ final class AppState {
         guard let _ = repoIndex(id: repoID), repo(id: repoID)?.isCloned == true else { return }
         if isDemoMode { return }
 
-        let vaultDir = vaultURL(for: repoID)
+        guard let vaultDir = vaultURLForOperation(for: repoID) else { return }
         let gitService = gitRepositoryFactory(vaultDir)
 
         guard gitService.hasGitDirectory else {
@@ -2301,7 +2362,7 @@ final class AppState {
         guard let repo = repo(id: repoID), repo.isCloned else { return }
         if isDemoMode { return }
 
-        let vaultDir = vaultURL(for: repoID)
+        guard let vaultDir = vaultURLForOperation(for: repoID) else { return }
         let gitService = gitRepositoryFactory(vaultDir)
 
         guard gitService.hasGitDirectory else {
@@ -2348,7 +2409,7 @@ final class AppState {
         guard let repo = repo(id: repoID), repo.isCloned else { return }
         if isDemoMode { return }
 
-        let vaultDir = vaultURL(for: repoID)
+        guard let vaultDir = vaultURLForOperation(for: repoID) else { return }
         let gitService = gitRepositoryFactory(vaultDir)
 
         guard gitService.hasGitDirectory else {
@@ -2408,7 +2469,7 @@ final class AppState {
         guard let repo = repo(id: repoID), repo.isCloned else { return }
         if isDemoMode { return }
 
-        let vaultDir = vaultURL(for: repoID)
+        guard let vaultDir = vaultURLForOperation(for: repoID) else { return }
         let gitService = gitRepositoryFactory(vaultDir)
 
         guard gitService.hasGitDirectory else {
@@ -2439,7 +2500,7 @@ final class AppState {
         guard let repo = repo(id: repoID), repo.isCloned else { return }
         if isDemoMode { return }
 
-        let vaultDir = vaultURL(for: repoID)
+        guard let vaultDir = vaultURLForOperation(for: repoID) else { return }
         let gitService = gitRepositoryFactory(vaultDir)
 
         guard gitService.hasGitDirectory else {
@@ -2463,7 +2524,7 @@ final class AppState {
         guard let repo = repo(id: repoID), repo.isCloned else { return }
         if isDemoMode { return }
 
-        let vaultDir = vaultURL(for: repoID)
+        guard let vaultDir = vaultURLForOperation(for: repoID) else { return }
         let gitService = gitRepositoryFactory(vaultDir)
 
         guard gitService.hasGitDirectory else {
@@ -2490,7 +2551,7 @@ final class AppState {
               hasLocalRepositoryAccess(repoID: repo.id) else { return }
         let remote = GitRemoteURL.cloneURLString(from: repo.repoURL) ?? repo.repoURL
         guard ObsidianCredentialHandoff.isGitHubHTTPS(remote) else { return }
-        let vault = vaultURL(for: repo.id)
+        let vault = try requireVaultURL(for: repo.id)
         let metadata = vault.appendingPathComponent(ObsidianCredentialHandoff.directory + "/connection.json")
         guard !FileManager.default.fileExists(atPath: metadata.path) else { return }
         try obsidianCredentialHandoff.prepare(vaultURL: vault, repoID: repo.id, remoteURL: remote)
@@ -2528,11 +2589,11 @@ final class AppState {
             }
             let remote = GitRemoteURL.cloneURLString(from: repo.repoURL) ?? repo.repoURL
             if url.path == "/prepare" {
-                let request = try obsidianCredentialHandoff.prepare(vaultURL: vaultURL(for: id), repoID: id, remoteURL: remote)
+                let request = try obsidianCredentialHandoff.prepare(vaultURL: try requireVaultURL(for: id), repoID: id, remoteURL: remote)
                 requestID = request.requestID
                 status = "prepared"
             } else {
-                try obsidianCredentialHandoff.respond(vaultURL: vaultURL(for: id), repoID: id,
+                try obsidianCredentialHandoff.respond(vaultURL: try requireVaultURL(for: id), repoID: id,
                                                   requestID: requestID, remoteURL: remote,
                                                   username: "x-access-token", token: token,
                                                   authorName: repo.authorName, authorEmail: repo.authorEmail)
@@ -2563,7 +2624,7 @@ final class AppState {
             return
         }
 
-        let possibleCloneURLs = [vaultURL(for: repoID)] + (
+        let possibleCloneURLs: [URL] = [vaultURL(for: repoID)].compactMap { $0 } + (
             repos[idx].customVaultBookmarkData == nil
                 ? resolvedDefaultSaveURL.map { [$0.appendingPathComponent(repos[idx].vaultFolderName, isDirectory: true)] } ?? []
                 : []
@@ -2637,6 +2698,7 @@ final class AppState {
                     clearCustomLocation(for: repoID)
                     throw FolderPublicationError.bookmarkUnavailable
                 }
+                _ = try requireVaultURL(for: repoID)
                 guard saveRepos() else {
                     repos[idx] = previousConfig
                     clearCustomLocation(for: repoID)
@@ -2651,7 +2713,7 @@ final class AppState {
 
             let repo = repos[idx]
             guard hasLocalRepositoryAccess(repoID: repoID) else { throw FolderPublicationError.bookmarkUnavailable }
-            let vaultDir = vaultURL(for: repoID)
+            let vaultDir = try requireVaultURL(for: repoID)
             try folderPublication.validateImportAvailability(at: vaultDir)
 
             obsidianCredentialHandoff.invalidate(repoID: repoID)
@@ -2799,7 +2861,9 @@ final class AppState {
         }
 
         let repo = repos[idx]
-        let vaultDir = vaultURL(for: repoID)
+        guard let vaultDir = vaultURLForOperation(for: repoID) else {
+            return .unavailable(message: (vaultAccessErrors[repoID] ?? .unavailableFolder).localizedDescription)
+        }
         let gitService = gitRepositoryFactory(vaultDir)
         DebugLogger.shared.info("pull", "Starting pull", detail: "branch: \(repo.branch)", repo: repo.displayName)
         // The runner may fast-forward the checkout. Invalidate any status scan
@@ -3200,7 +3264,8 @@ final class AppState {
 
     func continueRebase(repoID: UUID) async {
         guard let repo = repo(id: repoID), repo.isCloned, !isDemoMode else { return }
-        let gitService = gitRepositoryFactory(vaultURL(for: repoID))
+        guard let url = vaultURLForOperation(for: repoID) else { return }
+        let gitService = gitRepositoryFactory(url)
         guard gitService.hasGitDirectory else {
             showError(message: LocalGitError.notCloned.localizedDescription)
             return
@@ -3252,7 +3317,7 @@ final class AppState {
         guard let _ = repoIndex(id: repoID), repo(id: repoID)?.isCloned == true else { return }
         if isDemoMode { return }
 
-        let vaultDir = vaultURL(for: repoID)
+        guard let vaultDir = vaultURLForOperation(for: repoID) else { return }
         let gitService = gitRepositoryFactory(vaultDir)
 
         guard gitService.hasGitDirectory else {
@@ -3399,7 +3464,7 @@ final class AppState {
         }
 
         do {
-            let gitService = gitRepositoryFactory(vaultURL(for: repoID))
+            let gitService = gitRepositoryFactory(try requireVaultURL(for: repoID))
             guard gitService.hasGitDirectory else { throw LocalGitError.notCloned }
             let commitMsg = message.isEmpty ? String(localized: "Update from GitSync.md") : message
 
@@ -3484,7 +3549,13 @@ final class AppState {
     func isVaultFolderInUse(_ name: String, in parent: URL = AppState.appDocumentsDirectory) -> Bool {
         let candidate = parent.appendingPathComponent(name, isDirectory: true)
         let path = Self.canonicalFilePath(for: candidate).lowercased()
-        if repos.contains(where: { Self.canonicalFilePath(for: vaultURL(for: $0.id)).lowercased() == path }) {
+        if repos.contains(where: { repo in
+            guard let url = vaultURL(for: repo.id) else {
+                // An unavailable registered folder cannot be proven distinct.
+                return repo.vaultFolderName.caseInsensitiveCompare(name) == .orderedSame
+            }
+            return Self.canonicalFilePath(for: url).lowercased() == path
+        }) {
             return true
         }
         let scoped = parent.startAccessingSecurityScopedResource()
@@ -3513,7 +3584,13 @@ final class AppState {
         }
 
         let path = Self.canonicalFilePath(for: vaultDir).lowercased()
-        if repos.contains(where: { $0.id != repoID && Self.canonicalFilePath(for: vaultURL(for: $0.id)).lowercased() == path }) {
+        if repos.contains(where: { other in
+            guard other.id != repoID else { return false }
+            guard let url = vaultURL(for: other.id) else {
+                return other.vaultFolderName.caseInsensitiveCompare(name) == .orderedSame
+            }
+            return Self.canonicalFilePath(for: url).lowercased() == path
+        }) {
             return String(localized: "Another vault already uses the folder “\(name)”. Its files have been preserved. Remove this vault and add it again with a different folder name.")
         }
 
@@ -3680,7 +3757,8 @@ final class AppState {
         }
         if let existing = repo(id: id) {
             guard existing.repoURL == remote.cloneURL,
-                  Self.canonicalFilePath(for: vaultURL(for: id)) == Self.canonicalFilePath(for: url) else {
+                  let existingURL = vaultURL(for: id),
+                  Self.canonicalFilePath(for: existingURL) == Self.canonicalFilePath(for: url) else {
                 throw FolderPublicationError.changedHistory
             }
             return
@@ -3699,7 +3777,8 @@ final class AppState {
         // completed while this one waited for its repository lease.
         if let existing = repo(id: id) {
             guard existing.repoURL == remote.cloneURL,
-                  Self.canonicalFilePath(for: vaultURL(for: id)) == Self.canonicalFilePath(for: url) else {
+                  let existingURL = vaultURL(for: id),
+                  Self.canonicalFilePath(for: existingURL) == Self.canonicalFilePath(for: url) else {
                 throw FolderPublicationError.changedHistory
             }
             return
@@ -3825,7 +3904,8 @@ final class AppState {
     func isRepoAlreadyTracked(atPath path: String) -> Bool {
         let target = Self.canonicalFilePath(for: URL(fileURLWithPath: path))
         return repos.contains { repo in
-            Self.canonicalFilePath(for: vaultURL(for: repo.id)) == target
+            guard let url = vaultURL(for: repo.id) else { return false }
+            return Self.canonicalFilePath(for: url) == target
         }
     }
 
@@ -4108,16 +4188,22 @@ final class AppState {
     ) async {
         guard let repo = repo(id: id) else { return }
         let vaultDir = vaultURL(for: id)
-        if deleteLocalFiles && repo.isGitSyncManagedStorage && Self.isGitTrackingRemovalInProgress(at: vaultDir) {
-            showError(message: String(localized: "A Git history backup is in progress in this folder. Wait for it to finish before deleting local files."))
-            return
+        if deleteLocalFiles && repo.isGitSyncManagedStorage {
+            guard let vaultDir else {
+                showError(message: VaultAccessError.unavailableFolder.localizedDescription)
+                return
+            }
+            if Self.isGitTrackingRemovalInProgress(at: vaultDir) {
+                showError(message: String(localized: "A Git history backup is in progress in this folder. Wait for it to finish before deleting local files."))
+                return
+            }
         }
         assistRepositoryRemovalHandler?(repo)
 
         // Existing local repositories are user-owned folders that may also be
         // managed by another app. Removing GitSync.md's bookmark must never
         // delete those files.
-        if deleteLocalFiles && repo.isGitSyncManagedStorage {
+        if deleteLocalFiles && repo.isGitSyncManagedStorage, let vaultDir {
             // Cancellation above is synchronous, but detached libgit2 work may
             // still be unwinding. Delete only after the repository lease is ours.
             let deletionBlocked = (try? await operationCoordinator.withRepository(at: vaultDir) {
@@ -4195,7 +4281,7 @@ final class AppState {
         if oldRepo.isCloned,
            !trimmedRepoURL.isEmpty,
            trimmedRepoURL != oldRepo.repoURL.trimmingCharacters(in: .whitespacesAndNewlines) {
-            let vaultDir = vaultURL(for: id)
+            guard let vaultDir = vaultURLForOperation(for: id) else { return false }
             let gitService = gitRepositoryFactory(vaultDir)
             if gitService.hasGitDirectory {
                 let cloneURL = GitRemoteURL.cloneURLString(from: trimmedRepoURL) ?? trimmedRepoURL
@@ -4423,6 +4509,7 @@ final class AppState {
     func canPublishHistoryDecorations(repoID: UUID, request: UUID) -> Bool {
         historyDecorationRequestByRepo[repoID] == request
             && repo(id: repoID)?.isCloned == true && !isDemoMode
+            && hasLocalRepositoryAccess(repoID: repoID)
     }
 
     func finishHistoryDecorationRead(repoID: UUID, request: UUID) {
@@ -4517,8 +4604,9 @@ final class AppState {
 
         // Remove demo repo files
         for repo in demoRepos {
-            let vaultDir = vaultURL(for: repo.id)
-            try? FileManager.default.removeItem(at: vaultDir)
+            if let vaultDir = vaultURL(for: repo.id) {
+                try? FileManager.default.removeItem(at: vaultDir)
+            }
             clearCachedRepoState(for: repo.id)
         }
         repos = []

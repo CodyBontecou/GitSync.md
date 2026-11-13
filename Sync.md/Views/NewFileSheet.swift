@@ -10,6 +10,9 @@ struct NewFileSheet: View {
     /// "ideas/" — git path of the folder, for the headline.
     let folderLabel: String
     let vaultName: String
+    /// Recheck the grant at confirmation, including sheets already open when
+    /// access was lost or the working-copy location changed.
+    var accessIssue: () -> String? = { nil }
     /// Called after the item exists on disk: its URL and whether it's a folder.
     let onCreated: (URL, Bool) -> Void
 
@@ -52,6 +55,7 @@ struct NewFileSheet: View {
     }
 
     private var conflict: String? {
+        if let issue = accessIssue() { return issue }
         guard !finalName.isEmpty else { return nil }
         // Check the raw input as well, before trimming can hide controls.
         if let issue = RepositoryItemName.validationMessage(name, allowsLeadingDot: false)

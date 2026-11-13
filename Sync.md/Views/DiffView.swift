@@ -193,7 +193,8 @@ struct FileDiffView: View {
 
     /// The file on disk, when it still exists (deleted files can't be opened).
     private var fileURL: URL? {
-        let url = state.vaultURL(for: repoID).appendingPathComponent(path)
+        guard let root = state.vaultURL(for: repoID) else { return nil }
+        let url = root.appendingPathComponent(path)
         return FileManager.default.fileExists(atPath: url.path) ? url : nil
     }
 

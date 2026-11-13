@@ -18,20 +18,28 @@ struct VaultWorkspaceView: View {
     private var repo: RepoConfig? { state.repo(id: repoID) }
     private var entries: [GitStatusEntry] { state.statusEntriesByRepo[repoID] ?? [] }
     private var changeCount: Int { state.changeCounts[repoID] ?? 0 }
-    private var vaultURL: URL { state.vaultURL(for: repoID) }
+    private var vaultURL: URL? { state.vaultURL(for: repoID) }
 
     var body: some View {
-        HStack(spacing: 0) {
-            filesColumn
-                .frame(width: Self.filesColumnWidth)
-            Rectangle().fill(Tide.line).frame(width: 1).ignoresSafeArea()
-            detail
-                .frame(maxWidth: .infinity)
+        Group {
+            if vaultURL != nil {
+                HStack(spacing: 0) {
+                    filesColumn
+                        .frame(width: Self.filesColumnWidth)
+                    Rectangle().fill(Tide.line).frame(width: 1).ignoresSafeArea()
+                    detail
+                        .frame(maxWidth: .infinity)
+                }
+            } else {
+                VaultView(repoID: repoID)
+            }
         }
         .background(Tide.paper.ignoresSafeArea())
-        .task(id: repo?.gitState.commitSHA) { reloadTree() }
+        .task(id: vaultURL) { reloadTree() }
+        .onChange(of: repo?.gitState.commitSHA) { reloadTree() }
         .onChange(of: entries) {
             reloadTree()
+            guard let vaultURL else { selectedPath = nil; return }
             if let selectedPath, !FileManager.default.fileExists(atPath: vaultURL.appendingPathComponent(selectedPath).path),
                !entries.contains(where: { $0.path == selectedPath }) {
                 self.selectedPath = nil
@@ -224,6 +232,7 @@ struct VaultWorkspaceView: View {
     }
 
     private func load(folder: String) {
+        guard let vaultURL else { children = [:]; return }
         let url = folder.isEmpty ? vaultURL : vaultURL.appendingPathComponent(folder)
         children[folder] = (try? FileBrowserView.listContents(of: url, parentRelativePath: folder)) ?? []
     }
@@ -231,6 +240,7 @@ struct VaultWorkspaceView: View {
     /// Re-lists the root and every open folder; on first load, opens the
     /// folders that hold changes (the board shows them expanded).
     private func reloadTree() {
+        guard let vaultURL else { children = [:]; selectedPath = nil; return }
         lfs = GitLFSAttributes.load(from: vaultURL)
         if !didAutoExpand {
             didAutoExpand = true
@@ -310,8 +320,11 @@ private struct WorkspaceFileDetail: View {
         state.statusEntriesByRepo[repoID]?.first { $0.path == path }
     }
     private var changeCount: Int { state.changeCounts[repoID] ?? 0 }
-    private var fileURL: URL { state.vaultURL(for: repoID).appendingPathComponent(path) }
-    private var fileExists: Bool { FileManager.default.fileExists(atPath: fileURL.path) }
+    private var fileURL: URL? { state.vaultURL(for: repoID)?.appendingPathComponent(path) }
+    private var fileExists: Bool {
+        guard let fileURL else { return false }
+        return FileManager.default.fileExists(atPath: fileURL.path)
+    }
     private var filename: String { URL(fileURLWithPath: path).lastPathComponent }
     private var directory: String {
         let dir = URL(fileURLWithPath: path).deletingLastPathComponent().relativePath
@@ -437,7 +450,7 @@ private struct WorkspaceFileDetail: View {
     private var headerControls: some View {
         modePicker
 
-        if fileExists {
+        if let fileURL, fileExists {
             NavigationLink(value: FileEditorDestination(repoID: repoID, fileURL: fileURL)) {
                 Text(String(localized: "Edit"))
                     .font(TideFont.sans(13, .medium, relativeTo: .subheadline))
@@ -533,6 +546,7 @@ private struct WorkspaceFileDetail: View {
     }
 
     private func load() async {
+        guard let url = fileURL else { fileText = nil; isLoading = false; return }
         if !didPickMode {
             // Changed files open on their diff; the rest on the file itself.
             mode = entry != nil ? .diff : .preview
@@ -540,11 +554,12 @@ private struct WorkspaceFileDetail: View {
         if entry != nil {
             await state.loadUnifiedDiff(repoID: repoID, path: path)
         }
-        let url = fileURL
-        fileText = await Task.detached(priority: .userInitiated) {
+        let text = await Task.detached(priority: .userInitiated) { () -> String? in
             guard let data = try? Data(contentsOf: url), data.count <= 2_000_000 else { return nil }
             return String(data: data, encoding: .utf8)
         }.value
+        guard !Task.isCancelled, fileURL == url else { return }
+        fileText = text
         isLoading = false
     }
 }

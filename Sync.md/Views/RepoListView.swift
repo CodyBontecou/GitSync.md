@@ -1135,7 +1135,8 @@ struct RepoListView: View {
     }
 
     private func needsAttention(_ repo: RepoConfig) -> Bool {
-        !repo.isCloned || isSyncing(repo) || assistNeedsAttention(repo) || tideState(for: repo) != .inSync
+        !repo.isCloned || !state.hasLocalRepositoryAccess(repoID: repo.id)
+            || isSyncing(repo) || assistNeedsAttention(repo) || tideState(for: repo) != .inSync
     }
 
     private func metaLine(_ repo: RepoConfig) -> String {
@@ -1170,7 +1171,7 @@ struct RepoListView: View {
                     Spacer(minLength: 8)
                     if syncing {
                         TideStatePill(activity: .syncing)
-                    } else if state.authExpiredRepoIDs.contains(repo.id) {
+                    } else if !state.hasLocalRepositoryAccess(repoID: repo.id) || state.authExpiredRepoIDs.contains(repo.id) {
                         TideStatePill(activity: .paused)
                     } else if !repo.isCloned {
                         Text(String(localized: "Not cloned"))
@@ -1190,6 +1191,10 @@ struct RepoListView: View {
                         .font(TideFont.meta)
                         .foregroundStyle(Tide.inkMid)
                         .lineLimit(1)
+                } else if !state.hasLocalRepositoryAccess(repoID: repo.id) {
+                    Label(String(localized: "Folder Access Unavailable"), systemImage: "folder.badge.questionmark")
+                        .font(TideFont.meta)
+                        .foregroundStyle(Tide.danger)
                 } else if repo.isCloned {
                     HStack(spacing: 6) {
                         Text(String(localized: "iPhone").forThisDevice).frame(width: 44, alignment: .leading)

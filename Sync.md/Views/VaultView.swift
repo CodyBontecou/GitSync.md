@@ -48,11 +48,19 @@ struct VaultView: View {
                     ContentUnavailableView {
                         Label(String(localized: "Folder Access Unavailable"), systemImage: "folder.badge.questionmark")
                     } description: {
-                        Text(reconnectError ?? (isReconnectingFolder
+                        Text(reconnectError ?? state.vaultAccessErrors[repoID]?.localizedDescription ?? (isReconnectingFolder
                             ? String(localized: "Checking the folder and restoring access…")
                             : String(localized: "Reconnect the original folder to use this repository. Its saved commit and settings have been preserved.")))
                     } actions: {
-                        if repo.isExternalLocalRepository {
+                        if state.isUsingCustomLocation(for: repoID) {
+                            Button { showSettings = true } label: {
+                                Text("Reauthorize Folder")
+                                    .frame(minHeight: 44)
+                                    .contentShape(Rectangle())
+                            }
+                                .disabled(state.isSyncing)
+                                .accessibilityIdentifier("vault.reauthorizeFolder")
+                        } else if repo.isExternalLocalRepository {
                             Button("Reconnect Folder") {
                                 reconnectError = nil
                                 showReconnectFolder = true
@@ -1406,7 +1414,7 @@ struct VaultView: View {
     }
 
     private func openInFilesApp() {
-        let vaultDir = state.vaultURL(for: repoID)
+        guard let vaultDir = state.vaultURLForOperation(for: repoID) else { return }
         let filesURL = URL(string: "shareddocuments://\(vaultDir.path)")
         if let filesURL, UIApplication.shared.canOpenURL(filesURL) {
             UIApplication.shared.open(filesURL)

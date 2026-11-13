@@ -123,7 +123,7 @@ extension AppState {
     /// Starts structured progress for a foreground operation and routes
     /// libgit2 transfer callbacks for this vault into it.
     func beginSyncActivity(repoID: UUID, kind: SyncActivityKind) {
-        guard let repo = repo(id: repoID) else { return }
+        guard let repo = repo(id: repoID), let url = vaultURL(for: repoID) else { return }
         syncStateRuntime.lastOperationRepoID = repoID
         syncStateRuntime.lastOperationKind = kind
         if let previous = syncStateRuntime.observedProgressPath {
@@ -138,7 +138,7 @@ extension AppState {
             commitsAhead: currentCommitsAhead(repoID: repoID)
         )
         syncActivity = activity
-        let path = vaultURL(for: repoID).path
+        let path = url.path
         syncStateRuntime.observedProgressPath = path
         let activityID = activity.id
         // AppState lives for the whole process; capture it directly.
@@ -374,9 +374,9 @@ extension AppState {
         state.isAnalyzing = true
         state.analysisError = nil
         pushRejectionByRepo[repoID] = state
-        let url = vaultURL(for: repoID)
         let credentials = authPayload(for: repo)
         do {
+            let url = try requireVaultURL(for: repoID)
             let serialized = try serializedRepository(repoID: repoID)
             let analysis = try await serialized.withLease { _ in
                 try await LocalGitService(localURL: url).analyzeIncomingChanges(pat: credentials)
@@ -455,9 +455,9 @@ extension AppState {
         syncProgress = String(localized: "Pushing to \(name)…")
         beginSyncActivity(repoID: repoID, kind: .push)
         defer { isSyncing = false; syncingRepoID = nil }
-        let url = vaultURL(for: repoID)
         let credentials = authPayload(for: repo)
         do {
+            let url = try requireVaultURL(for: repoID)
             let serialized = try serializedRepository(repoID: repoID)
             try await runCancellableThrowing {
                 try await serialized.withLease { _ in
@@ -488,7 +488,7 @@ extension AppState {
     }
 
     func incomingPatch(repoID: UUID, path: String?) async -> String {
-        let url = vaultURL(for: repoID)
+        guard let url = vaultURL(for: repoID) else { return "" }
         return (try? await LocalGitService(localURL: url).incomingPatch(path: path)) ?? ""
     }
 
@@ -645,7 +645,7 @@ extension AppState {
         case .undoCommit(let repoID, let sha):
             do {
                 let serialized = try serializedRepository(repoID: repoID)
-                let url = vaultURL(for: repoID)
+                let url = try requireVaultURL(for: repoID)
                 try await withCheckoutMutation(repoID: repoID) {
                     try await serialized.withLease { _ in
                         try await LocalGitService(localURL: url).undoUnpushedCommit(expectedHeadSHA: sha)
@@ -693,8 +693,7 @@ extension AppState {
         switch result {
         case .updated(_, let newSHA), .updatedWithAttention(_, let newSHA, _):
             didSyncSuccessfully(repoID: repoID)
-            guard let repo = repo(id: repoID) else { return }
-            let url = vaultURL(for: repoID)
+            guard let repo = repo(id: repoID), let url = vaultURL(for: repoID) else { return }
             Task { @MainActor [weak self] in
                 let summary = await LocalGitService(localURL: url).commitRange(from: previousSHA, to: newSHA)
                 let count = max(summary?.count ?? 1, 1)
@@ -772,7 +771,7 @@ extension AppState {
         default: newSHA = nil
         }
         guard let newSHA, newSHA != previousSHA else { return }
-        let url = vaultURL(for: repoID)
+        guard let url = vaultURL(for: repoID) else { return }
         let name = repo.displayName
         Task { @MainActor [weak self] in
             let range = await LocalGitService(localURL: url).commitRange(from: previousSHA, to: newSHA)
@@ -886,8 +885,8 @@ extension AppState {
         for repo in visibleRepos {
             var ahead = 0
             var behind = 0
-            if repo.isCloned, !isDemoMode,
-               let counts = await LocalGitService(localURL: vaultURL(for: repo.id)).localAheadBehind() {
+            if repo.isCloned, !isDemoMode, let url = vaultURL(for: repo.id),
+               let counts = await LocalGitService(localURL: url).localAheadBehind() {
                 ahead = counts.ahead
                 behind = counts.behind
             }
@@ -896,7 +895,7 @@ extension AppState {
             let state: VaultStatusSnapshot.State
             if !repo.isCloned { state = .notCloned }
             else if syncing { state = .syncing }
-            else if authExpiredRepoIDs.contains(repo.id) { state = .paused }
+            else if authExpiredRepoIDs.contains(repo.id) || !hasLocalRepositoryAccess(repoID: repo.id) { state = .paused }
             else if ahead > 0 && behind > 0 { state = .diverged }
             else if behind > 0 { state = .behind }
             else if ahead > 0 || changes > 0 { state = .ahead }

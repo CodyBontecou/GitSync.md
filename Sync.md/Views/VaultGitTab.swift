@@ -228,7 +228,11 @@ struct VaultGitTab: View {
     }
 
     private func loadLFSLocks() async {
-        let url = state.vaultURL(for: repoID)
+        guard let url = state.vaultURL(for: repoID) else {
+            usesLFS = false
+            lfsLockCount = nil
+            return
+        }
         usesLFS = await Task.detached { VaultInsightsService.usesLFS(repositoryURL: url) }.value
         guard usesLFS, !state.isDemoMode, let service = state.lfsService(repoID: repoID) else {
             lfsLockCount = nil
@@ -959,15 +963,21 @@ struct VaultLFSScreen: View {
     private func load() async {
         isLoading = true
         defer { isLoading = false }
-        let url = state.vaultURL(for: repoID)
+        guard let url = state.vaultURL(for: repoID) else {
+            files = []
+            locks = []
+            errorMessage = AppState.VaultAccessError.unavailableFolder.localizedDescription
+            return
+        }
         files = (try? await Task.detached { try VaultInsightsService.lfsTrackedFiles(repositoryURL: url) }.value) ?? []
         await state.refreshVaultMeta(repoID: repoID, forceLFS: true)
         await loadLocks()
     }
 
     private func loadLocks() async {
-        guard !state.isDemoMode, let service = state.lfsService(repoID: repoID),
-              VaultInsightsService.usesLFS(repositoryURL: state.vaultURL(for: repoID)) else {
+        guard !state.isDemoMode, let url = state.vaultURL(for: repoID),
+              let service = state.lfsService(repoID: repoID),
+              VaultInsightsService.usesLFS(repositoryURL: url) else {
             locks = []
             return
         }

@@ -29,7 +29,7 @@ extension AppState {
     func refreshVaultMeta(repoID: UUID, forceLFS: Bool = false) async {
         guard let repo = repo(id: repoID), repo.isCloned, !isDemoMode,
               hasLocalRepositoryAccess(repoID: repoID) else { return }
-        let url = vaultURL(for: repoID)
+        guard let url = vaultURL(for: repoID) else { return }
         let measuredAt = vaultLFSMeasuredAt[repoID]
         let includeLFS = forceLFS || measuredAt == nil || Date().timeIntervalSince(measuredAt!) > 300
         let previousLFS = vaultMetaByRepo[repoID]?.lfsBytes ?? 0
@@ -37,7 +37,7 @@ extension AppState {
         var meta = await Task.detached(priority: .utility) {
             VaultInsightsService.meta(repositoryURL: url, includeLFS: includeLFS)
         }.value
-        guard !Task.isCancelled else { return }
+        guard !Task.isCancelled, hasLocalRepositoryAccess(repoID: repoID), vaultURL(for: repoID) == url else { return }
         if includeLFS {
             vaultLFSMeasuredAt[repoID] = Date()
         } else {
@@ -66,11 +66,11 @@ extension AppState {
     func loadWorkingLineStats(repoID: UUID) async {
         guard let repo = repo(id: repoID), repo.isCloned, !isDemoMode,
               hasLocalRepositoryAccess(repoID: repoID) else { return }
-        let url = vaultURL(for: repoID)
+        guard let url = vaultURL(for: repoID) else { return }
         let stats = (try? await Task.detached(priority: .utility) {
             try VaultInsightsService.workingLineStats(repositoryURL: url)
         }.value) ?? [:]
-        guard !Task.isCancelled else { return }
+        guard !Task.isCancelled, hasLocalRepositoryAccess(repoID: repoID), vaultURL(for: repoID) == url else { return }
         if workingLineStatsByRepo[repoID] != stats {
             workingLineStatsByRepo[repoID] = stats
         }
@@ -86,7 +86,7 @@ extension AppState {
     func loadHistoryDecorations(repoID: UUID) async {
         guard let repo = repo(id: repoID), repo.isCloned, !isDemoMode,
               hasLocalRepositoryAccess(repoID: repoID) else { return }
-        let url = vaultURL(for: repoID)
+        guard let url = vaultURL(for: repoID) else { return }
         let request = beginHistoryDecorationRead(repoID: repoID)
         defer { finishHistoryDecorationRead(repoID: repoID, request: request) }
         let known = commitExtrasByRepo[repoID] ?? [:]
@@ -183,7 +183,9 @@ extension AppState {
             return ["GitSync.md"] + (repo.customVaultRelativePath ?? repo.vaultFolderName)
                 .split(separator: "/").map(String.init)
         }
-        let url = vaultURL(for: repoID)
+        guard let url = vaultURL(for: repoID) else {
+            return [String(localized: "Folder Access Unavailable"), repo.vaultFolderName]
+        }
         let parent = url.deletingLastPathComponent()
         let parentName = (try? parent.resourceValues(forKeys: [.localizedNameKey]))?.localizedName
             ?? parent.lastPathComponent
@@ -198,8 +200,8 @@ extension AppState {
     // MARK: LFS locks
 
     func lfsService(repoID: UUID) -> GitLFSService? {
-        guard let repo = repo(id: repoID) else { return nil }
-        return GitLFSService(localURL: vaultURL(for: repoID), credentials: remoteCredentials(for: repo))
+        guard let repo = repo(id: repoID), let url = vaultURL(for: repoID) else { return nil }
+        return GitLFSService(localURL: url, credentials: remoteCredentials(for: repo))
     }
 }
 
