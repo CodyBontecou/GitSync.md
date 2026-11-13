@@ -1,0 +1,33 @@
+# Physical Safari inspection of the built PR59 candidate, not production.
+# Prerequisite: public-site-only preview at the private LAN URL below. No vault,
+# app installation, account state, clipboard or publishing/deployment mutation.
+steps:
+  - tool: open-url
+    args:
+      bundleId: com.apple.mobilesafari
+      url: http://192.168.1.252:8769/blog/obsidian-git-merge-conflicts-iphone#ours-and-theirs
+  - await: { visible: { text: Ours and Theirs depend on the operation, role: StaticText } }
+  - await: { idle: true }
+  - assert:
+      visible:
+        text: 'Normal merge: Ours is the current branch’s version; Theirs is the version being merged into it.'
+        role: StaticText
+  - assert:
+      visible:
+        text: 'Rebase: Ours is the history you are replaying commits onto, including commits already replayed. Theirs is the version from the commit currently being replayed.'
+        role: StaticText
+  - assert: { visible: { text: 'This is an illustrative Git scenario, not an app test.', role: StaticText } }
+  - assert: { visible: { text: Git’s documentation, role: Link } }
+  - tap: { text: Git’s documentation, role: Link }
+  - await:
+      visible:
+        text: 'Note that during git rebase and git pull --rebase, ours and theirs may appear swapped'
+        role: StaticText
+  - await: { idle: true }
+  - tap: { id: BackButton }
+  - await: { visible: { text: Ours and Theirs depend on the operation, role: StaticText } }
+  - await: { idle: true }
+  - assert:
+      visible:
+        text: 'Rebase: Ours is the history you are replaying commits onto, including commits already replayed. Theirs is the version from the commit currently being replayed.'
+        role: StaticText

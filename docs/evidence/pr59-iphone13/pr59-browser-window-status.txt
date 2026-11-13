@@ -1,0 +1,1 @@
+Pi browser window mode: visible

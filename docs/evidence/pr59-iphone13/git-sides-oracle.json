@@ -1,0 +1,12 @@
+{
+  "result": "PASS",
+  "gitVersion": "git version 2.54.0 (Apple Git-157)",
+  "normalMerge": {
+    "ours": "phone edit\n",
+    "theirs": "remote edit\n"
+  },
+  "rebase": {
+    "ours": "remote edit\n",
+    "theirs": "phone edit\n"
+  }
+}
