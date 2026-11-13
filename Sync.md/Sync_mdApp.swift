@@ -58,7 +58,11 @@ struct Sync_mdApp: App {
             Self.resetPersistedAuthAndReposForUITest()
         }
         #endif
+        #if DEBUG
+        let appState = MarketingDemoSeeder.checkoutRaceAppStateIfRequested() ?? AppState()
+        #else
         let appState = AppState()
+        #endif
         let coordinator = BackgroundSyncCoordinator(
             repositoryProvider: appState,
             conditionsProvider: SystemBackgroundSyncConditions()

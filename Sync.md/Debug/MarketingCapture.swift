@@ -205,6 +205,24 @@ final class MarketingCaptureCoordinator {
 @MainActor
 enum MarketingDemoSeeder {
 
+    /// Exercise a real post-ref SAFE-checkout race through the normal foreground
+    /// runner. The fixture has no credentials/network and never loads user repos.
+    static func checkoutRaceAppStateIfRequested() -> AppState? {
+        guard MarketingCapture.gitToolsUITestScenario == "checkout-incomplete" else { return nil }
+        let inventoryURL = FileManager.default.temporaryDirectory.appendingPathComponent("pr45-qa/repos.json")
+        // Every launch starts from one fixture inventory, rather than merging
+        // random IDs from prior runs into the persistence store after Pull.
+        try? FileManager.default.removeItem(at: inventoryURL)
+        return AppState(gitRepositoryFactory: { url in
+            LocalGitService(localURL: url, pullOnlyBeforeFinalCheckout: {
+                guard url.lastPathComponent == "git-tools-fixture" else { return }
+                try? "# Hello\n\nPR45 concurrent local edit preserved.\n".write(
+                    to: url.appendingPathComponent("notes/hello.md"), atomically: true, encoding: .utf8
+                )
+            })
+        }, reposFileURL: inventoryURL, loadPersistedState: false)
+    }
+
     static func seed(into state: AppState) {
         // UI-test local-git fixture modes (Issue #19 clone-flow and
         // conflict-resolver slices). These build REAL on-disk git fixtures and
@@ -529,7 +547,7 @@ enum MarketingDemoSeeder {
                     message: "Local note"
                 )
             }
-            if scenario == "behind" || scenario == "diverged" {
+            if scenario == "behind" || scenario == "diverged" || scenario == "checkout-incomplete" {
                 files["notes/hello.md"] = Data("# Hello\n\nUpdated remote note.\n".utf8)
                 try UITestGitFixtures.commitToBare(atPath: remotePath, files: files, message: "Remote note")
                 try UITestGitFixtures.fetchOrigin(atPath: vaultURL.path)
@@ -572,7 +590,7 @@ enum MarketingDemoSeeder {
             let syncState: RepoSyncState
             switch scenario {
             case "ahead": syncState = .ahead
-            case "behind": syncState = .behind
+            case "behind", "checkout-incomplete": syncState = .behind
             case "diverged": syncState = .diverged
             default: syncState = .upToDate
             }
@@ -679,15 +697,22 @@ enum UITestGitFixtures {
 
     /// Simulator processes (app and UI-test runner) share the host `/tmp`, so
     /// a fixed absolute path is addressable from both sides.
-    static let rootPath = "/tmp/syncmd-uitest-fixtures"
+    static var rootPath: String {
+        #if targetEnvironment(simulator)
+        return "/tmp/syncmd-uitest-fixtures"
+        #else
+        // Physical apps cannot write the simulator's host-shared /tmp path.
+        return FileManager.default.temporaryDirectory.appendingPathComponent("syncmd-uitest-fixtures").path
+        #endif
+    }
 
     static var cloneBareRemotePath: String { rootPath + "/bare-remote.git" }
     static var conflictBareRemotePath: String { rootPath + "/conflict-fixture.git" }
     static var gitToolsBareRemotePath: String { rootPath + "/git-tools-fixture.git" }
 
     /// The `file://` URL the UI test types into AddRepoView's manual entry.
-    static let cloneRemoteFileURL = "file:///tmp/syncmd-uitest-fixtures/bare-remote.git"
-    static let conflictRemoteFileURL = "file:///tmp/syncmd-uitest-fixtures/conflict-fixture.git"
+    static var cloneRemoteFileURL: String { "file://" + cloneBareRemotePath }
+    static var conflictRemoteFileURL: String { "file://" + conflictBareRemotePath }
 
     /// Vault folder (inside the app's Documents) for the conflict working copy.
     static let conflictVaultFolderName = "conflict-fixture"

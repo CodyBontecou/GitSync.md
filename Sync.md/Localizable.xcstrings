@@ -194905,6 +194905,26 @@
         }
       }
     },
+    "Working tree needs attention": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Working tree needs attention"
+          }
+        }
+      }
+    },
+    "Pull updated Git, but working tree checkout needs attention": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pull updated Git, but working tree checkout needs attention"
+          }
+        }
+      }
+    },
     "Pull to bring this iPhone up to date": {
       "localizations": {
         "ar": {

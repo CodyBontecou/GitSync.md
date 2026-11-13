@@ -414,6 +414,20 @@ final class SyncMDUITests: XCTestCase {
         XCTAssertTrue(app.buttons["Git Tools"].isEnabled, "Tools navigation must remain available after dismissing")
     }
 
+    func testIncompleteMarkdownCheckoutShowsCheckoutWarningAndPreservesConcurrentEdit() throws {
+        let app = launchGitToolsFixture("checkout-incomplete")
+        let remoteHead = try gitToolsHead(remote: true)
+        XCTAssertNotEqual(try gitToolsHead(), remoteHead)
+        tapWhenHittable(syncAction("Pull", in: app), in: app, message: "Start the real native checkout race")
+        XCTAssertTrue(app.staticTexts["Working tree needs attention"].waitForExistence(timeout: 15))
+        XCTAssertFalse(app.staticTexts["Large files couldn't download"].exists)
+        XCTAssertEqual(try gitToolsHead(), remoteHead, "Completed update must retain its advanced HEAD")
+        let note = try gitToolsWorktreeURL().appendingPathComponent("notes/hello.md")
+        XCTAssertEqual(try String(contentsOf: note, encoding: .utf8), "# Hello\n\nPR45 concurrent local edit preserved.\n")
+        XCTAssertFalse(app.alerts["Error"].exists)
+        attachScreenshot("Native incomplete Markdown checkout", in: app)
+    }
+
     func testGitToolsBehindRepositoryAndExistingPullFastForward() throws {
         let app = launchGitToolsFixture("behind")
         let remoteHead = try gitToolsHead(remote: true)

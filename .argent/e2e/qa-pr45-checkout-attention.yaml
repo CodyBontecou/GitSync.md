@@ -1,0 +1,31 @@
+steps:
+  - launch:
+      ios:
+        app: bontecou.Sync-md.prqa
+        args: [-UITestGitToolsFixture, checkout-incomplete, -AppleLanguages, '(en)', -AppleLocale, en_US]
+  - await:
+      visible: { text: 'git-tools-fixture, main · syncmd-uitest-fixtures/git-tools-fixture, 1 to pull' }
+  - await: { idle: true }
+  - tap: { text: 'main · syncmd-uitest-fixtures/git-tools-fixture' }
+  - await: { visible: { id: vault.title } }
+  - await: { idle: true }
+  - await: { visible: { text: No changes on this iPhone } }
+  - tap: { text: Pull }
+  - await: { visible: { text: Working tree needs attention }, timeout: 10000 }
+  - await: { idle: true }
+  - await: { hidden: { text: No changes on this iPhone } }
+  - await:
+      visible: { text: 'Git references updated, but the working tree checkout needs attention.' }
+  - tap: { text: 'notes/hello.md, modified, 1 line added, 1 line removed' }
+  - await: { visible: { text: Open in editor } }
+  - await: { idle: true }
+  - await: { visible: { text: 'Added: PR45 concurrent local edit preserved.' } }
+  - tap: { text: Whole file }
+  - await:
+      text:
+        in: { text: PR45 concurrent local edit preserved. }
+        equals: PR45 concurrent local edit preserved.
+  - await: { idle: true }
+  - tap: { id: BackButton }
+  - await: { visible: { text: Working tree needs attention } }
+  - await: { idle: true }
