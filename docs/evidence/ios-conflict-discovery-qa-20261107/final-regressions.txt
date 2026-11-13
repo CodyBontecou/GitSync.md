@@ -1,0 +1,12 @@
+Test Case '-[SyncMDTests.SyncMDTests testAppStateAbortMergeDelegatesToGitRepository]' started.
+Test Case '-[SyncMDTests.SyncMDTests testAppStateAbortMergeDelegatesToGitRepository]' passed (0.063 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.063 (0.069) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.063 (0.070) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.063 (0.070) seconds
+Test Case '-[SyncMDUITests.SyncMDUITests testConflictManualDraftSurvivesRepeatedEntryAndCancelledResolution]' started.
+Test Case '-[SyncMDUITests.SyncMDUITests testConflictManualDraftSurvivesRepeatedEntryAndCancelledResolution]' passed (29.003 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 29.003 (29.018) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 29.003 (29.019) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 29.003 (29.021) seconds
+	/tmp/gitsync-ios-edge-fixes/Logs/Test/Test-Sync.md-2026.11.07_21-36-11--0400.xcresult
+** TEST SUCCEEDED **

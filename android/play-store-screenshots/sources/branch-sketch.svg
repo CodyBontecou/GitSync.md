@@ -1,0 +1,9 @@
+<svg style="font-family:Arial,sans-serif" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 480" fill="none">
+       <g stroke="#3d5195" stroke-width="2.5" stroke-linecap="round">
+       <path d="M72 154 C180 155 255 152 325 154 C392 155 470 156 674 154"/>
+       <path d="M234 154 C300 154 280 69 355 69 L454 69 C493 69 500 154 548 154"/>
+       <path d="M661 143 L680 154 L662 167"/>
+       <circle cx="145" cy="154" r="15" fill="#faf9f6"/><circle cx="380" cy="69" r="15" fill="#faf9f6"/><circle cx="604" cy="154" r="15" fill="#faf9f6"/>
+       <path d="M280 279 Q378 303 480 279 M315 293 L310 320 M345 299 L341 331 M377 301 L375 335 M410 299 L410 330 M444 293 L445 318" opacity=".4"/>
+       </g><text x="145" y="229" text-anchor="middle">main</text><text x="604" y="229" text-anchor="middle">your next idea</text>
+       </svg>

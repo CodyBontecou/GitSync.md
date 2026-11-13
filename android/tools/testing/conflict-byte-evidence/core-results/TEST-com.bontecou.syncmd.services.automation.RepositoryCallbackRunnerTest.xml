@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.automation.RepositoryCallbackRunnerTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-11-03T00:55:43" hostname="MacBook-Pro.local" time="4.159">
+  <properties/>
+  <testcase name="folder name resolves independently of display alias and duplicates need explicit selection" classname="com.bontecou.syncmd.services.automation.RepositoryCallbackRunnerTest" time="0.068"/>
+  <testcase name="sync failure after a successful pull retains its local commit and pull receipt" classname="com.bontecou.syncmd.services.automation.RepositoryCallbackRunnerTest" time="1.93"/>
+  <testcase name="reviewed pull returns the actual new head and update receipt" classname="com.bontecou.syncmd.services.automation.RepositoryCallbackRunnerTest" time="0.105"/>
+  <testcase name="push only stages commits and publishes after reviewed execution and stale replay cannot repeat it" classname="com.bontecou.syncmd.services.automation.RepositoryCallbackRunnerTest" time="1.909"/>
+  <testcase name="review is read only and status never needs a reachable remote" classname="com.bontecou.syncmd.services.automation.RepositoryCallbackRunnerTest" time="0.052"/>
+  <testcase name="account catalog and endpoint changes refuse a prepared write without changing index or refs" classname="com.bontecou.syncmd.services.automation.RepositoryCallbackRunnerTest" time="0.049"/>
+  <testcase name="review consent cannot be reused for a different action message or return destination" classname="com.bontecou.syncmd.services.automation.RepositoryCallbackRunnerTest" time="0.046"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

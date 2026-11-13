@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.domain.repository.ConflictRepositoryTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-11-02T19:20:49" hostname="MacBook-Pro.local" time="0.792">
+  <properties/>
+  <testcase name="resolveConflict with MANUAL strategy accepts custom content" classname="com.bontecou.syncmd.domain.repository.ConflictRepositoryTest" time="0.098"/>
+  <testcase name="resolveConflict with THEIRS strategy takes their version" classname="com.bontecou.syncmd.domain.repository.ConflictRepositoryTest" time="0.084"/>
+  <testcase name="markAllResolved clears conflict state" classname="com.bontecou.syncmd.domain.repository.ConflictRepositoryTest" time="0.074"/>
+  <testcase name="getConflicts returns list of all conflicts" classname="com.bontecou.syncmd.domain.repository.ConflictRepositoryTest" time="0.073"/>
+  <testcase name="getFileConflict returns conflict for specific file" classname="com.bontecou.syncmd.domain.repository.ConflictRepositoryTest" time="0.072"/>
+  <testcase name="abortMerge cancels merge and returns to pre-merge state" classname="com.bontecou.syncmd.domain.repository.ConflictRepositoryTest" time="0.075"/>
+  <testcase name="getMergeState returns no merge when not merging" classname="com.bontecou.syncmd.domain.repository.ConflictRepositoryTest" time="0.071"/>
+  <testcase name="resolveConflict with OURS strategy takes our version" classname="com.bontecou.syncmd.domain.repository.ConflictRepositoryTest" time="0.081"/>
+  <testcase name="getMergeState returns merge in progress with conflicts" classname="com.bontecou.syncmd.domain.repository.ConflictRepositoryTest" time="0.076"/>
+  <testcase name="completeMerge finalizes the merge after resolution" classname="com.bontecou.syncmd.domain.repository.ConflictRepositoryTest" time="0.086"/>
+  <testcase name="parseConflictMarkers extracts conflict from content" classname="com.bontecou.syncmd.domain.repository.ConflictRepositoryTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

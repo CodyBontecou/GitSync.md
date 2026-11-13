@@ -1,0 +1,28 @@
+steps:
+  - launch:
+      ios:
+        app: bontecou.Sync-md.prqa
+        args: [-UITestGitToolsFixture, external-branch, -AppleLanguages, '(en)', -AppleLocale, en_US]
+  - await: { visible: { id: home.addRepository } }
+  - await: { visible: { text: 'git-tools-fixture, feature · Never, in sync' } }
+  - await: { idle: true }
+  - tap: { text: 'git-tools-fixture, feature · Never, in sync' }
+  - await: { visible: { id: vault.title } }
+  - await: { idle: true }
+  - await: { visible: { text: Branch feature } }
+  - await: { visible: { text: No changes on this iPhone } }
+  - tap: { id: ellipsis }
+  - await: { visible: { text: Settings, role: Button } }
+  - await: { idle: true }
+  - tap: { text: Settings, role: Button }
+  - await: { visible: { text: Vault settings } }
+  - await: { idle: true }
+  - scroll-to: { target: { id: repositorySettings.branch } }
+  - await:
+      text:
+        in: { id: repositorySettings.branch }
+        equals: main
+  - tap: { text: Cancel }
+  - await: { visible: { text: Branch feature } }
+  - await: { idle: true }
+  - await: { visible: { text: No changes on this iPhone } }

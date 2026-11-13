@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.git.RepositoryOverviewTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-11-02T20:54:09" hostname="MacBook-Pro.local" time="0.252">
+  <properties/>
+  <testcase name="missing bare and nested folders cannot masquerade as the saved working copy" classname="com.bontecou.syncmd.services.git.RepositoryOverviewTest" time="0.046"/>
+  <testcase name="overview waits for repository lease and reads the completed head" classname="com.bontecou.syncmd.services.git.RepositoryOverviewTest" time="0.11"/>
+  <testcase name="unborn detached and externally changed branches remain accurate without invented sync" classname="com.bontecou.syncmd.services.git.RepositoryOverviewTest" time="0.053"/>
+  <testcase name="overview reads real metadata while preserving staged and private content" classname="com.bontecou.syncmd.services.git.RepositoryOverviewTest" time="0.043"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

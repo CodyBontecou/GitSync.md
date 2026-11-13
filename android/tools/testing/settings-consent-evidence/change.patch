@@ -1,0 +1,365 @@
+--- before/app/src/androidTest/kotlin/com/bontecou/syncmd/AuthorRequestOwnershipTest.kt
++++ after/app/src/androidTest/kotlin/com/bontecou/syncmd/AuthorRequestOwnershipTest.kt
+@@ -97,7 +97,7 @@
+         val alpha = repository("alpha"); val beta = repository("beta")
+         val vm = model(alpha); val beforeAlpha = bytes(alpha); val beforeBeta = bytes(beta)
+         val release = hold(alpha)
+-        main { vm.save("Stale Alpha", "stale@example.invalid"); vm.load(beta.path) }
++        main { vm.save(vm.state.value, "Stale Alpha", "stale@example.invalid"); vm.load(beta.path) }
+         ready(vm, beta)
+         release.complete(Unit); quiescent(vm)
+         assertEquals("A superseded save must not write alpha's config", beforeAlpha, bytes(alpha))
+@@ -110,7 +110,7 @@
+     @Test fun reloadingTheSameRepositoryInvalidatesItsQueuedSave() {
+         val root = repository("reload"); val vm = model(root); val before = bytes(root)
+         val release = hold(root)
+-        main { vm.save("Superseded Draft", "draft@example.invalid"); vm.load(root.path) }
++        main { vm.save(vm.state.value, "Superseded Draft", "draft@example.invalid"); vm.load(root.path) }
+         release.complete(Unit); quiescent(vm); ready(vm, root)
+         assertEquals("Reload must invalidate the queued author mutation", before, bytes(root))
+         assertEquals("Original reload", vm.state.value.name)
+@@ -120,7 +120,7 @@
+     @Test fun currentQueuedSaveWritesOnlyAuthorAndSuppressesDuplicateSubmission() {
+         val root = repository("current"); val vm = model(root); val before = bytes(root)
+         val release = hold(root)
+-        main { vm.save("Accepted Author", "accepted@example.invalid"); vm.save("Duplicate", "duplicate@example.invalid") }
++        main { vm.save(vm.state.value, "Accepted Author", "accepted@example.invalid"); vm.save(vm.state.value, "Duplicate", "duplicate@example.invalid") }
+         release.complete(Unit); quiescent(vm)
+         assertTrue(vm.state.value.saved)
+         Git.open(root).use { git ->
+@@ -133,7 +133,7 @@
+     @Test fun externalConfigChangeWhileWaitingRetainsTheNewerConfigAndDraft() {
+         val root = repository("external"); val vm = model(root)
+         val release = hold(root)
+-        main { vm.save("Outdated Draft", "outdated@example.invalid") }
++        main { vm.save(vm.state.value, "Outdated Draft", "outdated@example.invalid") }
+         Git.open(root).use { git -> git.repository.config.apply { setString("user", null, "name", "External Author"); save() } }
+         val changed = bytes(root)
+         release.complete(Unit); quiescent(vm)
+--- before/app/src/androidTest/kotlin/com/bontecou/syncmd/UpstreamScreenTest.kt
++++ after/app/src/androidTest/kotlin/com/bontecou/syncmd/UpstreamScreenTest.kt
+@@ -132,14 +132,14 @@
+         val alpha = repository("alpha");val beta = repository("beta");val vm = model(alpha)
+         val beforeA = File(alpha,".git/config").readBytes();val beforeB = File(beta,".git/config").readBytes()
+         val release = hold(alpha)
+-        main { vm.save("backup","outdated");vm.load(beta.path) };ready(vm,beta)
++        main { vm.save(vm.state.value, "backup","outdated");vm.load(beta.path) };ready(vm,beta)
+         release.complete(Unit);settle(vm)
+         assertArrayEquals(beforeA,File(alpha,".git/config").readBytes());assertArrayEquals(beforeB,File(beta,".git/config").readBytes())
+         assertFalse(vm.state.value.saved);assertEquals(beta.canonicalPath,vm.state.value.plan?.path)
+     }
+     @Test fun reloadingTheSameRepositoryInvalidatesItsQueuedUpstreamSave() {
+         val root = repository("reload");val vm = model(root);val before = File(root,".git/config").readBytes();val release = hold(root)
+-        main { vm.save("backup","outdated");vm.load(root.path) };release.complete(Unit);settle(vm);ready(vm,root)
++        main { vm.save(vm.state.value, "backup","outdated");vm.load(root.path) };release.complete(Unit);settle(vm);ready(vm,root)
+         assertArrayEquals(before,File(root,".git/config").readBytes());assertFalse(vm.state.value.saved)
+     }
+     @Test fun detachedHeadShowsTheReasonAndCannotSaveTracking() {
+--- before/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/AuthorScreen.kt
++++ after/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/AuthorScreen.kt
+@@ -40,17 +40,17 @@
+ 
+ @Composable
+ fun AuthorScreen(path: String, onBack: () -> Unit, viewModel: AuthorViewModel = hiltViewModel()) {
+-    val state by viewModel.state.collectAsState()
+-    var name by remember { mutableStateOf("") }
+-    var email by remember { mutableStateOf("") }
++    val state = viewModel.state.collectAsState().value
++    // The first frame of a new review must not carry a previous review's draft.
++    var name by remember(path, state.requestId, state.plan) { mutableStateOf(state.name) }
++    var email by remember(path, state.requestId, state.plan) { mutableStateOf(state.email) }
+     LaunchedEffect(path) { viewModel.load(path) }
+-    LaunchedEffect(state.plan) { if (state.plan != null) { name = state.name; email = state.email } }
+-    LaunchedEffect(state.saved) { if (state.saved) onBack() }
++    LaunchedEffect(state.requestId, state.saved) { if (state.saved && viewModel.state.value === state) onBack() }
+     BackHandler(state.busy && state.plan != null) {}
+     AuthorContent(
+         busy = state.busy, hasPlan = state.plan != null, saved = state.saved, error = state.error,
+         name = name, email = email, onName = { name = it }, onEmail = { email = it },
+-        onBack = onBack, onSave = { viewModel.save(name, email) }, onReload = { viewModel.load(path) },
++        onBack = onBack, onSave = { viewModel.save(state, name, email) }, onReload = { viewModel.load(path) },
+     )
+ }
+ 
+--- before/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/UpstreamScreen.kt
++++ after/app/src/main/kotlin/com/bontecou/syncmd/ui/screens/UpstreamScreen.kt
+@@ -66,14 +66,13 @@
+ @OptIn(ExperimentalMaterial3Api::class)
+ @Composable
+ fun UpstreamScreen(path: String, onBack: () -> Unit, model: UpstreamViewModel = hiltViewModel()) {
+-    val state by model.state.collectAsState()
+-    var remote by remember(path) { mutableStateOf("") }
+-    var branch by remember(path) { mutableStateOf("") }
++    val state = model.state.collectAsState().value
++    var remote by remember(path, state.requestId, state.plan) {
++        mutableStateOf(state.plan?.let { it.remote ?: it.remotes.firstOrNull().orEmpty() }.orEmpty())
++    }
++    var branch by remember(path, state.requestId, state.plan) { mutableStateOf(state.plan?.remoteBranch.orEmpty()) }
+     LaunchedEffect(path) { model.load(path) }
+-    LaunchedEffect(state.plan) { state.plan?.let {
+-        remote = it.remote ?: it.remotes.firstOrNull().orEmpty(); branch = it.remoteBranch.orEmpty()
+-    } }
+-    LaunchedEffect(state.saved) { if(state.saved) onBack() }
++    LaunchedEffect(state.requestId, state.saved) { if(state.saved && model.state.value === state) onBack() }
+     BackHandler(state.busy && state.plan != null) {}
+     Scaffold(Modifier.testTag("upstream-screen"), containerColor = Tide.colors.paper, topBar = {
+         WrappingTopBar(stringResource(R.string.upstream_title),stringResource(R.string.publication_back),onBack,
+@@ -83,7 +82,7 @@
+             state = state, remote = remote, branch = branch,
+             modifier = Modifier.padding(padding),
+             onRemote = { remote = it }, onBranch = { branch = it },
+-            onSave = { model.save(remote, branch) }, onReload = { model.load(path) },
++            onSave = { model.save(state, remote, branch) }, onReload = { model.load(path) },
+         )
+     }
+ }
+--- before/app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/AuthorViewModel.kt
++++ after/app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/AuthorViewModel.kt
+@@ -18,27 +18,29 @@
+ @HiltViewModel
+ class AuthorViewModel @Inject constructor(private val authors: RepositoryAuthors) : ViewModel() {
+     data class State(val busy: Boolean = true, val plan: RepositoryIdentityPlan? = null,
+-        val name: String = "", val email: String = "", val error: String? = null, val saved: Boolean = false)
++        val name: String = "", val email: String = "", val error: String? = null, val saved: Boolean = false,
++        val requestId: Long = 0)
+     private val _state = MutableStateFlow(State())
+     val state = _state.asStateFlow()
+     @Volatile private var generation = 0L
+     fun load(path: String) {
+         val request = ++generation
+-        _state.value = State()
++        _state.value = State(requestId = request)
+         viewModelScope.launch {
+             try {
+                 val loaded = withContext(Dispatchers.IO) {
+                     val plan = RepositoryIdentity().inspect(path)
+                     val fallback = if (plan.name.isNullOrBlank() && plan.email.isNullOrBlank()) authors.resolve(path) else null
+-                    State(false, plan, plan.name ?: fallback?.first.orEmpty(), plan.email ?: fallback?.second.orEmpty())
++                    State(false, plan, plan.name ?: fallback?.first.orEmpty(), plan.email ?: fallback?.second.orEmpty(), requestId = request)
+                 }
+                 if (generation == request) _state.value = loaded
+             } catch (e: CancellationException) { throw e
+-            } catch (e: Exception) { if (generation == request) _state.value = State(busy = false, error = e.message ?: "Could not load author identity") }
++            } catch (e: Exception) { if (generation == request) _state.value = State(busy = false, error = e.message ?: "Could not load author identity", requestId = request) }
+         }
+     }
+-    fun save(name: String, email: String) {
+-        val current = _state.value
++    fun save(review: State, name: String, email: String) {
++        if (_state.value !== review) return
++        val current = review
+         val plan = current.plan ?: return
+         if (current.busy || current.saved) return
+         val request = generation
+--- before/app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/UpstreamViewModel.kt
++++ after/app/src/main/kotlin/com/bontecou/syncmd/ui/viewmodels/UpstreamViewModel.kt
+@@ -16,24 +16,26 @@
+ 
+ @HiltViewModel
+ class UpstreamViewModel @Inject constructor(): ViewModel() {
+-    data class State(val busy: Boolean = true, val plan: RepositoryUpstreamPlan? = null, val saved: Boolean = false, val error: String? = null)
++    data class State(val busy: Boolean = true, val plan: RepositoryUpstreamPlan? = null, val saved: Boolean = false, val error: String? = null,
++        val requestId: Long = 0)
+     private val service = RepositoryUpstream()
+     private val _state = MutableStateFlow(State())
+     val state = _state.asStateFlow()
+     @Volatile private var generation = 0L
+     fun load(path: String) {
+         val request = ++generation
+-        _state.value = State()
++        _state.value = State(requestId = request)
+         viewModelScope.launch {
+             try {
+                 val plan = withContext(Dispatchers.IO) { service.inspect(path) }
+-                if(generation == request) _state.value = State(busy = false,plan = plan)
++                if(generation == request) _state.value = State(busy = false,plan = plan,requestId = request)
+             } catch(cancelled: CancellationException) { throw cancelled
+-            } catch(e: Exception) { if(generation == request) _state.value = State(busy = false,error = e.message ?: "Could not load the upstream branch") }
++            } catch(e: Exception) { if(generation == request) _state.value = State(busy = false,error = e.message ?: "Could not load the upstream branch",requestId = request) }
+         }
+     }
+-    fun save(remote: String, branch: String) {
+-        val current = _state.value; val plan = current.plan ?: return
++    fun save(review: State, remote: String, branch: String) {
++        if (_state.value !== review) return
++        val current = review; val plan = current.plan ?: return
+         if(current.busy || current.saved || !plan.editable) return
+         val request = generation
+         _state.value = current.copy(busy = true,error = null)
+--- before/app/src/test/kotlin/com/bontecou/syncmd/ui/viewmodels/RepositorySettingsConsentTest.kt
++++ after/app/src/test/kotlin/com/bontecou/syncmd/ui/viewmodels/RepositorySettingsConsentTest.kt
+@@ -0,0 +1,174 @@
++package com.bontecou.syncmd.ui.viewmodels
++
++import androidx.lifecycle.ViewModelStore
++import androidx.lifecycle.viewModelScope
++import com.bontecou.syncmd.security.RepositoryAuthors
++import com.bontecou.syncmd.services.git.RepositoryOperationCoordinator
++import kotlinx.coroutines.*
++import kotlinx.coroutines.flow.MutableStateFlow
++import kotlinx.coroutines.flow.first
++import kotlinx.coroutines.test.UnconfinedTestDispatcher
++import kotlinx.coroutines.test.resetMain
++import kotlinx.coroutines.test.setMain
++import org.eclipse.jgit.api.Git
++import org.junit.*
++import org.junit.Assert.*
++import org.junit.rules.TemporaryFolder
++import org.junit.runner.RunWith
++import org.junit.runners.Parameterized
++import org.mockito.kotlin.mock
++import java.io.File
++
++/** Both production editors, actual config publication and leases; no Android preference writes. */
++@RunWith(Parameterized::class)
++@OptIn(ExperimentalCoroutinesApi::class)
++class RepositorySettingsConsentTest(private val editor: String) {
++    companion object {
++        @JvmStatic @Parameterized.Parameters(name = "{0}")
++        fun editors() = listOf(arrayOf("author"), arrayOf("upstream"))
++    }
++    @get:Rule val temporary = TemporaryFolder()
++    private lateinit var author: AuthorViewModel
++    private lateinit var upstream: UpstreamViewModel
++    private lateinit var first: File
++    private lateinit var second: File
++    @Before fun setup() {
++        Dispatchers.setMain(UnconfinedTestDispatcher())
++        author = AuthorViewModel(mock<RepositoryAuthors>())
++        upstream = UpstreamViewModel()
++        first = repository("first"); second = repository("second")
++    }
++    @After fun cleanup() {
++        ViewModelStore().apply { put("author", author); put("upstream", upstream); clear() }
++        Dispatchers.resetMain()
++    }
++    private fun repository(name: String): File = temporary.newFolder(name).canonicalFile.also { root ->
++        Git.init().setDirectory(root).setInitialBranch("main").call().use { git ->
++            File(root, "README.md").writeText("Generated settings fixture\n")
++            git.add().addFilepattern(".").call()
++            git.commit().setMessage("Fixture").setAuthor("Fixture", "fixture@example.invalid").call()
++            git.repository.config.apply {
++                setString("user", null, "name", "Existing Author")
++                setString("user", null, "email", "existing@example.invalid")
++                for (remote in listOf("origin", "backup")) {
++                    setString("remote", remote, "url", "https://example.invalid/$remote/$name.git")
++                    setString("remote", remote, "fetch", "+refs/heads/*:refs/remotes/$remote/*")
++                }
++                setString("branch", "main", "remote", "origin")
++                setString("branch", "main", "merge", "refs/heads/main")
++                save()
++            }
++        }
++        File(root, "draft.md").writeText("Untracked generated draft\n")
++    }
++    private fun contents(root: File) = root.walkTopDown().filter { it.isFile }
++        .associate { it.relativeTo(root).invariantSeparatorsPath to it.readBytes().toList() }
++    private suspend fun loaded(root: File) {
++        if (editor == "author") {
++            author.load(root.path)
++            withTimeout(10_000) { author.state.first { !it.busy } }
++            assertNull(author.state.value.error); assertEquals(root.path, author.state.value.plan!!.path)
++        } else {
++            upstream.load(root.path)
++            withTimeout(10_000) { upstream.state.first { !it.busy } }
++            assertNull(upstream.state.value.error); assertEquals(root.path, upstream.state.value.plan!!.path)
++        }
++    }
++    private fun reviewedSave(invalid: Boolean = false): () -> Unit = if (editor == "author") {
++        val review = author.state.value;
++        { author.save(review, if (invalid) "" else "Reviewed Author", "reviewed@example.invalid") }
++    } else {
++        val review = upstream.state.value;
++        { upstream.save(review, "backup", if (invalid) "invalid branch" else "reviewed") }
++    }
++    private fun state(): Any = if (editor == "author") author.state.value else upstream.state.value
++    private fun saved() = if (editor == "author") author.state.value.saved else upstream.state.value.saved
++    private fun error() = if (editor == "author") author.state.value.error else upstream.state.value.error
++    private fun busy() = if (editor == "author") author.state.value.busy else upstream.state.value.busy
++    private suspend fun settled() = withTimeout(10_000) {
++        author.viewModelScope.coroutineContext[Job]!!.children.toList().joinAll()
++        upstream.viewModelScope.coroutineContext[Job]!!.children.toList().joinAll()
++    }
++    @Test fun oldSaveCallbackCannotChangeAnotherRepository(): Unit = runBlocking { stale(second) }
++    @Test fun sameFolderReloadRevokesOldSaveCallback(): Unit = runBlocking { stale(first) }
++    private suspend fun stale(target: File) {
++        loaded(first); val save = reviewedSave()
++        loaded(target)
++        val before = contents(first); val otherBefore = contents(second)
++        save(); settled()
++        assertFalse(saved()); assertNull(error())
++        assertEquals(before, contents(first)); assertEquals(otherBefore, contents(second))
++    }
++    @Test fun unchangedReloadPublishesDistinctReviewForUiCollectors(): Unit = runBlocking {
++        loaded(first); val before = state()
++        val planBefore: Any? = if (editor == "author") author.state.value.plan else upstream.state.value.plan
++        loaded(first); val after = state()
++        val planAfter: Any? = if (editor == "author") author.state.value.plan else upstream.state.value.plan
++        assertEquals(planBefore, planAfter)
++        assertNotEquals("Reload must invalidate otherwise equal displayed state", before, after)
++        val displayed = MutableStateFlow(before); displayed.value = after
++        assertSame(after, displayed.value)
++    }
++    @Test fun queuedSaveRejectsRepositorySwitch(): Unit = runBlocking { queued(second) }
++    @Test fun queuedSaveRejectsSameFolderReload(): Unit = runBlocking { queued(first) }
++    private suspend fun queued(target: File) = coroutineScope {
++        loaded(first); val save = reviewedSave()
++        val before = contents(first); val otherBefore = contents(second)
++        val entered = CompletableDeferred<Unit>(); val release = CompletableDeferred<Unit>()
++        val holder = launch(Dispatchers.IO) {
++            RepositoryOperationCoordinator.withRepository(first.path) { entered.complete(Unit); release.await() }
++        }
++        entered.await()
++        try {
++            save(); assertTrue(busy())
++            if (editor == "author") author.load(target.path) else upstream.load(target.path)
++        } finally { release.complete(Unit); holder.join() }
++        settled()
++        assertFalse(saved()); assertNull(error())
++        assertEquals(before, contents(first)); assertEquals(otherBefore, contents(second))
++    }
++    @Test fun currentReviewPublishesOnlyItsConfigOnce(): Unit = runBlocking {
++        loaded(first); val save = reviewedSave()
++        val before = contents(first); val otherBefore = contents(second)
++        save(); save(); settled()
++        assertTrue(saved()); assertNull(error())
++        Git.open(first).use { git ->
++            val config = git.repository.config
++            if (editor == "author") {
++                assertEquals("Reviewed Author", config.getString("user", null, "name"))
++                assertEquals("reviewed@example.invalid", config.getString("user", null, "email"))
++                assertEquals("origin", config.getString("branch", "main", "remote"))
++                assertEquals("refs/heads/main", config.getString("branch", "main", "merge"))
++            } else {
++                assertEquals("backup", config.getString("branch", "main", "remote"))
++                assertEquals("refs/heads/reviewed", config.getString("branch", "main", "merge"))
++                assertEquals("Existing Author", config.getString("user", null, "name"))
++                assertEquals("existing@example.invalid", config.getString("user", null, "email"))
++            }
++            assertEquals("https://example.invalid/origin/first.git", config.getString("remote", "origin", "url"))
++            assertEquals("+refs/heads/*:refs/remotes/backup/*", config.getString("remote", "backup", "fetch"))
++        }
++        val after = contents(first)
++        assertNotEquals(before[".git/config"], after[".git/config"])
++        assertEquals(before.filterKeys { it != ".git/config" }, after.filterKeys { it != ".git/config" })
++        assertEquals(otherBefore, contents(second))
++        save(); settled(); assertEquals(after, contents(first))
++    }
++    @Test fun changedConfigRejectsReviewedSaveWithoutOverwritingIt(): Unit = runBlocking {
++        loaded(first); val save = reviewedSave()
++        Git.open(first).use { git -> git.repository.config.let { config ->
++            config.setString("user", null, "name", "External edit"); config.save()
++        } }
++        val before = contents(first); val otherBefore = contents(second)
++        save(); settled()
++        assertFalse(saved()); assertNotNull(error())
++        assertEquals(before, contents(first)); assertEquals(otherBefore, contents(second))
++    }
++    @Test fun invalidDraftLeavesRepositoryUnchanged(): Unit = runBlocking {
++        loaded(first); val save = reviewedSave(invalid = true)
++        val before = contents(first); val otherBefore = contents(second)
++        save(); settled()
++        assertFalse(saved()); assertNotNull(error())
++        assertEquals(before, contents(first)); assertEquals(otherBefore, contents(second))
++    }
++}

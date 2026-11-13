@@ -1,0 +1,1 @@
+Clona, fai commit, pull e push dei repo GitHub su Android.

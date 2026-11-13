@@ -1,0 +1,13 @@
+<resources>
+    <string name="lfs_tracking_updated">Tracking rules updated. Review and stage .gitattributes and the selected files, then commit.</string>
+    <string name="lfs_extensions_updated">Extension tracking rules updated. Review and stage .gitattributes and the affected files before committing.</string>
+    <string name="lfs_local_edits_kept">Local edits were kept.</string>
+    <plurals name="lfs_restored_files">
+        <item quantity="one">Restored %1$d file.</item>
+        <item quantity="other">Restored %1$d files.</item>
+    </plurals>
+    <plurals name="lfs_downloaded_objects">
+        <item quantity="one">Downloaded %1$d object.</item>
+        <item quantity="other">Downloaded %1$d objects.</item>
+    </plurals>
+</resources>

@@ -203,6 +203,70 @@ export async function fetchInstallationMetadata(
   return metadata;
 }
 
+/** Resolves only this app's existing installation; OAuth owner proof still runs afterward. */
+export async function findExistingInstallation(env: GitHubAppEnv, login: string): Promise<number> {
+  if (!LOGIN_RE.test(login)) throw new Error("GitHubInstallationLoginInvalid");
+  const jwt = await githubAppJWT(env);
+  for (const kind of ["users", "orgs"] as const) {
+    const response = await fetch(`https://api.github.com/${kind}/${encodeURIComponent(login)}/installation`, {
+      headers: githubHeaders(jwt), redirect: "manual", signal: AbortSignal.timeout(5_000),
+    });
+    if (response.status === 404) { await response.body?.cancel(); continue; }
+    if (!response.ok) { await response.body?.cancel(); throw new Error("GitHubInstallationLookupFailed"); }
+    if (Number(response.headers.get("content-length")) > 65_536 || !response.body) {
+      await response.body?.cancel(); throw new Error("GitHubInstallationResponseInvalid");
+    }
+    const reader = response.body.getReader();
+    const chunks: Uint8Array[] = []; let length = 0;
+    try {
+      while (true) {
+        const chunk = await reader.read(); if (chunk.done) break;
+        length += chunk.value.byteLength;
+        if (length > 65_536) throw new Error("GitHubInstallationResponseInvalid");
+        chunks.push(chunk.value);
+      }
+    } finally { try { await reader.cancel(); } catch { /* best-effort stream cleanup */ } }
+    const bytes = new Uint8Array(length); let offset = 0;
+    for (const chunk of chunks) { bytes.set(chunk, offset); offset += chunk.byteLength; }
+    const body: unknown = JSON.parse(new TextDecoder("utf-8", { fatal: true, ignoreBOM: false }).decode(bytes));
+    if (!body || typeof body !== "object") throw new Error("GitHubInstallationResponseInvalid");
+    const value = body as Record<string, unknown>;
+    const account = value.account as Record<string, unknown> | null;
+    if (!validInstallationID(value.id) || String(value.app_id) !== env.GITHUB_APP_ID
+        || !account || typeof account !== "object" || !validInstallationID(account.id)
+        || typeof account.login !== "string" || account.login.toLowerCase() !== login.toLowerCase()
+        // /users/{login} also resolves organizations, so it may return either account type.
+        || !(account.type === "Organization" || (kind === "users" && account.type === "User"))
+        || value.suspended_at != null) throw new Error("GitHubInstallationResponseInvalid");
+    return value.id;
+  }
+  throw new Error("GitHubInstallationNotFound");
+}
+
+/**
+ * Proves the signed-in user owns the named personal account or is an active
+ * owner of the named organization before the relay reveals whether this app
+ * is installed there.
+ */
+export async function proveAccountAdministrator(login: string, userToken: string): Promise<void> {
+  if (!LOGIN_RE.test(login)) throw new Error("GitHubInstallationLoginInvalid");
+  const user = await authenticatedUser(userToken);
+  if (user.login.toLowerCase() === login.toLowerCase()) return;
+  const response = await fetch(`https://api.github.com/user/memberships/orgs/${encodeURIComponent(login)}`, {
+    headers: githubHeaders(userToken),
+  });
+  if (response.status === 404) { await response.body?.cancel(); throw new Error("GitHubInstallationAdministratorRequired"); }
+  if (!response.ok) throw new Error(`GitHubMembershipLookup:${response.status}`);
+  const membership = await response.json() as Record<string, unknown>;
+  // Organization simple objects carry no `type`, so compare the login directly.
+  const organization = membership.organization as Record<string, unknown> | null;
+  if (membership.state !== "active" || membership.role !== "admin" || nestedNumericID(organization) === null
+      || typeof organization?.login !== "string" || organization.login.toLowerCase() !== login.toLowerCase()
+      || nestedNumericID(membership.user) !== user.id) {
+    throw new Error("GitHubInstallationAdministratorRequired");
+  }
+}
+
 export async function exchangeGitHubOAuthCode(
   env: GitHubAppEnv,
   code: string,

@@ -1,9 +1,12 @@
 import { sendApns, type ApnsConfig } from "./apns";
+import { FcmSender, FCM_TOKEN_RE, fcmConfigurationIsPresent } from "./fcm";
 import {
   exchangeGitHubOAuthCode,
+  findExistingInstallation,
   githubAppConfigurationIsPresent,
   installationIDFrom,
   parseLinkedInstallation,
+  proveAccountAdministrator,
   proveInstallationAdministrator,
   revalidateInstallationAdministrator,
   revokeGitHubUserToken,
@@ -13,6 +16,7 @@ import {
 
 export interface Env extends GitHubAppEnv {
   REGISTRY: KVNamespace;
+  FCM_SERVICE_ACCOUNT_JSON?: string;
   GITHUB_APP_WEBHOOK_SECRET: string;
   APNS_KEY_P8: string;
   APNS_KEY_ID: string;
@@ -23,6 +27,7 @@ export interface Env extends GitHubAppEnv {
 }
 
 interface DeviceRecord {
+  platform?: "android";
   token: string;
   environment: "development" | "production";
   repos: string[];
@@ -81,8 +86,9 @@ const MAX_WEBHOOK_BYTES = 10 * 1024 * 1024;
 
 export function parseRegisterRequest(body: unknown): DeviceRecord | null {
   if (typeof body !== "object" || body === null) return null;
-  const { token, environment, repos, deviceSecret } = body as Record<string, unknown>;
-  if (typeof token !== "string" || !DEVICE_TOKEN_RE.test(token)) return null;
+  const { token, environment, repos, deviceSecret, platform } = body as Record<string, unknown>;
+  if (platform !== undefined && platform !== "ios" && platform !== "android") return null;
+  if (typeof token !== "string" || !(platform === "android" ? FCM_TOKEN_RE : DEVICE_TOKEN_RE).test(token)) return null;
   if (environment !== "development" && environment !== "production") return null;
   if (typeof deviceSecret !== "string" || !DEVICE_SECRET_RE.test(deviceSecret)) return null;
   if (!Array.isArray(repos) || repos.length > 200) return null;
@@ -100,6 +106,7 @@ export function parseRegisterRequest(body: unknown): DeviceRecord | null {
     }
   }
   return {
+    ...(platform === "android" ? { platform: "android" as const } : {}),
     token,
     environment,
     repos: normalized,
@@ -117,7 +124,8 @@ export function parseStoredDeviceRecord(raw: string): DeviceRecord | null {
   }
   if (typeof parsed !== "object" || parsed === null) return null;
   const value = parsed as Record<string, unknown>;
-  if (typeof value.token !== "string" || !DEVICE_TOKEN_RE.test(value.token)) return null;
+  if (value.platform !== undefined && value.platform !== "android") return null;
+  if (typeof value.token !== "string" || !(value.platform === "android" ? FCM_TOKEN_RE : DEVICE_TOKEN_RE).test(value.token)) return null;
   if (value.environment !== "development" && value.environment !== "production") return null;
   if (!Array.isArray(value.repos) || value.repos.length > 200) return null;
   const repos: string[] = [];
@@ -146,6 +154,7 @@ export function parseStoredDeviceRecord(raw: string): DeviceRecord | null {
     }
   }
   return {
+    ...(value.platform === "android" ? { platform: "android" as const } : {}),
     token: value.token,
     environment: value.environment,
     repos,
@@ -245,6 +254,7 @@ interface GitHubLinkStateRecord {
   stage: "install" | "oauth";
   expiresAt: number;
   installationID?: number;
+  accountLogin?: string;
   codeVerifier?: string;
 }
 
@@ -276,6 +286,11 @@ function parseLinkState(raw: string): GitHubLinkStateRecord | null {
     const installationID = installationIDFrom(value.installationID);
     if (installationID === null) return null;
     result.installationID = installationID;
+  }
+  if (value.accountLogin !== undefined) {
+    if (typeof value.accountLogin !== "string" || !/^[A-Za-z0-9](?:[A-Za-z0-9-]{0,98}[A-Za-z0-9])?$/.test(value.accountLogin)
+        || value.installationID !== undefined) return null;
+    result.accountLogin = value.accountLogin;
   }
   if (value.codeVerifier !== undefined) {
     if (typeof value.codeVerifier !== "string" || !/^[A-Za-z0-9_-]{43,128}$/.test(value.codeVerifier)) {
@@ -412,6 +427,7 @@ async function handleRegister(env: Env, request: Request): Promise<Response> {
   const deviceSecret = (parsed as Record<string, unknown> | null)?.deviceSecret;
   const record = parseRegisterRequest(parsed);
   if (!record || typeof deviceSecret !== "string") return json(400, { error: "invalid registration" });
+  if (record.platform === "android" && !fcmConfigurationIsPresent(env.FCM_SERVICE_ACCOUNT_JSON)) return json(503, { error: "android push unavailable" });
 
   const existingRaw = await env.REGISTRY.get(`device:${deviceSecret}`);
   const existing = existingRaw ? parseStoredDeviceRecord(existingRaw) : null;
@@ -454,6 +470,17 @@ function githubAppUnavailable(env: Env): Response | null {
     : json(503, { error: "github app unavailable" });
 }
 
+async function githubAuthorizationURL(env: Env, state: string, codeVerifier: string): Promise<string> {
+  const authorizationURL = new URL("https://github.com/login/oauth/authorize");
+  authorizationURL.searchParams.set("client_id", env.GITHUB_APP_CLIENT_ID);
+  authorizationURL.searchParams.set("redirect_uri", env.GITHUB_APP_CALLBACK_URL);
+  authorizationURL.searchParams.set("state", state);
+  authorizationURL.searchParams.set("code_challenge", await codeChallenge(codeVerifier));
+  authorizationURL.searchParams.set("code_challenge_method", "S256");
+  authorizationURL.searchParams.set("prompt", "select_account");
+  return authorizationURL.toString();
+}
+
 async function handleGitHubAppLinkStart(env: Env, request: Request): Promise<Response> {
   const unavailable = githubAppUnavailable(env);
   if (unavailable) return unavailable;
@@ -467,15 +494,23 @@ async function handleGitHubAppLinkStart(env: Env, request: Request): Promise<Res
     return json(409, { error: "push registration required" });
   }
 
+  const accountLogin = (parsed as Record<string, unknown>).accountLogin;
+  if (accountLogin !== undefined && (typeof accountLogin !== "string"
+      || !/^[A-Za-z0-9](?:[A-Za-z0-9-]{0,98}[A-Za-z0-9])?$/.test(accountLogin))) {
+    return json(400, { error: "invalid accountLogin" });
+  }
   const state = randomURLSafe(32);
+  const codeVerifier = accountLogin === undefined ? undefined : randomURLSafe(64);
   const linkState: GitHubLinkStateRecord = {
     deviceSecret,
-    stage: "install",
+    stage: accountLogin === undefined ? "install" : "oauth",
     expiresAt: Date.now() + GITHUB_LINK_TTL_SECONDS * 1000,
+    ...(accountLogin === undefined ? {} : { accountLogin, codeVerifier }),
   };
   await env.REGISTRY.put(`github-link-state:${state}`, JSON.stringify(linkState), {
     expirationTtl: GITHUB_LINK_TTL_SECONDS,
   });
+  if (codeVerifier) return json(200, { ok: true, state, url: await githubAuthorizationURL(env, state, codeVerifier) });
   const installationURL = new URL(`https://github.com/apps/${env.GITHUB_APP_SLUG}/installations/new`);
   installationURL.searchParams.set("state", state);
   return json(200, { ok: true, state, url: installationURL.toString() });
@@ -516,14 +551,7 @@ async function handleGitHubAppSetup(env: Env, request: Request): Promise<Respons
   await env.REGISTRY.put(`github-link-state:${state}`, JSON.stringify(oauthState), {
     expirationTtl: GITHUB_LINK_TTL_SECONDS,
   });
-  const authorizationURL = new URL("https://github.com/login/oauth/authorize");
-  authorizationURL.searchParams.set("client_id", env.GITHUB_APP_CLIENT_ID);
-  authorizationURL.searchParams.set("redirect_uri", env.GITHUB_APP_CALLBACK_URL);
-  authorizationURL.searchParams.set("state", state);
-  authorizationURL.searchParams.set("code_challenge", await codeChallenge(codeVerifier));
-  authorizationURL.searchParams.set("code_challenge_method", "S256");
-  authorizationURL.searchParams.set("prompt", "select_account");
-  return noStoreRedirect(authorizationURL.toString());
+  return noStoreRedirect(await githubAuthorizationURL(env, state, codeVerifier));
 }
 
 async function handleGitHubAppOAuthCallback(env: Env, request: Request): Promise<Response> {
@@ -537,7 +565,7 @@ async function handleGitHubAppOAuthCallback(env: Env, request: Request): Promise
   const stateRaw = await env.REGISTRY.get(`github-link-state:${state}`);
   const linkState = stateRaw ? parseLinkState(stateRaw) : null;
   if (!linkState || linkState.stage !== "oauth" || linkState.expiresAt < Date.now()
-      || linkState.installationID === undefined || !linkState.codeVerifier) {
+      || (linkState.installationID === undefined && linkState.accountLogin === undefined) || !linkState.codeVerifier) {
     return json(400, { error: "expired authorization callback" });
   }
   // Make the state single-use before any external request. OAuth codes are also
@@ -550,14 +578,25 @@ async function handleGitHubAppOAuthCallback(env: Env, request: Request): Promise
     return noStoreRedirect(appCallbackURL(state, "error", oauthError === "access_denied" ? "cancelled" : "authorization_failed"));
   }
 
+  let stage = "installation_status";
   try {
-    if (await env.REGISTRY.get(githubInstallationTombstoneKey(linkState.installationID))) {
+    if (linkState.installationID !== undefined && await env.REGISTRY.get(githubInstallationTombstoneKey(linkState.installationID))) {
       throw new Error("GitHubInstallationDeleted");
     }
+    stage = "token_exchange";
     const userToken = await exchangeGitHubOAuthCode(env, code, linkState.codeVerifier);
     let installation: LinkedGitHubInstallation;
     try {
-      installation = await proveInstallationAdministrator(env, linkState.installationID, userToken);
+      if (linkState.accountLogin !== undefined) {
+        // Prove authority first so a lookup result never tells a non-owner whether the app is installed.
+        stage = "account_proof";
+        await proveAccountAdministrator(linkState.accountLogin, userToken);
+      }
+      stage = "installation_lookup";
+      const installationID = linkState.installationID ?? await findExistingInstallation(env, linkState.accountLogin!);
+      if (await env.REGISTRY.get(githubInstallationTombstoneKey(installationID))) throw new Error("GitHubInstallationDeleted");
+      stage = "owner_proof";
+      installation = await proveInstallationAdministrator(env, installationID, userToken);
     } finally {
       try {
         await revokeGitHubUserToken(env, userToken);
@@ -566,6 +605,7 @@ async function handleGitHubAppOAuthCallback(env: Env, request: Request): Promise
         console.info("GitHub App user token revocation failed");
       }
     }
+    stage = "device_lookup";
     const deviceRaw = await env.REGISTRY.get(`device:${linkState.deviceSecret}`);
     const device = deviceRaw ? parseStoredDeviceRecord(deviceRaw) : null;
     if (!device) throw new Error("PushRegistrationMissing");
@@ -581,7 +621,9 @@ async function handleGitHubAppOAuthCallback(env: Env, request: Request): Promise
       }
       device.linkedInstallations.push(installation);
     }
+    stage = "device_save";
     await putDeviceRecord(env, linkState.deviceSecret, device);
+    stage = "route_save";
     await env.REGISTRY.put(githubAppRouteKey(installation.id, linkState.deviceSecret), "1", {
       expiration: deviceExpiration(device),
     });
@@ -601,10 +643,13 @@ async function handleGitHubAppOAuthCallback(env: Env, request: Request): Promise
     }
     return noStoreRedirect(appCallbackURL(state, "connected"));
   } catch (error) {
-    const kind = error instanceof Error ? error.message.split(":", 1)[0].slice(0, 80) : "UnknownError";
-    console.info("GitHub App connection failed", { kind });
-    const reason = kind === "GitHubInstallationAdministratorRequired"
-      ? "account_owner_required"
+    const candidate = error instanceof Error ? error.message.split(":", 1)[0].slice(0, 80) : "";
+    const name = typeof error === "object" && error !== null && "name" in error ? String(error.name) : "";
+    const kind = /^(?:GitHub[A-Za-z0-9_]+|PushRegistrationMissing)$/.test(candidate) ? candidate
+      : ["Error", "TypeError", "SyntaxError", "AbortError", "TimeoutError", "DataError", "OperationError", "InvalidAccessError"].includes(name) ? name : "UnknownError";
+    console.info("GitHub App connection failed", { kind, stage });
+    const reason = kind === "GitHubInstallationAdministratorRequired" ? "account_owner_required"
+      : kind === "GitHubInstallationNotFound" ? "installation_required"
       : "verification_failed";
     return noStoreRedirect(appCallbackURL(state, "error", reason));
   }
@@ -852,6 +897,7 @@ async function handleGithubWebhook(env: Env, request: Request, ctx: ExecutionCon
     ? deliveryHeader
     : summary.headSHA ?? crypto.randomUUID();
   const collapseTtl = parseInt(env.NOTIFY_COLLAPSE_SECONDS || "120", 10);
+  const fcmSender = new FcmSender(env.FCM_SERVICE_ACCOUNT_JSON);
   const apnsConfig: ApnsConfig = {
     keyP8: env.APNS_KEY_P8,
     keyId: env.APNS_KEY_ID,
@@ -946,13 +992,28 @@ async function handleGithubWebhook(env: Env, request: Request, ctx: ExecutionCon
           // Branch-scoped throttling prevents an unrelated feature-branch push
           // from suppressing the configured branch's wake. Reuse the bounded
           // hash so even maximum-length refs stay within KV's key limit.
-          const throttleKey = `notif:${apnsCollapseID}:${device.token}`;
+          const throttleKey = device.platform === "android"
+            ? `notif:fcm:${apnsCollapseID}:${await collapseID(device.token, "fcm")}`
+            : `notif:${apnsCollapseID}:${device.token}`;
           if (await env.REGISTRY.get(throttleKey)) {
             deliverySummary.throttled += 1;
             return;
           }
           const text = notificationText(summary.repoFullName!, summary.commitCount);
           try {
+            if (device.platform === "android") {
+              const delivered = await fcmSender.send({ token: device.token, environment: device.environment,
+                title: text.title, body: text.body, collapseId: apnsCollapseID,
+                repo: summary.repoFullName!, branch: summary.branch!, hint: hintID,
+                ...(summary.headSHA ? { head: summary.headSHA } : {}) });
+              if (delivered.ok) {
+                deliverySummary.accepted += 1;
+                await env.REGISTRY.put(throttleKey, "1", { expirationTtl: collapseTtl });
+              } else if (delivered.unregistered) {
+                await deleteDevice(env, secret, device); deliverySummary.pruned += 1;
+              } else deliverySummary.rejected += 1;
+              return;
+            }
             const response = await sendApns(apnsConfig, {
               token: device.token,
               environment: device.environment,

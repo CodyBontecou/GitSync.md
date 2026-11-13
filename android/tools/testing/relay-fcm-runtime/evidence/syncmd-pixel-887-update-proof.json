@@ -1,0 +1,18 @@
+{
+  "package": "md.gitsync.md",
+  "serial": "2C061FDH200CJN",
+  "prior_apk_sha256": "b2e635b7aa10bdaaaff236a0e43a8eb16bd3700f3b07d81bab6919b1f3358586",
+  "new_apk_sha256": "53a92eca9fe5293ee266dd46f40104ef89d81c0bb143e260336c1312528bc5ad",
+  "signing_match": true,
+  "build_proof": "/tmp/syncmd-lfs-failure-language-proof.json",
+  "installed_at": "2026-11-02T16:20:49.392481+00:00",
+  "in_place_update": true,
+  "app_data_cleared": false,
+  "permissions_pregranted": false,
+  "install_result": "Success",
+  "installed_apk_verified": true,
+  "saved_link_visible_after_update": true,
+  "native_form_e2e_passed": false,
+  "live_webhook_qualified": true,
+  "live_webhook_proof": "/tmp/syncmd-live-webhook-test-plan.json"
+}

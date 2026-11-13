@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.git.RepositoryActivityTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2026-11-02T19:08:49" hostname="MacBook-Pro.local" time="0.48">
+  <properties/>
+  <testcase name="local commit records completion and failed push keeps that time and commit" classname="com.bontecou.syncmd.services.git.RepositoryActivityTest" time="0.042"/>
+  <testcase name="failed commit and read only fetch planning do not invent completion" classname="com.bontecou.syncmd.services.git.RepositoryActivityTest" time="0.035"/>
+  <testcase name="optional metadata write failure does not report a completed commit as failed" classname="com.bontecou.syncmd.services.git.RepositoryActivityTest" time="0.033"/>
+  <testcase name="metadata corruption and symlinks never expose invented times or alter their targets" classname="com.bontecou.syncmd.services.git.RepositoryActivityTest" time="0.028"/>
+  <testcase name="branch completion records time but dirty checkout refusal does not" classname="com.bontecou.syncmd.services.git.RepositoryActivityTest" time="0.039"/>
+  <testcase name="successful pull and acknowledged push persist across service reopen and folder move" classname="com.bontecou.syncmd.services.git.RepositoryActivityTest" time="0.052"/>
+  <testcase name="failed merge outcomes rebase pauses and unconfirmed remote pushes do not advance time" classname="com.bontecou.syncmd.services.git.RepositoryActivityTest" time="0.036"/>
+  <testcase name="status reads real full HEAD and never fabricates sync time" classname="com.bontecou.syncmd.services.git.RepositoryActivityTest" time="0.031"/>
+  <testcase name="real conflicted merge retains earlier time until completed" classname="com.bontecou.syncmd.services.git.RepositoryActivityTest" time="0.053"/>
+  <testcase name="clone completion is recorded only in the new working copy" classname="com.bontecou.syncmd.services.git.RepositoryActivityTest" time="0.053"/>
+  <testcase name="unborn and detached status carry accurate commit identities" classname="com.bontecou.syncmd.services.git.RepositoryActivityTest" time="0.037"/>
+  <testcase name="external commits refresh HEAD without pretending the app synced" classname="com.bontecou.syncmd.services.git.RepositoryActivityTest" time="0.038"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[Nov 02, 2026 3:08:50 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit17628385434886515397/junit8422085750752559704/cloned
+Nov 02, 2026 3:08:50 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=main commit=1b4d79030ff287aba0910b28803d031df322774e
+Nov 02, 2026 3:08:50 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 1 files, skipped 0
+Nov 02, 2026 3:08:50 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/main (1b4d790)
+]]></system-err>
+</testsuite>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Vault overflow actions, Fetch and the iOS local-changes resolution. Most English matches the iOS catalog. -->
+<resources>
+    <string name="git_fetch">Fetch</string>
+    <string name="vault_repository_fallback">Repository</string>
+    <string name="vault_open_in_files_failed">Could not open this folder in Files.</string>
+    <string name="vault_copy_url">Copy repository URL</string>
+    <string name="vault_url_copied">Copied!</string>
+    <string name="resolve_local_title">Local edits block this pull</string>
+    <string name="resolve_local_action">Resolve</string>
+    <string name="resolve_local_body">We\'ll commit your local changes, then merge with the remote. If there are conflicts, you can resolve them in the next screen.</string>
+    <string name="resolve_local_message_label">Commit message</string>
+    <string name="resolve_local_default_message">Local changes from GitSync.md</string>
+    <string name="resolve_local_commit_merge">Commit &amp; merge</string>
+    <string name="resolve_local_committing">Committing local changes…</string>
+    <string name="resolve_local_superseded">The selected repository changed. Review local changes again.</string>
+</resources>

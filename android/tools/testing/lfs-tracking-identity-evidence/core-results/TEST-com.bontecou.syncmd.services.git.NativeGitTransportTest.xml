@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.git.NativeGitTransportTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-11-02T19:08:39" hostname="MacBook-Pro.local" time="0.096">
+  <properties/>
+  <testcase name="native URLs preserve escaped paths canonicalize defaults and reject ambiguous addresses" classname="com.bontecou.syncmd.services.git.NativeGitTransportTest" time="0.002"/>
+  <testcase name="native transport refuses every secret before opening a connection" classname="com.bontecou.syncmd.services.git.NativeGitTransportTest" time="0.004"/>
+  <testcase name="native protocol clones a selected branch fetches and pushes anonymously" classname="com.bontecou.syncmd.services.git.NativeGitTransportTest" time="0.09"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

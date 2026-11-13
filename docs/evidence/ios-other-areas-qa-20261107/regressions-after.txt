@@ -1,0 +1,14 @@
+Test Case '-[SyncMDTests.NameValidationTests testGitIdentityRejectsControlScalarsBeforeTrimming]' started.
+Test Case '-[SyncMDTests.NameValidationTests testGitIdentityRejectsControlScalarsBeforeTrimming]' passed (0.005 seconds).
+Test Case '-[SyncMDTests.NameValidationTests testGitIdentityValidation]' started.
+Test Case '-[SyncMDTests.NameValidationTests testGitIdentityValidation]' passed (0.001 seconds).
+	 Executed 2 tests, with 0 failures (0 unexpected) in 0.006 (0.010) seconds
+Test Case '-[SyncMDTests.SyncMDTests testLocalGitServiceCommitAndPushReportsMissingAuthorEmail]' started.
+Test Case '-[SyncMDTests.SyncMDTests testLocalGitServiceCommitAndPushReportsMissingAuthorEmail]' passed (0.083 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testLocalGitServiceRejectsHiddenIdentityControlsWithoutCreatingCommit]' started.
+Test Case '-[SyncMDTests.SyncMDTests testLocalGitServiceRejectsHiddenIdentityControlsWithoutCreatingCommit]' passed (0.052 seconds).
+	 Executed 2 tests, with 0 failures (0 unexpected) in 0.135 (0.136) seconds
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.141 (0.146) seconds
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.141 (0.147) seconds
+	/tmp/gitsync-ios-edge-fixes/Logs/Test/Test-Sync.md-2026.11.07_21-06-05--0400.xcresult
+** TEST SUCCEEDED **

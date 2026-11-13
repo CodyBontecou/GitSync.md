@@ -1,0 +1,12 @@
+{
+  "branch": "main",
+  "head": "6cf5b4c3f4495ead7cae8439aa414a9eed8a1100",
+  "status": "M notes.md",
+  "unmerged": "",
+  "stashes": "",
+  "branches": "* main\n  sample-branch",
+  "files": {
+    "README.md": "5be6b7cb4cd12619dce4ceea6019ac3e2df093852acea51fb96efe828f816183",
+    "notes.md": "bc3ad6601b5cddca007a3d4b4205bbd28059158ba87c344f06bc4c83dafde624"
+  }
+}

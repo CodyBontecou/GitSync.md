@@ -1,0 +1,240 @@
+{
+  "e2eTest": "qa-pr47-return-owned-fixture",
+  "flow": "qa-pr47-return-owned-fixture",
+  "device": "00008110-00046CC63CA0401E",
+  "executionPrerequisite": "",
+  "ok": true,
+  "passed": 25,
+  "failed": 0,
+  "skipped": 0,
+  "errored": 0,
+  "steps": [
+    {
+      "index": 0,
+      "kind": "echo",
+      "e2eTest": "qa-pr47-return-owned-fixture",
+      "status": "pass",
+      "message": "Recovery only, not full QA proof. Requires original-named owned fixture in external QA parent; return anchor in isolated QA Documents; original QA destination absent.",
+      "durationMs": 0,
+      "flow": "qa-pr47-return-owned-fixture"
+    },
+    {
+      "index": 1,
+      "kind": "launch",
+      "e2eTest": "qa-pr47-return-owned-fixture",
+      "status": "pass",
+      "durationMs": 2137,
+      "flow": "qa-pr47-return-owned-fixture"
+    },
+    {
+      "index": 2,
+      "kind": "await",
+      "e2eTest": "qa-pr47-return-owned-fixture",
+      "target": "visible id=git-tools-fixture, Folder",
+      "status": "pass",
+      "durationMs": 219,
+      "flow": "qa-pr47-return-owned-fixture"
+    },
+    {
+      "index": 3,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-return-owned-fixture",
+      "status": "pass",
+      "durationMs": 1599,
+      "flow": "qa-pr47-return-owned-fixture"
+    },
+    {
+      "index": 4,
+      "kind": "long-press",
+      "e2eTest": "qa-pr47-return-owned-fixture",
+      "target": "id=git-tools-fixture, Folder",
+      "status": "pass",
+      "durationMs": 2085,
+      "flow": "qa-pr47-return-owned-fixture"
+    },
+    {
+      "index": 5,
+      "kind": "await",
+      "e2eTest": "qa-pr47-return-owned-fixture",
+      "target": "visible \"Move\" role=Button",
+      "status": "pass",
+      "durationMs": 120,
+      "flow": "qa-pr47-return-owned-fixture"
+    },
+    {
+      "index": 6,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-return-owned-fixture",
+      "status": "pass",
+      "durationMs": 2283,
+      "flow": "qa-pr47-return-owned-fixture"
+    },
+    {
+      "index": 7,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-return-owned-fixture",
+      "target": "id=folder.fill",
+      "status": "pass",
+      "durationMs": 3519,
+      "flow": "qa-pr47-return-owned-fixture"
+    },
+    {
+      "index": 8,
+      "kind": "await",
+      "e2eTest": "qa-pr47-return-owned-fixture",
+      "target": "visible id=Browse View (Picker)",
+      "status": "pass",
+      "durationMs": 121,
+      "flow": "qa-pr47-return-owned-fixture"
+    },
+    {
+      "index": 9,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-return-owned-fixture",
+      "status": "pass",
+      "durationMs": 2360,
+      "flow": "qa-pr47-return-owned-fixture"
+    },
+    {
+      "index": 10,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-return-owned-fixture",
+      "target": "id=BackButton",
+      "status": "pass",
+      "durationMs": 1544,
+      "flow": "qa-pr47-return-owned-fixture"
+    },
+    {
+      "index": 11,
+      "kind": "await",
+      "e2eTest": "qa-pr47-return-owned-fixture",
+      "target": "visible id=GitSync PR QA, Container",
+      "status": "pass",
+      "durationMs": 224,
+      "flow": "qa-pr47-return-owned-fixture"
+    },
+    {
+      "index": 12,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-return-owned-fixture",
+      "status": "pass",
+      "durationMs": 2590,
+      "flow": "qa-pr47-return-owned-fixture"
+    },
+    {
+      "index": 13,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-return-owned-fixture",
+      "target": "id=BackButton",
+      "status": "pass",
+      "durationMs": 1545,
+      "flow": "qa-pr47-return-owned-fixture"
+    },
+    {
+      "index": 14,
+      "kind": "await",
+      "e2eTest": "qa-pr47-return-owned-fixture",
+      "target": "visible id=DOC.sidebar.item.On My iPhone",
+      "status": "pass",
+      "durationMs": 290,
+      "flow": "qa-pr47-return-owned-fixture"
+    },
+    {
+      "index": 15,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-return-owned-fixture",
+      "status": "pass",
+      "durationMs": 2262,
+      "flow": "qa-pr47-return-owned-fixture"
+    },
+    {
+      "index": 16,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-return-owned-fixture",
+      "target": "id=DOC.sidebar.item.On My iPhone",
+      "status": "pass",
+      "durationMs": 1582,
+      "flow": "qa-pr47-return-owned-fixture"
+    },
+    {
+      "index": 17,
+      "kind": "await",
+      "e2eTest": "qa-pr47-return-owned-fixture",
+      "target": "visible id=GitSync PR QA, Container",
+      "status": "pass",
+      "durationMs": 307,
+      "flow": "qa-pr47-return-owned-fixture"
+    },
+    {
+      "index": 18,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-return-owned-fixture",
+      "status": "pass",
+      "durationMs": 2351,
+      "flow": "qa-pr47-return-owned-fixture"
+    },
+    {
+      "index": 19,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-return-owned-fixture",
+      "target": "id=GitSync PR QA, Container",
+      "status": "pass",
+      "durationMs": 1499,
+      "flow": "qa-pr47-return-owned-fixture"
+    },
+    {
+      "index": 20,
+      "kind": "await",
+      "e2eTest": "qa-pr47-return-owned-fixture",
+      "target": "visible id=pr47-return-anchor, Folder",
+      "status": "pass",
+      "durationMs": 257,
+      "flow": "qa-pr47-return-owned-fixture"
+    },
+    {
+      "index": 21,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-return-owned-fixture",
+      "status": "pass",
+      "durationMs": 2177,
+      "flow": "qa-pr47-return-owned-fixture"
+    },
+    {
+      "index": 22,
+      "kind": "await",
+      "e2eTest": "qa-pr47-return-owned-fixture",
+      "target": "hidden id=git-tools-fixture, Folder",
+      "status": "pass",
+      "durationMs": 178,
+      "flow": "qa-pr47-return-owned-fixture"
+    },
+    {
+      "index": 23,
+      "kind": "tap",
+      "e2eTest": "qa-pr47-return-owned-fixture",
+      "target": "id=DOCPicker.actionButton",
+      "status": "pass",
+      "durationMs": 1480,
+      "flow": "qa-pr47-return-owned-fixture"
+    },
+    {
+      "index": 24,
+      "kind": "await",
+      "e2eTest": "qa-pr47-return-owned-fixture",
+      "target": "visible \"Folder is Empty\" role=StaticText",
+      "status": "pass",
+      "durationMs": 600,
+      "flow": "qa-pr47-return-owned-fixture"
+    },
+    {
+      "index": 25,
+      "kind": "idle",
+      "e2eTest": "qa-pr47-return-owned-fixture",
+      "status": "pass",
+      "durationMs": 1450,
+      "flow": "qa-pr47-return-owned-fixture"
+    }
+  ],
+  "startedAt": 1794601047507,
+  "durationMs": 34784
+}

@@ -1,0 +1,4 @@
+<resources>
+    <string name="conflict_current_deleted">Current branch deleted this file. Choosing Ours removes it.</string>
+    <string name="conflict_incoming_deleted">Incoming branch deleted this file. Choosing Theirs removes it.</string>
+</resources>

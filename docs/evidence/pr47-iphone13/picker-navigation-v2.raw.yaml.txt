@@ -1,0 +1,18 @@
+steps:
+  - tap:
+      text: Reauthorize Folder
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: Browse View (Picker)
+  - tap:
+      id: folder.fill
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: DOC.sidebar.item.On My iPhone
+executionPrerequisite: Isolated QA Vault Settings recovery button visible;
+  native folder chooser remembers Browse tab; owned Git fixture external;
+  private inventory malformed.

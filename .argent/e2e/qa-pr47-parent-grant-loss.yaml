@@ -1,0 +1,174 @@
+executionPrerequisite: 'Files is foreground in isolated GitSync PR QA Documents. Seeded git-tools-fixture and pr47-return-anchor exist; external On My iPhone/GitSync-PR47-QA-20261113 is empty. QA private inventory is bookmark-parent malformed-access fixture.'
+steps:
+  - tap: { id: TopOverflowBarButtonItem }
+  - await: { visible: { id: checkmark.circle } }
+  - await: { idle: true }
+  - tap: { id: checkmark.circle }
+  - await: { visible: { text: Select Items, role: StaticText } }
+  - await: { idle: true }
+  - tap: { id: 'git-tools-fixture, Folder' }
+  - await: { visible: { id: checkmark.circle.platter } }
+  - tap: { text: Move, role: Button }
+  - await: { visible: { id: 'Browse View (Picker)' } }
+  - await: { idle: true }
+  - await: { visible: { text: 'GitSync PR QA, Actions Menu', role: Button } }
+  - tap: { id: BackButton }
+  - await: { visible: { id: 'GitSync-PR47-QA-20261113, Folder' } }
+  - await: { idle: true }
+  - tap: { id: 'GitSync-PR47-QA-20261113, Folder' }
+  - await: { visible: { id: 'DOC.browsingRoot Source: com.apple.FileProvider.LocalStorage, Title: GitSync-PR47-QA-20261113' } }
+  - await: { idle: true }
+  - await: { text: { in: { id: DOCPicker.filenameTextField }, equals: git-tools-fixture } }
+  - tap: { id: DOCPicker.actionButton }
+  - await: { visible: { id: 'pr47-return-anchor, Folder' } }
+  - await: { idle: true }
+  - await: { hidden: { id: 'git-tools-fixture, Folder' } }
+  - launch:
+      ios:
+        app: bontecou.Sync-md.prqa
+        args: [-UITestGitToolsFixture, bookmark-resume, -AppleLanguages, '(en)', -AppleLocale, en_US]
+  - await: { visible: { text: Attention 1, role: Button } }
+  - await: { idle: true }
+  - tap: { text: 'main · syncmd-uitest-fixtures/git-tools-fixture' }
+  - await: { visible: { id: vault.reauthorizeFolder } }
+  - await: { idle: true }
+  - tap: { id: vault.reauthorizeFolder }
+  - await: { visible: { text: Vault settings } }
+  - await: { idle: true }
+  - scroll-to: { target: { id: repository.reauthorizeFolder } }
+  - await: { visible: { id: repository.reauthorizeFolder } }
+  - await: { idle: true }
+  - echo: Reject an intentionally wrong child selection without changing saved configuration.
+  - tap: { id: repository.reauthorizeFolder }
+  - await: { visible: { id: 'Browse View (Picker)' } }
+  - await: { idle: true }
+  - tap: { id: folder.fill, within: { id: DOC.browsingModeTabBar } }
+  - await: { visible: { id: DOC.sidebar.item.On My iPhone } }
+  - await: { idle: true }
+  - tap: { id: DOC.sidebar.item.On My iPhone }
+  - await: { visible: { id: 'GitSync-PR47-QA-20261113, Folder' } }
+  - await: { idle: true }
+  - tap: { id: 'GitSync-PR47-QA-20261113, Folder' }
+  - await: { visible: { id: 'DOC.browsingRoot Source: com.apple.FileProvider.LocalStorage, Title: GitSync-PR47-QA-20261113' } }
+  - await: { idle: true }
+  - tap: { id: 'git-tools-fixture, Folder' }
+  - await: { visible: { id: 'DOC.browsingRoot Source: com.apple.FileProvider.LocalStorage, Title: git-tools-fixture' } }
+  - await: { idle: true }
+  - tap: { id: DOCPicker.actionButton }
+  - await: { visible: { text: Reauthorization Failed, role: Alert } }
+  - await: { idle: true }
+  - tap: { text: OK, role: Button }
+  - await: { visible: { id: repository.reauthorizeFolder } }
+  - await: { idle: true }
+  - echo: Renew with the actual external parent and preserve the configured main branch.
+  - tap: { id: repository.reauthorizeFolder }
+  - await: { visible: { id: 'Browse View (Picker)' } }
+  - await: { idle: true }
+  - tap: { id: folder.fill, within: { id: DOC.browsingModeTabBar } }
+  - await: { visible: { id: DOC.sidebar.item.On My iPhone } }
+  - await: { idle: true }
+  - tap: { id: DOC.sidebar.item.On My iPhone }
+  - await: { visible: { id: 'GitSync-PR47-QA-20261113, Folder' } }
+  - await: { idle: true }
+  - tap: { id: 'GitSync-PR47-QA-20261113, Folder' }
+  - await: { visible: { id: 'DOC.browsingRoot Source: com.apple.FileProvider.LocalStorage, Title: GitSync-PR47-QA-20261113' } }
+  - await: { idle: true }
+  - tap: { id: DOCPicker.actionButton }
+  - await: { visible: { text: 'GitSync-PR47-QA-20261113 › git-tools-fixture', role: StaticText } }
+  - await: { idle: true }
+  - await: { text: { in: { id: repositorySettings.branch }, equals: main } }
+  - tap: { text: Cancel, role: Button }
+  - await: { visible: { id: vault.title } }
+  - await: { idle: true }
+  - await: { visible: { text: 'README.md, modified', role: Button } }
+  - await: { hidden: { id: vault.reauthorizeFolder } }
+  - launch:
+      ios:
+        app: bontecou.Sync-md.prqa
+        args: [-UITestGitToolsFixture, bookmark-resume, -AppleLanguages, '(en)', -AppleLocale, en_US]
+  - await: { visible: { text: Attention 1, role: Button } }
+  - await: { idle: true }
+  - tap: { text: 'main · syncmd-uitest-fixtures/git-tools-fixture' }
+  - await: { visible: { id: vault.title } }
+  - await: { idle: true }
+  - await: { visible: { text: 'README.md, modified', role: Button } }
+  - launch: com.apple.DocumentsApp
+  - await: { visible: { text: 'GitSync-PR47-QA-20261113, Actions Menu', role: Button } }
+  - await: { idle: true }
+  - long-press: { id: 'git-tools-fixture, Folder' }
+  - await: { visible: { id: pencil } }
+  - await: { idle: true }
+  - tap: { id: pencil }
+  - await: { visible: { id: DOC.inlineRenameField } }
+  - echo: Native Rename auto-focuses and selects the full name; retain raw keyboard to avoid collapsing its selection with an extra focus tap.
+  - tool: keyboard
+    args: { text: git-tools-fixture-moved }
+  - tool: keyboard
+    args: { key: enter }
+  - await: { visible: { id: 'git-tools-fixture-moved, Folder' } }
+  - await: { idle: true }
+  - launch:
+      ios:
+        app: bontecou.Sync-md.prqa
+        args: [-UITestGitToolsFixture, bookmark-resume, -AppleLanguages, '(en)', -AppleLocale, en_US]
+  - await: { visible: { text: Attention 1, role: Button } }
+  - await: { idle: true }
+  - await: { visible: { text: Folder Access Unavailable, role: StaticText } }
+  - tap: { text: 'main · syncmd-uitest-fixtures/git-tools-fixture' }
+  - await: { visible: { id: vault.reauthorizeFolder } }
+  - await: { idle: true }
+  - launch: com.apple.DocumentsApp
+  - await: { visible: { id: 'git-tools-fixture-moved, Folder' } }
+  - await: { idle: true }
+  - long-press: { id: 'git-tools-fixture-moved, Folder' }
+  - await: { visible: { id: pencil } }
+  - await: { idle: true }
+  - tap: { id: pencil }
+  - await: { visible: { id: DOC.inlineRenameField } }
+  - tool: keyboard
+    args: { text: git-tools-fixture }
+  - tool: keyboard
+    args: { key: enter }
+  - await: { visible: { id: 'git-tools-fixture, Folder' } }
+  - await: { idle: true }
+  - launch:
+      ios:
+        app: bontecou.Sync-md.prqa
+        args: [-UITestGitToolsFixture, bookmark-resume, -AppleLanguages, '(en)', -AppleLocale, en_US]
+  - await: { visible: { text: Attention 1, role: Button } }
+  - await: { idle: true }
+  - tap: { text: 'main · syncmd-uitest-fixtures/git-tools-fixture' }
+  - await: { visible: { id: vault.title } }
+  - await: { idle: true }
+  - await: { visible: { text: 'README.md, modified', role: Button } }
+  - await: { visible: { text: Pull, role: Button } }
+  - echo: Native Pull must finish up-to-date without publishing the dirty note.
+  - tap: { text: Pull, role: Button }
+  - await: { visible: { text: Already up to date, role: StaticText } }
+  - await: { idle: true }
+  - await: { visible: { text: 'README.md, modified', role: Button } }
+  - launch: com.apple.DocumentsApp
+  - await: { visible: { id: 'git-tools-fixture, Folder' } }
+  - await: { idle: true }
+  - long-press: { id: 'git-tools-fixture, Folder' }
+  - await: { visible: { text: Move, role: Button } }
+  - await: { idle: true }
+  - tap: { id: folder.fill }
+  - await: { visible: { id: 'Browse View (Picker)' } }
+  - await: { idle: true }
+  - tap: { id: BackButton }
+  - await: { visible: { id: 'GitSync PR QA, Container' } }
+  - await: { idle: true }
+  - tap: { id: BackButton }
+  - await: { visible: { id: DOC.sidebar.item.On My iPhone } }
+  - await: { idle: true }
+  - tap: { id: DOC.sidebar.item.On My iPhone }
+  - await: { visible: { id: 'GitSync PR QA, Container' } }
+  - await: { idle: true }
+  - tap: { id: 'GitSync PR QA, Container' }
+  - await: { visible: { id: 'pr47-return-anchor, Folder' } }
+  - await: { idle: true }
+  - await: { hidden: { id: 'git-tools-fixture, Folder' } }
+  - tap: { id: DOCPicker.actionButton }
+  - await: { visible: { text: Folder is Empty, role: StaticText } }
+  - await: { idle: true }

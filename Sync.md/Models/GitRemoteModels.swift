@@ -183,7 +183,7 @@ struct GitRemoteURL: Equatable, Sendable {
         if slashParts.count == 2,
            !trimmed.contains("://"),
            !trimmed.contains(":"),
-           slashParts.allSatisfy({ !$0.isEmpty }) {
+           slashParts.allSatisfy({ !$0.isEmpty && $0 != "." && $0 != ".." }) {
             return GitRemoteURL(
                 rawValue: trimmed,
                 kind: .github,

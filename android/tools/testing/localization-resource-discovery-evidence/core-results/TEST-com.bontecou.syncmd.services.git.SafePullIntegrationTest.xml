@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.git.SafePullIntegrationTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-11-02T20:54:14" hostname="MacBook-Pro.local" time="0.98">
+  <properties/>
+  <testcase name="subdirectory is not treated as the registered repository root" classname="com.bontecou.syncmd.services.git.SafePullIntegrationTest" time="0.089"/>
+  <testcase name="deleted upstream cannot authorize a pull from a stale tracking ref" classname="com.bontecou.syncmd.services.git.SafePullIntegrationTest" time="0.113"/>
+  <testcase name="plan and pull use the configured remote and differently named upstream" classname="com.bontecou.syncmd.services.git.SafePullIntegrationTest" time="0.111"/>
+  <testcase name="ignored directory collision preserves nested contents and unrelated ignored files allow pull" classname="com.bontecou.syncmd.services.git.SafePullIntegrationTest" time="0.117"/>
+  <testcase name="detached head and active merge cannot produce executable plans" classname="com.bontecou.syncmd.services.git.SafePullIntegrationTest" time="0.053"/>
+  <testcase name="ignored local file is preserved when incoming commit would replace it" classname="com.bontecou.syncmd.services.git.SafePullIntegrationTest" time="0.108"/>
+  <testcase name="branch switch during credential resolution cannot pull into the replacement branch" classname="com.bontecou.syncmd.services.git.SafePullIntegrationTest" time="0.089"/>
+  <testcase name="head config and credential changes during authentication invalidate the pull" classname="com.bontecou.syncmd.services.git.SafePullIntegrationTest" time="0.3"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

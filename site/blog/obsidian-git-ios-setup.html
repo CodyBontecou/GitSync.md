@@ -31,6 +31,9 @@
 <meta name="twitter:description" content="Configure a GitHub Personal Access Token manually in Obsidian Git on iPhone. Set commit author details, check authentication, and verify your first push.">
 <meta name="twitter:image" content="https://gitsync.md/social/blog/obsidian-git-ios-setup.png">
 <meta name="twitter:image:alt" content="GitSync.md guide card: Set Up an Obsidian Git Token on iPhone">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="../site.css">
 <link rel="stylesheet" href="../content.css">
 <style>
@@ -93,24 +96,26 @@
 <!-- ─── NAV ─── -->
 <header class="site-header">
   <nav class="shell navigation" aria-label="Main navigation">
-    <a class="brand" href="/" aria-label="GitSync.md home"><span class="brand-mark" aria-hidden="true"><img src="../assets/gitsync-app-icon.png" width="192" height="192" alt="" decoding="async"></span>GITSYNC<span class="brand-extension">.MD</span></a>
-    <div class="nav-links"><a href="/#features">The app</a><a href="/#workflow">How it works</a><a href="/blog/">Guides <span aria-hidden="true">↗</span></a></div>
-    <a class="button button-small" href="/#download">Get the app <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-external"/></svg></a>
+    <a class="brand" href="/" aria-label="GitSync.md home">gitsync<span class="brand-extension">.md</span></a>
+    <div class="nav-links"><a href="/#app">The app</a><a href="/#workflow">How it works</a><a href="/blog/" class="is-active">Guides</a><a href="/compare/obsidian-sync-vs-git">Compare</a><a href="/#faq">FAQ</a></div>
+    <a class="button button-small" href="/#download">Get the app</a>
   </nav>
 </header>
 
 <!-- ─── ARTICLE ─── -->
 <main id="main">
-<header class="article-hero">
-  <div class="container">
-    <div class="hero-grid">
-      <div class="article-title">
+<div class="container guide-layout">
+      <header class="article-hero">
+        <div class="article-title">
         <nav class="eyebrow article-breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li><a href="/blog/">Guides</a></li><li aria-current="page">Manual Obsidian Git setup</li></ol></nav>
         <h1>Set up a GitHub token in Obsidian Git on iPhone</h1>
         <p class="subtitle">Use this manual setup when you want to configure GitHub credentials directly in Obsidian Git. Set the commit author and token separately, then verify a pull and push from your iPhone.</p>
         <div class="meta-line"><span>By <a href="/about" rel="author">Cody Bontecou</a></span><span>Published February 15, 2026</span><span>Updated October 26, 2026 — Guide</span></div>
       </div>
-      <aside class="toc-card" aria-label="Article outline">
+      </header>
+      <aside class="guide-aside" aria-label="Guide sidebar">
+        <div class="guide-aside-sticky">
+        <nav class="toc-card" aria-label="Article outline">
         <div class="toc-title">What this covers</div>
         <ol>
           <li><a href="#choose-sync">Choose a sync workflow</a></li>
@@ -124,13 +129,14 @@
           <li><a href="#daily-workflow">Daily workflow</a></li>
           <li><a href="#troubleshooting">Troubleshooting</a></li>
         </ol>
+      </nav>
+        <div class="aside-cta aside-cta-wide">
+          <p class="aside-cta-title">Real Git on your iPhone.</p>
+          <p class="aside-cta-price">iPhone + iPad: $9.99 once · No subscription</p>
+          <a class="aside-cta-button" href="/v/web-homepage-103" target="_blank" rel="noopener">Download on the App Store</a>
+        </div>
+        </div>
       </aside>
-    </div>
-  </div>
-</header>
-
-  <div class="container">
-    <div class="article-shell article-shell-single">
       <article class="article-body">
     <div class="callout">
       <span class="callout-label">Already signed into GitSync.md?</span>
@@ -340,7 +346,6 @@
 
       </article>
     </div>
-  </div>
   <section class="content-download" aria-labelledby="download-heading">
     <div class="shell content-download-layout">
       <div>
@@ -351,9 +356,9 @@
       <div>
         <div class="store-links" role="group" aria-label="Download GitSync.md">
           <a class="store-badge store-badge-apple" href="/v/web-homepage-103" target="_blank" rel="noopener"><img src="../assets/store-badges/download-on-app-store.svg" width="120" height="40" alt="Download GitSync.md on the App Store" decoding="async"></a>
-          <a class="store-badge store-badge-google" href="https://play.google.com/store/apps/details?id=md.gitsync.md" target="_blank" rel="noopener"><img src="../assets/store-badges/get-it-on-google-play.png" width="646" height="250" alt="Get GitSync.md on Google Play" decoding="async"></a>
+          <a class="store-badge store-badge-google" href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener"><img src="../assets/store-badges/get-it-on-google-play.png" width="646" height="250" alt="Get GitSync.md on Google Play" decoding="async"></a>
         </div>
-        <p class="purchase-note"><span>iPhone + iPad: $19.99 once. Unlimited repositories.</span><span>Android: $9.99 once. All features included.</span><span>No subscriptions.</span></p>
+        <p class="purchase-note"><span>iPhone + iPad: $9.99 once. Unlimited repositories.</span><span>Android: $9.99 once. All features included.</span><span>No subscriptions.</span></p>
       </div>
     </div>
   </section>
@@ -362,9 +367,9 @@
 <!-- ─── FOOTER ─── -->
 <footer class="site-footer">
   <div class="shell footer-layout">
-    <a class="brand" href="/" aria-label="GitSync.md home"><span class="brand-mark" aria-hidden="true"><img src="../assets/gitsync-app-icon.png" width="192" height="192" alt="" decoding="async"></span>GITSYNC<span class="brand-extension">.MD</span></a>
+    <a class="brand" href="/" aria-label="GitSync.md home">gitsync<span class="brand-extension">.md</span></a>
     <p>Independently built by <a href="https://codybontecou.com" target="_blank" rel="noopener">Cody Bontecou</a>.<br>© 2026 GitSync.md</p>
-    <div class="footer-links"><a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener">Source</a><a href="/blog/">Guides</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
+    <div class="footer-links"><a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener">Source</a><a href="/blog/">Guides</a><a href="/compare/obsidian-sync-vs-git">Compare</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
     <a class="back-top" href="#top" aria-label="Back to top">↑</a>
   </div>
 </footer>

@@ -1,0 +1,17 @@
+Test Case '-[SyncMDTests.VaultWatchTests testAutoCommitNeedsChangesAndFiresOncePerPause]' started.
+Test Case '-[SyncMDTests.VaultWatchTests testAutoCommitNeedsChangesAndFiresOncePerPause]' passed (0.006 seconds).
+Test Case '-[SyncMDTests.VaultWatchTests testAutoCommitSettingIsPerVault]' started.
+Test Case '-[SyncMDTests.VaultWatchTests testAutoCommitSettingIsPerVault]' passed (0.005 seconds).
+Test Case '-[SyncMDTests.VaultWatchTests testAutoCommitWaitsForTwoMinutePause]' started.
+Test Case '-[SyncMDTests.VaultWatchTests testAutoCommitWaitsForTwoMinutePause]' passed (0.001 seconds).
+Test Case '-[SyncMDTests.VaultWatchTests testFutureFileDateBecomesIdleAndEligibleAfterObservedPause]' started.
+Test Case '-[SyncMDTests.VaultWatchTests testFutureFileDateBecomesIdleAndEligibleAfterObservedPause]' passed (0.001 seconds).
+Test Case '-[SyncMDTests.VaultWatchTests testHistoricalFileDatesKeepTheirExistingAge]' started.
+Test Case '-[SyncMDTests.VaultWatchTests testHistoricalFileDatesKeepTheirExistingAge]' passed (0.005 seconds).
+Test Case '-[SyncMDTests.VaultWatchTests testWatchedFoldersSkipHiddenFolders]' started.
+Test Case '-[SyncMDTests.VaultWatchTests testWatchedFoldersSkipHiddenFolders]' passed (0.005 seconds).
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.024 (0.029) seconds
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.024 (0.030) seconds
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.024 (0.031) seconds
+	/tmp/gitsync-ios-navigation-fixes/Logs/Test/Test-Sync.md-2026.11.08_08-24-29--0400.xcresult
+** TEST SUCCEEDED **

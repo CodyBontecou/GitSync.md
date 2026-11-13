@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.git.RevertPreflightTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-11-02T19:08:54" hostname="MacBook-Pro.local" time="0.202">
+  <properties/>
+  <testcase name="dirty revert rejects every local change before author resolution and retains exact files index refs and config" classname="com.bontecou.syncmd.services.git.RevertPreflightTest" time="0.075"/>
+  <testcase name="active merge and revert metadata block a clean revert without changing the pending operation" classname="com.bontecou.syncmd.services.git.RevertPreflightTest" time="0.026"/>
+  <testcase name="clean revert creates one local inverse commit with resolved identity and keeps unrelated ignored data" classname="com.bontecou.syncmd.services.git.RevertPreflightTest" time="0.025"/>
+  <testcase name="changes during author lookup invalidate the revert while retaining the external writer state" classname="com.bontecou.syncmd.services.git.RevertPreflightTest" time="0.075"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

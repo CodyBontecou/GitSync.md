@@ -5,6 +5,13 @@ import Foundation
 protocol PremiumBackgroundProcessingTask: AnyObject {
     var expirationHandler: (() -> Void)? { get set }
     func complete(success: Bool)
+    /// Which kind of BGTask iOS launched, when known. Used to report the
+    /// execution budget in run records and the debug log.
+    var kind: PremiumBackgroundTaskKind? { get }
+}
+
+extension PremiumBackgroundProcessingTask {
+    var kind: PremiumBackgroundTaskKind? { nil }
 }
 
 @MainActor
@@ -32,11 +39,25 @@ final class SystemPremiumBackgroundProcessingTask: PremiumBackgroundProcessingTa
         set { task.expirationHandler = newValue }
     }
     func complete(success: Bool) { task.setTaskCompleted(success: success) }
+    var kind: PremiumBackgroundTaskKind? {
+        if task is BGAppRefreshTask { return .appRefresh }
+        if task is BGProcessingTask { return .processing }
+        return nil
+    }
 }
 
 enum PremiumBackgroundTaskKind: String, Hashable, Sendable {
     case appRefresh = "app-refresh"
     case processing
+
+    /// Approximate execution budget iOS grants for this task kind. App refresh
+    /// windows are about 30 seconds; processing windows are discretionary.
+    var approximateBudget: TimeInterval? {
+        switch self {
+        case .appRefresh: 30
+        case .processing: nil
+        }
+    }
 }
 
 /// A platform-neutral description of the request handed to
@@ -200,7 +221,8 @@ final class SystemPremiumBackgroundProcessingScheduler: PremiumBackgroundProcess
                     event.level,
                     category: "background-sync",
                     event.message,
-                    detail: event.detail
+                    detail: event.detail,
+                    background: true
                 )
             }
         )

@@ -56,6 +56,9 @@
   "mainEntityOfPage": "https://gitsync.md/blog/obsidian-git-iphone-ipad"
 }
 </script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="../site.css">
 <link rel="stylesheet" href="../content.css">
 <script type="application/ld+json">
@@ -95,17 +98,16 @@
 
 <header class="site-header">
   <nav class="shell navigation" aria-label="Main navigation">
-    <a class="brand" href="/" aria-label="GitSync.md home"><span class="brand-mark" aria-hidden="true"><img src="../assets/gitsync-app-icon.png" width="192" height="192" alt="" decoding="async"></span>GITSYNC<span class="brand-extension">.MD</span></a>
-    <div class="nav-links"><a href="/#features">The app</a><a href="/#workflow">How it works</a><a href="/blog/">Guides <span aria-hidden="true">↗</span></a></div>
-    <a class="button button-small" href="/#download">Get the app <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-external"/></svg></a>
+    <a class="brand" href="/" aria-label="GitSync.md home">gitsync<span class="brand-extension">.md</span></a>
+    <div class="nav-links"><a href="/#app">The app</a><a href="/#workflow">How it works</a><a href="/blog/" class="is-active">Guides</a><a href="/compare/obsidian-sync-vs-git">Compare</a><a href="/#faq">FAQ</a></div>
+    <a class="button button-small" href="/#download">Get the app</a>
   </nav>
 </header>
 
 <main id="main">
-<header class="article-hero">
-  <div class="container">
-    <div class="hero-grid">
-      <div class="article-title">
+<div class="container guide-layout">
+      <header class="article-hero">
+        <div class="article-title">
         <nav class="eyebrow article-breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li><a href="/blog/">Guides</a></li><li aria-current="page">Obsidian Git on iPhone</li></ol></nav>
         <h1>How to sync Obsidian with Git on iPhone and iPad<span class="accent">.</span></h1>
         <p class="subtitle">To sync Obsidian with Git on iPhone or iPad, put the vault in a local Git working copy that both apps can open. GitSync.md can clone an existing repository or publish a local vault to GitHub. Write in Obsidian, then pull, commit, and push with GitSync.md or the separately configured Obsidian Git plugin.</p>
@@ -115,7 +117,21 @@
           <span>iPhone + iPad</span>
         </div>
       </div>
-      <aside class="toc-card" aria-label="Article outline">
+      </header>
+      <aside class="guide-aside" aria-label="Guide sidebar">
+        <section class="side-note" aria-label="Article notes">
+        <h2>Details checked</h2>
+        <p>This guide matches the current GitSync.md positioning:</p>
+        <ul>
+          <li>iPhone and iPad support</li>
+          <li>real local Git operations via libgit2</li>
+          <li>iOS Files integration</li>
+          <li>GitHub plus manual self-hosted remotes</li>
+          <li><code>syncmd://</code> x-callback-url automation</li>
+        </ul>
+      </section>
+        <div class="guide-aside-sticky">
+        <nav class="toc-card" aria-label="Article outline">
         <div class="toc-title">What this covers</div>
         <ol>
           <li><a href="#clone-into-files">Clone an Obsidian vault into iOS Files</a></li>
@@ -123,14 +139,14 @@
           <li><a href="#open-in-obsidian">Open the vault on iPhone or iPad</a></li>
           <li><a href="#configure-obsidian-git">Trigger pull, commit, and push from Obsidian</a></li>
         </ol>
+      </nav>
+        <div class="aside-cta aside-cta-wide">
+          <p class="aside-cta-title">Real Git on your iPhone.</p>
+          <p class="aside-cta-price">iPhone + iPad: $9.99 once · No subscription</p>
+          <a class="aside-cta-button" href="/v/web-homepage-102" target="_blank" rel="noopener">Download on the App Store</a>
+        </div>
+        </div>
       </aside>
-    </div>
-  </div>
-</header>
-
-
-  <div class="container">
-    <div class="article-shell">
       <article class="article-body">
         <div class="tldr">
           <div class="tldr-title">Short version</div>
@@ -188,7 +204,7 @@
           <li><strong>Obsidian</strong> on the same iPhone or iPad.</li>
           <li><strong>A Git remote</strong> containing your vault. GitHub is the easiest path, but GitSync.md also supports manually entered remotes such as GitLab, Gitea, Bitbucket, or a self-hosted server over HTTPS token/password or SSH private key.</li>
         </ul>
-        <p>GitSync.md requires iOS 17 or iPadOS 17 or later and costs $19.99 once on the US App Store. Regional prices vary. Obsidian Git and GitSync.md Connect are separate community plugins; Connect requires GitSync.md 2.8.0 or later. Version 2.8.1 also supports connecting vaults published from a local folder.</p>
+        <p>GitSync.md requires iOS 17 or iPadOS 17 or later and costs $9.99 once on the US App Store. Regional prices vary. Obsidian Git and GitSync.md Connect are separate community plugins; Connect requires GitSync.md 2.8.0 or later. Version 2.8.1 also supports connecting vaults published from a local folder.</p>
         <h2 id="choose-start">Start with your existing vault</h2>
         <ul>
           <li><strong>Already in a Git remote:</strong> follow the clone instructions below. The repository root should be your vault root.</li>
@@ -294,20 +310,7 @@ syncmd://x-callback-url/status?repo=MyVault</code></pre>
           <ul><li><a href="/blog/gitsync-connect-obsidian-git">Connect Obsidian Git with your existing GitHub sign-in</a></li><li><a href="/blog/obsidian-git-ios-setup">Configure a GitHub token manually</a></li><li><a href="/blog/shortcuts-automation-ios">Trigger Git actions with Apple Shortcuts</a></li><li><a href="/blog/self-hosted-git-ssh-ios">Use a self-hosted remote with GitSync.md</a></li></ul>
         </div>
       </article>
-
-      <aside class="side-note" aria-label="Article notes">
-        <h2>Details checked</h2>
-        <p>This guide matches the current GitSync.md positioning:</p>
-        <ul>
-          <li>iPhone and iPad support</li>
-          <li>real local Git operations via libgit2</li>
-          <li>iOS Files integration</li>
-          <li>GitHub plus manual self-hosted remotes</li>
-          <li><code>syncmd://</code> x-callback-url automation</li>
-        </ul>
-      </aside>
     </div>
-  </div>
 
   <section class="content-download" aria-labelledby="download-heading">
     <div class="shell content-download-layout">
@@ -319,9 +322,9 @@ syncmd://x-callback-url/status?repo=MyVault</code></pre>
       <div>
         <div class="store-links" role="group" aria-label="Download GitSync.md">
           <a class="store-badge store-badge-apple" href="/v/web-homepage-102" target="_blank" rel="noopener"><img src="../assets/store-badges/download-on-app-store.svg" width="120" height="40" alt="Download GitSync.md on the App Store" decoding="async"></a>
-          <a class="store-badge store-badge-google" href="https://play.google.com/store/apps/details?id=md.gitsync.md" target="_blank" rel="noopener"><img src="../assets/store-badges/get-it-on-google-play.png" width="646" height="250" alt="Get GitSync.md on Google Play" decoding="async"></a>
+          <a class="store-badge store-badge-google" href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener"><img src="../assets/store-badges/get-it-on-google-play.png" width="646" height="250" alt="Get GitSync.md on Google Play" decoding="async"></a>
         </div>
-        <p class="purchase-note"><span>iPhone + iPad: $19.99 once. Unlimited repositories.</span><span>Android: $9.99 once. All features included.</span><span>No subscriptions.</span></p>
+        <p class="purchase-note"><span>iPhone + iPad: $9.99 once. Unlimited repositories.</span><span>Android: $9.99 once. All features included.</span><span>No subscriptions.</span></p>
       </div>
     </div>
   </section>
@@ -329,9 +332,9 @@ syncmd://x-callback-url/status?repo=MyVault</code></pre>
 
 <footer class="site-footer">
   <div class="shell footer-layout">
-    <a class="brand" href="/" aria-label="GitSync.md home"><span class="brand-mark" aria-hidden="true"><img src="../assets/gitsync-app-icon.png" width="192" height="192" alt="" decoding="async"></span>GITSYNC<span class="brand-extension">.MD</span></a>
+    <a class="brand" href="/" aria-label="GitSync.md home">gitsync<span class="brand-extension">.md</span></a>
     <p>Independently built by <a href="https://codybontecou.com" target="_blank" rel="noopener">Cody Bontecou</a>.<br>© 2026 GitSync.md</p>
-    <div class="footer-links"><a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener">Source</a><a href="/blog/">Guides</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
+    <div class="footer-links"><a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener">Source</a><a href="/blog/">Guides</a><a href="/compare/obsidian-sync-vs-git">Compare</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
     <a class="back-top" href="#top" aria-label="Back to top">↑</a>
   </div>
 </footer>

@@ -1,0 +1,6 @@
+<resources>
+    <string name="rebase_problem_active_operation">Finish the active Git operation before starting a rebase.</string>
+    <string name="rebase_problem_local_branch">Switch to a local branch before rebasing.</string>
+    <string name="rebase_problem_local_changes">Commit or stash all local changes before rebasing.</string>
+    <string name="rebase_problem_upstream">Configure a remote upstream branch before rebasing.</string>
+</resources>

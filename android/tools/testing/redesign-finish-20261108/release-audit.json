@@ -1,0 +1,107 @@
+{
+  "scope": "Repository files only; no current Google Play state established",
+  "base_commit": "ef9bcb23c980024f6eabc6967cbf792f1515a95d",
+  "applicationId": "com.bontecou.syncmd",
+  "versionName": "1.1.0",
+  "versionCode": 11,
+  "locales": 26,
+  "listing_text": {
+    "title.txt": {
+      "limit": 30,
+      "missing": [],
+      "over_limit": []
+    },
+    "short-description.txt": {
+      "limit": 80,
+      "missing": [
+        "en-US"
+      ],
+      "over_limit": []
+    },
+    "full-description.txt": {
+      "limit": 4000,
+      "missing": [
+        "en-US"
+      ],
+      "over_limit": []
+    }
+  },
+  "legacy_upload_package": "md.gitsync.md",
+  "legacy_manifest_missing_current_paths": [
+    "phone-screenshots/01-clone-real-repos-1080x1920.png",
+    "phone-screenshots/02-repo-health-1080x1920.png",
+    "phone-screenshots/03-git-control-1080x1920.png",
+    "phone-screenshots/04-line-by-line-diff-1080x1920.png",
+    "phone-screenshots/05-ready-to-push-1080x1920.png"
+  ],
+  "graphics_verified_count": 494,
+  "graphics_count_per_locale": {
+    "ar": 19,
+    "da-DK": 19,
+    "de-DE": 19,
+    "en-US": 19,
+    "es-ES": 19,
+    "fi-FI": 19,
+    "fr-FR": 19,
+    "hi-IN": 19,
+    "hu-HU": 19,
+    "id": 19,
+    "it-IT": 19,
+    "iw-IL": 19,
+    "ja-JP": 19,
+    "ko-KR": 19,
+    "nl-NL": 19,
+    "no-NO": 19,
+    "pl-PL": 19,
+    "pt-BR": 19,
+    "ru-RU": 19,
+    "sv-SE": 19,
+    "th": 19,
+    "tr-TR": 19,
+    "uk": 19,
+    "vi": 19,
+    "zh-CN": 19,
+    "zh-TW": 19
+  },
+  "graphics_format_counts": [
+    {
+      "width": 1024,
+      "height": 500,
+      "mode": "RGB",
+      "format": "PNG",
+      "count": 26
+    },
+    {
+      "width": 2752,
+      "height": 1548,
+      "mode": "RGB",
+      "format": "JPEG",
+      "count": 250
+    },
+    {
+      "width": 1080,
+      "height": 1920,
+      "mode": "RGB",
+      "format": "JPEG",
+      "count": 200
+    },
+    {
+      "width": 2752,
+      "height": 1548,
+      "mode": "RGB",
+      "format": "PNG",
+      "count": 10
+    },
+    {
+      "width": 1080,
+      "height": 1920,
+      "mode": "RGB",
+      "format": "PNG",
+      "count": 8
+    }
+  ],
+  "visual_spot_checks": [
+    "en-US/graphics/phone-screenshots/01-hook-1080x1920.png",
+    "en-US/graphics/tablet-screenshots/01-workspace.png"
+  ]
+}

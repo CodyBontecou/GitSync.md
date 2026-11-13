@@ -1,0 +1,4 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <solid android:color="@color/pull_all_widget_tonal" />
+    <corners android:radius="22dp" />
+</shape>

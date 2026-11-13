@@ -48,6 +48,7 @@ screenshots/
 !site/screenshots/
 site/screenshots/*
 !site/screenshots/*-660.webp
+!android/play-store-screenshots/screenshots/
 
 # App Store metadata
 metadata/
@@ -70,3 +71,6 @@ scripts/app-store-images/node_modules/
 docs/evidence/obsidian-*/
 docs/evidence/*pricing-*/
 docs/evidence/local-only-*/
+
+# Claude Code local agent worktrees
+.claude/worktrees/

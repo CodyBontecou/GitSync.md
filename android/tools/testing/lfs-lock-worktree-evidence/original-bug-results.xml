@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest" tests="3" skipped="0" failures="3" errors="0" timestamp="2026-11-02T19:20:03" hostname="MacBook-Pro.local" time="1.803">
+  <properties/>
+  <testcase name="lockCreationRejectsReplacementWorkingFolderWithOriginalMetadata" classname="com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest" time="0.91">
+    <failure message="expected instance of: com.bontecou.syncmd.services.git.lfs.LfsLockReviewChanged&#10;but was             : null" type="com.google.common.truth.AssertionErrorWithFacts">expected instance of: com.bontecou.syncmd.services.git.lfs.LfsLockReviewChanged
+but was             : null
+	at app//com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest.rejectReplacedLockWorktree(LfsNetworkIntegrationTest.kt:398)
+	at app//com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest.access$rejectReplacedLockWorktree(LfsNetworkIntegrationTest.kt:24)
+	at app//com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest$rejectReplacedLockWorktree$1.invokeSuspend(LfsNetworkIntegrationTest.kt)
+	at app//kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+	at app//kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:104)
+	at app//kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:277)
+	at app//kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:95)
+	at app//kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:69)
+	at app//kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source)
+	at app//kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:48)
+	at app//kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source)
+	at app//com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest.lockCreationRejectsReplacementWorkingFolderWithOriginalMetadata(LfsNetworkIntegrationTest.kt:366)
+</failure>
+  </testcase>
+  <testcase name="forceReleaseRejectsReplacementWorkingFolderWithOriginalMetadata" classname="com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest" time="0.412">
+    <failure message="expected instance of: com.bontecou.syncmd.services.git.lfs.LfsLockReviewChanged&#10;but was             : null" type="com.google.common.truth.AssertionErrorWithFacts">expected instance of: com.bontecou.syncmd.services.git.lfs.LfsLockReviewChanged
+but was             : null
+	at app//com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest.rejectReplacedLockWorktree(LfsNetworkIntegrationTest.kt:398)
+	at app//com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest.access$rejectReplacedLockWorktree(LfsNetworkIntegrationTest.kt:24)
+	at app//com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest$rejectReplacedLockWorktree$1.invokeSuspend(LfsNetworkIntegrationTest.kt)
+	at app//kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+	at app//kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:104)
+	at app//kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:277)
+	at app//kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:95)
+	at app//kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:69)
+	at app//kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source)
+	at app//kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:48)
+	at app//kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source)
+	at app//com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest.forceReleaseRejectsReplacementWorkingFolderWithOriginalMetadata(LfsNetworkIntegrationTest.kt:368)
+</failure>
+  </testcase>
+  <testcase name="lockReleaseRejectsReplacementWorkingFolderWithOriginalMetadata" classname="com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest" time="0.481">
+    <failure message="expected instance of: com.bontecou.syncmd.services.git.lfs.LfsLockReviewChanged&#10;but was             : null" type="com.google.common.truth.AssertionErrorWithFacts">expected instance of: com.bontecou.syncmd.services.git.lfs.LfsLockReviewChanged
+but was             : null
+	at app//com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest.rejectReplacedLockWorktree(LfsNetworkIntegrationTest.kt:398)
+	at app//com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest.access$rejectReplacedLockWorktree(LfsNetworkIntegrationTest.kt:24)
+	at app//com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest$rejectReplacedLockWorktree$1.invokeSuspend(LfsNetworkIntegrationTest.kt)
+	at app//kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+	at app//kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:104)
+	at app//kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:277)
+	at app//kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:95)
+	at app//kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:69)
+	at app//kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source)
+	at app//kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:48)
+	at app//kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source)
+	at app//com.bontecou.syncmd.services.git.lfs.LfsNetworkIntegrationTest.lockReleaseRejectsReplacementWorkingFolderWithOriginalMetadata(LfsNetworkIntegrationTest.kt:367)
+</failure>
+  </testcase>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+Nov 02, 2026 3:20:04 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit14500348247988768685/junit17238255052853422486/.gitsync-clone-6160650257590206585
+Nov 02, 2026 3:20:04 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=main commit=8472ce743e303b021c8ef4e8f983e19d0cd4aaa7
+Nov 02, 2026 3:20:04 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 2 files, skipped 0
+Nov 02, 2026 3:20:04 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/main (8472ce7)
+Nov 02, 2026 3:20:04 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit2952612879033021744/junit15344047587360214551/.gitsync-clone-15007065577046589232
+Nov 02, 2026 3:20:04 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=main commit=8472ce743e303b021c8ef4e8f983e19d0cd4aaa7
+Nov 02, 2026 3:20:04 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 2 files, skipped 0
+Nov 02, 2026 3:20:04 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/main (8472ce7)
+Nov 02, 2026 3:20:05 PM com.bontecou.syncmd.services.git.LocalGitRepository$clone$3 invokeSuspend
+WARNING: clone() starting no-checkout clone to /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/junit12698136482443466680/junit11762988369602338075/.gitsync-clone-14009658501702701552
+Nov 02, 2026 3:20:05 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: branch=main commit=1ef6a88746533acde279f8117f9ea77d28b4ee41
+Nov 02, 2026 3:20:05 PM com.bontecou.syncmd.services.git.LocalGitRepository manualCheckoutTree
+WARNING: manualCheckout: wrote 2 files, skipped 0
+Nov 02, 2026 3:20:05 PM com.bontecou.syncmd.services.git.LocalGitRepository checkoutAfterNoCheckoutClone
+WARNING: manualCheckout: HEAD -> refs/heads/main (1ef6a88)
+]]></system-err>
+</testsuite>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.ui.viewmodels.RepositoryDeletionReviewTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-11-02T21:04:33" hostname="MacBook-Pro.local" time="0.22">
+  <properties/>
+  <testcase name="mismatchedPlanCannotDeleteAnotherFolder" classname="com.bontecou.syncmd.ui.viewmodels.RepositoryDeletionReviewTest" time="0.04"/>
+  <testcase name="changedStorageOwnershipRequiresReview" classname="com.bontecou.syncmd.ui.viewmodels.RepositoryDeletionReviewTest" time="0.026"/>
+  <testcase name="changedCatalogAliasRequiresReview" classname="com.bontecou.syncmd.ui.viewmodels.RepositoryDeletionReviewTest" time="0.025"/>
+  <testcase name="anotherFolderReviewDoesNotRetargetQueuedConsent" classname="com.bontecou.syncmd.ui.viewmodels.RepositoryDeletionReviewTest" time="0.03"/>
+  <testcase name="cancelledQueuedReviewDoesNotDelete" classname="com.bontecou.syncmd.ui.viewmodels.RepositoryDeletionReviewTest" time="0.026"/>
+  <testcase name="sameFolderRereviewRevokesQueuedConsent" classname="com.bontecou.syncmd.ui.viewmodels.RepositoryDeletionReviewTest" time="0.023"/>
+  <testcase name="catalogRemovalRevokesQueuedConsent" classname="com.bontecou.syncmd.ui.viewmodels.RepositoryDeletionReviewTest" time="0.024"/>
+  <testcase name="currentReviewDeletesExactlyItsCheckout" classname="com.bontecou.syncmd.ui.viewmodels.RepositoryDeletionReviewTest" time="0.024"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

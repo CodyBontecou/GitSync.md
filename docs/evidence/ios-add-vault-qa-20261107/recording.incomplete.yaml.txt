@@ -1,0 +1,13 @@
+steps:
+  - tap:
+      id: chevron.backward
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: home.addRepository
+      timeoutMs: 3000
+  - tap:
+      id: Toolbar
+executionPrerequisite: Owned local Git fixture on simulator
+  25D7DB92-8559-40B8-9C72-97A8247158E1; app at vault Files screen.

@@ -1,0 +1,109 @@
+steps:
+  - launch:
+      native: bontecou.Sync-md.prqa
+      ios:
+        app: bontecou.Sync-md.prqa
+        args:
+          - -UITestGitToolsFixture
+          - bookmark-parent
+          - -AppleLanguages
+          - (en)
+          - -AppleLocale
+          - en_US
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Attention 1
+        role: Button
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Folder Access Unavailable
+        role: StaticText
+  - echo: Home correctly counts unavailable access as Attention. Open the retained
+      vault to recover without cloning.
+  - tap:
+      text: git-tools-fixture, main · syncmd-uitest-fixtures/git-tools-fixture,
+        paused, Folder Access Unavailable
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: vault.reauthorizeFolder
+  - echo: Open Vault settings from the 44pt recovery action.
+  - tap:
+      id: vault.reauthorizeFolder
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Vault settings
+  - echo: Reveal This vault recovery controls, without editing configuration.
+  - tool: gesture-swipe
+    args:
+      fromX: 0.5
+      fromY: 0.85
+      toX: 0.5
+      toY: 0.3
+      durationMs: 400
+      momentum: false
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: repository.reauthorizeFolder
+  - tool: await-ui-element
+    args:
+      condition: text
+      selector:
+        identifier: repositorySettings.branch
+      expectedText: main
+      textMatch: equals
+  - echo: Open the native folder chooser; cancellation must retain the malformed
+      grant and saved repository.
+  - tap:
+      role: ScrollView
+  - echo: The prior point hit only scrolling content after layout settled; Settings
+      and all values are unchanged. Use the freshly observed recovery-button
+      frame.
+  - tap:
+      text: Reauthorize Folder
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: Browse View (Picker)
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Cancel
+        role: Button
+  - echo: Cancel the native folder chooser; expect the same unavailable-access
+      Settings, not an error or a changed repository.
+  - tap:
+      text: Cancel
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: repository.reauthorizeFolder
+  - echo: Cancel unchanged Settings; access must remain unavailable and the retained
+      vault must still be reachable.
+  - tap:
+      text: Cancel
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: vault.reauthorizeFolder
+  - tap:
+      id: BackButton
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Attention 1
+        role: Button

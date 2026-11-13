@@ -1,0 +1,24 @@
+{
+  "e2eTest": "qa-pr47-newfolder-selector",
+  "flow": "qa-pr47-newfolder-selector",
+  "device": "00008110-00046CC63CA0401E",
+  "executionPrerequisite": "Files On My iPhone More menu is open on physical iPhone; diagnostic selector probe only",
+  "ok": true,
+  "passed": 1,
+  "failed": 0,
+  "skipped": 0,
+  "errored": 0,
+  "steps": [
+    {
+      "index": 0,
+      "kind": "assert",
+      "e2eTest": "qa-pr47-newfolder-selector",
+      "target": "visible id=folder.badge.plus",
+      "status": "pass",
+      "durationMs": 155,
+      "flow": "qa-pr47-newfolder-selector"
+    }
+  ],
+  "startedAt": 1794596993774,
+  "durationMs": 156
+}

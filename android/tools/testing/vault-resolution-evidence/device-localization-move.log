@@ -1,0 +1,71 @@
+
+com.bontecou.syncmd.LocalizationTest:
+Error in translatedPluralsFollowAndroidRulesInEverySupportedLanguage(com.bontecou.syncmd.LocalizationTest):
+java.util.MissingFormatArgumentException: Format specifier '%2$s'
+	at java.util.Formatter.format(Formatter.java:2709)
+	at java.util.Formatter.format(Formatter.java:2640)
+	at java.lang.String.format(String.java:4078)
+	at com.bontecou.syncmd.LocalizationTest.translatedPluralsFollowAndroidRulesInEverySupportedLanguage(LocalizationTest.kt:137)
+.
+Error in everyImportedLocaleMatchesItsSourceCatalogAndUntranslatedTextFallsBackToEnglish(com.bontecou.syncmd.LocalizationTest):
+java.lang.ArrayIndexOutOfBoundsException: length=3; index=4
+	at java.util.Arrays$ArrayList.get(Arrays.java:4599)
+	at com.bontecou.syncmd.LocalizationTest.arguments(LocalizationTest.kt:65)
+	at com.bontecou.syncmd.LocalizationTest.everyImportedLocaleMatchesItsSourceCatalogAndUntranslatedTextFallsBackToEnglish(LocalizationTest.kt:101)
+..
+Error in workflowEnglishCopyPreservesReviewedSourceAndArguments(com.bontecou.syncmd.LocalizationTest):
+java.lang.ArrayIndexOutOfBoundsException: length=3; index=4
+	at java.util.Arrays$ArrayList.get(Arrays.java:4599)
+	at com.bontecou.syncmd.LocalizationTest.arguments(LocalizationTest.kt:65)
+	at com.bontecou.syncmd.LocalizationTest.workflowEnglishCopyPreservesReviewedSourceAndArguments(LocalizationTest.kt:117)
+.
+com.bontecou.syncmd.RepositoryMoveTest:...........
+Error in sameVolumeDeviceFolderMoveUsesRenameAndRevokedAccessPreventsMutation(com.bontecou.syncmd.RepositoryMoveTest):
+java.lang.IllegalStateException: Grant shared-storage access before instrumentation; changing it restarts the app.
+	at com.bontecou.syncmd.RepositoryMoveTest$sameVolumeDeviceFolderMoveUsesRenameAndRevokedAccessPreventsMutation$1.invokeSuspend(RepositoryMoveTest.kt:542)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:101)
+	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:263)
+	at kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:95)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:69)
+	at kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source:1)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:47)
+	at kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source:1)
+	at com.bontecou.syncmd.RepositoryMoveTest.sameVolumeDeviceFolderMoveUsesRenameAndRevokedAccessPreventsMutation(RepositoryMoveTest.kt:541)
+........
+
+Time: 36.979
+There were 4 failures:
+1) translatedPluralsFollowAndroidRulesInEverySupportedLanguage(com.bontecou.syncmd.LocalizationTest)
+java.util.MissingFormatArgumentException: Format specifier '%2$s'
+	at java.util.Formatter.format(Formatter.java:2709)
+	at java.util.Formatter.format(Formatter.java:2640)
+	at java.lang.String.format(String.java:4078)
+	at com.bontecou.syncmd.LocalizationTest.translatedPluralsFollowAndroidRulesInEverySupportedLanguage(LocalizationTest.kt:137)
+2) everyImportedLocaleMatchesItsSourceCatalogAndUntranslatedTextFallsBackToEnglish(com.bontecou.syncmd.LocalizationTest)
+java.lang.ArrayIndexOutOfBoundsException: length=3; index=4
+	at java.util.Arrays$ArrayList.get(Arrays.java:4599)
+	at com.bontecou.syncmd.LocalizationTest.arguments(LocalizationTest.kt:65)
+	at com.bontecou.syncmd.LocalizationTest.everyImportedLocaleMatchesItsSourceCatalogAndUntranslatedTextFallsBackToEnglish(LocalizationTest.kt:101)
+3) workflowEnglishCopyPreservesReviewedSourceAndArguments(com.bontecou.syncmd.LocalizationTest)
+java.lang.ArrayIndexOutOfBoundsException: length=3; index=4
+	at java.util.Arrays$ArrayList.get(Arrays.java:4599)
+	at com.bontecou.syncmd.LocalizationTest.arguments(LocalizationTest.kt:65)
+	at com.bontecou.syncmd.LocalizationTest.workflowEnglishCopyPreservesReviewedSourceAndArguments(LocalizationTest.kt:117)
+4) sameVolumeDeviceFolderMoveUsesRenameAndRevokedAccessPreventsMutation(com.bontecou.syncmd.RepositoryMoveTest)
+java.lang.IllegalStateException: Grant shared-storage access before instrumentation; changing it restarts the app.
+	at com.bontecou.syncmd.RepositoryMoveTest$sameVolumeDeviceFolderMoveUsesRenameAndRevokedAccessPreventsMutation$1.invokeSuspend(RepositoryMoveTest.kt:542)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:101)
+	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:263)
+	at kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:95)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:69)
+	at kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source:1)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:47)
+	at kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source:1)
+	at com.bontecou.syncmd.RepositoryMoveTest.sameVolumeDeviceFolderMoveUsesRenameAndRevokedAccessPreventsMutation(RepositoryMoveTest.kt:541)
+
+FAILURES!!!
+Tests run: 27,  Failures: 4
+
+

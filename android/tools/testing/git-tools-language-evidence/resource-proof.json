@@ -1,0 +1,198 @@
+{
+  "new_keys": [
+    "tide_git_headline_choose",
+    "tide_git_headline_nothing",
+    "tide_git_included",
+    "tide_git_hint_stage",
+    "tide_git_hint_message",
+    "tide_git_commit_locally",
+    "tide_git_committing",
+    "tide_git_pushing",
+    "tide_git_unstaged",
+    "tide_git_status_copied",
+    "tide_git_local_only",
+    "tide_git_remote",
+    "tide_git_resolve_and_stage",
+    "tide_git_resolving",
+    "tide_git_branch_operation",
+    "tide_git_git_operation",
+    "tide_git_force_delete",
+    "tide_git_normal_delete",
+    "tide_git_force_delete_detail",
+    "tide_git_normal_delete_detail",
+    "tide_git_strategy_ff",
+    "tide_git_strategy_recursive",
+    "tide_git_strategy_prefer_ff"
+  ],
+  "new_values": 575,
+  "mapped_git_strings": [
+    "tide_git_tools",
+    "tide_git_headline_complete_merge",
+    "tide_git_headline_choose",
+    "tide_git_headline_nothing",
+    "tide_git_message",
+    "tide_git_included",
+    "tide_git_hint_stage",
+    "tide_git_hint_message",
+    "tide_git_commit_locally",
+    "tide_git_committing",
+    "tide_git_push_current",
+    "tide_git_pushing",
+    "tide_git_unstaged",
+    "tide_git_status_added",
+    "tide_git_status_modified",
+    "tide_git_status_deleted",
+    "tide_git_status_renamed",
+    "tide_git_status_copied",
+    "tide_git_status_type_changed",
+    "tide_git_status_changed",
+    "tide_git_detached",
+    "tide_git_local_only",
+    "tide_git_remote",
+    "tide_git_resolve_and_stage",
+    "tide_git_resolving",
+    "tide_git_branch_operation",
+    "tide_git_git_operation",
+    "tide_git_annotated",
+    "tide_git_lightweight",
+    "tide_git_force_delete",
+    "tide_git_normal_delete",
+    "tide_git_force_delete_detail",
+    "tide_git_normal_delete_detail",
+    "tide_git_strategy_ff",
+    "tide_git_strategy_recursive",
+    "tide_git_strategy_prefer_ff"
+  ],
+  "mapped_git_plurals": [
+    "tide_git_headline_commit",
+    "tide_git_files_staged",
+    "tide_git_conflicts_to_resolve"
+  ],
+  "locales": {
+    "ar": {
+      "qualifier": "ar",
+      "verified_unformatted_values": 23,
+      "xml_sha256": "4af0d3c06a3ea2f7c58c4234fceaa29bbe2f073f942c431c14b8c4f291eb6f30"
+    },
+    "da": {
+      "qualifier": "da",
+      "verified_unformatted_values": 23,
+      "xml_sha256": "247e9efd27417f8d87dcb9aac615549feae643f924133341a4c62ebbbcef6ca0"
+    },
+    "de": {
+      "qualifier": "de",
+      "verified_unformatted_values": 23,
+      "xml_sha256": "6c48103f9af8b5ca6b17006fffe2708f96f3c5a594f8275e7c1c65ffa0dcda07"
+    },
+    "es": {
+      "qualifier": "es",
+      "verified_unformatted_values": 23,
+      "xml_sha256": "f9db23a2bd28040092cc790b730ea2e3afee778af3d8b9d89c2f6466cbb0aaff"
+    },
+    "fi": {
+      "qualifier": "fi",
+      "verified_unformatted_values": 23,
+      "xml_sha256": "63980889dc95cb798908acc66d19f89d25303ebeefdff8e3da4dcc7fd4f508ec"
+    },
+    "fr": {
+      "qualifier": "fr",
+      "verified_unformatted_values": 23,
+      "xml_sha256": "826454755d9ce95d9040a89fa209fd228c84a6b1178235ae21eeda7be2528083"
+    },
+    "he": {
+      "qualifier": "iw",
+      "verified_unformatted_values": 23,
+      "xml_sha256": "f94cd681e4609f13097d5d6ca03658121ada502d151731abedcaa20c126b2fa9"
+    },
+    "hi": {
+      "qualifier": "hi",
+      "verified_unformatted_values": 23,
+      "xml_sha256": "b076782fb34033fbdd8e81a1c723177db50c07feb6bd387812525e2017df9da9"
+    },
+    "hu": {
+      "qualifier": "hu",
+      "verified_unformatted_values": 23,
+      "xml_sha256": "182a3d11a2c7d0cc7d562adf55e9fd9f163b0f3f835cbfdfb820ca9aeae37254"
+    },
+    "id": {
+      "qualifier": "in",
+      "verified_unformatted_values": 23,
+      "xml_sha256": "2bcaf3ed7a3cd9696583921cb687b48cd68442da1fd808e64d0bc5979060f988"
+    },
+    "it": {
+      "qualifier": "it",
+      "verified_unformatted_values": 23,
+      "xml_sha256": "838f3fcb003d51b386d62556b86d42b9f4cb9ef12252ee524628a5db9a9c569d"
+    },
+    "ja": {
+      "qualifier": "ja",
+      "verified_unformatted_values": 23,
+      "xml_sha256": "0f1bb53ff64423dd796cefd9cce88b386199fc395288581af70bd96c0778d722"
+    },
+    "ko": {
+      "qualifier": "ko",
+      "verified_unformatted_values": 23,
+      "xml_sha256": "103a2e2573c88e2a60836a45f195a945dc6182214f05110f6b01b5691142a66f"
+    },
+    "nb": {
+      "qualifier": "nb",
+      "verified_unformatted_values": 23,
+      "xml_sha256": "828f3b2b239879a96c5ff112e4c02c55825b4cdd9361b7b268ad13b18cab88d2"
+    },
+    "nl": {
+      "qualifier": "nl",
+      "verified_unformatted_values": 23,
+      "xml_sha256": "9ed9acfe87dd48f1e6f72fe1503c496da7d0c4339f09a21da59921d331c2269b"
+    },
+    "pl": {
+      "qualifier": "pl",
+      "verified_unformatted_values": 23,
+      "xml_sha256": "204e88e501e65f2b8d47253457b4147cda9179e8dd0760bca02d9ee4a77a1dcc"
+    },
+    "pt-BR": {
+      "qualifier": "pt-rBR",
+      "verified_unformatted_values": 23,
+      "xml_sha256": "6452d5326e5976562e13806c4a32b89819f07942ed4ae44fed85bd602c2ea7d0"
+    },
+    "ru": {
+      "qualifier": "ru",
+      "verified_unformatted_values": 23,
+      "xml_sha256": "37649a2a33efdcd68e2c4482f3cc22dca85efbbc5d53c351475d98847eb69464"
+    },
+    "sv": {
+      "qualifier": "sv",
+      "verified_unformatted_values": 23,
+      "xml_sha256": "957edaba03546fd9e3663650fbb2d9cd340b05cd698e7463f8a879a634653efa"
+    },
+    "th": {
+      "qualifier": "th",
+      "verified_unformatted_values": 23,
+      "xml_sha256": "ba98bffb505094b780578c29442dd3e6aa715474c11b9cce4ca5b854a38c1baf"
+    },
+    "tr": {
+      "qualifier": "tr",
+      "verified_unformatted_values": 23,
+      "xml_sha256": "e46a54f6790cb81f12c0a086d540a88b92e2ce6474e3e9791df561a58a7b44ef"
+    },
+    "uk": {
+      "qualifier": "uk",
+      "verified_unformatted_values": 23,
+      "xml_sha256": "f2e4bc9b376e817845f3dcbb5ea1df705d2d78ffa77c0c3a406ec2bd40076197"
+    },
+    "vi": {
+      "qualifier": "vi",
+      "verified_unformatted_values": 23,
+      "xml_sha256": "eac27d73acaececc9b4609f14202acf23efc18ea2aa61351ffe547f0e8e3d32f"
+    },
+    "zh-Hans": {
+      "qualifier": "b+zh+Hans",
+      "verified_unformatted_values": 23,
+      "xml_sha256": "69752d7330ef79f108dcfbda940d9ea48837b2b373a90a327b74fc1723a5166c"
+    },
+    "zh-Hant": {
+      "qualifier": "b+zh+Hant",
+      "verified_unformatted_values": 23,
+      "xml_sha256": "bd02d551be8774c554e5be7d1cf8d194a6781d11338076f1c79272a1fead7dc6"
+    }
+  }
+}

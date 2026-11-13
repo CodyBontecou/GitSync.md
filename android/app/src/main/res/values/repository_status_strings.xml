@@ -1,0 +1,5 @@
+<resources>
+    <string name="repository_no_commits">No commits</string>
+    <string name="repository_sync_not_recorded">Not recorded</string>
+    <string name="repository_metadata_unavailable">Repository metadata unavailable</string>
+</resources>

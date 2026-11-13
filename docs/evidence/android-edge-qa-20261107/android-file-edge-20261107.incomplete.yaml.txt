@@ -1,0 +1,5 @@
+steps:
+  - tap:
+      role: ComposeView
+executionPrerequisite: Android debug build with existing Hello-World test vault
+  open on Changes; no pending edits. Local-only validation; no commit or push.

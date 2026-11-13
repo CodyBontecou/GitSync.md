@@ -414,3 +414,63 @@ private final class GitHubPublisherURLProtocol: URLProtocol {
 
     override func stopLoading() {}
 }
+
+final class GitHubRepoPreflightTests: XCTestCase {
+    private func entry(_ path: String, _ type: String = "blob") -> GitTreeEntry {
+        GitTreeEntry(path: path, mode: type == "tree" ? "040000" : "100644", type: type, sha: "0", size: nil)
+    }
+
+    func testLFSPatternsReadOnlyFilterLFSLines() {
+        let text = """
+        # attachments
+        *.png filter=lfs diff=lfs merge=lfs -text
+        *.md text eol=lf
+        assets/** filter=lfs diff=lfs merge=lfs -text
+
+        """
+        XCTAssertEqual(GitHubService.lfsPatterns(fromGitAttributes: text), ["*.png", "assets/**"])
+    }
+
+    func testLFSPatternMatchingFollowsGitattributesRules() {
+        let patterns = ["*.png", "assets/**", "/docs/*.pdf"]
+        XCTAssertTrue(GitHubService.matchesLFSPattern(path: "deep/folder/image.png", patterns: patterns))
+        XCTAssertTrue(GitHubService.matchesLFSPattern(path: "assets/a/b.bin", patterns: patterns))
+        XCTAssertTrue(GitHubService.matchesLFSPattern(path: "docs/guide.pdf", patterns: patterns))
+        XCTAssertFalse(GitHubService.matchesLFSPattern(path: "other/docs/guide.pdf", patterns: patterns))
+        XCTAssertFalse(GitHubService.matchesLFSPattern(path: "note.md", patterns: patterns))
+    }
+
+    func testApplyTreeCountsFilesLFSAndObsidian() {
+        var result = GitHubRepoPreflight(canPush: true, defaultBranch: "main", sizeInBytes: 1024)
+        GitHubService.applyTree(
+            [
+                entry(".obsidian", "tree"),
+                entry(".obsidian/app.json"),
+                entry(".obsidian/plugins/obsidian-git", "tree"),
+                entry(".obsidian/plugins/obsidian-git/main.js"),
+                entry("Daily", "tree"),
+                entry("Daily/2026-11-03.md"),
+                entry("img/photo.png"),
+            ],
+            truncated: false,
+            lfsPatterns: ["*.png"],
+            to: &result
+        )
+        XCTAssertEqual(result.fileCount, 4)
+        XCTAssertEqual(result.lfsFileCount, 1)
+        XCTAssertTrue(result.hasObsidianFolder)
+        XCTAssertTrue(result.hasObsidianGitPlugin)
+        XCTAssertFalse(result.isEmpty)
+        XCTAssertTrue(result.isReady)
+    }
+
+    func testReadOnlyAccessIsNotReady() {
+        var result = GitHubRepoPreflight(canPush: false, defaultBranch: "main", sizeInBytes: nil)
+        GitHubService.applyTree([entry("a.md")], truncated: true, lfsPatterns: [], to: &result)
+        XCTAssertFalse(result.isReady)
+        XCTAssertTrue(result.fileCountIsPartial)
+        XCTAssertFalse(result.hasObsidianFolder)
+        XCTAssertNil(GitHubRepoPreflight(canPush: nil, defaultBranch: "main").canPush)
+        XCTAssertTrue(GitHubRepoPreflight(canPush: nil, defaultBranch: "main").isReady)
+    }
+}

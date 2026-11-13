@@ -14,5 +14,13 @@ enum FeatureFlags {
     /// Background Sync is part of the paid-up-front app — there is no
     /// subscription tier. Because this is a compile-time constant, Swift
     /// dead-code eliminates the disabled branches from Release builds.
-    static let gitSyncAssistEnabled = false
+    static let gitSyncAssistEnabled = true
+
+    /// Whether adding a vault requires the one-time unlock (`AppUnlock`).
+    ///
+    /// Turn on only in the build that ships with the App Store price set to
+    /// free, and set `AppUnlock.firstFreeBuild` to that build's number.
+    /// While the app is still paid up front, a new buyer's receipt would name
+    /// a build at or above the cutoff and they would be asked to pay twice.
+    static let hardPaywallEnabled = true
 }

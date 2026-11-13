@@ -1,0 +1,636 @@
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.PaywallFlowDeviceTest
+INSTRUMENTATION_STATUS: current=1
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=
+com.bontecou.syncmd.PaywallFlowDeviceTest:
+INSTRUMENTATION_STATUS: test=lockedCheckShowsPriceThenUnlockContinuesTheCloneOnce
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.PaywallFlowDeviceTest
+INSTRUMENTATION_STATUS: current=1
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=lockedCheckShowsPriceThenUnlockContinuesTheCloneOnce
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.PaywallFlowDeviceTest
+INSTRUMENTATION_STATUS: current=2
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=pendingPurchaseWaitsAndDismissDropsTheAction
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.PaywallFlowDeviceTest
+INSTRUMENTATION_STATUS: current=2
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=pendingPurchaseWaitsAndDismissDropsTheAction
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.PaywallFlowDeviceTest
+INSTRUMENTATION_STATUS: current=3
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=restoreFindsAnEarlierPurchase
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.PaywallFlowDeviceTest
+INSTRUMENTATION_STATUS: current=3
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=restoreFindsAnEarlierPurchase
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.LocalizationTest
+INSTRUMENTATION_STATUS: current=4
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=
+com.bontecou.syncmd.LocalizationTest:
+INSTRUMENTATION_STATUS: test=translatedPluralsFollowAndroidRulesInEverySupportedLanguage
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.LocalizationTest
+INSTRUMENTATION_STATUS: current=4
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=translatedPluralsFollowAndroidRulesInEverySupportedLanguage
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.LocalizationTest
+INSTRUMENTATION_STATUS: current=5
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=correctedNavigationAndDestructiveCopyRetainsMeaningAndFilename
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.LocalizationTest
+INSTRUMENTATION_STATUS: current=5
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=correctedNavigationAndDestructiveCopyRetainsMeaningAndFilename
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.LocalizationTest
+INSTRUMENTATION_STATUS: current=6
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=everyImportedLocaleMatchesItsSourceCatalogAndUntranslatedTextFallsBackToEnglish
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.LocalizationTest
+INSTRUMENTATION_STATUS: current=6
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=everyImportedLocaleMatchesItsSourceCatalogAndUntranslatedTextFallsBackToEnglish
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.LocalizationTest
+INSTRUMENTATION_STATUS: current=7
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=productionComponentsRenderSpanishArabicAndTurkishWithoutChangingSystemLocale
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.LocalizationTest
+INSTRUMENTATION_STATUS: current=7
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stack=java.lang.IllegalStateException: UiAutomationService android.accessibilityservice.IAccessibilityServiceClient$Stub$Proxy@b7fda87already registered!
+	at android.os.Parcel.createExceptionOrNull(Parcel.java:3348)
+	at android.os.Parcel.createException(Parcel.java:3324)
+	at android.os.Parcel.readException(Parcel.java:3307)
+	at android.os.Parcel.readException(Parcel.java:3249)
+	at android.app.IUiAutomationConnection$Stub$Proxy.connect(IUiAutomationConnection.java:555)
+	at android.app.UiAutomation.connectWithTimeout(UiAutomation.java:386)
+	at android.app.Instrumentation.getUiAutomation(Instrumentation.java:2557)
+	at androidx.test.uiautomator.UiDevice$Api24Impl.getUiAutomationWithRetry(UiDevice.java:1538)
+	at androidx.test.uiautomator.UiDevice.getUiAutomation(UiDevice.java:1463)
+	at androidx.test.uiautomator.QueryController.<init>(QueryController.java:95)
+	at androidx.test.uiautomator.UiDevice.<init>(UiDevice.java:113)
+	at androidx.test.uiautomator.UiDevice.getInstance(UiDevice.java:294)
+	at com.bontecou.syncmd.LocalizationTest.capture(LocalizationTest.kt:217)
+	at com.bontecou.syncmd.LocalizationTest.productionComponentsRenderSpanishArabicAndTurkishWithoutChangingSystemLocale(LocalizationTest.kt:203)
+
+INSTRUMENTATION_STATUS: stream=
+Error in productionComponentsRenderSpanishArabicAndTurkishWithoutChangingSystemLocale(com.bontecou.syncmd.LocalizationTest):
+java.lang.IllegalStateException: UiAutomationService android.accessibilityservice.IAccessibilityServiceClient$Stub$Proxy@b7fda87already registered!
+	at android.os.Parcel.createExceptionOrNull(Parcel.java:3348)
+	at android.os.Parcel.createException(Parcel.java:3324)
+	at android.os.Parcel.readException(Parcel.java:3307)
+	at android.os.Parcel.readException(Parcel.java:3249)
+	at android.app.IUiAutomationConnection$Stub$Proxy.connect(IUiAutomationConnection.java:555)
+	at android.app.UiAutomation.connectWithTimeout(UiAutomation.java:386)
+	at android.app.Instrumentation.getUiAutomation(Instrumentation.java:2557)
+	at androidx.test.uiautomator.UiDevice$Api24Impl.getUiAutomationWithRetry(UiDevice.java:1538)
+	at androidx.test.uiautomator.UiDevice.getUiAutomation(UiDevice.java:1463)
+	at androidx.test.uiautomator.QueryController.<init>(QueryController.java:95)
+	at androidx.test.uiautomator.UiDevice.<init>(UiDevice.java:113)
+	at androidx.test.uiautomator.UiDevice.getInstance(UiDevice.java:294)
+	at com.bontecou.syncmd.LocalizationTest.capture(LocalizationTest.kt:217)
+	at com.bontecou.syncmd.LocalizationTest.productionComponentsRenderSpanishArabicAndTurkishWithoutChangingSystemLocale(LocalizationTest.kt:203)
+
+INSTRUMENTATION_STATUS: test=productionComponentsRenderSpanishArabicAndTurkishWithoutChangingSystemLocale
+INSTRUMENTATION_STATUS_CODE: -2
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.LocalizationTest
+INSTRUMENTATION_STATUS: current=8
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=frameworkLanguageConfigurationAndSettingsIntentAreScopedToThisApp
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.LocalizationTest
+INSTRUMENTATION_STATUS: current=8
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=frameworkLanguageConfigurationAndSettingsIntentAreScopedToThisApp
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.LocalizationTest
+INSTRUMENTATION_STATUS: current=9
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=workflowEnglishCopyPreservesReviewedSourceAndArguments
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.LocalizationTest
+INSTRUMENTATION_STATUS: current=9
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=workflowEnglishCopyPreservesReviewedSourceAndArguments
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.LocalizationTest
+INSTRUMENTATION_STATUS: current=10
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=extractedEnglishCopyPreservesOriginalKotlinLiteralWhitespaceEscapingAndArguments
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.LocalizationTest
+INSTRUMENTATION_STATUS: current=10
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=extractedEnglishCopyPreservesOriginalKotlinLiteralWhitespaceEscapingAndArguments
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.PushSyncTest
+INSTRUMENTATION_STATUS: current=11
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=
+com.bontecou.syncmd.PushSyncTest:
+INSTRUMENTATION_STATUS: test=disablingDuringRegistrationCannotRestoreOptInAndUnregistersAfterward
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.PushSyncTest
+INSTRUMENTATION_STATUS: current=11
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=disablingDuringRegistrationCannotRestoreOptInAndUnregistersAfterward
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.PushSyncTest
+INSTRUMENTATION_STATUS: current=12
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=installationNumbersAreExactOnTheDeviceRuntimeWithoutNewerBigIntegerApis
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.PushSyncTest
+INSTRUMENTATION_STATUS: current=12
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=installationNumbersAreExactOnTheDeviceRuntimeWithoutNewerBigIntegerApis
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.PushSyncTest
+INSTRUMENTATION_STATUS: current=13
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=unavailablePushBuildStillAllowsOptOutAndRelayCleanupButCannotEnableAgain
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.PushSyncTest
+INSTRUMENTATION_STATUS: current=13
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stack=java.lang.IllegalStateException: Not connected!
+	at android.os.Parcel.createExceptionOrNull(Parcel.java:3348)
+	at android.os.Parcel.createException(Parcel.java:3324)
+	at android.os.Parcel.readException(Parcel.java:3307)
+	at android.os.Parcel.readException(Parcel.java:3249)
+	at android.app.IUiAutomationConnection$Stub$Proxy.takeScreenshot(IUiAutomationConnection.java:655)
+	at android.app.UiAutomation.takeScreenshot(UiAutomation.java:1288)
+	at com.bontecou.syncmd.CommittedScreenshot.save(CommittedScreenshot.kt:32)
+	at com.bontecou.syncmd.PushSyncTest$unavailablePushBuildStillAllowsOptOutAndRelayCleanupButCannotEnableAgain$1.invokeSuspend(PushSyncTest.kt:328)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:101)
+	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:263)
+	at kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:95)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:69)
+	at kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source:1)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:47)
+	at kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source:1)
+	at com.bontecou.syncmd.PushSyncTest.unavailablePushBuildStillAllowsOptOutAndRelayCleanupButCannotEnableAgain(PushSyncTest.kt:318)
+
+INSTRUMENTATION_STATUS: stream=
+Error in unavailablePushBuildStillAllowsOptOutAndRelayCleanupButCannotEnableAgain(com.bontecou.syncmd.PushSyncTest):
+java.lang.IllegalStateException: Not connected!
+	at android.os.Parcel.createExceptionOrNull(Parcel.java:3348)
+	at android.os.Parcel.createException(Parcel.java:3324)
+	at android.os.Parcel.readException(Parcel.java:3307)
+	at android.os.Parcel.readException(Parcel.java:3249)
+	at android.app.IUiAutomationConnection$Stub$Proxy.takeScreenshot(IUiAutomationConnection.java:655)
+	at android.app.UiAutomation.takeScreenshot(UiAutomation.java:1288)
+	at com.bontecou.syncmd.CommittedScreenshot.save(CommittedScreenshot.kt:32)
+	at com.bontecou.syncmd.PushSyncTest$unavailablePushBuildStillAllowsOptOutAndRelayCleanupButCannotEnableAgain$1.invokeSuspend(PushSyncTest.kt:328)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:101)
+	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:263)
+	at kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:95)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:69)
+	at kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source:1)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:47)
+	at kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source:1)
+	at com.bontecou.syncmd.PushSyncTest.unavailablePushBuildStillAllowsOptOutAndRelayCleanupButCannotEnableAgain(PushSyncTest.kt:318)
+
+INSTRUMENTATION_STATUS: test=unavailablePushBuildStillAllowsOptOutAndRelayCleanupButCannotEnableAgain
+INSTRUMENTATION_STATUS_CODE: -2
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.PushSyncTest
+INSTRUMENTATION_STATUS: current=14
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=notificationPermissionRevocationDisablesAndCleansUpRelayRegistration
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.PushSyncTest
+INSTRUMENTATION_STATUS: current=14
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=notificationPermissionRevocationDisablesAndCleansUpRelayRegistration
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.PushSyncTest
+INSTRUMENTATION_STATUS: current=15
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=resumingDuringAnActiveConnectionCheckDoesNotQueueAnotherCheckAfterStop
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.PushSyncTest
+INSTRUMENTATION_STATUS: current=15
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=resumingDuringAnActiveConnectionCheckDoesNotQueueAnotherCheckAfterStop
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.PushSyncTest
+INSTRUMENTATION_STATUS: current=16
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=nativeScreenEnablesRefreshesAndConfirmsUnlinkAtLargeText
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.PushSyncTest
+INSTRUMENTATION_STATUS: current=16
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stack=java.lang.IllegalStateException: UiAutomation not connected, UiAutomation@f12f816[id=-1, displayId=0, flags=0]
+	at android.app.UiAutomation.throwIfNotConnectedLocked(UiAutomation.java:1801)
+	at android.app.UiAutomation.getServiceInfo(UiAutomation.java:806)
+	at androidx.test.uiautomator.UiDevice.getUiAutomation(UiDevice.java:1476)
+	at androidx.test.uiautomator.QueryController.<init>(QueryController.java:95)
+	at androidx.test.uiautomator.UiDevice.<init>(UiDevice.java:113)
+	at androidx.test.uiautomator.UiDevice.getInstance(UiDevice.java:294)
+	at com.bontecou.syncmd.PushSyncTest.nativeScreenEnablesRefreshesAndConfirmsUnlinkAtLargeText(PushSyncTest.kt:426)
+
+INSTRUMENTATION_STATUS: stream=
+Error in nativeScreenEnablesRefreshesAndConfirmsUnlinkAtLargeText(com.bontecou.syncmd.PushSyncTest):
+java.lang.IllegalStateException: UiAutomation not connected, UiAutomation@f12f816[id=-1, displayId=0, flags=0]
+	at android.app.UiAutomation.throwIfNotConnectedLocked(UiAutomation.java:1801)
+	at android.app.UiAutomation.getServiceInfo(UiAutomation.java:806)
+	at androidx.test.uiautomator.UiDevice.getUiAutomation(UiDevice.java:1476)
+	at androidx.test.uiautomator.QueryController.<init>(QueryController.java:95)
+	at androidx.test.uiautomator.UiDevice.<init>(UiDevice.java:113)
+	at androidx.test.uiautomator.UiDevice.getInstance(UiDevice.java:294)
+	at com.bontecou.syncmd.PushSyncTest.nativeScreenEnablesRefreshesAndConfirmsUnlinkAtLargeText(PushSyncTest.kt:426)
+
+INSTRUMENTATION_STATUS: test=nativeScreenEnablesRefreshesAndConfirmsUnlinkAtLargeText
+INSTRUMENTATION_STATUS_CODE: -2
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.PushSyncTest
+INSTRUMENTATION_STATUS: current=17
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=restoredOptInLoadsExistingConnectionOnlyWhenTheScreenBecomesVisible
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.PushSyncTest
+INSTRUMENTATION_STATUS: current=17
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stack=java.lang.IllegalStateException: Not connected!
+	at android.os.Parcel.createExceptionOrNull(Parcel.java:3348)
+	at android.os.Parcel.createException(Parcel.java:3324)
+	at android.os.Parcel.readException(Parcel.java:3307)
+	at android.os.Parcel.readException(Parcel.java:3249)
+	at android.app.IUiAutomationConnection$Stub$Proxy.takeScreenshot(IUiAutomationConnection.java:655)
+	at android.app.UiAutomation.takeScreenshot(UiAutomation.java:1288)
+	at com.bontecou.syncmd.CommittedScreenshot.save(CommittedScreenshot.kt:32)
+	at com.bontecou.syncmd.PushSyncTest$restoredOptInLoadsExistingConnectionOnlyWhenTheScreenBecomesVisible$1.invokeSuspend(PushSyncTest.kt:196)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:101)
+	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:263)
+	at kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:95)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:69)
+	at kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source:1)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:47)
+	at kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source:1)
+	at com.bontecou.syncmd.PushSyncTest.restoredOptInLoadsExistingConnectionOnlyWhenTheScreenBecomesVisible(PushSyncTest.kt:181)
+
+INSTRUMENTATION_STATUS: stream=
+Error in restoredOptInLoadsExistingConnectionOnlyWhenTheScreenBecomesVisible(com.bontecou.syncmd.PushSyncTest):
+java.lang.IllegalStateException: Not connected!
+	at android.os.Parcel.createExceptionOrNull(Parcel.java:3348)
+	at android.os.Parcel.createException(Parcel.java:3324)
+	at android.os.Parcel.readException(Parcel.java:3307)
+	at android.os.Parcel.readException(Parcel.java:3249)
+	at android.app.IUiAutomationConnection$Stub$Proxy.takeScreenshot(IUiAutomationConnection.java:655)
+	at android.app.UiAutomation.takeScreenshot(UiAutomation.java:1288)
+	at com.bontecou.syncmd.CommittedScreenshot.save(CommittedScreenshot.kt:32)
+	at com.bontecou.syncmd.PushSyncTest$restoredOptInLoadsExistingConnectionOnlyWhenTheScreenBecomesVisible$1.invokeSuspend(PushSyncTest.kt:196)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:101)
+	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:263)
+	at kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:95)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:69)
+	at kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source:1)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:47)
+	at kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source:1)
+	at com.bontecou.syncmd.PushSyncTest.restoredOptInLoadsExistingConnectionOnlyWhenTheScreenBecomesVisible(PushSyncTest.kt:181)
+
+INSTRUMENTATION_STATUS: test=restoredOptInLoadsExistingConnectionOnlyWhenTheScreenBecomesVisible
+INSTRUMENTATION_STATUS_CODE: -2
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.PushSyncTest
+INSTRUMENTATION_STATUS: current=18
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=nativeWorkersRespectConsentAndMaintenanceRetriesProviderFailure
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.PushSyncTest
+INSTRUMENTATION_STATUS: current=18
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=nativeWorkersRespectConsentAndMaintenanceRetriesProviderFailure
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.PushSyncTest
+INSTRUMENTATION_STATUS: current=19
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=registrationEncryptsSecretsAndCachesTheExactInventoryWithoutContactingGit
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.PushSyncTest
+INSTRUMENTATION_STATUS: current=19
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=registrationEncryptsSecretsAndCachesTheExactInventoryWithoutContactingGit
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.PushSyncTest
+INSTRUMENTATION_STATUS: current=20
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=screenStatusDoesNotWaitForAnUnavailableSdkTokenOrReregisterTheDevice
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.PushSyncTest
+INSTRUMENTATION_STATUS: current=20
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=screenStatusDoesNotWaitForAnUnavailableSdkTokenOrReregisterTheDevice
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.PushSyncTest
+INSTRUMENTATION_STATUS: current=21
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=stalledTokenUsesRegistrationFailureRecoveryInsteadOfUserCancellation
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.PushSyncTest
+INSTRUMENTATION_STATUS: current=21
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=stalledTokenUsesRegistrationFailureRecoveryInsteadOfUserCancellation
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.PushSyncTest
+INSTRUMENTATION_STATUS: current=22
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=linkCallbacksAreStateBoundSingleUseAndNeverChangeGitCredentials
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.PushSyncTest
+INSTRUMENTATION_STATUS: current=22
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=linkCallbacksAreStateBoundSingleUseAndNeverChangeGitCredentials
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.PushSyncTest
+INSTRUMENTATION_STATUS: current=23
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=screenOpenedDuringAnotherActionLoadsConnectionsAfterThatActionSucceeds
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.PushSyncTest
+INSTRUMENTATION_STATUS: current=23
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=screenOpenedDuringAnotherActionLoadsConnectionsAfterThatActionSucceeds
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.PushSyncTest
+INSTRUMENTATION_STATUS: current=24
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=failedRegistrationStillLoadsSavedStatusWhileKeepingTheRegistrationError
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.PushSyncTest
+INSTRUMENTATION_STATUS: current=24
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stack=java.lang.IllegalStateException: Not connected!
+	at android.os.Parcel.createExceptionOrNull(Parcel.java:3348)
+	at android.os.Parcel.createException(Parcel.java:3324)
+	at android.os.Parcel.readException(Parcel.java:3307)
+	at android.os.Parcel.readException(Parcel.java:3249)
+	at android.app.IUiAutomationConnection$Stub$Proxy.takeScreenshot(IUiAutomationConnection.java:655)
+	at android.app.UiAutomation.takeScreenshot(UiAutomation.java:1288)
+	at com.bontecou.syncmd.CommittedScreenshot.save(CommittedScreenshot.kt:32)
+	at com.bontecou.syncmd.PushSyncTest$failedRegistrationStillLoadsSavedStatusWhileKeepingTheRegistrationError$1.invokeSuspend(PushSyncTest.kt:301)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:101)
+	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:263)
+	at kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:95)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:69)
+	at kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source:1)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:47)
+	at kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source:1)
+	at com.bontecou.syncmd.PushSyncTest.failedRegistrationStillLoadsSavedStatusWhileKeepingTheRegistrationError(PushSyncTest.kt:290)
+
+INSTRUMENTATION_STATUS: stream=
+Error in failedRegistrationStillLoadsSavedStatusWhileKeepingTheRegistrationError(com.bontecou.syncmd.PushSyncTest):
+java.lang.IllegalStateException: Not connected!
+	at android.os.Parcel.createExceptionOrNull(Parcel.java:3348)
+	at android.os.Parcel.createException(Parcel.java:3324)
+	at android.os.Parcel.readException(Parcel.java:3307)
+	at android.os.Parcel.readException(Parcel.java:3249)
+	at android.app.IUiAutomationConnection$Stub$Proxy.takeScreenshot(IUiAutomationConnection.java:655)
+	at android.app.UiAutomation.takeScreenshot(UiAutomation.java:1288)
+	at com.bontecou.syncmd.CommittedScreenshot.save(CommittedScreenshot.kt:32)
+	at com.bontecou.syncmd.PushSyncTest$failedRegistrationStillLoadsSavedStatusWhileKeepingTheRegistrationError$1.invokeSuspend(PushSyncTest.kt:301)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:101)
+	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:263)
+	at kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:95)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:69)
+	at kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source:1)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:47)
+	at kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source:1)
+	at com.bontecou.syncmd.PushSyncTest.failedRegistrationStillLoadsSavedStatusWhileKeepingTheRegistrationError(PushSyncTest.kt:290)
+
+INSTRUMENTATION_STATUS: test=failedRegistrationStillLoadsSavedStatusWhileKeepingTheRegistrationError
+INSTRUMENTATION_STATUS_CODE: -2
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.PushSyncTest
+INSTRUMENTATION_STATUS: current=25
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=registrationFallbackCannotReadStatusForAReplacementConsentGeneration
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.PushSyncTest
+INSTRUMENTATION_STATUS: current=25
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=registrationFallbackCannotReadStatusForAReplacementConsentGeneration
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.PushSyncTest
+INSTRUMENTATION_STATUS: current=26
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=missingDeviceStatusCannotPublishAcrossAChangedConsentGeneration
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.PushSyncTest
+INSTRUMENTATION_STATUS: current=26
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=missingDeviceStatusCannotPublishAcrossAChangedConsentGeneration
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.PushSyncTest
+INSTRUMENTATION_STATUS: current=27
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=resumedScreenRefreshesRemovedConnectionsAndRevokedNotificationConsent
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.PushSyncTest
+INSTRUMENTATION_STATUS: current=27
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=resumedScreenRefreshesRemovedConnectionsAndRevokedNotificationConsent
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.PushSyncTest
+INSTRUMENTATION_STATUS: current=28
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=eventDedupeAndGenerationInvalidateOldNotificationActions
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.PushSyncTest
+INSTRUMENTATION_STATUS: current=28
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=eventDedupeAndGenerationInvalidateOldNotificationActions
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.PushSyncTest
+INSTRUMENTATION_STATUS: current=29
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=statusFailureRetainsTheKnownConnectionAndExplicitRefreshRecovers
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.PushSyncTest
+INSTRUMENTATION_STATUS: current=29
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=statusFailureRetainsTheKnownConnectionAndExplicitRefreshRecovers
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.PushSyncTest
+INSTRUMENTATION_STATUS: current=30
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=connectionLoadingWaitsForStatusAndDoesNotShowAnEmptySetupWarning
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.PushSyncTest
+INSTRUMENTATION_STATUS: current=30
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=connectionLoadingWaitsForStatusAndDoesNotShowAnEmptySetupWarning
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.PushSyncTest
+INSTRUMENTATION_STATUS: current=31
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=tokenRotationForcesFreshRegistrationWithoutChangingThePrivateDeviceIdentity
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.PushSyncTest
+INSTRUMENTATION_STATUS: current=31
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=tokenRotationForcesFreshRegistrationWithoutChangingThePrivateDeviceIdentity
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.PushSyncTest
+INSTRUMENTATION_STATUS: current=32
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=missingRelayDeviceClearsTheOldRegistrationAndRefreshRegistersItAgain
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.PushSyncTest
+INSTRUMENTATION_STATUS: current=32
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=missingRelayDeviceClearsTheOldRegistrationAndRefreshRegistersItAgain
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.PushSyncTest
+INSTRUMENTATION_STATUS: current=33
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=stoppingAStalledTokenRequestDoesNotBecomeATimeoutOrIssueFallbackStatus
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.bontecou.syncmd.PushSyncTest
+INSTRUMENTATION_STATUS: current=33
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=33
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=stoppingAStalledTokenRequestDoesNotBecomeATimeoutOrIssueFallbackStatus
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_RESULT: shortMsg=Process crashed.
+INSTRUMENTATION_CODE: 0

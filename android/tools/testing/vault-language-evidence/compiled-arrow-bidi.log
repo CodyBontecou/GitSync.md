@@ -1,0 +1,2 @@
+Twelve Arabic/Hebrew JDK Bidi probes preserve LTR arrow-plus-count spans at 1, 12 and Int.MAX_VALUE, including locale-formatted digits.
+No Android/Compose rendering executed.

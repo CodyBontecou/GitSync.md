@@ -1,0 +1,13 @@
+{
+  "checked_at": "2026-11-02T16:42:57.945683+00:00",
+  "android_devices": [
+    {
+      "platform": "android",
+      "repository_count": 0,
+      "fixture_enrolled": false,
+      "updated_at": 1793637703890,
+      "personal_installation_linked": true
+    }
+  ],
+  "read_only": true
+}

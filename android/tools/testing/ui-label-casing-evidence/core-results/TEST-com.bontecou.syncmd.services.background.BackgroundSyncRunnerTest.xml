@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bontecou.syncmd.services.background.BackgroundSyncRunnerTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-11-02T20:53:38" hostname="MacBook-Pro.local" time="4.396">
+  <properties/>
+  <testcase name="bothModesAndRepositoryInclusionDefaultToNoAutomaticGitWork" classname="com.bontecou.syncmd.services.background.BackgroundSyncRunnerTest" time="0.049"/>
+  <testcase name="combinedModeStillRefusesDivergenceWithoutAnAutomaticMerge" classname="com.bontecou.syncmd.services.background.BackgroundSyncRunnerTest" time="0.075"/>
+  <testcase name="pushOnlyCommitsAndPublishesOnceAndRetryDoesNotCreateAnotherCommit" classname="com.bontecou.syncmd.services.background.BackgroundSyncRunnerTest" time="1.899"/>
+  <testcase name="anAccountAssignmentChangeInvalidatesConsentEvenWhenItsCredentialRecordIsUnchanged" classname="com.bontecou.syncmd.services.background.BackgroundSyncRunnerTest" time="0.058"/>
+  <testcase name="networkAndPowerRulesDeferWithoutCreatingCommitsOrLosingSuccessHistory" classname="com.bontecou.syncmd.services.background.BackgroundSyncRunnerTest" time="0.05"/>
+  <testcase name="anInterruptedPushRetainsItsLocalCommitAndASecondPassPublishesWithoutAnotherCommit" classname="com.bontecou.syncmd.services.background.BackgroundSyncRunnerTest" time="1.933"/>
+  <testcase name="pushOnlyRefusesAnIncomingCommitAndPreservesTheDraftAndIndex" classname="com.bontecou.syncmd.services.background.BackgroundSyncRunnerTest" time="0.092"/>
+  <testcase name="changedBranchConnectionAndRegistrationRequireFreshReview" classname="com.bontecou.syncmd.services.background.BackgroundSyncRunnerTest" time="0.061"/>
+  <testcase name="revokingConsentWhileWaitingForTheRepositoryLeasePreventsQueuedPublishing" classname="com.bontecou.syncmd.services.background.BackgroundSyncRunnerTest" time="0.059"/>
+  <testcase name="pullOnlyFastForwardsAndNeverPublishesDrafts" classname="com.bontecou.syncmd.services.background.BackgroundSyncRunnerTest" time="0.118"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

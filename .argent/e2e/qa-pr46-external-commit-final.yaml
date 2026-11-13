@@ -1,0 +1,28 @@
+steps:
+  - launch:
+      ios:
+        app: bontecou.Sync-md.prqa
+        args: [-UITestGitToolsFixture, external-commit, -AppleLanguages, '(en)', -AppleLocale, en_US]
+  - await:
+      visible: { text: 'git-tools-fixture, main · syncmd-uitest-fixtures/git-tools-fixture, 1 to push' }
+      timeout: 10000
+  - await: { idle: true }
+  - tap: { text: 'main · syncmd-uitest-fixtures/git-tools-fixture' }
+  - await: { visible: { id: vault.title } }
+  - await: { idle: true }
+  - await: { visible: { text: No changes on this iPhone } }
+  - tap: { id: ellipsis }
+  - await: { visible: { text: Git Tools, role: Button } }
+  - await: { idle: true }
+  - tap: { text: Git Tools, role: Button }
+  - await: { visible: { id: gitTools.observedHEAD } }
+  - await: { idle: true }
+  - await:
+      text:
+        in: { id: gitTools.observedHEAD }
+        equals: 6d13e3c · not synced yet
+  - await:
+      text:
+        in: { id: gitTools.observedBranch }
+        equals: main
+  - await: { visible: { text: No local changes } }

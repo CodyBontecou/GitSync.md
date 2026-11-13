@@ -1,0 +1,3 @@
+<resources>
+    <string name="git_native_public_only">Git native transport supports public access only. Use HTTPS or SSH for authentication.</string>
+</resources>

@@ -1,0 +1,6 @@
+ar	message	يزيل GitSync.md الرمز الخاص بـ⁨%1$s⁩ من هذا الجهاز. تبقى مستودعاتك وملفاتها في مكانها.
+ar	fallback	حساب GitHub هذا
+ar	version	⁦GitSync.md %1$s (%2$d)⁩
+he	message	GitSync.md ישכח את האסימון של ⁨%1$s⁩ במכשיר הזה. המאגרים והקבצים שלהם יישארו במקומם.
+he	fallback	חשבון GitHub הזה
+he	version	⁦GitSync.md %1$s (%2$d)⁩

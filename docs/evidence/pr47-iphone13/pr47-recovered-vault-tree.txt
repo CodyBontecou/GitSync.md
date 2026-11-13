@@ -1,0 +1,43 @@
+Source: xcuitest-runner
+Mode: nested
+Coordinates are normalized [0,1] fractions of the screen (x, y, width, height), not pixels.
+Pass them straight to gesture-tap / gesture-swipe / gesture-pinch, which expect this same space.
+To tap an element, use its centre: tap_x = frame.x + frame.width / 2, tap_y = frame.y + frame.height / 2.
+
+ROOT  Application (0.000, 0.000, 1.000, 1.000)
+
+  NavigationBar id="_TtGC7SwiftUI32NavigationStackHosting"  (0.000, 0.051, 1.000, 0.058)
+    AXButton "Back" id="BackButton"  (0.047, 0.051, 0.103, 0.048)
+    AXStaticText "Branch main"  (0.440, 0.066, 0.124, 0.017)
+    AXImage "Branch main" id="arrow.triangle.branch"  (0.440, 0.067, 0.033, 0.015)
+    AXButton "More vault options"  (0.832, 0.055, 0.112, 0.039)
+      AXButton  (0.832, 0.055, 0.112, 0.039)
+        AXImage "More" id="ellipsis"  (0.864, 0.072, 0.048, 0.005)
+  ScrollView [scrollable]  (0.000, 0.000, 1.000, 1.000)
+    AXStaticText "syncmd-uitest-fixtures/git-tools-fixture"  (0.047, 0.120, 0.673, 0.017)
+    AXStaticText "git-tools-fixture" id="vault.title"  (0.047, 0.141, 0.664, 0.056)
+    AXStaticText "1, change on this iPhone"  (0.084, 0.231, 0.361, 0.096)
+      AXStaticText "1"  (0.084, 0.231, 0.048, 0.076)
+      AXStaticText "change on this iPhone"  (0.084, 0.306, 0.361, 0.021)
+    AXStaticText "Remote is current\nfetched 15m ago"  (0.653, 0.293, 0.262, 0.034)
+    Other "1 to push"  (0.084, 0.347, 0.832, 0.017)
+    AXButton "Commit & push"  (0.084, 0.385, 0.667, 0.054)
+      AXStaticText "Commit & push"  (0.084, 0.385, 0.667, 0.054)
+      AXImage "Up" id="arrow.up"  (0.269, 0.405, 0.026, 0.014)
+    AXButton "Pull"  (0.769, 0.385, 0.146, 0.054)
+    AXButton "Changes" [selected]  (0.047, 0.482, 0.220, 0.037)
+    AXButton "Files"  (0.276, 0.482, 0.220, 0.037)
+    AXButton "History"  (0.505, 0.482, 0.220, 0.037)
+    AXButton "Git"  (0.734, 0.482, 0.220, 0.037)
+    AXButton "README.md, modified, 1 line added, 1 line removed"  (0.075, 0.541, 0.850, 0.067)
+      AXStaticText "modified"  (0.075, 0.560, 0.061, 0.028)
+      AXStaticText "README.md"  (0.164, 0.555, 0.205, 0.021)
+      Other "1 line added, 1 line removed"  (0.843, 0.566, 0.083, 0.017)
+        AXStaticText "+1"  (0.843, 0.566, 0.034, 0.017)
+        AXStaticText "−1"  (0.891, 0.566, 0.034, 0.017)
+      AXStaticText "/"  (0.164, 0.578, 0.016, 0.015)
+    AXStaticText "LAST PUSHED"  (0.047, 0.642, 0.187, 0.015)
+    AXButton "Base state, c868799 · UITest Seeder · 2y ago"  (0.047, 0.666, 0.907, 0.040)
+      AXStaticText "Base state"  (0.098, 0.666, 0.179, 0.021)
+      AXStaticText "c868799 · UITest Seeder · 2y ago"  (0.098, 0.691, 0.494, 0.015)
+  Toolbar "Toolbar" id="Toolbar"  (0.000, 0.000, 1.000, 1.000)
