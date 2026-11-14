@@ -303,12 +303,12 @@ struct GitShortcutPullSummary {
             plural: String(localized: "need attention"),
             into: &parts
         )
-        appendCount(
-            for: .cancelled,
-            singular: String(localized: "interrupted"),
-            plural: String(localized: "interrupted"),
-            into: &parts
-        )
+        let interruptedCount = results.filter { $0.status == .cancelled }.count
+        if interruptedCount > 0 {
+            // A status category with a separate count avoids inflecting a bare
+            // translated adjective (for example French or Hebrew) after a number.
+            parts.append("\(String(localized: "Pull interrupted")) (\(interruptedCount))")
+        }
         appendCount(
             for: .failed,
             singular: String(localized: "failed"),
@@ -316,8 +316,14 @@ struct GitShortcutPullSummary {
             into: &parts
         )
 
-        let repoWord = results.count == 1 ? String(localized: "repository") : String(localized: "repositories")
-        var message = String(localized: "Pulled \(results.count) \(repoWord)")
+        var message: String
+        if interruptedCount > 0 {
+            // A cancellation is not a completed pull, including in mixed batches.
+            message = "\(String(localized: "Pull")) (\(results.count))"
+        } else {
+            let repoWord = results.count == 1 ? String(localized: "repository") : String(localized: "repositories")
+            message = String(localized: "Pulled \(results.count) \(repoWord)")
+        }
         if !parts.isEmpty {
             message += ": " + parts.joined(separator: ", ")
         }

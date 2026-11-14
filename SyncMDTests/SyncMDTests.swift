@@ -1266,6 +1266,20 @@ final class SyncMDTests: XCTestCase {
         let summary = GitShortcutPullSummary(results: [shortcut, shortcut]).dialog
         XCTAssertTrue(summary.contains(message))
         XCTAssertFalse(summary.contains("Swift.CancellationError"))
+        XCTAssertTrue(summary.contains("Pull interrupted (2)"), "Use an invariant localized status title, not a quantity-dependent translated adjective")
+        XCTAssertTrue(summary.hasPrefix("Pull (2):"), "A batch containing cancellation must not claim every repository was pulled")
+        let updated = GitShortcutPullResult(repositoryName: "Control", status: .updated, message: "Fixture updated")
+        for count in [0, 1, 2, 5] {
+            let mixed = GitShortcutPullSummary(results: [updated] + Array(repeating: shortcut, count: count)).dialog
+            if count == 0 {
+                XCTAssertFalse(mixed.contains("Pull interrupted"))
+            } else {
+                XCTAssertTrue(mixed.contains("Pull interrupted (\(count))"))
+                XCTAssertTrue(mixed.hasPrefix("Pull (\(count + 1)):"))
+            }
+        }
+        XCTAssertEqual(GitShortcutPullSummary(results: [shortcut]).dialog, shortcut.dialog)
+        XCTAssertTrue(GitShortcutPullSummary(results: [updated, updated]).dialog.hasPrefix("Pulled 2 "))
         let reconciliation = RepositoryReconciliationResult.pullOnly(.cancelled)
         XCTAssertEqual(reconciliation.outcome, .blocked)
         XCTAssertFalse(reconciliation.isFailure)

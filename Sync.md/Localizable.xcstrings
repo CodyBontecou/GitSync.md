@@ -193118,37 +193118,6 @@
         "zh-Hant": {"stringUnit": {"state": "translated", "value": "拉取已中斷。準備好後，請再次嘗試拉取。"}}
       }
     },
-    "interrupted": {
-      "comment": "Count label in the Shortcuts pull summary. Non-English translations require human linguistic review.",
-      "localizations": {
-        "en": {"stringUnit": {"state": "translated", "value": "interrupted"}},
-        "ar": {"stringUnit": {"state": "translated", "value": "توقّف"}},
-        "da": {"stringUnit": {"state": "translated", "value": "afbrudt"}},
-        "de": {"stringUnit": {"state": "translated", "value": "unterbrochen"}},
-        "es": {"stringUnit": {"state": "translated", "value": "interrumpido"}},
-        "fi": {"stringUnit": {"state": "translated", "value": "keskeytynyt"}},
-        "fr": {"stringUnit": {"state": "translated", "value": "interrompu"}},
-        "he": {"stringUnit": {"state": "translated", "value": "הופסקו"}},
-        "hi": {"stringUnit": {"state": "translated", "value": "बाधित"}},
-        "hu": {"stringUnit": {"state": "translated", "value": "megszakítva"}},
-        "id": {"stringUnit": {"state": "translated", "value": "terhenti"}},
-        "it": {"stringUnit": {"state": "translated", "value": "interrotto"}},
-        "ja": {"stringUnit": {"state": "translated", "value": "中断"}},
-        "ko": {"stringUnit": {"state": "translated", "value": "중단됨"}},
-        "nb": {"stringUnit": {"state": "translated", "value": "avbrutt"}},
-        "nl": {"stringUnit": {"state": "translated", "value": "onderbroken"}},
-        "pl": {"stringUnit": {"state": "translated", "value": "przerwane"}},
-        "pt-BR": {"stringUnit": {"state": "translated", "value": "interrompido"}},
-        "ru": {"stringUnit": {"state": "translated", "value": "прервано"}},
-        "sv": {"stringUnit": {"state": "translated", "value": "avbruten"}},
-        "th": {"stringUnit": {"state": "translated", "value": "ถูกขัดจังหวะ"}},
-        "tr": {"stringUnit": {"state": "translated", "value": "kesintiye uğradı"}},
-        "uk": {"stringUnit": {"state": "translated", "value": "перервано"}},
-        "vi": {"stringUnit": {"state": "translated", "value": "bị gián đoạn"}},
-        "zh-Hans": {"stringUnit": {"state": "translated", "value": "已中断"}},
-        "zh-Hant": {"stringUnit": {"state": "translated", "value": "已中斷"}}
-      }
-    },
     "Pull down to refresh, or create a repository on GitHub first.": {
       "localizations": {
         "ar": {
