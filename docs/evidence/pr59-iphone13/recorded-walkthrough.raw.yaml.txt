@@ -1,0 +1,47 @@
+steps:
+  - tool: open-url
+    args:
+      bundleId: com.apple.mobilesafari
+      url: http://192.168.1.252:8769/blog/obsidian-git-merge-conflicts-iphone#ours-and-theirs
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Ours and Theirs depend on the operation
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: "Normal merge: Ours is the current branch’s version; Theirs is the version
+          being merged into it."
+        role: StaticText
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: "Rebase: Ours is the history you are replaying commits onto, including
+          commits already replayed. Theirs is the version from the commit
+          currently being replayed."
+        role: StaticText
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: This is an illustrative Git scenario, not an app test.
+        role: StaticText
+  - tap:
+      text: Git’s documentation
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Note that during git rebase and git pull --rebase, ours and theirs may
+          appear swapped
+        role: StaticText
+  - tap:
+      id: BackButton
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Ours and Theirs depend on the operation

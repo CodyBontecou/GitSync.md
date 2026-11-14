@@ -1,0 +1,36 @@
+agent-browser doctor
+
+Environment
+  pass  CLI version 0.37.1 (macos aarch64)
+  pass  Home directory /Users/codybontecou
+  pass  State and socket directory /Users/codybontecou/.agent-browser
+  pass  46.6 GB free at state dir
+
+Chrome
+  pass  Google Chrome for Testing 152.0.7977.82 at /Users/codybontecou/.agent-browser/browsers/chrome-152.0.7977.82/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing
+  info  Cache dir /Users/codybontecou/.agent-browser/browsers
+  info  1 Chrome profile(s) at /Users/codybontecou/Library/Application Support/Google/Chrome
+
+Recording
+  pass  ffmpeg version 9.0.2 at /opt/homebrew/bin/ffmpeg
+  pass  libvpx (.webm) and libx264 (.mp4) encoders available
+
+Daemons
+  pass  No active daemons
+
+Security
+  info  No encryption key set (will be auto-generated on first auth save)
+        fix: export AGENT_BROWSER_ENCRYPTION_KEY=$(openssl rand -hex 32)
+
+Providers
+  info  Browserless: BROWSERLESS_API_KEY not set
+  info  Browserbase: BROWSERBASE_API_KEY not set
+  info  Browser Use: BROWSER_USE_API_KEY not set
+  info  Kernel: KERNEL_API_KEY not set
+  info  AgentCore: no AWS credentials in env (AWS_ACCESS_KEY_ID / AWS_PROFILE)
+  info  AI_GATEWAY_API_KEY not set (chat command disabled)
+        fix: export AI_GATEWAY_API_KEY=gw_...
+
+Summary: 8 pass, 0 warn, 0 fail
+
+tip: Run with --fix to attempt repairs.
