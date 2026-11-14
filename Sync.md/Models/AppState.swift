@@ -2808,11 +2808,19 @@ final class AppState {
     }
 
     @discardableResult
-    func pull(repoID: UUID, showsProgressDelay: Bool = true) async -> Bool {
+    func pull(
+        repoID: UUID,
+        showsProgressDelay: Bool = true,
+        cancellationFeedback: PullCancellationFeedback = .silent
+    ) async -> Bool {
         // Preserve the legacy foreground contract: a completed classification
         // (including a safe attention state) returns true so existing sheets can
         // dismiss. Headless callers consume the precise `pullOnly` result.
-        switch await pullOnly(repoID: repoID, showsProgressDelay: showsProgressDelay) {
+        switch await pullOnly(
+            repoID: repoID,
+            showsProgressDelay: showsProgressDelay,
+            cancellationFeedback: cancellationFeedback
+        ) {
         case .updated, .updatedWithAttention, .upToDate, .blockedByLocalChanges, .diverged, .remoteBranchMissing:
             return true
         case .wrongBranch, .authenticationOrTrustRequired, .unavailable, .cancelled, .failed:
@@ -2823,7 +2831,11 @@ final class AppState {
     /// UI-independent, typed, pull-only execution seam for foreground, App
     /// Intents, and future Premium triggers.
     @discardableResult
-    func pullOnly(repoID: UUID, showsProgressDelay: Bool = true) async -> RepositoryPullResult {
+    func pullOnly(
+        repoID: UUID,
+        showsProgressDelay: Bool = true,
+        cancellationFeedback: PullCancellationFeedback = .silent
+    ) async -> RepositoryPullResult {
         // SwiftUI owns refresh tasks and may cancel them before they begin.
         // Do not clear existing outcomes or start Git work for a stale refresh.
         guard !Task.isCancelled else { return .cancelled }
@@ -2843,6 +2855,10 @@ final class AppState {
         defer {
             isSyncing = false
             syncingRepoID = nil
+        }
+
+        if Task.isCancelled {
+            return cancellationFeedback == .warning ? presentPullCancellation(repoID: repoID) : .cancelled
         }
 
         if isDemoMode {
@@ -2962,9 +2978,13 @@ final class AppState {
             }
 
         case .cancelled:
-            // A refresh interrupted by SwiftUI or cancelled while queued behind
-            // a revert must not become an error alert or a failed pull banner.
-            syncProgress = String(localized: "Cancelled")
+            // Stale/lifecycle refreshes preserve main's quiet contract. An explicit
+            // foreground request can surface a warning, never an error or retry.
+            if cancellationFeedback == .warning {
+                _ = presentPullCancellation(repoID: repoID)
+            } else {
+                syncProgress = String(localized: "Cancelled")
+            }
 
         case .unavailable(let message), .failed(let message):
             setPullOutcome(repoID: repoID, kind: .failed, message: message)
@@ -2977,6 +2997,12 @@ final class AppState {
         detectChanges(repoID: repoID)
         if showsProgressDelay && result != .cancelled { try? await Task.sleep(for: .seconds(1)) }
         return result
+    }
+
+    private func presentPullCancellation(repoID: UUID) -> RepositoryPullResult {
+        syncProgress = String(localized: "Pull interrupted")
+        setPullOutcome(repoID: repoID, kind: .cancelled, message: RepositoryPullResult.cancellationMessage)
+        return .cancelled
     }
 
     /// UI-independent, typed push-only execution seam for foreground, App

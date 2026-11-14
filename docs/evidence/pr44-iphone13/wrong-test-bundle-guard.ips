@@ -1,0 +1,207 @@
+{"app_name":"Sync.md","timestamp":"2026-11-13 17:53:02.00 -0400","app_version":"3.0","slice_uuid":"2d526b9a-f44c-39e7-a85f-5e94d9de9284","build_version":"202611071310","platform":7,"bundleID":"bontecou.Sync-md","share_with_app_devs":1,"is_first_party":0,"bug_type":"309","os_version":"macOS 27.2 (26B123)","roots_installed":0,"name":"Sync.md","incident_id":"35E793A0-B311-4162-8927-78C44B3268DC"}
+{
+  "uptime" : 140000,
+  "procRole" : "Foreground",
+  "version" : 2,
+  "userID" : 501,
+  "deployVersion" : 210,
+  "modelCode" : "Mac17,9",
+  "coalitionID" : 63632,
+  "osVersion" : {
+    "train" : "macOS 27.2",
+    "build" : "26B123",
+    "releaseType" : "User"
+  },
+  "captureTime" : "2026-11-13 17:52:54.3682 -0400",
+  "codeSigningMonitor" : 2,
+  "incident" : "35E793A0-B311-4162-8927-78C44B3268DC",
+  "pid" : 51770,
+  "translated" : false,
+  "cpuType" : "ARM-64",
+  "procLaunch" : "2026-11-13 17:52:46.2296 -0400",
+  "procStartAbsTime" : 3555311276460,
+  "procExitAbsTime" : 3555505101727,
+  "procName" : "Sync.md",
+  "procPath" : "\/Users\/USER\/Library\/Developer\/CoreSimulator\/Devices\/4DFF1574-E044-472A-8BC3-E7AC458F01D5\/data\/Containers\/Bundle\/Application\/C6A1A699-B860-40CF-A079-3C4513BB3C0E\/Sync.md.app\/Sync.md",
+  "bundleInfo" : {"CFBundleShortVersionString":"3.0","CFBundleVersion":"202611071310","CFBundleIdentifier":"bontecou.Sync-md"},
+  "storeInfo" : {"deviceIdentifierForVendor":"D232F3BA-4E59-543F-A0AF-D1D353E534F2","thirdParty":true},
+  "parentProc" : "launchd_sim",
+  "parentPid" : 89731,
+  "coalitionName" : "com.apple.CoreSimulator.SimDevice.4DFF1574-E044-472A-8BC3-E7AC458F01D5",
+  "crashReporterKey" : "4577215A-8453-AF34-8C1B-126190CEE714",
+  "chargingStatus" : {"externalSourceConnected":true,"chargeMode":"chargingWired"},
+  "developerMode" : 1,
+  "responsiblePid" : 951,
+  "responsibleProc" : "SimulatorTrampoline",
+  "codeSigningID" : "bontecou.Sync-md",
+  "codeSigningTeamID" : "",
+  "codeSigningFlags" : 570425857,
+  "codeSigningValidationCategory" : 10,
+  "codeSigningTrustLevel" : 4294967295,
+  "codeSigningAuxiliaryInfo" : 0,
+  "instructionByteStream" : {"beforePC":"IAAg1IEF+LfpAwC54gMDquMDBKrkAwWq5QMGquYDB6rnAwiqdgIAlA==","atPC":"IAAg1P8TALmIEoBS6AcA+UgAgFLoAwA5ABYA8ADQApEDFgDwY4APkQ=="},
+  "bootSessionUUID" : "DCF9CF63-1EE8-4237-92EA-869BF3CBD27C",
+  "wakeTime" : 125588,
+  "sleepWakeUUID" : "1F905FDD-EEA4-40D6-9888-5484B2C6CFA4",
+  "sip" : "enabled",
+  "exception" : {"codes":"0x0000000000000001, 0x00000001c16c415c","rawCodes":[1,7540064604],"type":"EXC_BREAKPOINT","signal":"SIGTRAP"},
+  "termination" : {"flags":0,"code":5,"namespace":"SIGNAL","indicator":"Trace\/BPT trap: 5","byProc":"exc handler","byPid":51770},
+  "os_fault" : {"process":"Sync.md"},
+  "extMods" : {"caller":{"thread_create":0,"thread_set_state":0,"task_for_pid":0},"system":{"thread_create":0,"thread_set_state":0,"task_for_pid":378},"targeted":{"thread_create":0,"thread_set_state":0,"task_for_pid":1},"warnings":0},
+  "faultingThread" : 0,
+  "threads" : [{"triggered":true,"id":7935575,"threadState":{"x":[{"value":16140901064495857664},{"value":5},{"value":4318888064},{"value":4320166368},{"value":30},{"value":512},{"value":100},{"value":2023101400332318},{"value":0},{"value":4289742817},{"value":2040693586376734},{"value":2023101400330268},{"value":1030144},{"value":0},{"value":5},{"value":4310843392},{"value":4296907484,"symbolLocation":0,"symbol":"pthread_getspecific"},{"value":1},{"value":0},{"value":6170332464},{"value":6170333424},{"value":6170333648},{"value":1152921500312613838},{"value":111685926929},{"value":1},{"value":68719460620},{"value":6170334488},{"value":0},{"value":4300718080}],"flavor":"ARM_THREAD_STATE64","lr":{"value":7540064604},"cpsr":{"value":0},"fp":{"value":6170331504},"sp":{"value":6170331472},"esr":{"value":4060086273,"description":"(Breakpoint) brk 1"},"pc":{"value":7540064604,"matchesCrashFrame":1},"far":{"value":0}},"queue":"com.apple.main-thread","frames":[{"imageOffset":1053020,"symbol":"_assertionFailure(_:_:file:line:flags:)","symbolLocation":208,"imageIndex":10},{"imageOffset":179016,"sourceLine":250,"sourceFile":"MarketingCapture.swift","symbol":"static MarketingDemoSeeder.pullCancellationAppStateIfRequested()","imageIndex":4,"symbolLocation":1316},{"imageOffset":16838976,"sourceLine":63,"sourceFile":"Sync_mdApp.swift","symbol":"Sync_mdApp.init()","imageIndex":4,"symbolLocation":844},{"imageOffset":16858988,"sourceFile":"\/<compiler-generated>","symbol":"protocol witness for App.init() in conformance Sync_mdApp","symbolLocation":12,"imageIndex":4},{"imageOffset":5830464,"symbol":"static App.main()","symbolLocation":132,"imageIndex":11},{"imageOffset":16858944,"sourceFile":"\/<compiler-generated>","symbol":"static Sync_mdApp.$main()","symbolLocation":40,"imageIndex":4},{"imageOffset":16859008,"sourceFile":"Sync_mdApp.swift","symbol":"__debug_main_executable_dylib_entry_point","symbolLocation":12,"imageIndex":4},{"imageOffset":66384,"symbol":"start_sim","symbolLocation":20,"imageIndex":1},{"imageOffset":204156,"symbol":"start","symbolLocation":6652,"imageIndex":9}]},{"id":7936409,"frames":[],"threadState":{"x":[{"value":6170898432},{"value":6147},{"value":6170361856},{"value":0},{"value":409604},{"value":18446744073709551615},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0},{"value":0}],"flavor":"ARM_THREAD_STATE64","lr":{"value":0},"cpsr":{"value":0},"fp":{"value":0},"sp":{"value":6170898432},"esr":{"value":1442840704,"description":"(Syscall)"},"pc":{"value":4296907352},"far":{"value":0}}}],
+  "usedImages" : [
+  {
+    "source" : "P",
+    "arch" : "arm64",
+    "base" : 4296540160,
+    "CFBundleShortVersionString" : "3.0",
+    "CFBundleIdentifier" : "bontecou.Sync-md",
+    "size" : 16384,
+    "uuid" : "2d526b9a-f44c-39e7-a85f-5e94d9de9284",
+    "path" : "\/Users\/USER\/Library\/Developer\/CoreSimulator\/Devices\/4DFF1574-E044-472A-8BC3-E7AC458F01D5\/data\/Containers\/Bundle\/Application\/C6A1A699-B860-40CF-A079-3C4513BB3C0E\/Sync.md.app\/Sync.md",
+    "name" : "Sync.md",
+    "CFBundleVersion" : "202611071310"
+  },
+  {
+    "source" : "P",
+    "arch" : "arm64",
+    "base" : 4297310208,
+    "size" : 376832,
+    "uuid" : "6fae6738-0877-3f55-80b9-6ae42fcb8606",
+    "path" : "\/Volumes\/VOLUME\/*\/dyld_sim",
+    "name" : "dyld_sim"
+  },
+  {
+    "source" : "P",
+    "arch" : "arm64",
+    "base" : 4298145792,
+    "size" : 278528,
+    "uuid" : "e40a186a-8d7d-3029-b5cd-d42c967992c0",
+    "path" : "\/Volumes\/VOLUME\/*\/libMainThreadChecker.dylib",
+    "name" : "libMainThreadChecker.dylib"
+  },
+  {
+    "source" : "P",
+    "arch" : "arm64",
+    "base" : 4301930496,
+    "size" : 638976,
+    "uuid" : "9e5e76d4-ee4a-351c-bc5d-23a660225f0e",
+    "path" : "\/Volumes\/VOLUME\/*\/libRPAC.dylib",
+    "name" : "libRPAC.dylib"
+  },
+  {
+    "source" : "P",
+    "arch" : "arm64",
+    "base" : 4415225856,
+    "size" : 38305792,
+    "uuid" : "eea0ab3c-b153-341c-8ea7-d59110cba362",
+    "path" : "\/Users\/USER\/Library\/Developer\/CoreSimulator\/Devices\/4DFF1574-E044-472A-8BC3-E7AC458F01D5\/data\/Containers\/Bundle\/Application\/C6A1A699-B860-40CF-A079-3C4513BB3C0E\/Sync.md.app\/Sync.md.debug.dylib",
+    "name" : "Sync.md.debug.dylib"
+  },
+  {
+    "source" : "P",
+    "arch" : "arm64",
+    "base" : 4296671232,
+    "size" : 16384,
+    "uuid" : "b40c3025-9a10-3bb8-9c5c-21d8c0e0f974",
+    "path" : "\/Volumes\/VOLUME\/*\/libswift_stdio.dylib",
+    "name" : "libswift_stdio.dylib"
+  },
+  {
+    "source" : "P",
+    "arch" : "arm64",
+    "base" : 4296720384,
+    "size" : 49152,
+    "uuid" : "38c97926-a4a7-3c0e-9086-20774f32b98b",
+    "path" : "\/usr\/lib\/system\/libsystem_platform.dylib",
+    "name" : "libsystem_platform.dylib"
+  },
+  {
+    "source" : "P",
+    "arch" : "arm64",
+    "base" : 4301193216,
+    "size" : 262144,
+    "uuid" : "ee6c35a4-06c3-3bb2-b1d6-00f39b96ab4d",
+    "path" : "\/usr\/lib\/system\/libsystem_kernel.dylib",
+    "name" : "libsystem_kernel.dylib"
+  },
+  {
+    "source" : "P",
+    "arch" : "arm64",
+    "base" : 4296900608,
+    "size" : 65536,
+    "uuid" : "8728d77b-94c9-38e9-a54b-1d4a92967cd8",
+    "path" : "\/usr\/lib\/system\/libsystem_pthread.dylib",
+    "name" : "libsystem_pthread.dylib"
+  },
+  {
+    "source" : "P",
+    "arch" : "arm64e",
+    "base" : 4299702272,
+    "size" : 786432,
+    "uuid" : "d8104ed6-185e-3a2f-ad71-b91eddbe2598",
+    "path" : "\/usr\/lib\/dyld",
+    "name" : "dyld"
+  },
+  {
+    "source" : "P",
+    "arch" : "arm64",
+    "base" : 7539011584,
+    "size" : 4962641,
+    "uuid" : "4bac37fd-036c-3819-88c4-d0183173216a",
+    "path" : "\/Volumes\/VOLUME\/*\/libswiftCore.dylib",
+    "name" : "libswiftCore.dylib"
+  },
+  {
+    "source" : "P",
+    "arch" : "arm64",
+    "base" : 7672930304,
+    "size" : 19362364,
+    "uuid" : "480ec830-2694-3017-bea4-230c8818dded",
+    "path" : "\/Volumes\/VOLUME\/*\/SwiftUI.framework\/SwiftUI",
+    "name" : "SwiftUI"
+  },
+  {
+    "size" : 0,
+    "source" : "A",
+    "base" : 0,
+    "uuid" : "00000000-0000-0000-0000-000000000000"
+  }
+],
+  "sharedCache" : {
+  "base" : 7516192768,
+  "size" : 3956064256,
+  "uuid" : "5827bb56-52e1-3d0b-ac02-7a3201246563"
+},
+  "legacyInfo" : {
+  "threadTriggered" : {
+    "queue" : "com.apple.main-thread"
+  }
+},
+  "logWritingSignature" : "0fa6ae4e20536f147e46067e3ad0d61c368ecea6",
+  "bug_type" : "309",
+  "roots_installed" : 0,
+  "trmStatus" : 1,
+  "trialInfo" : {
+  "rollouts" : [
+    {
+      "rolloutId" : "654119024fac9d2df9ecb124",
+      "factorPackIds" : [
+
+      ],
+      "deploymentId" : 240000004
+    },
+    {
+      "rolloutId" : "6813dc6e1e50e5344eb573e9",
+      "factorPackIds" : [
+
+      ],
+      "deploymentId" : 240000021
+    }
+  ],
+  "experiments" : [
+
+  ]
+}
+}

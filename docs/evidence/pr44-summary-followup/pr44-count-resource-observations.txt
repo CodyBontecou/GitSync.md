@@ -1,0 +1,6 @@
+fr: old=1 interrompu; category=Pull interrompu (1)
+fr: old=2 interrompu; category=Pull interrompu (2)
+fr: old=5 interrompu; category=Pull interrompu (5)
+he: old=1 הופסקו; category=המשיכה הופסקה (1)
+he: old=2 הופסקו; category=המשיכה הופסקה (2)
+he: old=5 הופסקו; category=המשיכה הופסקה (5)

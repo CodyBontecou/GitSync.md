@@ -243,6 +243,20 @@ enum MarketingDemoSeeder {
         }
     }
 
+    /// Cancellation QA uses a real native repo and its own inventory, never the
+    /// shipping account/store. The UI explicitly acquires/releases its lease.
+    static func pullCancellationAppStateIfRequested() -> AppState? {
+        guard MarketingCapture.gitToolsUITestScenario == "pull-cancel" else { return nil }
+        precondition(Bundle.main.bundleIdentifier == "bontecou.Sync-md.prqa")
+        let inventoryURL = FileManager.default.temporaryDirectory.appendingPathComponent("pr44-qa/repos.json")
+        try? FileManager.default.removeItem(at: inventoryURL)
+        let state = AppState(reposFileURL: inventoryURL, loadPersistedState: false)
+        // Seed before ContentView chooses onboarding vs Home. Relying on its
+        // onAppear races that first routing decision on physical cold launches.
+        seedUITestGitToolsFixture(into: state, scenario: "pull-cancel")
+        return state
+    }
+
     /// External-client fixtures must not load or reconcile the user's inventory.
     static func externalRefreshAppStateIfRequested() -> AppState? {
         guard MarketingCapture.gitToolsUITestScenario == "external-commit"
@@ -290,6 +304,10 @@ enum MarketingDemoSeeder {
             state.hasCompletedOnboarding = true
             state.hasSeenOnboarding = true
             state.isDemoMode = false
+            return
+        }
+        if MarketingCapture.gitToolsUITestScenario == "pull-cancel" {
+            // The isolated initializer already seeded this native working copy.
             return
         }
         if let scenario = MarketingCapture.gitToolsUITestScenario {
@@ -584,7 +602,7 @@ enum MarketingDemoSeeder {
         let documents = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
         let vaultURL = documents.appendingPathComponent("git-tools-fixture", isDirectory: true)
         let remotePath = UITestGitFixtures.gitToolsBareRemotePath
-        let isDirty = scenario == "dirty" || scenario == "syncing"
+        let isDirty = scenario == "dirty" || scenario == "syncing" || scenario == "pull-cancel"
         var files = [
             "README.md": Data("# Git Tools Fixture\n\nBase note.\n".utf8),
             "notes/hello.md": Data("# Hello\n\nBase remote note.\n".utf8),
@@ -651,6 +669,7 @@ enum MarketingDemoSeeder {
             default: syncState = .upToDate
             }
             state.syncStateByRepo = [repo.id: syncState]
+            if scenario == "pull-cancel" { _ = state.saveRepos() }
             // Mutate the real repository without using AppState's Git actions or
             // publishing its new HEAD/branch. Normal Vault-on-appear status
             // refresh must discover this independently, like another Git client.

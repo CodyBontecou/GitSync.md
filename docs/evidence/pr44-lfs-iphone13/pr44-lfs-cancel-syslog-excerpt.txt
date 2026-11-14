@@ -1,0 +1,8 @@
+Nov 13 20:37:27.875189 Sync.md(libxpc.dylib)[3607] <Notice>: [0x11b28c640] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+Nov 13 20:38:24.275736 Sync.md(Network)[3607] <Notice>: [C2 C677D9AA-E590-4212-8116-9478AB68B955 IPv4#dfdac404:8773 tcp, url hash: 68dcd089, definite, attribution: developer] cancelled
+Nov 13 20:38:24.275988 Sync.md(Network)[3607] <Debug>: nw_flow_cancel_read_write_requests [C2 IPv4#dfdac404:8773 cancelled channel-flow ((null))] cancelling read/write requests: write_requests=0x0, head_is_file_request=0
+Nov 13 20:38:24.276003 Sync.md(Network)[3607] <Notice>: nw_connection_report_state_with_handler_on_nw_queue [C2] reporting state cancelled
+Nov 13 20:38:46.937115 Sync.md(CFNetwork)[3607] <Notice>: Task <807C4B9F-A8F7-446E-918E-A0A368F1B30D>.<3> finished with error [-999] Error Domain=NSURLErrorDomain Code=-999 UserInfo={NSErrorFailingURLStringKey=<private>, NSErrorFailingURLKey=<private>, _NSURLErrorRelatedURLSessionTaskErrorKey=<private>, _NSURLErrorFailingURLSessionTaskErrorKey=<private>, NSLocalizedDescription=<private>}
+Nov 13 20:38:46.937416 Sync.md(Network)[3607] <Notice>: [C3 D1BACA92-AFFD-4350-8018-C4CBA9E9ACAE IPv4#dfdac404:8773 tcp, url hash: 7bfc2084, definite, attribution: developer] cancelled
+Nov 13 20:38:46.937878 Sync.md(Network)[3607] <Debug>: nw_flow_cancel_read_write_requests [C3 IPv4#dfdac404:8773 cancelled channel-flow ((null))] cancelling read/write requests: write_requests=0x0, head_is_file_request=0
+Nov 13 20:38:46.937898 Sync.md(Network)[3607] <Notice>: nw_connection_report_state_with_handler_on_nw_queue [C3] reporting state cancelled

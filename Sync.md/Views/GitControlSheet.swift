@@ -812,7 +812,7 @@ struct GitControlSheet: View {
                       title: String(localized: "Pull"),
                       subtitle: String(localized: "Fetch and apply remote changes")) {
                 Task {
-                    let ok = await state.pull(repoID: repoID)
+                    let ok = await state.pull(repoID: repoID, cancellationFeedback: .warning)
                     if ok { dismiss() }
                 }
             }
