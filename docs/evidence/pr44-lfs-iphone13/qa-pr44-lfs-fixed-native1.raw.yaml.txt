@@ -1,0 +1,59 @@
+steps:
+  - launch:
+      native: bontecou.Sync-md.prqa
+      ios:
+        app: bontecou.Sync-md.prqa
+        args:
+          - -UITestGitToolsFixture
+          - pull-cancel
+          - -AppleLanguages
+          - (en)
+          - -AppleLocale
+          - en_US
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Attention 1
+        role: Button
+  - tap:
+      text: main · syncmd-uitest-fixtures/git-tools-fixture
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: vault.title
+  - tap:
+      text: Pull
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Cancel
+        role: Button
+  - tap:
+      text: Cancel
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Git updated before cancellation completed. Verify the working tree before
+          the next sync.
+        role: StaticText
+  - tool: await-ui-element
+    args:
+      condition: hidden
+      selector:
+        text: Cancel
+        role: Button
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Check for changes
+        role: Button
+  - echo: Correct post-update interruption guidance and native/persisted new SHA
+      verified. Raw Cancel-hidden wait falsely matched the synthetic commit
+      title containing cancellation; independent exact-label tree confirms no
+      Cancel button and Check for changes ready. Preserve failed wait; use
+      non-conflicting synthetic commit title next take.

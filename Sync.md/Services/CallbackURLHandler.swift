@@ -281,7 +281,7 @@ final class CallbackURLHandler {
                 errorMessage: String(localized: "Expected branch '\(expected)', but '\(actual)' is checked out.")
             )
         case .cancelled:
-            return .init(params: ["updated": "false"], errorMessage: String(localized: "Cancelled"))
+            return .init(params: ["updated": "false"], errorMessage: RepositoryPullResult.cancellationMessage)
         case .authenticationOrTrustRequired(let message, _),
              .unavailable(let message),
              .failed(let message):

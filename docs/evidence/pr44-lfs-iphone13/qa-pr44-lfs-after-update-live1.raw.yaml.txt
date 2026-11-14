@@ -1,0 +1,40 @@
+steps:
+  - launch:
+      native: bontecou.Sync-md.prqa
+      ios:
+        app: bontecou.Sync-md.prqa
+        args:
+          - -UITestGitToolsFixture
+          - pull-cancel
+          - -AppleLanguages
+          - (en)
+          - -AppleLocale
+          - en_US
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Attention 1
+        role: Button
+  - echo: Owned synthetic LFS remote is one commit ahead; only synthetic dirty
+      README reset to tracked base, original archived. No product code changes.
+      Open Vault to perform native Pull.
+  - tap:
+      text: main · syncmd-uitest-fixtures/git-tools-fixture
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: vault.title
+  - tap:
+      text: Pull
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Large files couldn't download
+        role: StaticText
+  - echo: Real Git fast-forward and persisted new SHA verified, but LFS failed
+      immediately with offline error before any batch request reached the owned
+      LAN server. Cancellation gate NOT exercised. Preserve as network-failure
+      attention evidence; diagnose QA local-network access only.

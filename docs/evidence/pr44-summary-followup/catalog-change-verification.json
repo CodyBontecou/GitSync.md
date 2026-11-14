@@ -1,0 +1,11 @@
+{
+  "unchangedExistingKeys": [
+    "Pull",
+    "Pull interrupted",
+    "Pull was interrupted. Try pulling again when you're ready."
+  ],
+  "localesPerKey": 26,
+  "removedUnusedCountWord": "interrupted",
+  "newTranslatedSentencesAdded": 0,
+  "agentSemanticReviewNotHumanApproval": true
+}

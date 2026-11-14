@@ -8,10 +8,96 @@ import Clibgit2
 import libgit2
 @testable import Sync_md
 
+/// Per-session fixture: exercises Foundation's real data/upload error bridge
+/// without registering a global URLProtocol or requiring device networking.
+private final class LFSCancellationURLProtocol: URLProtocol, @unchecked Sendable {
+    override class func canInit(with request: URLRequest) -> Bool {
+        request.url?.host == "qa-lfs.invalid"
+    }
+
+    override class func canonicalRequest(for request: URLRequest) -> URLRequest { request }
+
+    override func startLoading() {
+        guard let url = request.url else { return }
+        switch url.path {
+        case "/cancel":
+            client?.urlProtocol(self, didFailWithError: URLError(.cancelled))
+        case "/offline":
+            client?.urlProtocol(self, didFailWithError: URLError(.notConnectedToInternet))
+        default:
+            let response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: nil)!
+            client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
+            client?.urlProtocol(self, didLoad: Data("synthetic-lfs-response".utf8))
+            client?.urlProtocolDidFinishLoading(self)
+        }
+    }
+
+    override func stopLoading() {}
+}
+
 final class SyncMDTests: XCTestCase {
     override func setUp() {
         super.setUp()
         _ = git_libgit2_init()
+    }
+
+    func testLFSHTTPDownloadNormalizesURLSessionCancellation() async {
+        await assertLFSHTTPTransportCancellation(body: nil)
+    }
+
+    func testLFSHTTPUploadNormalizesURLSessionCancellation() async {
+        await assertLFSHTTPTransportCancellation(body: Data("synthetic batch".utf8))
+    }
+
+    private func assertLFSHTTPTransportCancellation(body: Data?) async {
+        let configuration = URLSessionConfiguration.ephemeral
+        configuration.protocolClasses = [LFSCancellationURLProtocol.self]
+        let session = URLSession(configuration: configuration)
+        defer { session.invalidateAndCancel() }
+        var request = URLRequest(url: URL(string: "https://qa-lfs.invalid/cancel")!)
+        request.httpMethod = body == nil ? "GET" : "POST"
+        do {
+            _ = try await session.response(for: request, body: body)
+            XCTFail("Transport must propagate cancellation, not return success")
+        } catch is CancellationError {
+            // The post-update native pull boundary recognizes this type and
+            // preserves the new SHA with interruption rather than failure.
+        } catch {
+            XCTFail("Expected CancellationError, received \(error)")
+        }
+    }
+
+    func testLFSHTTPTransportPreservesOfflineErrors() async {
+        let configuration = URLSessionConfiguration.ephemeral
+        configuration.protocolClasses = [LFSCancellationURLProtocol.self]
+        let session = URLSession(configuration: configuration)
+        defer { session.invalidateAndCancel() }
+        for body in [Data?.none, Data("synthetic batch".utf8)] {
+            var request = URLRequest(url: URL(string: "https://qa-lfs.invalid/offline")!)
+            request.httpMethod = body == nil ? "GET" : "POST"
+            do {
+                _ = try await session.response(for: request, body: body)
+                XCTFail("Offline must not become success")
+            } catch let error as URLError {
+                XCTAssertEqual(error.code, .notConnectedToInternet)
+            } catch {
+                XCTFail("Offline must retain its error rather than become cancellation: \(error)")
+            }
+        }
+    }
+
+    func testLFSHTTPTransportPreservesSuccessfulResponses() async throws {
+        let configuration = URLSessionConfiguration.ephemeral
+        configuration.protocolClasses = [LFSCancellationURLProtocol.self]
+        let session = URLSession(configuration: configuration)
+        defer { session.invalidateAndCancel() }
+        for body in [Data?.none, Data("synthetic batch".utf8)] {
+            var request = URLRequest(url: URL(string: "https://qa-lfs.invalid/success")!)
+            request.httpMethod = body == nil ? "GET" : "POST"
+            let (data, response) = try await session.response(for: request, body: body)
+            XCTAssertEqual(response.statusCode, 200)
+            XCTAssertEqual(data, Data("synthetic-lfs-response".utf8))
+        }
     }
 
     func testTagNamesRejectControlsBeforeNativeMutation() async throws {
@@ -356,7 +442,7 @@ final class SyncMDTests: XCTestCase {
         }
         XCTAssertEqual(
             CallbackURLHandler.mapPullResult(.cancelled).errorMessage,
-            String(localized: "Cancelled")
+            RepositoryPullResult.cancellationMessage
         )
     }
 
@@ -1041,6 +1127,189 @@ final class SyncMDTests: XCTestCase {
         XCTAssertEqual(unlink.count, 2)
     }
 
+    func testRepositoryPullRunnerMapsThrownCancellationWithoutRetry() async throws {
+        let fixture = try GitFixtureFactory.make(state: .dirty)
+        defer { fixture.cleanup() }
+        let before = fixture.snapshot()
+        fixture.repository.executePullOnlyResult = .failure(CancellationError())
+
+        let result = await RepositoryPullRunner().run(repository: fixture.repository, credentials: "")
+
+        XCTAssertEqual(result, .cancelled)
+        XCTAssertFalse(result.completedWithoutAttention)
+        XCTAssertNil(result.newCommitSHA)
+        XCTAssertEqual(fixture.repository.executePullOnlyCallCount, 1)
+        XCTAssertEqual(fixture.repository.pullFastForwardCallCount, 0)
+        XCTAssertEqual(fixture.snapshot(), before)
+    }
+
+    func testRepositoryPullRunnerPreExecutionCancellationNeverCallsRepository() async throws {
+        let fixture = try GitFixtureFactory.make(state: .dirty)
+        defer { fixture.cleanup() }
+        let gate = AsyncGate()
+        let task = Task {
+            await gate.wait()
+            return await RepositoryPullRunner().run(repository: fixture.repository, credentials: "")
+        }
+        task.cancel()
+        await gate.open()
+        let result = await task.value
+
+        XCTAssertEqual(result, .cancelled)
+        XCTAssertEqual(fixture.repository.executePullOnlyCallCount, 0)
+    }
+
+    @MainActor
+    func testAppStateQueuedPullCancellationClearsIndicatorsAndAllowsExplicitRetry() async throws {
+        let fixture = try GitFixtureFactory.make(state: .dirty)
+        defer { fixture.cleanup() }
+        let before = fixture.snapshot()
+        let state = AppState(gitRepositoryFactory: { _ in fixture.repository }, loadPersistedState: false)
+        state.repos = [fixture.repoConfig]
+        let repoID = fixture.repoConfig.id
+        let url = try XCTUnwrap(state.vaultURL(for: repoID))
+        let gate = AsyncGate()
+        let holding = expectation(description: "repository lease held")
+        let holder = Task {
+            try await RepositoryOperationCoordinator.shared.withRepository(at: url) {
+                holding.fulfill()
+                await gate.wait()
+            }
+        }
+        await fulfillment(of: [holding], timeout: 2)
+        let pull = Task { await state.pullOnly(repoID: repoID, showsProgressDelay: false, cancellationFeedback: .warning) }
+        var queued = 0
+        for _ in 0..<200 {
+            queued = await RepositoryOperationCoordinator.shared.queuedOperationCount(at: url)
+            if queued > 0 { break }
+            try await Task.sleep(for: .milliseconds(10))
+        }
+        XCTAssertEqual(queued, 1)
+        XCTAssertTrue(state.isSyncing)
+        XCTAssertEqual(state.syncingRepoID, repoID)
+        pull.cancel()
+        let result = await pull.value
+        XCTAssertEqual(result, .cancelled)
+        XCTAssertFalse(state.isSyncing)
+        XCTAssertNil(state.syncingRepoID)
+        XCTAssertNil(state.lastError)
+        XCTAssertEqual(state.pullOutcomeByRepo[repoID]?.kind, .cancelled)
+        XCTAssertEqual(state.pullOutcomeByRepo[repoID]?.message, RepositoryPullResult.cancellationMessage)
+        XCTAssertEqual(fixture.repository.executePullOnlyCallCount, 0)
+        XCTAssertEqual(state.repo(id: repoID)?.gitState.commitSHA, fixture.repoConfig.gitState.commitSHA)
+        XCTAssertEqual(state.repo(id: repoID)?.gitState.lastSyncDate, fixture.repoConfig.gitState.lastSyncDate)
+        XCTAssertEqual(fixture.snapshot(), before)
+        await gate.open()
+        try await holder.value
+
+        let retry = await state.pullOnly(repoID: repoID, showsProgressDelay: false)
+        XCTAssertEqual(retry, .upToDate(branch: "main", commitSHA: fixture.repoConfig.gitState.commitSHA))
+        XCTAssertEqual(fixture.repository.executePullOnlyCallCount, 1)
+        XCTAssertEqual(state.pullOutcomeByRepo[repoID]?.kind, .upToDate)
+        XCTAssertFalse(state.isSyncing)
+        XCTAssertNil(state.syncingRepoID)
+    }
+
+    @MainActor
+    func testAppStateThrownCancellationIsNotErrorOrLegacySuccess() async throws {
+        let fixture = try GitFixtureFactory.make(state: .dirty)
+        defer { fixture.cleanup() }
+        fixture.repository.executePullOnlyResult = .failure(CancellationError())
+        let state = AppState(gitRepositoryFactory: { _ in fixture.repository }, loadPersistedState: false)
+        state.repos = [fixture.repoConfig]
+        let result = await state.pullOnly(repoID: fixture.repoConfig.id, showsProgressDelay: false, cancellationFeedback: .warning)
+        XCTAssertEqual(result, .cancelled)
+        XCTAssertEqual(state.pullOutcomeByRepo[fixture.repoConfig.id]?.kind, .cancelled)
+        XCTAssertEqual(state.pullOutcomeByRepo[fixture.repoConfig.id]?.message, RepositoryPullResult.cancellationMessage)
+        XCTAssertFalse(state.isSyncing)
+        XCTAssertNil(state.syncingRepoID)
+        XCTAssertNil(state.lastError)
+        let legacySucceeded = await state.pull(repoID: fixture.repoConfig.id, showsProgressDelay: false)
+        XCTAssertFalse(legacySucceeded)
+        XCTAssertEqual(fixture.repository.executePullOnlyCallCount, 2, "Each explicit request runs once; no automatic retries")
+    }
+
+    @MainActor
+    func testAppStatePreExecutionCancellationDoesNotReportDemoSuccess() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        let state = AppState(gitRepositoryFactory: { _ in fixture.repository }, loadPersistedState: false)
+        state.repos = [fixture.repoConfig]
+        state.isDemoMode = true
+        let gate = AsyncGate()
+        let pull = Task {
+            await gate.wait()
+            return await state.pullOnly(repoID: fixture.repoConfig.id, showsProgressDelay: false)
+        }
+        pull.cancel()
+        await gate.open()
+        let result = await pull.value
+        XCTAssertEqual(result, .cancelled)
+        XCTAssertFalse(state.isSyncing)
+        XCTAssertNil(state.syncingRepoID)
+        XCTAssertEqual(state.repo(id: fixture.repoConfig.id)?.gitState.lastSyncDate, fixture.repoConfig.gitState.lastSyncDate)
+        XCTAssertEqual(fixture.repository.executePullOnlyCallCount, 0)
+    }
+
+    @MainActor
+    func testCancellationAutomationMappingsProvideGuidanceWithoutRawErrorOrSuccess() {
+        let message = RepositoryPullResult.cancellationMessage
+        XCTAssertFalse(message.contains("Swift.CancellationError"))
+        XCTAssertFalse(message.contains("error 1"))
+        let callback = CallbackURLHandler.mapPullResult(.cancelled)
+        XCTAssertEqual(callback.params, ["updated": "false"])
+        XCTAssertEqual(callback.errorMessage, message)
+        let shortcut = GitShortcutPullResult(repositoryName: "Notes", status: .init(result: .cancelled), message: message)
+        XCTAssertEqual(shortcut.status, .cancelled)
+        XCTAssertTrue(shortcut.needsAttention)
+        XCTAssertTrue(shortcut.dialog.contains(message))
+        let summary = GitShortcutPullSummary(results: [shortcut, shortcut]).dialog
+        XCTAssertTrue(summary.contains(message))
+        XCTAssertFalse(summary.contains("Swift.CancellationError"))
+        XCTAssertTrue(summary.contains("Pull interrupted (2)"), "Use an invariant localized status title, not a quantity-dependent translated adjective")
+        XCTAssertTrue(summary.hasPrefix("Pull (2):"), "A batch containing cancellation must not claim every repository was pulled")
+        let updated = GitShortcutPullResult(repositoryName: "Control", status: .updated, message: "Fixture updated")
+        for count in [0, 1, 2, 5] {
+            let mixed = GitShortcutPullSummary(results: [updated] + Array(repeating: shortcut, count: count)).dialog
+            if count == 0 {
+                XCTAssertFalse(mixed.contains("Pull interrupted"))
+            } else {
+                XCTAssertTrue(mixed.contains("Pull interrupted (\(count))"))
+                XCTAssertTrue(mixed.hasPrefix("Pull (\(count + 1)):"))
+            }
+        }
+        XCTAssertEqual(GitShortcutPullSummary(results: [shortcut]).dialog, shortcut.dialog)
+        XCTAssertTrue(GitShortcutPullSummary(results: [updated, updated]).dialog.hasPrefix("Pulled 2 "))
+        let reconciliation = RepositoryReconciliationResult.pullOnly(.cancelled)
+        XCTAssertEqual(reconciliation.outcome, .blocked)
+        XCTAssertFalse(reconciliation.isFailure)
+        XCTAssertFalse(reconciliation.didTransferData)
+        XCTAssertNil(reconciliation.finalLocalCommitSHA)
+        XCTAssertEqual(reconciliation.message, message)
+    }
+
+    @MainActor
+    func testSyncStopsBeforePushWhenPullIsCancelled() async throws {
+        let fixture = try GitFixtureFactory.make(state: .dirty)
+        defer { fixture.cleanup() }
+        fixture.repository.executePullOnlyResult = .failure(CancellationError())
+        let state = AppState(gitRepositoryFactory: { _ in fixture.repository }, loadPersistedState: false)
+        state.repos = [fixture.repoConfig]
+        let result = await state.syncRepository(repoID: fixture.repoConfig.id)
+        XCTAssertEqual(result.pull, .cancelled)
+        XCTAssertEqual(result.outcome, .blocked)
+        XCTAssertNil(result.push)
+        XCTAssertEqual(result.message, RepositoryPullResult.cancellationMessage)
+        XCTAssertEqual(fixture.repository.commitLocalCallCount, 0)
+        XCTAssertEqual(fixture.repository.pushCurrentBranchCallCount, 0)
+        XCTAssertTrue(fixture.repository.commitAndPushMessages.isEmpty)
+        XCTAssertFalse(state.isSyncing)
+        XCTAssertNil(state.syncingRepoID)
+        let callback = CallbackURLHandler.mapSyncResult(result)
+        XCTAssertEqual(callback.params, ["pull_updated": "false"])
+        XCTAssertEqual(callback.errorMessage, RepositoryPullResult.cancellationMessage)
+    }
+
     func testRepositoryPullRunnerReturnsTypedOutcomesWithoutMutatingBlockedRepo() async throws {
         let fixture = try GitFixtureFactory.make(state: .dirty)
         defer { fixture.cleanup() }
@@ -1106,10 +1375,12 @@ final class SyncMDTests: XCTestCase {
         }
 
         let reconciliation = RepositoryReconciliationResult.pullOnly(.cancelled)
-        XCTAssertEqual(reconciliation.outcome, .failed, "Automation must not continue to push after a cancelled pull")
-        XCTAssertNil(reconciliation.push)
+        XCTAssertEqual(reconciliation.outcome, .blocked, "Interruption must stop automation without misclassifying it as a Git failure")
+        XCTAssertFalse(reconciliation.isFailure)
+        XCTAssertFalse(reconciliation.didTransferData)
+        XCTAssertNil(reconciliation.push, "Automation must not continue to push after a cancelled pull")
         XCTAssertFalse(reconciliation.retainsCompletedWorkOnCancellation)
-        XCTAssertEqual(reconciliation.message, String(localized: "Cancelled"))
+        XCTAssertEqual(reconciliation.message, RepositoryPullResult.cancellationMessage)
     }
 
     func testRepositoryPullRunnerReturnsNewSHAWithPostUpdateAttention() async throws {
@@ -1158,6 +1429,61 @@ final class SyncMDTests: XCTestCase {
             )
             XCTAssertFalse(additional.completedWithoutAttention)
         }
+    }
+
+    func testReconciliationCancellationBeforeLeaseDoesNotPushOrExposeRawError() async throws {
+        let fixture = try GitFixtureFactory.make(state: .dirty)
+        defer { fixture.cleanup() }
+        let serialized = SerializedGitRepository(base: fixture.repository, localURL: fixture.rootURL)
+        let gate = AsyncGate()
+        let task = Task {
+            await gate.wait()
+            return await RepositoryReconciliationRunner().run(
+                serialized: serialized, repo: fixture.repoConfig, credentials: "", expectedBranch: "main",
+                allowsPull: true, allowsPush: true
+            )
+        }
+        task.cancel()
+        await gate.open()
+        let result = await task.value
+        XCTAssertEqual(result.pull, .cancelled)
+        XCTAssertEqual(result.outcome, .blocked)
+        XCTAssertEqual(result.message, RepositoryPullResult.cancellationMessage)
+        XCTAssertNil(result.push)
+        XCTAssertEqual(fixture.repository.executePullOnlyCallCount, 0)
+        XCTAssertTrue(fixture.repository.commitAndPushMessages.isEmpty)
+    }
+
+    @MainActor
+    func testAppStateCancellationAfterUpdateRetainsSHAAndAttention() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        let newCommit = String(repeating: "c", count: 40)
+        let plan = PullPlan(action: .fastForward, branch: "main", localCommitSHA: fixture.repoConfig.gitState.commitSHA,
+                            remoteCommitSHA: newCommit, hasLocalChanges: false, aheadBy: 0, behindBy: 1)
+        fixture.repository.executePullOnlyResult = .success(.init(plan: plan, pullResult: .init(
+            updated: true, newCommitSHA: newCommit, attention: .cancelledAfterUpdate
+        )))
+        let gate = AsyncGate()
+        let started = expectation(description: "pull execution started")
+        fixture.repository.executePullOnlyGate = gate
+        fixture.repository.executePullOnlyStarted = { started.fulfill() }
+        let state = AppState(gitRepositoryFactory: { _ in fixture.repository }, loadPersistedState: false)
+        state.repos = [fixture.repoConfig]
+        let task = Task { await state.pullOnly(repoID: fixture.repoConfig.id, showsProgressDelay: false) }
+        await fulfillment(of: [started], timeout: 2)
+        task.cancel()
+        await gate.open()
+        let result = await task.value
+
+        XCTAssertEqual(result, .updatedWithAttention(branch: "main", commitSHA: newCommit, attention: .cancelledAfterUpdate))
+        XCTAssertEqual(state.repo(id: fixture.repoConfig.id)?.gitState.commitSHA, newCommit)
+        XCTAssertEqual(state.repo(id: fixture.repoConfig.id)?.gitState.lastSyncDate, fixture.repoConfig.gitState.lastSyncDate)
+        XCTAssertEqual(state.pullOutcomeByRepo[fixture.repoConfig.id]?.kind, .lfsHydrationBlocked)
+        XCTAssertFalse(state.isSyncing)
+        XCTAssertNil(state.syncingRepoID)
+        XCTAssertNil(state.lastError)
+        XCTAssertEqual(fixture.repository.executePullOnlyCallCount, 1)
     }
 
     @MainActor
@@ -3449,6 +3775,28 @@ final class SyncMDTests: XCTestCase {
     }
 
     @MainActor
+    func testBackgroundPullCancellationIsDeferredWithoutFailureOrSuccess() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        var repo = fixture.repoConfig
+        let successDate = Date(timeIntervalSince1970: 1_700_000_000)
+        repo.assist = RepoAssistSettings(enabled: true, selectedBranch: "main", health: .init(
+            kind: .upToDate, lastAttemptDate: successDate, lastSuccessDate: successDate, commitSHA: repo.gitState.commitSHA
+        ))
+        fixture.repository.executePullOnlyResult = .failure(CancellationError())
+        let provider = FakeAssistRepositoryProvider(repo: repo, repository: fixture.repository)
+        let coordinator = BackgroundSyncCoordinator(repositoryProvider: provider, conditionsProvider: PermissiveBackgroundSyncConditions())
+
+        let disposition = await coordinator.reconcile(repoID: repo.id)
+
+        XCTAssertEqual(disposition, .deferred(RepositoryPullResult.cancellationMessage))
+        XCTAssertEqual(provider.repo.assist.health.kind, .deferred)
+        XCTAssertNil(provider.repo.assist.health.attention)
+        XCTAssertEqual(provider.repo.assist.health.lastSuccessDate, successDate)
+        XCTAssertEqual(provider.repo.assist.health.commitSHA, repo.gitState.commitSHA)
+    }
+
+    @MainActor
     func testBackgroundCoordinatorRecordsPostUpdateHydrationAttentionWithNewSHAAndPriorSuccessDate() async throws {
         let fixture = try GitFixtureFactory.make(state: .clean)
         defer { fixture.cleanup() }
@@ -4370,18 +4718,15 @@ final class SyncMDTests: XCTestCase {
         let coordinator = RepositoryOperationCoordinator()
         let serialized = SerializedGitRepository(base: service, localURL: repoURL, coordinator: coordinator)
         let pull = Task {
-            try await serialized.executePullOnly(pat: "", expectedBranch: "main")
+            await RepositoryPullRunner().run(repository: serialized, credentials: "", expectedBranch: "main")
         }
 
         await fulfillment(of: [beforeMutation], timeout: 2)
         pull.cancel()
         releaseHook.signal()
-        do {
-            _ = try await pull.value
-            XCTFail("Expected cancellation from detached libgit2 bridge")
-        } catch is CancellationError {
-            // The cancellation signal is checked before transaction/checkout.
-        }
+        let cancelledResult = await pull.value
+        XCTAssertEqual(cancelledResult, .cancelled)
+        XCTAssertNil(cancelledResult.newCommitSHA)
 
         let infoAfterCancellation = try await setup.repoInfo()
         XCTAssertEqual(infoAfterCancellation.commitSHA, baseSHA)
@@ -4392,6 +4737,10 @@ final class SyncMDTests: XCTestCase {
         let postCancellationInfo = try await serialized.repoInfo()
         XCTAssertEqual(postCancellationInfo.commitSHA, baseSHA)
         XCTAssertEqual(postCancellationInfo.changeCount, 0)
+        let retryRepository = SerializedGitRepository(base: setup, localURL: repoURL, coordinator: coordinator)
+        let retry = await RepositoryPullRunner().run(repository: retryRepository, credentials: "", expectedBranch: "main")
+        XCTAssertEqual(retry, .updated(branch: "main", commitSHA: remoteSHA))
+        XCTAssertEqual(try String(contentsOf: fileURL, encoding: .utf8), "remote\n")
     }
 
     func testPullPlanClassifierDistinguishesFastForwardBlockedAndDiverged() {
