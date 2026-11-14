@@ -39,7 +39,15 @@ DEBUG-only `-UITestGitToolsFixture pull-cancel` uses private `tmp/pr44-qa/repos.
 
 Prior verified PR47 app backed up at `/tmp/gitsync-pr47-verified.app` (debug dylib SHA256 `061ef840d8c235ec5b305651621024dd7f23291a712d3d173e8e68499cbe6d88`). No original CancellationError transport/provider cause is claimed. A queued native cancellation proves that scoped pre-update path, not every network/LFS/Shortcuts-host scenario. Background/headless/post-update mappings have unit/native-model coverage, not independently induced physical OS-host proof. No Obsidian interoperability claim.
 
-## Remaining gates
+## LFS follow-up after base0d15ed5
+
+Base0d15ed5 exact-head CI43515488866 passed its528-test/Release/privacy/resource gates. Additional callback and Shortcuts live observations remain local sidecars, not that CI's coverage.
+
+Actual physical post-update LFS cancellation exposed a real CFNetwork -999 mapping gap. The follow-up normalizes only URLSession cancellation, adds four real Foundation transport regressions (red2/4 → green4/4), and preserves offline/success controls. Full signed unit/native repeat532/532 passed; initial unchanged-removal sourceChanged failure is retained. Two fixed live iPhone13 cases independently retained the new native/persisted SHA and rendered the intended interruption guidance. These are not two unattended e2e passes. See [LFS failure/fix evidence and limits](pr44-lfs-iphone13-qa.md).
+
+Required follow-up exact-head CI/tree audit and human non-English/RTL/count-grammar review remain. Actual canceled-Shortcuts displayed wording is unobserved. Keep draft/unmerged while gates remain. No QA project/signing overrides are committed.
+
+## Earlier remaining-gate checkpoint (historical, superseded above)
 
 - After the DEBUG fixture cold-start adjustment, the final signed run's **528 unit/native tests passed, zero failures**. The command inadvertently also selected the entire unrelated UI target rather than the five feature gates; it was intentionally interrupted (not counted as a complete suite) after three other UI cases passed and a fourth began, with no failures observed. Raw `/tmp/pr44-final-source-full.log` / `.xcresult` retained. The first exact-five rerun was misconfigured with restored shipping identifiers: the DEBUG fixture's unchanged QA-bundle precondition correctly trapped (`wrong-test-bundle-guard.ips`, line250); preserved and not counted. Restored local QA build identities, without weakening the guard, then the final exact five feature UI tests **passed5/5**, zero failures (`/tmp/pr44-final-qa-five-ui.xcresult`, exit0). Shipping project identifiers restored again before staging. Thus final-source evidence is528 unit/native plus five UI in separate scoped runs, not a falsely completed wider suite. Prior533-test success is separately retained.
 - Audit exact residual diff and PR39 requirements, commit/push candidate/evidence, inspect required exact-head CI/Release and refreshed base/head before any PR44 merge.

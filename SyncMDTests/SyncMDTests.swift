@@ -8,10 +8,96 @@ import Clibgit2
 import libgit2
 @testable import Sync_md
 
+/// Per-session fixture: exercises Foundation's real data/upload error bridge
+/// without registering a global URLProtocol or requiring device networking.
+private final class LFSCancellationURLProtocol: URLProtocol, @unchecked Sendable {
+    override class func canInit(with request: URLRequest) -> Bool {
+        request.url?.host == "qa-lfs.invalid"
+    }
+
+    override class func canonicalRequest(for request: URLRequest) -> URLRequest { request }
+
+    override func startLoading() {
+        guard let url = request.url else { return }
+        switch url.path {
+        case "/cancel":
+            client?.urlProtocol(self, didFailWithError: URLError(.cancelled))
+        case "/offline":
+            client?.urlProtocol(self, didFailWithError: URLError(.notConnectedToInternet))
+        default:
+            let response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: nil)!
+            client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
+            client?.urlProtocol(self, didLoad: Data("synthetic-lfs-response".utf8))
+            client?.urlProtocolDidFinishLoading(self)
+        }
+    }
+
+    override func stopLoading() {}
+}
+
 final class SyncMDTests: XCTestCase {
     override func setUp() {
         super.setUp()
         _ = git_libgit2_init()
+    }
+
+    func testLFSHTTPDownloadNormalizesURLSessionCancellation() async {
+        await assertLFSHTTPTransportCancellation(body: nil)
+    }
+
+    func testLFSHTTPUploadNormalizesURLSessionCancellation() async {
+        await assertLFSHTTPTransportCancellation(body: Data("synthetic batch".utf8))
+    }
+
+    private func assertLFSHTTPTransportCancellation(body: Data?) async {
+        let configuration = URLSessionConfiguration.ephemeral
+        configuration.protocolClasses = [LFSCancellationURLProtocol.self]
+        let session = URLSession(configuration: configuration)
+        defer { session.invalidateAndCancel() }
+        var request = URLRequest(url: URL(string: "https://qa-lfs.invalid/cancel")!)
+        request.httpMethod = body == nil ? "GET" : "POST"
+        do {
+            _ = try await session.response(for: request, body: body)
+            XCTFail("Transport must propagate cancellation, not return success")
+        } catch is CancellationError {
+            // The post-update native pull boundary recognizes this type and
+            // preserves the new SHA with interruption rather than failure.
+        } catch {
+            XCTFail("Expected CancellationError, received \(error)")
+        }
+    }
+
+    func testLFSHTTPTransportPreservesOfflineErrors() async {
+        let configuration = URLSessionConfiguration.ephemeral
+        configuration.protocolClasses = [LFSCancellationURLProtocol.self]
+        let session = URLSession(configuration: configuration)
+        defer { session.invalidateAndCancel() }
+        for body in [Data?.none, Data("synthetic batch".utf8)] {
+            var request = URLRequest(url: URL(string: "https://qa-lfs.invalid/offline")!)
+            request.httpMethod = body == nil ? "GET" : "POST"
+            do {
+                _ = try await session.response(for: request, body: body)
+                XCTFail("Offline must not become success")
+            } catch let error as URLError {
+                XCTAssertEqual(error.code, .notConnectedToInternet)
+            } catch {
+                XCTFail("Offline must retain its error rather than become cancellation: \(error)")
+            }
+        }
+    }
+
+    func testLFSHTTPTransportPreservesSuccessfulResponses() async throws {
+        let configuration = URLSessionConfiguration.ephemeral
+        configuration.protocolClasses = [LFSCancellationURLProtocol.self]
+        let session = URLSession(configuration: configuration)
+        defer { session.invalidateAndCancel() }
+        for body in [Data?.none, Data("synthetic batch".utf8)] {
+            var request = URLRequest(url: URL(string: "https://qa-lfs.invalid/success")!)
+            request.httpMethod = body == nil ? "GET" : "POST"
+            let (data, response) = try await session.response(for: request, body: body)
+            XCTAssertEqual(response.statusCode, 200)
+            XCTAssertEqual(data, Data("synthetic-lfs-response".utf8))
+        }
     }
 
     func testTagNamesRejectControlsBeforeNativeMutation() async throws {

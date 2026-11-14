@@ -1,0 +1,41 @@
+# PR44 — post-update LFS cancellation reproduced, fixed and physically rechecked
+
+Original candidate0d15ed5/artifact68fe failed the guidance gate below. A minimal follow-up now passes targeted regressions and two live physical cases on isolated `bontecou.Sync-md.prqa`; required follow-up CI is pending. PR44 remains draft/unmerged.
+
+## Actual physical sequence
+
+Prepared only the existing owned synthetic native fixture. Archived its original dirty README/worktree and bare remote, then deliberately reset that synthetic README to its tracked base for clean fast-forward setup. Created local synthetic bare remotes with valid LFS pointer data, `.gitattributes`, and `.lfsconfig` targeting an owned LAN-only Python LFS server. No external Git push, shipping vault, real identity or customer data. The server serves only fixed synthetic batch/object responses, never a repository directory.
+
+1. Initial native Pull advanced `bfd0fe1c7ee9e97d057aea9ecf01ec696e2ed3c9` → `7c66fb29b9db8da3d241a4bd3a99f8a98f9075f4`, but LFS immediately reported offline before any batch reached the server. Native/persisted SHA and tracked note/pointer were retained. This is real network-failure attention, **not cancellation coverage**.
+2. Read-only Settings inspection positively selected **GitSync PR QA / bontecou.Sync-md.prqa**, not shipping. Local Network already had value1; **no toggle changed**. Independent physical Safari reached the same server. Initial offline cause remains unestablished; do not infer a permission, entitlement or production-code defect from it.
+3. A second synthetic remote commit added another LFS pointer. A new native Pull reached the server: real batch at1794616704.226462, held object GET at1794616704.292723. This request worked without permission or binary changes.
+4. While GET was held and real Cancel visible, independently copied native `.git/refs/heads/main`: **`c101945908aff14b7bf52f03c9864e0e47b04ed6` before pressing Cancel**, proving the post-update boundary.
+5. Pressed actual UI Cancel at1794616726.541. Server recorded client disconnect at1794616727.001271. Logs were collected only from positively mapped QA PID3607, never the shipping process. CFNetwork recorded **NSURLErrorDomain Code=-999**.
+6. UI rendered **“Git updated, but Git LFS hydration failed and needs attention: cancelled”**, not the existing intended **“Git updated before cancellation completed. Verify the working tree before the next sync.”** The recorded expected-guidance check failed after5.002s while a positive check confirmed the actual generic-failure text.
+7. Independent native/persisted copies both retain c101945. `lastSyncDate` remained unchanged. Both pointer files and the tracked README retained exact bytes; no false claim that Git remained at the old SHA. The pre-Cancel visible check and post-Cancel hidden check use the same Cancel selector; the latter's immediate-result note is retained, not counted as a standalone history-aware oracle.
+
+## Finding at the original candidate
+
+New-SHA/data preservation works, but actual URLSession cancellation is displayed as generic LFS failure. `GitLFSService`'s URLSession transport currently lets URLError.cancelled escape; LocalGitService's post-update hydration boundary catches CancellationError specially but treats that URLError as generic failure. Existing model tests inject `.cancelledAfterUpdate`/CancellationError and did not cover this actual CFNetwork error shape. **Green CI is insufficient for this surface.**
+
+The follow-up below adds a red-capable test at the real transport seam for URLSession download/upload cancellation, with non-cancellation/offline errors preserved. An ephemeral URLSession using a per-session URLProtocol fixture generates the real URLError shape without global registration or a device-network dependency. The expected-guidance check remains unchanged; generic failure was not relabeled as success.
+
+## Follow-up fix and verification
+
+Normalized only Foundation `URLError.cancelled` to `CancellationError` at the existing URLSession LFS HTTP transport boundary. Other errors and successful responses are unchanged. The native post-update pull handler can now retain the new SHA with its existing interruption guidance. No UI, policy, entitlement or safety guard was changed.
+
+Added per-session URLProtocol tests exercising Foundation's actual download and upload error bridge. Before the fix, four tests produced exactly **two -999 cancellation failures**, while offline and success controls passed. After the fix, **4/4 passed**. The broader signed unit/native suite first had **532 tests/one unchanged GitTrackingRemovalService sourceChanged failure**; its unchanged repeat passed **532/532**. Both complete logs are retained. This known removal-safety intermittency was not fixed, hidden or weakened for LFS.
+
+A signed isolated device build succeeded and was independently checked for QA app/widget bundle IDs and absence of shipping app-group/APNs access. The build helper rejected a connected physical phone because its availability parser expected a different state; that failure log is retained. A direct signed generic-iOS build was used, then installed onto the explicit physical iPhone13. This was not a simulator substitute. Debug dylib SHA256: `498ee309ee7827f4941bbc9b1e3828e00e1bad1be1e17603ff72c54b7e35f3bc`. All temporary QA project overrides were restored immediately after build; project diff is empty.
+
+Before updating/reseeding, preserved the original failed c101945 worktree in **QA Documents/pr44-lfs-failed-c101945-20261113** and independently verified all36 file bytes, again after installation and both fresh fixture cases. The shipping app and retained iPhone17 failure were never touched.
+
+Two fixed live physical cases, with fresh owned synthetic fixtures, each reached an actual held LFS GET, independently confirmed the **new native main SHA before Cancel**, and then rendered the exact intended interruption guidance after actual UI Cancel. Server ledgers confirm client disconnect and no extra retry during the observation interval. Native/persisted SHAs: `d6a6cdec672db4d59d5f3539fe9970edcf7383c6` and `3e1cdc780d58c96637b58bbc161a1a1849bf1afe`. Tracked notes/pointers stayed intact; case2 explicitly verifies unchanged lastSyncDate and no incomplete cached object.
+
+The first fixed raw recording retains a **false absence-wait failure**: substring selector Cancel also matched the synthetic commit title containing “cancellation,” not a live Cancel button. Exact-label native-tree inspection proved Cancel absent and Check for changes ready. The next fixture used a non-conflicting synthetic commit title; its ten recorded live steps had no unmet waits. Expected guidance was unchanged and passed both cases. This is **two live physical cases, not two fully automated end-to-end passes**: external Git fixture setup, independent native file copies and server evidence are outside the raw UI files. No mature automated two-pass claim.
+
+## Artifacts and current state
+
+`docs/evidence/pr44-lfs-iphone13/` retains screenshots, real server ledger/source, fixture SHA/OID metadata, native hash/persisted-SHA proof, QA-only CFNetwork excerpt, diagnostic raw YAML/finish receipts and explicit red expected-guidance receipt. Settings diagnostic also retains a mistaken text/role navigation wait; corrected identifier check passed. Brittle menu capture and external fixture orchestration remain diagnostic limitations. **No mature automated two-pass acceptance claim.** Full unrelated-app lists and full QA syslog remain private in `/tmp`, not exported.
+
+All recorders, synthetic servers and QA-only log collector stopped. No download running, no settings changed, no new shortcut. Default QA inventory remains empty; current private fixture is the fixed case2 at3e1cdc7. Phone is QA Vault with the intended post-update interruption guidance and idle Check for changes. Original failed c101945 remains independently verified in the owned phone archive and `/tmp/pr44-lfs-real-cancel-worktree` / `/tmp/pr44-lfs-real-cancel-inventory.json`. Shipping app, real vaults, Android work and retained iPhone17 failure untouched. Follow-up exact-head CI/tree audit, human locale/RTL review and canceled-Shortcuts displayed wording remain separate unresolved gates; overall goal incomplete.
