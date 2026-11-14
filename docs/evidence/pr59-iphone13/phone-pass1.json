@@ -1,0 +1,148 @@
+{
+  "e2eTest": "qa-pr59-conflict-guide-final",
+  "flow": "qa-pr59-conflict-guide-final",
+  "device": "00008110-00046CC63CA0401E",
+  "executionPrerequisite": "",
+  "ok": true,
+  "passed": 14,
+  "failed": 0,
+  "skipped": 0,
+  "errored": 0,
+  "steps": [
+    {
+      "index": 0,
+      "kind": "tool",
+      "e2eTest": "qa-pr59-conflict-guide-final",
+      "status": "pass",
+      "tool": "open-url",
+      "result": {
+        "opened": true,
+        "url": "http://192.168.1.252:8769/blog/obsidian-git-merge-conflicts-iphone#ours-and-theirs",
+        "note": "This web URL was delivered to Safari as a launch payload. Universal Links are not resolved on this path, so the app verified for the link's domain does not open even when it is installed. Pass bundleId naming that app to hand it the URL directly."
+      },
+      "args": {
+        "bundleId": "com.apple.mobilesafari",
+        "url": "http://192.168.1.252:8769/blog/obsidian-git-merge-conflicts-iphone#ours-and-theirs",
+        "udid": "00008110-00046CC63CA0401E"
+      },
+      "durationMs": 390,
+      "flow": "qa-pr59-conflict-guide-final"
+    },
+    {
+      "index": 1,
+      "kind": "await",
+      "e2eTest": "qa-pr59-conflict-guide-final",
+      "target": "visible \"Ours and Theirs depend on the operation\" role=StaticText",
+      "status": "pass",
+      "durationMs": 3741,
+      "flow": "qa-pr59-conflict-guide-final"
+    },
+    {
+      "index": 2,
+      "kind": "idle",
+      "e2eTest": "qa-pr59-conflict-guide-final",
+      "status": "pass",
+      "durationMs": 2121,
+      "flow": "qa-pr59-conflict-guide-final"
+    },
+    {
+      "index": 3,
+      "kind": "assert",
+      "e2eTest": "qa-pr59-conflict-guide-final",
+      "target": "visible \"Normal merge: Ours is the current branch’s version; Theirs is the version being merged into it.\" role=StaticText",
+      "status": "pass",
+      "durationMs": 320,
+      "flow": "qa-pr59-conflict-guide-final"
+    },
+    {
+      "index": 4,
+      "kind": "assert",
+      "e2eTest": "qa-pr59-conflict-guide-final",
+      "target": "visible \"Rebase: Ours is the history you are replaying commits onto, including commits already replayed. Theirs is the version from the commit currently being replayed.\" role=StaticText",
+      "status": "pass",
+      "durationMs": 239,
+      "flow": "qa-pr59-conflict-guide-final"
+    },
+    {
+      "index": 5,
+      "kind": "assert",
+      "e2eTest": "qa-pr59-conflict-guide-final",
+      "target": "visible \"This is an illustrative Git scenario, not an app test.\" role=StaticText",
+      "status": "pass",
+      "durationMs": 218,
+      "flow": "qa-pr59-conflict-guide-final"
+    },
+    {
+      "index": 6,
+      "kind": "assert",
+      "e2eTest": "qa-pr59-conflict-guide-final",
+      "target": "visible \"Git’s documentation\" role=Link",
+      "status": "pass",
+      "durationMs": 213,
+      "flow": "qa-pr59-conflict-guide-final"
+    },
+    {
+      "index": 7,
+      "kind": "tap",
+      "e2eTest": "qa-pr59-conflict-guide-final",
+      "target": "\"Git’s documentation\" role=Link",
+      "status": "pass",
+      "durationMs": 1816,
+      "flow": "qa-pr59-conflict-guide-final"
+    },
+    {
+      "index": 8,
+      "kind": "await",
+      "e2eTest": "qa-pr59-conflict-guide-final",
+      "target": "visible \"Note that during git rebase and git pull --rebase, ours and theirs may appear swapped\" role=StaticText",
+      "status": "pass",
+      "durationMs": 736,
+      "flow": "qa-pr59-conflict-guide-final"
+    },
+    {
+      "index": 9,
+      "kind": "idle",
+      "e2eTest": "qa-pr59-conflict-guide-final",
+      "status": "pass",
+      "durationMs": 4731,
+      "flow": "qa-pr59-conflict-guide-final"
+    },
+    {
+      "index": 10,
+      "kind": "tap",
+      "e2eTest": "qa-pr59-conflict-guide-final",
+      "target": "id=BackButton",
+      "status": "pass",
+      "durationMs": 3899,
+      "flow": "qa-pr59-conflict-guide-final"
+    },
+    {
+      "index": 11,
+      "kind": "await",
+      "e2eTest": "qa-pr59-conflict-guide-final",
+      "target": "visible \"Ours and Theirs depend on the operation\" role=StaticText",
+      "status": "pass",
+      "durationMs": 309,
+      "flow": "qa-pr59-conflict-guide-final"
+    },
+    {
+      "index": 12,
+      "kind": "idle",
+      "e2eTest": "qa-pr59-conflict-guide-final",
+      "status": "pass",
+      "durationMs": 3892,
+      "flow": "qa-pr59-conflict-guide-final"
+    },
+    {
+      "index": 13,
+      "kind": "assert",
+      "e2eTest": "qa-pr59-conflict-guide-final",
+      "target": "visible \"Rebase: Ours is the history you are replaying commits onto, including commits already replayed. Theirs is the version from the commit currently being replayed.\" role=StaticText",
+      "status": "pass",
+      "durationMs": 388,
+      "flow": "qa-pr59-conflict-guide-final"
+    }
+  ],
+  "startedAt": 1794607490094,
+  "durationMs": 23016
+}

@@ -1,0 +1,18 @@
+✔ six independent public reviews keep their exact wording, attribution, dates and ratings (1.826292ms)
+✔ wall has static fallbacks, hidden inert copies, opposite motion and pause controls (0.428875ms)
+{"event":"gitsyncmd_campaign_click","slug":"web-homepage-100","campaignToken":"web_homepage_100","platform":"web","angle":"homepage","referrerHost":null,"clientSignal":"other","country":null,"hasProviderToken":false,"hasCustomProductPage":false,"ts":"2026-11-13T21:57:03.749Z"}
+✔ honors explicit Markdown preferences, quality values, and browser wildcards (1.357ms)
+✔ streams browser HTML unchanged and preserves existing Vary values (142.477ms)
+✔ serves generated Markdown at the canonical URL without forwarding HTML validators (48.423333ms)
+✔ keeps missing URLs at 404 with Markdown recovery guidance (1.672042ms)
+✔ HEAD uses the same representation headers with no response body (0.7715ms)
+✔ missing generated assets fall back to the intact HTML response (1.153375ms)
+✔ assets, legacy redirects, and campaign HEAD links retain their behavior (3.7625ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 991.837666
