@@ -140,6 +140,13 @@ struct UnlockSheet: View {
         .environment(\.colorScheme, .dark)
         .interactiveDismissDisabled(unlock.isPurchasing)
         .task { await unlock.loadProduct() }
+        // A purchase can land outside `purchase()`'s return value: an Ask to
+        // Buy approval, a sheet that reported cancel after the charge went
+        // through, or a delayed `Transaction.updates` delivery. Continue the
+        // clone as soon as the entitlement is seen.
+        .onChange(of: unlock.isUnlocked) { _, isUnlocked in
+            if isUnlocked, !didUnlock { finish() }
+        }
         .onDisappear {
             if didUnlock { onUnlocked() }
         }
@@ -185,7 +192,10 @@ struct UnlockSheet: View {
             case .failed(let reason):
                 message = reason
             case .cancelled:
-                break
+                // StoreKit can report a cancel even though the transaction
+                // completed; re-read entitlements before leaving the paywall up.
+                await unlock.refresh()
+                if unlock.isUnlocked, !didUnlock { finish() }
             }
         }
     }
