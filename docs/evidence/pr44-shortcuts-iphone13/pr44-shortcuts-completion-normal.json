@@ -1,0 +1,71 @@
+{
+  "e2eTest": "qa-pr44-shortcuts-completion-probe",
+  "flow": "qa-pr44-shortcuts-completion-probe",
+  "device": "00008110-00046CC63CA0401E",
+  "executionPrerequisite": "",
+  "ok": false,
+  "passed": 4,
+  "failed": 1,
+  "skipped": 1,
+  "errored": 0,
+  "steps": [
+    {
+      "index": 0,
+      "kind": "await",
+      "e2eTest": "qa-pr44-shortcuts-completion-probe",
+      "target": "visible \"PR44 QA Native Pull 20261113, Actions Menu\" role=Button",
+      "status": "pass",
+      "durationMs": 157,
+      "flow": "qa-pr44-shortcuts-completion-probe"
+    },
+    {
+      "index": 1,
+      "kind": "assert",
+      "e2eTest": "qa-pr44-shortcuts-completion-probe",
+      "target": "visible \"Pull , git-tools-fixture\"",
+      "status": "pass",
+      "durationMs": 105,
+      "flow": "qa-pr44-shortcuts-completion-probe"
+    },
+    {
+      "index": 2,
+      "kind": "tap",
+      "e2eTest": "qa-pr44-shortcuts-completion-probe",
+      "target": "\"play\" role=Button",
+      "status": "pass",
+      "durationMs": 1013,
+      "flow": "qa-pr44-shortcuts-completion-probe"
+    },
+    {
+      "index": 3,
+      "kind": "await",
+      "e2eTest": "qa-pr44-shortcuts-completion-probe",
+      "target": "visible \"Stop\" role=Button",
+      "status": "pass",
+      "durationMs": 105,
+      "flow": "qa-pr44-shortcuts-completion-probe"
+    },
+    {
+      "index": 4,
+      "kind": "await",
+      "e2eTest": "qa-pr44-shortcuts-completion-probe",
+      "target": "hidden \"Stop\" role=Button",
+      "status": "fail",
+      "reason": "an element matching text=\"Stop\" role=\"Button\" was still visible",
+      "durationMs": 15130,
+      "artifacts": {
+        "screen": "/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/argent-ios-device-screenshot-00008110-183848320825166.png"
+      },
+      "flow": "qa-pr44-shortcuts-completion-probe"
+    },
+    {
+      "index": 5,
+      "kind": "idle",
+      "status": "skip",
+      "e2eTest": "qa-pr44-shortcuts-completion-probe",
+      "flow": "qa-pr44-shortcuts-completion-probe"
+    }
+  ],
+  "startedAt": 1794611047864,
+  "durationMs": 16692
+}

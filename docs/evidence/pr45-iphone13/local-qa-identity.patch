@@ -1,0 +1,22 @@
+diff --git a/Sync.md.xcodeproj/project.pbxproj b/Sync.md.xcodeproj/project.pbxproj
+index 311c135..cd21cf0 100644
+--- a/Sync.md.xcodeproj/project.pbxproj
++++ b/Sync.md.xcodeproj/project.pbxproj
+@@ -518,7 +518,7 @@
+ 					"@executable_path/../../Frameworks",
+ 				);
+ 				MARKETING_VERSION = 3.0;
+-				PRODUCT_BUNDLE_IDENTIFIER = bontecou.Sync-md.widget;
++				PRODUCT_BUNDLE_IDENTIFIER = bontecou.Sync-md.prqa.widget;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 				SDKROOT = iphoneos;
+ 				SKIP_INSTALL = YES;
+@@ -740,7 +740,7 @@
+ 			"@executable_path/Frameworks",
+ 		);
+ 		"MARKETING_VERSION" = 3.0;
+-		"PRODUCT_BUNDLE_IDENTIFIER" = "bontecou.Sync-md";
++		"PRODUCT_BUNDLE_IDENTIFIER" = "bontecou.Sync-md.prqa";
+ 		"PRODUCT_NAME" = "$(TARGET_NAME)";
+ 		"STRING_CATALOG_GENERATE_SYMBOLS" = YES;
+ 		"SWIFT_APPROACHABLE_CONCURRENCY" = YES;

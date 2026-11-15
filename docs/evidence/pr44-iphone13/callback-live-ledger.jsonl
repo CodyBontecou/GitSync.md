@@ -1,0 +1,3 @@
+{"path": "/error", "params": {"message": ["Pull was interrupted. Try pulling again when you're ready."], "action": ["pull"], "status": ["error"], "updated": ["false"]}}
+{"path": "/error", "params": {"message": ["Pull was interrupted. Try pulling again when you're ready."], "action": ["pull"], "status": ["error"], "updated": ["false"]}}
+{"path": "/success", "params": {"action": ["pull"], "status": ["ok"], "updated": ["false"], "sha": ["c49f05e39d7fe76fbf4e7cfa2949e3f9efb7dae4"]}}

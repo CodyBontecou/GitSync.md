@@ -1,0 +1,8 @@
+{
+  "ownedShortcutDeleted": true,
+  "ownedSelectedCount": 1,
+  "originalFullVisibleCardsRetained": 12,
+  "originalAdditionalPartiallyVisibleCardsRetained": 2,
+  "noOriginalCapturedCardMissing": true,
+  "initialCountGuard": "Expected12 mistakenly included two partial cards; raw tree inspection established12full+2partial, all14 retained"
+}

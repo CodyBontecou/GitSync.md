@@ -1,0 +1,233 @@
+steps:
+  - launch:
+      native: bontecou.Sync-md.prqa
+      ios:
+        app: bontecou.Sync-md.prqa
+        args:
+          - -UITestGitToolsFixture
+          - pull-cancel
+          - -AppleLanguages
+          - (en)
+          - -AppleLocale
+          - en_US
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Attention 1
+        role: Button
+  - tap:
+      text: main · syncmd-uitest-fixtures/git-tools-fixture
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: vault.title
+  - tap:
+      id: ellipsis
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: qa44.holdLease
+  - tap:
+      id: qa44.holdLease
+  - tool: await-ui-element
+    args:
+      condition: text
+      selector:
+        identifier: qa44.leaseStatus
+      expectedText: QA repository lease held
+      textMatch: equals
+  - echo: Deliver actual x-callback URL explicitly to bontecou.Sync-md.prqa; never
+      let scheme resolution choose the shipping app. Require the existing lease
+      to remain held.
+  - tool: open-url
+    args:
+      bundleId: bontecou.Sync-md.prqa
+      url: syncmd://x-callback-url/pull?repo=git-tools-fixture&x-success=http%3A%2F%2F192.168.1.252%3A8771%2Fsuccess&x-error=http%3A%2F%2F192.168.1.252%3A8771%2Ferror
+  - tool: await-ui-element
+    args:
+      condition: text
+      selector:
+        identifier: qa44.leaseStatus
+      expectedText: QA repository lease held
+      textMatch: equals
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Cancel
+        role: Button
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Pulling…
+        role: StaticText
+  - tap:
+      text: Cancel
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Pull was interrupted. Try pulling again when you're ready.
+        role: StaticText
+  - tool: launch-app
+    args:
+      bundleId: com.apple.mobilesafari
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: "QA callback received: error"
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: "status: ['error']"
+        role: StaticText
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: "updated: ['false']"
+        role: StaticText
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: "sha present: no"
+        role: StaticText
+  - tool: launch-app
+    args:
+      bundleId: bontecou.Sync-md.prqa
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: vault.title
+  - tool: await-ui-element
+    args:
+      condition: text
+      selector:
+        identifier: qa44.leaseStatus
+      expectedText: QA repository lease held
+      textMatch: equals
+  - tool: await-ui-element
+    args:
+      condition: hidden
+      selector:
+        text: Cancel
+        role: Button
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Attention 1
+        role: Button
+  - tap:
+      text: main · syncmd-uitest-fixtures/git-tools-fixture
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: vault.title
+  - tool: await-ui-element
+    args:
+      condition: hidden
+      selector:
+        text: Cancel
+        role: Button
+  - echo: Callback cleanup returns to Home and recreates Vault view-local QA state.
+      Re-hold is an idempotent fixture operation that reattaches the existing
+      holder, then release it explicitly before retry.
+  - tap:
+      id: ellipsis
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: qa44.holdLease
+  - tap:
+      id: qa44.holdLease
+  - tool: await-ui-element
+    args:
+      condition: text
+      selector:
+        identifier: qa44.leaseStatus
+      expectedText: QA repository lease held
+      textMatch: equals
+  - tap:
+      id: _TtGC7SwiftUI32NavigationStackHosting
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: qa44.releaseLease
+  - tap:
+      id: qa44.releaseLease
+  - tool: await-ui-element
+    args:
+      condition: text
+      selector:
+        identifier: qa44.leaseStatus
+      expectedText: QA repository lease released
+      textMatch: equals
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: README.md, modified
+        role: Button
+  - echo: Now explicitly retry the real callback Pull after releasing the fixture
+      lease; require x-success with actual unchanged native SHA and retained
+      dirty README.
+  - tool: open-url
+    args:
+      bundleId: bontecou.Sync-md.prqa
+      url: syncmd://x-callback-url/pull?repo=git-tools-fixture&x-success=http%3A%2F%2F192.168.1.252%3A8771%2Fsuccess&x-error=http%3A%2F%2F192.168.1.252%3A8771%2Ferror
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Already up to date
+        role: StaticText
+  - tool: launch-app
+    args:
+      bundleId: com.apple.mobilesafari
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: "QA callback received: success"
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: "status: ['ok']"
+        role: StaticText
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: "sha present: yes"
+        role: StaticText
+  - tool: open-url
+    args:
+      bundleId: com.apple.mobilesafari
+      url: http://192.168.1.252:8771/baseline
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: QA callback awaiting a new result
+  - tool: launch-app
+    args:
+      bundleId: bontecou.Sync-md.prqa
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Attention 1
+        role: Button

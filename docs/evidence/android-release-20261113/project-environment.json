@@ -1,0 +1,11 @@
+{
+  "is_react_native": false,
+  "is_native_ios": true,
+  "is_native_android": true,
+  "android_build": "cd android && ./gradlew :app:bundleRelease",
+  "android_test": "./gradlew :core:test :app:testReleaseUnitTest :app:lintRelease",
+  "application_id": "com.bontecou.syncmd",
+  "version_name": "1.1.2",
+  "version_code": 13,
+  "commit": "c3d12c011f3cbb1ab310180c0ba7c69afefcea0e"
+}

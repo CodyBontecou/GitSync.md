@@ -1,0 +1,23 @@
+Test Case '-[SyncMDTests.SyncMDTests testAppStateCancelledRefreshDuringFileRevertDoesNotShowError]' passed (0.213 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testAppStatePersistsNewSHAWhileSurfacingPostUpdateAttention]' passed (0.078 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testAppStatePullCancellationFromGitDoesNotShowErrorOrChangeCommit]' passed (0.074 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testAppStatePullCancelledBeforeStartingPreservesExistingOutcome]' passed (0.003 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testAppStatePullPreservesCompletedUpdateWhenRefreshIsCancelled]' passed (0.037 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testAppStatePullStillShowsGenuineFetchFailures]' passed (0.042 seconds).
+/Users/codybontecou/dev/gitsync.md/SyncMDTests/SyncMDTests.swift:617: error: -[SyncMDTests.SyncMDTests testIssueAudit40UnavailableBookmarkPreservesClonedStateDuringRefresh] : XCTAssertEqual failed: ("GitState(commitSHA: "", treeSHA: "", branch: "main", blobSHAs: [:], lastSyncDate: 0001-01-01 00:00:00 +0000)") is not equal to ("GitState(commitSHA: "1111111111111111111111111111111111111111", treeSHA: "", branch: "main", blobSHAs: [:], lastSyncDate: 1970-01-01 00:00:00 +0000)") - Status refresh must preserve unavailable state too
+Test Case '-[SyncMDTests.SyncMDTests testIssueAudit40UnavailableBookmarkPreservesClonedStateDuringRefresh]' failed (0.227 seconds).
+/Users/codybontecou/dev/gitsync.md/SyncMDTests/SyncMDTests.swift:578: error: -[SyncMDTests.SyncMDTests testIssueAudit42RefreshAdoptsExternalHEADAndBranch] : XCTAssertEqual failed: ("1111111111111111111111111111111111111111") is not equal to ("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee") - Displayed HEAD must follow external Git
+/Users/codybontecou/dev/gitsync.md/SyncMDTests/SyncMDTests.swift:579: error: -[SyncMDTests.SyncMDTests testIssueAudit42RefreshAdoptsExternalHEADAndBranch] : XCTAssertEqual failed: ("main") is not equal to ("external-branch") - Displayed branch must follow external Git
+Test Case '-[SyncMDTests.SyncMDTests testIssueAudit42RefreshAdoptsExternalHEADAndBranch]' failed (0.071 seconds).
+/Users/codybontecou/dev/gitsync.md/SyncMDTests/SyncMDTests.swift:599: error: -[SyncMDTests.SyncMDTests testIssueAudit43MarkdownCheckoutAttentionIsNotLFS] : XCTAssertFalse failed - Ordinary Markdown checkout must not show LFS progress
+/Users/codybontecou/dev/gitsync.md/SyncMDTests/SyncMDTests.swift:600: error: -[SyncMDTests.SyncMDTests testIssueAudit43MarkdownCheckoutAttentionIsNotLFS] : XCTAssertNotEqual failed: ("Optional(Sync_md.PullOutcomeKind.lfsHydrationBlocked)") is equal to ("Optional(Sync_md.PullOutcomeKind.lfsHydrationBlocked)")
+Test Case '-[SyncMDTests.SyncMDTests testIssueAudit43MarkdownCheckoutAttentionIsNotLFS]' failed (0.045 seconds).
+/Users/codybontecou/dev/gitsync.md/SyncMDTests/SyncMDTests.swift:638: error: -[SyncMDTests.SyncMDTests testIssueAudit50ClonePreservesSameRemoteWorkingCopy] : XCTAssertTrue failed - Clone must not delete existing unpushed files
+Test Case '-[SyncMDTests.SyncMDTests testIssueAudit50ClonePreservesSameRemoteWorkingCopy]' failed (1.076 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testLocalGitPullOnlyCancellationBeforeMutationPreventsCheckoutAndReleasesLease]' passed (0.043 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testLocalGitPullOnlyPreservesWriteAfterRefCommitAsUpdatedAttention]' passed (0.049 seconds).
+Test Case '-[SyncMDTests.SyncMDTests testRepositoryPullRunnerTreatsCancellationAsANonSuccessOutcome]' passed (0.003 seconds).
+	 Executed 13 tests, with 6 failures (0 unexpected) in 1.960 (1.969) seconds
+	 Executed 13 tests, with 6 failures (0 unexpected) in 1.960 (1.969) seconds
+	 Executed 13 tests, with 6 failures (0 unexpected) in 1.960 (1.969) seconds
+** TEST FAILED **

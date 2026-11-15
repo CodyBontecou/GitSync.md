@@ -1,0 +1,9 @@
+SyncMDTests	Run unit XCTest suite	2026-11-13T15:09:50.4031580Z Test Case '-[SyncMDTests.SyncMDTests testAppStateIncompleteMarkdownCheckoutUsesCheckoutAttentionAndRetainsCompletedWork]' passed (0.047 seconds).
+SyncMDTests	Run unit XCTest suite	2026-11-13T15:09:51.6711780Z Test Case '-[SyncMDTests.SyncMDTests testAppStatePersistsNewSHAWhileSurfacingPostUpdateAttention]' passed (0.020 seconds).
+SyncMDTests	Run unit XCTest suite	2026-11-13T15:10:27.4308450Z Test Case '-[SyncMDTests.SyncMDTests testLocalGitPullOnlyPreservesWriteAfterRefCommitAsUpdatedAttention]' passed (0.084 seconds).
+SyncMDTests	Run unit XCTest suite	2026-11-13T15:10:27.5824060Z Test Case '-[SyncMDTests.SyncMDTests testLocalGitPullOnlyRollsBackWhenFinalIndexPublicationIsInterrupted]' passed (0.051 seconds).
+SyncMDTests	Run unit XCTest suite	2026-11-13T15:11:04.2208800Z 	 Executed 488 tests, with 2 tests skipped and 0 failures (0 unexpected) in 118.499 (120.126) seconds
+SyncMDTests	Run unit XCTest suite	2026-11-13T15:11:04.2209860Z 	 Executed 488 tests, with 2 tests skipped and 0 failures (0 unexpected) in 118.499 (120.130) seconds
+SyncMDTests	Run unit XCTest suite	2026-11-13T15:11:10.4123340Z ** TEST SUCCEEDED **
+SyncMDTests	Audit Release app resources	2026-11-13T15:28:55.0113760Z ** BUILD SUCCEEDED **
+SyncMDTests	Audit Release app resources	2026-11-13T15:28:55.2147430Z /Users/runner/work/_temp/ReleaseDerivedData/Build/Products/Release-iphonesimulator/Sync.md.app/PrivacyInfo.xcprivacy: OK

@@ -1,0 +1,87 @@
+steps:
+  - tool: launch-app
+    args:
+      bundleId: com.apple.shortcuts
+  - tap:
+      id: main.button.newshortcut
+  - tap:
+      text: ‌        ‌New Shortcut, Actions Menu
+  - tap:
+      text: Rename
+  - tap:
+      text: Clear text
+  - tool: keyboard
+    args:
+      text: PR44 QA No Entity Return
+  - tool: keyboard
+    args:
+      key: enter
+  - tap:
+      x: 0.5
+      y: 0.565
+  - tool: keyboard
+    args:
+      text: GitSync PR QA
+  - tool: keyboard
+    args:
+      key: enter
+  - tap:
+      x: 0.8915
+      y: 0.74
+  - tap:
+      text: close
+  - tap:
+      x: 0.8915
+      y: 0.811
+  - tap:
+      text: Add
+  - tap:
+      x: 0.5
+      y: 0.887
+  - tool: keyboard
+    args:
+      text: Show Alert
+  - tool: keyboard
+    args:
+      key: enter
+  - tap:
+      text: Show Alert
+  - tap:
+      id: textInput
+  - tool: keyboard
+    args:
+      text: PR44 QA intent returned
+  - tool: keyboard
+    args:
+      key: enter
+  - tap:
+      x: 0.5
+      y: 0.45
+  - tap:
+      text: play
+  - tap:
+      role: ScrollView
+  - tap:
+      role: ScrollView
+  - tap:
+      text: play
+  - tap:
+      role: ScrollView
+  - tap:
+      id: BackButton
+  - tool: open-url
+    args:
+      bundleId: com.apple.shortcuts
+      url: shortcuts://run-shortcut?name=PR44%20QA%20No%20Entity%20Return
+  - echo: Device-wide screenshot positively shows the real no-cloned-repositories
+      result and Done. Hosted dialog is absent from Shortcuts AX tree; dismiss
+      the visually observed Done, then require the separate return-chain
+      sentinel.
+  - tap:
+      role: CollectionView
+  - echo: Device-wide screenshot now positively shows the separate PR44 QA intent
+      returned sentinel after dismissing the real no-repositories result. This
+      confirms return-chain completion only, not Git success.
+  - tap:
+      x: 0.731
+      y: 0.197

@@ -1,0 +1,24 @@
+{
+  "e2eTest": "gitsync-pr46-menu-selector",
+  "flow": "gitsync-pr46-menu-selector",
+  "device": "00008110-00046CC63CA0401E",
+  "executionPrerequisite": "QA app vault options menu is open on the physical iPhone.",
+  "ok": true,
+  "passed": 1,
+  "failed": 0,
+  "skipped": 0,
+  "errored": 0,
+  "steps": [
+    {
+      "index": 0,
+      "kind": "assert",
+      "e2eTest": "gitsync-pr46-menu-selector",
+      "target": "visible \"Git Tools\" role=Button",
+      "status": "pass",
+      "durationMs": 130,
+      "flow": "gitsync-pr46-menu-selector"
+    }
+  ],
+  "startedAt": 1794584165969,
+  "durationMs": 132
+}

@@ -1,0 +1,7 @@
+steps:
+  - tool: launch-app
+    args:
+      bundleId: bontecou.Sync-md.prqa
+  - tool: launch-app
+    args:
+      bundleId: com.apple.shortcuts

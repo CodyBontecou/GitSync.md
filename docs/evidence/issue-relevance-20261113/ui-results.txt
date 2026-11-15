@@ -1,0 +1,7 @@
+Test Case '-[SyncMDUITests.SyncMDUITests testFileRevertThenPullToRefreshCompletesWithoutCancellationAlert]' passed (22.381 seconds).
+Test Case '-[SyncMDUITests.SyncMDUITests testGitToolsBehindRepositoryAndExistingPullFastForward]' passed (46.165 seconds).
+Test Case '-[SyncMDUITests.SyncMDUITests testGitToolsRemainsAvailableDuringSynchronizationWhileOperationsStayDisabled]' passed (44.686 seconds).
+	 Executed 3 tests, with 0 failures (0 unexpected) in 113.231 (113.235) seconds
+	 Executed 3 tests, with 0 failures (0 unexpected) in 113.231 (113.236) seconds
+	 Executed 3 tests, with 0 failures (0 unexpected) in 113.231 (113.237) seconds
+** TEST SUCCEEDED **

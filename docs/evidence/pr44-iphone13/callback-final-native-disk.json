@@ -1,0 +1,9 @@
+{
+  "result": "PASS",
+  "nativeHEAD": "6d10c918a0c1fd15e077d037c27168bd0c3fbcac",
+  "lastRealCallbackSHA": "6d10c918a0c1fd15e077d037c27168bd0c3fbcac",
+  "README": "exact unpublished bytes",
+  "stagedDiff": "empty",
+  "FETCH_HEAD": "nonempty native fetch",
+  "crossReseedIndexByteClaim": false
+}
