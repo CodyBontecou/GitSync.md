@@ -10,9 +10,14 @@ enum RepositoryPullResult: Sendable, Equatable {
     case authenticationOrTrustRequired(message: String, trustError: GitLFSSSHHostKeyTrustError?)
     case wrongBranch(expected: String, actual: String)
     case unavailable(message: String)
-    /// The pull stopped before updating the checkout; not a Git failure.
+    /// Interrupted before a working-copy update. This is neither success nor
+    /// an authentication/corruption failure; the caller may explicitly retry.
     case cancelled
     case failed(message: String)
+
+    static var cancellationMessage: String {
+        String(localized: "Pull was interrupted. Try pulling again when you're ready.")
+    }
 
     var completedWithoutAttention: Bool {
         switch self {

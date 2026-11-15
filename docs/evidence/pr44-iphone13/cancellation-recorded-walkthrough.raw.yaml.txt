@@ -1,0 +1,164 @@
+steps:
+  - launch:
+      native: bontecou.Sync-md.prqa
+      ios:
+        app: bontecou.Sync-md.prqa
+        args:
+          - -UITestGitToolsFixture
+          - pull-cancel
+          - -AppleLanguages
+          - (en)
+          - -AppleLocale
+          - en_US
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Attention 1
+        role: Button
+  - tap:
+      text: main · syncmd-uitest-fixtures/git-tools-fixture
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: vault.title
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: README.md, modified
+        role: Button
+  - tool: await-ui-element
+    args:
+      condition: text
+      selector:
+        identifier: qa44.leaseStatus
+      expectedText: QA repository lease released
+      textMatch: equals
+  - echo: Hold only the real coordinator lease for this owned native Git fixture;
+      normal Pull will queue and must be cancellable without changing bytes.
+  - tap:
+      id: ellipsis
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: qa44.holdLease
+  - tap:
+      id: qa44.holdLease
+  - tool: await-ui-element
+    args:
+      condition: text
+      selector:
+        identifier: qa44.leaseStatus
+      expectedText: QA repository lease held
+      textMatch: equals
+  - echo: Start explicit native Pull while the real coordinator lease is held;
+      expect actual progress with a Cancel control, not a fabricated result.
+  - tap:
+      text: Pull
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Cancel
+        role: Button
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Pulling…
+        role: StaticText
+  - echo: Cancel the actual queued Pull. Expect interruption guidance, no automatic
+      retry, retained note/index/refs and the ability to retry explicitly after
+      releasing the lease.
+  - tap:
+      text: Cancel
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Pull interrupted
+        role: StaticText
+  - tool: await-ui-element
+    args:
+      condition: hidden
+      selector:
+        text: Cancel
+        role: Button
+  - tool: await-ui-element
+    args:
+      condition: hidden
+      selector:
+        text: Pulling…
+        role: StaticText
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Pull was interrupted. Try pulling again when you're ready.
+        role: StaticText
+  - tool: await-ui-element
+    args:
+      condition: text
+      selector:
+        identifier: qa44.leaseStatus
+      expectedText: QA repository lease held
+      textMatch: equals
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: README.md, modified
+        role: Button
+  - tap:
+      id: ellipsis
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: qa44.releaseLease
+  - tap:
+      id: qa44.releaseLease
+  - tool: await-ui-element
+    args:
+      condition: text
+      selector:
+        identifier: qa44.leaseStatus
+      expectedText: QA repository lease released
+      textMatch: equals
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Pull interrupted
+        role: StaticText
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Pull
+        role: Button
+  - echo: Only now manually retry Pull against the real local bare remote. Require
+      positive native completion with the unpublished README still modified.
+  - tap:
+      text: Pull
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Already up to date
+        role: StaticText
+  - tool: await-ui-element
+    args:
+      condition: hidden
+      selector:
+        text: Pull interrupted
+        role: StaticText
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: README.md, modified
+        role: Button

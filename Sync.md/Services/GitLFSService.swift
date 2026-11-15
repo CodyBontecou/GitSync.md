@@ -452,10 +452,18 @@ protocol GitLFSHTTPTransport: AnyObject, Sendable {
 extension URLSession: GitLFSHTTPTransport {
     func response(for request: URLRequest, body: Data?) async throws -> (Data, HTTPURLResponse) {
         let tuple: (Data, URLResponse)
-        if let body {
-            tuple = try await upload(for: request, from: body)
-        } else {
-            tuple = try await data(for: request)
+        do {
+            if let body {
+                tuple = try await upload(for: request, from: body)
+            } else {
+                tuple = try await data(for: request)
+            }
+        } catch let error as URLError where error.code == .cancelled {
+            // Foundation reports canceled HTTP tasks as URLError(-999), not
+            // CancellationError. Preserve cancellation semantics so a pull
+            // that already advanced Git retains its SHA with interruption
+            // guidance rather than a generic LFS hydration failure.
+            throw CancellationError()
         }
 
         guard let response = tuple.1 as? HTTPURLResponse else {

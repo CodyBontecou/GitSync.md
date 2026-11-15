@@ -226,7 +226,7 @@ enum GitShortcutRunner {
         let pullResult = await state.pullOnly(repoID: repo.id, showsProgressDelay: false)
         let outcome = state.pullOutcomeByRepo[repo.id]
         let message = pullResult == .cancelled
-            ? String(localized: "Cancelled")
+            ? RepositoryPullResult.cancellationMessage
             : outcome?.message
                 ?? (pullResult.completedWithoutAttention ? String(localized: "Already up to date") : state.lastError ?? String(localized: "Pull failed"))
         let status = GitShortcutPullResult.Status(result: pullResult)
@@ -239,11 +239,12 @@ enum GitShortcutRunner {
     }
 }
 
-private struct GitShortcutPullResult {
+struct GitShortcutPullResult {
     enum Status {
         case updated
         case upToDate
         case blocked
+        case cancelled
         case failed
 
         init(result: RepositoryPullResult) {
@@ -256,7 +257,9 @@ private struct GitShortcutPullResult {
                 self = .upToDate
             case .blockedByLocalChanges, .diverged, .remoteBranchMissing:
                 self = .blocked
-            case .wrongBranch, .authenticationOrTrustRequired, .unavailable, .cancelled, .failed:
+            case .cancelled:
+                self = .cancelled
+            case .wrongBranch, .authenticationOrTrustRequired, .unavailable, .failed:
                 self = .failed
             }
         }
@@ -271,11 +274,11 @@ private struct GitShortcutPullResult {
     }
 
     var needsAttention: Bool {
-        status == .blocked || status == .failed
+        status == .blocked || status == .cancelled || status == .failed
     }
 }
 
-private struct GitShortcutPullSummary {
+struct GitShortcutPullSummary {
     let results: [GitShortcutPullResult]
 
     var dialog: String {
@@ -300,6 +303,12 @@ private struct GitShortcutPullSummary {
             plural: String(localized: "need attention"),
             into: &parts
         )
+        let interruptedCount = results.filter { $0.status == .cancelled }.count
+        if interruptedCount > 0 {
+            // A status category with a separate count avoids inflecting a bare
+            // translated adjective (for example French or Hebrew) after a number.
+            parts.append("\(String(localized: "Pull interrupted")) (\(interruptedCount))")
+        }
         appendCount(
             for: .failed,
             singular: String(localized: "failed"),
@@ -307,8 +316,14 @@ private struct GitShortcutPullSummary {
             into: &parts
         )
 
-        let repoWord = results.count == 1 ? String(localized: "repository") : String(localized: "repositories")
-        var message = String(localized: "Pulled \(results.count) \(repoWord)")
+        var message: String
+        if interruptedCount > 0 {
+            // A cancellation is not a completed pull, including in mixed batches.
+            message = "\(String(localized: "Pull")) (\(results.count))"
+        } else {
+            let repoWord = results.count == 1 ? String(localized: "repository") : String(localized: "repositories")
+            message = String(localized: "Pulled \(results.count) \(repoWord)")
+        }
         if !parts.isEmpty {
             message += ": " + parts.joined(separator: ", ")
         }

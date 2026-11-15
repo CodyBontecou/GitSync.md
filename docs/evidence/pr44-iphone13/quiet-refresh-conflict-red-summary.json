@@ -1,0 +1,60 @@
+{
+  "devicesAndConfigurations" : [
+    {
+      "device" : {
+        "architecture" : "arm64",
+        "deviceId" : "4DFF1574-E044-472A-8BC3-E7AC458F01D5",
+        "deviceName" : "GitSync-Tide-check",
+        "modelName" : "iPhone 18 Pro",
+        "osBuildNumber" : "24A434",
+        "osVersion" : "27.0",
+        "platform" : "iOS Simulator"
+      },
+      "expectedFailures" : 0,
+      "failedTests" : 2,
+      "passedTests" : 3,
+      "skippedTests" : 0,
+      "testPlanConfiguration" : {
+        "configurationId" : "1",
+        "configurationName" : "Test Scheme Action"
+      }
+    }
+  ],
+  "environmentDescription" : "Sync.md · Built with macOS 27.2",
+  "expectedFailures" : 0,
+  "failedTests" : 2,
+  "finishTime" : 1794603145.492,
+  "passedTests" : 3,
+  "result" : "Failed",
+  "runtimeWarnings" : [
+
+  ],
+  "skippedTests" : 0,
+  "startTime" : 1794603081.802,
+  "statistics" : [
+
+  ],
+  "testFailures" : [
+    {
+      "failureText" : "XCTAssertNil failed: \"PullOutcomeState(kind: Sync_md.PullOutcomeKind.cancelled, message: \"Pull was interrupted. Try pulling again when you\\'re ready.\", date: 2026-11-13 20:52:13 +0000)\" - Cancellation must not leave a failed pull banner",
+      "targetName" : "SyncMDTests",
+      "testIdentifier" : 1,
+      "testIdentifierString" : "SyncMDTests/testAppStateCancelledRefreshDuringFileRevertDoesNotShowError()",
+      "testIdentifierURL" : "test://com.apple.xcode/Sync.md/SyncMDTests/SyncMDTests/testAppStateCancelledRefreshDuringFileRevertDoesNotShowError",
+      "testName" : "testAppStateCancelledRefreshDuringFileRevertDoesNotShowError()"
+    },
+    {
+      "failureText" : "XCTAssertNil failed: \"PullOutcomeState(kind: Sync_md.PullOutcomeKind.cancelled, message: \"Pull was interrupted. Try pulling again when you\\'re ready.\", date: 2026-11-13 20:52:13 +0000)\"",
+      "targetName" : "SyncMDTests",
+      "testIdentifier" : 2,
+      "testIdentifierString" : "SyncMDTests/testAppStatePullCancellationFromGitDoesNotShowErrorOrChangeCommit()",
+      "testIdentifierURL" : "test://com.apple.xcode/Sync.md/SyncMDTests/SyncMDTests/testAppStatePullCancellationFromGitDoesNotShowErrorOrChangeCommit",
+      "testName" : "testAppStatePullCancellationFromGitDoesNotShowErrorOrChangeCommit()"
+    }
+  ],
+  "title" : "Test - Sync.md",
+  "topInsights" : [
+
+  ],
+  "totalTestCount" : 5
+}

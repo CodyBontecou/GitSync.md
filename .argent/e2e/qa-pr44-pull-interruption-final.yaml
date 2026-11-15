@@ -1,0 +1,57 @@
+# Physical iPhone QA, isolated signed bontecou.Sync-md.prqa only.
+# Seeds only the owned native Git fixture/private pr44 inventory. No credentials,
+# shipping vaults, fake Pull results, force push or destructive customer actions.
+# Exact disk preservation is independently recorded in docs/evidence/pr44-iphone13.
+steps:
+  - launch:
+      native: bontecou.Sync-md.prqa
+      ios:
+        app: bontecou.Sync-md.prqa
+        args: [-UITestGitToolsFixture, pull-cancel, -AppleLanguages, (en), -AppleLocale, en_US]
+  - await: { visible: { text: Attention 1, role: Button } }
+  - await: { idle: true }
+  - tap: { text: main · syncmd-uitest-fixtures/git-tools-fixture }
+  - await: { visible: { id: vault.title } }
+  - await: { idle: true }
+  - assert: { visible: { text: 'README.md, modified', role: Button } }
+  - assert: { text: { in: { id: qa44.leaseStatus }, equals: QA repository lease released } }
+  - echo: Hold only the real coordinator lease. Normal Pull must queue and remain cancellable without changing native Git or note bytes.
+  - tap: { id: ellipsis }
+  - await: { visible: { id: qa44.holdLease } }
+  - await: { idle: true }
+  - tap: { id: qa44.holdLease }
+  - await: { text: { in: { id: qa44.leaseStatus }, equals: QA repository lease held } }
+  - await: { idle: true }
+  - echo: Start explicit native Pull. Require actual progress and Cancel before attempting cancellation.
+  - tap: { text: Pull, role: Button }
+  - await: { visible: { text: Cancel, role: Button } }
+  - await: { visible: { text: Pulling…, role: StaticText } }
+  - echo: Cancel the actual queued operation; require positive manual retry guidance while keeping unpublished changes.
+  - tap: { text: Cancel, role: Button }
+  - await: { visible: { text: Pull interrupted, role: StaticText } }
+  - await: { idle: true }
+  - assert: { hidden: { text: Cancel, role: Button } }
+  - assert: { hidden: { text: Pulling…, role: StaticText } }
+  - assert:
+      visible:
+        text: "Pull was interrupted. Try pulling again when you're ready."
+        role: StaticText
+  - assert: { text: { in: { id: qa44.leaseStatus }, equals: QA repository lease held } }
+  - assert: { visible: { text: 'README.md, modified', role: Button } }
+  - tap: { id: ellipsis }
+  - await: { visible: { id: qa44.releaseLease } }
+  - await: { idle: true }
+  - tap: { id: qa44.releaseLease }
+  - await: { text: { in: { id: qa44.leaseStatus }, equals: QA repository lease released } }
+  - await: { idle: true }
+  - assert: { visible: { text: Pull interrupted, role: StaticText } }
+  - assert: { visible: { text: Pull, role: Button } }
+  - echo: Only now retry manually against the real local bare remote. Success must coexist with the still-unpublished README change.
+  - tap: { text: Pull, role: Button }
+  - await: { visible: { text: Already up to date, role: StaticText } }
+  - await: { idle: true }
+  - assert: { hidden: { text: Pull interrupted, role: StaticText } }
+  - assert: { visible: { text: 'README.md, modified', role: Button } }
+  - assert: { text: { in: { id: qa44.leaseStatus }, equals: QA repository lease released } }
+  - assert: { visible: { text: Branch main, role: StaticText } }
+  - assert: { text: { in: { id: vault.title }, equals: git-tools-fixture } }

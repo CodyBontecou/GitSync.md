@@ -1,0 +1,11 @@
+{
+  "result": "PASS",
+  "head": "c33a81731f054bc83e61e9bca10c2bfd1cde1718",
+  "main": "c33a81731f054bc83e61e9bca10c2bfd1cde1718",
+  "bareRemoteMain": "c33a81731f054bc83e61e9bca10c2bfd1cde1718",
+  "README": "exact owned unpublished note",
+  "FETCH_HEAD": "nonempty native fetch",
+  "stagedDiff": "empty",
+  "porcelain": " M README.md",
+  "indexCaveat": "No byte equality claimed across independent reseeds."
+}

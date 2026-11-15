@@ -1,0 +1,14 @@
+{
+  "message": "Finished recording \"qa-pr44-lfs-expected-interruption-red\" e2e test (2 steps) — 1 step recorded a wait that did not pass; read `summary` before converting or replaying",
+  "path": "/tmp/gitsync-pr44-qa/.argent/e2e/qa-pr44-lfs-expected-interruption-red.yaml",
+  "executionPrerequisite": "",
+  "steps": 2,
+  "summary": [
+    "1. tool: await-ui-element {\"condition\":\"visible\",\"selector\":{\"text\":\"Git updated, but Git LFS hydration failed and needs attention: cancelled\",\"role\":\"StaticText\"}}",
+    "2. tool: await-ui-element {\"condition\":\"visible\",\"selector\":{\"text\":\"Git updated before cancellation completed. Verify the working tree before the next sync.\",\"role\":\"StaticText\"}}",
+    "   warning: recorded, but the wait itself never held — `await-ui-element` reports an unmet condition by returning success:false instead of failing, so the step was written to the e2e test anyway. At replay an unmet wait FAILS the step and stops the run there, so re-record it once the condition can actually hold, and delete the failed step after `e2e-finish-recording` rather than mid-recording: over a link the in-memory copy is authoritative and the next append writes the step straight back, and without a link the recorder re-reads the file before each append, so an edit that renumbers the steps costs the finish the verdicts it would otherwise carry. The cross-tree re-probe was skipped: it asks whether a check that PASSED would survive conversion to `await:`/`assert:`, and this one did not pass"
+  ],
+  "e2eTestFile": "steps:\n  - tool: await-ui-element\n    args:\n      condition: visible\n      selector:\n        text: \"Git updated, but Git LFS hydration failed and needs attention: cancelled\"\n        role: StaticText\n  - tool: await-ui-element\n    args:\n      condition: visible\n      selector:\n        text: Git updated before cancellation completed. Verify the working tree before\n          the next sync.\n        role: StaticText\n",
+  "flowFile": "steps:\n  - tool: await-ui-element\n    args:\n      condition: visible\n      selector:\n        text: \"Git updated, but Git LFS hydration failed and needs attention: cancelled\"\n        role: StaticText\n  - tool: await-ui-element\n    args:\n      condition: visible\n      selector:\n        text: Git updated before cancellation completed. Verify the working tree before\n          the next sync.\n        role: StaticText\n",
+  "savedTo": "/tmp/gitsync-pr44-qa/.argent/e2e/qa-pr44-lfs-expected-interruption-red.yaml"
+}

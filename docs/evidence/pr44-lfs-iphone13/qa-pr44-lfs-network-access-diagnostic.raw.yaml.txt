@@ -1,0 +1,74 @@
+steps:
+  - tap:
+      text: Search Apps
+  - tool: keyboard
+    args:
+      text: GitSync
+  - tap:
+      id: bontecou.Sync-md.prqa
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: GitSync PR QA
+        role: NavigationBar
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: GitSync PR QA
+  - echo: Explicit QA app Settings page shows Local Network already enabled
+      (value1), so no permission toggle changed. Check independent physical
+      Safari reachability to the owned server; do not infer a production app
+      defect from offline alone.
+  - tool: open-url
+    args:
+      bundleId: com.apple.mobilesafari
+      url: http://192.168.1.252:8773/?qa=pr44-connectivity
+  - tool: launch-app
+    args:
+      bundleId: bontecou.Sync-md.prqa
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: vault.title
+  - tap:
+      id: ellipsis
+  - tap:
+      x: 0.664
+      y: 0.1295
+  - tap:
+      text: Close
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: vault.title
+  - tap:
+      text: Check for changes
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Cancel
+        role: Button
+  - tap:
+      text: Cancel
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: "Git updated, but Git LFS hydration failed and needs attention: cancelled"
+        role: StaticText
+  - tool: await-ui-element
+    args:
+      condition: hidden
+      selector:
+        text: Cancel
+        role: Button
+  - echo: "Actual post-update cancellation defect reproduced: before Cancel native
+      main already c101945; server download pending then client disconnected.
+      New native/persisted SHA retained and lastSync unchanged, but UI generic
+      LFS hydration failed: cancelled instead of interruption guidance. These
+      diagnostic positive observations do NOT mean acceptance passed."

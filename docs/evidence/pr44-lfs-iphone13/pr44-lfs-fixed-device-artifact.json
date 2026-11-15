@@ -1,0 +1,7 @@
+{
+  "bundleID": "bontecou.Sync-md.prqa",
+  "debugDylibSHA256": "498ee309ee7827f4941bbc9b1e3828e00e1bad1be1e17603ff72c54b7e35f3bc",
+  "noShippingAppGroupOrAPNs": true,
+  "compiledSourceBase": "0d15ed5 + local GitLFSService cancellation normalization",
+  "failedPhoneArchiveVerified": true
+}

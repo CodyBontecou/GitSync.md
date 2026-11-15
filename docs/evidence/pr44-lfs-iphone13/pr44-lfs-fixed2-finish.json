@@ -1,0 +1,21 @@
+{
+  "message": "Finished recording \"qa-pr44-lfs-fixed-native2\" e2e test (10 steps)",
+  "path": "/tmp/gitsync-pr44-qa/.argent/e2e/qa-pr44-lfs-fixed-native2.yaml",
+  "executionPrerequisite": "",
+  "steps": 10,
+  "summary": [
+    "1. launch: {\"native\":\"bontecou.Sync-md.prqa\",\"ios\":{\"app\":\"bontecou.Sync-md.prqa\",\"args\":[\"-UITestGitToolsFixture\",\"pull-cancel\",\"-AppleLanguages\",\"(en)\",\"-AppleLocale\",\"en_US\"]}}",
+    "2. tool: await-ui-element {\"condition\":\"visible\",\"selector\":{\"text\":\"Attention 1\",\"role\":\"Button\"}}",
+    "3. tap: {\"text\":\"main · syncmd-uitest-fixtures/git-tools-fixture\"}",
+    "4. tool: await-ui-element {\"condition\":\"visible\",\"selector\":{\"identifier\":\"vault.title\"}}",
+    "5. tap: {\"text\":\"Pull\"}",
+    "6. tool: await-ui-element {\"condition\":\"visible\",\"selector\":{\"text\":\"Cancel\",\"role\":\"Button\"}}",
+    "7. tap: {\"text\":\"Cancel\"}",
+    "8. tool: await-ui-element {\"condition\":\"visible\",\"selector\":{\"text\":\"Git updated before cancellation completed. Verify the working tree before the next sync.\",\"role\":\"StaticText\"}}",
+    "9. tool: await-ui-element {\"condition\":\"hidden\",\"selector\":{\"text\":\"Cancel\",\"role\":\"Button\"}}",
+    "10. tool: await-ui-element {\"condition\":\"visible\",\"selector\":{\"text\":\"Check for changes\",\"role\":\"Button\"}}"
+  ],
+  "e2eTestFile": "steps:\n  - launch:\n      native: bontecou.Sync-md.prqa\n      ios:\n        app: bontecou.Sync-md.prqa\n        args:\n          - -UITestGitToolsFixture\n          - pull-cancel\n          - -AppleLanguages\n          - (en)\n          - -AppleLocale\n          - en_US\n  - tool: await-ui-element\n    args:\n      condition: visible\n      selector:\n        text: Attention 1\n        role: Button\n  - tap:\n      text: main · syncmd-uitest-fixtures/git-tools-fixture\n  - tool: await-ui-element\n    args:\n      condition: visible\n      selector:\n        identifier: vault.title\n  - tap:\n      text: Pull\n  - tool: await-ui-element\n    args:\n      condition: visible\n      selector:\n        text: Cancel\n        role: Button\n  - tap:\n      text: Cancel\n  - tool: await-ui-element\n    args:\n      condition: visible\n      selector:\n        text: Git updated before cancellation completed. Verify the working tree before\n          the next sync.\n        role: StaticText\n  - tool: await-ui-element\n    args:\n      condition: hidden\n      selector:\n        text: Cancel\n        role: Button\n  - tool: await-ui-element\n    args:\n      condition: visible\n      selector:\n        text: Check for changes\n        role: Button\n",
+  "flowFile": "steps:\n  - launch:\n      native: bontecou.Sync-md.prqa\n      ios:\n        app: bontecou.Sync-md.prqa\n        args:\n          - -UITestGitToolsFixture\n          - pull-cancel\n          - -AppleLanguages\n          - (en)\n          - -AppleLocale\n          - en_US\n  - tool: await-ui-element\n    args:\n      condition: visible\n      selector:\n        text: Attention 1\n        role: Button\n  - tap:\n      text: main · syncmd-uitest-fixtures/git-tools-fixture\n  - tool: await-ui-element\n    args:\n      condition: visible\n      selector:\n        identifier: vault.title\n  - tap:\n      text: Pull\n  - tool: await-ui-element\n    args:\n      condition: visible\n      selector:\n        text: Cancel\n        role: Button\n  - tap:\n      text: Cancel\n  - tool: await-ui-element\n    args:\n      condition: visible\n      selector:\n        text: Git updated before cancellation completed. Verify the working tree before\n          the next sync.\n        role: StaticText\n  - tool: await-ui-element\n    args:\n      condition: hidden\n      selector:\n        text: Cancel\n        role: Button\n  - tool: await-ui-element\n    args:\n      condition: visible\n      selector:\n        text: Check for changes\n        role: Button\n",
+  "savedTo": "/tmp/gitsync-pr44-qa/.argent/e2e/qa-pr44-lfs-fixed-native2.yaml"
+}

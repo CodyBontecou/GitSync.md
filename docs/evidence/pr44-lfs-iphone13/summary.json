@@ -1,0 +1,28 @@
+{
+  "qaLocalNetworkAlreadyEnabled": true,
+  "qaSettingsChanged": false,
+  "physicalSafariReachedSameServer": true,
+  "initialOfflineCause": "unestablished, later request worked without permission/binary change",
+  "scopedQAProcessPID": 3607,
+  "nativeSHAWasCopiedBeforeCancel": "c101945908aff14b7bf52f03c9864e0e47b04ed6",
+  "expectedGuidance": "Git updated before cancellation completed. Verify the working tree before the next sync.",
+  "actualGuidance": "Git updated, but Git LFS hydration failed and needs attention: cancelled",
+  "acceptance": "FAILED",
+  "productSourceChanged": false,
+  "serversRecordersAndLogCollectorStopped": true,
+  "followUpSourceChanged": true,
+  "targetedTransportRed": "4tests/2cancelFailures; offline+success passed",
+  "targetedTransportGreen": "4/4passed",
+  "fullUnitFirst": "532/1unchanged-removal-sourceChanged failure",
+  "fullUnitUnchangedRepeat": "532/0failures",
+  "fixedPhysicalCases": 2,
+  "fixedArtifactDylibSHA256": "498ee309ee7827f4941bbc9b1e3828e00e1bad1be1e17603ff72c54b7e35f3bc",
+  "fixedNativeSHAs": [
+    "d6a6cdec672db4d59d5f3539fe9970edcf7383c6",
+    "3e1cdc780d58c96637b58bbc161a1a1849bf1afe"
+  ],
+  "guidanceVerifiedOnFixedDevice": true,
+  "automatedTwoPassE2eClaim": false,
+  "originalFailedPhoneArchiveFinalAll36BytesVerified": true,
+  "ciForFollowUp": "pending"
+}

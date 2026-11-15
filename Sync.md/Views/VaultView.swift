@@ -7,6 +7,9 @@ struct VaultView: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     let repoID: UUID
 
+    #if DEBUG
+    @State private var qaCancellationLeaseHeld = false
+    #endif
     @State private var showSettings = false
     @State private var showCommitSheet = false
     @State private var showGitTools = false
@@ -111,6 +114,33 @@ struct VaultView: View {
                     Button { openInFilesApp() } label: {
                         Label(String(localized: "Open in Files"), systemImage: "folder")
                     }
+                    #if DEBUG
+                    if MarketingCapture.gitToolsUITestScenario == "pull-cancel" {
+                        if qaCancellationLeaseHeld {
+                            Button("Release QA repository lease") {
+                                Task {
+                                    await PullCancellationFixture.release()
+                                    qaCancellationLeaseHeld = false
+                                }
+                            }
+                            .accessibilityIdentifier("qa44.releaseLease")
+                        } else {
+                            Button("Hold QA repository lease") {
+                                Task {
+                                    guard let url = state.vaultURL(for: repoID) else { return }
+                                    do {
+                                        try await PullCancellationFixture.hold(at: url)
+                                        qaCancellationLeaseHeld = true
+                                    } catch {
+                                        state.lastError = error.localizedDescription
+                                        state.showError = true
+                                    }
+                                }
+                            }
+                            .accessibilityIdentifier("qa44.holdLease")
+                        }
+                    }
+                    #endif
                     Button {
                         withAnimation(.easeInOut(duration: 0.2)) { watchOverride = !isWatching }
                     } label: {
@@ -340,6 +370,14 @@ struct VaultView: View {
                     .padding(.horizontal, 4)
                     .padding(.top, 10)
 
+                #if DEBUG
+                if MarketingCapture.gitToolsUITestScenario == "pull-cancel" {
+                    Text(qaCancellationLeaseHeld ? "QA repository lease held" : "QA repository lease released")
+                        .font(TideFont.meta)
+                        .foregroundStyle(Tide.inkMid)
+                        .accessibilityIdentifier("qa44.leaseStatus")
+                }
+                #endif
                 VaultStateHeroSlot(repoID: repoID) { stateHero(repo) }
                     .padding(.top, 18)
 
@@ -665,19 +703,19 @@ struct VaultView: View {
             switch tideState {
             case .ahead where changeCount > 0:
                 heroPrimary(String(localized: "Commit & push"), icon: "arrow.up") { showCommitSheet = true }
-                heroSecondary(String(localized: "Pull")) { Task { await state.pull(repoID: repoID) } }
+                heroSecondary(String(localized: "Pull")) { Task { await state.pull(repoID: repoID, cancellationFeedback: .warning) } }
             case .ahead:
                 heroPrimary(String(localized: "Push"), icon: "arrow.up") {
                     Task { await state.pushCurrentBranch(repoID: repoID) }
                 }
-                heroSecondary(String(localized: "Pull")) { Task { await state.pull(repoID: repoID) } }
+                heroSecondary(String(localized: "Pull")) { Task { await state.pull(repoID: repoID, cancellationFeedback: .warning) } }
             case .behind:
                 heroPrimary(String(localized: "Pull"), icon: "arrow.down") {
-                    Task { await state.pull(repoID: repoID) }
+                    Task { await state.pull(repoID: repoID, cancellationFeedback: .warning) }
                 }
             case .diverged where changeCount > 0:
                 heroPrimary(String(localized: "Commit & push"), icon: "arrow.up") { showCommitSheet = true }
-                heroSecondary(String(localized: "Pull")) { Task { await state.pull(repoID: repoID) } }
+                heroSecondary(String(localized: "Pull")) { Task { await state.pull(repoID: repoID, cancellationFeedback: .warning) } }
             case .diverged:
                 heroPrimary(String(localized: "Bring theirs in"), icon: "arrow.triangle.merge") {
                     Task { await state.mergeWithRemote(repoID: repoID) }
@@ -685,7 +723,7 @@ struct VaultView: View {
                 heroSecondary(String(localized: "Rebase")) { Task { await state.pullWithRebase(repoID: repoID) } }
             case .inSync:
                 heroPrimary(String(localized: "Check for changes"), icon: "arrow.clockwise") {
-                    Task { await state.pull(repoID: repoID) }
+                    Task { await state.pull(repoID: repoID, cancellationFeedback: .warning) }
                 }
             }
         }
@@ -828,6 +866,7 @@ struct VaultView: View {
         case .lfsHydrationBlocked:   String(localized: "Large files couldn't download")
         case .diverged:              String(localized: "Needs a decision")
         case .remoteBranchMissing:   String(localized: "Remote branch missing")
+        case .cancelled:             String(localized: "Pull interrupted")
         case .failed:                String(localized: "Pull failed")
         }
     }
@@ -842,6 +881,7 @@ struct VaultView: View {
         case .lfsHydrationBlocked:   return "externaldrive.badge.exclamationmark"
         case .diverged:              return "arrow.triangle.branch"
         case .remoteBranchMissing:   return "questionmark"
+        case .cancelled:             return "pause.circle"
         case .failed:                return "xmark"
         }
     }
@@ -851,7 +891,7 @@ struct VaultView: View {
         case .upToDate, .rebased:    return Tide.synced
         case .fastForwarded:         return Tide.behind
         case .rebaseConflicts, .blockedByLocalChanges, .checkoutIncomplete, .lfsHydrationBlocked,
-             .diverged, .remoteBranchMissing:
+             .diverged, .remoteBranchMissing, .cancelled:
             return Tide.ahead
         case .failed:                return Tide.danger
         }

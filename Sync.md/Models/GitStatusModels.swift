@@ -92,6 +92,12 @@ struct PullPlan: Codable, Sendable, Equatable {
     }
 }
 
+/// Lifecycle refreshes stay quiet; an explicit user action may offer retry guidance.
+enum PullCancellationFeedback: Sendable, Equatable {
+    case silent
+    case warning
+}
+
 enum PullOutcomeKind: String, Codable, Sendable {
     case upToDate
     case fastForwarded
@@ -103,6 +109,7 @@ enum PullOutcomeKind: String, Codable, Sendable {
     case lfsHydrationBlocked
     case diverged
     case remoteBranchMissing
+    case cancelled
     case failed
 }
 

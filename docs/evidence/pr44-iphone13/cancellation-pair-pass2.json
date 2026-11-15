@@ -1,0 +1,411 @@
+{
+  "e2eTest": "qa-pr44-pull-interruption-final",
+  "flow": "qa-pr44-pull-interruption-final",
+  "device": "00008110-00046CC63CA0401E",
+  "executionPrerequisite": "",
+  "ok": true,
+  "passed": 41,
+  "failed": 0,
+  "skipped": 0,
+  "errored": 0,
+  "steps": [
+    {
+      "index": 0,
+      "kind": "launch",
+      "e2eTest": "qa-pr44-pull-interruption-final",
+      "status": "pass",
+      "durationMs": 2359,
+      "flow": "qa-pr44-pull-interruption-final"
+    },
+    {
+      "index": 1,
+      "kind": "await",
+      "e2eTest": "qa-pr44-pull-interruption-final",
+      "target": "visible \"Attention 1\" role=Button",
+      "status": "pass",
+      "durationMs": 174,
+      "flow": "qa-pr44-pull-interruption-final"
+    },
+    {
+      "index": 2,
+      "kind": "idle",
+      "e2eTest": "qa-pr44-pull-interruption-final",
+      "status": "pass",
+      "durationMs": 1642,
+      "flow": "qa-pr44-pull-interruption-final"
+    },
+    {
+      "index": 3,
+      "kind": "tap",
+      "e2eTest": "qa-pr44-pull-interruption-final",
+      "target": "\"main · syncmd-uitest-fixtures/git-tools-fixture\"",
+      "status": "pass",
+      "durationMs": 1052,
+      "flow": "qa-pr44-pull-interruption-final"
+    },
+    {
+      "index": 4,
+      "kind": "await",
+      "e2eTest": "qa-pr44-pull-interruption-final",
+      "target": "visible id=vault.title",
+      "status": "pass",
+      "durationMs": 139,
+      "flow": "qa-pr44-pull-interruption-final"
+    },
+    {
+      "index": 5,
+      "kind": "idle",
+      "e2eTest": "qa-pr44-pull-interruption-final",
+      "status": "pass",
+      "durationMs": 2448,
+      "flow": "qa-pr44-pull-interruption-final"
+    },
+    {
+      "index": 6,
+      "kind": "assert",
+      "e2eTest": "qa-pr44-pull-interruption-final",
+      "target": "visible \"README.md, modified\" role=Button",
+      "status": "pass",
+      "durationMs": 136,
+      "flow": "qa-pr44-pull-interruption-final"
+    },
+    {
+      "index": 7,
+      "kind": "assert",
+      "e2eTest": "qa-pr44-pull-interruption-final",
+      "target": "id=qa44.leaseStatus equals \"QA repository lease released\"",
+      "status": "pass",
+      "durationMs": 82,
+      "flow": "qa-pr44-pull-interruption-final"
+    },
+    {
+      "index": 8,
+      "kind": "echo",
+      "e2eTest": "qa-pr44-pull-interruption-final",
+      "status": "pass",
+      "message": "Hold only the real coordinator lease. Normal Pull must queue and remain cancellable without changing native Git or note bytes.",
+      "durationMs": 0,
+      "flow": "qa-pr44-pull-interruption-final"
+    },
+    {
+      "index": 9,
+      "kind": "tap",
+      "e2eTest": "qa-pr44-pull-interruption-final",
+      "target": "id=ellipsis",
+      "status": "pass",
+      "durationMs": 1377,
+      "flow": "qa-pr44-pull-interruption-final"
+    },
+    {
+      "index": 10,
+      "kind": "await",
+      "e2eTest": "qa-pr44-pull-interruption-final",
+      "target": "visible id=qa44.holdLease",
+      "status": "pass",
+      "durationMs": 93,
+      "flow": "qa-pr44-pull-interruption-final"
+    },
+    {
+      "index": 11,
+      "kind": "idle",
+      "e2eTest": "qa-pr44-pull-interruption-final",
+      "status": "pass",
+      "durationMs": 2748,
+      "flow": "qa-pr44-pull-interruption-final"
+    },
+    {
+      "index": 12,
+      "kind": "tap",
+      "e2eTest": "qa-pr44-pull-interruption-final",
+      "target": "id=qa44.holdLease",
+      "status": "pass",
+      "durationMs": 1061,
+      "flow": "qa-pr44-pull-interruption-final"
+    },
+    {
+      "index": 13,
+      "kind": "await",
+      "e2eTest": "qa-pr44-pull-interruption-final",
+      "target": "id=qa44.leaseStatus equals \"QA repository lease held\"",
+      "status": "pass",
+      "durationMs": 128,
+      "flow": "qa-pr44-pull-interruption-final"
+    },
+    {
+      "index": 14,
+      "kind": "idle",
+      "e2eTest": "qa-pr44-pull-interruption-final",
+      "status": "pass",
+      "durationMs": 2881,
+      "flow": "qa-pr44-pull-interruption-final"
+    },
+    {
+      "index": 15,
+      "kind": "echo",
+      "e2eTest": "qa-pr44-pull-interruption-final",
+      "status": "pass",
+      "message": "Start explicit native Pull. Require actual progress and Cancel before attempting cancellation.",
+      "durationMs": 0,
+      "flow": "qa-pr44-pull-interruption-final"
+    },
+    {
+      "index": 16,
+      "kind": "tap",
+      "e2eTest": "qa-pr44-pull-interruption-final",
+      "target": "\"Pull\" role=Button",
+      "status": "pass",
+      "durationMs": 1080,
+      "flow": "qa-pr44-pull-interruption-final"
+    },
+    {
+      "index": 17,
+      "kind": "await",
+      "e2eTest": "qa-pr44-pull-interruption-final",
+      "target": "visible \"Cancel\" role=Button",
+      "status": "pass",
+      "durationMs": 132,
+      "flow": "qa-pr44-pull-interruption-final"
+    },
+    {
+      "index": 18,
+      "kind": "await",
+      "e2eTest": "qa-pr44-pull-interruption-final",
+      "target": "visible \"Pulling…\" role=StaticText",
+      "status": "pass",
+      "durationMs": 98,
+      "flow": "qa-pr44-pull-interruption-final"
+    },
+    {
+      "index": 19,
+      "kind": "echo",
+      "e2eTest": "qa-pr44-pull-interruption-final",
+      "status": "pass",
+      "message": "Cancel the actual queued operation; require positive manual retry guidance while keeping unpublished changes.",
+      "durationMs": 0,
+      "flow": "qa-pr44-pull-interruption-final"
+    },
+    {
+      "index": 20,
+      "kind": "tap",
+      "e2eTest": "qa-pr44-pull-interruption-final",
+      "target": "\"Cancel\" role=Button",
+      "status": "pass",
+      "durationMs": 3844,
+      "flow": "qa-pr44-pull-interruption-final"
+    },
+    {
+      "index": 21,
+      "kind": "await",
+      "e2eTest": "qa-pr44-pull-interruption-final",
+      "target": "visible \"Pull interrupted\" role=StaticText",
+      "status": "pass",
+      "durationMs": 98,
+      "flow": "qa-pr44-pull-interruption-final"
+    },
+    {
+      "index": 22,
+      "kind": "idle",
+      "e2eTest": "qa-pr44-pull-interruption-final",
+      "status": "pass",
+      "durationMs": 2567,
+      "flow": "qa-pr44-pull-interruption-final"
+    },
+    {
+      "index": 23,
+      "kind": "assert",
+      "e2eTest": "qa-pr44-pull-interruption-final",
+      "target": "hidden \"Cancel\" role=Button",
+      "status": "pass",
+      "durationMs": 125,
+      "flow": "qa-pr44-pull-interruption-final"
+    },
+    {
+      "index": 24,
+      "kind": "assert",
+      "e2eTest": "qa-pr44-pull-interruption-final",
+      "target": "hidden \"Pulling…\" role=StaticText",
+      "status": "pass",
+      "durationMs": 95,
+      "flow": "qa-pr44-pull-interruption-final"
+    },
+    {
+      "index": 25,
+      "kind": "assert",
+      "e2eTest": "qa-pr44-pull-interruption-final",
+      "target": "visible \"Pull was interrupted. Try pulling again when you're ready.\" role=StaticText",
+      "status": "pass",
+      "durationMs": 127,
+      "flow": "qa-pr44-pull-interruption-final"
+    },
+    {
+      "index": 26,
+      "kind": "assert",
+      "e2eTest": "qa-pr44-pull-interruption-final",
+      "target": "id=qa44.leaseStatus equals \"QA repository lease held\"",
+      "status": "pass",
+      "durationMs": 105,
+      "flow": "qa-pr44-pull-interruption-final"
+    },
+    {
+      "index": 27,
+      "kind": "assert",
+      "e2eTest": "qa-pr44-pull-interruption-final",
+      "target": "visible \"README.md, modified\" role=Button",
+      "status": "pass",
+      "durationMs": 88,
+      "flow": "qa-pr44-pull-interruption-final"
+    },
+    {
+      "index": 28,
+      "kind": "tap",
+      "e2eTest": "qa-pr44-pull-interruption-final",
+      "target": "id=ellipsis",
+      "status": "pass",
+      "durationMs": 1028,
+      "flow": "qa-pr44-pull-interruption-final"
+    },
+    {
+      "index": 29,
+      "kind": "await",
+      "e2eTest": "qa-pr44-pull-interruption-final",
+      "target": "visible id=qa44.releaseLease",
+      "status": "pass",
+      "durationMs": 82,
+      "flow": "qa-pr44-pull-interruption-final"
+    },
+    {
+      "index": 30,
+      "kind": "idle",
+      "e2eTest": "qa-pr44-pull-interruption-final",
+      "status": "pass",
+      "durationMs": 2204,
+      "flow": "qa-pr44-pull-interruption-final"
+    },
+    {
+      "index": 31,
+      "kind": "tap",
+      "e2eTest": "qa-pr44-pull-interruption-final",
+      "target": "id=qa44.releaseLease",
+      "status": "pass",
+      "durationMs": 1087,
+      "flow": "qa-pr44-pull-interruption-final"
+    },
+    {
+      "index": 32,
+      "kind": "await",
+      "e2eTest": "qa-pr44-pull-interruption-final",
+      "target": "id=qa44.leaseStatus equals \"QA repository lease released\"",
+      "status": "pass",
+      "durationMs": 124,
+      "flow": "qa-pr44-pull-interruption-final"
+    },
+    {
+      "index": 33,
+      "kind": "idle",
+      "e2eTest": "qa-pr44-pull-interruption-final",
+      "status": "pass",
+      "durationMs": 2864,
+      "flow": "qa-pr44-pull-interruption-final"
+    },
+    {
+      "index": 34,
+      "kind": "assert",
+      "e2eTest": "qa-pr44-pull-interruption-final",
+      "target": "visible \"Pull interrupted\" role=StaticText",
+      "status": "pass",
+      "durationMs": 135,
+      "flow": "qa-pr44-pull-interruption-final"
+    },
+    {
+      "index": 35,
+      "kind": "assert",
+      "e2eTest": "qa-pr44-pull-interruption-final",
+      "target": "visible \"Pull\" role=Button",
+      "status": "pass",
+      "durationMs": 101,
+      "flow": "qa-pr44-pull-interruption-final"
+    },
+    {
+      "index": 36,
+      "kind": "echo",
+      "e2eTest": "qa-pr44-pull-interruption-final",
+      "status": "pass",
+      "message": "Only now retry manually against the real local bare remote. Success must coexist with the still-unpublished README change.",
+      "durationMs": 1,
+      "flow": "qa-pr44-pull-interruption-final"
+    },
+    {
+      "index": 37,
+      "kind": "tap",
+      "e2eTest": "qa-pr44-pull-interruption-final",
+      "target": "\"Pull\" role=Button",
+      "status": "pass",
+      "durationMs": 1044,
+      "flow": "qa-pr44-pull-interruption-final"
+    },
+    {
+      "index": 38,
+      "kind": "await",
+      "e2eTest": "qa-pr44-pull-interruption-final",
+      "target": "visible \"Already up to date\" role=StaticText",
+      "status": "pass",
+      "durationMs": 114,
+      "flow": "qa-pr44-pull-interruption-final"
+    },
+    {
+      "index": 39,
+      "kind": "idle",
+      "e2eTest": "qa-pr44-pull-interruption-final",
+      "status": "pass",
+      "durationMs": 3058,
+      "flow": "qa-pr44-pull-interruption-final"
+    },
+    {
+      "index": 40,
+      "kind": "assert",
+      "e2eTest": "qa-pr44-pull-interruption-final",
+      "target": "hidden \"Pull interrupted\" role=StaticText",
+      "status": "pass",
+      "durationMs": 150,
+      "flow": "qa-pr44-pull-interruption-final"
+    },
+    {
+      "index": 41,
+      "kind": "assert",
+      "e2eTest": "qa-pr44-pull-interruption-final",
+      "target": "visible \"README.md, modified\" role=Button",
+      "status": "pass",
+      "durationMs": 101,
+      "flow": "qa-pr44-pull-interruption-final"
+    },
+    {
+      "index": 42,
+      "kind": "assert",
+      "e2eTest": "qa-pr44-pull-interruption-final",
+      "target": "id=qa44.leaseStatus equals \"QA repository lease released\"",
+      "status": "pass",
+      "durationMs": 123,
+      "flow": "qa-pr44-pull-interruption-final"
+    },
+    {
+      "index": 43,
+      "kind": "assert",
+      "e2eTest": "qa-pr44-pull-interruption-final",
+      "target": "visible \"Branch main\" role=StaticText",
+      "status": "pass",
+      "durationMs": 97,
+      "flow": "qa-pr44-pull-interruption-final"
+    },
+    {
+      "index": 44,
+      "kind": "assert",
+      "e2eTest": "qa-pr44-pull-interruption-final",
+      "target": "id=vault.title equals \"git-tools-fixture\"",
+      "status": "pass",
+      "durationMs": 87,
+      "flow": "qa-pr44-pull-interruption-final"
+    }
+  ],
+  "startedAt": 1794605934001,
+  "durationMs": 37089
+}

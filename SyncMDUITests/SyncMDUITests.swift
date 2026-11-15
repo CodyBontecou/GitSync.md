@@ -460,6 +460,42 @@ final class SyncMDUITests: XCTestCase {
         XCTAssertTrue(app.buttons["Git Tools"].isEnabled, "Tools navigation must remain available after dismissing")
     }
 
+    func testExplicitPullCancellationPreservesNativeFilesAndAllowsManualRetry() throws {
+        let app = launchGitToolsFixture("pull-cancel")
+        let before = try gitToolsSnapshot()
+        let originalHead = try gitToolsHead()
+        tapWhenHittable(app.buttons["More vault options"], in: app)
+        tapWhenHittable(app.buttons["qa44.holdLease"], in: app)
+        let leaseStatus = app.staticTexts["qa44.leaseStatus"]
+        XCTAssertTrue(leaseStatus.waitForExistence(timeout: 5))
+        let held = NSPredicate(format: "label == %@", "QA repository lease held")
+        expectation(for: held, evaluatedWith: leaseStatus)
+        waitForExpectations(timeout: 10)
+
+        tapWhenHittable(syncAction("Pull", in: app), in: app)
+        let cancel = app.buttons["Cancel"].firstMatch
+        XCTAssertTrue(cancel.waitForExistence(timeout: 10), "Normal foreground Pull must expose its real cancellation control")
+        tapWhenHittable(cancel, in: app)
+        XCTAssertTrue(app.staticTexts["Pull interrupted"].waitForExistence(timeout: 10))
+        XCTAssertTrue(app.staticTexts["Pull was interrupted. Try pulling again when you're ready."].exists)
+        XCTAssertFalse(app.alerts["Error"].exists)
+        XCTAssertEqual(try gitToolsSnapshot(), before, "Cancelling the real queued native operation must preserve all Git and note bytes")
+        XCTAssertEqual(try gitToolsHead(), originalHead)
+        attachScreenshot("Explicit native Pull interruption", in: app)
+
+        tapWhenHittable(app.buttons["More vault options"], in: app)
+        tapWhenHittable(app.buttons["qa44.releaseLease"], in: app)
+        let released = NSPredicate(format: "label == %@", "QA repository lease released")
+        expectation(for: released, evaluatedWith: leaseStatus)
+        waitForExpectations(timeout: 10)
+        tapWhenHittable(syncAction("Pull", in: app), in: app)
+        XCTAssertTrue(app.staticTexts["Already up to date"].waitForExistence(timeout: 15))
+        XCTAssertEqual(try gitToolsHead(), originalHead)
+        XCTAssertEqual(try String(contentsOf: gitToolsWorktreeURL().appendingPathComponent("README.md"), encoding: .utf8),
+                       "# Git Tools Fixture\n\nUnstaged local note.\n")
+        XCTAssertFalse(app.alerts["Error"].exists)
+    }
+
     func testIncompleteMarkdownCheckoutShowsCheckoutWarningAndPreservesConcurrentEdit() throws {
         let app = launchGitToolsFixture("checkout-incomplete")
         let remoteHead = try gitToolsHead(remote: true)
@@ -2165,7 +2201,7 @@ final class SyncMDUITests: XCTestCase {
         return false
     }
 
-    private func tapWhenHittable(_ element: XCUIElement, in app: XCUIApplication, message: String) {
+    private func tapWhenHittable(_ element: XCUIElement, in app: XCUIApplication, message: String = "Expected UI control to be available") {
         guard reveal(element, in: app) else {
             XCTFail(message)
             return

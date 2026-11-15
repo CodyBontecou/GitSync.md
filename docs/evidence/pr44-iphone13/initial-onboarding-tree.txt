@@ -1,0 +1,23 @@
+Source: xcuitest-runner
+Mode: nested
+Coordinates are normalized [0,1] fractions of the screen (x, y, width, height), not pixels.
+Pass them straight to gesture-tap / gesture-swipe / gesture-pinch, which expect this same space.
+To tap an element, use its centre: tap_x = frame.x + frame.width / 2, tap_y = frame.y + frame.height / 2.
+
+ROOT  Application (0.000, 0.000, 1.000, 1.000)
+
+  AXStaticText "GitSync.md"  (0.056, 0.074, 0.182, 0.018)
+  AXImage "Notes on your phone and commits on GitHub meeting at one sync point"  (0.056, 0.201, 0.888, 0.062)
+    AXStaticText "this iPhone"  (0.056, 0.201, 0.170, 0.015)
+    AXStaticText "GitHub"  (0.851, 0.201, 0.093, 0.015)
+    AXImage "Selected" id="checkmark" [selected]  (0.481, 0.230, 0.038, 0.017)
+  AXStaticText "Your notes., Real git., Always in step."  (0.056, 0.435, 0.664, 0.176)
+    AXStaticText "Your notes."  (0.056, 0.435, 0.495, 0.062)
+    AXStaticText "Real git."  (0.056, 0.492, 0.359, 0.062)
+    AXStaticText "Always in step."  (0.056, 0.550, 0.664, 0.062)
+  AXStaticText "Clone any repo into Files, write in Obsidian or anything else, and sync with one tap."  (0.056, 0.629, 0.775, 0.049)
+  AXButton "Continue with GitHub" id="onboarding.continueWithGitHub"  (0.056, 0.756, 0.888, 0.063)
+    AXStaticText "Continue with GitHub"  (0.056, 0.756, 0.888, 0.063)
+    AXImage "GitHubLogo"  (0.263, 0.777, 0.047, 0.021)
+  AXButton "SSH, token or another host" id="onboarding.otherWays"  (0.056, 0.829, 0.888, 0.058)
+  AXButton "Look around with a demo vault →" id="onboarding.demo"  (0.217, 0.898, 0.566, 0.048)

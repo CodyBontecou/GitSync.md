@@ -1,0 +1,14 @@
+steps:
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: "Git updated, but Git LFS hydration failed and needs attention: cancelled"
+        role: StaticText
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Git updated before cancellation completed. Verify the working tree before
+          the next sync.
+        role: StaticText
