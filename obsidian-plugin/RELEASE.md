@@ -4,7 +4,7 @@
 
 Version [0.1.3](https://github.com/CodyBontecou/gitsync-obsidian-connect/releases/tag/0.1.3) is available through the [Obsidian community directory](https://community.obsidian.md/plugins/gitsync-connect) and in [CodyBontecou/gitsync-obsidian-connect](https://github.com/CodyBontecou/gitsync-obsidian-connect). All automated community checks pass. Recommend the directory’s **Add to Obsidian → Install → Enable** flow for users. Manual asset installation is a fallback; do not recommend downloading a ZIP. See [SUBMISSION.md](SUBMISSION.md) for the prepared directory entry and remaining requirements. The MIT license here applies to this companion plugin, not the parent iOS application.
 
-The physical iPhone check passed clone → automatic connection → Obsidian Git pull → commit/push with the app's handoff implementation. Evidence lives in the app repository at `docs/obsidian-iphone-qa-20261014.md`. Release the matching GitSync.md app update before advertising the plugin as generally usable. App version 2.6.0 alone is not sufficient evidence: the tested development build included unreleased handoff code.
+The physical iPhone check passed clone → automatic connection → Obsidian Git pull → commit/push with the app's handoff implementation. The evidence was recorded in the app repository as `docs/obsidian-iphone-qa-20261014.md` (removed 2026-11-15; see that repository's git history). Release the matching GitSync.md app update before advertising the plugin as generally usable. App version 2.6.0 alone is not sufficient evidence: the tested development build included unreleased handoff code.
 
 ## Prepare
 

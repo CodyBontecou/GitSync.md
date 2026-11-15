@@ -27,7 +27,7 @@ All tests are in `SyncMDTests/SyncMDTests.swift`, already registered in the Xcod
 
 ## Physical QA follow-up
 
-See `docs/pr44-iphone13-qa.md` and `docs/evidence/pr44-iphone13/`: actual iPhone13 native queued cancellation/manual retry passed 45/45 steps twice, with exact native Git/index/note preservation and only legitimate FETCH_HEAD change on retry. Local full signed 528 unit/native + five UI tests passed before the DEBUG fixture cold-start adjustment; its selected UI test passed after adjustment. Final-source signed528 unit/native and five feature UI tests subsequently passed in separately scoped runs; wider unrelated UI run was intentionally interrupted and is not counted as complete. These observations do not reproduce the original cancellation cause or replace actual OS-host/LFS/human linguistic gates below.
+See `docs/qa/2026-11-13-pr44-pull-cancellation/README.md` and `docs/qa/2026-11-13-pr44-pull-cancellation/evidence/pr44-iphone13/`: actual iPhone13 native queued cancellation/manual retry passed 45/45 steps twice, with exact native Git/index/note preservation and only legitimate FETCH_HEAD change on retry. Local full signed 528 unit/native + five UI tests passed before the DEBUG fixture cold-start adjustment; its selected UI test passed after adjustment. Final-source signed528 unit/native and five feature UI tests subsequently passed in separately scoped runs; wider unrelated UI run was intentionally interrupted and is not counted as complete. These observations do not reproduce the original cancellation cause or replace actual OS-host/LFS/human linguistic gates below.
 
 ## Reproduction limits and remaining QA
 

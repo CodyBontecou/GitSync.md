@@ -69,7 +69,7 @@ This optional network check requires curl, follows up to five redirects, and use
 
 Use authorized Google Search Console access or an exported report. No Search Console credentials are stored in this repository.
 
-The [domain property for gitsync.md](https://search.google.com/search-console?resource_id=sc-domain%3Agitsync.md) was verified for `cody@isolated.tech` on October 26, 2026 through an apex DNS TXT record. Retain the verification record. Google successfully processed `https://gitsync.md/sitemap.xml` and discovered 19 pages that day. Initial performance and indexing reports were still processing; establish the first measured baseline when those reports become available. See [the release record](seo-release-20261026.md) for setup details.
+The [domain property for gitsync.md](https://search.google.com/search-console?resource_id=sc-domain%3Agitsync.md) was verified for the owner's Google account on October 26, 2026 through an apex DNS TXT record. Retain the verification record. Google successfully processed `https://gitsync.md/sitemap.xml` and discovered 19 pages that day. Initial performance and indexing reports were still processing; establish the first measured baseline when those reports become available. See [the release record](seo-release-20261026.md) for setup details.
 
 The [initial URL inspection record](seo-search-baseline-20261026.md) confirms the homepage is indexed and documents a successful live canonical check and accepted recrawl request for the primary Obsidian guide. Review stored crawl dates when diagnosing canonical issues; a pre-release crawl can still reflect the former `.html` URL.
 

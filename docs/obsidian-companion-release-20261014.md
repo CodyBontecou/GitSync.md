@@ -16,7 +16,7 @@ GitSync.md Connect 0.1.0 is published for manual installation. The companion nee
 - App-monorepo companion tests: 10 passed, including actual Swift/CryptoKit producer → JavaScript consumer.
 - Source ZIP extracted into an independent temporary directory: all 10 tests passed; release assets rebuilt without the app checkout; all four checksums passed.
 - Installation ZIP inspected: exactly the gitsync-connect folder and its three files, with no test or credential data.
-- Generated main.js syntax check passed. SHA-256 `c9023da321216ca81365f420196aa56e312a921755d1915dcc4503da103d12b2` matches the bundle exercised in the [physical iPhone test](obsidian-iphone-qa-20261014.md).
+- Generated main.js syntax check passed. SHA-256 `c9023da321216ca81365f420196aa56e312a921755d1915dcc4503da103d12b2` matches the bundle exercised in the [physical iPhone test](https://github.com/CodyBontecou/GitSync.md/blob/8122a34b89b756af2fc23d048eb4304b4dd11832/docs/obsidian-iphone-qa-20261014.md).
 - Both workflow files parsed as YAML. Hosted GitHub Actions passed on the published source. BRAT and community directory installation have not been verified.
 - `git diff --check` passed.
 

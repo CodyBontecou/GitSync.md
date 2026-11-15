@@ -57,7 +57,7 @@ Computed: `displayName`, `ownerName`, `isExternalLocalRepository` (bookmark + no
 ## 8. Feedback & support email
 
 1. **Name**: `FeedbackHelper`
-2. **Mechanics**: `supportEmail cody@isolated.tech`; diagnostics block (app version/build, iOS version, device model — non-identifying) auto-appended; MailCompose in-app sheet when available else `mailto:` URL open; **privacy data-request mailto** pre-populates subject "GitSync.md Privacy & Data Request" with the onboarding-analytics installation ID only. Background Sync has no server record or installation ID. The draft is explicitly user-mediated and never auto-sent. Test: `testPrivacyRequestDraftUsesPrivateAddressAndOpaqueInstallationIDs`.
+2. **Mechanics**: `supportEmail` (the owner's support address); diagnostics block (app version/build, iOS version, device model — non-identifying) auto-appended; MailCompose in-app sheet when available else `mailto:` URL open; **privacy data-request mailto** pre-populates subject "GitSync.md Privacy & Data Request" with the onboarding-analytics installation ID only. Background Sync has no server record or installation ID. The draft is explicitly user-mediated and never auto-sent. Test: `testPrivacyRequestDraftUsesPrivateAddressAndOpaqueInstallationIDs`.
 3. **User-visible**: Send Feedback row (AppSettings), Request data access/deletion (Background Sync settings privacy section).
 4. **Source**: `FeedbackHelper.swift`.
 

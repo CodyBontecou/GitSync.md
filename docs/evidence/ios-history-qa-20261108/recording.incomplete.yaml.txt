@@ -1,5 +1,0 @@
-steps:
-  - tap:
-      x: 0.5
-      y: 0.52
-executionPrerequisite: GitSync isolated simulator at vault Files tab with disposable history fixtures
