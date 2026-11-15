@@ -5589,6 +5589,64 @@ final class SyncMDTests: XCTestCase {
         XCTAssertEqual(appState.branchesByRepo[fixture.repoConfig.id], expected)
     }
 
+    /// Issue #67: Fetch used to succeed silently. It must refresh the branch
+    /// inventory (so behind counts appear) and report what it found.
+    @MainActor
+    func testFetchRemoteRefreshesBranchesAndReportsNewCommits() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        let inventory = BranchInventory(
+            local: [
+                GitBranchInfo(
+                    name: "refs/heads/main",
+                    shortName: "main",
+                    scope: .local,
+                    isCurrent: true,
+                    upstreamShortName: "origin/main",
+                    aheadBy: 0,
+                    behindBy: 3
+                )
+            ],
+            remote: [],
+            detachedHeadOID: nil
+        )
+        fixture.repository.branchInventoryResult = inventory
+
+        let appState = AppState(
+            gitRepositoryFactory: { _ in fixture.repository },
+            loadPersistedState: false
+        )
+        appState.repos = [fixture.repoConfig]
+        let repoID = fixture.repoConfig.id
+
+        let ok = await appState.fetchRemote(repoID: repoID)
+
+        XCTAssertTrue(ok)
+        XCTAssertFalse(appState.isSyncing)
+        XCTAssertEqual(appState.branchesByRepo[repoID], inventory)
+        XCTAssertEqual(appState.fetchResultByRepo[repoID]?.title, "3 new commits")
+        XCTAssertEqual(appState.currentToast?.title, "3 new commits")
+    }
+
+    @MainActor
+    func testFetchResultToastDescribesEachOutcome() {
+        XCTAssertEqual(
+            AppState.fetchResultToast(branch: "main", upstream: "origin/main", ahead: 0, behind: 0).title,
+            "Up to date"
+        )
+        XCTAssertEqual(
+            AppState.fetchResultToast(branch: "main", upstream: "origin/main", ahead: 0, behind: 1).title,
+            "1 new commit"
+        )
+        let diverged = AppState.fetchResultToast(branch: "main", upstream: "origin/main", ahead: 2, behind: 4)
+        XCTAssertEqual(diverged.title, "4 new commits")
+        XCTAssertEqual(diverged.detail, "main has diverged from the remote. Pull to reconcile.")
+        XCTAssertEqual(
+            AppState.fetchResultToast(branch: "feature", upstream: nil, ahead: 0, behind: 0).title,
+            "Fetched"
+        )
+    }
+
     @MainActor
     func testAppStateCreateSwitchDeleteBranchDelegatesToGitRepository() async throws {
         let fixture = try GitFixtureFactory.make(state: .clean)
@@ -5816,6 +5874,82 @@ final class SyncMDTests: XCTestCase {
         XCTAssertEqual(info.commitSHA, originalSHA)
         XCTAssertTrue(info.statusEntries.isEmpty)
         XCTAssertFalse(fm.fileExists(atPath: repoURL.appendingPathComponent(".git/index.lock").path))
+    }
+
+    /// Issue #66: a lingering index.lock can be detected and, once confirmed,
+    /// removed in-app — but never while it is fresh or after it changed.
+    func testLocalGitServiceRemovesOnlyConfirmedStaleIndexLock() async throws {
+        let fm = FileManager.default
+        let repoURL = try makeTemporaryGitRepository(prefix: "SyncMD-StaleIndexLock")
+        defer { try? fm.removeItem(at: repoURL) }
+        let service = LocalGitService(localURL: repoURL)
+        let lockURL = repoURL.appendingPathComponent(".git/index.lock")
+
+        let noLock = await service.indexLockStatus()
+        XCTAssertNil(noLock)
+
+        try Data("interrupted writer\n".utf8).write(to: lockURL)
+        let old = Date().addingTimeInterval(-120)
+        try fm.setAttributes([.modificationDate: old], ofItemAtPath: lockURL.path)
+        let maybeStatus = await service.indexLockStatus()
+        let status = try XCTUnwrap(maybeStatus)
+        XCTAssertEqual(
+            URL(fileURLWithPath: status.lockPath).resolvingSymlinksInPath(),
+            lockURL.resolvingSymlinksInPath()
+        )
+
+        // A lock that is brand new relative to "now" may belong to an active writer.
+        do {
+            try await service.removeStaleIndexLock(expected: status, now: old.addingTimeInterval(1))
+            XCTFail("A fresh lock must not be removed")
+        } catch LocalGitError.indexLocked {}
+        XCTAssertTrue(fm.fileExists(atPath: lockURL.path))
+
+        // A lock that changed since the user confirmed is someone else's.
+        let changed = GitIndexLockStatus(lockPath: status.lockPath, modifiedAt: status.modifiedAt, size: status.size + 1)
+        do {
+            try await service.removeStaleIndexLock(expected: changed)
+            XCTFail("A lock that changed since confirmation must not be removed")
+        } catch LocalGitError.indexLocked {}
+        XCTAssertTrue(fm.fileExists(atPath: lockURL.path))
+
+        try await service.removeStaleIndexLock(expected: status)
+        XCTAssertFalse(fm.fileExists(atPath: lockURL.path))
+        let cleared = await service.indexLockStatus()
+        XCTAssertNil(cleared)
+
+        // Git works again: staging needs the index lock.
+        try "after\n".write(to: repoURL.appendingPathComponent("Note.md"), atomically: true, encoding: .utf8)
+        try await service.stage(path: "Note.md")
+    }
+
+    @MainActor
+    func testAppStateSurfacesAndRemovesStaleIndexLock() async throws {
+        let fm = FileManager.default
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        let appState = AppState(
+            gitRepositoryFactory: { _ in fixture.repository },
+            loadPersistedState: false
+        )
+        appState.repos = [fixture.repoConfig]
+        let repoID = fixture.repoConfig.id
+        let vaultURL = try XCTUnwrap(appState.vaultURL(for: repoID))
+        let gitDir = vaultURL.appendingPathComponent(".git", isDirectory: true)
+        try fm.createDirectory(at: gitDir, withIntermediateDirectories: true)
+        let lockURL = gitDir.appendingPathComponent("index.lock")
+        try Data().write(to: lockURL)
+        try fm.setAttributes([.modificationDate: Date().addingTimeInterval(-60)], ofItemAtPath: lockURL.path)
+
+        await appState.refreshIndexLockStatus(repoID: repoID)
+        XCTAssertNotNil(appState.indexLockByRepo[repoID])
+
+        let removed = await appState.removeStaleIndexLock(repoID: repoID)
+
+        XCTAssertTrue(removed)
+        XCTAssertFalse(fm.fileExists(atPath: lockURL.path))
+        XCTAssertNil(appState.indexLockByRepo[repoID])
+        XCTAssertEqual(appState.currentToast?.title, "Lock removed")
     }
 
     func testLocalGitServiceDiscardChangesPreservesFilesAndExistingIndexLock() async throws {
@@ -8909,6 +9043,34 @@ final class SyncMDTests: XCTestCase {
             fm.fileExists(atPath: unresolvedVault.appendingPathComponent("lib").path),
             "The depth-1 fallback name must not resolve at depth 2"
         )
+    }
+
+    /// Issue #65: dot-files such as `.obsidian/` and `.gitignore` can be shown
+    /// on request, but the repository's `.git` directory never is.
+    func testFileBrowserListsDotFilesOnlyWhenRequestedAndNeverGitDirectory() throws {
+        let fm = FileManager.default
+        let vault = fm.temporaryDirectory.appendingPathComponent("hidden-files-\(UUID().uuidString)", isDirectory: true)
+        defer { try? fm.removeItem(at: vault) }
+        try fm.createDirectory(at: vault.appendingPathComponent(".git", isDirectory: true), withIntermediateDirectories: true)
+        try fm.createDirectory(at: vault.appendingPathComponent(".obsidian", isDirectory: true), withIntermediateDirectories: true)
+        fm.createFile(atPath: vault.appendingPathComponent(".obsidian/app.json").path, contents: Data("{}".utf8))
+        fm.createFile(atPath: vault.appendingPathComponent(".gitignore").path, contents: Data("*.tmp\n".utf8))
+        fm.createFile(atPath: vault.appendingPathComponent(".DS_Store").path, contents: nil)
+        fm.createFile(atPath: vault.appendingPathComponent("Note.md").path, contents: nil)
+
+        let defaultListing = try FileBrowserView.listContents(of: vault, parentRelativePath: "")
+        XCTAssertEqual(defaultListing.map(\.relativePath), ["Note.md"])
+
+        let withHidden = try FileBrowserView.listContents(of: vault, parentRelativePath: "", includeHidden: true)
+        XCTAssertEqual(withHidden.map(\.relativePath), [".obsidian", ".gitignore", "Note.md"])
+        XCTAssertTrue(withHidden[0].isDirectory)
+
+        let nested = try FileBrowserView.listContents(
+            of: vault.appendingPathComponent(".obsidian"),
+            parentRelativePath: ".obsidian",
+            includeHidden: true
+        )
+        XCTAssertEqual(nested.map(\.relativePath), [".obsidian/app.json"])
     }
 
     // MARK: - RepositoryPushRunner / pushOnly / syncRepository (Issue #32)

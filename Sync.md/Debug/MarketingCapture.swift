@@ -47,6 +47,7 @@ enum MarketingCapture {
 
     static var allowsFixtureStatusRefresh: Bool {
         gitToolsUITestScenario == "external-commit" || gitToolsUITestScenario == "external-branch"
+            || gitToolsUITestScenario == "issues-65-67"
             || isBookmarkRecoveryFixture
     }
 
@@ -590,6 +591,14 @@ enum MarketingDemoSeeder {
             "notes/hello.md": Data("# Hello\n\nBase remote note.\n".utf8),
         ]
 
+        // Issues #65/#66/#67: committed dotfiles, an unfetched remote commit and
+        // a stale index.lock left by an interrupted operation.
+        let isIssueQA = scenario == "issues-65-67"
+        if isIssueQA {
+            files[".gitignore"] = Data("*.tmp\n".utf8)
+            files[".obsidian/app.json"] = Data("{\n  \"livePreview\": true\n}\n".utf8)
+        }
+
         do {
             try UITestGitFixtures.resetFixtureArea()
             try UITestGitFixtures.commitToBare(atPath: remotePath, files: files, message: "Base state")
@@ -607,6 +616,15 @@ enum MarketingDemoSeeder {
                 files["notes/hello.md"] = Data("# Hello\n\nUpdated remote note.\n".utf8)
                 try UITestGitFixtures.commitToBare(atPath: remotePath, files: files, message: "Remote note")
                 try UITestGitFixtures.fetchOrigin(atPath: vaultURL.path)
+            }
+            if isIssueQA {
+                files["notes/hello.md"] = Data("# Hello\n\nUnfetched remote note.\n".utf8)
+                try UITestGitFixtures.commitToBare(atPath: remotePath, files: files, message: "Unfetched remote note")
+                let lockURL = vaultURL.appendingPathComponent(".git/index.lock")
+                try Data("interrupted writer\n".utf8).write(to: lockURL)
+                try FileManager.default.setAttributes(
+                    [.modificationDate: Date().addingTimeInterval(-600)], ofItemAtPath: lockURL.path
+                )
             }
             if isDirty {
                 try Data("# Git Tools Fixture\n\nUnstaged local note.\n".utf8)

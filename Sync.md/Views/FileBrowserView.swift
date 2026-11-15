@@ -76,19 +76,24 @@ struct FileBrowserView: View {
     /// `contentsOfDirectory` returns child URLs with symlinks resolved, so
     /// prefix stripping silently fails and every folder two or more levels
     /// deep navigates to a non-existent path and renders as "Empty Directory".
+    ///
+    /// Dot-files (`.obsidian/`, `.gitignore`, …) are listed only when
+    /// `includeHidden` is set. The repository's own `.git` entry is never
+    /// listed: editing Git internals by hand can corrupt the repository.
     static func listContents(
         of directory: URL,
-        parentRelativePath: String
+        parentRelativePath: String,
+        includeHidden: Bool = false
     ) throws -> [FileItem] {
         let contents = try FileManager.default.contentsOfDirectory(
             at: directory,
             includingPropertiesForKeys: [.isDirectoryKey],
-            options: .skipsHiddenFiles
+            options: includeHidden ? [] : .skipsHiddenFiles
         )
 
         return contents.compactMap { url -> FileItem? in
             let name = url.lastPathComponent
-            guard name != ".git" else { return nil }
+            guard !isAlwaysHidden(name) else { return nil }
             let isDir = (try? url.resourceValues(forKeys: [.isDirectoryKey]))?.isDirectory ?? false
             let relativePath = parentRelativePath.isEmpty
                 ? name
@@ -100,6 +105,14 @@ struct FileBrowserView: View {
             return $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending
         }
     }
+
+    /// Entries hidden even when the user opts into seeing dot-files.
+    static func isAlwaysHidden(_ name: String) -> Bool {
+        name == ".git" || name == ".DS_Store"
+    }
+
+    /// `@AppStorage` key for the "show hidden files" preference.
+    static let showHiddenFilesKey = "files.showHidden"
 }
 
 // MARK: - Listing (inline in the Vault Files tab and inside the browser)
@@ -115,6 +128,7 @@ struct FileBrowserListing: View {
     /// Full-screen browser: show the empty state large.
     var fillsEmptyState = false
 
+    @AppStorage(FileBrowserView.showHiddenFilesKey) private var showHiddenFiles = false
     @State private var items: [FileItem] = []
     @State private var meta: [String: FileItemMeta] = [:]
     @State private var loadErrorMessage: String?
@@ -178,6 +192,7 @@ struct FileBrowserListing: View {
         // when git status (e.g. an already-untracked file) did not.
         .onAppear { loadItems() }
         .onChange(of: statusEntries) { loadItems() }
+        .onChange(of: showHiddenFiles) { loadItems() }
         .onChange(of: newName) { renameError = nil }
         .sheet(isPresented: Binding(get: { renameItem != nil }, set: { if !$0 && !isRenaming { renameItem = nil } })) {
             if let item = renameItem {
@@ -291,6 +306,21 @@ struct FileBrowserListing: View {
             }
             .font(TideFont.mono(12))
             .accessibilityElement(children: .combine)
+
+            Button {
+                showHiddenFiles.toggle()
+            } label: {
+                Image(systemName: showHiddenFiles ? "eye" : "eye.slash")
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundStyle(showHiddenFiles ? Tide.ink : Tide.inkMid)
+                    .frame(width: 30, height: 30)
+                    .background(Circle().fill(Tide.card))
+                    .frame(width: 44, height: 44)
+                    .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel(String(localized: "Show Hidden Files"))
+            .accessibilityAddTraits(showHiddenFiles ? [.isToggle, .isSelected] : .isToggle)
 
             Button {
                 showNewFile = true
@@ -481,7 +511,11 @@ struct FileBrowserListing: View {
             return
         }
         do {
-            items = try FileBrowserView.listContents(of: currentURL, parentRelativePath: relativePath)
+            items = try FileBrowserView.listContents(
+                of: currentURL,
+                parentRelativePath: relativePath,
+                includeHidden: showHiddenFiles
+            )
             loadErrorMessage = nil
         } catch {
             // A failed read is not an empty directory — surface it distinctly
@@ -491,18 +525,26 @@ struct FileBrowserListing: View {
             loadErrorMessage = error.localizedDescription
             DebugLogger.shared.error("files", "Could not list \(currentURL.path)", detail: error.localizedDescription)
         }
-        meta = Self.loadMeta(for: items, attributes: GitLFSAttributes.load(from: vaultURL))
+        meta = Self.loadMeta(
+            for: items,
+            attributes: GitLFSAttributes.load(from: vaultURL),
+            includeHidden: showHiddenFiles
+        )
     }
 
-    private static func loadMeta(for items: [FileItem], attributes: GitLFSAttributes) -> [String: FileItemMeta] {
+    private static func loadMeta(
+        for items: [FileItem],
+        attributes: GitLFSAttributes,
+        includeHidden: Bool
+    ) -> [String: FileItemMeta] {
         var result: [String: FileItemMeta] = [:]
         for item in items {
             if item.isDirectory {
                 let children = try? FileManager.default.contentsOfDirectory(
                     at: item.url,
                     includingPropertiesForKeys: nil,
-                    options: .skipsHiddenFiles
-                )
+                    options: includeHidden ? [] : .skipsHiddenFiles
+                ).filter { !FileBrowserView.isAlwaysHidden($0.lastPathComponent) }
                 result[item.id] = FileItemMeta(childCount: children?.count)
             } else {
                 var url = item.url

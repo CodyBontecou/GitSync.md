@@ -102,7 +102,7 @@ enum LocalGitError: LocalizedError {
         case .repositoryCorrupted(let msg):
             return String(localized: "Repository corrupted: \(msg). Try removing and re-cloning.")
         case .indexLocked:
-            return String(localized: "The Git index is locked. Wait for other Git operations to finish, then try again. If no Git operation is running, remove the stale index.lock file from the repository's Git directory.")
+            return String(localized: "The Git index is locked. Wait for other Git operations to finish, then try again. If nothing else is using this repository, tap Remove Lock in the vault's Git tab.")
         case .lfsFailed(let msg):
             return String(localized: "Git LFS failed: \(msg)")
         case .lfsHydrationBlockedByLocalChanges:
@@ -415,7 +415,8 @@ nonisolated private final class GitIndexFileLock {
             }
             // Only explicit discard operations wait. Never remove an existing
             // lock: it may belong to another app, even if it looks abandoned.
-            guard errno == EEXIST, waitTimeout > 0 else {
+            if errno == EEXIST, waitTimeout <= 0 { throw LocalGitError.indexLocked }
+            guard errno == EEXIST else {
                 throw LocalGitError.commitFailed(
                     String(localized: "Could not stage all local file changes before push.")
                 )
@@ -5474,6 +5475,12 @@ struct IncomingChangesAnalysis: Sendable, Equatable {
     }
 }
 
+struct GitIndexLockStatus: Sendable, Equatable {
+    let lockPath: String
+    let modifiedAt: Date?
+    let size: Int64
+}
+
 struct LocalAheadBehind: Sendable, Equatable {
     let branch: String
     let ahead: Int
@@ -5504,6 +5511,66 @@ extension LocalGitService {
             cancellationSignal.cancel()
             operation.cancel()
         }
+    }
+
+    // MARK: - Stale index lock recovery (issue #66)
+
+    /// Minimum age before a lock may be removed from the app, so a lock that
+    /// another Git client created a moment ago is never mistaken for stale.
+    static let staleIndexLockMinimumAge: TimeInterval = 5
+
+    /// Reports `<gitdir>/index.lock` when it exists. GitSync.md always removes
+    /// its own locks when an operation finishes, so a lingering one was left
+    /// behind by an interrupted operation (the app suspended or killed
+    /// mid-write) or is held by another Git app.
+    func indexLockStatus() async -> GitIndexLockStatus? {
+        let url = localURL
+        return await Task.detached { Self.indexLockStatus(localURL: url) }.value
+    }
+
+    /// Removes a stale `index.lock` after the user confirmed it. Callers must
+    /// hold the repository lease so no in-app Git operation is running. The
+    /// lock is only removed if it is the same file the user was shown
+    /// (`expected`) and is older than `staleIndexLockMinimumAge`; otherwise
+    /// another writer may own it and `.indexLocked` is thrown.
+    func removeStaleIndexLock(expected: GitIndexLockStatus, now: Date = Date()) async throws {
+        let url = localURL
+        try await Task.detached {
+            guard let current = Self.indexLockStatus(localURL: url) else { return }
+            guard current == expected,
+                  let modifiedAt = current.modifiedAt,
+                  now.timeIntervalSince(modifiedAt) >= Self.staleIndexLockMinimumAge else {
+                throw LocalGitError.indexLocked
+            }
+            do {
+                try FileManager.default.removeItem(atPath: current.lockPath)
+            } catch CocoaError.fileNoSuchFile {
+                return
+            }
+        }.value
+    }
+
+    private static func indexLockStatus(localURL: URL) -> GitIndexLockStatus? {
+        let lockPath = gitDirectoryPath(localURL: localURL) + "index.lock"
+        guard let attributes = try? FileManager.default.attributesOfItem(atPath: lockPath) else { return nil }
+        return GitIndexLockStatus(
+            lockPath: lockPath,
+            modifiedAt: attributes[.modificationDate] as? Date,
+            size: (attributes[.size] as? NSNumber)?.int64Value ?? 0
+        )
+    }
+
+    /// The repository's Git directory with a trailing slash. Asks libgit2 so a
+    /// `.git` file pointing elsewhere (worktrees, submodules) is honoured.
+    private static func gitDirectoryPath(localURL: URL) -> String {
+        var repo: OpaquePointer?
+        defer { if let repo { git_repository_free(repo) } }
+        if git_repository_open(&repo, localURL.path) == 0,
+           let raw = git_repository_path(repo) {
+            let path = String(cString: raw)
+            return path.hasSuffix("/") ? path : path + "/"
+        }
+        return localURL.appendingPathComponent(".git", isDirectory: true).path + "/"
     }
 
     /// Local-only ahead/behind against the last fetched remote-tracking ref.

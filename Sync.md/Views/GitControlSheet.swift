@@ -49,6 +49,8 @@ struct GitControlSheet: View {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 0) {
                         header
+                        IndexLockRecoveryCard(repoID: repoID)
+                            .padding(.top, 20)
                         if hasConflictSession { conflictCenterSection }
                         commitSection
                         currentBranchCard
@@ -113,6 +115,7 @@ struct GitControlSheet: View {
                 #if DEBUG
                 guard !MarketingCapture.isActive else { return }
                 #endif
+                await state.refreshIndexLockStatus(repoID: repoID)
                 await state.loadBranches(repoID: repoID)
                 await state.loadConflictSession(repoID: repoID)
                 await state.loadStashes(repoID: repoID)
@@ -804,7 +807,7 @@ struct GitControlSheet: View {
         toolSection(String(localized: "Remote"), count: nil) {
             remoteRow(icon: "arrow.triangle.2.circlepath",
                       title: String(localized: "Fetch"),
-                      subtitle: String(localized: "Check remote for new commits")) {
+                      subtitle: fetchSubtitle) {
                 Task { await state.fetchRemote(repoID: repoID) }
             }
             BDivider()
@@ -826,6 +829,16 @@ struct GitControlSheet: View {
                 }
             }
         }
+    }
+
+    private var fetchSubtitle: String {
+        if isThisRepoSyncing && state.syncProgress == String(localized: "Fetching...") {
+            return String(localized: "Fetching...")
+        }
+        guard let result = state.fetchResultByRepo[repoID] else {
+            return String(localized: "Check remote for new commits")
+        }
+        return [result.title, result.detail].compactMap { $0 }.joined(separator: " · ")
     }
 
     private func remoteRow(icon: String, title: String, subtitle: String, action: @escaping () -> Void) -> some View {

@@ -124,6 +124,8 @@ extension AppState {
     /// libgit2 transfer callbacks for this vault into it.
     func beginSyncActivity(repoID: UUID, kind: SyncActivityKind) {
         guard let repo = repo(id: repoID), let url = vaultURL(for: repoID) else { return }
+        // A pull/push/sync supersedes what the last fetch reported.
+        fetchResultByRepo[repoID] = nil
         syncStateRuntime.lastOperationRepoID = repoID
         syncStateRuntime.lastOperationKind = kind
         if let previous = syncStateRuntime.observedProgressPath {
