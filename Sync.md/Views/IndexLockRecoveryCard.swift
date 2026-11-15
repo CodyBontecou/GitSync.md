@@ -15,12 +15,14 @@ struct IndexLockRecoveryCard: View {
     var body: some View {
         if let lock {
             VStack(alignment: .leading, spacing: 8) {
-                TideSectionLabel(title: String(localized: "Git Index Locked"))
+                TideSectionLabel(title: lock.isIndexLock ? String(localized: "Git Index Locked") : String(localized: "Git Branch Locked"))
                     .accessibilityAddTraits(.isHeader)
                     .padding(.horizontal, 4)
 
                 VStack(alignment: .leading, spacing: 12) {
-                    Text(String(localized: "Git can't stage, commit, or pull while index.lock exists. It is usually left behind when an operation is interrupted, for example when iOS suspends the app."))
+                    Text(lock.isIndexLock
+                         ? String(localized: "Git can't stage, commit, or pull while index.lock exists. It is usually left behind when an operation is interrupted, for example when iOS suspends the app.")
+                         : String(localized: "Git can't pull or commit while \(lock.fileName) exists. It is usually left behind when an operation is interrupted, for example when iOS suspends the app."))
                         .font(TideFont.sans(15, relativeTo: .subheadline))
                         .foregroundStyle(Tide.ink)
                         .fixedSize(horizontal: false, vertical: true)
@@ -55,7 +57,7 @@ struct IndexLockRecoveryCard: View {
                 )
             }
             .confirmationDialog(
-                String(localized: "Remove the Git index lock?"),
+                lock.isIndexLock ? String(localized: "Remove the Git index lock?") : String(localized: "Remove \(lock.fileName)?"),
                 isPresented: $confirmRemove,
                 titleVisibility: .visible
             ) {

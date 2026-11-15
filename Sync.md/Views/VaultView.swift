@@ -63,15 +63,16 @@ struct VaultView: View {
                             }
                                 .disabled(state.isSyncing)
                                 .accessibilityIdentifier("vault.reauthorizeFolder")
-                        } else if repo.isExternalLocalRepository {
-                            Button("Reconnect Folder") {
-                                reconnectError = nil
-                                showReconnectFolder = true
-                            }
-                                .disabled(isReconnectingFolder)
-                                .accessibilityIdentifier("repository.reconnectFolder")
-                            if isReconnectingFolder { ProgressView() }
                         }
+                        // Any vault can be pointed at a folder that already
+                        // holds its repository, e.g. after the folder moved (#50).
+                        Button("Reconnect Folder") {
+                            reconnectError = nil
+                            showReconnectFolder = true
+                        }
+                            .disabled(isReconnectingFolder)
+                            .accessibilityIdentifier("repository.reconnectFolder")
+                        if isReconnectingFolder { ProgressView() }
                     }
                 } else if repo.isCloned {
                     clonedContent(repo)
@@ -183,7 +184,7 @@ struct VaultView: View {
                 Task {
                     defer { isReconnectingFolder = false }
                     do {
-                        try await state.reconnectExternalRepository(repoID: repoID, url: url)
+                        try await state.reconnectRepositoryFolder(repoID: repoID, url: url)
                         reconnectError = nil
                     } catch is CancellationError {
                         // Cancellation leaves the saved repository untouched.
@@ -1495,6 +1496,30 @@ struct VaultView: View {
                 actionTitle: String(localized: "Clone Repository")
             ) {
                 Task { await state.clone(repoID: repoID) }
+            }
+
+            // Issue #50: a working copy that already exists elsewhere (for
+            // example after its folder moved) is reconnected, not re-cloned.
+            VStack(spacing: 8) {
+                Button {
+                    reconnectError = nil
+                    showReconnectFolder = true
+                } label: {
+                    Text(String(localized: "Reconnect Existing Folder"))
+                        .font(TideFont.sans(15, .semibold, relativeTo: .body))
+                        .frame(minHeight: 44)
+                        .contentShape(Rectangle())
+                }
+                .disabled(isReconnectingFolder || state.isSyncing)
+                .accessibilityIdentifier("repository.reconnectExistingFolder")
+                if isReconnectingFolder { ProgressView() }
+                if let reconnectError {
+                    Text(reconnectError)
+                        .font(TideFont.sans(13, relativeTo: .footnote))
+                        .foregroundStyle(Tide.danger)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 32)
+                }
             }
 
             Spacer()

@@ -5479,6 +5479,9 @@ struct GitIndexLockStatus: Sendable, Equatable {
     let lockPath: String
     let modifiedAt: Date?
     let size: Int64
+
+    var fileName: String { (lockPath as NSString).lastPathComponent }
+    var isIndexLock: Bool { fileName == "index.lock" }
 }
 
 struct LocalAheadBehind: Sendable, Equatable {
@@ -5550,14 +5553,30 @@ extension LocalGitService {
         }.value
     }
 
+    /// `index.lock` first, then `HEAD.lock` and branch ref locks under
+    /// `refs/heads` (issue #50 report 2: an interrupted fast-forward left
+    /// `HEAD.lock` and `refs/heads/main.lock`, blocking every later pull).
     private static func indexLockStatus(localURL: URL) -> GitIndexLockStatus? {
-        let lockPath = gitDirectoryPath(localURL: localURL) + "index.lock"
-        guard let attributes = try? FileManager.default.attributesOfItem(atPath: lockPath) else { return nil }
-        return GitIndexLockStatus(
-            lockPath: lockPath,
-            modifiedAt: attributes[.modificationDate] as? Date,
-            size: (attributes[.size] as? NSNumber)?.int64Value ?? 0
-        )
+        let gitDir = gitDirectoryPath(localURL: localURL)
+        let fm = FileManager.default
+        var candidates = [gitDir + "index.lock", gitDir + "HEAD.lock"]
+        let heads = URL(fileURLWithPath: gitDir + "refs/heads", isDirectory: true)
+        if let enumerator = fm.enumerator(at: heads, includingPropertiesForKeys: [.isRegularFileKey],
+                                          options: [.skipsHiddenFiles]) {
+            for case let url as URL in enumerator where url.pathExtension == "lock" {
+                candidates.append(url.path)
+            }
+        }
+        for lockPath in candidates {
+            guard let attributes = try? fm.attributesOfItem(atPath: lockPath),
+                  attributes[.type] as? FileAttributeType == .typeRegular else { continue }
+            return GitIndexLockStatus(
+                lockPath: lockPath,
+                modifiedAt: attributes[.modificationDate] as? Date,
+                size: (attributes[.size] as? NSNumber)?.int64Value ?? 0
+            )
+        }
+        return nil
     }
 
     /// The repository's Git directory with a trailing slash. Asks libgit2 so a
