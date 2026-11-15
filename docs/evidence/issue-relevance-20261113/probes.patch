@@ -1,0 +1,126 @@
+diff --git a/SyncMDTests/SyncMDTests.swift b/SyncMDTests/SyncMDTests.swift
+index d18079a..15fbcb2 100644
+--- a/SyncMDTests/SyncMDTests.swift
++++ b/SyncMDTests/SyncMDTests.swift
+@@ -559,6 +559,85 @@ final class SyncMDTests: XCTestCase {
+         }
+     }
+ 
++    // Temporary issue-relevance probes; preserved as an audit patch, not product fixes.
++    @MainActor
++    func testIssueAudit42RefreshAdoptsExternalHEADAndBranch() async throws {
++        let fixture = try GitFixtureFactory.make(state: .clean)
++        defer { fixture.cleanup() }
++        let state = AppState(gitRepositoryFactory: { _ in fixture.repository }, loadPersistedState: false)
++        state.repos = [fixture.repoConfig]
++        let configuredBranch = fixture.repoConfig.branch
++        let newSHA = String(repeating: "e", count: 40)
++        fixture.repository.repoInfoResult = LocalRepoInfo(branch: "external-branch", commitSHA: newSHA, changeCount: 7)
++        state.detectChanges(repoID: fixture.repoConfig.id)
++        for _ in 0..<80 {
++            if state.changeCounts[fixture.repoConfig.id] == 7 { break }
++            try await Task.sleep(for: .milliseconds(25))
++        }
++        XCTAssertEqual(state.changeCounts[fixture.repoConfig.id], 7, "Refresh must actually complete")
++        XCTAssertEqual(state.repos[0].gitState.commitSHA, newSHA, "Displayed HEAD must follow external Git")
++        XCTAssertEqual(state.repos[0].gitState.branch, "external-branch", "Displayed branch must follow external Git")
++        XCTAssertEqual(state.repos[0].branch, configuredBranch, "Configured auto-sync branch must stay unchanged")
++    }
++
++    @MainActor
++    func testIssueAudit43MarkdownCheckoutAttentionIsNotLFS() async throws {
++        let fixture = try GitFixtureFactory.make(state: .clean)
++        defer { fixture.cleanup() }
++        let newSHA = String(repeating: "d", count: 40)
++        fixture.repository.pullPlanResult = PullPlan(
++            action: .fastForward, branch: "main", localCommitSHA: fixture.repoConfig.gitState.commitSHA,
++            remoteCommitSHA: newSHA, hasLocalChanges: false, aheadBy: 0, behindBy: 1
++        )
++        let attention = PullPostUpdateAttention.checkoutIncomplete(message: "Fixture Markdown checkout incomplete")
++        fixture.repository.pullResult = .success(LocalPullResult(updated: true, newCommitSHA: newSHA, attention: attention))
++        let state = AppState(gitRepositoryFactory: { _ in fixture.repository }, loadPersistedState: false)
++        state.repos = [fixture.repoConfig]
++        let result = await state.pullOnly(repoID: fixture.repoConfig.id, showsProgressDelay: false)
++        XCTAssertEqual(result, .updatedWithAttention(branch: "main", commitSHA: newSHA, attention: attention))
++        XCTAssertEqual(state.repos[0].gitState.commitSHA, newSHA)
++        XCTAssertFalse(state.syncProgress.contains("LFS"), "Ordinary Markdown checkout must not show LFS progress")
++        XCTAssertNotEqual(state.pullOutcomeByRepo[fixture.repoConfig.id]?.kind, .lfsHydrationBlocked)
++    }
++
++    @MainActor
++    func testIssueAudit40UnavailableBookmarkPreservesClonedStateDuringRefresh() throws {
++        let fixture = try GitFixtureFactory.make(state: .clean)
++        defer { fixture.cleanup() }
++        fixture.repository.hasGitDirectoryValue = false
++        let state = AppState(gitRepositoryFactory: { _ in fixture.repository }, loadPersistedState: false)
++        var config = fixture.repoConfig
++        config.customVaultBookmarkData = Data("invalid synthetic bookmark".utf8)
++        state.repos = [config]
++        XCTAssertFalse(state.hasLocalRepositoryAccess(repoID: config.id))
++        XCTAssertTrue(state.vaultURL(for: config.id).path.hasPrefix("/dev/null/"), "No app-storage fallback")
++        state.validateClonedRepos()
++        XCTAssertEqual(state.repos[0].gitState, config.gitState, "Launch validation must preserve unavailable state")
++        state.detectChanges(repoID: config.id)
++        XCTAssertEqual(state.repos[0].gitState, config.gitState, "Status refresh must preserve unavailable state too")
++    }
++
++    @MainActor
++    func testIssueAudit50ClonePreservesSameRemoteWorkingCopy() async throws {
++        let fixture = try GitFixtureFactory.make(state: .clean)
++        defer { fixture.cleanup() }
++        let state = AppState(gitRepositoryFactory: { _ in fixture.repository }, loadPersistedState: false)
++        var config = fixture.repoConfig
++        config.vaultFolderName = "issue-audit-50-\(UUID().uuidString)"
++        config.gitState = .empty
++        state.repos = [config]
++        let target = state.vaultURL(for: config.id)
++        let gitDir = target.appendingPathComponent(".git", isDirectory: true)
++        try FileManager.default.createDirectory(at: gitDir.appendingPathComponent("refs/heads"), withIntermediateDirectories: true)
++        defer { try? FileManager.default.removeItem(at: target) }
++        try "[remote \"origin\"]\n\turl = \(config.repoURL)\n".write(to: gitDir.appendingPathComponent("config"), atomically: true, encoding: .utf8)
++        try (String(repeating: "a", count: 40) + "\n").write(to: gitDir.appendingPathComponent("refs/heads/main"), atomically: true, encoding: .utf8)
++        let note = target.appendingPathComponent("unpublished.md")
++        try "Synthetic unpushed note".write(to: note, atomically: true, encoding: .utf8)
++        await state.clone(repoID: config.id)
++        XCTAssertTrue(FileManager.default.fileExists(atPath: note.path), "Clone must not delete existing unpushed files")
++    }
++
+     @MainActor
+     func testAppStateDetectChangesUsesInjectedGitRepositoryFactory() async throws {
+         let fixture = try GitFixtureFactory.make(state: .dirty)
+diff --git a/SyncMDUITests/SyncMDUITests.swift b/SyncMDUITests/SyncMDUITests.swift
+index 6ef0186..139b856 100644
+--- a/SyncMDUITests/SyncMDUITests.swift
++++ b/SyncMDUITests/SyncMDUITests.swift
+@@ -414,6 +414,31 @@ final class SyncMDUITests: XCTestCase {
+         XCTAssertTrue(app.buttons["Git Tools"].isEnabled, "Tools navigation must remain available after dismissing")
+     }
+ 
++    func testIssueAuditNativePullUpdatesActualNoteBytes() throws {
++        let app = launchGitToolsFixture("behind")
++        let remoteHead = try gitToolsHead(remote: true)
++        let worktree = try gitToolsWorktreeURL()
++        let note = worktree.appendingPathComponent("notes/hello.md")
++        let oldBytes = try Data(contentsOf: note)
++        XCTAssertNotEqual(try gitToolsHead(), remoteHead)
++        tapWhenHittable(syncAction("Pull", in: app), in: app, message: "Pull should remain reachable after redesign")
++        XCTAssertTrue(app.staticTexts["Pulled latest changes (fast-forward)"].waitForExistence(timeout: 15))
++        XCTAssertEqual(try gitToolsHead(), remoteHead)
++        XCTAssertEqual(try gitToolsHead(remote: true), remoteHead)
++        XCTAssertNotEqual(try Data(contentsOf: note), oldBytes, "Success must update actual note bytes")
++        XCTAssertTrue(try String(contentsOf: note, encoding: .utf8).contains("Updated remote note"))
++        attachScreenshot("Issue audit native pull", in: app)
++    }
++
++    func testIssueAuditSyncingShowsImmediateProgress() throws {
++        let app = launchGitToolsFixture("syncing")
++        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label CONTAINS %@", "Syncing")).firstMatch.exists)
++        XCTAssertTrue(app.progressIndicators.firstMatch.exists, "Busy state must visibly indicate progress")
++        let pull = syncAction("Pull", in: app)
++        XCTAssertFalse(pull.exists && pull.isEnabled, "Repeated Pull must not be enabled while syncing")
++        attachScreenshot("Issue audit syncing feedback", in: app)
++    }
++
+     func testGitToolsBehindRepositoryAndExistingPullFastForward() throws {
+         let app = launchGitToolsFixture("behind")
+         let remoteHead = try gitToolsHead(remote: true)

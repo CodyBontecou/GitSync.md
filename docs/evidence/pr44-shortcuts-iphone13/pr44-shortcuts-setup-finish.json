@@ -1,0 +1,32 @@
+{
+  "message": "Finished recording \"qa-pr44-shortcuts-host\" e2e test (20 steps) — 1 step recorded a wait that did not pass; read `summary` before converting or replaying",
+  "path": "/tmp/gitsync-pr44-qa/.argent/e2e/qa-pr44-shortcuts-host.yaml",
+  "executionPrerequisite": "",
+  "steps": 20,
+  "summary": [
+    "1. tool: launch-app {\"bundleId\":\"com.apple.shortcuts\"}",
+    "2. tap: {\"id\":\"main.button.newshortcut\"}",
+    "3. tap: {\"text\":\"‌        ‌New Shortcut, Actions Menu\"}",
+    "4. tap: {\"text\":\"Rename\"}",
+    "5. tap: {\"text\":\"Clear text\"}",
+    "6. tool: keyboard {\"text\":\"PR44 QA Native Pull 20261113\"}",
+    "7. tool: keyboard {\"key\":\"enter\"}",
+    "8. tap: (0.5, 0.565)",
+    "9. tool: keyboard {\"text\":\"GitSync PR QA\"}",
+    "10. tool: await-ui-element {\"condition\":\"visible\",\"selector\":{\"text\":\"GitSync PR QA\",\"role\":\"StaticText\"}}",
+    "11. tap: {\"text\":\"Pull Repository\"}",
+    "12. echo: Prerequisite outside UI: verified empty isolated QA default inventory, copied only the existing owned synthetic native fixture into it. Never seed shipping inventory; clear only this newly created QA file after testing.",
+    "13. tap: {\"id\":\"enum\"}",
+    "14. tool: await-ui-element {\"condition\":\"visible\",\"selector\":{\"text\":\"git-tools-fixture\",\"role\":\"StaticText\"}}",
+    "15. tap: {\"text\":\"git-tools-fixture\"}",
+    "16. tap: {\"text\":\"play\"}",
+    "17. tool: await-ui-element {\"condition\":\"visible\",\"selector\":{\"text\":\"Already up to date\"},\"timeoutMs\":15000}",
+    "   warning: recorded, but the wait itself never held — `await-ui-element` reports an unmet condition by returning success:false instead of failing, so the step was written to the e2e test anyway. At replay an unmet wait FAILS the step and stops the run there, so re-record it once the condition can actually hold, and delete the failed step after `e2e-finish-recording` rather than mid-recording: over a link the in-memory copy is authoritative and the next append writes the step straight back, and without a link the recorder re-reads the file before each append, so an edit that renumbers the steps costs the finish the verdicts it would otherwise carry. The cross-tree re-probe was skipped: it asks whether a check that PASSED would survive conversion to `await:`/`assert:`, and this one did not pass",
+    "18. tool: await-ui-element {\"condition\":\"visible\",\"selector\":{\"text\":\"Stop\",\"role\":\"Button\"}}",
+    "19. tap: {\"text\":\"play\"}",
+    "20. tool: await-ui-element {\"condition\":\"hidden\",\"selector\":{\"text\":\"Stop\",\"role\":\"Button\"}}"
+  ],
+  "e2eTestFile": "steps:\n  - tool: launch-app\n    args:\n      bundleId: com.apple.shortcuts\n  - tap:\n      id: main.button.newshortcut\n  - tap:\n      text: ‌        ‌New Shortcut, Actions Menu\n  - tap:\n      text: Rename\n  - tap:\n      text: Clear text\n  - tool: keyboard\n    args:\n      text: PR44 QA Native Pull 20261113\n  - tool: keyboard\n    args:\n      key: enter\n  - tap:\n      x: 0.5\n      y: 0.565\n  - tool: keyboard\n    args:\n      text: GitSync PR QA\n  - tool: await-ui-element\n    args:\n      condition: visible\n      selector:\n        text: GitSync PR QA\n        role: StaticText\n  - tap:\n      text: Pull Repository\n  - echo: \"Prerequisite outside UI: verified empty isolated QA default inventory,\n      copied only the existing owned synthetic native fixture into it. Never\n      seed shipping inventory; clear only this newly created QA file after\n      testing.\"\n  - tap:\n      id: enum\n  - tool: await-ui-element\n    args:\n      condition: visible\n      selector:\n        text: git-tools-fixture\n        role: StaticText\n  - tap:\n      text: git-tools-fixture\n  - tap:\n      text: play\n  - tool: await-ui-element\n    args:\n      condition: visible\n      selector:\n        text: Already up to date\n      timeoutMs: 15000\n  - tool: await-ui-element\n    args:\n      condition: visible\n      selector:\n        text: Stop\n        role: Button\n  - tap:\n      text: play\n  - tool: await-ui-element\n    args:\n      condition: hidden\n      selector:\n        text: Stop\n        role: Button\n",
+  "flowFile": "steps:\n  - tool: launch-app\n    args:\n      bundleId: com.apple.shortcuts\n  - tap:\n      id: main.button.newshortcut\n  - tap:\n      text: ‌        ‌New Shortcut, Actions Menu\n  - tap:\n      text: Rename\n  - tap:\n      text: Clear text\n  - tool: keyboard\n    args:\n      text: PR44 QA Native Pull 20261113\n  - tool: keyboard\n    args:\n      key: enter\n  - tap:\n      x: 0.5\n      y: 0.565\n  - tool: keyboard\n    args:\n      text: GitSync PR QA\n  - tool: await-ui-element\n    args:\n      condition: visible\n      selector:\n        text: GitSync PR QA\n        role: StaticText\n  - tap:\n      text: Pull Repository\n  - echo: \"Prerequisite outside UI: verified empty isolated QA default inventory,\n      copied only the existing owned synthetic native fixture into it. Never\n      seed shipping inventory; clear only this newly created QA file after\n      testing.\"\n  - tap:\n      id: enum\n  - tool: await-ui-element\n    args:\n      condition: visible\n      selector:\n        text: git-tools-fixture\n        role: StaticText\n  - tap:\n      text: git-tools-fixture\n  - tap:\n      text: play\n  - tool: await-ui-element\n    args:\n      condition: visible\n      selector:\n        text: Already up to date\n      timeoutMs: 15000\n  - tool: await-ui-element\n    args:\n      condition: visible\n      selector:\n        text: Stop\n        role: Button\n  - tap:\n      text: play\n  - tool: await-ui-element\n    args:\n      condition: hidden\n      selector:\n        text: Stop\n        role: Button\n",
+  "savedTo": "/tmp/gitsync-pr44-qa/.argent/e2e/qa-pr44-shortcuts-host.yaml"
+}

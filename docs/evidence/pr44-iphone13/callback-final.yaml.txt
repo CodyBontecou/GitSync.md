@@ -1,0 +1,93 @@
+# Isolated physical-device QA only. Requires the owned callback receiver at
+# 192.168.1.252:8771. Receiver only echoes actual query parameters; it never
+# manufactures an app result. Compare its raw ledger and native disk separately.
+steps:
+  - tool: open-url
+    args: { bundleId: com.apple.mobilesafari, url: 'http://192.168.1.252:8771/baseline' }
+  - await: { visible: { text: QA callback awaiting a new result } }
+  - await: { idle: true }
+  - launch:
+      native: bontecou.Sync-md.prqa
+      ios:
+        app: bontecou.Sync-md.prqa
+        args: [-UITestGitToolsFixture, pull-cancel, -AppleLanguages, (en), -AppleLocale, en_US]
+  - await: { visible: { text: Attention 1, role: Button } }
+  - await: { idle: true }
+  - tap: { text: main · syncmd-uitest-fixtures/git-tools-fixture }
+  - await: { visible: { id: vault.title } }
+  - await: { idle: true }
+  - assert: { visible: { text: 'README.md, modified', role: Button } }
+  - tap: { text: More vault options, role: Button }
+  - await: { visible: { id: qa44.holdLease } }
+  - await: { idle: true }
+  - tap: { id: qa44.holdLease }
+  - await: { text: { in: { id: qa44.leaseStatus }, equals: QA repository lease held } }
+  - await: { idle: true }
+  - echo: Deliver the real callback URL explicitly to the isolated bundle, never through ambiguous shipping scheme resolution.
+  - tool: open-url
+    args:
+      bundleId: bontecou.Sync-md.prqa
+      url: 'syncmd://x-callback-url/pull?repo=git-tools-fixture&x-success=http%3A%2F%2F192.168.1.252%3A8771%2Fsuccess&x-error=http%3A%2F%2F192.168.1.252%3A8771%2Ferror'
+  - assert: { text: { in: { id: qa44.leaseStatus }, equals: QA repository lease held } }
+  - await: { visible: { text: Cancel, role: Button } }
+  - assert: { visible: { text: Pulling…, role: StaticText } }
+  - tap: { text: Cancel, role: Button }
+  - await:
+      visible:
+        text: "Pull was interrupted. Try pulling again when you're ready."
+        role: StaticText
+  # CallbackURLHandler deliberately holds its foreground error banner for 2s.
+  # Earlier Safari activation prevents iOS from honoring its pending openURL.
+  # Cross-app target tracking cannot await Safari before activation; retain this
+  # source-grounded handoff delay, then require the fresh receiver's positive UI.
+  - wait: 2500
+  - tool: launch-app
+    args: { bundleId: com.apple.mobilesafari }
+  - await: { visible: { text: 'QA callback received: error' } }
+  - await: { idle: true }
+  - assert: { visible: { text: "status: ['error']", role: StaticText } }
+  - assert: { visible: { text: "updated: ['false']", role: StaticText } }
+  - assert: { visible: { text: 'sha present: no', role: StaticText } }
+  - assert: { visible: { text: "Pull was interrupted. Try pulling again when you're ready.", role: StaticText } }
+  - tool: launch-app
+    args: { bundleId: bontecou.Sync-md.prqa }
+  - await: { visible: { text: Attention 1, role: Button } }
+  - await: { idle: true }
+  - tap: { text: main · syncmd-uitest-fixtures/git-tools-fixture }
+  - await: { visible: { id: vault.title } }
+  - await: { idle: true }
+  - assert: { hidden: { text: Cancel, role: Button } }
+  - assert: { hidden: { text: Pulling…, role: StaticText } }
+  - assert: { visible: { text: 'README.md, modified', role: Button } }
+  - echo: Callback cleanup recreates Vault view-local QA state. Idempotent re-hold reattaches the existing fixture holder before explicit release; no app result is substituted.
+  - tap: { text: More vault options, role: Button }
+  - await: { visible: { id: qa44.holdLease } }
+  - await: { idle: true }
+  - tap: { id: qa44.holdLease }
+  - await: { text: { in: { id: qa44.leaseStatus }, equals: QA repository lease held } }
+  - await: { idle: true }
+  - tap: { text: More vault options, role: Button }
+  - await: { visible: { id: qa44.releaseLease } }
+  - await: { idle: true }
+  - tap: { id: qa44.releaseLease }
+  - await: { text: { in: { id: qa44.leaseStatus }, equals: QA repository lease released } }
+  - await: { idle: true }
+  - echo: Explicitly retry native callback Pull only after releasing the holder. Require actual x-success and independently match its returned SHA to native HEAD.
+  - tool: open-url
+    args:
+      bundleId: bontecou.Sync-md.prqa
+      url: 'syncmd://x-callback-url/pull?repo=git-tools-fixture&x-success=http%3A%2F%2F192.168.1.252%3A8771%2Fsuccess&x-error=http%3A%2F%2F192.168.1.252%3A8771%2Ferror'
+  - await: { visible: { text: Already up to date, role: StaticText } }
+  # Source-controlled success-banner delay is 1.5s before redirect.
+  - wait: 2000
+  - tool: launch-app
+    args: { bundleId: com.apple.mobilesafari }
+  - await: { visible: { text: 'QA callback received: success' } }
+  - await: { idle: true }
+  - assert: { visible: { text: "status: ['ok']", role: StaticText } }
+  - assert: { visible: { text: "updated: ['false']", role: StaticText } }
+  - assert: { visible: { text: 'sha present: yes', role: StaticText } }
+  - tool: launch-app
+    args: { bundleId: bontecou.Sync-md.prqa }
+  - await: { visible: { text: Attention 1, role: Button } }
+  - await: { idle: true }

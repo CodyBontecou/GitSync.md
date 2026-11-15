@@ -1,0 +1,56 @@
+{
+  "devicesAndConfigurations" : [
+    {
+      "device" : {
+        "architecture" : "arm64",
+        "deviceId" : "4DFF1574-E044-472A-8BC3-E7AC458F01D5",
+        "deviceName" : "GitSync-Tide-check",
+        "modelName" : "iPhone 18 Pro",
+        "osBuildNumber" : "24A434",
+        "osVersion" : "27.0",
+        "platform" : "iOS Simulator"
+      },
+      "expectedFailures" : 0,
+      "failedTests" : 1,
+      "passedTests" : 488,
+      "skippedTests" : 0,
+      "testPlanConfiguration" : {
+        "configurationId" : "1",
+        "configurationName" : "Test Scheme Action"
+      }
+    }
+  ],
+  "environmentDescription" : "Sync.md · Built with macOS 27.2",
+  "expectedFailures" : 0,
+  "failedTests" : 1,
+  "finishTime" : 1794581766.824,
+  "passedTests" : 488,
+  "result" : "Failed",
+  "runtimeWarnings" : [
+
+  ],
+  "skippedTests" : 0,
+  "startTime" : 1794581654.336,
+  "statistics" : [
+
+  ],
+  "testFailures" : [
+    {
+      "failureText" : "failed: caught error: \"sourceChanged\"",
+      "targetName" : "SyncMDTests",
+      "testIdentifier" : 160,
+      "testIdentifierString" : "GitTrackingRemovalServiceTests/testRepositoryStatusRefreshKeepsReviewedMetadataValidForRemoval()",
+      "testIdentifierURL" : "test://com.apple.xcode/Sync.md/SyncMDTests/GitTrackingRemovalServiceTests/testRepositoryStatusRefreshKeepsReviewedMetadataValidForRemoval",
+      "testName" : "testRepositoryStatusRefreshKeepsReviewedMetadataValidForRemoval()"
+    }
+  ],
+  "title" : "Test - Sync.md",
+  "topInsights" : [
+    {
+      "category" : "Longest Test Runs",
+      "impact" : "70% of duration",
+      "text" : "28 longest test runs with outlier durations exceeding 1.58s (three standard deviations)"
+    }
+  ],
+  "totalTestCount" : 489
+}

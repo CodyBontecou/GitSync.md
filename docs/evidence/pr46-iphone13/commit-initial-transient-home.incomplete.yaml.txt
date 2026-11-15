@@ -1,0 +1,20 @@
+steps:
+  - launch:
+      native: bontecou.Sync-md.prqa
+      ios:
+        app: bontecou.Sync-md.prqa
+        args:
+          - -UITestGitToolsFixture
+          - external-commit
+          - -AppleLanguages
+          - (en)
+          - -AppleLocale
+          - en_US
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: git-tools-fixture, main · Never, in sync
+  - tap:
+      x: 0.5
+      y: 0.4

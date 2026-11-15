@@ -1,0 +1,14 @@
+/tmp/gitsync-pr45-baseline-removal.log:53:Test Case '-[SyncMDTests.GitTrackingRemovalServiceTests testRepositoryStatusRefreshKeepsReviewedMetadataValidForRemoval]' passed (0.160 seconds).
+/tmp/gitsync-pr45-baseline-removal.log:55:Test Case '-[SyncMDTests.GitTrackingRemovalServiceTests testRepositoryStatusRefreshKeepsReviewedMetadataValidForRemoval]' passed (0.102 seconds).
+/tmp/gitsync-pr45-baseline-removal.log:57:Test Case '-[SyncMDTests.GitTrackingRemovalServiceTests testRepositoryStatusRefreshKeepsReviewedMetadataValidForRemoval]' passed (0.104 seconds).
+/tmp/gitsync-pr45-baseline-removal.log:59:Test Case '-[SyncMDTests.GitTrackingRemovalServiceTests testRepositoryStatusRefreshKeepsReviewedMetadataValidForRemoval]' passed (0.110 seconds).
+/tmp/gitsync-pr45-baseline-removal.log:61:Test Case '-[SyncMDTests.GitTrackingRemovalServiceTests testRepositoryStatusRefreshKeepsReviewedMetadataValidForRemoval]' passed (0.098 seconds).
+/tmp/gitsync-pr45-baseline-removal.log:63:Test Case '-[SyncMDTests.GitTrackingRemovalServiceTests testRepositoryStatusRefreshKeepsReviewedMetadataValidForRemoval]' passed (0.108 seconds).
+/tmp/gitsync-pr45-baseline-removal.log:65:Test Case '-[SyncMDTests.GitTrackingRemovalServiceTests testRepositoryStatusRefreshKeepsReviewedMetadataValidForRemoval]' passed (0.102 seconds).
+/tmp/gitsync-pr45-baseline-removal.log:67:Test Case '-[SyncMDTests.GitTrackingRemovalServiceTests testRepositoryStatusRefreshKeepsReviewedMetadataValidForRemoval]' passed (0.103 seconds).
+/tmp/gitsync-pr45-baseline-removal.log:69:Test Case '-[SyncMDTests.GitTrackingRemovalServiceTests testRepositoryStatusRefreshKeepsReviewedMetadataValidForRemoval]' passed (0.102 seconds).
+/tmp/gitsync-pr45-baseline-removal.log:71:Test Case '-[SyncMDTests.GitTrackingRemovalServiceTests testRepositoryStatusRefreshKeepsReviewedMetadataValidForRemoval]' passed (0.101 seconds).
+/tmp/gitsync-pr45-baseline-removal.log:85:** TEST EXECUTE SUCCEEDED **
+/tmp/gitsync-pr45-final-tests.log:947:/tmp/gitsync-pr45-qa/SyncMDTests/GitTrackingRemovalServiceTests.swift:651: error: -[SyncMDTests.GitTrackingRemovalServiceTests testRepositoryStatusRefreshKeepsReviewedMetadataValidForRemoval] : failed: caught error: "sourceChanged"
+/tmp/gitsync-pr45-final-tests.log:948:Test Case '-[SyncMDTests.GitTrackingRemovalServiceTests testRepositoryStatusRefreshKeepsReviewedMetadataValidForRemoval]' failed (0.182 seconds).
+/tmp/gitsync-pr45-final-tests.log:1728:** TEST FAILED **

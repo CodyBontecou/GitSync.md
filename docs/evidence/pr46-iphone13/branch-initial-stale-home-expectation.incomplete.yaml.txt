@@ -1,0 +1,99 @@
+steps:
+  - launch:
+      native: bontecou.Sync-md.prqa
+      ios:
+        app: bontecou.Sync-md.prqa
+        args:
+          - -UITestGitToolsFixture
+          - external-branch
+          - -AppleLanguages
+          - (en)
+          - -AppleLocale
+          - en_US
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: home.addRepository
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: main · Never
+  - tap:
+      text: git-tools-fixture, feature · Never, in sync
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: vault.title
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Branch feature
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: git-tools-fixture, feature · Never, in sync
+  - tap:
+      text: git-tools-fixture, feature · Never, in sync
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: vault.title
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Branch feature
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: No changes on this iPhone
+  - tap:
+      id: ellipsis
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Settings
+        role: Button
+  - tap:
+      x: 0.66
+      y: 0.085
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Vault settings
+  - tool: gesture-swipe
+    args:
+      fromX: 0.5
+      fromY: 0.84
+      toX: 0.5
+      toY: 0.3
+      durationMs: 500
+      momentum: false
+  - tool: await-ui-element
+    args:
+      condition: text
+      selector:
+        identifier: repositorySettings.branch
+      expectedText: main
+      textMatch: equals
+  - tap:
+      text: Cancel
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Branch feature
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: No changes on this iPhone

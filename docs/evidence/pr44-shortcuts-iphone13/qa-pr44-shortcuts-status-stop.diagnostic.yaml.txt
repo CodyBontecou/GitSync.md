@@ -1,0 +1,7 @@
+# Recovery only: Stop ONLY the owned QA status shortcut currently open.
+steps:
+  - await: { visible: { text: 'PR44 QA Native Status 20261113, Actions Menu', role: Button } }
+  - await: { visible: { text: Stop, role: Button } }
+  - tap: { text: Stop, role: Button }
+  - await: { hidden: { text: Stop, role: Button } }
+  - await: { idle: true }

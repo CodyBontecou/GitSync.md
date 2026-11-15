@@ -1,0 +1,6 @@
+Test Case '-[SyncMDUITests.SyncMDUITests testIssueAuditNativePullUpdatesActualNoteBytes]' passed (11.594 seconds).
+Test Case '-[SyncMDUITests.SyncMDUITests testIssueAuditSyncingShowsImmediateProgress]' passed (7.820 seconds).
+	 Executed 2 tests, with 0 failures (0 unexpected) in 19.414 (19.416) seconds
+	 Executed 2 tests, with 0 failures (0 unexpected) in 19.414 (19.417) seconds
+	 Executed 2 tests, with 0 failures (0 unexpected) in 19.414 (19.418) seconds
+** TEST SUCCEEDED **

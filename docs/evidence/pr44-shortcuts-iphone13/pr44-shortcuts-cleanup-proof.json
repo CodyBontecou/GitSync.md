@@ -1,0 +1,8 @@
+{
+  "defaultInventoryInitiallyAbsent": "readable SyncMD directory empty",
+  "createdDefaultInventoryCleanup": "[] independently read back; only newly created owned file changed",
+  "originalVisibleShortcutCount": 12,
+  "originalVisibleShortcutsStillPresent": 12,
+  "ownedShortcutNamesAbsent": true,
+  "noOtherSelection": "only two explicitly named owned shortcuts selected before Delete2 confirmation"
+}

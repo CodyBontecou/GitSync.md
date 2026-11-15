@@ -1,0 +1,9 @@
+steps:
+  - tap:
+      text: Select
+  - tap:
+      text: PR44 QA No Entity Return
+  - tap:
+      text: Delete
+  - tap:
+      text: Delete Shortcut

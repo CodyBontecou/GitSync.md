@@ -1,0 +1,154 @@
+{
+  "e2eTest": "qa-pr46-external-commit-final",
+  "flow": "qa-pr46-external-commit-final",
+  "device": "00008110-00046CC63CA0401E",
+  "executionPrerequisite": "",
+  "ok": true,
+  "passed": 16,
+  "failed": 0,
+  "skipped": 0,
+  "errored": 0,
+  "steps": [
+    {
+      "index": 0,
+      "kind": "launch",
+      "e2eTest": "qa-pr46-external-commit-final",
+      "status": "pass",
+      "durationMs": 8290,
+      "flow": "qa-pr46-external-commit-final"
+    },
+    {
+      "index": 1,
+      "kind": "await",
+      "e2eTest": "qa-pr46-external-commit-final",
+      "target": "visible \"git-tools-fixture, main · syncmd-uitest-fixtures/git-tools-fixture, 1 to push\"",
+      "status": "pass",
+      "durationMs": 174,
+      "flow": "qa-pr46-external-commit-final"
+    },
+    {
+      "index": 2,
+      "kind": "idle",
+      "e2eTest": "qa-pr46-external-commit-final",
+      "status": "pass",
+      "durationMs": 2263,
+      "flow": "qa-pr46-external-commit-final"
+    },
+    {
+      "index": 3,
+      "kind": "tap",
+      "e2eTest": "qa-pr46-external-commit-final",
+      "target": "\"main · syncmd-uitest-fixtures/git-tools-fixture\"",
+      "status": "pass",
+      "durationMs": 924,
+      "flow": "qa-pr46-external-commit-final"
+    },
+    {
+      "index": 4,
+      "kind": "await",
+      "e2eTest": "qa-pr46-external-commit-final",
+      "target": "visible id=vault.title",
+      "status": "pass",
+      "durationMs": 131,
+      "flow": "qa-pr46-external-commit-final"
+    },
+    {
+      "index": 5,
+      "kind": "idle",
+      "e2eTest": "qa-pr46-external-commit-final",
+      "status": "pass",
+      "durationMs": 2280,
+      "flow": "qa-pr46-external-commit-final"
+    },
+    {
+      "index": 6,
+      "kind": "await",
+      "e2eTest": "qa-pr46-external-commit-final",
+      "target": "visible \"No changes on this iPhone\"",
+      "status": "pass",
+      "durationMs": 136,
+      "flow": "qa-pr46-external-commit-final"
+    },
+    {
+      "index": 7,
+      "kind": "tap",
+      "e2eTest": "qa-pr46-external-commit-final",
+      "target": "id=ellipsis",
+      "status": "pass",
+      "durationMs": 977,
+      "flow": "qa-pr46-external-commit-final"
+    },
+    {
+      "index": 8,
+      "kind": "await",
+      "e2eTest": "qa-pr46-external-commit-final",
+      "target": "visible \"Git Tools\" role=Button",
+      "status": "pass",
+      "durationMs": 90,
+      "flow": "qa-pr46-external-commit-final"
+    },
+    {
+      "index": 9,
+      "kind": "idle",
+      "e2eTest": "qa-pr46-external-commit-final",
+      "status": "pass",
+      "durationMs": 2202,
+      "flow": "qa-pr46-external-commit-final"
+    },
+    {
+      "index": 10,
+      "kind": "tap",
+      "e2eTest": "qa-pr46-external-commit-final",
+      "target": "\"Git Tools\" role=Button",
+      "status": "pass",
+      "durationMs": 1045,
+      "flow": "qa-pr46-external-commit-final"
+    },
+    {
+      "index": 11,
+      "kind": "await",
+      "e2eTest": "qa-pr46-external-commit-final",
+      "target": "visible id=gitTools.observedHEAD",
+      "status": "pass",
+      "durationMs": 181,
+      "flow": "qa-pr46-external-commit-final"
+    },
+    {
+      "index": 12,
+      "kind": "idle",
+      "e2eTest": "qa-pr46-external-commit-final",
+      "status": "pass",
+      "durationMs": 2377,
+      "flow": "qa-pr46-external-commit-final"
+    },
+    {
+      "index": 13,
+      "kind": "await",
+      "e2eTest": "qa-pr46-external-commit-final",
+      "target": "id=gitTools.observedHEAD equals \"6d13e3c · not synced yet\"",
+      "status": "pass",
+      "durationMs": 178,
+      "flow": "qa-pr46-external-commit-final"
+    },
+    {
+      "index": 14,
+      "kind": "await",
+      "e2eTest": "qa-pr46-external-commit-final",
+      "target": "id=gitTools.observedBranch equals \"main\"",
+      "status": "pass",
+      "durationMs": 119,
+      "flow": "qa-pr46-external-commit-final"
+    },
+    {
+      "index": 15,
+      "kind": "await",
+      "e2eTest": "qa-pr46-external-commit-final",
+      "target": "visible \"No local changes\"",
+      "status": "pass",
+      "durationMs": 114,
+      "flow": "qa-pr46-external-commit-final"
+    }
+  ],
+  "startedAt": 1794584626114,
+  "durationMs": 21483
+}

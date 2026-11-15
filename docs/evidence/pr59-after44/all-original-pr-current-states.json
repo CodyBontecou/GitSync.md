@@ -1,0 +1,58 @@
+[
+  {
+    "draft": false,
+    "head": "ceaba19b2d1be59297e07985ae2073f20a7d23e0",
+    "merge_commit_sha": "738043efbf88fd2bb549e71795115754f701a6b7",
+    "merged": true,
+    "number": 44,
+    "state": "closed"
+  },
+  {
+    "draft": false,
+    "head": "22ee832249e7197626fb342d22595f74e942e527",
+    "merge_commit_sha": "1decb7610eab3cc090bac228f0509f60f2d81b8e",
+    "merged": true,
+    "number": 45,
+    "state": "closed"
+  },
+  {
+    "draft": false,
+    "head": "1fa69bc5ad6f16ec60c017dfe50711407592ddc9",
+    "merge_commit_sha": "050a245368a0b7afbef749f0bf1b35607b8fcde9",
+    "merged": true,
+    "number": 46,
+    "state": "closed"
+  },
+  {
+    "draft": false,
+    "head": "4dcb3c27a0b8a990addbaef6c0c8064c9c6d18a7",
+    "merge_commit_sha": "27146b7026de2e4960d812d4a071a45a122f9646",
+    "merged": true,
+    "number": 47,
+    "state": "closed"
+  },
+  {
+    "draft": true,
+    "head": "ff3cfa046399101d98ddcca165e0226c8a1ebe0f",
+    "merge_commit_sha": null,
+    "merged": false,
+    "number": 48,
+    "state": "open"
+  },
+  {
+    "draft": true,
+    "head": "5b9b079e08f78b2f76df2008441640e3b9b83411",
+    "merge_commit_sha": "e78ee83ccd8444285f82ce279b554ed62eda40a0",
+    "merged": false,
+    "number": 49,
+    "state": "open"
+  },
+  {
+    "draft": true,
+    "head": "1de5394a6b3f41cf027b03507b9bb15cf3a58b90",
+    "merge_commit_sha": "309ea03a219640bf80d1850545c16e005817b863",
+    "merged": false,
+    "number": 59,
+    "state": "open"
+  }
+]

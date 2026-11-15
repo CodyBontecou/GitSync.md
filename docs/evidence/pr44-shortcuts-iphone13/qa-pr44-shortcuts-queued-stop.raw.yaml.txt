@@ -1,0 +1,131 @@
+steps:
+  - launch:
+      native: bontecou.Sync-md.prqa
+      ios:
+        app: bontecou.Sync-md.prqa
+        args:
+          - -UITestGitToolsFixture
+          - pull-cancel
+          - -AppleLanguages
+          - (en)
+          - -AppleLocale
+          - en_US
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Attention 1
+        role: Button
+  - tap:
+      text: main · syncmd-uitest-fixtures/git-tools-fixture
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: vault.title
+  - tap:
+      id: ellipsis
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: qa44.holdLease
+  - tap:
+      id: qa44.holdLease
+  - tool: await-ui-element
+    args:
+      condition: text
+      selector:
+        identifier: qa44.leaseStatus
+      expectedText: QA repository lease held
+      textMatch: equals
+  - tool: open-url
+    args:
+      bundleId: com.apple.shortcuts
+      url: shortcuts://run-shortcut?name=PR44%20QA%20No%20Entity%20Return
+  - echo: Device-wide screenshot shows the owned shortcut genuinely running with its
+      square Stop control and NO completed-result dialog while the real
+      repository holder remains held.
+  - tap:
+      x: 0.417
+      y: 0.2005
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Play, PR44 QA No Entity Return
+        role: Button
+  - echo: First queued attempt reached the OS timeout before the manual Stop.
+      Preserve its actual timeout screenshot; this does NOT count as an
+      in-flight Stop pass. Retry with an immediate owned-card Stop and inspect
+      the captured pre-tap screen.
+  - tap:
+      text: OK
+  - tool: launch-app
+    args:
+      bundleId: bontecou.Sync-md.prqa
+  - tool: await-ui-element
+    args:
+      condition: text
+      selector:
+        identifier: qa44.leaseStatus
+      expectedText: QA repository lease held
+      textMatch: equals
+  - tool: open-url
+    args:
+      bundleId: com.apple.shortcuts
+      url: shortcuts://run-shortcut?name=PR44%20QA%20No%20Entity%20Return
+  - tap:
+      x: 0.417
+      y: 0.2005
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Play, PR44 QA No Entity Return
+        role: Button
+  - tool: launch-app
+    args:
+      bundleId: bontecou.Sync-md.prqa
+  - tool: await-ui-element
+    args:
+      condition: text
+      selector:
+        identifier: qa44.leaseStatus
+      expectedText: QA repository lease held
+      textMatch: equals
+  - tap:
+      id: ellipsis
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: qa44.releaseLease
+  - tap:
+      id: qa44.releaseLease
+  - tool: await-ui-element
+    args:
+      condition: text
+      selector:
+        identifier: qa44.leaseStatus
+      expectedText: QA repository lease released
+      textMatch: equals
+  - tool: open-url
+    args:
+      bundleId: com.apple.shortcuts
+      url: shortcuts://run-shortcut?name=PR44%20QA%20No%20Entity%20Return
+  - echo: "After actual fast queued Stop all28 files were byte-identical, including
+      after explicit holder release and a no-retry observation interval.
+      Explicit new retry now visibly returned git-tools-fixture: Already up to
+      date / Done."
+  - tap:
+      id: All Shortcuts
+  - tap:
+      x: 0.731
+      y: 0.197
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Play, PR44 QA No Entity Return
+        role: Button
