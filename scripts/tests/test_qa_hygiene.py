@@ -3,6 +3,7 @@ from pathlib import Path
 import contextlib
 import importlib.util
 import io
+import os
 import subprocess
 import tempfile
 import unittest
@@ -12,6 +13,18 @@ CHECKER = Path(__file__).resolve().parents[1] / 'qa_hygiene.py'
 spec = importlib.util.spec_from_file_location('qa_hygiene', CHECKER)
 qa = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(qa)
+
+# Output format must not depend on whether the tests run inside GitHub Actions.
+_ENV = mock.patch.dict(os.environ, {'GITHUB_ACTIONS': 'false'})
+
+
+def setUpModule():
+    _ENV.start()
+
+
+def tearDownModule():
+    _ENV.stop()
+
 
 SHA = 'f481bec0556856da716bed62f7db3857d73562f0'
 GOOD = f'''---
