@@ -1,0 +1,8 @@
+{
+  "run": 43557322180,
+  "head": "1de5394a6b3f41cf027b03507b9bb15cf3a58b90",
+  "actualDownloadedCIBuiltArticleSHA256": "6d3ce31fbb2aa84755d89e6a9427f164857159a6d7d5625544da6fbf8a81ea12",
+  "matchesActualTwiceTestedIPhoneLANResponse": true,
+  "artifactDownloadedReadOnly": true,
+  "deployed": false
+}

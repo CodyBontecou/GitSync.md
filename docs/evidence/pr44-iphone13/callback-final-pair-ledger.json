@@ -1,0 +1,70 @@
+[
+  {
+    "path": "/error",
+    "params": {
+      "message": [
+        "Pull was interrupted. Try pulling again when you're ready."
+      ],
+      "updated": [
+        "false"
+      ],
+      "action": [
+        "pull"
+      ],
+      "status": [
+        "error"
+      ]
+    }
+  },
+  {
+    "path": "/success",
+    "params": {
+      "action": [
+        "pull"
+      ],
+      "sha": [
+        "8ee85f76cdba37f4ec6517fb33018a039bae5a33"
+      ],
+      "updated": [
+        "false"
+      ],
+      "status": [
+        "ok"
+      ]
+    }
+  },
+  {
+    "path": "/error",
+    "params": {
+      "action": [
+        "pull"
+      ],
+      "updated": [
+        "false"
+      ],
+      "message": [
+        "Pull was interrupted. Try pulling again when you're ready."
+      ],
+      "status": [
+        "error"
+      ]
+    }
+  },
+  {
+    "path": "/success",
+    "params": {
+      "updated": [
+        "false"
+      ],
+      "sha": [
+        "6d10c918a0c1fd15e077d037c27168bd0c3fbcac"
+      ],
+      "status": [
+        "ok"
+      ],
+      "action": [
+        "pull"
+      ]
+    }
+  }
+]

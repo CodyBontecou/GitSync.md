@@ -1,0 +1,12 @@
+{
+  "base": "27146b7026de2e4960d812d4a071a45a122f9646",
+  "draft": false,
+  "head": "ceaba19b2d1be59297e07985ae2073f20a7d23e0",
+  "merge_commit_sha": "738043efbf88fd2bb549e71795115754f701a6b7",
+  "merged": true,
+  "merged_at": "2026-11-14T04:29:51Z",
+  "number": 44,
+  "state": "closed",
+  "wholeTreeVerified": "eb945ed51c08788c6e8a7165776f559d9861434a",
+  "appTreeVerified": "93f9027f29040063903e802d7fa556f15d7044ce"
+}

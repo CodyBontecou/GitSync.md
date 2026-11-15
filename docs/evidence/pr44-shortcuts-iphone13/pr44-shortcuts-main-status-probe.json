@@ -1,0 +1,71 @@
+{
+  "e2eTest": "qa-pr44-shortcuts-status-probe",
+  "flow": "qa-pr44-shortcuts-status-probe",
+  "device": "00008110-00046CC63CA0401E",
+  "executionPrerequisite": "",
+  "ok": false,
+  "passed": 4,
+  "failed": 1,
+  "skipped": 1,
+  "errored": 0,
+  "steps": [
+    {
+      "index": 0,
+      "kind": "await",
+      "e2eTest": "qa-pr44-shortcuts-status-probe",
+      "target": "visible \"PR44 QA Native Status 20261113, Actions Menu\" role=Button",
+      "status": "pass",
+      "durationMs": 159,
+      "flow": "qa-pr44-shortcuts-status-probe"
+    },
+    {
+      "index": 1,
+      "kind": "assert",
+      "e2eTest": "qa-pr44-shortcuts-status-probe",
+      "target": "visible \"Get the status of , git-tools-fixture\"",
+      "status": "pass",
+      "durationMs": 108,
+      "flow": "qa-pr44-shortcuts-status-probe"
+    },
+    {
+      "index": 2,
+      "kind": "tap",
+      "e2eTest": "qa-pr44-shortcuts-status-probe",
+      "target": "\"play\" role=Button",
+      "status": "pass",
+      "durationMs": 1020,
+      "flow": "qa-pr44-shortcuts-status-probe"
+    },
+    {
+      "index": 3,
+      "kind": "await",
+      "e2eTest": "qa-pr44-shortcuts-status-probe",
+      "target": "visible \"Stop\" role=Button",
+      "status": "pass",
+      "durationMs": 90,
+      "flow": "qa-pr44-shortcuts-status-probe"
+    },
+    {
+      "index": 4,
+      "kind": "await",
+      "e2eTest": "qa-pr44-shortcuts-status-probe",
+      "target": "hidden \"Stop\" role=Button",
+      "status": "fail",
+      "reason": "an element matching text=\"Stop\" role=\"Button\" was still visible",
+      "durationMs": 15214,
+      "artifacts": {
+        "screen": "/var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/argent-ios-device-screenshot-00008110-184332237740416.png"
+      },
+      "flow": "qa-pr44-shortcuts-status-probe"
+    },
+    {
+      "index": 5,
+      "kind": "idle",
+      "status": "skip",
+      "e2eTest": "qa-pr44-shortcuts-status-probe",
+      "flow": "qa-pr44-shortcuts-status-probe"
+    }
+  ],
+  "startedAt": 1794611531703,
+  "durationMs": 16771
+}

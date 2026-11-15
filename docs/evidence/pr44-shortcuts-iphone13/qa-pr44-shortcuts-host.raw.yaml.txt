@@ -1,0 +1,68 @@
+steps:
+  - tool: launch-app
+    args:
+      bundleId: com.apple.shortcuts
+  - tap:
+      id: main.button.newshortcut
+  - tap:
+      text: ‌        ‌New Shortcut, Actions Menu
+  - tap:
+      text: Rename
+  - tap:
+      text: Clear text
+  - tool: keyboard
+    args:
+      text: PR44 QA Native Pull 20261113
+  - tool: keyboard
+    args:
+      key: enter
+  - tap:
+      x: 0.5
+      y: 0.565
+  - tool: keyboard
+    args:
+      text: GitSync PR QA
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: GitSync PR QA
+        role: StaticText
+  - tap:
+      text: Pull Repository
+  - echo: "Prerequisite outside UI: verified empty isolated QA default inventory,
+      copied only the existing owned synthetic native fixture into it. Never
+      seed shipping inventory; clear only this newly created QA file after
+      testing."
+  - tap:
+      id: enum
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: git-tools-fixture
+        role: StaticText
+  - tap:
+      text: git-tools-fixture
+  - tap:
+      text: play
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Already up to date
+      timeoutMs: 15000
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Stop
+        role: Button
+  - tap:
+      text: play
+  - tool: await-ui-element
+    args:
+      condition: hidden
+      selector:
+        text: Stop
+        role: Button

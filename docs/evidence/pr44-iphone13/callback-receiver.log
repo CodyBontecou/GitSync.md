@@ -1,0 +1,78 @@
+192.168.1.227 - - [13/Nov/2026 18:26:29] "GET /error?message=Pull%20was%20interrupted.%20Try%20pulling%20again%20when%20you%27re%20ready.&action=pull&status=error&updated=false HTTP/1.1" 200 -
+192.168.1.227 - - [13/Nov/2026 18:26:29] code 404, message Not Found
+192.168.1.227 - - [13/Nov/2026 18:26:29] "GET /favicon.ico HTTP/1.1" 404 -
+----------------------------------------
+Exception occurred during processing of request from ('192.168.1.227', 64836)
+Traceback (most recent call last):
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/socketserver.py", line 683, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/socketserver.py", line 360, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/socketserver.py", line 747, in __init__
+    self.handle()
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/http/server.py", line 434, in handle
+    self.handle_one_request()
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/http/server.py", line 402, in handle_one_request
+    self.raw_requestline = self.rfile.readline(65537)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/socket.py", line 704, in readinto
+    return self._sock.recv_into(b)
+ConnectionResetError: [Errno 54] Connection reset by peer
+----------------------------------------
+192.168.1.50 - - [13/Nov/2026 18:28:51] "GET /error?message=Pull%20was%20interrupted.%20Try%20pulling%20again%20when%20you%27re%20ready.&action=pull&status=error&updated=false HTTP/1.1" 200 -
+192.168.1.50 - - [13/Nov/2026 18:28:51] code 404, message Not Found
+192.168.1.50 - - [13/Nov/2026 18:28:51] "GET /apple-touch-icon-precomposed.png HTTP/1.1" 404 -
+192.168.1.50 - - [13/Nov/2026 18:28:51] code 404, message Not Found
+192.168.1.50 - - [13/Nov/2026 18:28:51] "GET /apple-touch-icon.png HTTP/1.1" 404 -
+192.168.1.50 - - [13/Nov/2026 18:28:51] code 404, message Not Found
+192.168.1.50 - - [13/Nov/2026 18:28:51] "GET /favicon.ico HTTP/1.1" 404 -
+192.168.1.227 - - [13/Nov/2026 18:31:28] "GET /success?action=pull&status=ok&updated=false&sha=c49f05e39d7fe76fbf4e7cfa2949e3f9efb7dae4 HTTP/1.1" 200 -
+192.168.1.227 - - [13/Nov/2026 18:33:38] "GET /baseline HTTP/1.1" 200 -
+192.168.1.227 - - [13/Nov/2026 18:35:27] "GET /baseline HTTP/1.1" 200 -
+192.168.1.227 - - [13/Nov/2026 18:37:52] "GET /baseline HTTP/1.1" 200 -
+192.168.1.227 - - [13/Nov/2026 18:38:16] "GET /error?message=Pull%20was%20interrupted.%20Try%20pulling%20again%20when%20you%27re%20ready.&updated=false&action=pull&status=error HTTP/1.1" 200 -
+192.168.1.227 - - [13/Nov/2026 18:38:43] "GET /success?action=pull&sha=8ee85f76cdba37f4ec6517fb33018a039bae5a33&updated=false&status=ok HTTP/1.1" 200 -
+192.168.1.227 - - [13/Nov/2026 18:38:51] "GET /baseline HTTP/1.1" 200 -
+192.168.1.227 - - [13/Nov/2026 18:39:15] "GET /error?action=pull&updated=false&message=Pull%20was%20interrupted.%20Try%20pulling%20again%20when%20you%27re%20ready.&status=error HTTP/1.1" 200 -
+192.168.1.227 - - [13/Nov/2026 18:39:43] "GET /success?updated=false&sha=6d10c918a0c1fd15e077d037c27168bd0c3fbcac&status=ok&action=pull HTTP/1.1" 200 -
+192.168.1.50 - - [13/Nov/2026 18:40:12] "GET /baseline HTTP/1.1" 200 -
+192.168.1.50 - - [13/Nov/2026 18:40:12] code 404, message Not Found
+192.168.1.50 - - [13/Nov/2026 18:40:12] "GET /apple-touch-icon-precomposed.png HTTP/1.1" 404 -
+192.168.1.50 - - [13/Nov/2026 18:40:12] "GET /success?action=pull&status=ok&updated=false&sha=c49f05e39d7fe76fbf4e7cfa2949e3f9efb7dae4 HTTP/1.1" 200 -
+192.168.1.50 - - [13/Nov/2026 18:40:12] code 404, message Not Found
+192.168.1.50 - - [13/Nov/2026 18:40:12] "GET /error?message=Pull%20was%20interrupted.%20Try%20pulling%20again%20when%20you%27re%20ready.&updated=false&action=pull&status=error HTTP/1.1" 200 -
+192.168.1.50 - - [13/Nov/2026 18:40:12] "GET /apple-touch-icon-precomposed.png HTTP/1.1" 404 -
+192.168.1.50 - - [13/Nov/2026 18:40:12] code 404, message Not Found
+192.168.1.50 - - [13/Nov/2026 18:40:12] "GET /apple-touch-icon-precomposed.png HTTP/1.1" 404 -
+192.168.1.50 - - [13/Nov/2026 18:40:12] code 404, message Not Found
+192.168.1.50 - - [13/Nov/2026 18:40:12] "GET /apple-touch-icon-precomposed.png HTTP/1.1" 404 -
+192.168.1.50 - - [13/Nov/2026 18:40:12] code 404, message Not Found
+192.168.1.50 - - [13/Nov/2026 18:40:12] "GET /apple-touch-icon-precomposed.png HTTP/1.1" 404 -
+192.168.1.50 - - [13/Nov/2026 18:40:12] "GET /success?updated=false&sha=6d10c918a0c1fd15e077d037c27168bd0c3fbcac&status=ok&action=pull HTTP/1.1" 200 -
+192.168.1.50 - - [13/Nov/2026 18:40:12] code 404, message Not Found
+192.168.1.50 - - [13/Nov/2026 18:40:12] "GET /apple-touch-icon.png HTTP/1.1" 404 -
+192.168.1.50 - - [13/Nov/2026 18:40:12] "GET /success?action=pull&sha=8ee85f76cdba37f4ec6517fb33018a039bae5a33&updated=false&status=ok HTTP/1.1" 200 -
+192.168.1.50 - - [13/Nov/2026 18:40:12] code 404, message Not Found
+192.168.1.50 - - [13/Nov/2026 18:40:12] "GET /favicon.ico HTTP/1.1" 404 -
+192.168.1.50 - - [13/Nov/2026 18:40:12] code 404, message Not Found
+192.168.1.50 - - [13/Nov/2026 18:40:12] code 404, message Not Found
+192.168.1.50 - - [13/Nov/2026 18:40:12] "GET /apple-touch-icon.png HTTP/1.1" 404 -
+192.168.1.50 - - [13/Nov/2026 18:40:12] "GET /favicon.ico HTTP/1.1" 404 -
+192.168.1.50 - - [13/Nov/2026 18:40:12] code 404, message Not Found
+192.168.1.50 - - [13/Nov/2026 18:40:12] code 404, message Not Found
+192.168.1.50 - - [13/Nov/2026 18:40:12] "GET /favicon.ico HTTP/1.1" 404 -
+192.168.1.50 - - [13/Nov/2026 18:40:12] "GET /apple-touch-icon.png HTTP/1.1" 404 -
+192.168.1.50 - - [13/Nov/2026 18:40:12] code 404, message Not Found
+192.168.1.50 - - [13/Nov/2026 18:40:12] "GET /apple-touch-icon.png HTTP/1.1" 404 -
+192.168.1.50 - - [13/Nov/2026 18:40:12] code 404, message Not Found
+192.168.1.50 - - [13/Nov/2026 18:40:12] "GET /favicon.ico HTTP/1.1" 404 -
+192.168.1.50 - - [13/Nov/2026 18:40:12] code 404, message Not Found
+192.168.1.50 - - [13/Nov/2026 18:40:12] "GET /apple-touch-icon.png HTTP/1.1" 404 -
+192.168.1.50 - - [13/Nov/2026 18:40:12] code 404, message Not Found
+192.168.1.50 - - [13/Nov/2026 18:40:12] "GET /favicon.ico HTTP/1.1" 404 -
+192.168.1.50 - - [13/Nov/2026 18:40:13] "GET /error?action=pull&updated=false&message=Pull%20was%20interrupted.%20Try%20pulling%20again%20when%20you%27re%20ready.&status=error HTTP/1.1" 200 -
+192.168.1.50 - - [13/Nov/2026 18:40:13] code 404, message Not Found
+192.168.1.50 - - [13/Nov/2026 18:40:13] "GET /apple-touch-icon-precomposed.png HTTP/1.1" 404 -
+192.168.1.50 - - [13/Nov/2026 18:40:13] code 404, message Not Found
+192.168.1.50 - - [13/Nov/2026 18:40:13] "GET /apple-touch-icon.png HTTP/1.1" 404 -
+192.168.1.50 - - [13/Nov/2026 18:40:13] code 404, message Not Found
+192.168.1.50 - - [13/Nov/2026 18:40:13] "GET /favicon.ico HTTP/1.1" 404 -

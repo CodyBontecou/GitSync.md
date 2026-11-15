@@ -1,0 +1,20 @@
+{
+  "message": "Finished recording \"qa-pr44-shortcuts-cleanup\" e2e test (9 steps)",
+  "path": "/tmp/gitsync-pr44-qa/.argent/e2e/qa-pr44-shortcuts-cleanup.yaml",
+  "executionPrerequisite": "",
+  "steps": 9,
+  "summary": [
+    "1. tap: {\"id\":\"BackButton\"}",
+    "2. tap: {\"text\":\"Select\"}",
+    "3. tap: {\"text\":\"PR44 QA Native Pull 20261113\"}",
+    "4. tap: {\"text\":\"PR44 QA Native Status 20261113\"}",
+    "5. tap: {\"text\":\"Delete\"}",
+    "6. tool: await-ui-element {\"condition\":\"visible\",\"selector\":{\"text\":\"Delete 2 Shortcuts\",\"role\":\"Button\"}}",
+    "7. tap: {\"text\":\"Delete 2 Shortcuts\"}",
+    "8. tool: await-ui-element {\"condition\":\"hidden\",\"selector\":{\"text\":\"PR44 QA Native Pull 20261113\"}}",
+    "9. tool: await-ui-element {\"condition\":\"hidden\",\"selector\":{\"text\":\"PR44 QA Native Status 20261113\"}}"
+  ],
+  "e2eTestFile": "steps:\n  - tap:\n      id: BackButton\n  - tap:\n      text: Select\n  - tap:\n      text: PR44 QA Native Pull 20261113\n  - tap:\n      text: PR44 QA Native Status 20261113\n  - tap:\n      text: Delete\n  - tool: await-ui-element\n    args:\n      condition: visible\n      selector:\n        text: Delete 2 Shortcuts\n        role: Button\n  - tap:\n      text: Delete 2 Shortcuts\n  - tool: await-ui-element\n    args:\n      condition: hidden\n      selector:\n        text: PR44 QA Native Pull 20261113\n  - tool: await-ui-element\n    args:\n      condition: hidden\n      selector:\n        text: PR44 QA Native Status 20261113\n",
+  "flowFile": "steps:\n  - tap:\n      id: BackButton\n  - tap:\n      text: Select\n  - tap:\n      text: PR44 QA Native Pull 20261113\n  - tap:\n      text: PR44 QA Native Status 20261113\n  - tap:\n      text: Delete\n  - tool: await-ui-element\n    args:\n      condition: visible\n      selector:\n        text: Delete 2 Shortcuts\n        role: Button\n  - tap:\n      text: Delete 2 Shortcuts\n  - tool: await-ui-element\n    args:\n      condition: hidden\n      selector:\n        text: PR44 QA Native Pull 20261113\n  - tool: await-ui-element\n    args:\n      condition: hidden\n      selector:\n        text: PR44 QA Native Status 20261113\n",
+  "savedTo": "/tmp/gitsync-pr44-qa/.argent/e2e/qa-pr44-shortcuts-cleanup.yaml"
+}

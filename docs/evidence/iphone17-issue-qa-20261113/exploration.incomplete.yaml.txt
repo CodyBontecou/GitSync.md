@@ -1,0 +1,175 @@
+steps:
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: home.addRepository
+  - tap:
+      id: home.addRepository
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: addRepository.url
+  - tap:
+      id: addRepository.url
+  - tool: keyboard
+    args:
+      text: https://github.com/CodyBontecou/gitsync-tide-qa.git
+  - tap:
+      text: o
+  - tool: keyboard
+    args:
+      key: enter
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: addRepository.addAndClone
+  - tool: gesture-swipe
+    args:
+      fromX: 0.5
+      fromY: 0.78
+      toX: 0.5
+      toY: 0.36
+      durationMs: 500
+  - tap:
+      text: Change location
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: DOCPicker.actionButton
+  - tap:
+      id: DOC.navBarButton.backInHistory
+  - tap:
+      id: DOC.sidebar.item.Obsidian
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Obsidian, Actions Menu
+  - tap:
+      id: OverflowBarButtonItem
+  - tap:
+      x: 0.43
+      y: 0.136
+  - tool: keyboard
+    args:
+      text: GitSync-Issue-QA-20261113
+  - tool: keyboard
+    args:
+      key: enter
+  - tap:
+      x: 0.866
+      y: 0.126
+  - tap:
+      id: addRepository.addAndClone
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Clone vault
+        role: Button
+      timeoutMs: 30000
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: gitsync-tide-qa
+        role: Button
+  - tap:
+      text: gitsync-tide-qa, main · 1s ago, in sync
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: vault.title
+  - tap:
+      text: Check for changes
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Already up to date
+        role: StaticText
+      timeoutMs: 20000
+  - tool: gesture-swipe
+    args:
+      fromX: 0.5
+      fromY: 0.28
+      toX: 0.5
+      toY: 0.75
+      durationMs: 1200
+      momentum: false
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Check for changes
+        role: Button
+      timeoutMs: 10000
+  - tap:
+      id: ellipsis
+  - tap:
+      x: 0.65
+      y: 0.202
+  - tool: launch-app
+    args:
+      bundleId: com.apple.DocumentsApp
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: daily-note.md, md
+  - tap:
+      text: gitsync-tide-qa, Actions Menu
+  - tap:
+      text: Rename
+  - tool: keyboard
+    args:
+      text: gitsync-tide-qa-renamed
+  - tool: keyboard
+    args:
+      key: enter
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: gitsync-tide-qa-renamed, Actions Menu
+  - tool: launch-app
+    args:
+      bundleId: bontecou.Sync-md
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Not Cloned
+        role: StaticText
+  - tool: launch-app
+    args:
+      bundleId: com.apple.DocumentsApp
+  - tap:
+      text: gitsync-tide-qa-renamed, Actions Menu
+  - tap:
+      text: Rename
+  - tool: keyboard
+    args:
+      text: gitsync-tide-qa
+  - tool: keyboard
+    args:
+      key: enter
+  - launch: bontecou.Sync-md
+  - tap:
+      text: myself.md-vault, main · CodyBontecou/myself.md-vault, 3 to push
+  - tap:
+      text: gitsync-tide-qa, main · CodyBontecou/gitsync-tide-qa, Not cloned
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Clone Repository
+        role: Button
+executionPrerequisite: Physical iPhone unlocked with GitSync.md Home visible;
+  existing vaults must not be synchronized or modified. Observational navigation
+  and disposable QA setup only.

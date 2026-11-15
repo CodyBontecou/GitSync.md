@@ -1,0 +1,652 @@
+{
+  "e2eTest": "qa-pr44-native-callback-final",
+  "flow": "qa-pr44-native-callback-final",
+  "device": "00008110-00046CC63CA0401E",
+  "executionPrerequisite": "",
+  "ok": true,
+  "passed": 63,
+  "failed": 0,
+  "skipped": 0,
+  "errored": 0,
+  "steps": [
+    {
+      "index": 0,
+      "kind": "tool",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "status": "pass",
+      "tool": "open-url",
+      "result": {
+        "opened": true,
+        "url": "http://192.168.1.252:8771/baseline",
+        "note": "This web URL was delivered to Safari as a launch payload. Universal Links are not resolved on this path, so the app verified for the link's domain does not open even when it is installed. Pass bundleId naming that app to hand it the URL directly."
+      },
+      "args": {
+        "bundleId": "com.apple.mobilesafari",
+        "url": "http://192.168.1.252:8771/baseline",
+        "udid": "00008110-00046CC63CA0401E"
+      },
+      "durationMs": 298,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 1,
+      "kind": "await",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "target": "visible \"QA callback awaiting a new result\"",
+      "status": "pass",
+      "durationMs": 3221,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 2,
+      "kind": "idle",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "status": "pass",
+      "durationMs": 1334,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 3,
+      "kind": "launch",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "status": "pass",
+      "durationMs": 1742,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 4,
+      "kind": "await",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "target": "visible \"Attention 1\" role=Button",
+      "status": "pass",
+      "durationMs": 143,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 5,
+      "kind": "idle",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "status": "pass",
+      "durationMs": 1917,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 6,
+      "kind": "tap",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "target": "\"main · syncmd-uitest-fixtures/git-tools-fixture\"",
+      "status": "pass",
+      "durationMs": 1232,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 7,
+      "kind": "await",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "target": "visible id=vault.title",
+      "status": "pass",
+      "durationMs": 143,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 8,
+      "kind": "idle",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "status": "pass",
+      "durationMs": 1940,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 9,
+      "kind": "assert",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "target": "visible \"README.md, modified\" role=Button",
+      "status": "pass",
+      "durationMs": 108,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 10,
+      "kind": "tap",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "target": "\"More vault options\" role=Button",
+      "status": "pass",
+      "durationMs": 1132,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 11,
+      "kind": "await",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "target": "visible id=qa44.holdLease",
+      "status": "pass",
+      "durationMs": 83,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 12,
+      "kind": "idle",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "status": "pass",
+      "durationMs": 1978,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 13,
+      "kind": "tap",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "target": "id=qa44.holdLease",
+      "status": "pass",
+      "durationMs": 1053,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 14,
+      "kind": "await",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "target": "id=qa44.leaseStatus equals \"QA repository lease held\"",
+      "status": "pass",
+      "durationMs": 123,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 15,
+      "kind": "idle",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "status": "pass",
+      "durationMs": 2453,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 16,
+      "kind": "echo",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "status": "pass",
+      "message": "Deliver the real callback URL explicitly to the isolated bundle, never through ambiguous shipping scheme resolution.",
+      "durationMs": 0,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 17,
+      "kind": "tool",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "status": "pass",
+      "tool": "open-url",
+      "result": {
+        "opened": true,
+        "url": "syncmd://x-callback-url/pull?repo=git-tools-fixture&x-success=http%3A%2F%2F192.168.1.252%3A8771%2Fsuccess&x-error=http%3A%2F%2F192.168.1.252%3A8771%2Ferror"
+      },
+      "args": {
+        "bundleId": "bontecou.Sync-md.prqa",
+        "url": "syncmd://x-callback-url/pull?repo=git-tools-fixture&x-success=http%3A%2F%2F192.168.1.252%3A8771%2Fsuccess&x-error=http%3A%2F%2F192.168.1.252%3A8771%2Ferror",
+        "udid": "00008110-00046CC63CA0401E"
+      },
+      "durationMs": 312,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 18,
+      "kind": "assert",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "target": "id=qa44.leaseStatus equals \"QA repository lease held\"",
+      "status": "pass",
+      "durationMs": 137,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 19,
+      "kind": "await",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "target": "visible \"Cancel\" role=Button",
+      "status": "pass",
+      "durationMs": 477,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 20,
+      "kind": "assert",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "target": "visible \"Pulling…\" role=StaticText",
+      "status": "pass",
+      "durationMs": 86,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 21,
+      "kind": "tap",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "target": "\"Cancel\" role=Button",
+      "status": "pass",
+      "durationMs": 2031,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 22,
+      "kind": "await",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "target": "visible \"Pull was interrupted. Try pulling again when you're ready.\" role=StaticText",
+      "status": "pass",
+      "durationMs": 75,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 23,
+      "kind": "wait",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "status": "pass",
+      "durationMs": 2502,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 24,
+      "kind": "tool",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "status": "pass",
+      "tool": "launch-app",
+      "result": {
+        "launched": true,
+        "bundleId": "com.apple.mobilesafari"
+      },
+      "args": {
+        "bundleId": "com.apple.mobilesafari",
+        "udid": "00008110-00046CC63CA0401E"
+      },
+      "durationMs": 257,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 25,
+      "kind": "await",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "target": "visible \"QA callback received: error\"",
+      "status": "pass",
+      "durationMs": 93,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 26,
+      "kind": "idle",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "status": "pass",
+      "durationMs": 2490,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 27,
+      "kind": "assert",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "target": "visible \"status: ['error']\" role=StaticText",
+      "status": "pass",
+      "durationMs": 111,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 28,
+      "kind": "assert",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "target": "visible \"updated: ['false']\" role=StaticText",
+      "status": "pass",
+      "durationMs": 84,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 29,
+      "kind": "assert",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "target": "visible \"sha present: no\" role=StaticText",
+      "status": "pass",
+      "durationMs": 89,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 30,
+      "kind": "assert",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "target": "visible \"Pull was interrupted. Try pulling again when you're ready.\" role=StaticText",
+      "status": "pass",
+      "durationMs": 97,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 31,
+      "kind": "tool",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "status": "pass",
+      "tool": "launch-app",
+      "result": {
+        "launched": true,
+        "bundleId": "bontecou.Sync-md.prqa"
+      },
+      "args": {
+        "bundleId": "bontecou.Sync-md.prqa",
+        "udid": "00008110-00046CC63CA0401E"
+      },
+      "durationMs": 216,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 32,
+      "kind": "await",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "target": "visible \"Attention 1\" role=Button",
+      "status": "pass",
+      "durationMs": 451,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 33,
+      "kind": "idle",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "status": "pass",
+      "durationMs": 3033,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 34,
+      "kind": "tap",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "target": "\"main · syncmd-uitest-fixtures/git-tools-fixture\"",
+      "status": "pass",
+      "durationMs": 1033,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 35,
+      "kind": "await",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "target": "visible id=vault.title",
+      "status": "pass",
+      "durationMs": 149,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 36,
+      "kind": "idle",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "status": "pass",
+      "durationMs": 1912,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 37,
+      "kind": "assert",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "target": "hidden \"Cancel\" role=Button",
+      "status": "pass",
+      "durationMs": 108,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 38,
+      "kind": "assert",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "target": "hidden \"Pulling…\" role=StaticText",
+      "status": "pass",
+      "durationMs": 84,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 39,
+      "kind": "assert",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "target": "visible \"README.md, modified\" role=Button",
+      "status": "pass",
+      "durationMs": 72,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 40,
+      "kind": "echo",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "status": "pass",
+      "message": "Callback cleanup recreates Vault view-local QA state. Idempotent re-hold reattaches the existing fixture holder before explicit release; no app result is substituted.",
+      "durationMs": 0,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 41,
+      "kind": "tap",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "target": "\"More vault options\" role=Button",
+      "status": "pass",
+      "durationMs": 995,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 42,
+      "kind": "await",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "target": "visible id=qa44.holdLease",
+      "status": "pass",
+      "durationMs": 80,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 43,
+      "kind": "idle",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "status": "pass",
+      "durationMs": 1955,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 44,
+      "kind": "tap",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "target": "id=qa44.holdLease",
+      "status": "pass",
+      "durationMs": 1046,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 45,
+      "kind": "await",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "target": "id=qa44.leaseStatus equals \"QA repository lease held\"",
+      "status": "pass",
+      "durationMs": 126,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 46,
+      "kind": "idle",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "status": "pass",
+      "durationMs": 2453,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 47,
+      "kind": "tap",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "target": "\"More vault options\" role=Button",
+      "status": "pass",
+      "durationMs": 1021,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 48,
+      "kind": "await",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "target": "visible id=qa44.releaseLease",
+      "status": "pass",
+      "durationMs": 76,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 49,
+      "kind": "idle",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "status": "pass",
+      "durationMs": 1969,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 50,
+      "kind": "tap",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "target": "id=qa44.releaseLease",
+      "status": "pass",
+      "durationMs": 1227,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 51,
+      "kind": "await",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "target": "id=qa44.leaseStatus equals \"QA repository lease released\"",
+      "status": "pass",
+      "durationMs": 110,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 52,
+      "kind": "idle",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "status": "pass",
+      "durationMs": 2457,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 53,
+      "kind": "echo",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "status": "pass",
+      "message": "Explicitly retry native callback Pull only after releasing the holder. Require actual x-success and independently match its returned SHA to native HEAD.",
+      "durationMs": 0,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 54,
+      "kind": "tool",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "status": "pass",
+      "tool": "open-url",
+      "result": {
+        "opened": true,
+        "url": "syncmd://x-callback-url/pull?repo=git-tools-fixture&x-success=http%3A%2F%2F192.168.1.252%3A8771%2Fsuccess&x-error=http%3A%2F%2F192.168.1.252%3A8771%2Ferror"
+      },
+      "args": {
+        "bundleId": "bontecou.Sync-md.prqa",
+        "url": "syncmd://x-callback-url/pull?repo=git-tools-fixture&x-success=http%3A%2F%2F192.168.1.252%3A8771%2Fsuccess&x-error=http%3A%2F%2F192.168.1.252%3A8771%2Ferror",
+        "udid": "00008110-00046CC63CA0401E"
+      },
+      "durationMs": 305,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 55,
+      "kind": "await",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "target": "visible \"Already up to date\" role=StaticText",
+      "status": "pass",
+      "durationMs": 589,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 56,
+      "kind": "wait",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "status": "pass",
+      "durationMs": 2001,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 57,
+      "kind": "tool",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "status": "pass",
+      "tool": "launch-app",
+      "result": {
+        "launched": true,
+        "bundleId": "com.apple.mobilesafari"
+      },
+      "args": {
+        "bundleId": "com.apple.mobilesafari",
+        "udid": "00008110-00046CC63CA0401E"
+      },
+      "durationMs": 411,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 58,
+      "kind": "await",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "target": "visible \"QA callback received: success\"",
+      "status": "pass",
+      "durationMs": 103,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 59,
+      "kind": "idle",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "status": "pass",
+      "durationMs": 2497,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 60,
+      "kind": "assert",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "target": "visible \"status: ['ok']\" role=StaticText",
+      "status": "pass",
+      "durationMs": 119,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 61,
+      "kind": "assert",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "target": "visible \"updated: ['false']\" role=StaticText",
+      "status": "pass",
+      "durationMs": 93,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 62,
+      "kind": "assert",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "target": "visible \"sha present: yes\" role=StaticText",
+      "status": "pass",
+      "durationMs": 98,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 63,
+      "kind": "tool",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "status": "pass",
+      "tool": "launch-app",
+      "result": {
+        "launched": true,
+        "bundleId": "bontecou.Sync-md.prqa"
+      },
+      "args": {
+        "bundleId": "bontecou.Sync-md.prqa",
+        "udid": "00008110-00046CC63CA0401E"
+      },
+      "durationMs": 345,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 64,
+      "kind": "await",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "target": "visible \"Attention 1\" role=Button",
+      "status": "pass",
+      "durationMs": 443,
+      "flow": "qa-pr44-native-callback-final"
+    },
+    {
+      "index": 65,
+      "kind": "idle",
+      "e2eTest": "qa-pr44-native-callback-final",
+      "status": "pass",
+      "durationMs": 3062,
+      "flow": "qa-pr44-native-callback-final"
+    }
+  ],
+  "startedAt": 1794609472222,
+  "durationMs": 58385
+}

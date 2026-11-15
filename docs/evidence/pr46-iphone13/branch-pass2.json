@@ -1,0 +1,198 @@
+{
+  "e2eTest": "qa-pr46-external-branch",
+  "flow": "qa-pr46-external-branch",
+  "device": "00008110-00046CC63CA0401E",
+  "executionPrerequisite": "",
+  "ok": true,
+  "passed": 21,
+  "failed": 0,
+  "skipped": 0,
+  "errored": 0,
+  "steps": [
+    {
+      "index": 0,
+      "kind": "launch",
+      "e2eTest": "qa-pr46-external-branch",
+      "status": "pass",
+      "durationMs": 2651,
+      "flow": "qa-pr46-external-branch"
+    },
+    {
+      "index": 1,
+      "kind": "await",
+      "e2eTest": "qa-pr46-external-branch",
+      "target": "visible id=home.addRepository",
+      "status": "pass",
+      "durationMs": 156,
+      "flow": "qa-pr46-external-branch"
+    },
+    {
+      "index": 2,
+      "kind": "await",
+      "e2eTest": "qa-pr46-external-branch",
+      "target": "visible \"git-tools-fixture, feature · Never, in sync\"",
+      "status": "pass",
+      "durationMs": 78,
+      "flow": "qa-pr46-external-branch"
+    },
+    {
+      "index": 3,
+      "kind": "idle",
+      "e2eTest": "qa-pr46-external-branch",
+      "status": "pass",
+      "durationMs": 1575,
+      "flow": "qa-pr46-external-branch"
+    },
+    {
+      "index": 4,
+      "kind": "tap",
+      "e2eTest": "qa-pr46-external-branch",
+      "target": "\"git-tools-fixture, feature · Never, in sync\"",
+      "status": "pass",
+      "durationMs": 1020,
+      "flow": "qa-pr46-external-branch"
+    },
+    {
+      "index": 5,
+      "kind": "await",
+      "e2eTest": "qa-pr46-external-branch",
+      "target": "visible id=vault.title",
+      "status": "pass",
+      "durationMs": 140,
+      "flow": "qa-pr46-external-branch"
+    },
+    {
+      "index": 6,
+      "kind": "idle",
+      "e2eTest": "qa-pr46-external-branch",
+      "status": "pass",
+      "durationMs": 2163,
+      "flow": "qa-pr46-external-branch"
+    },
+    {
+      "index": 7,
+      "kind": "await",
+      "e2eTest": "qa-pr46-external-branch",
+      "target": "visible \"Branch feature\"",
+      "status": "pass",
+      "durationMs": 126,
+      "flow": "qa-pr46-external-branch"
+    },
+    {
+      "index": 8,
+      "kind": "await",
+      "e2eTest": "qa-pr46-external-branch",
+      "target": "visible \"No changes on this iPhone\"",
+      "status": "pass",
+      "durationMs": 95,
+      "flow": "qa-pr46-external-branch"
+    },
+    {
+      "index": 9,
+      "kind": "tap",
+      "e2eTest": "qa-pr46-external-branch",
+      "target": "id=ellipsis",
+      "status": "pass",
+      "durationMs": 974,
+      "flow": "qa-pr46-external-branch"
+    },
+    {
+      "index": 10,
+      "kind": "await",
+      "e2eTest": "qa-pr46-external-branch",
+      "target": "visible \"Settings\" role=Button",
+      "status": "pass",
+      "durationMs": 75,
+      "flow": "qa-pr46-external-branch"
+    },
+    {
+      "index": 11,
+      "kind": "idle",
+      "e2eTest": "qa-pr46-external-branch",
+      "status": "pass",
+      "durationMs": 2189,
+      "flow": "qa-pr46-external-branch"
+    },
+    {
+      "index": 12,
+      "kind": "tap",
+      "e2eTest": "qa-pr46-external-branch",
+      "target": "\"Settings\" role=Button",
+      "status": "pass",
+      "durationMs": 1022,
+      "flow": "qa-pr46-external-branch"
+    },
+    {
+      "index": 13,
+      "kind": "await",
+      "e2eTest": "qa-pr46-external-branch",
+      "target": "visible \"Vault settings\"",
+      "status": "pass",
+      "durationMs": 309,
+      "flow": "qa-pr46-external-branch"
+    },
+    {
+      "index": 14,
+      "kind": "idle",
+      "e2eTest": "qa-pr46-external-branch",
+      "status": "pass",
+      "durationMs": 2510,
+      "flow": "qa-pr46-external-branch"
+    },
+    {
+      "index": 15,
+      "kind": "scroll-to",
+      "e2eTest": "qa-pr46-external-branch",
+      "target": "id=repositorySettings.branch",
+      "status": "pass",
+      "durationMs": 4730,
+      "flow": "qa-pr46-external-branch"
+    },
+    {
+      "index": 16,
+      "kind": "await",
+      "e2eTest": "qa-pr46-external-branch",
+      "target": "id=repositorySettings.branch equals \"main\"",
+      "status": "pass",
+      "durationMs": 144,
+      "flow": "qa-pr46-external-branch"
+    },
+    {
+      "index": 17,
+      "kind": "tap",
+      "e2eTest": "qa-pr46-external-branch",
+      "target": "\"Cancel\"",
+      "status": "pass",
+      "durationMs": 1260,
+      "flow": "qa-pr46-external-branch"
+    },
+    {
+      "index": 18,
+      "kind": "await",
+      "e2eTest": "qa-pr46-external-branch",
+      "target": "visible \"Branch feature\"",
+      "status": "pass",
+      "durationMs": 534,
+      "flow": "qa-pr46-external-branch"
+    },
+    {
+      "index": 19,
+      "kind": "idle",
+      "e2eTest": "qa-pr46-external-branch",
+      "status": "pass",
+      "durationMs": 1568,
+      "flow": "qa-pr46-external-branch"
+    },
+    {
+      "index": 20,
+      "kind": "await",
+      "e2eTest": "qa-pr46-external-branch",
+      "target": "visible \"No changes on this iPhone\"",
+      "status": "pass",
+      "durationMs": 127,
+      "flow": "qa-pr46-external-branch"
+    }
+  ],
+  "startedAt": 1794584715531,
+  "durationMs": 23451
+}
