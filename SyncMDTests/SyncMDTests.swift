@@ -2526,7 +2526,7 @@ final class SyncMDTests: XCTestCase {
     }
 
     @MainActor
-    func testNativeParentGrantPreservesMetadataWhenWorkingCopyChildIsRenamed() async throws {
+    func testNativeParentGrantFollowsRenamedWorkingCopyChildWithoutResettingMetadata() async throws {
         let fm = FileManager.default
         let root = fm.temporaryDirectory.appendingPathComponent("native-bookmark-\(UUID())", isDirectory: true)
         try fm.createDirectory(at: root, withIntermediateDirectories: true)
@@ -2554,20 +2554,20 @@ final class SyncMDTests: XCTestCase {
         // independent verification use actual native Git repositories/files.
         let access = AppState.VaultBookmarkAccess(resolve: { _ in (root, false) }, start: { _ in true }, stop: { _ in })
         let state = AppState(gitRepositoryFactory: { url in
-            XCTAssertEqual(url, original, "Never fall back to another working-copy path")
+            // Issue #50: the renamed child (same HEAD, no other candidate) is
+            // followed. Never a fallback outside the grant or a fresh clone.
+            XCTAssertEqual(url, renamed, "Only the renamed working copy may be opened")
             return LocalGitService(localURL: url)
         }, reposFileURL: inventory, vaultBookmarkAccess: access)
-        XCTAssertEqual(state.vaultAccessErrors[config.id], .unavailableFolder)
-        XCTAssertNil(state.vaultURL(for: config.id))
+        XCTAssertNil(state.vaultAccessErrors[config.id])
+        XCTAssertEqual(state.vaultURL(for: config.id), renamed)
         XCTAssertTrue(state.repo(id: config.id)?.isCloned == true)
         state.detectChanges(repoID: config.id)
         XCTAssertTrue(state.repo(id: config.id)?.isCloned == true, "Refresh must retain the saved clone")
-        XCTAssertEqual(try RepoPersistenceStore().loadStrict(from: inventory).first, config, "Refresh must not erase persisted Git state")
-        switch await state.pullOnly(repoID: config.id, showsProgressDelay: false) {
-        case .unavailable: break
-        default: XCTFail("Missing child must require access recovery, never reset/reclone")
-        }
-        XCTAssertEqual(try RepoPersistenceStore().loadStrict(from: inventory).first, config)
+        var expected = config
+        expected.vaultFolderName = "notes-renamed"
+        XCTAssertEqual(try RepoPersistenceStore().loadStrict(from: inventory).first, expected,
+                       "Only the folder name changes; persisted Git state is kept")
         let retained = try await LocalGitService(localURL: renamed).repoInfo()
         XCTAssertEqual(retained.commitSHA, sha)
         XCTAssertEqual(retained.changeCount, 1)
@@ -13510,16 +13510,23 @@ final class NameValidationTests: XCTestCase {
         try "0123456789012345678901234567890123456789\n".write(to: git.appendingPathComponent("refs/heads/main"), atomically: true, encoding: .utf8)
         XCTAssertNotNil(state.cloneTargetConflict(dir, repoID: vault.id))
 
-        // The same repository in another URL form is still this vault's.
+        // The same repository in another URL form is still this vault's. With
+        // commits it is an intact working copy (issue #50): reconnected by
+        // clone, never replaced.
         try reset()
-        try fm.createDirectory(at: git, withIntermediateDirectories: true)
+        try fm.createDirectory(at: git.appendingPathComponent("refs/heads"), withIntermediateDirectories: true)
+        try "0123456789012345678901234567890123456789\n".write(to: git.appendingPathComponent("refs/heads/main"), atomically: true, encoding: .utf8)
         try "note".write(to: dir.appendingPathComponent("a.md"), atomically: true, encoding: .utf8)
         for form in ["git@github.com:owner/notes.git", "ssh://git@github.com/owner/notes",
                      "https://cody@github.com/owner/notes/", "https://github.com/OWNER/notes"] {
             try "[remote \"origin\"]\n\turl = \(form)\n".write(to: config, atomically: true, encoding: .utf8)
-            XCTAssertNil(state.cloneTargetConflict(dir, repoID: vault.id), form)
+            XCTAssertEqual(state.cloneTargetAssessment(dir, repoID: vault.id), .existingWorkingCopy, form)
+            XCTAssertNotNil(state.cloneTargetConflict(dir, repoID: vault.id), form)
         }
         try "[remote \"origin\"]\n\turl = git@github.com:owner/other.git\n".write(to: config, atomically: true, encoding: .utf8)
         XCTAssertNotNil(state.cloneTargetConflict(dir, repoID: vault.id))
+        guard case .conflict = state.cloneTargetAssessment(dir, repoID: vault.id) else {
+            return XCTFail("A different repository is never this vault's working copy")
+        }
     }
 }

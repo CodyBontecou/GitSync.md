@@ -23,6 +23,7 @@
 		AA2001002FAA000100AA0001 /* Citadel in Frameworks */ = {isa = PBXBuildFile; productRef = AA2001002FAA000100AA0002 /* Citadel */; };
 		AA3001002FAA000100AA0001 /* Notelet in Frameworks */ = {isa = PBXBuildFile; productRef = AA3001002FAA000100AA0002 /* Notelet */; };
 		F01D00000000000000000001 /* FolderGitServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F01D00000000000000000004 /* FolderGitServiceTests.swift */; };
+		E5050000000000000000A001 /* Issue50WorkingCopyRecoveryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5050000000000000000A002 /* Issue50WorkingCopyRecoveryTests.swift */; };
 		F01D00000000000000000002 /* GitHubRepositoryPublisherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F01D00000000000000000005 /* GitHubRepositoryPublisherTests.swift */; };
 		A9B1C0DE0000000000000001 /* AppUnlockStoreKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B1C0DE0000000000000002 /* AppUnlockStoreKitTests.swift */; };
 		F01D00000000000000000003 /* FolderPublicationCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F01D00000000000000000006 /* FolderPublicationCoordinatorTests.swift */; };
@@ -81,6 +82,7 @@
 		B6C100000000000000000002 /* BackgroundProcessingSchedulerTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BackgroundProcessingSchedulerTests.swift; sourceTree = "<group>"; };
 		E70D88DABEB05A34746D5412 /* SyncMDUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SyncMDUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F01D00000000000000000004 /* FolderGitServiceTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FolderGitServiceTests.swift; sourceTree = "<group>"; };
+		E5050000000000000000A002 /* Issue50WorkingCopyRecoveryTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Issue50WorkingCopyRecoveryTests.swift; sourceTree = "<group>"; };
 		F01D00000000000000000005 /* GitHubRepositoryPublisherTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GitHubRepositoryPublisherTests.swift; sourceTree = "<group>"; };
 		A9B1C0DE0000000000000002 /* AppUnlockStoreKitTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppUnlockStoreKitTests.swift; sourceTree = "<group>"; };
 		F01D00000000000000000006 /* FolderPublicationCoordinatorTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FolderPublicationCoordinatorTests.swift; sourceTree = "<group>"; };
@@ -173,6 +175,7 @@
 				A9B1C0DE0000000000000002 /* AppUnlockStoreKitTests.swift */,
 				F01D00000000000000000004 /* FolderGitServiceTests.swift */,
 				D37A00000000000000000002 /* GitTrackingRemovalServiceTests.swift */,
+				E5050000000000000000A002 /* Issue50WorkingCopyRecoveryTests.swift */,
 			);
 			name = SyncMDTests;
 			path = SyncMDTests;
@@ -448,6 +451,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				336367C9178D693793FC2E54 /* SyncMDTests.swift in Sources */,
+				E5050000000000000000A001 /* Issue50WorkingCopyRecoveryTests.swift in Sources */,
 				B6C100000000000000000001 /* BackgroundProcessingSchedulerTests.swift in Sources */,
 				F01D00000000000000000003 /* FolderPublicationCoordinatorTests.swift in Sources */,
 				F01D00000000000000000002 /* GitHubRepositoryPublisherTests.swift in Sources */,

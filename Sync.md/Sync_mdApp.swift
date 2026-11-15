@@ -178,8 +178,10 @@ struct Sync_mdApp: App {
                 guard !MarketingCapture.usesSeededData || MarketingCapture.allowsFixtureStatusRefresh else { return }
                 #endif
 
-                // Re-validate repos when returning to foreground —
-                // the user may have deleted files via the Files app.
+                // Follow folders that moved while suspended (issue #50), then
+                // re-validate repos — the user may have renamed or deleted
+                // files via the Files app.
+                appState.refreshVaultBookmarks()
                 appState.validateClonedRepos()
 
                 // Refresh change counts for repos that are still cloned, but

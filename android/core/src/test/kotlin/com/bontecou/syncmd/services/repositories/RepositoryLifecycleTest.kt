@@ -66,6 +66,33 @@ class RepositoryLifecycleTest {
         assertThat(File(occupied, "important.md").readText()).isEqualTo("Unsynced notes")
     }
 
+    // Issue #50 (iOS deleted this case): an intact working copy of the very
+    // same remote, with an unpushed commit and an unsaved edit, must never be
+    // replaced by a re-clone. Android refuses any existing destination.
+    @Test fun `clone refuses an intact same-remote working copy and keeps its commits and edits`() = runBlocking {
+        val root = repo()
+        val remote = File(root.parentFile, "sample-remote.git").toURI().toString()
+        val parent = temporary.newFolder("clones")
+        val existing = File(parent, "repo")
+        assertThat(SafeCloneService(LocalGitRepository()).clone(remote, existing.path, Credentials.None).isSuccess).isTrue()
+        val unpushed = Git.open(existing).use { git ->
+            File(existing, "unpushed.md").writeText("Committed locally, never pushed")
+            git.add().addFilepattern("unpushed.md").call()
+            git.commit().setMessage("Unpushed").setAuthor("Tests", "tests@example.com").setCommitter("Tests", "tests@example.com").call().name
+        }
+        File(existing, "draft.md").writeText("Unsaved draft")
+
+        val result = SafeCloneService(LocalGitRepository()).clone(remote, existing.path, Credentials.None)
+
+        assertThat(result.isFailure).isTrue()
+        assertThat(result.exceptionOrNull()?.message).contains("No files were deleted")
+        Git.open(existing).use { assertThat(it.repository.resolve("HEAD").name).isEqualTo(unpushed) }
+        assertThat(File(existing, "unpushed.md").readText()).isEqualTo("Committed locally, never pushed")
+        assertThat(File(existing, "draft.md").readText()).isEqualTo("Unsaved draft")
+        assertThat(discovery.inspect(existing.path).branch).isEqualTo("main")
+        assertThat(parent.listFiles()!!.none { it.name.startsWith(".gitsync-clone-") }).isTrue()
+    }
+
     @Test fun `clone publishes a validated working copy and removes its staging directory`() = runBlocking {
         val root = repo()
         val parent = temporary.newFolder("clones")
