@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 """Enforce the QA notes and evidence rules in CLAUDE.md.
 
-  qa_hygiene.py check   [--base REF] [--offline]   fail on layout, header, size, file-type and stale-status problems
-  qa_hygiene.py cleanup [--days 90] [--offline]    print the "QA cleanup" issue body (Markdown) to stdout
+  qa_hygiene.py check   [--base REF] [--offline] [--root DIR]   fail on layout, header, size, file-type and stale-status problems
+  qa_hygiene.py cleanup [--days 90]  [--offline] [--root DIR]   print the "QA cleanup" issue body (Markdown) to stdout
+
+Only files git would commit are checked: tracked files plus untracked files
+that are not gitignored. Ignored scratch/ output and local logs are skipped.
 
 GitHub lookups (PR and issue state) use the `gh` CLI. If `gh` is missing, not
 authenticated or the API fails, those checks are skipped with a warning; the
@@ -24,6 +27,7 @@ HEADER_KEYS = ('status', 'covers', 'tested', 'updated')
 FOLDER_RE = re.compile(r'^\d{4}-\d{2}-\d{2}-[a-z0-9]+(?:-[a-z0-9]+)*$')
 REF_RE = re.compile(r'^(pr|issue)#([1-9]\d*)$')
 SHA_RE = re.compile(r'^[0-9a-f]{40}$')
+DATE_RE = re.compile(r'^\d{4}-\d{2}-\d{2}$')
 FORBIDDEN_NAME_RES = (
     (re.compile(r'\.log(\.gz)?$', re.I), 'raw log file; record the CI run ID and result in the README instead'),
     (re.compile(r'\.incomplete\.', re.I), 'unfinished recording'),
@@ -31,7 +35,7 @@ FORBIDDEN_NAME_RES = (
 )
 LEGACY_RES = (
     (re.compile(r'^docs/evidence/'), 'legacy docs/evidence/ folder'),
-    (re.compile(r'^docs/[^/]+-qa\.md$'), 'top-level docs/*-qa.md file'),
+    (re.compile(r'^docs/[^/]+-qa(?:-\d{8})?\.md$'), 'top-level docs/*-qa.md or docs/*-qa-<date>.md file'),
 )
 
 
@@ -60,7 +64,7 @@ class Report:
 
 def parse_header(text):
     """Return (fields, problem). fields maps key -> raw string value."""
-    lines = text.splitlines()
+    lines = text.lstrip('\ufeff').splitlines()
     if not lines or lines[0].strip() != '---':
         return None, 'README.md must start with a `---` header block'
     fields = {}
@@ -73,7 +77,13 @@ def parse_header(text):
         key, sep, value = line.partition(':')
         if not sep:
             return None, f'header line is not `key: value`: {line!r}'
-        fields[key.strip()] = value.strip()
+        key = key.strip()
+        if key in fields:
+            return None, f'header has `{key}` twice'
+        value = value.strip()
+        if len(value) >= 2 and value[0] == value[-1] and value[0] in '"\'':
+            value = value[1:-1].strip()
+        fields[key] = value
     return None, 'header block is not closed with `---`'
 
 
@@ -111,6 +121,8 @@ def validate_header(fields, rel, report, today):
     updated = fields.get('updated')
     if updated is not None:
         try:
+            if not DATE_RE.match(updated):
+                raise ValueError(updated)
             day = dt.date.fromisoformat(updated)
             if day > today + dt.timedelta(days=1):
                 report.error(rel, f'updated {updated} is in the future')
@@ -124,7 +136,8 @@ def validate_header(fields, rel, report, today):
 class GitHub:
     """Looks up PR/issue state with `gh api`. Disables itself on the first failure."""
 
-    def __init__(self, offline, report):
+    def __init__(self, offline, report, root):
+        self.root = root  # gh expands {owner}/{repo} from the git remote of its working directory
         self.available = not offline
         self.report = report
         self.cache = {}
@@ -140,13 +153,14 @@ class GitHub:
         try:
             out = subprocess.run(
                 ['gh', 'api', f'repos/{self.repo}/issues/{number}'],
-                capture_output=True, text=True, timeout=30)
+                capture_output=True, text=True, timeout=30, cwd=self.root)
         except (OSError, subprocess.TimeoutExpired) as exc:
             return self._disable(f'gh unavailable ({exc})')
         if out.returncode != 0:
             msg = (out.stderr or out.stdout).strip().splitlines()
             msg = msg[-1] if msg else f'exit {out.returncode}'
-            if 'Not Found' in msg or '404' in msg:
+            # 404: never existed (or no access); 410: deleted. Either way it can't be covered.
+            if any(code in msg for code in ('Not Found', '404', 'Gone', '410')):
                 self.cache[number] = {'state': 'missing', 'closed_at': None, 'is_pr': kind == 'pr'}
                 return self.cache[number]
             return self._disable(f'GitHub API failed ({msg})')
@@ -182,23 +196,33 @@ def git(root, *args):
     return out.stdout
 
 
-def qa_folders(root):
+def committable_files(root, prefix):
+    """Files under prefix/ that git would commit: tracked, or untracked and not ignored."""
+    out = git(root, 'ls-files', '-z', '--cached', '--others', '--exclude-standard', '--', prefix)
+    paths = {root / p for p in out.split('\0') if p}
+    return sorted(p for p in paths if p.is_file())  # --cached still lists files deleted in the work tree
+
+
+def qa_files(root):
+    return committable_files(root, QA_DIR)
+
+
+def qa_folders(root, files=None):
     base = root / QA_DIR
-    if not base.is_dir():
-        return []
-    return sorted(p for p in base.iterdir() if p.is_dir())
+    files = qa_files(root) if files is None else files
+    return sorted({base / p.relative_to(base).parts[0] for p in files if len(p.relative_to(base).parts) > 1})
 
 
-def folder_files(folder):
-    return sorted(p for p in folder.rglob('*') if p.is_file())
+def folder_files(folder, files):
+    return [p for p in files if folder in p.parents]
 
 
-def read_folder(folder, root, report, today):
+def read_folder(folder, root, report, today, files):
     """Validate one docs/qa/<dir>/ and return (status, refs) or (None, None)."""
     rel = folder.relative_to(root).as_posix()
     if not FOLDER_RE.match(folder.name):
         report.error(rel, 'folder name must be <YYYY-MM-DD>-<slug>, lowercase, e.g. 2026-11-15-pr68-dotfiles-index-lock')
-    for path in folder_files(folder):
+    for path in folder_files(folder, files):
         prel = path.relative_to(root).as_posix()
         if 'scratch' in path.relative_to(folder).parts[:-1]:
             report.error(prel, 'scratch/ output must not be committed')
@@ -209,7 +233,7 @@ def read_folder(folder, root, report, today):
         if size > MAX_BYTES:
             report.error(prel, f'{size / MAX_BYTES:.1f} MB is over the 1 MB limit; downscale or crop it')
     readme = folder / 'README.md'
-    if not readme.is_file():
+    if readme not in files:
         report.error(rel, 'missing README.md')
         return None, None
     rrel = readme.relative_to(root).as_posix()
@@ -221,36 +245,58 @@ def read_folder(folder, root, report, today):
 
 
 def changed_paths(root, base, filters):
-    out = git(root, 'diff', '--name-only', f'--diff-filter={filters}', '-M', f'{base}...HEAD')
-    return [line for line in out.splitlines() if line]
+    """Return [(status, old_path, new_path)] for base...HEAD, with rename detection."""
+    out = git(root, 'diff', '--name-status', '-z', f'--diff-filter={filters}', '-M', f'{base}...HEAD')
+    fields = out.split('\0')
+    result = []
+    i = 0
+    while i < len(fields) and fields[i]:
+        status = fields[i][0]
+        if status in 'RC':
+            result.append((status, fields[i + 1], fields[i + 2]))
+            i += 3
+        else:
+            result.append((status, fields[i + 1], fields[i + 1]))
+            i += 2
+    return result
+
+
+def legacy_reason(path):
+    for regex, why in LEGACY_RES:
+        if regex.search(path):
+            return why
+    return None
 
 
 def check(args):
     root = Path(args.root).resolve()
     today = dt.date.today()
     report = Report()
-    gh = GitHub(args.offline, report)
+    gh = GitHub(args.offline, report, root)
 
     touched = set()
     if args.base:
         try:
-            for path in changed_paths(root, args.base, 'ACR'):
-                for regex, why in LEGACY_RES:
-                    if regex.search(path):
-                        report.error(path, f'new file in {why}; put QA under {QA_DIR}/<YYYY-MM-DD>-<ref>-<slug>/')
-            touched = {p for p in changed_paths(root, args.base, 'ACMRD') if p.startswith(QA_DIR + '/')}
+            for status, old, new in changed_paths(root, args.base, 'ACR'):
+                why = legacy_reason(new)
+                # Renaming or reorganizing files already in a legacy location adds nothing new.
+                if why and not (status == 'R' and legacy_reason(old)):
+                    report.error(new, f'new file in {why}; put QA under {QA_DIR}/<YYYY-MM-DD>-<ref>-<slug>/')
+            touched = {p for _, old, new in changed_paths(root, args.base, 'ACMRD')
+                       for p in (old, new) if p.startswith(QA_DIR + '/')}
         except RuntimeError as exc:
             report.error('.', str(exc))
 
     base = root / QA_DIR
-    if base.is_dir():
-        for path in sorted(base.iterdir()):
-            if path.is_file():
-                report.error(path.relative_to(root).as_posix(), f'files directly under {QA_DIR}/ are not allowed; use a folder')
+    files = qa_files(root)
+    for path in files:
+        if path.parent == base:
+            report.error(path.relative_to(root).as_posix(), f'files directly under {QA_DIR}/ are not allowed; use a folder')
 
-    for folder in qa_folders(root):
+    folders = qa_folders(root, files)
+    for folder in folders:
         rel = folder.relative_to(root).as_posix()
-        status, refs = read_folder(folder, root, report, today)
+        status, refs = read_folder(folder, root, report, today, files)
         if status != 'active' or not refs:
             continue
         states = [gh.state(kind, n) for kind, n in refs]
@@ -272,7 +318,7 @@ def check(args):
                 report.warn(f'{rel}/README.md', msg)
 
     report.emit()
-    n = len(qa_folders(root))
+    n = len(folders)
     print(f'qa-hygiene: {n} QA folder(s), {len(report.errors)} error(s), {len(report.warnings)} warning(s)')
     return 1 if report.errors else 0
 
@@ -296,12 +342,13 @@ def cleanup(args):
     root = Path(args.root).resolve()
     today = dt.date.today()
     report = Report()
-    gh = GitHub(args.offline, report)
+    gh = GitHub(args.offline, report, root)
     rows = []
     unknown = []
-    for folder in qa_folders(root):
+    files = qa_files(root)
+    for folder in qa_folders(root, files):
         rel = folder.relative_to(root).as_posix()
-        status, refs = read_folder(folder, root, report, today)
+        status, refs = read_folder(folder, root, report, today, files)
         reason = None
         if status in ('closed', 'superseded'):
             reason = f'status: {status}'
@@ -316,14 +363,14 @@ def cleanup(args):
                     reason = f'all covered refs closed for {age} days (last {last}, status: {status})'
         if reason:
             covers = ', '.join(f'{k}#{n}' for k, n in refs or [])
-            rows.append((rel, covers or '—', reason, tree_size(folder)))
+            rows.append((rel, covers or '—', reason, sum(p.stat().st_size for p in folder_files(folder, files))))
 
     legacy = []
     docs = root / 'docs'
     if (docs / 'evidence').is_dir():
         legacy += sorted(p for p in (docs / 'evidence').iterdir())
     if docs.is_dir():
-        legacy += sorted(p for p in docs.glob('*-qa.md'))
+        legacy += sorted(p for p in docs.glob('*.md') if legacy_reason(p.relative_to(root).as_posix()))
     repo = os.environ.get('GITHUB_REPOSITORY')
     rules = f'[CLAUDE.md](https://github.com/{repo}/blob/main/CLAUDE.md#cleanup)' if repo else 'CLAUDE.md'
 
@@ -359,15 +406,20 @@ def cleanup(args):
 
 
 def main(argv=None):
-    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('--root', default='.', help='repository root (default: .)')
-    parser.add_argument('--offline', action='store_true', help='skip GitHub PR/issue lookups')
+    # --root and --offline work before or after the subcommand.
+    common = argparse.ArgumentParser(add_help=False)
+    common.add_argument('--root', default=argparse.SUPPRESS, help='repository root (default: .)')
+    common.add_argument('--offline', action='store_true', default=argparse.SUPPRESS, help='skip GitHub PR/issue lookups')
+    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter,
+                                     parents=[common])
     sub = parser.add_subparsers(dest='cmd', required=True)
-    c = sub.add_parser('check')
+    c = sub.add_parser('check', parents=[common])
     c.add_argument('--base', help='base ref to diff against, e.g. origin/main (enables new-legacy-file checks)')
-    k = sub.add_parser('cleanup')
+    k = sub.add_parser('cleanup', parents=[common])
     k.add_argument('--days', type=int, default=90)
     args = parser.parse_args(argv)
+    args.root = getattr(args, 'root', '.')
+    args.offline = getattr(args, 'offline', False)
     return check(args) if args.cmd == 'check' else cleanup(args)
 
 

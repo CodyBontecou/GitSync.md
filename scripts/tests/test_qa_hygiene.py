@@ -9,6 +9,7 @@ import tempfile
 import unittest
 from unittest import mock
 
+REAL_RUN = subprocess.run  # qa.subprocess is this module, so patches below replace it too
 CHECKER = Path(__file__).resolve().parents[1] / 'qa_hygiene.py'
 spec = importlib.util.spec_from_file_location('qa_hygiene', CHECKER)
 qa = importlib.util.module_from_spec(spec)
@@ -170,12 +171,106 @@ class CheckTests(unittest.TestCase):
         self.repo.write('docs/qa/2026-11-15-pr68-x/README.md', GOOD)
         self.repo.commit()
         failed = subprocess.CompletedProcess([], 1, '', 'gh: To use GitHub CLI, please run: gh auth login')
-        with mock.patch.object(qa.subprocess, 'run', side_effect=lambda cmd, **kw: failed if cmd[0] == 'gh' else subprocess.run(cmd, **kw)):
+        with mock.patch.object(qa.subprocess, 'run', side_effect=lambda cmd, **kw: failed if cmd[0] == 'gh' else REAL_RUN(cmd, **kw)):
             out = io.StringIO()
             with contextlib.redirect_stdout(out):
                 rc = qa.main(['--root', str(self.repo.root), 'check'])
         self.assertEqual(rc, 0, out.getvalue())
         self.assertIn('WARNING: docs/qa: skipping PR/issue state checks', out.getvalue())
+
+
+    def test_dated_legacy_qa_name_fails(self):
+        self.repo.write('docs/ios-new-qa-20261120.md', 'x')
+        self.repo.write('docs/background-sync-validation.md', 'x')  # not a QA file name
+        self.repo.commit()
+        rc, out = self.repo.run('check', '--base', 'main')
+        self.assertEqual(rc, 1)
+        self.assertIn('docs/ios-new-qa-20261120.md: new file in top-level', out)
+        self.assertNotIn('background-sync-validation', out)
+
+    def test_renames_within_legacy_pass_but_moves_into_legacy_fail(self):
+        self.repo.write('docs/notes.md', 'some unrelated notes that are long enough to be detected as a rename\n' * 5)
+        self.repo.commit('add notes')
+        self.repo.git('mv', 'docs/evidence/old', 'docs/evidence/renamed')
+        self.repo.git('mv', 'docs/notes.md', 'docs/evidence/renamed/notes.md')
+        self.repo.commit('move')
+        rc, out = self.repo.run('check', '--base', 'main')
+        self.assertEqual(rc, 1, out)
+        self.assertNotIn('shot.png', out)
+        self.assertIn('docs/evidence/renamed/notes.md: new file in legacy', out)
+
+    def test_gitignored_files_are_skipped(self):
+        self.repo.write('.gitignore', 'docs/qa/**/scratch/\ndocs/qa/**/*.log\n')
+        d = 'docs/qa/2026-11-15-pr68-x'
+        self.repo.write(f'{d}/README.md', GOOD)
+        self.repo.commit()
+        self.repo.write(f'{d}/scratch/tmp.png', b'\0' * (qa.MAX_BYTES + 1))
+        self.repo.write(f'{d}/run.log', 'x')
+        self.repo.write('docs/qa/2026-11-15-only-ignored/scratch/a.png', 'x')
+        self.repo.write(f'{d}/untracked.log.gz', 'x')  # untracked but not ignored: still checked
+        rc, out = self.repo.run('check', '--base', 'main')
+        self.assertEqual(rc, 1, out)
+        self.assertIn('untracked.log.gz: raw log', out)
+        for needle in ('scratch', 'run.log', 'only-ignored'):
+            self.assertNotIn(needle, out)
+
+    def test_options_after_subcommand(self):
+        self.repo.write('docs/qa/2026-11-15-pr68-x/README.md', GOOD)
+        self.repo.commit()
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            rc = qa.main(['check', '--offline', '--root', str(self.repo.root), '--base', 'main'])
+        self.assertEqual(rc, 0, out.getvalue())
+        self.assertIn('1 QA folder(s)', out.getvalue())
+
+    def test_header_tolerates_bom_and_quotes_but_not_duplicates(self):
+        self.repo.write('docs/qa/2026-11-15-bom/README.md', '\ufeff' + GOOD.replace('status: active', 'status: "active"'))
+        self.repo.write('docs/qa/2026-11-15-dup/README.md', GOOD.replace('updated:', 'status: merged\nupdated:'))
+        self.repo.write('docs/qa/2026-11-15-compact-date/README.md', GOOD.replace('2026-11-15', '20261115'))
+        self.repo.commit()
+        rc, out = self.repo.run('check')
+        self.assertEqual(rc, 1)
+        self.assertNotIn('bom', out)
+        self.assertIn('2026-11-15-dup/README.md: header has `status` twice', out)
+        self.assertIn("2026-11-15-compact-date/README.md: updated '20261115' must be a YYYY-MM-DD date", out)
+
+    def test_github_state_parsing(self):
+        self.repo.write('docs/qa/2026-11-15-pr68-x/README.md', GOOD.replace('[pr#68, issue#65]', '[pr#68, issue#65, pr#99]'))
+        self.repo.write('docs/qa/2026-11-15-pr70-y/README.md', GOOD.replace('[pr#68, issue#65]', '[pr#70, issue#71]'))
+        self.repo.commit()
+        api = {
+            '68': (0, '{"state": "closed", "closed_at": "2026-11-10T00:00:00Z", '
+                      '"pull_request": {"merged_at": "2026-11-10T00:00:00Z"}}', ''),
+            '65': (0, '{"state": "closed", "closed_at": "2026-11-11T00:00:00Z"}', ''),
+            '99': (1, '', 'gh: Not Found (HTTP 404)'),
+            '70': (0, '{"state": "open", "closed_at": null, "pull_request": {"merged_at": null}}', ''),
+            '71': (1, '', 'gh: This issue was deleted (HTTP 410)'),
+        }
+        calls = []
+
+        def fake(cmd, **kw):
+            if cmd[0] != 'gh':
+                return REAL_RUN(cmd, **kw)
+            calls.append(kw.get('cwd'))
+            rc, so, se = api[cmd[-1].rsplit('/', 1)[1]]
+            return subprocess.CompletedProcess(cmd, rc, so, se)
+
+        with mock.patch.object(qa.subprocess, 'run', side_effect=fake), \
+                mock.patch.dict(os.environ, {'GITHUB_REPOSITORY': 'o/r'}):
+            out = io.StringIO()
+            with contextlib.redirect_stdout(out):
+                rc = qa.main(['--root', str(self.repo.root), 'check'])
+        out = out.getvalue()
+        self.assertEqual(rc, 1, out)
+        self.assertIn('pr#99, which does not exist', out)
+        self.assertIn('issue#71, which does not exist', out)
+        self.assertNotIn('skipping', out)
+        self.assertEqual(set(calls), {self.repo.root.resolve()})
+        gh = qa.GitHub(False, qa.Report(), self.repo.root)
+        with mock.patch.object(qa.subprocess, 'run', side_effect=fake):
+            self.assertEqual(gh.state('pr', 68), {'state': 'merged', 'closed_at': qa.dt.date(2026, 11, 10), 'is_pr': True})
+            self.assertEqual(gh.state('issue', 65), {'state': 'closed', 'closed_at': qa.dt.date(2026, 11, 11), 'is_pr': False})
+            self.assertEqual(gh.state('pr', 70)['state'], 'open')
 
 
 class CleanupTests(unittest.TestCase):

@@ -7,8 +7,8 @@ Screenshots, Argent receipts and QA write-ups belong in the repo, but each one m
 ### Where it goes
 
 - Each piece of QA work gets one folder: `docs/qa/<YYYY-MM-DD>-<pr|issue><number>-<slug>/`, for example `docs/qa/2026-11-15-pr68-dotfiles-index-lock/`. For QA not tied to a PR or issue, use a slug alone, such as `docs/qa/2026-11-13-issue-relevance/`.
-- The write-up is that folder's `README.md`. Evidence (screenshots, Argent JSON receipts, short logs, e2e YAML) sits next to it, in subfolders if needed.
-- Don't add new top-level `docs/*-qa.md` files or `docs/evidence/<dir>/` folders.
+- The write-up is that folder's `README.md`. Evidence (screenshots, Argent JSON receipts, short log excerpts saved as `.txt`, e2e YAML) sits next to it, in subfolders if needed.
+- Don't add new top-level `docs/*-qa.md` or `docs/*-qa-<YYYYMMDD>.md` files, or files under `docs/evidence/`. Editing, moving out of, or deleting existing legacy files is fine.
 
 ### Required header
 
@@ -36,10 +36,10 @@ updated: YYYY-MM-DD
 
 ### What never gets committed
 
-- Raw CI logs (`*.log`, `*.log.gz` from GitHub Actions). Record the run ID and result in the README or a small JSON receipt instead.
+- Log files (`*.log`, `*.log.gz`), including raw CI logs. Record the run ID and result in the README or a small JSON receipt instead, and save any short excerpt you need as `.txt`.
 - Any single evidence file over 1 MB. Downscale screenshots (Argent's default 0.25 scale is fine) or crop them.
 - Secrets, tokens, signing material, personal data, real user vault content or real repository names. Use the owned fixtures (`syncmd-uitest-fixtures/*`).
-- Unfinished recordings (`*.incomplete.*`) and scratch output. Put scratch files under a `scratch/` folder, which is gitignored.
+- Unfinished recordings (`*.incomplete.*`) and scratch output. Put scratch files under a `scratch/` folder, which is gitignored. The check skips gitignored files, so local scratch output doesn't fail it.
 
 ### Cleanup
 
