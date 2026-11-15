@@ -6,7 +6,7 @@ Screenshots, Argent receipts and QA write-ups belong in the repo, but each one m
 
 ### Where it goes
 
-- Each piece of QA work gets one folder: `docs/qa/<YYYY-MM-DD>-<pr|issue><number>-<slug>/`, for example `docs/qa/2026-11-15-pr68-dotfiles-index-lock/`. For QA not tied to a PR or issue, use a slug alone, such as `docs/qa/2026-11-13-issue-relevance/`.
+- Each piece of QA work gets one folder: `docs/qa/<YYYY-MM-DD>-<pr|issue><number>-<slug>/`, for example `docs/qa/2026-11-15-pr68-dotfiles-index-lock/`. For QA not tied to a single PR or issue, use a slug alone, such as `docs/qa/2026-11-13-issue-relevance/`. The header must still name what the QA covers, so open an issue or PR for QA work rather than committing it straight to main.
 - The write-up is that folder's `README.md`. Evidence (screenshots, Argent JSON receipts, short log excerpts saved as `.txt`, e2e YAML) sits next to it, in subfolders if needed.
 - Don't add new top-level `docs/*-qa.md` or `docs/*-qa-<YYYYMMDD>.md` files, or files under `docs/evidence/`. Editing, moving out of, or deleting existing legacy files is fine.
 
