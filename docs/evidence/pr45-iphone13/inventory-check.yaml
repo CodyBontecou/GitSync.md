@@ -1,0 +1,7 @@
+executionPrerequisite: The separate QA app is on its fixture vault after completing qa-pr45-checkout-attention; Working tree needs attention is visible.
+steps:
+  - await: { visible: { text: Working tree needs attention } }
+  - tap: { id: BackButton }
+  - await: { visible: { id: home.addRepository } }
+  - await: { idle: true }
+  - await: { visible: { text: All 1, role: Button } }

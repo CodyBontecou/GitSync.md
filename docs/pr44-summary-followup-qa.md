@@ -1,5 +1,7 @@
 # PR44 cancellation summary follow-up
 
+**Final update:** exactceaba19 merged normally as738043efbf88fd2bb549e71795115754f701a6b7 after fresh CI43553368905 (532 total/two explicit hosted StoreKit skips/zero failures), guard43553368894, actual checkoutd0dc186/treeeb945ed5 and Release/privacy/StoreKit-exclusion audit. Issue39 left open. `pr44-acceptance-reaudit.md` explains actual criteria versus unobserved optional review requests; no human approval or cancelled-host wording is claimed. Pending-CI/draft statements below record the earlier commit-time state.
+
 ## Concrete findings, not approval-count padding
 
 Rechecked issue39's actual four acceptance criteria: explicit localized cancellation; queued/pre-execution/pre-mutation cancellation with cleared activity and manual retry; UI/automation mapping without raw Swift errors; post-update attention/new-SHA preservation. The user goal itself does not require26 human signoffs or an iOS result dialog after Stop has discarded that result. Human approval and that displayed wording remain **unobserved**, not silently declared passed.

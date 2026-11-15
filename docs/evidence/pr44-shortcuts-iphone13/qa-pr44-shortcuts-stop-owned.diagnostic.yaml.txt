@@ -1,0 +1,7 @@
+# Recovery only: cancel ONLY the owned QA shortcut currently open in its editor.
+steps:
+  - await: { visible: { text: 'PR44 QA Native Pull 20261113, Actions Menu', role: Button } }
+  - await: { visible: { text: Stop, role: Button } }
+  - tap: { text: Stop, role: Button }
+  - await: { hidden: { text: Stop, role: Button } }
+  - await: { idle: true }

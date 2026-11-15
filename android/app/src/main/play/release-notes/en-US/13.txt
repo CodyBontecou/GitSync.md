@@ -1,0 +1,2 @@
+• Fixed dialogs and bottom controls overlapping Android navigation and status bars.
+• Improved layouts in landscape and with larger text, including the vault check and widget picker.

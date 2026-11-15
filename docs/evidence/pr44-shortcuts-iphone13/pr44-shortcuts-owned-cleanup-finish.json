@@ -1,0 +1,15 @@
+{
+  "message": "Finished recording \"qa-pr44-shortcuts-owned-cleanup\" e2e test (4 steps)",
+  "path": "/tmp/gitsync-pr44-qa/.argent/e2e/qa-pr44-shortcuts-owned-cleanup.yaml",
+  "executionPrerequisite": "",
+  "steps": 4,
+  "summary": [
+    "1. tap: {\"text\":\"Select\"}",
+    "2. tap: {\"text\":\"PR44 QA No Entity Return\"}",
+    "3. tap: {\"text\":\"Delete\"}",
+    "4. tap: {\"text\":\"Delete Shortcut\"}"
+  ],
+  "e2eTestFile": "steps:\n  - tap:\n      text: Select\n  - tap:\n      text: PR44 QA No Entity Return\n  - tap:\n      text: Delete\n  - tap:\n      text: Delete Shortcut\n",
+  "flowFile": "steps:\n  - tap:\n      text: Select\n  - tap:\n      text: PR44 QA No Entity Return\n  - tap:\n      text: Delete\n  - tap:\n      text: Delete Shortcut\n",
+  "savedTo": "/tmp/gitsync-pr44-qa/.argent/e2e/qa-pr44-shortcuts-owned-cleanup.yaml"
+}

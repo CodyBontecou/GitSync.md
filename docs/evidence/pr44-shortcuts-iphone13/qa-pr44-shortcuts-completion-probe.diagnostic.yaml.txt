@@ -1,0 +1,11 @@
+# Diagnostic, not acceptance. Prerequisite: frontmost owned Shortcuts editor
+# PR44 QA Native Pull 20261113, one Pull Repository action from GitSync PR QA,
+# only the owned fixture in the isolated QA app's default inventory, no lease
+# intentionally held. No existing/user shortcut is created, edited or run here.
+steps:
+  - await: { visible: { text: 'PR44 QA Native Pull 20261113, Actions Menu', role: Button } }
+  - assert: { visible: { text: 'Pull , git-tools-fixture' } }
+  - tap: { text: play, role: Button }
+  - await: { visible: { text: Stop, role: Button } }
+  - await: { hidden: { text: Stop, role: Button }, timeout: 15000 }
+  - await: { idle: true }

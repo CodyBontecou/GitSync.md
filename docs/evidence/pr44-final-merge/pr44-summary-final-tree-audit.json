@@ -1,0 +1,15 @@
+{
+  "head": "ceaba19b2d1be59297e07985ae2073f20a7d23e0",
+  "base": "27146b7026de2e4960d812d4a071a45a122f9646",
+  "merge": "d0dc1863b26ffc89ce8919e089d196e9c3e47879",
+  "wholeTree": "eb945ed51c08788c6e8a7165776f559d9861434a",
+  "appTree": "93f9027f29040063903e802d7fa556f15d7044ce",
+  "checkoutVerifiedInCILog": true,
+  "ci": 43553368905,
+  "guard": 43553368894,
+  "hostedTotal": 532,
+  "explicitHostedStoreKitSkips": 2,
+  "failures": 0,
+  "releaseBuildPrivacyAndStorekitExclusionInspected": true,
+  "requiredChecksExitSuccess": true
+}

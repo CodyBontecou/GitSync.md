@@ -1,0 +1,13 @@
+{
+  "base": "27146b7026de2e4960d812d4a071a45a122f9646",
+  "head": "ab27ed44ac8b38537b1f4fcf86a483fc1d4799db",
+  "syntheticMerge": "f5a3b62028a6f79dff2207f8a8c710e7571cf7e7",
+  "parents": [
+    "27146b7026de2e4960d812d4a071a45a122f9646",
+    "ab27ed44ac8b38537b1f4fcf86a483fc1d4799db"
+  ],
+  "wholeTree": "b21e38889b430cc2df9ecb81af92525364d1faeb",
+  "treeEqual": true,
+  "checkoutVerifiedInCILog": true,
+  "shippingProjectIdentifiers": true
+}

@@ -1,0 +1,29 @@
+steps:
+  - tap:
+      id: BackButton
+  - tap:
+      text: Select
+  - tap:
+      text: PR44 QA Native Pull 20261113
+  - tap:
+      text: PR44 QA Native Status 20261113
+  - tap:
+      text: Delete
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Delete 2 Shortcuts
+        role: Button
+  - tap:
+      text: Delete 2 Shortcuts
+  - tool: await-ui-element
+    args:
+      condition: hidden
+      selector:
+        text: PR44 QA Native Pull 20261113
+  - tool: await-ui-element
+    args:
+      condition: hidden
+      selector:
+        text: PR44 QA Native Status 20261113

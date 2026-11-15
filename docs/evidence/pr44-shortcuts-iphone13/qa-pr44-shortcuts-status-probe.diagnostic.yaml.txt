@@ -1,0 +1,9 @@
+# Diagnostic only. Existing owned status shortcut editor must be frontmost;
+# isolated QA default inventory contains only the owned credential-free fixture.
+steps:
+  - await: { visible: { text: 'PR44 QA Native Status 20261113, Actions Menu', role: Button } }
+  - assert: { visible: { text: 'Get the status of , git-tools-fixture' } }
+  - tap: { text: play, role: Button }
+  - await: { visible: { text: Stop, role: Button } }
+  - await: { hidden: { text: Stop, role: Button }, timeout: 15000 }
+  - await: { idle: true }

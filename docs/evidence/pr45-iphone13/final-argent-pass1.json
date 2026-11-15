@@ -1,0 +1,206 @@
+{
+  "e2eTest": "qa-pr45-checkout-attention",
+  "flow": "qa-pr45-checkout-attention",
+  "device": "00008110-00046CC63CA0401E",
+  "executionPrerequisite": "",
+  "ok": true,
+  "passed": 22,
+  "failed": 0,
+  "skipped": 0,
+  "errored": 0,
+  "steps": [
+    {
+      "index": 0,
+      "kind": "launch",
+      "e2eTest": "qa-pr45-checkout-attention",
+      "status": "pass",
+      "durationMs": 6208,
+      "flow": "qa-pr45-checkout-attention"
+    },
+    {
+      "index": 1,
+      "kind": "await",
+      "e2eTest": "qa-pr45-checkout-attention",
+      "target": "visible \"git-tools-fixture, main · syncmd-uitest-fixtures/git-tools-fixture, 1 to pull\"",
+      "status": "pass",
+      "durationMs": 167,
+      "flow": "qa-pr45-checkout-attention"
+    },
+    {
+      "index": 2,
+      "kind": "idle",
+      "e2eTest": "qa-pr45-checkout-attention",
+      "status": "pass",
+      "durationMs": 2000,
+      "flow": "qa-pr45-checkout-attention"
+    },
+    {
+      "index": 3,
+      "kind": "tap",
+      "e2eTest": "qa-pr45-checkout-attention",
+      "target": "\"main · syncmd-uitest-fixtures/git-tools-fixture\"",
+      "status": "pass",
+      "durationMs": 1051,
+      "flow": "qa-pr45-checkout-attention"
+    },
+    {
+      "index": 4,
+      "kind": "await",
+      "e2eTest": "qa-pr45-checkout-attention",
+      "target": "visible id=vault.title",
+      "status": "pass",
+      "durationMs": 136,
+      "flow": "qa-pr45-checkout-attention"
+    },
+    {
+      "index": 5,
+      "kind": "idle",
+      "e2eTest": "qa-pr45-checkout-attention",
+      "status": "pass",
+      "durationMs": 1971,
+      "flow": "qa-pr45-checkout-attention"
+    },
+    {
+      "index": 6,
+      "kind": "await",
+      "e2eTest": "qa-pr45-checkout-attention",
+      "target": "visible \"No changes on this iPhone\"",
+      "status": "pass",
+      "durationMs": 112,
+      "flow": "qa-pr45-checkout-attention"
+    },
+    {
+      "index": 7,
+      "kind": "tap",
+      "e2eTest": "qa-pr45-checkout-attention",
+      "target": "\"Pull\"",
+      "status": "pass",
+      "durationMs": 981,
+      "flow": "qa-pr45-checkout-attention"
+    },
+    {
+      "index": 8,
+      "kind": "await",
+      "e2eTest": "qa-pr45-checkout-attention",
+      "target": "visible \"Working tree needs attention\"",
+      "status": "pass",
+      "durationMs": 99,
+      "flow": "qa-pr45-checkout-attention"
+    },
+    {
+      "index": 9,
+      "kind": "idle",
+      "e2eTest": "qa-pr45-checkout-attention",
+      "status": "pass",
+      "durationMs": 2566,
+      "flow": "qa-pr45-checkout-attention"
+    },
+    {
+      "index": 10,
+      "kind": "await",
+      "e2eTest": "qa-pr45-checkout-attention",
+      "target": "hidden \"No changes on this iPhone\"",
+      "status": "pass",
+      "durationMs": 117,
+      "flow": "qa-pr45-checkout-attention"
+    },
+    {
+      "index": 11,
+      "kind": "await",
+      "e2eTest": "qa-pr45-checkout-attention",
+      "target": "visible \"Git references updated, but the working tree checkout needs attention.\"",
+      "status": "pass",
+      "durationMs": 90,
+      "flow": "qa-pr45-checkout-attention"
+    },
+    {
+      "index": 12,
+      "kind": "tap",
+      "e2eTest": "qa-pr45-checkout-attention",
+      "target": "\"notes/hello.md, modified, 1 line added, 1 line removed\"",
+      "status": "pass",
+      "durationMs": 1022,
+      "flow": "qa-pr45-checkout-attention"
+    },
+    {
+      "index": 13,
+      "kind": "await",
+      "e2eTest": "qa-pr45-checkout-attention",
+      "target": "visible \"Open in editor\"",
+      "status": "pass",
+      "durationMs": 143,
+      "flow": "qa-pr45-checkout-attention"
+    },
+    {
+      "index": 14,
+      "kind": "idle",
+      "e2eTest": "qa-pr45-checkout-attention",
+      "status": "pass",
+      "durationMs": 3094,
+      "flow": "qa-pr45-checkout-attention"
+    },
+    {
+      "index": 15,
+      "kind": "await",
+      "e2eTest": "qa-pr45-checkout-attention",
+      "target": "visible \"Added: PR45 concurrent local edit preserved.\"",
+      "status": "pass",
+      "durationMs": 113,
+      "flow": "qa-pr45-checkout-attention"
+    },
+    {
+      "index": 16,
+      "kind": "tap",
+      "e2eTest": "qa-pr45-checkout-attention",
+      "target": "\"Whole file\"",
+      "status": "pass",
+      "durationMs": 1007,
+      "flow": "qa-pr45-checkout-attention"
+    },
+    {
+      "index": 17,
+      "kind": "await",
+      "e2eTest": "qa-pr45-checkout-attention",
+      "target": "\"PR45 concurrent local edit preserved.\" equals \"PR45 concurrent local edit preserved.\"",
+      "status": "pass",
+      "durationMs": 128,
+      "flow": "qa-pr45-checkout-attention"
+    },
+    {
+      "index": 18,
+      "kind": "idle",
+      "e2eTest": "qa-pr45-checkout-attention",
+      "status": "pass",
+      "durationMs": 1403,
+      "flow": "qa-pr45-checkout-attention"
+    },
+    {
+      "index": 19,
+      "kind": "tap",
+      "e2eTest": "qa-pr45-checkout-attention",
+      "target": "id=BackButton",
+      "status": "pass",
+      "durationMs": 1011,
+      "flow": "qa-pr45-checkout-attention"
+    },
+    {
+      "index": 20,
+      "kind": "await",
+      "e2eTest": "qa-pr45-checkout-attention",
+      "target": "visible \"Working tree needs attention\"",
+      "status": "pass",
+      "durationMs": 133,
+      "flow": "qa-pr45-checkout-attention"
+    },
+    {
+      "index": 21,
+      "kind": "idle",
+      "e2eTest": "qa-pr45-checkout-attention",
+      "status": "pass",
+      "durationMs": 2003,
+      "flow": "qa-pr45-checkout-attention"
+    }
+  ],
+  "startedAt": 1794581568424,
+  "durationMs": 25556
+}

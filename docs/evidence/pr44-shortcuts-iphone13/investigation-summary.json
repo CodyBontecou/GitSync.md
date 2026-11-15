@@ -1,0 +1,36 @@
+{
+  "candidateDylibSHA256": "68fe868e9ae63baf169757ac979acb4227c520a1034468eebe65cd05af733b6a",
+  "mainControlDylibSHA256": "061ef840d8c235ec5b305651621024dd7f23291a712d3d173e8e68499cbe6d88",
+  "candidatePullTimeoutMs": 15000,
+  "candidateFreshNormalPullTimeoutMs": 15000,
+  "candidateStatusTimeoutMs": 15000,
+  "mainControlStatusTimeoutMs": 15000,
+  "result": "SHORTCUTS_HOST_GATE_NOT_MET",
+  "attribution": "not established; baseline main status control also stalls",
+  "rootCause": "Prior timeout was an invalid AX-only oracle: actual hosted result awaited Done. No AppIntent runtime stall established.",
+  "defaultInventoryCleanup": "created owned file reset to empty list; readback verified",
+  "ownedTemporaryShortcutsDeleted": 2,
+  "candidateRestored": true,
+  "workingAndGitFilesPreserved": 28,
+  "productSourceChanges": false,
+  "priorStopTimeoutInterpretation": "RETRACTED: hosted result dialog omitted from AX; waiting for Done is not an AppIntent stall",
+  "candidatePullVisualResult": "Already up to date with Done",
+  "baselineStatusVisualResult": "main / one changed file with Done",
+  "noEntityActualResult": "No cloned repositories, acknowledged Done, then independent return-chain sentinel",
+  "fullCancellationHostAcceptance": "OS Stop/data/lease/explicit-retry observed twice; no claim of visible interrupted-dialog wording on canceled OS workflow",
+  "ownedTemporaryShortcutsCurrentlyPresent": [],
+  "noEntityWorkflowRunning": false,
+  "actualQueuedStopRuns": 2,
+  "nativeFilesIdenticalBeforeThroughStopAndAfterReleaseBeforeExplicitRetry": 28,
+  "explicitRetryChangedFilesEachRun": [
+    ".git/FETCH_HEAD"
+  ],
+  "nativeRetryHeads": [
+    "25e6bf6608596aced697ecc92c60cd76ec59d89b",
+    "003bc178cd362200d26961ce4335c0bcb97ffc60"
+  ],
+  "initialDelayedStopAttempt": "OS timeout; preserved, not counted as a successful Stop",
+  "automatedTwoConsecutiveE2ePassesClaimed": false,
+  "qaDefaultInventoryFinal": [],
+  "workflowOrRecorderRunning": false
+}

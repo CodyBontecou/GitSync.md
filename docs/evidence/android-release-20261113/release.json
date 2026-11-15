@@ -1,0 +1,27 @@
+{
+  "source_commit": "c3d12c011f3cbb1ab310180c0ba7c69afefcea0e",
+  "version_name": "1.1.2",
+  "version_code": 13,
+  "application_id": "com.bontecou.syncmd",
+  "aab_sha256": "4fa4d82434cd1574797d3ccdc681e77e608f0de9f9e4e4e32c2462854bf69a8a",
+  "unit_tests": {
+    "core": 717,
+    "app_release": 192,
+    "failures": 0
+  },
+  "lint": {
+    "errors": 0,
+    "warnings": 603
+  },
+  "status": "changes_in_review",
+  "local_changes": [
+    "android/app/build.gradle.kts",
+    "android/app/src/main/play/release-notes/en-US/13.txt"
+  ],
+  "google_play_quick_checks": "running; submission proceeds automatically when checks pass",
+  "managed_publishing": false,
+  "rollout_percentage": 100,
+  "store_warning": "Native debug symbols not uploaded",
+  "console_url": "https://play.google.com/console/u/1/developers/8478281120215349264/app/4973274085693465738/publishing",
+  "submitted_date": "2026-11-13"
+}
