@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Git lock recovery (#66) and fetch feedback (#67). -->
+<resources>
+    <string name="git_lock_title">Git 索引已锁定</string>
+    <string name="git_lock_body">index.lock 存在时，Git 无法暂存、提交或拉取。它通常是在操作被中断时遗留下来的，例如 Android 挂起了应用。</string>
+    <string name="git_lock_remove">移除锁</string>
+    <string name="git_lock_confirm_title">移除 Git 索引锁？</string>
+    <string name="git_lock_confirm_body">仅当目前没有其他 Git 应用正在使用此文件夹时才执行此操作。你的文件和提交不会被更改。</string>
+    <string name="gitops_lock_in_use">锁已更改或刚刚创建，可能有其他 Git 应用正在使用此仓库。请关闭其他 Git 应用，等待几秒后重试。</string>
+    <string name="gitops_repository_locked">Git 索引已锁定。如果没有其他程序在使用此仓库，请在 Git 页面轻点“移除锁”。</string>
+    <string name="git_fetch_up_to_date">已是最新。远程没有新的提交。</string>
+    <plurals name="git_fetch_new_commits">
+        <item quantity="other">远程有 %d 个新提交。请拉取以应用它们。</item>
+    </plurals>
+    <plurals name="git_fetch_diverged">
+        <item quantity="other">远程有 %d 个新提交，且此分支也有本地提交。请合并或变基以协调更改。</item>
+    </plurals>
+</resources>

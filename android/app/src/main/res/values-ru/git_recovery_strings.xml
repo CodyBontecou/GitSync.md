@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Git lock recovery (#66) and fetch feedback (#67). -->
+<resources>
+    <string name="git_lock_title">Индекс Git заблокирован</string>
+    <string name="git_lock_body">Git не может индексировать, коммитить или выполнять Pull, пока существует index.lock. Обычно этот файл остаётся после прерывания операции, например когда Android приостанавливает приложение.</string>
+    <string name="git_lock_remove">Снять блокировку</string>
+    <string name="git_lock_confirm_title">Снять блокировку индекса Git?</string>
+    <string name="git_lock_confirm_body">Делайте это, только если сейчас эту папку не использует другое Git-приложение. Ваши файлы и коммиты не изменятся.</string>
+    <string name="gitops_lock_in_use">Блокировка изменилась или только что создана — возможно, этот репозиторий использует другое Git-приложение. Закройте другие Git-приложения, подождите несколько секунд и повторите попытку.</string>
+    <string name="gitops_repository_locked">Индекс Git заблокирован. Если этот репозиторий больше ничем не используется, нажмите «Снять блокировку» на экране Git.</string>
+    <string name="git_fetch_up_to_date">Актуально. В удалённом репозитории нет новых коммитов.</string>
+    <plurals name="git_fetch_new_commits">
+        <item quantity="one">%d новый коммит в удалённом репозитории. Выполните Pull, чтобы применить его.</item>
+        <item quantity="few">%d новых коммита в удалённом репозитории. Выполните Pull, чтобы применить их.</item>
+        <item quantity="many">%d новых коммитов в удалённом репозитории. Выполните Pull, чтобы применить их.</item>
+        <item quantity="other">%d нового коммита в удалённом репозитории. Выполните Pull, чтобы применить их.</item>
+    </plurals>
+    <plurals name="git_fetch_diverged">
+        <item quantity="one">%d новый коммит в удалённом репозитории, а в этой ветке есть и локальные коммиты. Выполните merge или rebase, чтобы согласовать изменения.</item>
+        <item quantity="few">%d новых коммита в удалённом репозитории, а в этой ветке есть и локальные коммиты. Выполните merge или rebase, чтобы согласовать изменения.</item>
+        <item quantity="many">%d новых коммитов в удалённом репозитории, а в этой ветке есть и локальные коммиты. Выполните merge или rebase, чтобы согласовать изменения.</item>
+        <item quantity="other">%d нового коммита в удалённом репозитории, а в этой ветке есть и локальные коммиты. Выполните merge или rebase, чтобы согласовать изменения.</item>
+    </plurals>
+</resources>

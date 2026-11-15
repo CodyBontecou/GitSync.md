@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Git lock recovery (#66) and fetch feedback (#67). -->
+<resources>
+    <string name="git_lock_title">Indeks Git Terkunci</string>
+    <string name="git_lock_body">Git tidak dapat melakukan stage, commit, atau pull selama index.lock ada. File ini biasanya tertinggal saat operasi terputus, misalnya ketika Android menangguhkan aplikasi.</string>
+    <string name="git_lock_remove">Hapus Kunci</string>
+    <string name="git_lock_confirm_title">Hapus kunci indeks Git?</string>
+    <string name="git_lock_confirm_body">Lakukan ini hanya jika tidak ada aplikasi Git lain yang sedang menggunakan folder ini. File dan commit Anda tidak diubah.</string>
+    <string name="gitops_lock_in_use">Kunci berubah atau baru saja dibuat, jadi aplikasi Git lain mungkin sedang menggunakan repositori ini. Tutup aplikasi Git lain, tunggu beberapa detik, lalu coba lagi.</string>
+    <string name="gitops_repository_locked">Indeks Git terkunci. Jika tidak ada lagi yang menggunakan repositori ini, ketuk Hapus Kunci di layar Git.</string>
+    <string name="git_fetch_up_to_date">Sudah terbaru. Tidak ada commit baru di remote.</string>
+    <plurals name="git_fetch_new_commits">
+        <item quantity="other">%d commit baru di remote. Lakukan pull untuk menerapkannya.</item>
+    </plurals>
+    <plurals name="git_fetch_diverged">
+        <item quantity="other">%d commit baru di remote, dan branch ini juga memiliki commit lokal. Gunakan merge atau rebase untuk merekonsiliasi.</item>
+    </plurals>
+</resources>

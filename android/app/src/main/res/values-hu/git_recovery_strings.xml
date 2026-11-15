@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Git lock recovery (#66) and fetch feedback (#67). -->
+<resources>
+    <string name="git_lock_title">Git-index zárolva</string>
+    <string name="git_lock_body">A Git nem tud stage-elni, commitolni vagy lekérni, amíg az index.lock létezik. Általában akkor marad vissza, ha egy művelet megszakad, például amikor az Android felfüggeszti az alkalmazást.</string>
+    <string name="git_lock_remove">Zárolás eltávolítása</string>
+    <string name="git_lock_confirm_title">Eltávolítod a Git-index zárolását?</string>
+    <string name="git_lock_confirm_body">Csak akkor tedd ezt, ha most egyetlen másik Git-alkalmazás sem használja ezt a mappát. A fájljaid és commitjaid nem változnak.</string>
+    <string name="gitops_lock_in_use">A zárolás megváltozott vagy most jött létre, ezért lehet, hogy egy másik Git-alkalmazás használja ezt a tárolót. Zárd be a többi Git-alkalmazást, várj néhány másodpercet, majd próbáld újra.</string>
+    <string name="gitops_repository_locked">A Git-index zárolva van. Ha semmi más nem használja ezt a tárolót, koppints a Git képernyőn a Zárolás eltávolítása gombra.</string>
+    <string name="git_fetch_up_to_date">Naprakész. Nincs új commit a távoli tárolóban.</string>
+    <plurals name="git_fetch_new_commits">
+        <item quantity="one">%d új commit a távoli tárolóban. Végezz lekérést (Pull) az alkalmazásához.</item>
+        <item quantity="other">%d új commit a távoli tárolóban. Végezz lekérést (Pull) az alkalmazásukhoz.</item>
+    </plurals>
+    <plurals name="git_fetch_diverged">
+        <item quantity="one">%d új commit a távoli tárolóban, és ennek az ágnak helyi commitjai is vannak. Használj merge-et vagy rebase-t az összehangoláshoz.</item>
+        <item quantity="other">%d új commit a távoli tárolóban, és ennek az ágnak helyi commitjai is vannak. Használj merge-et vagy rebase-t az összehangoláshoz.</item>
+    </plurals>
+</resources>

@@ -106,6 +106,8 @@ fun GitRemoteScreen(
             onMerge = { sheet = RemoteSheet.MERGE }, onRebase = { onNavigate(GitDestination.Rebase) },
             onPush = push, onPull = pull, onUpstream = { sheet = RemoteSheet.UPSTREAM })
 
+        GitRecoveryNotes(pullVM, pullContext)
+
         attention?.takeIf { pullContext != null }?.let { notice ->
             M3Note(notice, Modifier.padding(start = 16.dp, end = 16.dp, top = 12.dp).testTag("pull-lfs-attention")) {
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {

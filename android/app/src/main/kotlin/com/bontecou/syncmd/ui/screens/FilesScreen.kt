@@ -149,6 +149,9 @@ fun FilesScreen(
     val openFailed = stringResource(R.string.files_m3_open_in_failed)
     val fetchFailed = stringResource(R.string.files_m3_fetch_failed)
     val fetchedText = state.fetched?.let { stringResource(R.string.files_m3_fetched, it) }
+    // Seed the folder's view model before it first lists, so `.obsidian/` keeps the choice (issue #65).
+    val showHidden = com.bontecou.syncmd.storage.FileBrowserPreferences.showHidden(context).collectAsState().value ?: false
+    LaunchedEffect(showHidden) { viewModel.setShowHidden(showHidden) }
     LaunchedEffect(repositoryPath, directory) { viewModel.open(repositoryPath, directory) }
     com.bontecou.syncmd.ui.util.RepositoryUpdatesEffect(repositoryPath) { viewModel.open(repositoryPath, directory) }
     LaunchedEffect(state.fetchFailed) { if (state.fetchFailed) { snackbar.showSnackbar(fetchFailed); viewModel.clearError() } }
@@ -175,7 +178,7 @@ fun FilesScreen(
                         M3IconButton(R.drawable.ic_m3_more_vert, stringResource(R.string.ui_more_d47d7cb0), { overflow = true }, Modifier.testTag("files-more"))
                         M3DropdownMenu(expanded = overflow, onDismissRequest = { overflow = false }) {
                             M3MenuItem(stringResource(if (state.showHidden) R.string.files_hide_hidden else R.string.files_show_hidden),
-                                { overflow = false; viewModel.toggleHidden() }, Modifier.testTag("files-hidden-toggle"),
+                                { overflow = false; com.bontecou.syncmd.storage.FileBrowserPreferences.setShowHidden(context, !state.showHidden) }, Modifier.testTag("files-hidden-toggle"),
                                 icon = R.drawable.ic_m3_visibility, enabled = !state.isMutating)
                             M3MenuItem(stringResource(R.string.ui_refresh_0e916101), { overflow = false; viewModel.refresh() },
                                 icon = R.drawable.ic_m3_refresh, enabled = !state.isLoading && !state.isMutating)

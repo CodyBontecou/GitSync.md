@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Git lock recovery (#66) and fetch feedback (#67). -->
+<resources>
+    <string name="git_lock_title">Індекс Git заблоковано</string>
+    <string name="git_lock_body">Git не може індексувати, комітити чи виконувати Pull, доки існує index.lock. Зазвичай цей файл залишається після переривання операції, наприклад коли Android призупиняє застосунок.</string>
+    <string name="git_lock_remove">Зняти блокування</string>
+    <string name="git_lock_confirm_title">Зняти блокування індексу Git?</string>
+    <string name="git_lock_confirm_body">Робіть це, лише якщо зараз жоден інший Git-застосунок не використовує цю папку. Ваші файли й коміти не зміняться.</string>
+    <string name="gitops_lock_in_use">Блокування змінилося або щойно створене — можливо, цей репозиторій використовує інший Git-застосунок. Закрийте інші Git-застосунки, зачекайте кілька секунд і повторіть спробу.</string>
+    <string name="gitops_repository_locked">Індекс Git заблоковано. Якщо цей репозиторій більше нічим не використовується, торкніться «Зняти блокування» на екрані Git.</string>
+    <string name="git_fetch_up_to_date">Актуально. У віддаленому репозиторії немає нових комітів.</string>
+    <plurals name="git_fetch_new_commits">
+        <item quantity="one">%d новий коміт у віддаленому репозиторії. Виконайте Pull, щоб застосувати його.</item>
+        <item quantity="few">%d нові коміти у віддаленому репозиторії. Виконайте Pull, щоб застосувати їх.</item>
+        <item quantity="many">%d нових комітів у віддаленому репозиторії. Виконайте Pull, щоб застосувати їх.</item>
+        <item quantity="other">%d нового коміту у віддаленому репозиторії. Виконайте Pull, щоб застосувати їх.</item>
+    </plurals>
+    <plurals name="git_fetch_diverged">
+        <item quantity="one">%d новий коміт у віддаленому репозиторії, а в цій гілці є й локальні коміти. Виконайте merge або rebase, щоб узгодити зміни.</item>
+        <item quantity="few">%d нові коміти у віддаленому репозиторії, а в цій гілці є й локальні коміти. Виконайте merge або rebase, щоб узгодити зміни.</item>
+        <item quantity="many">%d нових комітів у віддаленому репозиторії, а в цій гілці є й локальні коміти. Виконайте merge або rebase, щоб узгодити зміни.</item>
+        <item quantity="other">%d нового коміту у віддаленому репозиторії, а в цій гілці є й локальні коміти. Виконайте merge або rebase, щоб узгодити зміни.</item>
+    </plurals>
+</resources>

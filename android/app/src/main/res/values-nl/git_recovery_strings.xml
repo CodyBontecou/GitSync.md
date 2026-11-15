@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Git lock recovery (#66) and fetch feedback (#67). -->
+<resources>
+    <string name="git_lock_title">Git-index vergrendeld</string>
+    <string name="git_lock_body">Git kan niet stagen, committen of pullen zolang index.lock bestaat. Dit bestand blijft meestal achter als een bewerking wordt onderbroken, bijvoorbeeld wanneer Android de app pauzeert.</string>
+    <string name="git_lock_remove">Vergrendeling verwijderen</string>
+    <string name="git_lock_confirm_title">Git-indexvergrendeling verwijderen?</string>
+    <string name="git_lock_confirm_body">Doe dit alleen als geen andere Git-app deze map nu gebruikt. Uw bestanden en commits worden niet gewijzigd.</string>
+    <string name="gitops_lock_in_use">De vergrendeling is gewijzigd of net aangemaakt, dus mogelijk gebruikt een andere Git-app deze repository. Sluit andere Git-apps, wacht een paar seconden en probeer het opnieuw.</string>
+    <string name="gitops_repository_locked">De Git-index is vergrendeld. Als niets anders deze repository gebruikt, tik dan op ‘Vergrendeling verwijderen’ in het Git-scherm.</string>
+    <string name="git_fetch_up_to_date">Bijgewerkt. Geen nieuwe commits op de remote.</string>
+    <plurals name="git_fetch_new_commits">
+        <item quantity="one">%d nieuwe commit op de remote. Pull om die toe te passen.</item>
+        <item quantity="other">%d nieuwe commits op de remote. Pull om ze toe te passen.</item>
+    </plurals>
+    <plurals name="git_fetch_diverged">
+        <item quantity="one">%d nieuwe commit op de remote, en deze branch heeft ook lokale commits. Gebruik merge of rebase om ze samen te voegen.</item>
+        <item quantity="other">%d nieuwe commits op de remote, en deze branch heeft ook lokale commits. Gebruik merge of rebase om ze samen te voegen.</item>
+    </plurals>
+</resources>

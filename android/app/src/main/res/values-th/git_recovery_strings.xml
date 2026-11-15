@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Git lock recovery (#66) and fetch feedback (#67). -->
+<resources>
+    <string name="git_lock_title">ดัชนี Git ถูกล็อก</string>
+    <string name="git_lock_body">Git ไม่สามารถสเตจ คอมมิต หรือพุลได้ขณะที่มี index.lock อยู่ ไฟล์นี้มักค้างอยู่เมื่อการทำงานถูกขัดจังหวะ เช่น เมื่อ Android พักแอป</string>
+    <string name="git_lock_remove">ลบการล็อก</string>
+    <string name="git_lock_confirm_title">ลบการล็อกดัชนี Git ไหม</string>
+    <string name="git_lock_confirm_body">ทำสิ่งนี้เฉพาะเมื่อไม่มีแอป Git อื่น กำลังใช้โฟลเดอร์นี้อยู่ ไฟล์และคอมมิตของคุณจะไม่เปลี่ยนแปลง</string>
+    <string name="gitops_lock_in_use">การล็อกเปลี่ยนไปหรือเพิ่งถูกสร้าง จึงอาจมีแอป Git อื่นกำลังใช้รีโพสิทอรีนี้อยู่ ปิดแอป Git อื่น รอสักครู่ แล้วลองอีกครั้ง</string>
+    <string name="gitops_repository_locked">ดัชนี Git ถูกล็อก หากไม่มีสิ่งอื่นใช้รีโพสิทอรีนี้อยู่ ให้แตะ ลบการล็อก ในหน้าจอ Git</string>
+    <string name="git_fetch_up_to_date">เป็นปัจจุบันแล้ว ไม่มีคอมมิตใหม่บนรีโมท</string>
+    <plurals name="git_fetch_new_commits">
+        <item quantity="other">มีคอมมิตใหม่ %d รายการบนรีโมท พุลเพื่อนำไปใช้</item>
+    </plurals>
+    <plurals name="git_fetch_diverged">
+        <item quantity="other">มีคอมมิตใหม่ %d รายการบนรีโมท และแบรนช์นี้ก็มีคอมมิตในเครื่องด้วย ใช้การผสานหรือรีเบสเพื่อปรับให้ตรงกัน</item>
+    </plurals>
+</resources>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Git lock recovery (#66) and fetch feedback (#67). -->
+<resources>
+    <string name="git_lock_title">Git-index låst</string>
+    <string name="git_lock_body">Git kan inte stagea, committa eller pulla så länge index.lock finns. Den blir oftast kvar när en åtgärd avbryts, till exempel när Android pausar appen.</string>
+    <string name="git_lock_remove">Ta bort låset</string>
+    <string name="git_lock_confirm_title">Ta bort Git-indexlåset?</string>
+    <string name="git_lock_confirm_body">Gör bara detta om ingen annan Git-app använder den här mappen just nu. Dina filer och commits ändras inte.</string>
+    <string name="gitops_lock_in_use">Låset har ändrats eller skapades nyss, så en annan Git-app kanske använder det här repositoryt. Stäng andra Git-appar, vänta några sekunder och försök igen.</string>
+    <string name="gitops_repository_locked">Git-indexet är låst. Om inget annat använder det här repositoryt trycker du på Ta bort låset på Git-skärmen.</string>
+    <string name="git_fetch_up_to_date">Uppdaterat. Inga nya commits på fjärren.</string>
+    <plurals name="git_fetch_new_commits">
+        <item quantity="one">%d ny commit på fjärren. Gör en pull för att tillämpa den.</item>
+        <item quantity="other">%d nya commits på fjärren. Gör en pull för att tillämpa dem.</item>
+    </plurals>
+    <plurals name="git_fetch_diverged">
+        <item quantity="one">%d ny commit på fjärren, och den här grenen har även lokala commits. Använd merge eller rebase för att jämka samman dem.</item>
+        <item quantity="other">%d nya commits på fjärren, och den här grenen har även lokala commits. Använd merge eller rebase för att jämka samman dem.</item>
+    </plurals>
+</resources>

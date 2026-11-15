@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Git lock recovery (#66) and fetch feedback (#67). -->
+<resources>
+    <string name="git_lock_title">Git Dizini Kilitli</string>
+    <string name="git_lock_body">index.lock var olduğu sürece Git hazırlama, commit veya pull yapamaz. Genellikle bir işlem yarıda kaldığında, örneğin Android uygulamayı askıya aldığında geride kalır.</string>
+    <string name="git_lock_remove">Kilidi Kaldır</string>
+    <string name="git_lock_confirm_title">Git dizin kilidi kaldırılsın mı?</string>
+    <string name="git_lock_confirm_body">Bunu yalnızca şu anda başka bir Git uygulaması bu klasörü kullanmıyorsa yapın. Dosyalarınız ve commitleriniz değişmez.</string>
+    <string name="gitops_lock_in_use">Kilit değişti veya yeni oluşturuldu; bu depoyu başka bir Git uygulaması kullanıyor olabilir. Diğer Git uygulamalarını kapatın, birkaç saniye bekleyin ve yeniden deneyin.</string>
+    <string name="gitops_repository_locked">Git dizini kilitli. Bu depoyu başka hiçbir şey kullanmıyorsa Git ekranında Kilidi Kaldır’a dokunun.</string>
+    <string name="git_fetch_up_to_date">Güncel. Uzak depoda yeni commit yok.</string>
+    <plurals name="git_fetch_new_commits">
+        <item quantity="one">Uzak depoda %d yeni commit var. Uygulamak için pull yapın.</item>
+        <item quantity="other">Uzak depoda %d yeni commit var. Uygulamak için pull yapın.</item>
+    </plurals>
+    <plurals name="git_fetch_diverged">
+        <item quantity="one">Uzak depoda %d yeni commit var ve bu dalda yerel commitler de var. Uzlaştırmak için merge veya rebase kullanın.</item>
+        <item quantity="other">Uzak depoda %d yeni commit var ve bu dalda yerel commitler de var. Uzlaştırmak için merge veya rebase kullanın.</item>
+    </plurals>
+</resources>
