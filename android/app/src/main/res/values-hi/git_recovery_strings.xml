@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Git lock recovery (#66) and fetch feedback (#67). -->
+<resources>
+    <string name="git_lock_title">Git इंडेक्स लॉक है</string>
+    <string name="git_lock_body">जब तक index.lock मौजूद है, Git स्टेज, कमिट या पुल नहीं कर सकता। यह आमतौर पर तब रह जाता है जब कोई ऑपरेशन बीच में रुक जाता है, जैसे जब Android ऐप को निलंबित कर देता है।</string>
+    <string name="git_lock_remove">लॉक हटाएँ</string>
+    <string name="git_lock_confirm_title">Git इंडेक्स लॉक हटाएँ?</string>
+    <string name="git_lock_confirm_body">ऐसा केवल तभी करें जब अभी कोई दूसरा Git ऐप इस फ़ोल्डर का उपयोग न कर रहा हो। आपकी फ़ाइलें और कमिट नहीं बदलेंगे।</string>
+    <string name="gitops_lock_in_use">लॉक बदल गया है या अभी-अभी बना है, इसलिए हो सकता है कोई दूसरा Git ऐप इस रिपॉज़िटरी का उपयोग कर रहा हो। दूसरे Git ऐप बंद करें, कुछ सेकंड प्रतीक्षा करें, फिर दोबारा कोशिश करें।</string>
+    <string name="gitops_repository_locked">Git इंडेक्स लॉक है। अगर कोई और इस रिपॉज़िटरी का उपयोग नहीं कर रहा है, तो Git स्क्रीन पर लॉक हटाएँ पर टैप करें।</string>
+    <string name="git_fetch_up_to_date">अप टू डेट। रिमोट पर कोई नया कमिट नहीं है।</string>
+    <plurals name="git_fetch_new_commits">
+        <item quantity="one">रिमोट पर %d नया कमिट है। इसे लागू करने के लिए पुल करें।</item>
+        <item quantity="other">रिमोट पर %d नए कमिट हैं। इन्हें लागू करने के लिए पुल करें।</item>
+    </plurals>
+    <plurals name="git_fetch_diverged">
+        <item quantity="one">रिमोट पर %d नया कमिट है, और इस ब्रांच में भी स्थानीय कमिट हैं। मिलाने के लिए मर्ज या रीबेस करें।</item>
+        <item quantity="other">रिमोट पर %d नए कमिट हैं, और इस ब्रांच में भी स्थानीय कमिट हैं। मिलाने के लिए मर्ज या रीबेस करें।</item>
+    </plurals>
+</resources>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Git lock recovery (#66) and fetch feedback (#67). -->
+<resources>
+    <string name="git_lock_title">Indice Git bloccato</string>
+    <string name="git_lock_body">Git non può eseguire stage, commit o pull finché esiste index.lock. Di solito resta quando un’operazione viene interrotta, ad esempio quando Android sospende l’app.</string>
+    <string name="git_lock_remove">Rimuovi blocco</string>
+    <string name="git_lock_confirm_title">Rimuovere il blocco dell’indice Git?</string>
+    <string name="git_lock_confirm_body">Fallo solo se nessun’altra app Git sta usando questa cartella in questo momento. I tuoi file e commit non vengono modificati.</string>
+    <string name="gitops_lock_in_use">Il blocco è cambiato o è stato appena creato, quindi un’altra app Git potrebbe usare questo repository. Chiudi le altre app Git, attendi qualche secondo e riprova.</string>
+    <string name="gitops_repository_locked">L’indice Git è bloccato. Se nient’altro sta usando questo repository, tocca «Rimuovi blocco» nella schermata Git.</string>
+    <string name="git_fetch_up_to_date">Aggiornato. Nessun nuovo commit sul remoto.</string>
+    <plurals name="git_fetch_new_commits">
+        <item quantity="one">%d nuovo commit sul remoto. Esegui il pull per applicarlo.</item>
+        <item quantity="many">%d nuovi commit sul remoto. Esegui il pull per applicarli.</item>
+        <item quantity="other">%d nuovi commit sul remoto. Esegui il pull per applicarli.</item>
+    </plurals>
+    <plurals name="git_fetch_diverged">
+        <item quantity="one">%d nuovo commit sul remoto, e questo branch ha anche commit locali. Esegui merge o rebase per riconciliare.</item>
+        <item quantity="many">%d nuovi commit sul remoto, e questo branch ha anche commit locali. Esegui merge o rebase per riconciliare.</item>
+        <item quantity="other">%d nuovi commit sul remoto, e questo branch ha anche commit locali. Esegui merge o rebase per riconciliare.</item>
+    </plurals>
+</resources>

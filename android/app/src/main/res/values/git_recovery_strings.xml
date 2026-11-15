@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Git lock recovery (#66) and fetch feedback (#67). -->
+<resources>
+    <string name="git_lock_title">Git index locked</string>
+    <string name="git_lock_body">Git can\'t stage, commit, or pull while index.lock exists. It is usually left behind when an operation is interrupted, for example when Android stops the app.</string>
+    <string name="git_lock_remove">Remove lock</string>
+    <string name="git_lock_confirm_title">Remove the Git index lock?</string>
+    <string name="git_lock_confirm_body">Only do this if no other Git app is using this folder right now. Your files and commits are not changed.</string>
+    <string name="gitops_lock_in_use">The lock changed or was just created, so another Git app may be using this repository. Close other Git apps, wait a few seconds, then try again.</string>
+    <string name="gitops_repository_locked">The Git index is locked. If nothing else is using this repository, tap Remove lock on the Git screen.</string>
+    <string name="git_fetch_up_to_date">Up to date. No new commits on the remote.</string>
+    <plurals name="git_fetch_new_commits">
+        <item quantity="one">%d new commit on the remote. Pull to apply it.</item>
+        <item quantity="other">%d new commits on the remote. Pull to apply them.</item>
+    </plurals>
+    <plurals name="git_fetch_diverged">
+        <item quantity="one">%d new commit on the remote, and this branch has local commits too. Merge or rebase to reconcile.</item>
+        <item quantity="other">%d new commits on the remote, and this branch has local commits too. Merge or rebase to reconcile.</item>
+    </plurals>
+</resources>

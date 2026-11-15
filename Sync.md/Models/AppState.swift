@@ -447,6 +447,12 @@ final class AppState {
     /// Vaults that tried to sync while offline; replayed when back online.
     var offlineQueue: [UUID: OfflineQueuedOperation] = [:]
     var currentToast: TideToastItem? = nil
+    /// Last fetch outcome per vault, shown inline in the Git sheet (whose
+    /// presentation covers the root toast host).
+    var fetchResultByRepo: [UUID: TideToastItem] = [:]
+    /// A lingering `index.lock` per vault (issue #66), surfaced with a
+    /// confirmed "Remove Lock" action instead of forcing a re-clone.
+    var indexLockByRepo: [UUID: GitIndexLockStatus] = [:]
     /// Background runs since the app was last in the foreground.
     var backgroundRunSummary: BackgroundRunSummary? = nil
     /// Vaults whose Background Sync stopped and need the user (merge etc.).
@@ -1223,6 +1229,8 @@ final class AppState {
                 }
             }
 
+            await refreshIndexLockStatus(repoID: repoID, vaultURL: vaultDir)
+
             let shouldRunAgain = pendingChangeDetection.remove(repoID) != nil
             changeDetectionInFlight.remove(repoID)
             if shouldRunAgain {
@@ -1231,18 +1239,140 @@ final class AppState {
         }
     }
 
-    func fetchRemote(repoID: UUID) async {
-        guard let repo = repo(id: repoID), repo.isCloned else { return }
-        if isDemoMode { return }
-        guard let vaultDir = vaultURLForOperation(for: repoID) else { return }
-        let gitService = gitRepositoryFactory(vaultDir)
-        guard gitService.hasGitDirectory else { return }
+    // MARK: - Stale index lock (issue #66)
+
+    func refreshIndexLockStatus(repoID: UUID, vaultURL url: URL? = nil) async {
+        guard !isDemoMode, let url = url ?? vaultURL(for: repoID) else {
+            indexLockByRepo[repoID] = nil
+            return
+        }
+        let status = await LocalGitService(localURL: url).indexLockStatus()
+        guard vaultURL(for: repoID) == url else { return }
+        indexLockByRepo[repoID] = status
+    }
+
+    /// Removes a lingering `index.lock` the user confirmed is stale. Runs under
+    /// the repository lease so it can never race an in-app Git operation, and
+    /// the service refuses a lock that changed or is brand new (another Git
+    /// app may be writing).
+    @discardableResult
+    func removeStaleIndexLock(repoID: UUID) async -> Bool {
+        guard let expected = indexLockByRepo[repoID] else { return true }
+        guard !(isSyncing && syncingRepoID == repoID),
+              (backgroundSyncFlightCounts[repoID] ?? 0) == 0 else {
+            showError(message: String(localized: "A sync is running for this vault. Wait for it to finish, then try again."))
+            return false
+        }
         do {
-            try await gitService.fetchRemote(pat: authPayload(for: repo))
-            detectChanges(repoID: repoID)
+            let serialized = try serializedRepository(repoID: repoID)
+            let url = try requireVaultURL(for: repoID)
+            try await serialized.withLease { _ in
+                try await LocalGitService(localURL: url).removeStaleIndexLock(expected: expected)
+            }
+            DebugLogger.shared.info("git", "Removed stale index.lock", detail: expected.lockPath)
+        } catch LocalGitError.indexLocked {
+            await refreshIndexLockStatus(repoID: repoID)
+            showError(message: String(localized: "The lock changed or was just created, so another Git app may be using this repository. Close other Git apps, wait a few seconds, then try again."))
+            return false
         } catch {
             showError(message: error.localizedDescription)
+            return false
         }
+        await refreshIndexLockStatus(repoID: repoID)
+        detectChanges(repoID: repoID)
+        showToast(TideToastItem(kind: .info, title: String(localized: "Lock removed"),
+                                detail: String(localized: "Git can use this repository again."), action: nil))
+        return indexLockByRepo[repoID] == nil
+    }
+
+    /// Fetches `origin` without touching the working copy, then refreshes the
+    /// branch inventory so ahead/behind counts reflect the new remote refs and
+    /// tells the user what the fetch found (issue #67: a successful fetch used
+    /// to finish with no visible change at all).
+    @discardableResult
+    func fetchRemote(repoID: UUID) async -> Bool {
+        guard let repo = repo(id: repoID), repo.isCloned else {
+            showError(message: LocalGitError.notCloned.localizedDescription)
+            return false
+        }
+        if isDemoMode {
+            showToast(TideToastItem(kind: .info, title: String(localized: "Up to date"),
+                                    detail: String(localized: "No new commits on the remote."), action: nil))
+            return true
+        }
+        if isOffline {
+            showError(message: String(localized: "You're offline. Connect to the internet to fetch."))
+            return false
+        }
+        guard !isSyncing else { return false }
+        guard let vaultDir = vaultURLForOperation(for: repoID) else { return false }
+        let gitService = gitRepositoryFactory(vaultDir)
+        guard gitService.hasGitDirectory else {
+            showError(message: LocalGitError.notCloned.localizedDescription)
+            return false
+        }
+
+        isSyncing = true
+        syncingRepoID = repoID
+        syncProgress = String(localized: "Fetching...")
+        defer {
+            isSyncing = false
+            syncingRepoID = nil
+            syncProgress = ""
+        }
+
+        do {
+            try await gitService.fetchRemote(pat: authPayload(for: repo))
+        } catch {
+            showError(message: error.localizedDescription)
+            return false
+        }
+
+        await loadBranches(repoID: repoID)
+        detectChanges(repoID: repoID)
+        scheduleWidgetSnapshot()
+
+        let current = branchesByRepo[repoID]?.local.first(where: \.isCurrent)
+        let result = Self.fetchResultToast(
+            branch: current?.shortName,
+            upstream: current?.upstreamShortName,
+            ahead: current?.aheadBy ?? 0,
+            behind: current?.behindBy ?? 0
+        )
+        fetchResultByRepo[repoID] = result
+        showToast(result)
+        return true
+    }
+
+    static func fetchResultToast(branch: String?, upstream: String?, ahead: Int, behind: Int) -> TideToastItem {
+        guard let branch, upstream != nil else {
+            return TideToastItem(
+                kind: .info,
+                title: String(localized: "Fetched"),
+                detail: String(localized: "This branch has no remote tracking branch to compare against."),
+                action: nil
+            )
+        }
+        if behind == 0 {
+            return TideToastItem(
+                kind: .info,
+                title: String(localized: "Up to date"),
+                detail: ahead > 0
+                    ? String(localized: "No new remote commits. \(branch) has \(ahead) local commit(s) to push.")
+                    : String(localized: "No new commits on the remote."),
+                action: nil
+            )
+        }
+        return TideToastItem(
+            kind: .info,
+            title: behind == 1
+                ? String(localized: "1 new commit")
+                : String(localized: "\(behind) new commits"),
+            detail: ahead > 0
+                ? String(localized: "\(branch) has diverged from the remote. Pull to reconcile.")
+                : String(localized: "Pull to update \(branch)."),
+            action: nil
+        )
     }
 
     func loadUnifiedDiff(repoID: UUID, path: String? = nil) async {
@@ -3209,6 +3339,7 @@ final class AppState {
             showError(message: String(localized: "Repository not found"))
             return false
         }
+        fetchResultByRepo[repoID] = nil
         isSyncing = true
         syncingRepoID = repoID
         syncProgress = String(localized: "Checking for updates...")

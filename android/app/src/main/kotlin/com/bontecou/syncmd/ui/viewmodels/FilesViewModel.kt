@@ -100,6 +100,13 @@ class FilesViewModel @Inject constructor(private val lfs: LfsRepository) : ViewM
         refresh()
     }
 
+    /** Applies the persisted app-wide preference; reloads only when it changes. */
+    fun setShowHidden(value: Boolean) {
+        if (_state.value.showHidden == value) return
+        _state.update { it.copy(showHidden = value) }
+        refresh()
+    }
+
     /** True when [name] is already taken in this folder (any case, hidden files included). */
     fun exists(name: String): Boolean {
         if (root.isBlank() || name.isBlank()) return false

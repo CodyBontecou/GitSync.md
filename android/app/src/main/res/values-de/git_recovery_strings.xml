@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Git lock recovery (#66) and fetch feedback (#67). -->
+<resources>
+    <string name="git_lock_title">Git-Index gesperrt</string>
+    <string name="git_lock_body">Git kann nicht stagen, committen oder pullen, solange index.lock existiert. Die Datei bleibt meist zurück, wenn ein Vorgang unterbrochen wird, zum Beispiel wenn Android die App anhält.</string>
+    <string name="git_lock_remove">Sperre entfernen</string>
+    <string name="git_lock_confirm_title">Git-Indexsperre entfernen?</string>
+    <string name="git_lock_confirm_body">Tun Sie dies nur, wenn gerade keine andere Git-App diesen Ordner verwendet. Ihre Dateien und Commits werden nicht verändert.</string>
+    <string name="gitops_lock_in_use">Die Sperre hat sich geändert oder wurde gerade erst erstellt, daher verwendet möglicherweise eine andere Git-App dieses Repository. Schließen Sie andere Git-Apps, warten Sie einige Sekunden und versuchen Sie es dann erneut.</string>
+    <string name="gitops_repository_locked">Der Git-Index ist gesperrt. Wenn nichts anderes dieses Repository verwendet, tippen Sie im Git-Bildschirm auf „Sperre entfernen“.</string>
+    <string name="git_fetch_up_to_date">Aktuell. Keine neuen Commits auf dem Remote.</string>
+    <plurals name="git_fetch_new_commits">
+        <item quantity="one">%d neuer Commit auf dem Remote. Führen Sie einen Pull aus, um ihn anzuwenden.</item>
+        <item quantity="other">%d neue Commits auf dem Remote. Führen Sie einen Pull aus, um sie anzuwenden.</item>
+    </plurals>
+    <plurals name="git_fetch_diverged">
+        <item quantity="one">%d neuer Commit auf dem Remote, und dieser Branch hat auch lokale Commits. Führen Sie einen Merge oder Rebase aus, um sie zusammenzuführen.</item>
+        <item quantity="other">%d neue Commits auf dem Remote, und dieser Branch hat auch lokale Commits. Führen Sie einen Merge oder Rebase aus, um sie zusammenzuführen.</item>
+    </plurals>
+</resources>

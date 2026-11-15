@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Git lock recovery (#66) and fetch feedback (#67). -->
+<resources>
+    <string name="git_lock_title">Git インデックスがロックされています</string>
+    <string name="git_lock_body">index.lock が存在する間、Git はステージ、コミット、プルを実行できません。通常、Android がアプリを一時停止したときなど、操作が中断されると残ります。</string>
+    <string name="git_lock_remove">ロックを削除</string>
+    <string name="git_lock_confirm_title">Git インデックスのロックを削除しますか？</string>
+    <string name="git_lock_confirm_body">このフォルダを今ほかの Git アプリが使用していない場合にのみ実行してください。ファイルやコミットは変更されません。</string>
+    <string name="gitops_lock_in_use">ロックが変更されたか、作成されたばかりのため、別の Git アプリがこのリポジトリを使用している可能性があります。ほかの Git アプリを閉じ、数秒待ってからもう一度お試しください。</string>
+    <string name="gitops_repository_locked">Git インデックスがロックされています。このリポジトリをほかに何も使用していない場合は、Git 画面で「ロックを削除」をタップしてください。</string>
+    <string name="git_fetch_up_to_date">最新です。リモートに新しいコミットはありません。</string>
+    <plurals name="git_fetch_new_commits">
+        <item quantity="other">リモートに新しいコミットが %d 件あります。プルして適用してください。</item>
+    </plurals>
+    <plurals name="git_fetch_diverged">
+        <item quantity="other">リモートに新しいコミットが %d 件あり、このブランチにもローカルコミットがあります。マージまたはリベースで調整してください。</item>
+    </plurals>
+</resources>

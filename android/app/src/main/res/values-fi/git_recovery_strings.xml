@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Git lock recovery (#66) and fetch feedback (#67). -->
+<resources>
+    <string name="git_lock_title">Git-indeksi lukittu</string>
+    <string name="git_lock_body">Git ei voi lisätä muutoksia, tehdä committia tai noutaa, kun index.lock on olemassa. Se jää yleensä jäljelle, kun toiminto keskeytyy, esimerkiksi kun Android keskeyttää sovelluksen.</string>
+    <string name="git_lock_remove">Poista lukitus</string>
+    <string name="git_lock_confirm_title">Poistetaanko Git-indeksin lukitus?</string>
+    <string name="git_lock_confirm_body">Tee tämä vain, jos mikään muu Git-sovellus ei käytä tätä kansiota juuri nyt. Tiedostojasi ja committejasi ei muuteta.</string>
+    <string name="gitops_lock_in_use">Lukitus on muuttunut tai se luotiin juuri, joten toinen Git-sovellus saattaa käyttää tätä repositoriota. Sulje muut Git-sovellukset, odota muutama sekunti ja yritä uudelleen.</string>
+    <string name="gitops_repository_locked">Git-indeksi on lukittu. Jos mikään muu ei käytä tätä repositoriota, napauta Git-näkymässä Poista lukitus.</string>
+    <string name="git_fetch_up_to_date">Ajan tasalla. Etäpalvelimella ei ole uusia committeja.</string>
+    <plurals name="git_fetch_new_commits">
+        <item quantity="one">%d uusi commit etäpalvelimella. Nouda muutokset ottaaksesi sen käyttöön.</item>
+        <item quantity="other">%d uutta committia etäpalvelimella. Nouda muutokset ottaaksesi ne käyttöön.</item>
+    </plurals>
+    <plurals name="git_fetch_diverged">
+        <item quantity="one">%d uusi commit etäpalvelimella, ja tällä haaralla on myös paikallisia committeja. Yhdistä ne merge- tai rebase-toiminnolla.</item>
+        <item quantity="other">%d uutta committia etäpalvelimella, ja tällä haaralla on myös paikallisia committeja. Yhdistä ne merge- tai rebase-toiminnolla.</item>
+    </plurals>
+</resources>

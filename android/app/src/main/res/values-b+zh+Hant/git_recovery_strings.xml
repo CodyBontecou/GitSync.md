@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Git lock recovery (#66) and fetch feedback (#67). -->
+<resources>
+    <string name="git_lock_title">Git 索引已鎖定</string>
+    <string name="git_lock_body">index.lock 存在時，Git 無法暫存、提交或拉取。它通常是在操作中斷時留下的，例如 Android 暫停了 App。</string>
+    <string name="git_lock_remove">移除鎖定</string>
+    <string name="git_lock_confirm_title">要移除 Git 索引鎖定嗎？</string>
+    <string name="git_lock_confirm_body">只有在目前沒有其他 Git App使用此資料夾時才執行此操作。你的檔案和提交不會被變更。</string>
+    <string name="gitops_lock_in_use">鎖定已變更或剛建立，可能有其他 Git App 正在使用此儲存庫。請關閉其他 Git App，等待幾秒後再試一次。</string>
+    <string name="gitops_repository_locked">Git 索引已鎖定。如果沒有其他程式在使用此儲存庫，請在 Git 畫面點一下「移除鎖定」。</string>
+    <string name="git_fetch_up_to_date">已是最新狀態。遠端沒有新的提交。</string>
+    <plurals name="git_fetch_new_commits">
+        <item quantity="other">遠端有 %d 個新提交。請拉取以套用。</item>
+    </plurals>
+    <plurals name="git_fetch_diverged">
+        <item quantity="other">遠端有 %d 個新提交，且此分支也有本機提交。請合併或重定基底以協調變更。</item>
+    </plurals>
+</resources>

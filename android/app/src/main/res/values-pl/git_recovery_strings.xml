@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Git lock recovery (#66) and fetch feedback (#67). -->
+<resources>
+    <string name="git_lock_title">Indeks Git zablokowany</string>
+    <string name="git_lock_body">Git nie może dodawać zmian, tworzyć commitów ani wykonywać Pull, dopóki istnieje plik index.lock. Zwykle zostaje on po przerwaniu operacji, na przykład gdy Android wstrzyma aplikację.</string>
+    <string name="git_lock_remove">Usuń blokadę</string>
+    <string name="git_lock_confirm_title">Usunąć blokadę indeksu Git?</string>
+    <string name="git_lock_confirm_body">Zrób to tylko wtedy, gdy żadna inna aplikacja Git nie używa teraz tego folderu. Twoje pliki i commity nie zostaną zmienione.</string>
+    <string name="gitops_lock_in_use">Blokada zmieniła się lub została właśnie utworzona, więc inna aplikacja Git może używać tego repozytorium. Zamknij inne aplikacje Git, odczekaj kilka sekund i spróbuj ponownie.</string>
+    <string name="gitops_repository_locked">Indeks Git jest zablokowany. Jeśli nic innego nie używa tego repozytorium, stuknij Usuń blokadę na ekranie Git.</string>
+    <string name="git_fetch_up_to_date">Aktualne. Brak nowych commitów w zdalnym repozytorium.</string>
+    <plurals name="git_fetch_new_commits">
+        <item quantity="one">%d nowy commit w zdalnym repozytorium. Wykonaj Pull, aby go zastosować.</item>
+        <item quantity="few">%d nowe commity w zdalnym repozytorium. Wykonaj Pull, aby je zastosować.</item>
+        <item quantity="many">%d nowych commitów w zdalnym repozytorium. Wykonaj Pull, aby je zastosować.</item>
+        <item quantity="other">%d nowego commita w zdalnym repozytorium. Wykonaj Pull, aby je zastosować.</item>
+    </plurals>
+    <plurals name="git_fetch_diverged">
+        <item quantity="one">%d nowy commit w zdalnym repozytorium, a ta gałąź ma też lokalne commity. Użyj merge lub rebase, aby uzgodnić zmiany.</item>
+        <item quantity="few">%d nowe commity w zdalnym repozytorium, a ta gałąź ma też lokalne commity. Użyj merge lub rebase, aby uzgodnić zmiany.</item>
+        <item quantity="many">%d nowych commitów w zdalnym repozytorium, a ta gałąź ma też lokalne commity. Użyj merge lub rebase, aby uzgodnić zmiany.</item>
+        <item quantity="other">%d nowego commita w zdalnym repozytorium, a ta gałąź ma też lokalne commity. Użyj merge lub rebase, aby uzgodnić zmiany.</item>
+    </plurals>
+</resources>

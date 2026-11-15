@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Git lock recovery (#66) and fetch feedback (#67). -->
+<resources>
+    <string name="git_lock_title">Git 인덱스 잠김</string>
+    <string name="git_lock_body">index.lock이 있는 동안에는 Git에서 스테이징, 커밋, Pull을 할 수 없습니다. 보통 Android가 앱을 일시 중단하는 등 작업이 중단되었을 때 남습니다.</string>
+    <string name="git_lock_remove">잠금 제거</string>
+    <string name="git_lock_confirm_title">Git 인덱스 잠금을 제거할까요?</string>
+    <string name="git_lock_confirm_body">지금 다른 Git 앱이 이 폴더를 사용하고 있지 않을 때만 진행하세요. 파일과 커밋은 변경되지 않습니다.</string>
+    <string name="gitops_lock_in_use">잠금이 변경되었거나 방금 생성되어 다른 Git 앱이 이 저장소를 사용 중일 수 있습니다. 다른 Git 앱을 닫고 몇 초 기다린 후 다시 시도하세요.</string>
+    <string name="gitops_repository_locked">Git 인덱스가 잠겨 있습니다. 이 저장소를 사용하는 다른 항목이 없다면 Git 화면에서 잠금 제거를 탭하세요.</string>
+    <string name="git_fetch_up_to_date">최신 상태입니다. 원격에 새 커밋이 없습니다.</string>
+    <plurals name="git_fetch_new_commits">
+        <item quantity="other">원격에 새 커밋이 %d개 있습니다. Pull하여 적용하세요.</item>
+    </plurals>
+    <plurals name="git_fetch_diverged">
+        <item quantity="other">원격에 새 커밋이 %d개 있고 이 브랜치에도 로컬 커밋이 있습니다. 병합하거나 리베이스하여 조정하세요.</item>
+    </plurals>
+</resources>

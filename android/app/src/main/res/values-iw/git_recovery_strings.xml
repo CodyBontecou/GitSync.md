@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Git lock recovery (#66) and fetch feedback (#67). -->
+<resources>
+    <string name="git_lock_title">האינדקס של Git נעול</string>
+    <string name="git_lock_body">Git לא יכול להכין שינויים, לבצע קומיט או משיכה כל עוד index.lock קיים. בדרך כלל הוא נשאר כשפעולה נקטעת, למשל כש־Android משהה את האפליקציה.</string>
+    <string name="git_lock_remove">הסרת הנעילה</string>
+    <string name="git_lock_confirm_title">להסיר את נעילת האינדקס של Git?</string>
+    <string name="git_lock_confirm_body">יש לעשות זאת רק אם אף אפליקציית Git אחרת לא משתמשת בתיקייה הזו כרגע. הקבצים והקומיטים שלך לא ישתנו.</string>
+    <string name="gitops_lock_in_use">הנעילה השתנתה או נוצרה זה עתה, כך שייתכן שאפליקציית Git אחרת משתמשת במאגר הזה. יש לסגור אפליקציות Git אחרות, להמתין כמה שניות ולנסות שוב.</string>
+    <string name="gitops_repository_locked">האינדקס של Git נעול. אם שום דבר אחר לא משתמש במאגר הזה, יש להקיש על ״הסרת הנעילה״ במסך Git.</string>
+    <string name="git_fetch_up_to_date">מעודכן. אין קומיטים חדשים במאגר המרוחק.</string>
+    <plurals name="git_fetch_new_commits">
+        <item quantity="one">קומיט חדש אחד במאגר המרוחק. יש לבצע משיכה כדי להחיל אותו.</item>
+        <item quantity="two">שני קומיטים חדשים במאגר המרוחק. יש לבצע משיכה כדי להחיל אותם.</item>
+        <item quantity="other">%d קומיטים חדשים במאגר המרוחק. יש לבצע משיכה כדי להחיל אותם.</item>
+    </plurals>
+    <plurals name="git_fetch_diverged">
+        <item quantity="one">קומיט חדש אחד במאגר המרוחק, ולענף הזה יש גם קומיטים מקומיים. יש להשתמש במיזוג או ב־rebase כדי ליישב.</item>
+        <item quantity="two">שני קומיטים חדשים במאגר המרוחק, ולענף הזה יש גם קומיטים מקומיים. יש להשתמש במיזוג או ב־rebase כדי ליישב.</item>
+        <item quantity="other">%d קומיטים חדשים במאגר המרוחק, ולענף הזה יש גם קומיטים מקומיים. יש להשתמש במיזוג או ב־rebase כדי ליישב.</item>
+    </plurals>
+</resources>

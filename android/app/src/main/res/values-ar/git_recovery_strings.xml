@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Git lock recovery (#66) and fetch feedback (#67). -->
+<resources>
+    <string name="git_lock_title">فهرس Git مقفل</string>
+    <string name="git_lock_body">لا يمكن لـ Git التجهيز أو تنفيذ commit أو السحب ما دام الملف index.lock موجودًا. يبقى عادةً عند مقاطعة عملية ما، مثلًا عندما يعلّق Android التطبيق.</string>
+    <string name="git_lock_remove">إزالة القفل</string>
+    <string name="git_lock_confirm_title">هل تريد إزالة قفل فهرس Git؟</string>
+    <string name="git_lock_confirm_body">لا تفعل ذلك إلا إذا لم يكن أي تطبيق Git آخر يستخدم هذا المجلد الآن. لن تتغير ملفاتك وعمليات commit.</string>
+    <string name="gitops_lock_in_use">تغيّر القفل أو أُنشئ للتو، لذا قد يكون تطبيق Git آخر يستخدم هذا المستودع. أغلق تطبيقات Git الأخرى، وانتظر بضع ثوانٍ، ثم حاول مرة أخرى.</string>
+    <string name="gitops_repository_locked">فهرس Git مقفل. إذا لم يكن هناك شيء آخر يستخدم هذا المستودع، فاضغط على «إزالة القفل» في شاشة Git.</string>
+    <string name="git_fetch_up_to_date">محدّث. لا توجد عمليات commit جديدة في المستودع البعيد.</string>
+    <plurals name="git_fetch_new_commits">
+        <item quantity="zero">لا توجد عمليات commit جديدة في المستودع البعيد.</item>
+        <item quantity="one">commit جديد واحد في المستودع البعيد. نفّذ السحب لتطبيقه.</item>
+        <item quantity="two">عمليتا commit جديدتان في المستودع البعيد. نفّذ السحب لتطبيقهما.</item>
+        <item quantity="few">%d عمليات commit جديدة في المستودع البعيد. نفّذ السحب لتطبيقها.</item>
+        <item quantity="many">%d عملية commit جديدة في المستودع البعيد. نفّذ السحب لتطبيقها.</item>
+        <item quantity="other">%d عملية commit جديدة في المستودع البعيد. نفّذ السحب لتطبيقها.</item>
+    </plurals>
+    <plurals name="git_fetch_diverged">
+        <item quantity="zero">لا توجد عمليات commit جديدة في المستودع البعيد.</item>
+        <item quantity="one">commit جديد واحد في المستودع البعيد، ولهذا الفرع عمليات commit محلية أيضًا. استخدم الدمج أو إعادة التأسيس للتوفيق بينها.</item>
+        <item quantity="two">عمليتا commit جديدتان في المستودع البعيد، ولهذا الفرع عمليات commit محلية أيضًا. استخدم الدمج أو إعادة التأسيس للتوفيق بينها.</item>
+        <item quantity="few">%d عمليات commit جديدة في المستودع البعيد، ولهذا الفرع عمليات commit محلية أيضًا. استخدم الدمج أو إعادة التأسيس للتوفيق بينها.</item>
+        <item quantity="many">%d عملية commit جديدة في المستودع البعيد، ولهذا الفرع عمليات commit محلية أيضًا. استخدم الدمج أو إعادة التأسيس للتوفيق بينها.</item>
+        <item quantity="other">%d عملية commit جديدة في المستودع البعيد، ولهذا الفرع عمليات commit محلية أيضًا. استخدم الدمج أو إعادة التأسيس للتوفيق بينها.</item>
+    </plurals>
+</resources>

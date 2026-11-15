@@ -6,6 +6,7 @@ import com.bontecou.syncmd.R
 import com.bontecou.syncmd.data.models.RepositoryStatus
 import com.bontecou.syncmd.data.models.SafePullPlan
 import com.bontecou.syncmd.services.git.PullService
+import com.bontecou.syncmd.services.git.RepositoryLockRecovery
 import com.bontecou.syncmd.services.git.RepositoryOperationCoordinator
 import com.bontecou.syncmd.ui.util.RepositorySelection
 import com.bontecou.syncmd.ui.util.UiText
@@ -14,6 +15,9 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
+
+/** What a fetch found, against the branch's upstream (issue #67: fetch used to finish silently). */
+data class FetchOutcome(val ahead: Int, val behind: Int)
 
 /** Read requests and mutation callbacks belong to one immutable repository selection. */
 @HiltViewModel
@@ -35,6 +39,14 @@ class PullViewModel @Inject constructor(private val pullService: PullService) : 
     /** Typed so the UI can offer iOS's commit-then-merge resolution instead of a raw error. */
     private val _localChangesBlock = MutableStateFlow(false)
     val localChangesBlock = _localChangesBlock.asStateFlow()
+    private val _fetchResult = MutableStateFlow<FetchOutcome?>(null)
+    /** Set after a successful fetch until dismissed or the next pull/fetch starts. */
+    val fetchResult = _fetchResult.asStateFlow()
+    private val _staleLocks = MutableStateFlow<List<RepositoryLockRecovery.Lock>>(emptyList())
+    /** Lingering Git lock files (issue #66), offered for user-confirmed removal. */
+    val staleLocks = _staleLocks.asStateFlow()
+    private val _removingLocks = MutableStateFlow(false)
+    val removingLocks = _removingLocks.asStateFlow()
     private val _currentRepoPath = MutableStateFlow<String?>(null)
     val currentRepoPath = _currentRepoPath.asStateFlow()
     private val _selection = MutableStateFlow<RepositorySelection?>(null)
@@ -47,7 +59,8 @@ class PullViewModel @Inject constructor(private val pullService: PullService) : 
     private var operationNotice: Notice? = null
     private fun showError(notice: Notice?) { _errorMessage.value = notice?.english; _errorText.value = notice?.text }
     private fun Throwable.notice(@androidx.annotation.StringRes fallback: Int, english: String) =
-        Notice(message ?: english, gitOpsText(fallback))
+        if (isGitLockFailure()) Notice(message ?: english, UiText.res(R.string.gitops_repository_locked))
+        else Notice(message ?: english, gitOpsText(fallback))
 
     private fun current(expected: RepositorySelection?) = expected != null && _selection.value === expected
     fun setRepositoryPath(path: String) {
@@ -56,6 +69,7 @@ class PullViewModel @Inject constructor(private val pullService: PullService) : 
             _currentRepoPath.value = path
             _selection.value = path.takeIf { it.isNotBlank() }?.let(::RepositorySelection)
             _status.value = null; _pullPlan.value = null; _attention.value = null; _localChangesBlock.value = false; operationNotice = null; showError(null)
+            _fetchResult.value = null; _staleLocks.value = emptyList()
             _isLoading.value = mutationRunning
         }
         loadStatus()
@@ -64,7 +78,37 @@ class PullViewModel @Inject constructor(private val pullService: PullService) : 
         if (mutationRunning) { refreshPending = true; return }
         _pullPlan.value = null
         read({ pullService.getStatus(it).getOrThrow() }) { _status.value = it }
+        checkLocks()
     }
+    /** Looks for lingering lock files without taking the repository lease. */
+    fun checkLocks() {
+        val expected = _selection.value ?: return
+        viewModelScope.launch {
+            val locks = withContext(Dispatchers.IO) { runCatching { RepositoryLockRecovery.find(expected.path) }.getOrDefault(emptyList()) }
+            if (current(expected)) _staleLocks.value = locks
+        }
+    }
+    /** Deletes the locks the user confirmed; refuses (with a notice) when they changed or are fresh. */
+    fun removeStaleLocks(expected: RepositorySelection) {
+        val locks = _staleLocks.value
+        if (!current(expected) || mutationRunning || _removingLocks.value || locks.isEmpty()) return
+        _removingLocks.value = true
+        viewModelScope.launch {
+            try {
+                withContext(Dispatchers.IO) { RepositoryLockRecovery.remove(expected.path, locks) }
+                if (current(expected)) { operationNotice = null; showError(null) }
+            } catch (cancelled: CancellationException) { throw cancelled
+            } catch (changed: RepositoryLockRecovery.LockChangedException) {
+                if (current(expected)) { operationNotice = Notice(changed.message ?: "", UiText.res(R.string.gitops_lock_in_use)); showError(operationNotice) }
+            } catch (error: Exception) {
+                if (current(expected)) { operationNotice = error.notice(R.string.gitops_action_failed, "Git could not complete this action"); showError(operationNotice) }
+            } finally {
+                _removingLocks.value = false
+                if (current(expected)) loadStatus()
+            }
+        }
+    }
+    fun clearFetchResult(expected: RepositorySelection?) { if (current(expected)) _fetchResult.value = null }
     fun planPull(expected: RepositorySelection) {
         if (!current(expected) || mutationRunning) return
         _pullPlan.value = null
@@ -96,12 +140,13 @@ class PullViewModel @Inject constructor(private val pullService: PullService) : 
         if (!current(expected) || mutationRunning) return
         mutationRunning = true; refreshPending = false
         readId++; readJob?.cancel()
-        _isLoading.value = true; operationNotice = null; showError(null); _pullPlan.value = null
+        _isLoading.value = true; operationNotice = null; showError(null); _pullPlan.value = null; _fetchResult.value = null
         if (pull) { _attention.value = null; _localChangesBlock.value = false }
         viewModelScope.launch {
             var updated: RepositoryStatus? = null
             var attention: String? = null
             var failure: Exception? = null
+            var fetched: FetchOutcome? = null
             try {
                 withContext(Dispatchers.IO) {
                     RepositoryOperationCoordinator.withRepository(expected.path) {
@@ -121,11 +166,15 @@ class PullViewModel @Inject constructor(private val pullService: PullService) : 
                         try { updated = pullService.getStatus(expected.path).getOrThrow() }
                         catch (cancelled: CancellationException) { throw cancelled
                         } catch (error: Exception) { if (failure == null) failure = error }
+                        if (!pull && failure == null) {
+                            fetched = pullService.getSyncStatus(expected.path).getOrNull()?.let { (ahead, behind) -> FetchOutcome(ahead, behind) }
+                        }
                     }
                 }
                 if (current(expected)) {
                     updated?.let { _status.value = it }
                     if (pull) _attention.value = attention
+                    _fetchResult.value = fetched
                     val blocked = pull && failure is com.bontecou.syncmd.data.models.DirtyRepoException
                     _localChangesBlock.value = blocked
                     operationNotice = failure?.takeUnless { blocked }?.notice(R.string.gitops_action_failed, "Git could not complete this action")
@@ -138,7 +187,7 @@ class PullViewModel @Inject constructor(private val pullService: PullService) : 
                 mutationRunning = false; _isLoading.value = false
                 val refresh = !current(expected) || refreshPending
                 refreshPending = false
-                if (refresh) loadStatus()
+                if (refresh) loadStatus() else checkLocks()
             }
         }
     }
@@ -146,3 +195,6 @@ class PullViewModel @Inject constructor(private val pullService: PullService) : 
     fun clearAttention(expected: RepositorySelection?) { if (current(expected)) _attention.value = null }
     fun clearLocalChangesBlock(expected: RepositorySelection?) { if (current(expected)) _localChangesBlock.value = false }
 }
+
+/** JGit's lock failures, including when wrapped by a command exception. */
+internal fun Throwable.isGitLockFailure(): Boolean = RepositoryLockRecovery.isLockFailure(this)

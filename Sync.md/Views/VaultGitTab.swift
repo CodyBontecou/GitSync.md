@@ -28,6 +28,8 @@ struct VaultGitTab: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
+            IndexLockRecoveryCard(repoID: repoID)
+                .padding(.bottom, 18)
             currentBranchCard
 
             TideSectionLabel(title: String(localized: "Workspace"))
