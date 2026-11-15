@@ -1,0 +1,37 @@
+name: QA Hygiene
+
+# Enforces the "QA notes and evidence" rules in CLAUDE.md.
+on:
+  pull_request:
+    paths:
+      - "docs/**"
+      - "scripts/qa_hygiene.py"
+      - "scripts/tests/test_qa_hygiene.py"
+      - ".github/workflows/qa-hygiene.yml"
+
+permissions:
+  contents: read
+  issues: read
+  pull-requests: read
+
+jobs:
+  qa-hygiene:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Test the checker
+        run: python3 -m unittest discover -s scripts/tests -p 'test_qa_hygiene.py'
+
+      # PR/issue state lookups degrade to a warning if the API is unavailable.
+      - name: Check docs/qa
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/qa_hygiene.py check --base "origin/${{ github.base_ref }}"
