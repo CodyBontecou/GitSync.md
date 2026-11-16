@@ -1,7 +1,0 @@
-
-com.bontecou.syncmd.FilesScreenTest:..
-com.bontecou.syncmd.FileNavigationTest:...
-
-Time: 27.52
-
-OK (5 tests)

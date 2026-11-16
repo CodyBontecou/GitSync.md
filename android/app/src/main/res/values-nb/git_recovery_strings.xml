@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Git lock recovery (#66) and fetch feedback (#67). -->
+<resources>
+    <string name="git_lock_title">Git-indeks låst</string>
+    <string name="git_lock_body">Git kan ikke stage, committe eller pulle så lenge index.lock finnes. Den blir vanligvis liggende igjen når en operasjon avbrytes, for eksempel når Android setter appen på pause.</string>
+    <string name="git_lock_remove">Fjern lås</string>
+    <string name="git_lock_confirm_title">Fjerne Git-indekslåsen?</string>
+    <string name="git_lock_confirm_body">Gjør dette bare hvis ingen annen Git-app bruker denne mappen akkurat nå. Filene og commitene dine endres ikke.</string>
+    <string name="gitops_lock_in_use">Låsen er endret eller nettopp opprettet, så en annen Git-app bruker kanskje dette repositoryet. Lukk andre Git-apper, vent noen sekunder, og prøv igjen.</string>
+    <string name="gitops_repository_locked">Git-indeksen er låst. Hvis ingenting annet bruker dette repositoryet, trykker du på Fjern lås på Git-skjermen.</string>
+    <string name="git_fetch_up_to_date">Oppdatert. Ingen nye commits på remote.</string>
+    <plurals name="git_fetch_new_commits">
+        <item quantity="one">%d ny commit på remote. Gjør en pull for å bruke den.</item>
+        <item quantity="other">%d nye commits på remote. Gjør en pull for å bruke dem.</item>
+    </plurals>
+    <plurals name="git_fetch_diverged">
+        <item quantity="one">%d ny commit på remote, og denne branchen har også lokale commits. Bruk merge eller rebase for å forene dem.</item>
+        <item quantity="other">%d nye commits på remote, og denne branchen har også lokale commits. Bruk merge eller rebase for å forene dem.</item>
+    </plurals>
+</resources>

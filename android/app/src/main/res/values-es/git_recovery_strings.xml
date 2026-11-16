@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Git lock recovery (#66) and fetch feedback (#67). -->
+<resources>
+    <string name="git_lock_title">Índice de Git bloqueado</string>
+    <string name="git_lock_body">Git no puede preparar, hacer commit ni pull mientras exista index.lock. Suele quedar cuando se interrumpe una operación, por ejemplo cuando Android suspende la app.</string>
+    <string name="git_lock_remove">Quitar bloqueo</string>
+    <string name="git_lock_confirm_title">¿Quitar el bloqueo del índice de Git?</string>
+    <string name="git_lock_confirm_body">Hazlo solo si ninguna otra app de Git está usando esta carpeta ahora mismo. Tus archivos y commits no se modifican.</string>
+    <string name="gitops_lock_in_use">El bloqueo cambió o se acaba de crear, así que otra app de Git podría estar usando este repositorio. Cierra las demás apps de Git, espera unos segundos y vuelve a intentarlo.</string>
+    <string name="gitops_repository_locked">El índice de Git está bloqueado. Si nada más está usando este repositorio, toca «Quitar bloqueo» en la pantalla de Git.</string>
+    <string name="git_fetch_up_to_date">Actualizado. No hay commits nuevos en el remoto.</string>
+    <plurals name="git_fetch_new_commits">
+        <item quantity="one">%d commit nuevo en el remoto. Haz pull para aplicarlo.</item>
+        <item quantity="many">%d commits nuevos en el remoto. Haz pull para aplicarlos.</item>
+        <item quantity="other">%d commits nuevos en el remoto. Haz pull para aplicarlos.</item>
+    </plurals>
+    <plurals name="git_fetch_diverged">
+        <item quantity="one">%d commit nuevo en el remoto, y esta rama también tiene commits locales. Haz merge o rebase para reconciliar.</item>
+        <item quantity="many">%d commits nuevos en el remoto, y esta rama también tiene commits locales. Haz merge o rebase para reconciliar.</item>
+        <item quantity="other">%d commits nuevos en el remoto, y esta rama también tiene commits locales. Haz merge o rebase para reconciliar.</item>
+    </plurals>
+</resources>

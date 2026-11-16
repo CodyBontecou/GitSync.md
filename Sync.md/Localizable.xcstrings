@@ -207689,6 +207689,160 @@
         }
       }
     },
+    "Reconnect Existing Folder": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إعادة الاتصال بمجلد موجود"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Genopret forbindelse til eksisterende mappe"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vorhandenen Ordner wieder verbinden"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reconectar carpeta existente"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yhdistä olemassa oleva kansio uudelleen"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reconnecter un dossier existant"
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "חיבור מחדש לתיקייה קיימת"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "मौजूदा फ़ोल्डर फिर से कनेक्ट करें"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Meglévő mappa újracsatlakoztatása"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hubungkan Kembali Folder yang Ada"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ricollega cartella esistente"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "既存のフォルダに再接続"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "기존 폴더 다시 연결"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Koble til eksisterende mappe på nytt"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bestaande map opnieuw verbinden"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Połącz ponownie istniejący folder"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reconectar Pasta Existente"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Подключить существующую папку"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Återanslut befintlig mapp"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เชื่อมต่อโฟลเดอร์ที่มีอยู่อีกครั้ง"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mevcut Klasörü Yeniden Bağla"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Підключити наявну папку"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kết nối lại thư mục hiện có"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "重新连接现有文件夹"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "重新連接現有資料夾"
+          }
+        }
+      }
+    },
     "Reconnect Folder": {
       "localizations": {
         "ar": {
@@ -208147,6 +208301,468 @@
           "stringUnit": {
             "state": "translated",
             "value": "重新連接原始資料夾以使用此儲存庫。其已儲存的提交和設定已保留。"
+          }
+        }
+      }
+    },
+    "Reconnected": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تمت إعادة الاتصال"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forbindelse genoprettet"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wieder verbunden"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reconectado"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yhdistetty uudelleen"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reconnecté"
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "חובר מחדש"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "फिर से कनेक्ट हुआ"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Újracsatlakoztatva"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Terhubung kembali"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ricollegato"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "再接続しました"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "다시 연결됨"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Koblet til på nytt"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opnieuw verbonden"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Połączono ponownie"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reconectado"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Подключено повторно"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Återansluten"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เชื่อมต่ออีกครั้งแล้ว"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yeniden bağlandı"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Підключено повторно"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đã kết nối lại"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已重新连接"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已重新連接"
+          }
+        }
+      }
+    },
+    "Reconnected the existing working copy. No files were deleted.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تمت إعادة الاتصال بنسخة العمل الموجودة. لم يتم حذف أي ملفات."
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forbindelsen til den eksisterende arbejdskopi er genoprettet. Ingen filer blev slettet."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vorhandene Arbeitskopie wieder verbunden. Es wurden keine Dateien gelöscht."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se reconectó la copia de trabajo existente. No se eliminó ningún archivo."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Olemassa oleva työkopio yhdistettiin uudelleen. Tiedostoja ei poistettu."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copie de travail existante reconnectée. Aucun fichier n’a été supprimé."
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "עותק העבודה הקיים חובר מחדש. לא נמחקו קבצים."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "मौजूदा वर्किंग कॉपी से फिर से कनेक्ट हो गया। कोई फ़ाइल नहीं हटाई गई।"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A meglévő munkapéldány újracsatlakoztatva. Egyetlen fájl sem lett törölve."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Salinan kerja yang ada telah terhubung kembali. Tidak ada file yang dihapus."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copia di lavoro esistente ricollegata. Nessun file è stato eliminato."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "既存の作業コピーに再接続しました。ファイルは削除されていません。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "기존 작업 사본에 다시 연결했습니다. 삭제된 파일은 없습니다."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Den eksisterende arbeidskopien er koblet til på nytt. Ingen filer ble slettet."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bestaande werkkopie opnieuw verbonden. Er zijn geen bestanden verwijderd."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ponownie połączono z istniejącą kopią roboczą. Żadne pliki nie zostały usunięte."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A cópia de trabalho existente foi reconectada. Nenhum arquivo foi apagado."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Существующая рабочая копия подключена повторно. Файлы не удалены."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Den befintliga arbetskopian har återanslutits. Inga filer raderades."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เชื่อมต่อสำเนาการทำงานที่มีอยู่อีกครั้งแล้ว ไม่มีไฟล์ใดถูกลบ"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mevcut çalışma kopyasına yeniden bağlanıldı. Hiçbir dosya silinmedi."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Наявну робочу копію підключено повторно. Жодних файлів не видалено."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đã kết nối lại bản sao làm việc hiện có. Không có tệp nào bị xóa."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已重新连接现有工作副本。没有删除任何文件。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已重新連接現有工作副本。沒有刪除任何檔案。"
+          }
+        }
+      }
+    },
+    "Reconnecting the existing working copy...": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "جارٍ إعادة الاتصال بنسخة العمل الموجودة..."
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Genopretter forbindelsen til den eksisterende arbejdskopi..."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vorhandene Arbeitskopie wird wieder verbunden..."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reconectando la copia de trabajo existente..."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yhdistetään olemassa oleva työkopio uudelleen..."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reconnexion de la copie de travail existante..."
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "מתחבר מחדש לעותק העבודה הקיים..."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "मौजूदा वर्किंग कॉपी से फिर से कनेक्ट किया जा रहा है..."
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A meglévő munkapéldány újracsatlakoztatása..."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Menghubungkan kembali salinan kerja yang ada..."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ricollegamento della copia di lavoro esistente..."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "既存の作業コピーに再接続しています..."
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "기존 작업 사본에 다시 연결하는 중..."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kobler til den eksisterende arbeidskopien på nytt..."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bestaande werkkopie opnieuw verbinden..."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ponowne łączenie z istniejącą kopią roboczą..."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reconectando a cópia de trabalho existente..."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Повторное подключение существующей рабочей копии..."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Återansluter den befintliga arbetskopian..."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "กำลังเชื่อมต่อสำเนาการทำงานที่มีอยู่อีกครั้ง..."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mevcut çalışma kopyasına yeniden bağlanılıyor..."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Повторне підключення наявної робочої копії..."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đang kết nối lại bản sao làm việc hiện có..."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在重新连接现有工作副本..."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在重新連接現有工作副本..."
           }
         }
       }
@@ -210933,6 +211549,160 @@
           "stringUnit": {
             "state": "translated",
             "value": "移除"
+          }
+        }
+      }
+    },
+    "Remove %@?": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إزالة %@؟"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fjern %@?"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ entfernen?"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Eliminar %@?"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Poistetaanko %@?"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Supprimer %@ ?"
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "להסיר את %@?"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ हटाएँ?"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eltávolítod: %@?"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hapus %@?"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rimuovere %@?"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ を削除しますか？"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@을(를) 제거하시겠습니까?"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fjerne %@?"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ verwijderen?"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Usunąć %@?"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remover %@?"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Удалить %@?"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ta bort %@?"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ลบ %@ ไหม"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ kaldırılsın mı?"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Видалити %@?"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xóa %@?"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "移除 %@？"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "移除 %@？"
           }
         }
       }
@@ -256047,7 +256817,8 @@
             "value": "Git 索引已鎖定。請等待其他 Git 操作完成後再試一次。若沒有正在執行的 Git 操作，請從儲存庫的 Git 目錄中移除過時的 index.lock 檔案。"
           }
         }
-      }
+      },
+      "extractionState": "stale"
     },
     "The SSH key could not be saved to the Keychain (%lld).": {
       "localizations": {
@@ -325042,6 +325813,160 @@
       "shouldTranslate": false,
       "extractionState": "stale"
     },
+    "“%@” already holds a working copy of this repository. Its files have been preserved.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يحتوي “%@” بالفعل على نسخة عمل من هذا المستودع. تم الاحتفاظ بملفاته."
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "“%@” indeholder allerede en arbejdskopi af dette repository. Dets filer er bevaret."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "„%@“ enthält bereits eine Arbeitskopie dieses Repositorys. Die Dateien wurden beibehalten."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "“%@” ya contiene una copia de trabajo de este repositorio. Sus archivos se han conservado."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "“%@” sisältää jo tämän repositorion työkopion. Sen tiedostot on säilytetty."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "« %@ » contient déjà une copie de travail de ce dépôt. Ses fichiers ont été conservés."
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "‏“%@” כבר מכיל עותק עבודה של מאגר זה. הקבצים שלו נשמרו."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "“%@” में पहले से इस रिपॉज़िटरी की वर्किंग कॉपी है। इसकी फ़ाइलें सुरक्षित रखी गई हैं।"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A(z) „%@” már tartalmazza ennek a tárolónak egy munkapéldányát. A fájljai megmaradtak."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "“%@” sudah berisi salinan kerja repositori ini. File-filenya telah dipertahankan."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "“%@” contiene già una copia di lavoro di questo repository. I suoi file sono stati conservati."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "“%@”にはこのリポジトリの作業コピーがすでにあります。ファイルは保持されています。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "“%@”에 이미 이 저장소의 작업 사본이 있습니다. 파일은 보존되었습니다."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "“%@” inneholder allerede en arbeidskopi av dette repositoriet. Filene er beholdt."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "‘%@’ bevat al een werkkopie van deze repository. De bestanden zijn behouden."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "„%@” zawiera już kopię roboczą tego repozytorium. Jego pliki zostały zachowane."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "“%@” já contém uma cópia de trabalho deste repositório. Os arquivos foram preservados."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "«%@» уже содержит рабочую копию этого репозитория. Её файлы сохранены."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "”%@” innehåller redan en arbetskopia av det här förrådet. Dess filer har bevarats."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "“%@” มีสำเนาการทำงานของรีโพสิทอรีนี้อยู่แล้ว ไฟล์ของมันถูกเก็บรักษาไว้"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "“%@” zaten bu deponun bir çalışma kopyasını içeriyor. Dosyaları korundu."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "«%@» уже містить робочу копію цього репозиторію. Її файли збережено."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "“%@” đã chứa một bản sao làm việc của kho này. Các tệp của nó đã được giữ nguyên."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "“%@”中已有此仓库的工作副本。其文件已保留。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "「%@」中已有此儲存庫的工作副本。其檔案已保留。"
+          }
+        }
+      }
+    },
     "“Check notes in GitSync.md”": {
       "localizations": {
         "ar": {
@@ -330150,6 +331075,3834 @@
       },
       "shouldTranslate": false,
       "extractionState": "stale"
+    },
+    "Lock removed": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تمت إزالة القفل"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lås fjernet"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sperre entfernt"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bloqueo eliminado"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lukitus poistettu"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verrou supprimé"
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "הנעילה הוסרה"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "लॉक हटा दिया गया"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zárolás eltávolítva"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kunci dihapus"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Blocco rimosso"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ロックを削除しました"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "잠금을 제거했습니다"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lås fjernet"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vergrendeling verwijderd"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Usunięto blokadę"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bloqueio removido"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Блокировка снята"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Låset borttaget"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ลบการล็อกแล้ว"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kilit kaldırıldı"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Блокування знято"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đã xóa khóa"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已移除锁"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已移除鎖定"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lock removed"
+          }
+        }
+      }
+    },
+    "Git can use this repository again.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يمكن لـ Git استخدام هذا المستودع مرة أخرى."
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git kan bruge dette repository igen."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git kann dieses Repository wieder verwenden."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git puede volver a usar este repositorio."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git voi taas käyttää tätä repositoriota."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git peut de nouveau utiliser ce dépôt."
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git יכול להשתמש במאגר הזה שוב."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git अब इस रिपॉज़िटरी का फिर से उपयोग कर सकता है।"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A Git újra használhatja ezt a tárolót."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git dapat menggunakan repositori ini lagi."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git può di nuovo usare questo repository."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git がこのリポジトリを再び使用できるようになりました。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이제 Git에서 이 저장소를 다시 사용할 수 있습니다."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git kan bruke dette repositoryet igjen."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git kan deze repository weer gebruiken."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git może ponownie używać tego repozytorium."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O Git pode usar este repositório novamente."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git снова может использовать этот репозиторий."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git kan använda det här repositoryt igen."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git ใช้รีโพสิทอรีนี้ได้อีกครั้งแล้ว"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git bu depoyu yeniden kullanabilir."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git знову може використовувати цей репозиторій."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git có thể sử dụng kho này trở lại."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git 可以再次使用此仓库。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git 可以再次使用此儲存庫。"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git can use this repository again."
+          }
+        }
+      }
+    },
+    "A sync is running for this vault. Wait for it to finish, then try again.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تجري مزامنة لهذه الخزنة الآن. انتظر حتى تنتهي، ثم حاول مرة أخرى."
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der kører en synkronisering for denne vault. Vent, til den er færdig, og prøv igen."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Für diesen Vault läuft gerade eine Synchronisierung. Warten Sie, bis sie abgeschlossen ist, und versuchen Sie es dann erneut."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hay una sincronización en curso para esta bóveda. Espera a que termine y vuelve a intentarlo."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tämän holvin synkronointi on käynnissä. Odota, että se valmistuu, ja yritä sitten uudelleen."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Une synchronisation est en cours pour ce coffre. Attendez qu’elle se termine, puis réessayez."
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "מתבצע סנכרון עבור הכספת הזו. יש להמתין לסיומו ולנסות שוב."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "इस वॉल्ट के लिए सिंक चल रहा है। इसके पूरा होने तक प्रतीक्षा करें, फिर दोबारा कोशिश करें।"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Szinkronizálás fut ennél a széfnél. Várd meg, amíg befejeződik, majd próbáld újra."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sinkronisasi sedang berjalan untuk vault ini. Tunggu hingga selesai, lalu coba lagi."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "È in corso una sincronizzazione per questo vault. Attendi che finisca, poi riprova."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "この保管庫の同期を実行中です。完了するまで待ってから、もう一度お試しください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이 보관함의 동기화가 진행 중입니다. 완료될 때까지 기다린 후 다시 시도하세요."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En synkronisering kjører for dette hvelvet. Vent til den er ferdig, og prøv igjen."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Er loopt een synchronisatie voor deze kluis. Wacht tot die klaar is en probeer het opnieuw."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trwa synchronizacja tego sejfu. Poczekaj na jej zakończenie i spróbuj ponownie."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uma sincronização está em andamento para este cofre. Aguarde terminar e tente novamente."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Для этого хранилища идёт синхронизация. Дождитесь её завершения и повторите попытку."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En synkronisering pågår för det här valvet. Vänta tills den är klar och försök igen."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "กำลังซิงค์ vault นี้อยู่ โปรดรอให้เสร็จก่อน แล้วลองอีกครั้ง"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu kasa için bir eşzamanlama çalışıyor. Bitmesini bekleyin, ardından yeniden deneyin."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Для цього сховища триває синхронізація. Дочекайтеся її завершення й повторіть спробу."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vault này đang được đồng bộ. Hãy đợi hoàn tất rồi thử lại."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "此库正在同步。请等待同步完成后重试。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "此保險庫正在同步。請等待同步完成後再試一次。"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A sync is running for this vault. Wait for it to finish, then try again."
+          }
+        }
+      }
+    },
+    "The lock changed or was just created, so another Git app may be using this repository. Close other Git apps, wait a few seconds, then try again.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تغيّر القفل أو أُنشئ للتو، لذا قد يكون تطبيق Git آخر يستخدم هذا المستودع. أغلق تطبيقات Git الأخرى، وانتظر بضع ثوانٍ، ثم حاول مرة أخرى."
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Låsen er ændret eller lige oprettet, så en anden Git-app bruger muligvis dette repository. Luk andre Git-apps, vent et par sekunder, og prøv igen."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Sperre hat sich geändert oder wurde gerade erst erstellt, daher verwendet möglicherweise eine andere Git-App dieses Repository. Schließen Sie andere Git-Apps, warten Sie einige Sekunden und versuchen Sie es dann erneut."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El bloqueo cambió o se acaba de crear, así que otra app de Git podría estar usando este repositorio. Cierra las demás apps de Git, espera unos segundos y vuelve a intentarlo."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lukitus on muuttunut tai se luotiin juuri, joten toinen Git-sovellus saattaa käyttää tätä repositoriota. Sulje muut Git-sovellukset, odota muutama sekunti ja yritä uudelleen."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le verrou a changé ou vient d’être créé : une autre app Git utilise peut-être ce dépôt. Fermez les autres apps Git, patientez quelques secondes, puis réessayez."
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "הנעילה השתנתה או נוצרה זה עתה, כך שייתכן שאפליקציית Git אחרת משתמשת במאגר הזה. יש לסגור אפליקציות Git אחרות, להמתין כמה שניות ולנסות שוב."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "लॉक बदल गया है या अभी-अभी बना है, इसलिए हो सकता है कोई दूसरा Git ऐप इस रिपॉज़िटरी का उपयोग कर रहा हो। दूसरे Git ऐप बंद करें, कुछ सेकंड प्रतीक्षा करें, फिर दोबारा कोशिश करें।"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A zárolás megváltozott vagy most jött létre, ezért lehet, hogy egy másik Git-alkalmazás használja ezt a tárolót. Zárd be a többi Git-alkalmazást, várj néhány másodpercet, majd próbáld újra."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kunci berubah atau baru saja dibuat, jadi aplikasi Git lain mungkin sedang menggunakan repositori ini. Tutup aplikasi Git lain, tunggu beberapa detik, lalu coba lagi."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Il blocco è cambiato o è stato appena creato, quindi un’altra app Git potrebbe usare questo repository. Chiudi le altre app Git, attendi qualche secondo e riprova."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ロックが変更されたか、作成されたばかりのため、別の Git アプリがこのリポジトリを使用している可能性があります。ほかの Git アプリを閉じ、数秒待ってからもう一度お試しください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "잠금이 변경되었거나 방금 생성되어 다른 Git 앱이 이 저장소를 사용 중일 수 있습니다. 다른 Git 앱을 닫고 몇 초 기다린 후 다시 시도하세요."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Låsen er endret eller nettopp opprettet, så en annen Git-app bruker kanskje dette repositoryet. Lukk andre Git-apper, vent noen sekunder, og prøv igjen."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De vergrendeling is gewijzigd of net aangemaakt, dus mogelijk gebruikt een andere Git-app deze repository. Sluit andere Git-apps, wacht een paar seconden en probeer het opnieuw."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Blokada zmieniła się lub została właśnie utworzona, więc inna aplikacja Git może używać tego repozytorium. Zamknij inne aplikacje Git, odczekaj kilka sekund i spróbuj ponownie."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O bloqueio mudou ou acabou de ser criado, então outro app Git pode estar usando este repositório. Feche outros apps Git, aguarde alguns segundos e tente novamente."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Блокировка изменилась или только что создана — возможно, этот репозиторий использует другое Git-приложение. Закройте другие Git-приложения, подождите несколько секунд и повторите попытку."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Låset har ändrats eller skapades nyss, så en annan Git-app kanske använder det här repositoryt. Stäng andra Git-appar, vänta några sekunder och försök igen."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "การล็อกเปลี่ยนไปหรือเพิ่งถูกสร้าง จึงอาจมีแอป Git อื่นกำลังใช้รีโพสิทอรีนี้อยู่ ปิดแอป Git อื่น รอสักครู่ แล้วลองอีกครั้ง"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kilit değişti veya yeni oluşturuldu; bu depoyu başka bir Git uygulaması kullanıyor olabilir. Diğer Git uygulamalarını kapatın, birkaç saniye bekleyin ve yeniden deneyin."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Блокування змінилося або щойно створене — можливо, цей репозиторій використовує інший Git-застосунок. Закрийте інші Git-застосунки, зачекайте кілька секунд і повторіть спробу."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Khóa đã thay đổi hoặc vừa được tạo, nên có thể một ứng dụng Git khác đang dùng kho này. Hãy đóng các ứng dụng Git khác, đợi vài giây rồi thử lại."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "锁已更改或刚刚创建，可能有其他 Git 应用正在使用此仓库。请关闭其他 Git 应用，等待几秒后重试。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "鎖定已變更或剛建立，可能有其他 Git App 正在使用此儲存庫。請關閉其他 Git App，等待幾秒後再試一次。"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The lock changed or was just created, so another Git app may be using this repository. Close other Git apps, wait a few seconds, then try again."
+          }
+        }
+      }
+    },
+    "No new commits on the remote.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لا توجد عمليات commit جديدة في المستودع البعيد."
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ingen nye commits på remote."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine neuen Commits auf dem Remote."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No hay commits nuevos en el remoto."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Etäpalvelimella ei ole uusia committeja."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucun nouveau commit sur le dépôt distant."
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "אין קומיטים חדשים במאגר המרוחק."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "रिमोट पर कोई नया कमिट नहीं है।"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nincs új commit a távoli tárolóban."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tidak ada commit baru di remote."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nessun nuovo commit sul remoto."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "リモートに新しいコミットはありません。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "원격에 새 커밋이 없습니다."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ingen nye commits på remote."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geen nieuwe commits op de remote."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Brak nowych commitów w zdalnym repozytorium."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nenhum commit novo no remoto."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "В удалённом репозитории нет новых коммитов."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inga nya commits på fjärren."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ไม่มีคอมมิตใหม่บนรีโมท"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uzak depoda yeni commit yok."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "У віддаленому репозиторії немає нових комітів."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Không có commit mới trên remote."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "远程没有新的提交。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "遠端沒有新的提交。"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No new commits on the remote."
+          }
+        }
+      }
+    },
+    "You're offline. Connect to the internet to fetch.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "أنت غير متصل. اتصل بالإنترنت لجلب التغييرات."
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Du er offline. Opret forbindelse til internettet for at hente."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sie sind offline. Stellen Sie eine Internetverbindung her, um abzurufen."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No tienes conexión. Conéctate a Internet para recuperar los cambios."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Olet offline-tilassa. Muodosta internetyhteys hakeaksesi."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vous êtes hors ligne. Connectez-vous à Internet pour récupérer les modifications."
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "אין חיבור לאינטרנט. יש להתחבר כדי לבצע Fetch."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "आप ऑफ़लाइन हैं। फ़ेच करने के लिए इंटरनेट से कनेक्ट करें।"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nincs internetkapcsolat. Csatlakozz az internethez a lekéréshez."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anda sedang offline. Sambungkan ke internet untuk melakukan fetch."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sei offline. Connettiti a Internet per eseguire il fetch."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "オフラインです。フェッチするにはインターネットに接続してください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "오프라인 상태입니다. 가져오려면 인터넷에 연결하세요."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Du er frakoblet. Koble til internett for å hente."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "U bent offline. Maak verbinding met internet om op te halen."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jesteś offline. Połącz się z internetem, aby pobrać zmiany."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Você está offline. Conecte-se à internet para buscar."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Нет подключения к интернету. Подключитесь, чтобы получить изменения."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Du är offline. Anslut till internet för att hämta."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "คุณออฟไลน์อยู่ เชื่อมต่ออินเทอร์เน็ตเพื่อเฟตช์"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Çevrimdışısınız. Getirmek için internete bağlanın."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Немає з’єднання з інтернетом. Під’єднайтеся, щоб отримати зміни."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bạn đang ngoại tuyến. Hãy kết nối Internet để fetch."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "你已离线。请连接互联网后再获取。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "你目前離線。請連上網際網路後再擷取。"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You're offline. Connect to the internet to fetch."
+          }
+        }
+      }
+    },
+    "Fetching...": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "جارٍ الجلب…"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Henter …"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wird abgerufen …"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recuperando…"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Haetaan…"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Récupération…"
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "מבצע Fetch…"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "फ़ेच हो रहा है…"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lekérés…"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Melakukan fetch…"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recupero in corso…"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "フェッチ中…"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "가져오는 중…"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Henter …"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ophalen…"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pobieranie…"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Buscando…"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Получение…"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hämtar …"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "กำลังเฟตช์…"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Getiriliyor…"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Отримання…"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đang fetch…"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在获取…"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在擷取…"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fetching..."
+          }
+        }
+      }
+    },
+    "No new remote commits. %@ has %lld local commit(s) to push.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لا توجد عمليات commit بعيدة جديدة. عمليات commit المحلية في %@ بانتظار الدفع: %lld."
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ingen nye remote-commits. %@ har %lld lokale commit(s) at pushe."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine neuen Remote-Commits. %@ hat %lld lokale(n) Commit(s) zum Pushen."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No hay commits remotos nuevos. %@ tiene %lld commit(s) local(es) para hacer push."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ei uusia etäcommitteja. Haaralla %@ on lähetettäviä paikallisia committeja: %lld."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucun nouveau commit distant. %@ a %lld commit(s) local(aux) à pousser."
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "אין קומיטים מרוחקים חדשים. קומיטים מקומיים ב־%@ שממתינים לדחיפה: %lld."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "कोई नया रिमोट कमिट नहीं। %@ में पुश करने के लिए स्थानीय कमिट: %lld।"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nincs új távoli commit. Elküldendő helyi commitok itt: %@: %lld."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tidak ada commit remote baru. %@ memiliki %lld commit lokal untuk di-push."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nessun nuovo commit remoto. %@ ha %lld commit locali da inviare."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "リモートの新しいコミットはありません。%@ にはプッシュ待ちのローカルコミットが %lld 件あります。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "새 원격 커밋이 없습니다. %@에 푸시할 로컬 커밋이 %lld개 있습니다."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ingen nye remote-commits. %@ har %lld lokale commit(s) å pushe."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geen nieuwe remote-commits. %@ heeft %lld lokale commit(s) om te pushen."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Brak nowych zdalnych commitów. Lokalne commity w %@ do wypchnięcia: %lld."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nenhum commit remoto novo. %@ tem %lld commit(s) local(is) para enviar."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Новых удалённых коммитов нет. Локальных коммитов в %@ для отправки: %lld."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inga nya fjärrcommits. %@ har %lld lokala commit(s) att pusha."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ไม่มีคอมมิตใหม่จากรีโมท %@ มีคอมมิตในเครื่องที่รอพุช %lld รายการ"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yeni uzak commit yok. %@ dalında gönderilecek %lld yerel commit var."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Нових віддалених комітів немає. Локальних комітів у %@ для надсилання: %lld."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Không có commit mới từ remote. %@ có %lld commit cục bộ cần push."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "没有新的远程提交。%@ 有 %lld 个本地提交待推送。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "沒有新的遠端提交。%@ 有 %lld 個本機提交待推送。"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No new remote commits. %@ has %lld local commit(s) to push."
+          }
+        }
+      }
+    },
+    "1 new commit": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "commit جديد واحد"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 nyt commit"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 neuer Commit"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 commit nuevo"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 uusi commit"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 nouveau commit"
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "קומיט חדש אחד"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 नया कमिट"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 új commit"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 commit baru"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 nuovo commit"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "新しいコミットが 1 件あります"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "새 커밋 1개"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 ny commit"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 nieuwe commit"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 nowy commit"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 commit novo"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 новый коммит"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 ny commit"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "คอมมิตใหม่ 1 รายการ"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 yeni commit"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 новий коміт"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 commit mới"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 个新提交"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 個新提交"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 new commit"
+          }
+        }
+      }
+    },
+    "%lld new commits": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "عمليات commit جديدة: %lld"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld nye commits"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld neue Commits"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld commits nuevos"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uusia committeja: %lld"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld nouveaux commits"
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "קומיטים חדשים: %lld"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "नए कमिट: %lld"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Új commitok: %lld"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld commit baru"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld nuovi commit"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "新しいコミットが %lld 件あります"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "새 커밋 %lld개"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld nye commits"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld nieuwe commits"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nowe commity: %lld"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld commits novos"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Новых коммитов: %lld"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld nya commits"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "คอมมิตใหม่ %lld รายการ"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld yeni commit"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Нових комітів: %lld"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld commit mới"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 个新提交"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 個新提交"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld new commits"
+          }
+        }
+      }
+    },
+    "%@ has diverged from the remote. Pull to reconcile.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تباعد %@ عن المستودع البعيد. نفّذ السحب للتوفيق بين التغييرات."
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ har divergeret fra remote. Lav et pull for at forene ændringerne."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ ist vom Remote abgewichen. Führen Sie einen Pull aus, um die Änderungen zusammenzuführen."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ se ha desviado del remoto. Haz pull para reconciliar los cambios."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ on eriytynyt etäpalvelimesta. Nouda muutokset yhdistääksesi ne."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ a divergé du dépôt distant. Faites un pull pour réconcilier les modifications."
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ התפצל מהמאגר המרוחק. יש לבצע משיכה כדי ליישב את השינויים."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ रिमोट से अलग हो गई है। बदलावों को मिलाने के लिए पुल करें।"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ eltért a távoli tárolótól. Végezz lekérést (Pull) a módosítások összehangolásához."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ telah menyimpang dari remote. Lakukan pull untuk merekonsiliasi."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ si è discostato dal remoto. Esegui il pull per riconciliare."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ はリモートと分岐しています。プルして調整してください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@이(가) 원격과 갈라졌습니다. Pull하여 조정하세요."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ har divergert fra remote. Gjør en pull for å forene endringene."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ is afgeweken van de remote. Pull om de wijzigingen samen te voegen."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ rozeszła się ze zdalnym repozytorium. Wykonaj Pull, aby uzgodnić zmiany."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ divergiu do remoto. Faça pull para conciliar."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ разошлась с удалённым репозиторием. Выполните Pull, чтобы согласовать изменения."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ har avvikit från fjärren. Gör en pull för att jämka samman ändringarna."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ แยกออกจากรีโมทแล้ว ให้พุลเพื่อปรับให้ตรงกัน"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ uzak depodan ayrıştı. Değişiklikleri uzlaştırmak için pull yapın."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ розійшлася з віддаленим репозиторієм. Виконайте Pull, щоб узгодити зміни."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ đã tách khỏi remote. Hãy pull để đối chiếu thay đổi."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 已与远程分叉。请拉取以协调更改。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 已與遠端分歧。請拉取以協調變更。"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ has diverged from the remote. Pull to reconcile."
+          }
+        }
+      }
+    },
+    "Fetched": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تم الجلب"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hentet"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abgerufen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recuperado"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Haettu"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Récupéré"
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "בוצע Fetch"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "फ़ेच किया गया"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lekérve"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fetch selesai"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recuperato"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "フェッチしました"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "가져옴"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hentet"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opgehaald"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pobrano"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Buscado"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Получено"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hämtat"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เฟตช์แล้ว"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Getirildi"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Отримано"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đã fetch"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已获取"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已擷取"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fetched"
+          }
+        }
+      }
+    },
+    "This branch has no remote tracking branch to compare against.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لا يحتوي هذا الفرع على فرع تتبّع بعيد للمقارنة به."
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Denne branch har ingen remote-tracking-branch at sammenligne med."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieser Branch hat keinen Remote-Tracking-Branch zum Vergleichen."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esta rama no tiene una rama de seguimiento remota con la que comparar."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tällä haaralla ei ole etäseurantahaaraa, johon verrata."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cette branche n’a pas de branche de suivi distante à comparer."
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "לענף הזה אין ענף מעקב מרוחק להשוואה."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "इस ब्रांच की तुलना के लिए कोई रिमोट ट्रैकिंग ब्रांच नहीं है।"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ennek az ágnak nincs távoli követő ága, amellyel össze lehetne hasonlítani."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Branch ini tidak memiliki branch pelacak remote untuk dibandingkan."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Questo branch non ha un branch di tracciamento remoto con cui confrontarsi."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "このブランチには比較対象のリモート追跡ブランチがありません。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이 브랜치에는 비교할 원격 추적 브랜치가 없습니다."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Denne branchen har ingen remote-tracking-branch å sammenligne med."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deze branch heeft geen remote-trackingbranch om mee te vergelijken."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ta gałąź nie ma zdalnej gałęzi śledzącej do porównania."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este branch não tem um branch de rastreamento remoto para comparar."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "У этой ветки нет удалённой отслеживаемой ветки для сравнения."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Den här grenen har ingen fjärrspårningsgren att jämföra med."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "แบรนช์นี้ไม่มีแบรนช์ติดตามรีโมทให้เปรียบเทียบ"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu dalın karşılaştırılacak bir uzak izleme dalı yok."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ця гілка не має віддаленої гілки відстеження для порівняння."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nhánh này không có nhánh theo dõi remote để so sánh."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "此分支没有可供比较的远程跟踪分支。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "此分支沒有可供比較的遠端追蹤分支。"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This branch has no remote tracking branch to compare against."
+          }
+        }
+      }
+    },
+    "Show Hidden Files": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "عرض الملفات المخفية"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vis skjulte filer"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Versteckte Dateien anzeigen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mostrar archivos ocultos"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Näytä piilotetut tiedostot"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Afficher les fichiers cachés"
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "הצגת קבצים מוסתרים"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "छिपी हुई फ़ाइलें दिखाएँ"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rejtett fájlok megjelenítése"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tampilkan File Tersembunyi"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mostra file nascosti"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "隠しファイルを表示"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "숨김 파일 표시"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vis skjulte filer"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verborgen bestanden weergeven"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pokaż ukryte pliki"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mostrar arquivos ocultos"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Показать скрытые файлы"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Visa dolda filer"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "แสดงไฟล์ที่ซ่อนอยู่"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gizli Dosyaları Göster"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Показати приховані файли"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hiển thị tệp ẩn"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "显示隐藏文件"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "顯示隱藏檔案"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show Hidden Files"
+          }
+        }
+      }
+    },
+    "Remove the Git index lock?": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "هل تريد إزالة قفل فهرس Git؟"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fjern Git-indekslåsen?"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git-Indexsperre entfernen?"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Quitar el bloqueo del índice de Git?"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Poistetaanko Git-indeksin lukitus?"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Supprimer le verrou de l’index Git ?"
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "להסיר את נעילת האינדקס של Git?"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git इंडेक्स लॉक हटाएँ?"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eltávolítod a Git-index zárolását?"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hapus kunci indeks Git?"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rimuovere il blocco dell’indice Git?"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git インデックスのロックを削除しますか？"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git 인덱스 잠금을 제거할까요?"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fjerne Git-indekslåsen?"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git-indexvergrendeling verwijderen?"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Usunąć blokadę indeksu Git?"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remover o bloqueio do índice do Git?"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Снять блокировку индекса Git?"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ta bort Git-indexlåset?"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ลบการล็อกดัชนี Git ไหม"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git dizin kilidi kaldırılsın mı?"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Зняти блокування індексу Git?"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xóa khóa chỉ mục Git?"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "移除 Git 索引锁？"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "要移除 Git 索引鎖定嗎？"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remove the Git index lock?"
+          }
+        }
+      }
+    },
+    "Git Branch Locked": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "فرع Git مقفل"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git-gren låst"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git-Branch gesperrt"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rama de Git bloqueada"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git-haara lukittu"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Branche Git verrouillée"
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ענף Git נעול"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git ब्रांच लॉक है"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git-ág zárolva"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cabang Git Terkunci"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Branch Git bloccato"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gitブランチがロックされています"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git 브랜치 잠김"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git-gren låst"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git-branch vergrendeld"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gałąź Git zablokowana"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Branch do Git bloqueado"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ветка Git заблокирована"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git-gren låst"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "สาขา Git ถูกล็อก"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git dalı kilitli"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Гілку Git заблоковано"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nhánh Git bị khóa"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git 分支已锁定"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git 分支已鎖定"
+          }
+        }
+      }
+    },
+    "Git Index Locked": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "فهرس Git مقفل"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git-indeks låst"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git-Index gesperrt"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Índice de Git bloqueado"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git-indeksi lukittu"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Index Git verrouillé"
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "האינדקס של Git נעול"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git इंडेक्स लॉक है"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git-index zárolva"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Indeks Git Terkunci"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Indice Git bloccato"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git インデックスがロックされています"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git 인덱스 잠김"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git-indeks låst"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git-index vergrendeld"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Indeks Git zablokowany"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Índice do Git bloqueado"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Индекс Git заблокирован"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git-index låst"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ดัชนี Git ถูกล็อก"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git Dizini Kilitli"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Індекс Git заблоковано"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chỉ mục Git bị khóa"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git 索引已锁定"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git 索引已鎖定"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git Index Locked"
+          }
+        }
+      }
+    },
+    "Git can't pull or commit while %@ exists. It is usually left behind when an operation is interrupted, for example when iOS suspends the app.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لا يمكن لـ Git السحب أو الالتزام أثناء وجود %@. يُترك عادةً عند مقاطعة عملية، مثلًا عندما يعلّق iOS التطبيق."
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git kan ikke hente eller committe, mens %@ findes. Den efterlades normalt, når en handling afbrydes, f.eks. når iOS sætter appen på pause."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git kann nicht pullen oder committen, solange %@ existiert. Die Datei bleibt meist zurück, wenn ein Vorgang unterbrochen wird, etwa wenn iOS die App anhält."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git no puede hacer pull ni commit mientras exista %@. Suele quedar cuando se interrumpe una operación, por ejemplo, cuando iOS suspende la app."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git ei voi hakea tai tehdä committia, kun %@ on olemassa. Se jää yleensä jäljelle, kun toiminto keskeytyy, esimerkiksi kun iOS keskeyttää apin."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git ne peut ni récupérer ni valider tant que %@ existe. Ce fichier subsiste généralement après l’interruption d’une opération, par exemple lorsque iOS suspend l’app."
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "‏Git לא יכול למשוך או לבצע commit כל עוד %@ קיים. בדרך כלל הוא נשאר כשפעולה נקטעת, למשל כש-iOS משהה את האפליקציה."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ मौजूद रहने तक Git पुल या कमिट नहीं कर सकता। यह आमतौर पर तब रह जाता है जब कोई ऑपरेशन बीच में रुक जाता है, जैसे iOS ऐप को निलंबित कर दे।"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A Git nem tud pullolni vagy commitolni, amíg a(z) %@ létezik. Általában akkor marad vissza, ha egy művelet megszakad, például amikor az iOS felfüggeszti az appot."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git tidak dapat pull atau commit selama %@ ada. File ini biasanya tertinggal saat operasi terputus, misalnya saat iOS menangguhkan app."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git non può eseguire pull o commit finché esiste %@. Di solito rimane quando un’operazione viene interrotta, ad esempio quando iOS sospende l’app."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ が存在する間、Gitはプルやコミットができません。通常、iOSがアプリを一時停止したときなど、操作が中断されると残ります。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 파일이 있는 동안 Git이 풀하거나 커밋할 수 없습니다. 보통 iOS가 앱을 일시 중단하는 등 작업이 중단되면 남습니다."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git kan ikke hente eller committe mens %@ finnes. Den blir vanligvis liggende igjen når en handling avbrytes, for eksempel når iOS setter appen på pause."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git kan niet pullen of committen zolang %@ bestaat. Dit blijft meestal achter als een bewerking wordt onderbroken, bijvoorbeeld wanneer iOS de app pauzeert."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git nie może wykonać pull ani commit, dopóki istnieje %@. Zwykle pozostaje po przerwaniu operacji, na przykład gdy iOS wstrzyma aplikację."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O Git não consegue fazer pull nem commit enquanto %@ existir. Ele costuma ficar para trás quando uma operação é interrompida, por exemplo, quando o iOS suspende o app."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git не может выполнить pull или commit, пока существует %@. Обычно он остаётся после прерванной операции, например когда iOS приостанавливает приложение."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git kan inte hämta eller committa medan %@ finns. Den blir oftast kvar när en åtgärd avbryts, till exempel när iOS pausar appen."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git ไม่สามารถ pull หรือ commit ได้ขณะที่มี %@ อยู่ มักหลงเหลือเมื่อการทำงานถูกขัดจังหวะ เช่น เมื่อ iOS พักแอป"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ var olduğu sürece Git pull veya commit yapamaz. Genellikle bir işlem yarıda kaldığında, örneğin iOS uygulamayı askıya aldığında geride kalır."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git не може виконати pull або commit, поки існує %@. Зазвичай він лишається після перерваної операції, наприклад коли iOS призупиняє застосунок."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git không thể pull hoặc commit khi %@ còn tồn tại. Tệp này thường còn sót lại khi một thao tác bị gián đoạn, ví dụ khi iOS tạm dừng ứng dụng."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 存在时，Git 无法拉取或提交。它通常在操作中断时遗留，例如 iOS 挂起应用时。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 存在時，Git 無法提取或提交。它通常在操作中斷時遺留，例如 iOS 暫停 App 時。"
+          }
+        }
+      }
+    },
+    "Git can't stage, commit, or pull while index.lock exists. It is usually left behind when an operation is interrupted, for example when iOS suspends the app.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لا يمكن لـ Git التجهيز أو تنفيذ commit أو السحب ما دام الملف index.lock موجودًا. يبقى عادةً عند مقاطعة عملية ما، مثلًا عندما يعلّق iOS التطبيق."
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git kan ikke stage, committe eller pulle, så længe index.lock findes. Den efterlades typisk, når en handling afbrydes, f.eks. når iOS sætter appen på pause."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git kann nicht stagen, committen oder pullen, solange index.lock existiert. Die Datei bleibt meist zurück, wenn ein Vorgang unterbrochen wird, zum Beispiel wenn iOS die App anhält."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git no puede preparar, hacer commit ni pull mientras exista index.lock. Suele quedar cuando se interrumpe una operación, por ejemplo cuando iOS suspende la app."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git ei voi lisätä muutoksia, tehdä committia tai noutaa, kun index.lock on olemassa. Se jää yleensä jäljelle, kun toiminto keskeytyy, esimerkiksi kun iOS keskeyttää sovelluksen."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git ne peut pas indexer, committer ni faire de pull tant que index.lock existe. Ce fichier reste généralement après l’interruption d’une opération, par exemple lorsque iOS suspend l’app."
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git לא יכול להכין שינויים, לבצע קומיט או משיכה כל עוד index.lock קיים. בדרך כלל הוא נשאר כשפעולה נקטעת, למשל כש־iOS משהה את האפליקציה."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "जब तक index.lock मौजूद है, Git स्टेज, कमिट या पुल नहीं कर सकता। यह आमतौर पर तब रह जाता है जब कोई ऑपरेशन बीच में रुक जाता है, जैसे जब iOS ऐप को निलंबित कर देता है।"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A Git nem tud stage-elni, commitolni vagy lekérni, amíg az index.lock létezik. Általában akkor marad vissza, ha egy művelet megszakad, például amikor az iOS felfüggeszti az alkalmazást."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git tidak dapat melakukan stage, commit, atau pull selama index.lock ada. File ini biasanya tertinggal saat operasi terputus, misalnya ketika iOS menangguhkan aplikasi."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git non può eseguire stage, commit o pull finché esiste index.lock. Di solito resta quando un’operazione viene interrotta, ad esempio quando iOS sospende l’app."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "index.lock が存在する間、Git はステージ、コミット、プルを実行できません。通常、iOS がアプリを一時停止したときなど、操作が中断されると残ります。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "index.lock이 있는 동안에는 Git에서 스테이징, 커밋, Pull을 할 수 없습니다. 보통 iOS가 앱을 일시 중단하는 등 작업이 중단되었을 때 남습니다."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git kan ikke stage, committe eller pulle så lenge index.lock finnes. Den blir vanligvis liggende igjen når en operasjon avbrytes, for eksempel når iOS setter appen på pause."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git kan niet stagen, committen of pullen zolang index.lock bestaat. Dit bestand blijft meestal achter als een bewerking wordt onderbroken, bijvoorbeeld wanneer iOS de app pauzeert."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git nie może dodawać zmian, tworzyć commitów ani wykonywać Pull, dopóki istnieje plik index.lock. Zwykle zostaje on po przerwaniu operacji, na przykład gdy iOS wstrzyma aplikację."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O Git não consegue preparar, fazer commit ou pull enquanto index.lock existir. Ele costuma ficar para trás quando uma operação é interrompida, por exemplo quando o iOS suspende o app."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git не может индексировать, коммитить или выполнять Pull, пока существует index.lock. Обычно этот файл остаётся после прерывания операции, например когда iOS приостанавливает приложение."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git kan inte stagea, committa eller pulla så länge index.lock finns. Den blir oftast kvar när en åtgärd avbryts, till exempel när iOS pausar appen."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git ไม่สามารถสเตจ คอมมิต หรือพุลได้ขณะที่มี index.lock อยู่ ไฟล์นี้มักค้างอยู่เมื่อการทำงานถูกขัดจังหวะ เช่น เมื่อ iOS พักแอป"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "index.lock var olduğu sürece Git hazırlama, commit veya pull yapamaz. Genellikle bir işlem yarıda kaldığında, örneğin iOS uygulamayı askıya aldığında geride kalır."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git не може індексувати, комітити чи виконувати Pull, доки існує index.lock. Зазвичай цей файл залишається після переривання операції, наприклад коли iOS призупиняє застосунок."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git không thể stage, commit hoặc pull khi index.lock còn tồn tại. Tệp này thường bị bỏ lại khi một thao tác bị gián đoạn, chẳng hạn khi iOS tạm dừng ứng dụng."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "index.lock 存在时，Git 无法暂存、提交或拉取。它通常是在操作被中断时遗留下来的，例如 iOS 挂起了应用。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "index.lock 存在時，Git 無法暫存、提交或拉取。它通常是在操作中斷時留下的，例如 iOS 暫停了 App。"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git can't stage, commit, or pull while index.lock exists. It is usually left behind when an operation is interrupted, for example when iOS suspends the app."
+          }
+        }
+      }
+    },
+    "Created %@": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "أُنشئ %@"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oprettet %@"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erstellt %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Creado %@"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Luotu %@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Créé %@"
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "נוצר %@"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ बनाया गया"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Létrehozva: %@"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dibuat %@"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Creato %@"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@に作成"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 생성됨"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opprettet %@"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aangemaakt %@"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Utworzono %@"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Criado %@"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Создано %@"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Skapad %@"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "สร้างเมื่อ %@"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ oluşturuldu"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Створено %@"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Được tạo %@"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "创建于%@"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "建立於%@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Created %@"
+          }
+        }
+      }
+    },
+    "Remove Lock": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إزالة القفل"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fjern lås"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sperre entfernen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quitar bloqueo"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Poista lukitus"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Supprimer le verrou"
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "הסרת הנעילה"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "लॉक हटाएँ"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zárolás eltávolítása"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hapus Kunci"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rimuovi blocco"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ロックを削除"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "잠금 제거"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fjern lås"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vergrendeling verwijderen"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Usuń blokadę"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remover bloqueio"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Снять блокировку"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ta bort låset"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ลบการล็อก"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kilidi Kaldır"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Зняти блокування"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xóa khóa"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "移除锁"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "移除鎖定"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remove Lock"
+          }
+        }
+      }
+    },
+    "Only do this if no other Git app (such as Working Copy) is using this folder right now. Your files and commits are not changed.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لا تفعل ذلك إلا إذا لم يكن أي تطبيق Git آخر (مثل Working Copy) يستخدم هذا المجلد الآن. لن تتغير ملفاتك وعمليات commit."
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gør kun dette, hvis ingen anden Git-app (f.eks. Working Copy) bruger denne mappe lige nu. Dine filer og commits ændres ikke."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tun Sie dies nur, wenn gerade keine andere Git-App (z. B. Working Copy) diesen Ordner verwendet. Ihre Dateien und Commits werden nicht verändert."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hazlo solo si ninguna otra app de Git (como Working Copy) está usando esta carpeta ahora mismo. Tus archivos y commits no se modifican."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tee tämä vain, jos mikään muu Git-sovellus (kuten Working Copy) ei käytä tätä kansiota juuri nyt. Tiedostojasi ja committejasi ei muuteta."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ne faites cela que si aucune autre app Git (comme Working Copy) n’utilise ce dossier en ce moment. Vos fichiers et commits ne sont pas modifiés."
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "יש לעשות זאת רק אם אף אפליקציית Git אחרת (כמו Working Copy) לא משתמשת בתיקייה הזו כרגע. הקבצים והקומיטים שלך לא ישתנו."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ऐसा केवल तभी करें जब अभी कोई दूसरा Git ऐप (जैसे Working Copy) इस फ़ोल्डर का उपयोग न कर रहा हो। आपकी फ़ाइलें और कमिट नहीं बदलेंगे।"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Csak akkor tedd ezt, ha most egyetlen másik Git-alkalmazás (például a Working Copy) sem használja ezt a mappát. A fájljaid és commitjaid nem változnak."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lakukan ini hanya jika tidak ada aplikasi Git lain (seperti Working Copy) yang sedang menggunakan folder ini. File dan commit Anda tidak diubah."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fallo solo se nessun’altra app Git (come Working Copy) sta usando questa cartella in questo momento. I tuoi file e commit non vengono modificati."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "このフォルダを今ほかの Git アプリ（Working Copy など）が使用していない場合にのみ実行してください。ファイルやコミットは変更されません。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "지금 다른 Git 앱(예: Working Copy)이 이 폴더를 사용하고 있지 않을 때만 진행하세요. 파일과 커밋은 변경되지 않습니다."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gjør dette bare hvis ingen annen Git-app (for eksempel Working Copy) bruker denne mappen akkurat nå. Filene og commitene dine endres ikke."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Doe dit alleen als geen andere Git-app (zoals Working Copy) deze map nu gebruikt. Uw bestanden en commits worden niet gewijzigd."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zrób to tylko wtedy, gdy żadna inna aplikacja Git (np. Working Copy) nie używa teraz tego folderu. Twoje pliki i commity nie zostaną zmienione."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Faça isso somente se nenhum outro app Git (como o Working Copy) estiver usando esta pasta agora. Seus arquivos e commits não são alterados."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Делайте это, только если сейчас эту папку не использует другое Git-приложение (например, Working Copy). Ваши файлы и коммиты не изменятся."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gör bara detta om ingen annan Git-app (till exempel Working Copy) använder den här mappen just nu. Dina filer och commits ändras inte."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ทำสิ่งนี้เฉพาะเมื่อไม่มีแอป Git อื่น (เช่น Working Copy) กำลังใช้โฟลเดอร์นี้อยู่ ไฟล์และคอมมิตของคุณจะไม่เปลี่ยนแปลง"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bunu yalnızca şu anda başka bir Git uygulaması (ör. Working Copy) bu klasörü kullanmıyorsa yapın. Dosyalarınız ve commitleriniz değişmez."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Робіть це, лише якщо зараз жоден інший Git-застосунок (наприклад, Working Copy) не використовує цю папку. Ваші файли й коміти не зміняться."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chỉ làm điều này nếu hiện không có ứng dụng Git nào khác (như Working Copy) đang dùng thư mục này. Tệp và commit của bạn không bị thay đổi."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "仅当目前没有其他 Git 应用（例如 Working Copy）正在使用此文件夹时才执行此操作。你的文件和提交不会被更改。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "只有在目前沒有其他 Git App（例如 Working Copy）使用此資料夾時才執行此操作。你的檔案和提交不會被變更。"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Only do this if no other Git app (such as Working Copy) is using this folder right now. Your files and commits are not changed."
+          }
+        }
+      }
+    },
+    "Pull to update %@.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Führen Sie einen Pull aus, um %@ zu aktualisieren."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Faites un pull pour mettre à jour %@."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Haz pull para actualizar %@."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esegui il pull per aggiornare %@."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Faça pull para atualizar %@."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pull om %@ bij te werken."
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lav et pull for at opdatere %@."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gjør en pull for å oppdatere %@."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gör en pull för att uppdatera %@."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nouda muutokset päivittääksesi haaran %@."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wykonaj Pull, aby zaktualizować %@."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Выполните Pull, чтобы обновить %@."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Виконайте Pull, щоб оновити %@."
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Végezz lekérést (Pull) a(z) %@ frissítéséhez."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "プルして %@ を更新してください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pull하여 %@을(를) 업데이트하세요."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "拉取以更新 %@。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "拉取以更新 %@。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "نفّذ السحب لتحديث %@."
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "יש לבצע משיכה כדי לעדכן את %@."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ को अपडेट करने के लिए पुल करें।"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lakukan pull untuk memperbarui %@."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "พุลเพื่ออัปเดต %@"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ dalını güncellemek için pull yapın."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hãy pull để cập nhật %@."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pull to update %@."
+          }
+        }
+      }
+    },
+    "The Git index is locked. Wait for other Git operations to finish, then try again. If nothing else is using this repository, tap Remove Lock in the vault's Git tab.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Git-Index ist gesperrt. Warten Sie, bis andere Git-Vorgänge abgeschlossen sind, und versuchen Sie es dann erneut. Wenn nichts anderes dieses Repository verwendet, tippen Sie im Git-Tab des Vaults auf „Sperre entfernen“."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L’index Git est verrouillé. Attendez la fin des autres opérations Git, puis réessayez. Si rien d’autre n’utilise ce dépôt, touchez « Supprimer le verrou » dans l’onglet Git du coffre."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El índice de Git está bloqueado. Espera a que terminen otras operaciones de Git y vuelve a intentarlo. Si nada más está usando este repositorio, toca «Quitar bloqueo» en la pestaña Git de la bóveda."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L’indice Git è bloccato. Attendi il termine delle altre operazioni Git, poi riprova. Se nient’altro sta usando questo repository, tocca «Rimuovi blocco» nella scheda Git del vault."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O índice do Git está bloqueado. Aguarde outras operações do Git terminarem e tente novamente. Se nada mais estiver usando este repositório, toque em “Remover bloqueio” na aba Git do cofre."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De Git-index is vergrendeld. Wacht tot andere Git-bewerkingen klaar zijn en probeer het opnieuw. Als niets anders deze repository gebruikt, tik dan op ‘Vergrendeling verwijderen’ op het Git-tabblad van de kluis."
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git-indekset er låst. Vent, til andre Git-handlinger er færdige, og prøv igen. Hvis intet andet bruger dette repository, så tryk på Fjern lås på fanen Git i vaulten."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git-indeksen er låst. Vent til andre Git-operasjoner er ferdige, og prøv igjen. Hvis ingenting annet bruker dette repositoryet, trykker du på Fjern lås i Git-fanen for hvelvet."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git-indexet är låst. Vänta tills andra Git-åtgärder är klara och försök igen. Om inget annat använder det här repositoryt trycker du på Ta bort låset på valvets Git-flik."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git-indeksi on lukittu. Odota, että muut Git-toiminnot valmistuvat, ja yritä uudelleen. Jos mikään muu ei käytä tätä repositoriota, napauta holvin Git-välilehdellä Poista lukitus."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Indeks Git jest zablokowany. Poczekaj na zakończenie innych operacji Git i spróbuj ponownie. Jeśli nic innego nie używa tego repozytorium, stuknij Usuń blokadę na karcie Git sejfu."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Индекс Git заблокирован. Дождитесь завершения других операций Git и повторите попытку. Если этот репозиторий больше ничем не используется, нажмите «Снять блокировку» на вкладке Git хранилища."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Індекс Git заблоковано. Дочекайтеся завершення інших операцій Git і повторіть спробу. Якщо цей репозиторій більше нічим не використовується, торкніться «Зняти блокування» на вкладці Git сховища."
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A Git-index zárolva van. Várd meg, amíg a többi Git-művelet befejeződik, majd próbáld újra. Ha semmi más nem használja ezt a tárolót, koppints a széf Git lapján a Zárolás eltávolítása gombra."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git インデックスがロックされています。ほかの Git 操作が終わるまで待ってから、もう一度お試しください。このリポジトリをほかに何も使用していない場合は、保管庫の Git タブで「ロックを削除」をタップしてください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git 인덱스가 잠겨 있습니다. 다른 Git 작업이 끝날 때까지 기다린 후 다시 시도하세요. 이 저장소를 사용하는 다른 항목이 없다면 보관함의 Git 탭에서 잠금 제거를 탭하세요."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git 索引已锁定。请等待其他 Git 操作完成后重试。如果没有其他程序在使用此仓库，请在此库的 Git 标签页中轻点“移除锁”。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git 索引已鎖定。請等待其他 Git 操作完成後再試一次。如果沒有其他程式在使用此儲存庫，請在保險庫的 Git 分頁中點一下「移除鎖定」。"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "فهرس Git مقفل. انتظر حتى تنتهي عمليات Git الأخرى، ثم حاول مرة أخرى. إذا لم يكن هناك شيء آخر يستخدم هذا المستودع، فاضغط على «إزالة القفل» في علامة تبويب Git للخزنة."
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "האינדקס של Git נעול. יש להמתין לסיום פעולות Git אחרות ולנסות שוב. אם שום דבר אחר לא משתמש במאגר הזה, יש להקיש על ״הסרת הנעילה״ בלשונית Git של הכספת."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git इंडेक्स लॉक है। दूसरे Git ऑपरेशन पूरे होने तक प्रतीक्षा करें, फिर दोबारा कोशिश करें। अगर कोई और इस रिपॉज़िटरी का उपयोग नहीं कर रहा है, तो वॉल्ट के Git टैब में लॉक हटाएँ पर टैप करें।"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Indeks Git terkunci. Tunggu hingga operasi Git lainnya selesai, lalu coba lagi. Jika tidak ada lagi yang menggunakan repositori ini, ketuk Hapus Kunci di tab Git vault."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ดัชนี Git ถูกล็อก โปรดรอให้การทำงานอื่นของ Git เสร็จ แล้วลองอีกครั้ง หากไม่มีสิ่งอื่นใช้รีโพสิทอรีนี้อยู่ ให้แตะ ลบการล็อก ในแท็บ Git ของ vault"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git dizini kilitli. Diğer Git işlemlerinin bitmesini bekleyin ve yeniden deneyin. Bu depoyu başka hiçbir şey kullanmıyorsa kasanın Git sekmesinde Kilidi Kaldır’a dokunun."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chỉ mục Git đang bị khóa. Hãy đợi các thao tác Git khác hoàn tất rồi thử lại. Nếu không có gì khác đang dùng kho này, hãy chạm vào Xóa khóa trong tab Git của vault."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The Git index is locked. Wait for other Git operations to finish, then try again. If nothing else is using this repository, tap Remove Lock in the vault's Git tab."
+          }
+        }
+      }
     }
   },
   "version": "1.0"

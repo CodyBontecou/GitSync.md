@@ -24,6 +24,10 @@ final class SyncStateRuntime {
     var lastOperationRepoID: UUID?
     var lastOperationKind: SyncActivityKind?
     var activationObserver: NSObjectProtocol?
+    /// Background execution time held while a foreground sync runs (issue
+    /// #50 report 2): an app switch mid-pull would otherwise suspend libgit2
+    /// while it holds `HEAD.lock` / branch ref locks.
+    var backgroundTask: UIBackgroundTaskIdentifier = .invalid
 }
 
 private enum SyncStatesDefaults {
@@ -124,6 +128,8 @@ extension AppState {
     /// libgit2 transfer callbacks for this vault into it.
     func beginSyncActivity(repoID: UUID, kind: SyncActivityKind) {
         guard let repo = repo(id: repoID), let url = vaultURL(for: repoID) else { return }
+        // A pull/push/sync supersedes what the last fetch reported.
+        fetchResultByRepo[repoID] = nil
         syncStateRuntime.lastOperationRepoID = repoID
         syncStateRuntime.lastOperationKind = kind
         if let previous = syncStateRuntime.observedProgressPath {
@@ -138,6 +144,7 @@ extension AppState {
             commitsAhead: currentCommitsAhead(repoID: repoID)
         )
         syncActivity = activity
+        beginSyncBackgroundTask(name: "GitSync \(kind)")
         let path = url.path
         syncStateRuntime.observedProgressPath = path
         let activityID = activity.id
@@ -156,7 +163,31 @@ extension AppState {
     }
 
     /// Settles progress; the hero lingers briefly on the finished state.
+    /// Asks iOS for time to finish the running Git operation if the user
+    /// leaves the app. If that time runs out, the operation is cancelled so
+    /// libgit2 unwinds and releases its lock files instead of being frozen
+    /// while holding them.
+    private func beginSyncBackgroundTask(name: String) {
+        endSyncBackgroundTask()
+        syncStateRuntime.backgroundTask = UIApplication.shared.beginBackgroundTask(withName: name) { [weak self] in
+            MainActor.assumeIsolated {
+                guard let self else { return }
+                DebugLogger.shared.info("sync", "Background time expired; cancelling the running Git operation")
+                self.cancelActiveSync()
+                self.endSyncBackgroundTask()
+            }
+        }
+    }
+
+    private func endSyncBackgroundTask() {
+        let task = syncStateRuntime.backgroundTask
+        guard task != .invalid else { return }
+        syncStateRuntime.backgroundTask = .invalid
+        UIApplication.shared.endBackgroundTask(task)
+    }
+
     func finishSyncActivity(repoID: UUID, success: Bool) {
+        endSyncBackgroundTask()
         if let path = syncStateRuntime.observedProgressPath {
             GitTransferProgressCenter.shared.stopObserving(path: path)
             syncStateRuntime.observedProgressPath = nil

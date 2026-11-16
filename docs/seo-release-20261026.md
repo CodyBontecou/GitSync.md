@@ -37,7 +37,7 @@ Run instructions and the ongoing review process are in [seo.md](seo.md). The rep
 
 ## Search Console setup
 
-On October 26, 2026, the user approved verifying the domain property for `cody@isolated.tech` and submitting the sitemap. Ownership verification succeeded using a Google verification TXT record at the domain apex in Cloudflare DNS. Keep this record to retain verification. Existing DNS records were preserved; no Google-to-Cloudflare account integration was authorized.
+On October 26, 2026, the user approved verifying the domain property with the owner's Google account and submitting the sitemap. Ownership verification succeeded using a Google verification TXT record at the domain apex in Cloudflare DNS. Keep this record to retain verification. Existing DNS records were preserved; no Google-to-Cloudflare account integration was authorized.
 
 Property: [sc-domain:gitsync.md](https://search.google.com/search-console?resource_id=sc-domain%3Agitsync.md).
 
@@ -61,7 +61,7 @@ Removed accidentally inserted About/Contact links from privacy-policy sentences 
 - Source and generated-site SEO checks passed; 12 Python site tests passed. Preview and production response/content checks passed for all indexable pages, sitemap, robots, and the missing-page 404.
 - Footer layout was visually checked at desktop and 390px phone width.
 - The first production check encountered HTTP 409 on the unchanged Working Copy comparison page. A direct recheck returned HTTP 200 with HTML matching the release snapshot; production verification was then repeated.
-- All 26 live redirect checks passed: 21 `.html` aliases redirect permanently to their canonical paths, and five alternate/legacy domains redirect permanently to `gitsync.md`, preserving the tested path and query string. [Detailed HEAD-request evidence](evidence/seo-20261026/redirects.json).
+- All 26 live redirect checks passed: 21 `.html` aliases redirect permanently to their canonical paths, and five alternate/legacy domains redirect permanently to `gitsync.md`, preserving the tested path and query string. [Detailed HEAD-request evidence](seo-release-20261026/redirects.json).
 
 The earlier Search Console discovery count of 19 is a historical observation, not a claim about this later 21-URL sitemap. Google has not been rechecked for the additional pages in this correction.
 
@@ -107,7 +107,7 @@ Added contextual incoming links from the main Obsidian guide, Windows setup guid
 
 ## Public source-link audit
 
-Audited all 52 unique public external destinations linked from HTML pages using credential-free HEAD requests. Every destination returned HTTP 200 after redirects; this verifies HTTP reachability, not page semantics, anchors, video availability, or signed-in access. [Audit evidence](evidence/seo-20261026/external-links.json) records each URL, result, final destination, and referring pages.
+Audited all 52 unique public external destinations linked from HTML pages using credential-free HEAD requests. Every destination returned HTTP 200 after redirects; this verifies HTTP reachability, not page semantics, anchors, video availability, or signed-in access. [Audit evidence](seo-release-20261026/external-links.json) records each URL, result, final destination, and referring pages.
 
 Updated the Gitignore article to link directly to GitHub's current `/en/get-started/git-basics/ignoring-files` documentation rather than its former redirected path. Retained expected App Store locale selection and GitHub token-settings sign-in redirects. Added `scripts/check_site_external_links.py` as an optional manual audit command with separate broken (404/410) and unverified/network/access outcomes; it does not run in required CI.
 

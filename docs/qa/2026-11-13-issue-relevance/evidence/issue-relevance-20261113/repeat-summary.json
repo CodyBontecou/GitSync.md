@@ -1,0 +1,76 @@
+{
+  "devicesAndConfigurations" : [
+    {
+      "device" : {
+        "architecture" : "arm64",
+        "deviceId" : "4DFF1574-E044-472A-8BC3-E7AC458F01D5",
+        "deviceName" : "GitSync-Tide-check",
+        "modelName" : "iPhone 18 Pro",
+        "osBuildNumber" : "24A434",
+        "osVersion" : "27.0",
+        "platform" : "iOS Simulator"
+      },
+      "expectedFailures" : 0,
+      "failedTests" : 4,
+      "passedTests" : 0,
+      "skippedTests" : 0,
+      "testPlanConfiguration" : {
+        "configurationId" : "1",
+        "configurationName" : "Test Scheme Action"
+      }
+    }
+  ],
+  "environmentDescription" : "Sync.md · Built with macOS 27.2",
+  "expectedFailures" : 0,
+  "failedTests" : 4,
+  "finishTime" : 1794577256.558,
+  "passedTests" : 0,
+  "result" : "Failed",
+  "runtimeWarnings" : [
+
+  ],
+  "skippedTests" : 0,
+  "startTime" : 1794577241.97,
+  "statistics" : [
+
+  ],
+  "testFailures" : [
+    {
+      "failureText" : "XCTAssertEqual failed: (\"GitState(commitSHA: \"\", treeSHA: \"\", branch: \"main\", blobSHAs: [:], lastSyncDate: 0001-01-01 00:00:00 +0000)\") is not equal to (\"GitState(commitSHA: \"1111111111111111111111111111111111111111\", treeSHA: \"\", branch: \"main\", blobSHAs: [:], lastSyncDate: 1970-01-01 00:00:00 +0000)\") - Status refresh must preserve unavailable state too",
+      "targetName" : "SyncMDTests",
+      "testIdentifier" : 1,
+      "testIdentifierString" : "SyncMDTests/testIssueAudit40UnavailableBookmarkPreservesClonedStateDuringRefresh()",
+      "testIdentifierURL" : "test://com.apple.xcode/Sync.md/SyncMDTests/SyncMDTests/testIssueAudit40UnavailableBookmarkPreservesClonedStateDuringRefresh",
+      "testName" : "testIssueAudit40UnavailableBookmarkPreservesClonedStateDuringRefresh()"
+    },
+    {
+      "failureText" : "XCTAssertEqual failed: (\"1111111111111111111111111111111111111111\") is not equal to (\"eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\") - Displayed HEAD must follow external Git",
+      "targetName" : "SyncMDTests",
+      "testIdentifier" : 2,
+      "testIdentifierString" : "SyncMDTests/testIssueAudit42RefreshAdoptsExternalHEADAndBranch()",
+      "testIdentifierURL" : "test://com.apple.xcode/Sync.md/SyncMDTests/SyncMDTests/testIssueAudit42RefreshAdoptsExternalHEADAndBranch",
+      "testName" : "testIssueAudit42RefreshAdoptsExternalHEADAndBranch()"
+    },
+    {
+      "failureText" : "XCTAssertFalse failed - Ordinary Markdown checkout must not show LFS progress",
+      "targetName" : "SyncMDTests",
+      "testIdentifier" : 3,
+      "testIdentifierString" : "SyncMDTests/testIssueAudit43MarkdownCheckoutAttentionIsNotLFS()",
+      "testIdentifierURL" : "test://com.apple.xcode/Sync.md/SyncMDTests/SyncMDTests/testIssueAudit43MarkdownCheckoutAttentionIsNotLFS",
+      "testName" : "testIssueAudit43MarkdownCheckoutAttentionIsNotLFS()"
+    },
+    {
+      "failureText" : "XCTAssertTrue failed - Clone must not delete existing unpushed files",
+      "targetName" : "SyncMDTests",
+      "testIdentifier" : 4,
+      "testIdentifierString" : "SyncMDTests/testIssueAudit50ClonePreservesSameRemoteWorkingCopy()",
+      "testIdentifierURL" : "test://com.apple.xcode/Sync.md/SyncMDTests/SyncMDTests/testIssueAudit50ClonePreservesSameRemoteWorkingCopy",
+      "testName" : "testIssueAudit50ClonePreservesSameRemoteWorkingCopy()"
+    }
+  ],
+  "title" : "Test - Sync.md",
+  "topInsights" : [
+
+  ],
+  "totalTestCount" : 4
+}

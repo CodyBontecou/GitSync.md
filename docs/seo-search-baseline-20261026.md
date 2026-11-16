@@ -1,6 +1,6 @@
 # Search Console baseline — October 26, 2026
 
-Property: [sc-domain:gitsync.md](https://search.google.com/search-console?resource_id=sc-domain%3Agitsync.md). Inspected using the authorized `cody@isolated.tech` account. This is an initial crawl/discovery record, not evidence of traffic growth after the release.
+Property: [sc-domain:gitsync.md](https://search.google.com/search-console?resource_id=sc-domain%3Agitsync.md). Inspected using the owner's authorized Google account. This is an initial crawl/discovery record, not evidence of traffic growth after the release.
 
 ## Search performance
 

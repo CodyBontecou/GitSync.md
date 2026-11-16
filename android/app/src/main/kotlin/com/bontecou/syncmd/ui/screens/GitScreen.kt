@@ -124,6 +124,8 @@ fun GitScreen(
     val pullContext = pullSelection?.takeIf { it.path == repositoryPath }
     val pullError = pullVM.errorText.collectAsState().value?.asString()
     val pullAttention by pullVM.attention.collectAsState()
+    // Ahead/behind on the branch card must reflect a fetch as soon as it finishes (issue #67).
+    LaunchedEffect(pullBusy) { if (!pullBusy && repositoryPath.isNotBlank()) workspaceVM.load(repositoryPath) }
     val status by pullVM.status.collectAsState()
     val mergeState by conflictVM.mergeState.collectAsState()
     val conflicts by conflictVM.conflicts.collectAsState()
@@ -186,6 +188,8 @@ fun GitScreen(
             },
             onSwitch = { navigate(GitDestination.Branches) },
         )
+
+        GitRecoveryNotes(pullVM, pullContext)
 
         pullAttention?.takeIf { pullContext != null }?.let { notice ->
             M3Note(notice, Modifier.padding(start = 16.dp, end = 16.dp, top = 12.dp).testTag("pull-lfs-attention"), tone = M3NoteTone.Info) {

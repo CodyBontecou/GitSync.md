@@ -1,0 +1,66 @@
+name: QA Cleanup
+
+# Opens or updates one "QA cleanup" issue listing docs/qa/ deletion candidates
+# (see CLAUDE.md, "Cleanup"). It never deletes or changes any file.
+on:
+  schedule:
+    - cron: "17 9 1 * *" # 09:17 UTC on the 1st of each month
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: read
+
+concurrency:
+  group: qa-cleanup
+  cancel-in-progress: false
+
+jobs:
+  qa-cleanup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      GH_TOKEN: ${{ github.token }}
+      TITLE: QA cleanup
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: List deletion candidates
+        id: list
+        run: |
+          set +e
+          python3 scripts/qa_hygiene.py cleanup > "$RUNNER_TEMP/body.md"
+          rc=$?
+          set -e
+          case "$rc" in
+            0) echo "found=true" >> "$GITHUB_OUTPUT" ;;
+            3) echo "found=false" >> "$GITHUB_OUTPUT" ;;
+            *) exit "$rc" ;;
+          esac
+          cat "$RUNNER_TEMP/body.md" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Open, update or close the issue
+        env:
+          FOUND: ${{ steps.list.outputs.found }}
+        run: |
+          set -euo pipefail
+          number=$(gh issue list --state open --search "in:title \"$TITLE\"" --json number,title \
+            --jq "map(select(.title == \"$TITLE\")) | .[0].number // empty")
+          if [ "$FOUND" = "true" ]; then
+            if [ -n "$number" ]; then
+              gh issue edit "$number" --body-file "$RUNNER_TEMP/body.md"
+              echo "Updated #$number"
+            else
+              gh issue create --title "$TITLE" --body-file "$RUNNER_TEMP/body.md"
+            fi
+          elif [ -n "$number" ]; then
+            gh issue close "$number" --comment "Nothing left to clean up as of $(date -u +%F)."
+            echo "Closed #$number"
+          else
+            echo "Nothing to clean up; no issue opened."
+          fi

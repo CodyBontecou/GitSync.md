@@ -1,0 +1,93 @@
+steps:
+  - launch:
+      native: bontecou.Sync-md.prqa
+      ios:
+        app: bontecou.Sync-md.prqa
+        args:
+          - -UITestGitToolsFixture
+          - pull-cancel
+          - -AppleLanguages
+          - (ar)
+          - -AppleLocale
+          - ar_SA
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: git-tools-fixture
+        role: Button
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: vault.title
+  - tap:
+      id: ellipsis
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: qa44.holdLease
+  - tap:
+      id: qa44.holdLease
+  - tool: await-ui-element
+    args:
+      condition: text
+      selector:
+        identifier: qa44.leaseStatus
+      expectedText: QA repository lease held
+      textMatch: equals
+  - tap:
+      text: سحب
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: إلغاء
+        role: Button
+  - tap:
+      text: إلغاء
+  - tool: gesture-swipe
+    args:
+      fromX: 0.28
+      fromY: 0.84
+      toX: 0.28
+      toY: 0.32
+      durationMs: 500
+      momentum: false
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: توقّف السحب
+        role: StaticText
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: توقّف السحب. حاول السحب مجددًا عندما تكون مستعدًا.
+        role: StaticText
+  - tap:
+      id: ellipsis
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: qa44.releaseLease
+  - tap:
+      id: qa44.releaseLease
+  - tool: gesture-swipe
+    args:
+      fromX: 0.28
+      fromY: 0.32
+      toX: 0.28
+      toY: 0.84
+      durationMs: 500
+      momentum: false
+  - tool: await-ui-element
+    args:
+      condition: text
+      selector:
+        identifier: qa44.leaseStatus
+      expectedText: QA repository lease released
+      textMatch: equals

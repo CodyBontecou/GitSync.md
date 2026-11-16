@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Git lock recovery (#66) and fetch feedback (#67). -->
+<resources>
+    <string name="git_lock_title">Índice do Git bloqueado</string>
+    <string name="git_lock_body">O Git não consegue preparar, fazer commit ou pull enquanto index.lock existir. Ele costuma ficar para trás quando uma operação é interrompida, por exemplo quando o Android suspende o app.</string>
+    <string name="git_lock_remove">Remover bloqueio</string>
+    <string name="git_lock_confirm_title">Remover o bloqueio do índice do Git?</string>
+    <string name="git_lock_confirm_body">Faça isso somente se nenhum outro app Git estiver usando esta pasta agora. Seus arquivos e commits não são alterados.</string>
+    <string name="gitops_lock_in_use">O bloqueio mudou ou acabou de ser criado, então outro app Git pode estar usando este repositório. Feche outros apps Git, aguarde alguns segundos e tente novamente.</string>
+    <string name="gitops_repository_locked">O índice do Git está bloqueado. Se nada mais estiver usando este repositório, toque em “Remover bloqueio” na tela do Git.</string>
+    <string name="git_fetch_up_to_date">Atualizado. Nenhum commit novo no remoto.</string>
+    <plurals name="git_fetch_new_commits">
+        <item quantity="one">%d commit novo no remoto. Faça pull para aplicá-lo.</item>
+        <item quantity="many">%d commits novos no remoto. Faça pull para aplicá-los.</item>
+        <item quantity="other">%d commits novos no remoto. Faça pull para aplicá-los.</item>
+    </plurals>
+    <plurals name="git_fetch_diverged">
+        <item quantity="one">%d commit novo no remoto, e este branch também tem commits locais. Faça merge ou rebase para conciliar.</item>
+        <item quantity="many">%d commits novos no remoto, e este branch também tem commits locais. Faça merge ou rebase para conciliar.</item>
+        <item quantity="other">%d commits novos no remoto, e este branch também tem commits locais. Faça merge ou rebase para conciliar.</item>
+    </plurals>
+</resources>

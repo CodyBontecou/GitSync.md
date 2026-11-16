@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Git lock recovery (#66) and fetch feedback (#67). -->
+<resources>
+    <string name="git_lock_title">Chỉ mục Git bị khóa</string>
+    <string name="git_lock_body">Git không thể stage, commit hoặc pull khi index.lock còn tồn tại. Tệp này thường bị bỏ lại khi một thao tác bị gián đoạn, chẳng hạn khi Android tạm dừng ứng dụng.</string>
+    <string name="git_lock_remove">Xóa khóa</string>
+    <string name="git_lock_confirm_title">Xóa khóa chỉ mục Git?</string>
+    <string name="git_lock_confirm_body">Chỉ làm điều này nếu hiện không có ứng dụng Git nào khác đang dùng thư mục này. Tệp và commit của bạn không bị thay đổi.</string>
+    <string name="gitops_lock_in_use">Khóa đã thay đổi hoặc vừa được tạo, nên có thể một ứng dụng Git khác đang dùng kho này. Hãy đóng các ứng dụng Git khác, đợi vài giây rồi thử lại.</string>
+    <string name="gitops_repository_locked">Chỉ mục Git đang bị khóa. Nếu không có gì khác đang dùng kho này, hãy chạm vào Xóa khóa trên màn hình Git.</string>
+    <string name="git_fetch_up_to_date">Đã cập nhật. Không có commit mới trên remote.</string>
+    <plurals name="git_fetch_new_commits">
+        <item quantity="other">Có %d commit mới trên remote. Hãy pull để áp dụng.</item>
+    </plurals>
+    <plurals name="git_fetch_diverged">
+        <item quantity="other">Có %d commit mới trên remote và nhánh này cũng có commit cục bộ. Hãy dùng merge hoặc rebase để đối chiếu.</item>
+    </plurals>
+</resources>

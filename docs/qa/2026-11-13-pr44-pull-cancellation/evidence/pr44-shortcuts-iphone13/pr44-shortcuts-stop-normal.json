@@ -1,0 +1,59 @@
+{
+  "e2eTest": "qa-pr44-shortcuts-stop-owned",
+  "flow": "qa-pr44-shortcuts-stop-owned",
+  "device": "00008110-00046CC63CA0401E",
+  "executionPrerequisite": "",
+  "ok": true,
+  "passed": 5,
+  "failed": 0,
+  "skipped": 0,
+  "errored": 0,
+  "steps": [
+    {
+      "index": 0,
+      "kind": "await",
+      "e2eTest": "qa-pr44-shortcuts-stop-owned",
+      "target": "visible \"PR44 QA Native Pull 20261113, Actions Menu\" role=Button",
+      "status": "pass",
+      "durationMs": 164,
+      "flow": "qa-pr44-shortcuts-stop-owned"
+    },
+    {
+      "index": 1,
+      "kind": "await",
+      "e2eTest": "qa-pr44-shortcuts-stop-owned",
+      "target": "visible \"Stop\" role=Button",
+      "status": "pass",
+      "durationMs": 117,
+      "flow": "qa-pr44-shortcuts-stop-owned"
+    },
+    {
+      "index": 2,
+      "kind": "tap",
+      "e2eTest": "qa-pr44-shortcuts-stop-owned",
+      "target": "\"Stop\" role=Button",
+      "status": "pass",
+      "durationMs": 1222,
+      "flow": "qa-pr44-shortcuts-stop-owned"
+    },
+    {
+      "index": 3,
+      "kind": "await",
+      "e2eTest": "qa-pr44-shortcuts-stop-owned",
+      "target": "hidden \"Stop\" role=Button",
+      "status": "pass",
+      "durationMs": 156,
+      "flow": "qa-pr44-shortcuts-stop-owned"
+    },
+    {
+      "index": 4,
+      "kind": "idle",
+      "e2eTest": "qa-pr44-shortcuts-stop-owned",
+      "status": "pass",
+      "durationMs": 2031,
+      "flow": "qa-pr44-shortcuts-stop-owned"
+    }
+  ],
+  "startedAt": 1794611224512,
+  "durationMs": 3692
+}

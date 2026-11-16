@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Git lock recovery (#66) and fetch feedback (#67). -->
+<resources>
+    <string name="git_lock_title">Index Git verrouillé</string>
+    <string name="git_lock_body">Git ne peut pas indexer, committer ni faire de pull tant que index.lock existe. Ce fichier reste généralement après l’interruption d’une opération, par exemple lorsque Android suspend l’app.</string>
+    <string name="git_lock_remove">Supprimer le verrou</string>
+    <string name="git_lock_confirm_title">Supprimer le verrou de l’index Git ?</string>
+    <string name="git_lock_confirm_body">Ne faites cela que si aucune autre app Git n’utilise ce dossier en ce moment. Vos fichiers et commits ne sont pas modifiés.</string>
+    <string name="gitops_lock_in_use">Le verrou a changé ou vient d’être créé : une autre app Git utilise peut-être ce dépôt. Fermez les autres apps Git, patientez quelques secondes, puis réessayez.</string>
+    <string name="gitops_repository_locked">L’index Git est verrouillé. Si rien d’autre n’utilise ce dépôt, touchez « Supprimer le verrou » dans l’écran Git.</string>
+    <string name="git_fetch_up_to_date">À jour. Aucun nouveau commit sur le dépôt distant.</string>
+    <plurals name="git_fetch_new_commits">
+        <item quantity="one">%d nouveau commit sur le dépôt distant. Faites un pull pour l’appliquer.</item>
+        <item quantity="many">%d nouveaux commits sur le dépôt distant. Faites un pull pour les appliquer.</item>
+        <item quantity="other">%d nouveaux commits sur le dépôt distant. Faites un pull pour les appliquer.</item>
+    </plurals>
+    <plurals name="git_fetch_diverged">
+        <item quantity="one">%d nouveau commit sur le dépôt distant, et cette branche a aussi des commits locaux. Faites un merge ou un rebase pour réconcilier.</item>
+        <item quantity="many">%d nouveaux commits sur le dépôt distant, et cette branche a aussi des commits locaux. Faites un merge ou un rebase pour réconcilier.</item>
+        <item quantity="other">%d nouveaux commits sur le dépôt distant, et cette branche a aussi des commits locaux. Faites un merge ou un rebase pour réconcilier.</item>
+    </plurals>
+</resources>

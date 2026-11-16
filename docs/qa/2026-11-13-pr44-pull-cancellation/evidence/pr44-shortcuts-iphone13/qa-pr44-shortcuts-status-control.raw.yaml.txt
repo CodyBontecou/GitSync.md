@@ -1,0 +1,55 @@
+steps:
+  - tap:
+      text: ‌        ‌PR44 QA Native Pull 20261113, Actions Menu
+  - tap:
+      text: Duplicate
+  - tap:
+      text: ‌        ‌PR44 QA Native Pull 20261114, Actions Menu
+  - tap:
+      text: Rename
+  - tap:
+      text: Clear text
+  - tool: keyboard
+    args:
+      text: PR44 QA Native Status 20261113
+  - tool: keyboard
+    args:
+      key: enter
+  - tap:
+      text: Remove Action
+  - tap:
+      x: 0.5
+      y: 0.565
+  - tool: keyboard
+    args:
+      text: GitSync PR QA
+  - tool: keyboard
+    args:
+      key: enter
+  - tap:
+      text: Get Repository Status
+  - tap:
+      id: enum
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: git-tools-fixture
+        role: StaticText
+  - tap:
+      text: git-tools-fixture
+  - tap:
+      text: play
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Stop
+        role: Button
+  - tool: await-ui-element
+    args:
+      condition: hidden
+      selector:
+        text: Stop
+        role: Button
+      timeoutMs: 15000

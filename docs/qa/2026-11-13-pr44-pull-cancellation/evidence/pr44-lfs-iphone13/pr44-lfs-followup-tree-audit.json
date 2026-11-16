@@ -1,0 +1,16 @@
+{
+  "base": "27146b7026de2e4960d812d4a071a45a122f9646",
+  "head": "fb6ec8356d579a6314bf2e8da2c566a59db18695",
+  "syntheticMerge": "3bfdb2306156fe15b9575d55e1f2cc09c37b6ec4",
+  "parents": [
+    "27146b7026de2e4960d812d4a071a45a122f9646",
+    "fb6ec8356d579a6314bf2e8da2c566a59db18695"
+  ],
+  "wholeTree": "fc6f101241d1b853bb5291b864732c3e58213024",
+  "treeEqual": true,
+  "shippingProjectUnchangedFromBase": true,
+  "checkoutVerifiedInCILog": true,
+  "ci": "43539452957 SUCCESS; full532/2explicitStoreKitSkips/0failures and Release/privacy/StoreKit resource exclusion inspected",
+  "buildNumberGuard": "43539453155 SUCCESS",
+  "draft": true
+}

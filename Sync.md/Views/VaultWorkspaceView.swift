@@ -9,6 +9,7 @@ struct VaultWorkspaceView: View {
 
     @State private var selectedPath: String?
     @State private var expanded: Set<String> = []
+    @AppStorage(FileBrowserView.showHiddenFilesKey) private var showHiddenFiles = false
     @State private var children: [String: [FileItem]] = [:]
     @State private var lfs = GitLFSAttributes(text: "")
     @State private var didAutoExpand = false
@@ -37,6 +38,7 @@ struct VaultWorkspaceView: View {
         .background(Tide.paper.ignoresSafeArea())
         .task(id: vaultURL) { reloadTree() }
         .onChange(of: repo?.gitState.commitSHA) { reloadTree() }
+        .onChange(of: showHiddenFiles) { reloadTree() }
         .onChange(of: entries) {
             reloadTree()
             guard let vaultURL else { selectedPath = nil; return }
@@ -234,7 +236,7 @@ struct VaultWorkspaceView: View {
     private func load(folder: String) {
         guard let vaultURL else { children = [:]; return }
         let url = folder.isEmpty ? vaultURL : vaultURL.appendingPathComponent(folder)
-        children[folder] = (try? FileBrowserView.listContents(of: url, parentRelativePath: folder)) ?? []
+        children[folder] = (try? FileBrowserView.listContents(of: url, parentRelativePath: folder, includeHidden: showHiddenFiles)) ?? []
     }
 
     /// Re-lists the root and every open folder; on first load, opens the

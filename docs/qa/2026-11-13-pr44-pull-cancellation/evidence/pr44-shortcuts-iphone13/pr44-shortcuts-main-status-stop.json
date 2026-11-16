@@ -1,0 +1,59 @@
+{
+  "e2eTest": "qa-pr44-shortcuts-status-stop",
+  "flow": "qa-pr44-shortcuts-status-stop",
+  "device": "00008110-00046CC63CA0401E",
+  "executionPrerequisite": "",
+  "ok": true,
+  "passed": 5,
+  "failed": 0,
+  "skipped": 0,
+  "errored": 0,
+  "steps": [
+    {
+      "index": 0,
+      "kind": "await",
+      "e2eTest": "qa-pr44-shortcuts-status-stop",
+      "target": "visible \"PR44 QA Native Status 20261113, Actions Menu\" role=Button",
+      "status": "pass",
+      "durationMs": 164,
+      "flow": "qa-pr44-shortcuts-status-stop"
+    },
+    {
+      "index": 1,
+      "kind": "await",
+      "e2eTest": "qa-pr44-shortcuts-status-stop",
+      "target": "visible \"Stop\" role=Button",
+      "status": "pass",
+      "durationMs": 104,
+      "flow": "qa-pr44-shortcuts-status-stop"
+    },
+    {
+      "index": 2,
+      "kind": "tap",
+      "e2eTest": "qa-pr44-shortcuts-status-stop",
+      "target": "\"Stop\" role=Button",
+      "status": "pass",
+      "durationMs": 1195,
+      "flow": "qa-pr44-shortcuts-status-stop"
+    },
+    {
+      "index": 3,
+      "kind": "await",
+      "e2eTest": "qa-pr44-shortcuts-status-stop",
+      "target": "hidden \"Stop\" role=Button",
+      "status": "pass",
+      "durationMs": 140,
+      "flow": "qa-pr44-shortcuts-status-stop"
+    },
+    {
+      "index": 4,
+      "kind": "idle",
+      "e2eTest": "qa-pr44-shortcuts-status-stop",
+      "status": "pass",
+      "durationMs": 2315,
+      "flow": "qa-pr44-shortcuts-status-stop"
+    }
+  ],
+  "startedAt": 1794611692533,
+  "durationMs": 3920
+}

@@ -1,0 +1,59 @@
+{
+  "e2eTest": "qa-pr45-inventory-check",
+  "flow": "qa-pr45-inventory-check",
+  "device": "00008110-00046CC63CA0401E",
+  "executionPrerequisite": "The separate QA app is on its fixture vault after completing qa-pr45-checkout-attention; Working tree needs attention is visible.",
+  "ok": true,
+  "passed": 5,
+  "failed": 0,
+  "skipped": 0,
+  "errored": 0,
+  "steps": [
+    {
+      "index": 0,
+      "kind": "await",
+      "e2eTest": "qa-pr45-inventory-check",
+      "target": "visible \"Working tree needs attention\"",
+      "status": "pass",
+      "durationMs": 145,
+      "flow": "qa-pr45-inventory-check"
+    },
+    {
+      "index": 1,
+      "kind": "tap",
+      "e2eTest": "qa-pr45-inventory-check",
+      "target": "id=BackButton",
+      "status": "pass",
+      "durationMs": 1017,
+      "flow": "qa-pr45-inventory-check"
+    },
+    {
+      "index": 2,
+      "kind": "await",
+      "e2eTest": "qa-pr45-inventory-check",
+      "target": "visible id=home.addRepository",
+      "status": "pass",
+      "durationMs": 143,
+      "flow": "qa-pr45-inventory-check"
+    },
+    {
+      "index": 3,
+      "kind": "idle",
+      "e2eTest": "qa-pr45-inventory-check",
+      "status": "pass",
+      "durationMs": 1998,
+      "flow": "qa-pr45-inventory-check"
+    },
+    {
+      "index": 4,
+      "kind": "await",
+      "e2eTest": "qa-pr45-inventory-check",
+      "target": "visible \"All 1\" role=Button",
+      "status": "pass",
+      "durationMs": 112,
+      "flow": "qa-pr45-inventory-check"
+    }
+  ],
+  "startedAt": 1794582057513,
+  "durationMs": 3416
+}

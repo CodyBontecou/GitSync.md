@@ -194,6 +194,7 @@ fun GitBranchesScreen(
                 size = M3ButtonSize.XSmall, enabled = pullContext != null && !pullBusy)
             Text(stringResource(R.string.git_m3_fetch_hint), style = M3Type.bodySmall, color = c.onVar)
         }
+        GitRecoveryNotes(pullVM, pullContext)
     }
 
     merging?.let { initial ->
