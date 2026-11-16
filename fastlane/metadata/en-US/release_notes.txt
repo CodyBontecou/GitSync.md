@@ -1,16 +1,4 @@
-GitSync.md 3.0 is a complete redesign. Every screen is new, built around one idea: always know whether your notes are in sync.
-
-• A sync rail on every vault shows at a glance what's pending, syncing, paused or up to date
-• See what changed before you commit: pick files, read the diff, and use a suggested commit message
-• Undo a push you didn't mean to make
-• Commit offline — changes queue up and push when you're back online
-• Merge conflicts are easier: step through each conflicted file, read both sides next to each other, and keep mine, theirs or both
-• File history, Markdown preview and a new-file sheet in the vault
-• iPad gets a workspace layout with your vaults and files side by side
-• New Home Screen widgets show each vault's status, a Live Activity follows a sync in progress, and a Control Center toggle turns Background Sync on or off
-• New Shortcuts: Sync All, check a vault's status, or open a vault
-• Generate an SSH key on your iPhone or iPad to add a vault from any Git server
-• Publishing a folder now skips .DS_Store and other system files
-• The new design is translated into every language GitSync.md supports
-
-Thanks for using GitSync.md. Tell us what you think of the new design.
+• If a vault's folder moves, GitSync.md now follows it instead of showing "Not cloned", and it never deletes an intact working copy
+• A leftover Git lock file no longer blocks syncing: GitSync.md spots it and lets you remove it safely
+• Show hidden files such as .obsidian with the new eye toggle in the file browser
+• Fetch now tells you whether you're up to date, have new commits to pull, or have diverged
