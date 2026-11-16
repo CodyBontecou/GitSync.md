@@ -1,13 +1,13 @@
 ---
-status: active
-covers: [issue#39, issue#40, issue#42, issue#43, issue#50, issue#38, issue#41]
+status: merged
+covers: [pr#69, issue#39, issue#40, issue#42, issue#43, issue#50, issue#38, issue#41]
 tested: c3d12c011f3cbb1ab310180c0ba7c69afefcea0e
 updated: 2026-11-16
 ---
 
 # Open-issue relevance after the redesign — 2026-11-13
 
-> Recorded in PR #69 (merged 2026-11-15 as `8122a34b89b756af2fc23d048eb4304b4dd11832`). Issues #39, #40, #42 and #43 are still open. #50 was closed by PR #73 on 2026-11-15 (see [its QA](../2026-11-15-pr73-issue-50-not-cloned/README.md)); #38 and #41 are closed. Migrated from the legacy `docs/` layout on 2026-11-15. Raw logs and unfinished recordings were removed; links to them point at `8122a34`.
+> Recorded in PR #69 (merged 2026-11-15 as `8122a34b89b756af2fc23d048eb4304b4dd11832`). Issues #39, #40, #42 and #43 were closed as completed on 2026-11-16, fixed by PRs #44, #47, #46 and #45 respectively. #50 was closed by PR #73 on 2026-11-15 (see [its QA](../2026-11-15-pr73-issue-50-not-cloned/README.md)); #38 and #41 are closed. Migrated from the legacy `docs/` layout on 2026-11-15. Raw logs and unfinished recordings were removed; links to them point at `8122a34`.
 
 Follow-up: [physical iPhone 17 Pro QA](iphone17-follow-up.md) reproduced #50's false-not-cloned state after renaming a disposable fixture folder. The simulator/source audit below remains its original evidence scope; do not treat its tests as physical-device tests.
 
