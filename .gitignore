@@ -74,3 +74,10 @@ docs/evidence/local-only-*/
 
 # Claude Code local agent worktrees
 .claude/worktrees/
+
+# QA scratch output (see CLAUDE.md, "QA notes and evidence"). Logs are only
+# ignored under docs/qa/: some committed *.log files elsewhere must stay.
+docs/qa/**/scratch/
+docs/qa/**/*.log
+docs/qa/**/*.log.gz
+*.incomplete.*

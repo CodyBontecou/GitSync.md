@@ -1062,6 +1062,154 @@ final class AppState {
         }
     }
 
+    // MARK: - Moved working copies (issue #50)
+
+    /// Re-resolves security-scoped bookmarks when the app returns to the
+    /// foreground. A folder moved by another app (or a container migration)
+    /// while GitSync.md was suspended otherwise stays cached at its old path.
+    /// Healthy grants whose path is unchanged are left alone, and a transient
+    /// resolution failure never revokes access that still works.
+    func refreshVaultBookmarks() {
+        if isDemoMode { return }
+        for repo in repos {
+            guard let data = repo.customVaultBookmarkData else { continue }
+            if isSyncing && syncingRepoID == repo.id { continue }
+            if (backgroundSyncFlightCounts[repo.id] ?? 0) > 0 { continue }
+            let current = resolvedCustomURLs[repo.id]
+            guard let resolved = try? vaultBookmarkAccess.resolve(data) else {
+                // Keep a working grant; only an already-broken one is retried.
+                if vaultAccessErrors[repo.id] != nil || current == nil { resolveVaultBookmark(for: repo.id) }
+                continue
+            }
+            let moved = current.map { Self.canonicalFilePath(for: $0) != Self.canonicalFilePath(for: resolved.url) } ?? true
+            if moved || vaultAccessErrors[repo.id] != nil {
+                if moved, let current {
+                    DebugLogger.shared.info("storage", "Folder moved; following its bookmark",
+                                            detail: "\(repo.displayName): \(current.lastPathComponent) → \(resolved.url.lastPathComponent)")
+                }
+                resolveVaultBookmark(for: repo.id)
+            }
+        }
+    }
+
+    /// The working-copy URL a repo's settings point at, even while it is marked
+    /// unavailable. Nil when its grant root is not resolved and accessible.
+    private func expectedWorkingCopyURL(for repo: RepoConfig) -> (root: URL, url: URL)? {
+        if repo.customVaultBookmarkData != nil {
+            guard let root = resolvedCustomURLs[repo.id] else { return nil }
+            let homePath = Self.canonicalFilePath(for: URL(fileURLWithPath: NSHomeDirectory()))
+            guard accessingSecurityScope.contains(repo.id) || Self.canonicalFilePath(for: root).hasPrefix(homePath + "/") else { return nil }
+            return (root, workingCopyURL(root: root, repo: repo))
+        }
+        let docs = Self.appDocumentsDirectory
+        if let relativePath = repo.customVaultRelativePath {
+            return (docs, docs.appendingPathComponent(relativePath, isDirectory: true))
+        }
+        return (docs, repo.defaultVaultURL)
+    }
+
+    /// Finds a cloned vault whose working-copy folder was renamed in place
+    /// (issue #50) and repoints the vault at it. A sibling is adopted only when
+    /// it is the one folder that is this vault's repository: same remote, HEAD
+    /// at the saved commit, and not used by another vault. Nothing on disk is
+    /// written. Returns whether the vault was repointed.
+    @discardableResult
+    func relocateMovedWorkingCopy(repoID: UUID) -> Bool {
+        guard !isDemoMode, let repo = repo(id: repoID), repo.isCloned,
+              let expected = expectedWorkingCopyURL(for: repo) else { return false }
+        let fm = FileManager.default
+        let expectedGit = expected.url.appendingPathComponent(".git")
+        guard !fm.fileExists(atPath: expectedGit.path) else { return false }
+        // A bookmark that is the working copy itself follows renames through
+        // bookmark resolution; its siblings are outside the grant.
+        let rootPath = Self.canonicalFilePath(for: expected.root)
+        guard Self.canonicalFilePath(for: expected.url) != rootPath else { return false }
+        let parent = expected.url.deletingLastPathComponent()
+        let parentPath = Self.canonicalFilePath(for: parent)
+        guard parentPath == rootPath || parentPath.hasPrefix(rootPath + "/"),
+              let names = try? fm.contentsOfDirectory(atPath: parent.path) else { return false }
+
+        let expectedRemote = GitRemoteURL.cloneURLString(from: repo.repoURL) ?? repo.repoURL
+        let expectedIdentity = expectedRemote.isEmpty ? nil : Self.remoteIdentity(expectedRemote)
+        let otherPaths = Set(repos.filter { $0.id != repoID }.compactMap { other -> String? in
+            guard let url = vaultURL(for: other.id) ?? expectedWorkingCopyURL(for: other)?.url else { return nil }
+            return Self.canonicalFilePath(for: url).lowercased()
+        })
+        let candidates = names.filter { !$0.hasPrefix(".") && $0 != expected.url.lastPathComponent }.compactMap { name -> URL? in
+            let candidate = parent.appendingPathComponent(name, isDirectory: true)
+            var isDirectory: ObjCBool = false
+            let gitDir = candidate.appendingPathComponent(".git", isDirectory: true)
+            guard fm.fileExists(atPath: gitDir.path, isDirectory: &isDirectory), isDirectory.boolValue,
+                  !otherPaths.contains(Self.canonicalFilePath(for: candidate).lowercased()),
+                  Self.headCommitSHA(gitDir: gitDir) == repo.gitState.commitSHA else { return nil }
+            let remotes = (try? String(contentsOf: gitDir.appendingPathComponent("config"), encoding: .utf8))
+                .map(Self.remoteURLs(inGitConfig:)) ?? []
+            if let expectedIdentity {
+                guard remotes.contains(where: { Self.remoteIdentity($0) == expectedIdentity }) else { return nil }
+            } else if !remotes.isEmpty {
+                return nil
+            }
+            return candidate
+        }
+        guard candidates.count == 1, let found = candidates.first, let index = repoIndex(id: repoID) else {
+            if candidates.count > 1 {
+                DebugLogger.shared.info("storage", "Several folders match a moved vault; not choosing one",
+                                        detail: "\(repo.displayName): \(candidates.map(\.lastPathComponent).joined(separator: ", "))")
+            }
+            return false
+        }
+        let previous = repos[index]
+        let newName = found.lastPathComponent
+        repos[index].vaultFolderName = newName
+        if let relativePath = previous.customVaultRelativePath, !relativePath.isEmpty {
+            var components = relativePath.split(separator: "/").map(String.init)
+            components.removeLast()
+            components.append(newName)
+            repos[index].customVaultRelativePath = components.joined(separator: "/")
+        }
+        guard saveRepos() else {
+            repos[index] = previous
+            return false
+        }
+        vaultAccessErrors.removeValue(forKey: repoID)
+        clearCommitHistoryCache(for: repoID)
+        DebugLogger.shared.info("storage", "Found a renamed vault folder and reconnected it",
+                                detail: "\(repo.displayName): \(expected.url.lastPathComponent) → \(newName)")
+        return true
+    }
+
+    /// The commit `HEAD` points at, read from files (no libgit2, no locks).
+    nonisolated static func headCommitSHA(gitDir: URL) -> String? {
+        guard let head = try? String(contentsOf: gitDir.appendingPathComponent("HEAD"), encoding: .utf8)
+            .trimmingCharacters(in: .whitespacesAndNewlines) else { return nil }
+        guard head.hasPrefix("ref:") else { return head.isEmpty ? nil : head }
+        let ref = head.dropFirst(4).trimmingCharacters(in: .whitespaces)
+        guard !ref.split(separator: "/").contains(where: { $0 == ".." }) else { return nil }
+        if let loose = try? String(contentsOf: gitDir.appendingPathComponent(ref), encoding: .utf8)
+            .trimmingCharacters(in: .whitespacesAndNewlines), !loose.isEmpty {
+            return loose
+        }
+        guard let packed = try? String(contentsOf: gitDir.appendingPathComponent("packed-refs"), encoding: .utf8) else { return nil }
+        for line in packed.split(whereSeparator: \.isNewline) where !line.hasPrefix("#") && !line.hasPrefix("^") {
+            let parts = line.split(separator: " ", maxSplits: 1)
+            if parts.count == 2, parts[1] == ref { return String(parts[0]) }
+        }
+        return nil
+    }
+
+    /// Clears `.unavailableFolder` once the expected working copy is back (for
+    /// example a renamed folder restored to its original name), or repoints the
+    /// vault at its renamed folder. Returns whether the vault is usable again.
+    private func recoverUnavailableWorkingCopy(_ repo: RepoConfig) -> Bool {
+        guard vaultAccessErrors[repo.id] == .unavailableFolder,
+              let expected = expectedWorkingCopyURL(for: repo) else { return false }
+        if FileManager.default.fileExists(atPath: expected.url.appendingPathComponent(".git").path) {
+            vaultAccessErrors.removeValue(forKey: repo.id)
+            return true
+        }
+        return relocateMovedWorkingCopy(repoID: repo.id)
+    }
+
     /// A false hasGitDirectory is not proof of deletion in a File Provider folder.
     private func preserveUnavailableExternalRepo(_ repo: RepoConfig) -> Bool {
         guard repo.customVaultBookmarkData != nil else { return false }
@@ -1078,6 +1226,12 @@ final class AppState {
         if isDemoMode { return }
         var didChange = false
         for (index, repo) in repos.enumerated() where repo.isCloned {
+            _ = recoverUnavailableWorkingCopy(repo)
+            if let candidate = vaultURL(for: repo.id),
+               !FileManager.default.fileExists(atPath: candidate.appendingPathComponent(".git").path) {
+                _ = relocateMovedWorkingCopy(repoID: repo.id)
+            }
+            let repo = repos[index]
             guard hasLocalRepositoryAccess(repoID: repo.id), let vaultDir = vaultURL(for: repo.id) else { continue }
             if repo.customVaultBookmarkData != nil && !FileManager.default.isReadableFile(atPath: vaultDir.path) {
                 _ = preserveUnavailableExternalRepo(repo)
@@ -1140,6 +1294,11 @@ final class AppState {
         let gitService = gitRepositoryFactory(vaultDir)
 
         guard gitService.hasGitDirectory else {
+            // A renamed working-copy folder is followed, not forgotten (#50).
+            if relocateMovedWorkingCopy(repoID: repoID) {
+                detectChanges(repoID: repoID, skipIfRecentlyStartedWithin: interval)
+                return
+            }
             if preserveUnavailableExternalRepo(repo) { return }
             // .git directory was removed — reset cloned state
             if let idx = repoIndex(id: repoID) {
@@ -2850,9 +3009,19 @@ final class AppState {
 
             // Remove existing vault directory — git clone needs a clean target.
             // Never delete outside the vault's parent, another vault's working
-            // copy, or a different repository that happens to share the name.
-            if let conflict = cloneTargetConflict(vaultDir, repoID: repoID) {
+            // copy, a different repository that happens to share the name, or
+            // an intact working copy of this same repository (issue #50).
+            switch cloneTargetAssessment(vaultDir, repoID: repoID) {
+            case .conflict(let conflict):
                 throw FolderPublicationError.unavailable(conflict)
+            case .existingWorkingCopy:
+                try await reconnectExistingWorkingCopy(repoID: repoID, at: vaultDir)
+                try? await Task.sleep(for: .seconds(1))
+                isSyncing = false
+                syncingRepoID = nil
+                return
+            case .replaceable:
+                break
             }
             if fm.fileExists(atPath: vaultDir.path) {
                 try fm.removeItem(at: vaultDir)
@@ -3725,10 +3894,74 @@ final class AppState {
         VaultFolderName.unique(base) { isVaultFolderInUse($0, in: parent) }
     }
 
+    /// Adopts an intact working copy of this vault's own remote that `clone`
+    /// found at its target, instead of deleting it (issue #50). Only HEAD and
+    /// branch are read; no file, ref or index is written.
+    private func reconnectExistingWorkingCopy(repoID: UUID, at vaultDir: URL) async throws {
+        syncProgress = String(localized: "Reconnecting the existing working copy...")
+        let info = try await gitRepositoryFactory(vaultDir).repoInfo()
+        guard !info.commitSHA.isEmpty else {
+            throw FolderPublicationError.unavailable(cloneTargetConflict(vaultDir, repoID: repoID)
+                ?? VaultAccessError.unavailableFolder.localizedDescription)
+        }
+        guard let index = repoIndex(id: repoID), vaultURL(for: repoID) == vaultDir else {
+            throw FolderPublicationError.changedHistory
+        }
+        let previous = repos[index]
+        if repos[index].branch.isEmpty { repos[index].branch = info.branch }
+        repos[index].gitState.commitSHA = info.commitSHA
+        repos[index].gitState.branch = info.branch
+        guard saveRepos() else {
+            repos[index] = previous
+            throw FolderPublicationError.unavailable(String(localized: "The folder was found, but its access settings could not be saved."))
+        }
+        DebugLogger.shared.info("clone", "Reconnected existing working copy instead of re-cloning",
+                                detail: "\(vaultDir.lastPathComponent) at \(info.commitSHA.prefix(7))")
+        clearCommitHistoryCache(for: repoID)
+        assistInventoryChangeHandler?()
+        detectChanges(repoID: repoID)
+        syncProgress = String(localized: "Reconnected the existing working copy. No files were deleted.")
+        showToast(TideToastItem(kind: .info, title: String(localized: "Reconnected"),
+                                detail: String(localized: "Reconnected the existing working copy. No files were deleted."),
+                                action: nil))
+    }
+
+    /// What `clone` may do with an existing target folder.
+    enum CloneTargetAssessment: Equatable {
+        /// Missing, empty, or a partial clone of this vault's remote with no
+        /// commits: safe to remove and clone into.
+        case replaceable
+        /// A working copy of this vault's own remote that has commits (issue
+        /// #50). It may hold unpushed commits or edits, so it is reconnected,
+        /// never deleted.
+        case existingWorkingCopy
+        /// Someone else's files, another vault's folder, or an unsafe path.
+        case conflict(String)
+    }
+
     /// Why `vaultDir` must not be deleted and re-cloned for `repoID`, or nil
-    /// when it is safe. Re-cloning the same repository (a retry after a failed
-    /// or partial clone) stays allowed.
+    /// when it is safe. Only a missing/empty folder or a partial clone of the
+    /// same remote (no commits yet) may be replaced. An intact working copy of
+    /// the same remote is refused here; `clone` reconnects it instead.
     func cloneTargetConflict(_ vaultDir: URL, repoID: UUID, anchor: URL? = nil) -> String? {
+        switch cloneTargetAssessment(vaultDir, repoID: repoID, anchor: anchor) {
+        case .replaceable: return nil
+        case .existingWorkingCopy:
+            return String(localized: "“\(vaultDir.lastPathComponent)” already holds a working copy of this repository. Its files have been preserved.")
+        case .conflict(let message): return message
+        }
+    }
+
+    func cloneTargetAssessment(_ vaultDir: URL, repoID: UUID, anchor: URL? = nil) -> CloneTargetAssessment {
+        switch cloneTargetConflictIgnoringOwnWorkingCopy(vaultDir, repoID: repoID, anchor: anchor) {
+        case .some(let message): return .conflict(message)
+        case .none:
+            let gitDir = vaultDir.appendingPathComponent(".git", isDirectory: true)
+            return Self.gitDirectoryHasCommits(gitDir) ? .existingWorkingCopy : .replaceable
+        }
+    }
+
+    private func cloneTargetConflictIgnoringOwnWorkingCopy(_ vaultDir: URL, repoID: UUID, anchor: URL?) -> String? {
         let name = vaultDir.lastPathComponent
         let unsafe = String(localized: "The folder “\(name)” is outside this vault's location. Choose a different folder name.")
         guard !vaultDir.pathComponents.contains(where: { $0 == "." || $0 == ".." }) else { return unsafe }
@@ -3776,8 +4009,23 @@ final class AppState {
         }
         guard let repo = repo(id: repoID) else { return occupied }
         let expected = Self.remoteIdentity(GitRemoteURL.cloneURLString(from: repo.repoURL) ?? repo.repoURL)
-        if remotes.contains(where: { Self.remoteIdentity($0) == expected }) { return nil }
+        if remotes.contains(where: { Self.remoteIdentity($0) == expected }) {
+            // libgit2 writes branch refs before checking out files, so a partial
+            // clone without commits holds only `.git`. Anything else beside it
+            // was put there by someone and is kept. A working copy with commits
+            // is classified by `cloneTargetAssessment` and never deleted.
+            return contents == [".git"] || Self.gitDirectoryHasCommits(gitDir) ? nil : occupied
+        }
         return String(localized: "“\(name)” already holds a different Git repository. Its files have been preserved. Remove this vault and add it again with a different folder name.")
+    }
+
+    /// Whether a folder's origin is the vault's remote, in any URL form. A
+    /// local-only vault (no remote) only matches a folder without one.
+    nonisolated static func isSameRemote(_ folderRemote: String?, _ vaultRemote: String) -> Bool {
+        let folder = folderRemote?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        let vault = vaultRemote.trimmingCharacters(in: .whitespacesAndNewlines)
+        if folder.isEmpty || vault.isEmpty { return folder.isEmpty && vault.isEmpty }
+        return remoteIdentity(folder) == remoteIdentity(GitRemoteURL.cloneURLString(from: vault) ?? vault)
     }
 
     /// `url = …` values from a Git config file (remote URLs).
@@ -3836,15 +4084,25 @@ final class AppState {
 
     // MARK: - Publish a Local Folder
 
-    func reconnectExternalRepository(repoID: UUID, url: URL) async throws {
-        guard let existing = repo(id: repoID), existing.isExternalLocalRepository else { throw FolderPublicationError.bookmarkUnavailable }
+    /// Points a vault at a folder the user picked that already holds this
+    /// vault's repository. Offered for every vault (issue #50): external
+    /// folders that lost access, and app-cloned vaults whose folder moved or
+    /// that show "Not Cloned" while their working copy is intact elsewhere.
+    /// Only settings change; files, refs and the index are never written.
+    func reconnectRepositoryFolder(repoID: UUID, url: URL) async throws {
+        guard let existing = repo(id: repoID) else { throw FolderPublicationError.bookmarkUnavailable }
         let scoped = url.startAccessingSecurityScopedResource()
         var transferredScope = false
         defer { if scoped && !transferredScope { url.stopAccessingSecurityScopedResource() } }
         let homePath = Self.canonicalFilePath(for: URL(fileURLWithPath: NSHomeDirectory()))
         guard scoped || Self.canonicalFilePath(for: url).hasPrefix(homePath + "/") else { throw FolderPublicationError.bookmarkUnavailable }
+        guard !repos.contains(where: { other in
+            other.id != repoID && vaultURL(for: other.id).map { Self.canonicalFilePath(for: $0) == Self.canonicalFilePath(for: url) } == true
+        }) else {
+            throw FolderPublicationError.unavailable(String(localized: "This folder is already registered. Its existing settings have been preserved."))
+        }
         let info = try await gitRepositoryFactory(url).repoInfo()
-        guard Self.readGitRemoteURL(at: url) == existing.repoURL,
+        guard !info.commitSHA.isEmpty, Self.isSameRemote(Self.readGitRemoteURL(at: url), existing.repoURL),
               let index = repoIndex(id: repoID), repos[index] == existing else { throw FolderPublicationError.changedHistory }
         let bookmark = try url.bookmarkData(options: [], includingResourceValuesForKeys: nil, relativeTo: nil)
         repos[index].customVaultBookmarkData = bookmark
@@ -3854,7 +4112,10 @@ final class AppState {
         repos[index].gitState.commitSHA = info.commitSHA
         repos[index].gitState.branch = info.branch
         guard saveRepos() else { repos[index] = existing; throw FolderPublicationError.unavailable(String(localized: "The folder was found, but its access settings could not be saved.")) }
-        clearCustomLocation(for: repoID)
+        // Release only the previous grant. `clearCustomLocation` would also
+        // erase the bookmark just saved, losing the folder on relaunch.
+        releaseVaultScope(for: repoID)
+        vaultAccessErrors.removeValue(forKey: repoID)
         resolvedCustomURLs[repoID] = url
         if scoped { accessingSecurityScope.insert(repoID); transferredScope = true }
         detectChanges(repoID: repoID)
