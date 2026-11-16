@@ -217,12 +217,17 @@ final class PushSyncManager: ObservableObject {
 
     func connectGitHubApp() async {
         guard isEnabled, !isConnectingGitHubApp else { return }
-        guard let token = Self.cachedDeviceTokenHex() else {
+        isConnectingGitHubApp = true
+        defer { isConnectingGitHubApp = false }
+        lastError = nil
+
+        // Right after notifications are granted, APNs and the relay round-trip
+        // that caches the token may still be in flight. Wait for it instead of
+        // failing the first tap.
+        guard let token = await awaitDeviceTokenHex() else {
             lastError = GitHubAppLinkError.registrationRequired.localizedDescription
             return
         }
-        isConnectingGitHubApp = true
-        defer { isConnectingGitHubApp = false }
 
         guard await register(tokenHex: token) else { return }
         var request = URLRequest(url: workerURL.appendingPathComponent("v1/github-app/link/start"))
@@ -402,6 +407,21 @@ final class PushSyncManager: ObservableObject {
     }
 
     private static let tokenCacheKey = "pushSyncCachedTokenHex"
+    /// Returns the cached APNs token, asking iOS to (re)register and polling
+    /// for up to `timeout` while the token and relay registration arrive.
+    private func awaitDeviceTokenHex(timeout: Duration = .seconds(15)) async -> String? {
+        if let token = Self.cachedDeviceTokenHex() { return token }
+        UIApplication.shared.registerForRemoteNotifications()
+        let clock = ContinuousClock()
+        let deadline = clock.now.advanced(by: timeout)
+        while clock.now < deadline {
+            try? await Task.sleep(for: .milliseconds(250))
+            if Task.isCancelled { return nil }
+            if let token = Self.cachedDeviceTokenHex() { return token }
+        }
+        return nil
+    }
+
     static func cacheDeviceTokenHex(_ hex: String) {
         UserDefaults.standard.set(hex, forKey: tokenCacheKey)
     }

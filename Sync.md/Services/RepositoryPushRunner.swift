@@ -111,6 +111,12 @@ struct RepositoryReconciliationResult: Sendable, Equatable {
 /// lease. A clean retry also checks for already-created commits ahead of origin,
 /// closing the failed-push retry hole where HEAD advanced but the worktree is clean.
 struct RepositoryPushRunner: Sendable {
+    /// Upper bound on status reads while waiting for delayed editor events.
+    static let maxStagingSettlePasses = 8
+    /// Consecutive status reads without unstaged worktree changes that end
+    /// the settle window early (~250 ms apart).
+    static let requiredQuietSettlePasses = 2
+
     func run(
         serialized: SerializedGitRepository,
         repo: RepoConfig,
@@ -304,15 +310,28 @@ struct RepositoryPushRunner: Sendable {
 
     /// Stages all local changes with a short settle window for delayed external
     /// editor rename/delete events. Cancellation is checked between every pass.
+    ///
+    /// A whole-tree stage (`add_all` + `update_all` + an LFS pass over every
+    /// index path) is expensive on large vaults, so it only runs while status
+    /// shows unstaged worktree changes. A clean vault costs one status read,
+    /// and the settle window ends after two consecutive quiet status reads.
     private func stageAllLocalChanges(repository: any GitRepositoryProtocol) async throws {
         var sawAnyChanges = false
-        for pass in 0..<8 {
+        var quietPasses = 0
+        for pass in 0..<Self.maxStagingSettlePasses {
             try Task.checkCancellation()
             let before = try await repository.repoInfo()
+            if pass == 0, before.statusEntries.isEmpty { throw LocalGitError.noChanges }
             if !before.statusEntries.isEmpty { sawAnyChanges = true }
-            try await ensureNoActiveConflict(repository: repository)
-            try await repository.stageAll()
-            if pass < 7 { try await Task.sleep(for: .milliseconds(250)) }
+            if before.statusEntries.contains(where: { $0.workTreeStatus != nil }) {
+                quietPasses = 0
+                try await ensureNoActiveConflict(repository: repository)
+                try await repository.stageAll()
+            } else {
+                quietPasses += 1
+                if quietPasses >= Self.requiredQuietSettlePasses { break }
+            }
+            if pass < Self.maxStagingSettlePasses - 1 { try await Task.sleep(for: .milliseconds(250)) }
         }
 
         var finalInfo = try await repository.repoInfo()

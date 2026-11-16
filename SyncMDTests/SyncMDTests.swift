@@ -9425,7 +9425,7 @@ final class SyncMDTests: XCTestCase {
     // MARK: - RepositoryPushRunner / pushOnly / syncRepository (Issue #32)
 
     /// A status entry that is already staged — the fake never mutates its
-    /// `repoInfoResult`, so an `indexStatus` entry makes the 8-pass staging
+    /// `repoInfoResult`, so an `indexStatus` entry makes the staging
     /// loop succeed on the first pass.
     private static func stagedEntry(path: String = "Note.md") -> GitStatusEntry {
         GitStatusEntry(path: path, indexStatus: .modified, workTreeStatus: nil)
@@ -9486,6 +9486,64 @@ final class SyncMDTests: XCTestCase {
             fixture.repository.commitAndPushMessages,
             ["Update from GitSync.md"],
             "A blank message must fall back to the default commit message"
+        )
+    }
+
+    @MainActor
+    func testRepositoryPushRunnerSkipsWholeTreeStagingForCleanVault() async throws {
+        // A clean 11k-file vault spent minutes in eight whole-tree stage passes.
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+
+        let serialized = SerializedGitRepository(base: fixture.repository, localURL: fixture.rootURL)
+        let result = await RepositoryPushRunner().run(
+            serialized: serialized,
+            repo: fixture.repoConfig,
+            credentials: "pat",
+            message: nil
+        )
+
+        XCTAssertEqual(result, .noChanges)
+        XCTAssertTrue(fixture.repository.stagedPaths.isEmpty, "A clean vault must not run a whole-tree stage")
+        XCTAssertLessThanOrEqual(fixture.repository.repoInfoCallCount, 3, "A clean vault needs only a HEAD read and one status read")
+    }
+
+    @MainActor
+    func testRepositoryPushRunnerStagesWorktreeChangesOnceThenSettles() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        let modified = LocalRepoInfo(
+            branch: "main",
+            commitSHA: fixture.repoInfo.commitSHA,
+            changeCount: 1,
+            statusEntries: [Self.unstagedEntry(path: "Inbox.md")]
+        )
+        let staged = LocalRepoInfo(
+            branch: "main",
+            commitSHA: fixture.repoInfo.commitSHA,
+            changeCount: 1,
+            statusEntries: [Self.stagedEntry()]
+        )
+        // HEAD read, then the first settle pass sees the worktree edit;
+        // every later read sees it staged.
+        fixture.repository.repoInfoResults = [.success(modified), .success(modified)]
+        fixture.repository.repoInfoResult = staged
+        fixture.repository.commitAndPushResult = .success(LocalPushResult(commitSHA: fixture.repoInfo.commitSHA))
+
+        let serialized = SerializedGitRepository(base: fixture.repository, localURL: fixture.rootURL)
+        _ = await RepositoryPushRunner().run(
+            serialized: serialized,
+            repo: fixture.repoConfig,
+            credentials: "pat",
+            message: nil
+        )
+
+        XCTAssertEqual(fixture.repository.stagedPaths, ["*"], "Stage the whole tree only while worktree changes remain")
+        XCTAssertEqual(fixture.repository.commitAndPushMessages, ["Update from GitSync.md"])
+        XCTAssertLessThan(
+            fixture.repository.repoInfoCallCount,
+            1 + RepositoryPushRunner.maxStagingSettlePasses,
+            "Two quiet status reads must end the settle window early"
         )
     }
 
