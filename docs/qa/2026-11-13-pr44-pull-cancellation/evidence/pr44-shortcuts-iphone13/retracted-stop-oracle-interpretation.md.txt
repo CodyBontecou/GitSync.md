@@ -1,0 +1,49 @@
+# HISTORICAL / RETRACTED INTERPRETATION — NOT A CURRENT FAILURE VERDICT
+
+Later visual audit found actual returned Pull/status results with hosted Done dialogs omitted from AX. The Stop-disappearance oracle below was invalid without acknowledging Done. Preserve this text as history only; see docs/qa/2026-11-13-pr44-pull-cancellation/shortcuts.md for correction.
+
+# Original report
+
+## Scope and isolation
+
+Physical iPhone13 Pro Max/iOS27.2, **GitSync PR QA / `bontecou.Sync-md.prqa` only**. Candidate dylib SHA256 `68fe868e9ae63baf169757ac979acb4227c520a1034468eebe65cd05af733b6a`; baseline verified main/PR47 dylib `061ef840d8c235ec5b305651621024dd7f23291a712d3d173e8e68499cbe6d88`. No source, entitlement, production guard or shipping-app changes. Candidate restored after the baseline comparison.
+
+The app entity query/intent runner use the **default** persisted inventory rather than the private44 fixture inventory. Before any write, CoreDevice proved the isolated QA `Library/Application Support/SyncMD` directory was readable and **empty**. Copied one already-owned credential-free native fixture record into the new QA default inventory: known folder `git-tools-fixture`, local bare remote, no custom bookmark. Never copied or modified shipping inventory.
+
+Created only two temporary shortcuts, from the positively identified **GitSync PR QA** action group: `PR44 QA Native Pull 20261113` and its owned status control `PR44 QA Native Status 20261113`. No existing shortcut was executed or edited. The entity picker showed only the owned fixture. No push/sync/background-sync action was selected.
+
+## Actual observed failure, not a passing host test
+
+| Probe | Actual result |
+| --- | --- |
+| Candidate real Pull Repository, normal unheld fixture | Running UI/Stop persisted; expected completion wording did not appear within15s, and the first live attempt remained pending for minutes before explicit Stop. No intentional QA holder was acquired for this test. |
+| Tight unattended completion probe on candidate | `qa-pr44-shortcuts-completion-probe`:4 pass/1 fail/1 skip,16.781s; **Stop still visible after15000ms**. Recovery Stop passed5/5. |
+| Foreground QA during an already-pending run | Foregrounded explicit QA app, observed its valid fixture Home, then returned to Shortcuts. Stop remained visible. This did not resolve the stall in the observed window; it does not rule out every background activation issue. |
+| Fresh candidate process with **normal launch**, no DEBUG fixture arguments | Same completion probe red:4 pass/1 fail/1 skip,16.692s. Residual in-memory fixture-holder state is therefore not a sufficient explanation. |
+| Candidate **Get Repository Status** control | Same native host remains running/Stop visible beyond15s. This action does not exercise the new Pull cancellation mapping. |
+| Previously verified main build, same isolated app/data/status control | Same red:4 pass/1 fail/1 skip,16.771s, Stop visible after15000ms. This is not established as a PR44 regression or as the original customer's failure. |
+
+The precise red-capable command was run against the actual path:
+
+```sh
+argent run e2e-execute --name qa-pr44-shortcuts-completion-probe \
+  --project_root /tmp/gitsync-pr44-qa \
+  --device 00008110-00046CC63CA0401E --platform ios --json
+```
+
+The diagnostic YAML requires the existing owned editor/default fixture as explicit prerequisites; it does not repeatedly create shortcuts. It checks owned title and action, taps Play, proves Stop visible, then requires Stop to disappear within15s. It catches this observed pending-run symptom, not the original reported CancellationError or every fast-completion case. Status probe is equivalent with its own title/action. These are **diagnostics, not accepted/regression-green flows**. Temporary shortcuts were subsequently removed, so setup must be re-established before repeating.
+
+## Hypotheses and inference limits
+
+Ranked before testing: background activation, residual fixture lease, common intent registration/initialization, Pull-specific fault. Foregrounding did not clear the pending state; fresh normal launch still failed; read-only status failed on both candidate and baseline. Evidence narrows attention toward a common runtime/packaging/initialization/parameter/lease path, **but does not identify which boundary failed**. Read-only signing comparison found both isolated artifacts have only application/team identifiers and get-task-allow; production source additionally declares APNs and an app group, deliberately omitted for QA isolation. This is an environment difference, not an established cause. **Never grant QA the shipping app group as a workaround**; any future group-dependent test needs its own isolated QA group and authorization. No instrumentation or code fix was added on speculation. Do not substitute model tests, change `openAppWhenRun`, weaken timeout/assertions, or classify this as authentication/data corruption without evidence.
+
+Next useful discriminator: a **no-entity-parameter** QA action (for example Pull All against the proven-empty QA default inventory, which should return the real no-repositories dialog without Git work), or privacy-safe entry/pre-state/post-state instrumentation in a disposable QA-only build. Neither has been performed. Main also stalling in this signed QA setup does not certify the shipping AppIntent runtime or absolve every PR44 code path.
+
+## Preservation and cleanup verified
+
+- **All28 working/Git files byte-identical** before execution, while pending, after OS Stop and after both-build controls. Native index/HEAD/refs/dirty note unchanged; no repair, staging, forced checkout, discard, reclone or push.
+- Pending owned runs explicitly stopped. Deleted **only the two created shortcuts** after verifying exactly those names selected and the native **Delete2 Shortcuts** confirmation. All12 originally visible shortcut cards remained present; no owned QA names remained. Existing-library snapshots/raw inventory backups are private under `/tmp`, not exported into this evidence directory.
+- Only the newly created QA default file was reset to `[]`, independently read back. Original physical absence is not claimed; logical empty inventory restored. Private fixture inventory and native working copy retained.
+- Candidate QA app restored from the saved verified68fe artifact, normal launch with empty default inventory now shows onboarding (expected cleanup, not a data-loss diagnosis). No recorder, workflow or new automation remains running. Shipping app, real vaults, unrelated Android work and the retained iPhone17 failed fixture untouched.
+
+Artifacts in `docs/qa/2026-11-13-pr44-pull-cancellation/evidence/pr44-shortcuts-iphone13/`: red execution receipts, failed running-screen evidence, raw setup/control/recovery/cleanup recordings, manifest preservation and safe cleanup proof. Additional sidecars are local/uncommitted, not relabeled as CI-executed handset tests. Existing candidate CI remains green on unchanged0d15ed5; this real host gate remains **not met**. PR44 stays draft/unmerged; overall goal incomplete.

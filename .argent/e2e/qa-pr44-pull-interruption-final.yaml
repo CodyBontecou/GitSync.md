@@ -1,7 +1,7 @@
 # Physical iPhone QA, isolated signed bontecou.Sync-md.prqa only.
 # Seeds only the owned native Git fixture/private pr44 inventory. No credentials,
 # shipping vaults, fake Pull results, force push or destructive customer actions.
-# Exact disk preservation is independently recorded in docs/evidence/pr44-iphone13.
+# Exact disk preservation is independently recorded in docs/qa/2026-11-13-pr44-pull-cancellation/evidence/pr44-iphone13.
 steps:
   - launch:
       native: bontecou.Sync-md.prqa

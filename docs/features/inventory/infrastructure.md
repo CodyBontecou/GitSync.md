@@ -94,7 +94,7 @@ Worker `gitsyncmd-site-router`, attached custom domains: `gitsync.md`, `www.gits
 
 **Files:** `Fastfile` (120 lines), `Appfile`, `metadata/en-US/release_notes.txt`, `.env.example` (only `OPENAI_API_KEY=`), `Preview.html`, `report.xml`. **No Matchfile exists** — signing is automatic (see `release` lane export options).
 
-- `Appfile`: app_identifier `bontecou.Sync-md`, apple_id `bontecouc@gmail.com`, team_id `67KC823C9A`.
+- `Appfile`: app_identifier `bontecou.Sync-md`, apple_id (the owner's Apple ID), team_id `67KC823C9A`.
 - Private lane `asc_api_key`: App Store Connect API key from `ASC_KEY_ID`, `ASC_ISSUER_ID`, `ASC_KEY_FILEPATH` (duration 1190 min).
 - Hardcoded in Fastfile: `app_version = "2.4.4"`, en-US release notes (Git author setup fix), submission info `add_id_info_uses_idfa: false`, `export_compliance_uses_encryption: false`.
 

@@ -20,7 +20,7 @@ The release was built from base `2e054050daeda9bae9cc88384bb214227a41e523` plus 
 - IPA SHA-256: `30052ceec0eec511132771233a3adb724906e734e817b79d9e9c454d6196157c`.
 - Listing metadata copied from 2.7.0. New release notes saved for all 26 locales, with companion testing instructions in Apple review notes.
 - `asc validate --app 6758960270 --version 2.8.0 --ipa <IPA>` returned zero errors/blockers. Fifteen warnings remain for existing keyword repetition and subscription metadata; App Privacy publication requires a separate web check. No new subscription changes were included.
-- This archive was not installed for an additional physical-phone pass; the same handoff source and plugin were already verified in the [iPhone QA report](obsidian-iphone-qa-20261014.md).
+- This archive was not installed for an additional physical-phone pass; the same handoff source and plugin were already verified in the [iPhone QA report](https://github.com/CodyBontecou/GitSync.md/blob/8122a34b89b756af2fc23d048eb4304b4dd11832/docs/obsidian-iphone-qa-20261014.md).
 
 Private build artifacts, source patch, release plan and API receipts are in `.asc/release/obsidian-connect/`. The project version/build now matches the uploaded artifact.
 
