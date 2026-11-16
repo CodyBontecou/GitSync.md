@@ -4777,12 +4777,7 @@ final class AppState {
     private func activateGitHubAccount(token: String) async throws {
         syncProgress = String(localized: "Fetching profile...")
         let user = try await GitHubService.fetchUser(token: token)
-        let email: String
-        if let userEmail = user.email, !userEmail.isEmpty {
-            email = userEmail
-        } else {
-            email = try await GitHubService.fetchPrimaryEmail(token: token) ?? ""
-        }
+        let email = await GitHubService.commitEmail(for: user, token: token)
 
         let account = GitHubAccount(
             login: user.login,
@@ -4850,11 +4845,7 @@ final class AppState {
                 defaultAuthorName = user.name ?? user.login
             }
             if defaultAuthorEmail.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                if let email = user.email, !email.isEmpty {
-                    defaultAuthorEmail = email
-                } else if let email = try await GitHubService.fetchPrimaryEmail(token: token), !email.isEmpty {
-                    defaultAuthorEmail = email
-                }
+                defaultAuthorEmail = await GitHubService.commitEmail(for: user, token: token)
             }
 
             saveGlobalSettings()

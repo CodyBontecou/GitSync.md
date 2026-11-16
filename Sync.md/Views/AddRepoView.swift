@@ -184,11 +184,13 @@ struct AddRepoView: View {
                 }
             }
             .unlockGate($pendingUnlock)
-            .onChange(of: state.defaultAuthorName) { _, newValue in
-                if authorName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty { authorName = newValue }
+            // Follow the account's identity (sign-in, account switch) unless
+            // the user typed their own value: replace empty or prefilled text.
+            .onChange(of: state.defaultAuthorName) { oldValue, newValue in
+                authorName = AuthorFieldDefault.updated(authorName, previousDefault: oldValue, newDefault: newValue)
             }
-            .onChange(of: state.defaultAuthorEmail) { _, newValue in
-                if authorEmail.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty { authorEmail = newValue }
+            .onChange(of: state.defaultAuthorEmail) { oldValue, newValue in
+                authorEmail = AuthorFieldDefault.updated(authorEmail, previousDefault: oldValue, newDefault: newValue)
             }
             .alert("Missing Required Fields", isPresented: $showValidationAlert) {
                 Button("OK", role: .cancel) {}

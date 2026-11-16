@@ -172,3 +172,13 @@ enum GitIdentityValidation {
         return true
     }
 }
+
+/// Author fields prefilled from the account's identity follow that identity
+/// when it changes, but never overwrite a value the user typed.
+enum AuthorFieldDefault {
+    static func updated(_ current: String, previousDefault: String, newDefault: String) -> String {
+        let trimmed = current.trimmingCharacters(in: .whitespacesAndNewlines)
+        return trimmed.isEmpty || trimmed == previousDefault.trimmingCharacters(in: .whitespacesAndNewlines)
+            ? newDefault : current
+    }
+}
