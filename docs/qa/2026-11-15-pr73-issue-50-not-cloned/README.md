@@ -1,4 +1,13 @@
+---
+status: merged
+covers: [pr#73, issue#50]
+tested: cf8904b6d7eb1b3f7d1581db9c17adb3d414ad5d
+updated: 2026-11-16
+---
+
 # Issue #50 QA — 2026-11-15
+
+> PR #73 merged on 2026-11-15 as `18517111306da68ae7ffb9f824047079597842e0`, closing issue #50. The write-up does not state its tested head; `tested` is the PR's final head. Moved from the legacy `docs/` layout on 2026-11-16.
 
 Fix for "Repository flips to Not cloned after its folder's path changes, and Clone Repository would then delete the intact working copy".
 
