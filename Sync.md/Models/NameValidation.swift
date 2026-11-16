@@ -53,11 +53,27 @@ enum VaultFolderName {
             let prefix = parentPath.hasSuffix("/") ? parentPath : parentPath + "/"
             return childPath.hasPrefix(prefix) && childPath.count > prefix.count
         }
-        // Compare lexically (".." removed) and with symlinks resolved, since
-        // resolution of a not-yet-existing child may differ from its parent's.
+        // Compare lexically (".." removed) and canonically. Foundation strips
+        // "/private" only from paths that exist, so a not-yet-cloned folder in
+        // another app's container (bookmarks resolve to /private/var/...) would
+        // otherwise look like it sits outside its existing parent (/var/...).
         return contained(child.standardizedFileURL.path, parent.standardizedFileURL.path)
-            || contained(child.standardizedFileURL.resolvingSymlinksInPath().path,
-                         parent.standardizedFileURL.resolvingSymlinksInPath().path)
+            || contained(canonicalPath(child), canonicalPath(parent))
+    }
+
+    /// Path with symlinks resolved on its deepest existing ancestor and any
+    /// missing components re-appended, so an existing folder and a path that
+    /// does not exist yet below it share one prefix.
+    static func canonicalPath(_ url: URL) -> String {
+        var existing = url.standardizedFileURL
+        var missing: [String] = []
+        while !FileManager.default.fileExists(atPath: existing.path), existing.path != "/" {
+            missing.insert(existing.lastPathComponent, at: 0)
+            existing = existing.deletingLastPathComponent()
+        }
+        var resolved = existing.resolvingSymlinksInPath()
+        for component in missing { resolved.appendPathComponent(component) }
+        return resolved.path
     }
 }
 

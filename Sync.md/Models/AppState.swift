@@ -531,7 +531,7 @@ final class AppState {
     /// descendants with symlinked ancestors resolved (notably `/var` as
     /// `/private/var` on iOS), even when the root URL keeps the unresolved form.
     nonisolated static func canonicalFilePath(for url: URL) -> String {
-        url.standardizedFileURL.resolvingSymlinksInPath().path
+        VaultFolderName.canonicalPath(url)
     }
 
     nonisolated static var persistedReposFileURL: URL {

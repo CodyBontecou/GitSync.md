@@ -13430,6 +13430,22 @@ final class NameValidationTests: XCTestCase {
         XCTAssertFalse(VaultFolderName.isContained(URL(fileURLWithPath: "/tmp/container/DocumentsX/a"), in: parent))
     }
 
+    /// Bookmarks into another app's container (e.g. Obsidian) resolve as
+    /// /private/var/..., which Foundation shortens to /var/... only for paths
+    /// that exist. A not-yet-cloned vault folder must still count as inside.
+    func testVaultFolderContainmentAcceptsMissingChildUnderPrivateSymlinkedParent() throws {
+        let name = "containment-\(UUID().uuidString)"
+        let parent = URL(fileURLWithPath: "/private/tmp", isDirectory: true).appendingPathComponent(name, isDirectory: true)
+        try FileManager.default.createDirectory(at: parent, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: parent) }
+        let child = parent.appendingPathComponent("myself.md-vault", isDirectory: true)
+        XCTAssertTrue(VaultFolderName.isContained(child, in: parent))
+        XCTAssertTrue(VaultFolderName.isContained(child.appendingPathComponent("nested/deeper"), in: parent))
+        XCTAssertFalse(VaultFolderName.isContained(parent, in: parent))
+        XCTAssertEqual(AppState.canonicalFilePath(for: child),
+                       AppState.canonicalFilePath(for: URL(fileURLWithPath: "/tmp/\(name)/myself.md-vault")))
+    }
+
     func testGitHubShorthandRejectsDotSegments() {
         XCTAssertNil(GitRemoteURL.parse("../.."))
         XCTAssertNil(GitRemoteURL.parse("owner/.."))
