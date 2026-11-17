@@ -1,11 +1,13 @@
 ---
-status: active
+status: merged
 covers: [pr#81]
 tested: 502e44befb0c3253fec53e1eca20281a60b3bff0
 updated: 2026-11-16
 ---
 
 # Clone into Obsidian's folder, and GitHub author identity: QA 2026-11-16
+
+Merged in PR #81 as `1feaa0517ffbf30fc78e3a098b0ee5a9d7aed50c` (2026-11-17).
 
 ## Reported bug
 
