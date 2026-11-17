@@ -1,11 +1,13 @@
 ---
-status: active
+status: merged
 covers: [pr#81]
 tested: 502e44befb0c3253fec53e1eca20281a60b3bff0
 updated: 2026-11-16
 ---
 
 # Clone into Obsidian's folder, and GitHub author identity: QA 2026-11-16
+
+> PR #81 merged on 2026-11-16 as `1feaa0517ffbf30fc78e3a098b0ee5a9d7aed50c`. It ships in iOS 3.0.1 build 202611162034.
 
 ## Reported bug
 
