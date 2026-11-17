@@ -4,6 +4,8 @@ import SwiftUI
 /// passes its check, or before linking/publishing when the app is locked.
 /// Styled like `BackgroundSyncUpgradeSheet`.
 struct UnlockSheet: View {
+    /// Where the sheet was opened, for paywall analytics.
+    let context: OnboardingAnalyticsPaywallContext
     /// Vault this unlock is for ("notes"), when it came from a vault check.
     var vaultName: String? = nil
     /// Mono stamp under the rail ("238 MB · checked, ready to clone").
@@ -139,7 +141,13 @@ struct UnlockSheet: View {
         }
         .environment(\.colorScheme, .dark)
         .interactiveDismissDisabled(unlock.isPurchasing)
-        .task { await unlock.loadProduct() }
+        .task {
+            await unlock.loadProduct()
+            OnboardingAnalyticsClient.shared.trackPaywallViewed(
+                context: context,
+                productLoaded: unlock.product != nil
+            )
+        }
         // A purchase can land outside `purchase()`'s return value: an Ask to
         // Buy approval, a sheet that reported cancel after the charge went
         // through, or a delayed `Transaction.updates` delivery. Continue the
@@ -183,18 +191,31 @@ struct UnlockSheet: View {
 
     private func buy() {
         message = nil
+        let analytics = OnboardingAnalyticsClient.shared
+        analytics.trackPaywallPurchaseStarted(context: context)
         Task {
             switch await unlock.purchase() {
             case .unlocked:
+                analytics.trackPaywallPurchaseCompleted(context: context, outcome: .unlocked)
                 finish()
             case .pending:
+                analytics.trackPaywallPurchaseCompleted(context: context, outcome: .pending)
                 message = String(localized: "Waiting for approval. Your vault clones as soon as the purchase goes through.")
             case .failed(let reason):
+                analytics.trackPaywallPurchaseCompleted(
+                    context: context,
+                    outcome: .failed,
+                    errorCategory: unlock.product == nil ? .productUnavailable : .unknown
+                )
                 message = reason
             case .cancelled:
                 // StoreKit can report a cancel even though the transaction
                 // completed; re-read entitlements before leaving the paywall up.
                 await unlock.refresh()
+                analytics.trackPaywallPurchaseCompleted(
+                    context: context,
+                    outcome: unlock.isUnlocked ? .unlocked : .cancelled
+                )
                 if unlock.isUnlocked, !didUnlock { finish() }
             }
         }
@@ -203,7 +224,9 @@ struct UnlockSheet: View {
     private func restore() {
         message = nil
         Task {
-            if await unlock.restore() {
+            let restored = await unlock.restore()
+            OnboardingAnalyticsClient.shared.trackPaywallRestoreCompleted(context: context, restored: restored)
+            if restored {
                 finish()
             } else {
                 message = String(localized: "No earlier purchase found for this Apple Account.")
@@ -290,13 +313,17 @@ private struct UnlockPoint: View {
 extension View {
     /// Runs `action` now when the app is unlocked; otherwise presents the
     /// unlock sheet and runs it once the purchase or restore succeeds.
-    func unlockGate(_ pending: Binding<(() -> Void)?>) -> some View {
-        modifier(UnlockGateModifier(pending: pending))
+    func unlockGate(
+        _ pending: Binding<(() -> Void)?>,
+        context: Binding<OnboardingAnalyticsPaywallContext>
+    ) -> some View {
+        modifier(UnlockGateModifier(pending: pending, context: context))
     }
 }
 
 private struct UnlockGateModifier: ViewModifier {
     @Binding var pending: (() -> Void)?
+    @Binding var context: OnboardingAnalyticsPaywallContext
 
     func body(content: Content) -> some View {
         content.sheet(isPresented: Binding(
@@ -304,7 +331,7 @@ private struct UnlockGateModifier: ViewModifier {
             set: { if !$0 { pending = nil } }
         )) {
             let action = pending
-            UnlockSheet { action?() }
+            UnlockSheet(context: context) { action?() }
         }
     }
 }

@@ -65,7 +65,7 @@ struct VaultCheckView: View {
             }
         }
         .sheet(isPresented: $showUnlock) {
-            UnlockSheet(vaultName: preflight.target.name, stamp: unlockStamp) {
+            UnlockSheet(context: .vaultCheck, vaultName: preflight.target.name, stamp: unlockStamp) {
                 clone()
             }
         }

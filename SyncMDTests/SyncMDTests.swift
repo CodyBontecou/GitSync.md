@@ -2063,6 +2063,7 @@ final class SyncMDTests: XCTestCase {
             "NSPrivacyCollectedDataTypePurposeAnalytics"
         ])
         XCTAssertEqual(purposes["NSPrivacyCollectedDataTypePurchaseHistory"], [
+            "NSPrivacyCollectedDataTypePurposeAnalytics",
             "NSPrivacyCollectedDataTypePurposeAppFunctionality"
         ])
         XCTAssertEqual(purposes["NSPrivacyCollectedDataTypeUserID"], [
@@ -12048,6 +12049,31 @@ final class OnboardingAnalyticsEventModelTests: XCTestCase {
         )
 
         XCTAssertTrue(properties.encodedProperties().isEmpty)
+    }
+
+    func testPaywallPropertiesEncodeContextProductAndOutcome() {
+        let event = OnboardingAnalyticsEvent(
+            name: .paywallPurchaseCompleted,
+            properties: OnboardingAnalyticsProperties(
+                errorCategory: .productUnavailable,
+                paywallContext: .vaultCheck,
+                productId: .lifetime,
+                purchaseOutcome: .failed
+            )
+        )
+
+        let payload = event.encodedPayload()
+
+        XCTAssertEqual(payload.eventName, "sync_paywall_purchase_completed")
+        XCTAssertEqual(payload.properties[.paywallContext], .string("vault_check"))
+        XCTAssertEqual(payload.properties[.productId], .string("gitsync.md.lifetime"))
+        XCTAssertEqual(payload.properties[.purchaseOutcome], .string("failed"))
+        XCTAssertEqual(payload.properties[.errorCategory], .string("product_unavailable"))
+    }
+
+    @MainActor
+    func testPaywallProductIDMatchesStoreProduct() {
+        XCTAssertEqual(OnboardingAnalyticsProductID.lifetime.rawValue, AppUnlock.productID)
     }
 }
 

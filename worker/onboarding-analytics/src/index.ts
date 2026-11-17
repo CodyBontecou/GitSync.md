@@ -27,6 +27,10 @@ const EVENT_NAMES = new Set([
   "sync_onboarding_auth_completed",
   "sync_onboarding_save_location_selected",
   "sync_onboarding_completed",
+  "sync_paywall_viewed",
+  "sync_paywall_purchase_started",
+  "sync_paywall_purchase_completed",
+  "sync_paywall_restore_completed",
 ]);
 
 const STRING_PROPERTY_KEYS = new Set([
@@ -38,6 +42,9 @@ const STRING_PROPERTY_KEYS = new Set([
   "authOutcome",
   "saveLocationPreference",
   "errorCategory",
+  "paywallContext",
+  "productId",
+  "purchaseOutcome",
 ]);
 
 const ALLOWED_PROPERTY_KEYS = new Set([
@@ -64,7 +71,24 @@ const ERROR_CATEGORIES = new Set([
   "network_unavailable",
   "configuration_unavailable",
   "auth_failed",
+  "product_unavailable",
   "unknown",
+]);
+const PAYWALL_CONTEXTS = new Set([
+  "vault_check",
+  "discover_repos",
+  "suggested_repo",
+  "publish_folder",
+  "link_local_repo",
+]);
+const PRODUCT_IDS = new Set(["gitsync.md.lifetime"]);
+const PURCHASE_OUTCOMES = new Set([
+  "unlocked",
+  "cancelled",
+  "pending",
+  "failed",
+  "restored",
+  "not_found",
 ]);
 
 const APP_VERSION_RE = /^\d+(?:\.\d+){0,3}$/;
@@ -178,11 +202,11 @@ async function ingestEvents(request: Request, env: Env): Promise<Response> {
     stringProperty(row.properties, "authMethod"),
     stringProperty(row.properties, "authOutcome"),
     stringProperty(row.properties, "saveLocationPreference"),
+    stringProperty(row.properties, "paywallContext"),
     null,
     null,
-    null,
-    null,
-    null,
+    stringProperty(row.properties, "productId"),
+    stringProperty(row.properties, "purchaseOutcome"),
     stringProperty(row.properties, "errorCategory"),
     JSON.stringify({ eventName: row.eventName, properties: row.properties }),
   )));
@@ -255,6 +279,12 @@ function validateStringProperty(key: string, value: unknown): string {
       return validateSetValue(key, value, SAVE_LOCATION_PREFERENCES);
     case "errorCategory":
       return validateSetValue(key, value, ERROR_CATEGORIES);
+    case "paywallContext":
+      return validateSetValue(key, value, PAYWALL_CONTEXTS);
+    case "productId":
+      return validateSetValue(key, value, PRODUCT_IDS);
+    case "purchaseOutcome":
+      return validateSetValue(key, value, PURCHASE_OUTCOMES);
     default:
       throw new Error(`unknown_property:${key}`);
   }

@@ -9,8 +9,9 @@ import Foundation
 
 /// Privacy contract for onboarding analytics:
 /// - Allowed: app version/build/platform, coarse onboarding step, coarse auth
-///   method/outcome, whether the save location was default or custom, and
-///   coarse error category.
+///   method/outcome, whether the save location was default or custom, coarse
+///   error category, and for the unlock paywall: where it was opened, the
+///   product ID and a coarse purchase/restore outcome.
 /// - Prohibited: repository URLs, paths, branch names, author names/emails,
 ///   access tokens, SSH keys, file contents, folder names, GitHub usernames,
 ///   raw device identifiers, IP addresses, user agents, and free-form user text.
@@ -52,6 +53,10 @@ nonisolated enum OnboardingAnalyticsEventName: String, CaseIterable, Sendable {
     case onboardingAuthCompleted = "sync_onboarding_auth_completed"
     case onboardingSaveLocationSelected = "sync_onboarding_save_location_selected"
     case onboardingCompleted = "sync_onboarding_completed"
+    case paywallViewed = "sync_paywall_viewed"
+    case paywallPurchaseStarted = "sync_paywall_purchase_started"
+    case paywallPurchaseCompleted = "sync_paywall_purchase_completed"
+    case paywallRestoreCompleted = "sync_paywall_restore_completed"
 }
 
 nonisolated struct OnboardingAnalyticsPayload: Equatable, Sendable, Codable {
@@ -123,6 +128,9 @@ nonisolated enum OnboardingAnalyticsPropertyKey: String, CaseIterable, Sendable 
     case authOutcome
     case saveLocationPreference
     case errorCategory
+    case paywallContext
+    case productId
+    case purchaseOutcome
 }
 
 nonisolated enum OnboardingAnalyticsValue: Equatable, Sendable, Codable {
@@ -172,6 +180,9 @@ nonisolated struct OnboardingAnalyticsProperties: Equatable, Sendable {
     private let authOutcome: OnboardingAnalyticsAuthOutcome?
     private let saveLocationPreference: OnboardingAnalyticsSaveLocationPreference?
     private let errorCategory: OnboardingAnalyticsErrorCategory?
+    private let paywallContext: OnboardingAnalyticsPaywallContext?
+    private let productId: OnboardingAnalyticsProductID?
+    private let purchaseOutcome: OnboardingAnalyticsPurchaseOutcome?
 
     init(
         appVersion: String? = nil,
@@ -181,7 +192,10 @@ nonisolated struct OnboardingAnalyticsProperties: Equatable, Sendable {
         authMethod: OnboardingAnalyticsAuthMethod? = nil,
         authOutcome: OnboardingAnalyticsAuthOutcome? = nil,
         saveLocationPreference: OnboardingAnalyticsSaveLocationPreference? = nil,
-        errorCategory: OnboardingAnalyticsErrorCategory? = nil
+        errorCategory: OnboardingAnalyticsErrorCategory? = nil,
+        paywallContext: OnboardingAnalyticsPaywallContext? = nil,
+        productId: OnboardingAnalyticsProductID? = nil,
+        purchaseOutcome: OnboardingAnalyticsPurchaseOutcome? = nil
     ) {
         self.appVersion = OnboardingAnalyticsSanitizer.sanitizedAppVersion(appVersion)
         self.buildNumber = OnboardingAnalyticsSanitizer.sanitizedBuildNumber(buildNumber)
@@ -191,6 +205,9 @@ nonisolated struct OnboardingAnalyticsProperties: Equatable, Sendable {
         self.authOutcome = authOutcome
         self.saveLocationPreference = saveLocationPreference
         self.errorCategory = errorCategory
+        self.paywallContext = paywallContext
+        self.productId = productId
+        self.purchaseOutcome = purchaseOutcome
     }
 
     func encodedProperties() -> [OnboardingAnalyticsPropertyKey: OnboardingAnalyticsValue] {
@@ -204,6 +221,9 @@ nonisolated struct OnboardingAnalyticsProperties: Equatable, Sendable {
         encode(authOutcome?.rawValue, for: .authOutcome, into: &encoded)
         encode(saveLocationPreference?.rawValue, for: .saveLocationPreference, into: &encoded)
         encode(errorCategory?.rawValue, for: .errorCategory, into: &encoded)
+        encode(paywallContext?.rawValue, for: .paywallContext, into: &encoded)
+        encode(productId?.rawValue, for: .productId, into: &encoded)
+        encode(purchaseOutcome?.rawValue, for: .purchaseOutcome, into: &encoded)
 
         return encoded
     }
@@ -259,7 +279,36 @@ nonisolated enum OnboardingAnalyticsErrorCategory: String, CaseIterable, Sendabl
     case networkUnavailable = "network_unavailable"
     case configurationUnavailable = "configuration_unavailable"
     case authFailed = "auth_failed"
+    /// The App Store product could not be loaded for the paywall.
+    case productUnavailable = "product_unavailable"
     case unknown
+}
+
+/// What the person was trying to do when the unlock paywall appeared.
+nonisolated enum OnboardingAnalyticsPaywallContext: String, CaseIterable, Sendable {
+    /// "Unlock & clone" after a vault passed its check.
+    case vaultCheck = "vault_check"
+    /// Opening repository discovery from Add Vault or the empty vault list.
+    case discoverRepos = "discover_repos"
+    /// Tapping a suggested (ghost) repository in the vault list.
+    case suggestedRepo = "suggested_repo"
+    /// Publishing a local folder to GitHub.
+    case publishFolder = "publish_folder"
+    /// Linking a clone that already exists on the device.
+    case linkLocalRepo = "link_local_repo"
+}
+
+nonisolated enum OnboardingAnalyticsProductID: String, CaseIterable, Sendable {
+    case lifetime = "gitsync.md.lifetime"
+}
+
+nonisolated enum OnboardingAnalyticsPurchaseOutcome: String, CaseIterable, Sendable {
+    case unlocked
+    case cancelled
+    case pending
+    case failed
+    case restored
+    case notFound = "not_found"
 }
 
 nonisolated private enum OnboardingAnalyticsSanitizer {
