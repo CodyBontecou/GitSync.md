@@ -554,6 +554,8 @@ final class GitHubService: Sendable {
 // MARK: - User-Level API (static — no owner/repo needed)
 
 struct GitHubUser: Codable {
+    /// Numeric account id; optional so older fixtures without it still decode.
+    var id: Int64? = nil
     let login: String
     let name: String?
     let email: String?
@@ -761,6 +763,21 @@ extension GitHubService {
     }
 
     /// Fetch the user's primary email (if not public)
+    /// GitHub's private commit address, which GitHub attributes to the account.
+    /// Used when the account's email is private or unavailable to this token.
+    static func noreplyEmail(id: Int64?, login: String) -> String {
+        guard let id else { return "\(login)@users.noreply.github.com" }
+        return "\(id)+\(login)@users.noreply.github.com"
+    }
+
+    /// Public email, else primary email, else the no-reply address. A failed
+    /// email lookup never blocks sign-in or leaves the author email empty.
+    static func commitEmail(for user: GitHubUser, token: String) async -> String {
+        if let email = user.email?.trimmingCharacters(in: .whitespacesAndNewlines), !email.isEmpty { return email }
+        if let email = try? await fetchPrimaryEmail(token: token), !email.isEmpty { return email }
+        return noreplyEmail(id: user.id, login: user.login)
+    }
+
     static func fetchPrimaryEmail(token: String) async throws -> String? {
         var req = URLRequest(url: URL(string: "https://api.github.com/user/emails")!)
         req.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")

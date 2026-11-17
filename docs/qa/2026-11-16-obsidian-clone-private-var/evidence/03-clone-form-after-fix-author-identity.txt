@@ -1,0 +1,13 @@
+Argent describe excerpt, iPhone 17 Pro (iOS 27.0.1), GitSync PR QA, build at 502e44be.
+Fresh Add-vault form after sign-in, repo entered as <owner>/<private-vault>. Identity redacted.
+
+  AXTextField "Repository URL" value="<owner>/<private-vault>"
+  AXButton "GitHub" id="addRepository.authMethod" [selected]
+  AXStaticText "GitHub Account" / "@<owner>" / "Keychain"
+  AXStaticText "AUTHOR NAME"
+  AXTextField value="<GitHub display name>"      <- filled from GitHub
+  AXStaticText "AUTHOR EMAIL"
+  AXTextField value="<GitHub account email>"     <- filled from GitHub
+  AXStaticText "CLONE TO"
+  AXStaticText "<private-vault>"
+  AXStaticText "/private/var/mobile/Containers/Data/Application/5199F4C3-C435-4A35-822F-031957F3F828/Documents/<private-vault>"

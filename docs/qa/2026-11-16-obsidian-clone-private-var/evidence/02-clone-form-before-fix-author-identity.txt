@@ -1,0 +1,11 @@
+Argent describe excerpt, iPhone 17 Pro (iOS 27.0.1), GitSync PR QA, build at 92533728 (path fix only).
+Add-vault sheet kept open across GitHub sign-in. Repo/owner/identity redacted.
+
+  AXButton "GitHub" id="addRepository.authMethod" [selected]
+  AXStaticText "@<owner>"
+  AXStaticText "AUTHOR NAME"
+  AXTextField value="QA Fixture"                 <- typed before sign-in; GitHub name never applied
+  AXStaticText "AUTHOR EMAIL"
+  AXTextField value="<GitHub account email>"     <- was empty, so it filled from GitHub
+  AXStaticText "CLONE TO"
+  AXStaticText "<private-vault>"

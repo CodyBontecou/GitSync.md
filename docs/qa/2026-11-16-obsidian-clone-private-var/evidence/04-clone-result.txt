@@ -1,0 +1,17 @@
+Argent describe excerpts, iPhone 17 Pro (iOS 27.0.1), GitSync PR QA, build at 502e44be (+ QA-only paywall off).
+Tapped "Check & clone" on the form above. Repo/owner redacted.
+
+Vault check (before paywall was disabled in the QA build):
+  "Your vault is ready." SIZE 361 KB, FILES 18, ACCESS read · write, GIT LFS none
+  "Obsidian vault found .obsidian/", "Obsidian Git plugin configured"
+
+Home after clone (no error alert):
+  AXStaticText "All in sync."  "1 in sync · checked 1s ago"
+  AXButton "<private-vault>, main · 1s ago, in sync"
+
+Vault settings > Debug log:
+  07:53:53 · clone  INFO  Starting clone  https://github.com/<owner>/<private-vault>.git
+  07:53:54 · clone  INFO  Clone complete  6 files, branch: main
+  (no Errors entries)
+
+Vault detail: "In sync", HEAD 736f394, Vault settings Health: 18 files, 0 errors.

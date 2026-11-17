@@ -13430,6 +13430,39 @@ final class NameValidationTests: XCTestCase {
         XCTAssertFalse(VaultFolderName.isContained(URL(fileURLWithPath: "/tmp/container/DocumentsX/a"), in: parent))
     }
 
+    /// Bookmarks into another app's container (e.g. Obsidian) resolve as
+    /// /private/var/..., which Foundation shortens to /var/... only for paths
+    /// that exist. A not-yet-cloned vault folder must still count as inside.
+    func testAuthorFieldFollowsIdentityChangesButKeepsTypedValues() {
+        // Empty field takes the new identity.
+        XCTAssertEqual(AuthorFieldDefault.updated("", previousDefault: "", newDefault: "Cody"), "Cody")
+        // A value prefilled from the previous identity follows the new one.
+        XCTAssertEqual(AuthorFieldDefault.updated("Demo User", previousDefault: "Demo User", newDefault: "Cody"), "Cody")
+        XCTAssertEqual(AuthorFieldDefault.updated("old@example.com ", previousDefault: "old@example.com", newDefault: "new@example.com"), "new@example.com")
+        // A value the user typed is kept.
+        XCTAssertEqual(AuthorFieldDefault.updated("My Name", previousDefault: "", newDefault: "Cody"), "My Name")
+    }
+
+    func testGitHubNoreplyEmailUsesIdWhenKnown() throws {
+        XCTAssertEqual(GitHubService.noreplyEmail(id: 583231, login: "octocat"), "583231+octocat@users.noreply.github.com")
+        XCTAssertEqual(GitHubService.noreplyEmail(id: nil, login: "octocat"), "octocat@users.noreply.github.com")
+        let user = try JSONDecoder().decode(GitHubUser.self, from: Data(#"{"id":583231,"login":"octocat","name":null,"email":null,"avatar_url":null}"#.utf8))
+        XCTAssertEqual(user.id, 583231)
+    }
+
+    func testVaultFolderContainmentAcceptsMissingChildUnderPrivateSymlinkedParent() throws {
+        let name = "containment-\(UUID().uuidString)"
+        let parent = URL(fileURLWithPath: "/private/tmp", isDirectory: true).appendingPathComponent(name, isDirectory: true)
+        try FileManager.default.createDirectory(at: parent, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: parent) }
+        let child = parent.appendingPathComponent("myself.md-vault", isDirectory: true)
+        XCTAssertTrue(VaultFolderName.isContained(child, in: parent))
+        XCTAssertTrue(VaultFolderName.isContained(child.appendingPathComponent("nested/deeper"), in: parent))
+        XCTAssertFalse(VaultFolderName.isContained(parent, in: parent))
+        XCTAssertEqual(AppState.canonicalFilePath(for: child),
+                       AppState.canonicalFilePath(for: URL(fileURLWithPath: "/tmp/\(name)/myself.md-vault")))
+    }
+
     func testGitHubShorthandRejectsDotSegments() {
         XCTAssertNil(GitRemoteURL.parse("../.."))
         XCTAssertNil(GitRemoteURL.parse("owner/.."))
