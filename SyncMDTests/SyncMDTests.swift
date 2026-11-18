@@ -13489,6 +13489,106 @@ final class NameValidationTests: XCTestCase {
                        AppState.canonicalFilePath(for: URL(fileURLWithPath: "/tmp/\(name)/myself.md-vault")))
     }
 
+    /// Issue #85: a fresh clone into a picked location (e.g. On My iPhone ›
+    /// Obsidian or iCloud Drive › Obsidian) must pass the containment check
+    /// whichever way the `/private` prefix, trailing slashes and missing
+    /// folders fall on either side.
+    func testVaultFolderContainmentNormalizesPrivatePrefixesAndTrailingSlashes() throws {
+        let name = "containment-\(UUID().uuidString)"
+        let shortParent = "/tmp/\(name)"
+        let longParent = "/private/tmp/\(name)"
+        try FileManager.default.createDirectory(atPath: longParent, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(atPath: longParent) }
+
+        for parentPath in [shortParent, longParent, shortParent + "/", longParent + "/", longParent + "//"] {
+            let parent = URL(fileURLWithPath: parentPath, isDirectory: true)
+            for childBase in [shortParent, longParent] {
+                for suffix in ["/Vault", "/Vault/", "/Vault/nested/deeper", "/./Vault"] {
+                    let child = URL(fileURLWithPath: childBase + suffix)
+                    XCTAssertTrue(VaultFolderName.isContained(child, in: parent), "\(child.path) in \(parentPath)")
+                }
+                XCTAssertFalse(VaultFolderName.isContained(URL(fileURLWithPath: childBase), in: parent), parentPath)
+                XCTAssertFalse(VaultFolderName.isContained(URL(fileURLWithPath: childBase + "/"), in: parent), parentPath)
+                XCTAssertFalse(VaultFolderName.isContained(URL(fileURLWithPath: childBase + "X/Vault"), in: parent), parentPath)
+                XCTAssertFalse(VaultFolderName.isContained(URL(fileURLWithPath: childBase + "/../Vault"), in: parent), parentPath)
+                XCTAssertFalse(VaultFolderName.isContained(URL(fileURLWithPath: childBase + "/Vault/../.."), in: parent), parentPath)
+            }
+        }
+
+        // An existing vault folder (cloning again after the files were
+        // deleted) must still count as inside, under either spelling.
+        try FileManager.default.createDirectory(atPath: longParent + "/Vault", withIntermediateDirectories: true)
+        XCTAssertTrue(VaultFolderName.isContained(URL(fileURLWithPath: longParent + "/Vault"),
+                                                  in: URL(fileURLWithPath: shortParent + "/")))
+        XCTAssertTrue(VaultFolderName.isContained(URL(fileURLWithPath: shortParent + "/Vault/"),
+                                                  in: URL(fileURLWithPath: longParent)))
+        XCTAssertEqual(AppState.canonicalFilePath(for: URL(fileURLWithPath: longParent + "/Vault/")),
+                       AppState.canonicalFilePath(for: URL(fileURLWithPath: shortParent + "/Vault")))
+    }
+
+    /// Neither the picked location nor the vault folder has to exist for the
+    /// check (another app's container can be unreadable until its scope is
+    /// started); `/private/var` and `/var` still compare equal.
+    func testVaultFolderContainmentAcceptsMissingParentUnderEitherVarSpelling() {
+        let container = "var/mobile/Containers/Data/Application/\(UUID().uuidString)/Documents"
+        for parentPath in ["/\(container)", "/private/\(container)", "/\(container)/"] {
+            let parent = URL(fileURLWithPath: parentPath, isDirectory: true)
+            XCTAssertTrue(VaultFolderName.isContained(URL(fileURLWithPath: "/private/\(container)/Vault"), in: parent))
+            XCTAssertTrue(VaultFolderName.isContained(URL(fileURLWithPath: "/\(container)/Vault/"), in: parent))
+            XCTAssertFalse(VaultFolderName.isContained(URL(fileURLWithPath: "/private/\(container)"), in: parent))
+            XCTAssertFalse(VaultFolderName.isContained(URL(fileURLWithPath: "/\(container)Other/Vault"), in: parent))
+        }
+        XCTAssertEqual(AppState.canonicalFilePath(for: URL(fileURLWithPath: "/private/\(container)/Vault")),
+                       "/\(container)/Vault")
+    }
+
+    func testPrivatePrefixIsOnlyStrippedFromSystemFirmlinks() {
+        XCTAssertEqual(VaultFolderName.withoutPrivatePrefix("/private/var/mobile"), "/var/mobile")
+        XCTAssertEqual(VaultFolderName.withoutPrivatePrefix("/private/var"), "/var")
+        XCTAssertEqual(VaultFolderName.withoutPrivatePrefix("/private/tmp/a"), "/tmp/a")
+        XCTAssertEqual(VaultFolderName.withoutPrivatePrefix("/private/etc/hosts"), "/etc/hosts")
+        XCTAssertEqual(VaultFolderName.withoutPrivatePrefix("/private/variable/a"), "/private/variable/a")
+        XCTAssertEqual(VaultFolderName.withoutPrivatePrefix("/private"), "/private")
+        XCTAssertEqual(VaultFolderName.withoutPrivatePrefix("/Users/private/var"), "/Users/private/var")
+    }
+
+    /// Fresh setup (issue #85): a new vault cloned into a picked parent whose
+    /// bookmark resolves with the other `/private` spelling and a trailing
+    /// slash is not reported as outside its location.
+    @MainActor
+    func testFreshCloneIntoPickedLocationIsNotOutsideItsLocation() throws {
+        let state = AppState(loadPersistedState: false)
+        let name = "fresh-\(UUID().uuidString.prefix(8))"
+        let pickedPath = "/private/tmp/\(name)/Obsidian"
+        try FileManager.default.createDirectory(atPath: pickedPath, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(atPath: "/private/tmp/\(name)") }
+        let vault = RepoConfig(repoURL: "https://github.com/Owner/Notes.git", branch: "main", authorName: "A",
+                               authorEmail: "a@example.com", vaultFolderName: "Notes", customLocationIsParent: true)
+        state.repos = [vault]
+        let anchor = URL(fileURLWithPath: "/tmp/\(name)/Obsidian/", isDirectory: true)
+        let target = URL(fileURLWithPath: pickedPath, isDirectory: true).appendingPathComponent("Notes", isDirectory: true)
+        XCTAssertNil(state.cloneTargetConflict(target, repoID: vault.id, anchor: anchor))
+        XCTAssertEqual(state.cloneTargetAssessment(target, repoID: vault.id, anchor: anchor), .replaceable)
+
+        // Cloning again after the vault's files were deleted in Files or
+        // Obsidian leaves an empty folder behind; it is still replaceable.
+        try FileManager.default.createDirectory(at: target, withIntermediateDirectories: true)
+        XCTAssertEqual(state.cloneTargetAssessment(target, repoID: vault.id, anchor: anchor), .replaceable)
+
+        let elsewhere = URL(fileURLWithPath: "/private/tmp/\(name)/Other/Notes", isDirectory: true)
+        XCTAssertEqual(state.cloneTargetConflict(elsewhere, repoID: vault.id, anchor: anchor),
+                       AppState.cloneTargetOutsideLocationMessage(folderName: "Notes", usesChosenLocation: false))
+    }
+
+    func testOutsideLocationMessageSaysHowToRecover() {
+        let chosen = AppState.cloneTargetOutsideLocationMessage(folderName: "Notes", usesChosenLocation: true)
+        XCTAssertTrue(chosen.contains("Notes"))
+        XCTAssertTrue(chosen.contains("choose the location again"))
+        let fallback = AppState.cloneTargetOutsideLocationMessage(folderName: "Notes", usesChosenLocation: false)
+        XCTAssertTrue(fallback.contains("add it again"))
+        XCTAssertFalse(fallback.contains("Choose a different folder name"))
+    }
+
     func testGitHubShorthandRejectsDotSegments() {
         XCTAssertNil(GitRemoteURL.parse("../.."))
         XCTAssertNil(GitRemoteURL.parse("owner/.."))

@@ -48,6 +48,8 @@ enum VaultFolderName {
 
     /// `true` when `child` resolves to a direct-or-nested descendant of
     /// `parent` (never `parent` itself, never a sibling reached via `..`).
+    /// Neither path has to exist yet: a folder that is about to be cloned
+    /// counts as inside when its nearest existing ancestor is.
     static func isContained(_ child: URL, in parent: URL) -> Bool {
         func contained(_ childPath: String, _ parentPath: String) -> Bool {
             let prefix = parentPath.hasSuffix("/") ? parentPath : parentPath + "/"
@@ -57,13 +59,15 @@ enum VaultFolderName {
         // "/private" only from paths that exist, so a not-yet-cloned folder in
         // another app's container (bookmarks resolve to /private/var/...) would
         // otherwise look like it sits outside its existing parent (/var/...).
-        return contained(child.standardizedFileURL.path, parent.standardizedFileURL.path)
+        return contained(lexicalPath(child), lexicalPath(parent))
             || contained(canonicalPath(child), canonicalPath(parent))
     }
 
     /// Path with symlinks resolved on its deepest existing ancestor and any
     /// missing components re-appended, so an existing folder and a path that
-    /// does not exist yet below it share one prefix.
+    /// does not exist yet below it share one prefix. The system's
+    /// `/private` firmlinks (`/var`, `/tmp`, `/etc`) are always written in
+    /// their short form, whether or not Foundation shortened them.
     static func canonicalPath(_ url: URL) -> String {
         var existing = url.standardizedFileURL
         var missing: [String] = []
@@ -73,7 +77,31 @@ enum VaultFolderName {
         }
         var resolved = existing.resolvingSymlinksInPath()
         for component in missing { resolved.appendPathComponent(component) }
-        return resolved.path
+        return withoutPrivatePrefix(trimmingTrailingSlashes(resolved.path))
+    }
+
+    /// `..` and `.` removed, trailing slashes dropped and `/private` shortened,
+    /// without touching the file system.
+    static func lexicalPath(_ url: URL) -> String {
+        withoutPrivatePrefix(trimmingTrailingSlashes(url.standardizedFileURL.path))
+    }
+
+    /// On Apple platforms `/var`, `/tmp` and `/etc` are symlinks into
+    /// `/private`, so both spellings name the same folder.
+    static func withoutPrivatePrefix(_ path: String) -> String {
+        for root in ["/var", "/tmp", "/etc"] {
+            let privateRoot = "/private" + root
+            if path == privateRoot || path.hasPrefix(privateRoot + "/") {
+                return String(path.dropFirst("/private".count))
+            }
+        }
+        return path
+    }
+
+    private static func trimmingTrailingSlashes(_ path: String) -> String {
+        var path = path
+        while path.count > 1, path.hasSuffix("/") { path.removeLast() }
+        return path
     }
 }
 
