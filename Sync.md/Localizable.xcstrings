@@ -334903,6 +334903,314 @@
           }
         }
       }
+    },
+    "GitSync.md couldn't confirm that the folder “%@” is inside the location you chose. Remove this vault, add it again and choose the location again under Clone To.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تعذّر على GitSync.md التأكد من أن المجلد “%@” داخل الموقع الذي اخترته. أزل هذا المخزن، ثم أضفه مرة أخرى واختر الموقع من جديد ضمن «استنساخ إلى»."
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md kunne ikke bekræfte, at mappen “%@” ligger i den placering, du valgte. Fjern denne vault, tilføj den igen, og vælg placeringen igen under Klon til."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md konnte nicht bestätigen, dass der Ordner „%@“ im gewählten Speicherort liegt. Entferne diesen Vault, füge ihn erneut hinzu und wähle den Speicherort unter „Klonen nach“ erneut."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md no pudo confirmar que la carpeta “%@” esté dentro de la ubicación que elegiste. Elimina este vault, vuelve a añadirlo y elige de nuevo la ubicación en Clonar en."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md ei voinut varmistaa, että kansio “%@” on valitsemassasi sijainnissa. Poista tämä holvi, lisää se uudelleen ja valitse sijainti uudelleen kohdassa Kloonaa kohteeseen."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md n’a pas pu confirmer que le dossier « %@ » se trouve dans l’emplacement choisi. Supprimez ce coffre, ajoutez-le à nouveau et choisissez de nouveau l’emplacement sous Cloner vers."
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md לא הצליחה לוודא שהתיקייה “%@” נמצאת בתוך המיקום שבחרת. יש להסיר את הכספת הזו, להוסיף אותה שוב ולבחור שוב את המיקום תחת „שכפול אל”."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md पुष्टि नहीं कर सका कि फ़ोल्डर “%@” आपके चुने गए स्थान के अंदर है। इस वॉल्ट को हटाएँ, इसे फिर से जोड़ें और क्लोन स्थान में स्थान दोबारा चुनें।"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A GitSync.md nem tudta megerősíteni, hogy a(z) „%@” mappa a kiválasztott helyen belül van. Távolítsd el ezt a tárolót, add hozzá újra, és válaszd ki újra a helyet a Klónozás ide résznél."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md tidak dapat memastikan bahwa folder “%@” berada di dalam lokasi yang Anda pilih. Hapus vault ini, tambahkan lagi, dan pilih lokasinya lagi di Clone Ke."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md non è riuscito a confermare che la cartella “%@” si trovi nella posizione scelta. Rimuovi questo vault, aggiungilo di nuovo e scegli di nuovo la posizione in Clona in."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md は、フォルダ「%@」が選択した場所の中にあることを確認できませんでした。このVaultを削除して追加し直し、「クローン先」で場所を選び直してください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md에서 “%@” 폴더가 선택한 위치 안에 있는지 확인할 수 없습니다. 이 볼트를 제거한 후 다시 추가하고 복제 위치에서 위치를 다시 선택하세요."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md kunne ikke bekrefte at mappen «%@» ligger i plasseringen du valgte. Fjern dette hvelvet, legg det til på nytt og velg plasseringen på nytt under Klon til."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md kon niet bevestigen dat de map ‘%@’ binnen de gekozen locatie staat. Verwijder deze vault, voeg hem opnieuw toe en kies de locatie opnieuw onder Klonen naar."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md nie może potwierdzić, że folder „%@” znajduje się w wybranej lokalizacji. Usuń ten sejf, dodaj go ponownie i wybierz lokalizację jeszcze raz w sekcji Klonuj do."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O GitSync.md não conseguiu confirmar que a pasta “%@” está dentro do local escolhido. Remova este cofre, adicione-o novamente e escolha o local de novo em Clonar Para."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md не удалось подтвердить, что папка «%@» находится в выбранном расположении. Удалите это хранилище, добавьте его снова и заново выберите расположение в разделе «Клонировать в»."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md kunde inte bekräfta att mappen ”%@” ligger i platsen du valde. Ta bort det här valvet, lägg till det igen och välj platsen igen under Klona till."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md ไม่สามารถยืนยันได้ว่าโฟลเดอร์ “%@” อยู่ภายในตำแหน่งที่คุณเลือก ให้ลบคลังนี้ เพิ่มใหม่อีกครั้ง แล้วเลือกตำแหน่งใหม่ใต้ โคลนไปยัง"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md, “%@” klasörünün seçtiğiniz konumun içinde olduğunu doğrulayamadı. Bu kasayı kaldırın, yeniden ekleyin ve Klonlama Konumu altında konumu yeniden seçin."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md не вдалося підтвердити, що папка «%@» розташована у вибраному місці. Видаліть це сховище, додайте його знову й повторно виберіть розташування в розділі «Клонувати до»."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md không thể xác nhận thư mục “%@” nằm trong vị trí bạn đã chọn. Hãy xóa kho này, thêm lại và chọn lại vị trí trong mục Sao chép về."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md 无法确认文件夹“%@”位于你选择的位置中。请移除此仓库，重新添加，并在“克隆到”中重新选择位置。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md 無法確認資料夾「%@」位於你選擇的位置中。請移除此儲存庫，重新加入，並在「複製至」中重新選擇位置。"
+          }
+        }
+      }
+    },
+    "The folder “%@” is outside this vault's location. Remove this vault and add it again with a different folder name.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "المجلد “%@” خارج موقع هذا المخزن. أزل هذا المخزن ثم أضفه مرة أخرى باسم مجلد مختلف."
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mappen “%@” ligger uden for denne vaults placering. Fjern denne vault, og tilføj den igen med et andet mappenavn."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Ordner „%@“ liegt außerhalb des Speicherorts dieses Vaults. Entferne diesen Vault und füge ihn mit einem anderen Ordnernamen erneut hinzu."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La carpeta “%@” está fuera de la ubicación de este vault. Elimina este vault y vuelve a añadirlo con otro nombre de carpeta."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kansio “%@” on tämän holvin sijainnin ulkopuolella. Poista tämä holvi ja lisää se uudelleen eri kansionimellä."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le dossier « %@ » se trouve en dehors de l’emplacement de ce coffre. Supprimez ce coffre et ajoutez-le à nouveau avec un autre nom de dossier."
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "התיקייה “%@” נמצאת מחוץ למיקום של הכספת הזו. יש להסיר את הכספת הזו ולהוסיף אותה שוב עם שם תיקייה אחר."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "फ़ोल्डर “%@” इस वॉल्ट के स्थान से बाहर है। इस वॉल्ट को हटाएँ और किसी दूसरे फ़ोल्डर नाम के साथ इसे फिर से जोड़ें।"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A(z) „%@” mappa ennek a tárolónak a helyén kívül van. Távolítsd el ezt a tárolót, és add hozzá újra egy másik mappanévvel."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folder “%@” berada di luar lokasi vault ini. Hapus vault ini dan tambahkan lagi dengan nama folder lain."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La cartella “%@” si trova fuori dalla posizione di questo vault. Rimuovi questo vault e aggiungilo di nuovo con un altro nome di cartella."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "フォルダ「%@」はこのVaultの場所の外にあります。このVaultを削除し、別のフォルダ名で追加し直してください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "“%@” 폴더가 이 볼트의 위치 밖에 있습니다. 이 볼트를 제거한 후 다른 폴더 이름으로 다시 추가하세요."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mappen «%@» ligger utenfor plasseringen til dette hvelvet. Fjern hvelvet og legg det til på nytt med et annet mappenavn."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De map ‘%@’ staat buiten de locatie van deze vault. Verwijder deze vault en voeg hem opnieuw toe met een andere mapnaam."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folder „%@” znajduje się poza lokalizacją tego sejfu. Usuń ten sejf i dodaj go ponownie z inną nazwą folderu."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A pasta “%@” está fora do local deste cofre. Remova este cofre e adicione-o novamente com outro nome de pasta."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Папка «%@» находится за пределами расположения этого хранилища. Удалите хранилище и добавьте его снова с другим именем папки."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mappen ”%@” ligger utanför det här valvets plats. Ta bort valvet och lägg till det igen med ett annat mappnamn."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "โฟลเดอร์ “%@” อยู่นอกตำแหน่งของคลังนี้ ให้ลบคลังนี้แล้วเพิ่มใหม่อีกครั้งโดยใช้ชื่อโฟลเดอร์อื่น"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "“%@” klasörü bu kasanın konumunun dışında. Bu kasayı kaldırın ve farklı bir klasör adıyla yeniden ekleyin."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Папка «%@» розташована поза місцем цього сховища. Видаліть сховище й додайте його знову з іншою назвою папки."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thư mục “%@” nằm ngoài vị trí của kho này. Hãy xóa kho này và thêm lại với tên thư mục khác."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "文件夹“%@”不在此仓库的位置中。请移除此仓库，并使用其他文件夹名称重新添加。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "資料夾「%@」不在此儲存庫的位置中。請移除此儲存庫，並使用其他資料夾名稱重新加入。"
+          }
+        }
+      }
     }
   },
   "version": "1.0"

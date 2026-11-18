@@ -334,6 +334,57 @@ final class SyncMDTests: XCTestCase {
         XCTAssertEqual(try String(contentsOf: destination.appendingPathComponent("README.md"), encoding: .utf8), "selected branch")
     }
 
+    /// Issue #85: on a fresh install (no default save location) a new vault
+    /// clones into the app's own Documents folder (Files › On My iPhone ›
+    /// GitSync.md), and cloning again after the local vault was deleted, or
+    /// emptied in Files, works too.
+    @MainActor
+    func testFreshCloneIntoAppDocumentsSucceedsAndRepeatsAfterLocalVaultIsDeleted() async throws {
+        let fm = FileManager.default
+        let source = try makeTemporaryGitRepository(prefix: "fresh-docs-source")
+        defer { try? fm.removeItem(at: source) }
+        let service = LocalGitService(localURL: source)
+        try "# Notes".write(to: source.appendingPathComponent("Welcome.md"), atomically: true, encoding: .utf8)
+        try await service.stage(path: "Welcome.md")
+        let sha = try await service.commitLocal(message: "Base", authorName: "Tests", authorEmail: "tests@example.com")
+
+        let state = AppState(loadPersistedState: false)
+        XCTAssertNil(state.defaultSaveLocationBookmarkData, "A fresh install has no default save location")
+        let config = RepoConfig(repoURL: source.absoluteString, branch: "", authorName: "Tests",
+                                authorEmail: "tests@example.com", vaultFolderName: "fresh-docs-\(UUID().uuidString.prefix(8))")
+        state.repos = [config]
+        let destination = try XCTUnwrap(state.vaultURL(for: config.id))
+        defer { try? fm.removeItem(at: destination) }
+        XCTAssertTrue(VaultFolderName.isContained(destination, in: AppState.appDocumentsDirectory))
+        XCTAssertFalse(fm.fileExists(atPath: destination.path), "The vault folder does not exist before the first clone")
+
+        func assertCloned(_ step: String) throws {
+            XCTAssertFalse(state.showError, "\(step): \(state.lastError ?? "")")
+            XCTAssertNil(state.lastError, step)
+            XCTAssertEqual(state.repo(id: config.id)?.gitState.commitSHA, sha, step)
+            XCTAssertEqual(try String(contentsOf: destination.appendingPathComponent("Welcome.md"), encoding: .utf8), "# Notes", step)
+            XCTAssertTrue(fm.fileExists(atPath: destination.appendingPathComponent(".git").path), step)
+        }
+
+        await state.clone(repoID: config.id)
+        try assertCloned("first clone")
+
+        // The user deletes the local vault folder, then clones again.
+        try fm.removeItem(at: destination)
+        state.repos[0].gitState = .empty
+        await state.clone(repoID: config.id)
+        try assertCloned("clone after deleting the vault folder")
+
+        // The user deletes the vault's contents (as Files or Obsidian does),
+        // leaving an empty folder behind.
+        for item in try fm.contentsOfDirectory(atPath: destination.path) {
+            try fm.removeItem(at: destination.appendingPathComponent(item))
+        }
+        state.repos[0].gitState = .empty
+        await state.clone(repoID: config.id)
+        try assertCloned("clone into the emptied vault folder")
+    }
+
     @MainActor
     func testVaultPreflightRejectsMissingBranchInsteadOfPassingIt() async throws {
         let source = try makeTemporaryGitRepository(prefix: "missing-branch-source")
@@ -13578,6 +13629,28 @@ final class NameValidationTests: XCTestCase {
         let elsewhere = URL(fileURLWithPath: "/private/tmp/\(name)/Other/Notes", isDirectory: true)
         XCTAssertEqual(state.cloneTargetConflict(elsewhere, repoID: vault.id, anchor: anchor),
                        AppState.cloneTargetOutsideLocationMessage(folderName: "Notes", usesChosenLocation: false))
+    }
+
+    /// The recovery messages ship translated in every language the app ships,
+    /// under the keys `String(localized:)` looks up.
+    func testOutsideLocationMessagesAreTranslatedInEveryShippedLanguage() throws {
+        let keys = [
+            "GitSync.md couldn't confirm that the folder “%@” is inside the location you chose. Remove this vault, add it again and choose the location again under Clone To.",
+            "The folder “%@” is outside this vault's location. Remove this vault and add it again with a different folder name.",
+        ]
+        let appBundle = Bundle(for: AppState.self)
+        let languages = appBundle.localizations.filter { $0 != "en" && $0 != "Base" }
+        XCTAssertGreaterThanOrEqual(languages.count, 25, "\(appBundle.localizations)")
+        for language in languages {
+            let path = try XCTUnwrap(appBundle.path(forResource: language, ofType: "lproj"), language)
+            let bundle = try XCTUnwrap(Bundle(path: path), language)
+            for key in keys {
+                let value = bundle.localizedString(forKey: key, value: "<missing>", table: nil)
+                XCTAssertNotEqual(value, "<missing>", "\(language): \(key)")
+                XCTAssertNotEqual(value, key, "\(language) falls back to English")
+                XCTAssertEqual(value.components(separatedBy: "%@").count, 2, "\(language) keeps the folder placeholder")
+            }
+        }
     }
 
     func testOutsideLocationMessageSaysHowToRecover() {
