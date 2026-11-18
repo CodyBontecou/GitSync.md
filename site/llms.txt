@@ -29,6 +29,10 @@ For automation on a user's device, consult the Shortcuts guide and agent instruc
 - [Troubleshooting](https://gitsync.md/blog/obsidian-git-not-working-iphone): Authentication, folder selection, and sync problems.
 - [Conflict recovery](https://gitsync.md/blog/obsidian-git-merge-conflicts-iphone): Preserve work and resolve divergent edits.
 
+## Android workflows
+
+- [Obsidian Git on Android](https://gitsync.md/blog/obsidian-git-android): Plugin, Termux and native-client options, vault folder and storage access, and Android background limits.
+
 ## Compare syncing methods
 
 - [iCloud vs Git for Obsidian](https://gitsync.md/compare/icloud-vs-git-obsidian): Device compatibility, folder locations, history, privacy, and switching methods.
