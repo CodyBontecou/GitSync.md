@@ -4,7 +4,9 @@ import argparse
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 import re
-from urllib.error import HTTPError
+import sys
+import time
+from urllib.error import HTTPError, URLError
 from urllib.parse import unquote, urlsplit
 from urllib.request import Request, urlopen
 import xml.etree.ElementTree as ET
@@ -56,10 +58,36 @@ def main():
     parser.add_argument('--private-tools', action='store_true')
     parser.add_argument('--canonical-origin', help='Production origin when checking a preview')
     parser.add_argument('--preview', action='store_true')
+    parser.add_argument('--retry-seconds', type=float, default=0,
+                        help='Keep re-running the whole check for up to this long while the live site '
+                             'still differs (production aliases update a few seconds after a deploy)')
     args = parser.parse_args()
-    origin = args.base_url.rstrip('/')
-    if not origin.startswith('https://'):
+    if not args.base_url.rstrip('/').startswith('https://'):
         parser.error('Live release checks require verified HTTPS')
+    print(retry_until(lambda: verify(args), args.retry_seconds))
+
+
+def retry_until(check, budget, interval=10, clock=time.monotonic, sleep=time.sleep):
+    """Run check until it passes; after budget seconds, raise its last error.
+
+    Only live-content errors are retried: a stale alias still serving the previous
+    deployment, or a page the new deployment added that is not routed yet. The
+    comparison itself is never relaxed, so a real mismatch still fails, just later.
+    """
+    deadline = clock() + budget
+    while True:
+        try:
+            return check()
+        except (ValueError, HTTPError, URLError) as error:
+            remaining = deadline - clock()
+            if remaining <= 0:
+                raise
+            print(f'Live site not matching yet ({error}); retrying for up to {remaining:.0f}s more', file=sys.stderr)
+            sleep(min(interval, remaining))
+
+
+def verify(args):
+    origin = args.base_url.rstrip('/')
     canonical_origin = (args.canonical_origin or origin).rstrip('/')
     urls = [entry.text for entry in ET.parse(args.site / 'sitemap.xml').findall('.//{*}loc')]
     _, live_sitemap = fetch(origin + '/sitemap.xml', 'application/xml')
@@ -100,7 +128,7 @@ def main():
                         raise ValueError('Missing private-file network boundary: ' + url)
                     if r.headers.get('Referrer-Policy') != 'no-referrer' or b'/assets/acquisition.js' in body:
                         raise ValueError('Private-file tool privacy drift: ' + url)
-    print(f'Verified {len(urls)} canonical HTML pages, matching sitemap and {len(assets)} exact public assets over HTTPS.')
+    return f'Verified {len(urls)} canonical HTML pages, matching sitemap and {len(assets)} exact public assets over HTTPS.'
 
 
 if __name__ == '__main__':
