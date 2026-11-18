@@ -334,6 +334,57 @@ final class SyncMDTests: XCTestCase {
         XCTAssertEqual(try String(contentsOf: destination.appendingPathComponent("README.md"), encoding: .utf8), "selected branch")
     }
 
+    /// Issue #85: on a fresh install (no default save location) a new vault
+    /// clones into the app's own Documents folder (Files › On My iPhone ›
+    /// GitSync.md), and cloning again after the local vault was deleted, or
+    /// emptied in Files, works too.
+    @MainActor
+    func testFreshCloneIntoAppDocumentsSucceedsAndRepeatsAfterLocalVaultIsDeleted() async throws {
+        let fm = FileManager.default
+        let source = try makeTemporaryGitRepository(prefix: "fresh-docs-source")
+        defer { try? fm.removeItem(at: source) }
+        let service = LocalGitService(localURL: source)
+        try "# Notes".write(to: source.appendingPathComponent("Welcome.md"), atomically: true, encoding: .utf8)
+        try await service.stage(path: "Welcome.md")
+        let sha = try await service.commitLocal(message: "Base", authorName: "Tests", authorEmail: "tests@example.com")
+
+        let state = AppState(loadPersistedState: false)
+        XCTAssertNil(state.defaultSaveLocationBookmarkData, "A fresh install has no default save location")
+        let config = RepoConfig(repoURL: source.absoluteString, branch: "", authorName: "Tests",
+                                authorEmail: "tests@example.com", vaultFolderName: "fresh-docs-\(UUID().uuidString.prefix(8))")
+        state.repos = [config]
+        let destination = try XCTUnwrap(state.vaultURL(for: config.id))
+        defer { try? fm.removeItem(at: destination) }
+        XCTAssertTrue(VaultFolderName.isContained(destination, in: AppState.appDocumentsDirectory))
+        XCTAssertFalse(fm.fileExists(atPath: destination.path), "The vault folder does not exist before the first clone")
+
+        func assertCloned(_ step: String) throws {
+            XCTAssertFalse(state.showError, "\(step): \(state.lastError ?? "")")
+            XCTAssertNil(state.lastError, step)
+            XCTAssertEqual(state.repo(id: config.id)?.gitState.commitSHA, sha, step)
+            XCTAssertEqual(try String(contentsOf: destination.appendingPathComponent("Welcome.md"), encoding: .utf8), "# Notes", step)
+            XCTAssertTrue(fm.fileExists(atPath: destination.appendingPathComponent(".git").path), step)
+        }
+
+        await state.clone(repoID: config.id)
+        try assertCloned("first clone")
+
+        // The user deletes the local vault folder, then clones again.
+        try fm.removeItem(at: destination)
+        state.repos[0].gitState = .empty
+        await state.clone(repoID: config.id)
+        try assertCloned("clone after deleting the vault folder")
+
+        // The user deletes the vault's contents (as Files or Obsidian does),
+        // leaving an empty folder behind.
+        for item in try fm.contentsOfDirectory(atPath: destination.path) {
+            try fm.removeItem(at: destination.appendingPathComponent(item))
+        }
+        state.repos[0].gitState = .empty
+        await state.clone(repoID: config.id)
+        try assertCloned("clone into the emptied vault folder")
+    }
+
     @MainActor
     func testVaultPreflightRejectsMissingBranchInsteadOfPassingIt() async throws {
         let source = try makeTemporaryGitRepository(prefix: "missing-branch-source")
@@ -13487,6 +13538,128 @@ final class NameValidationTests: XCTestCase {
         XCTAssertFalse(VaultFolderName.isContained(parent, in: parent))
         XCTAssertEqual(AppState.canonicalFilePath(for: child),
                        AppState.canonicalFilePath(for: URL(fileURLWithPath: "/tmp/\(name)/myself.md-vault")))
+    }
+
+    /// Issue #85: a fresh clone into a picked location (e.g. On My iPhone ›
+    /// Obsidian or iCloud Drive › Obsidian) must pass the containment check
+    /// whichever way the `/private` prefix, trailing slashes and missing
+    /// folders fall on either side.
+    func testVaultFolderContainmentNormalizesPrivatePrefixesAndTrailingSlashes() throws {
+        let name = "containment-\(UUID().uuidString)"
+        let shortParent = "/tmp/\(name)"
+        let longParent = "/private/tmp/\(name)"
+        try FileManager.default.createDirectory(atPath: longParent, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(atPath: longParent) }
+
+        for parentPath in [shortParent, longParent, shortParent + "/", longParent + "/", longParent + "//"] {
+            let parent = URL(fileURLWithPath: parentPath, isDirectory: true)
+            for childBase in [shortParent, longParent] {
+                for suffix in ["/Vault", "/Vault/", "/Vault/nested/deeper", "/./Vault"] {
+                    let child = URL(fileURLWithPath: childBase + suffix)
+                    XCTAssertTrue(VaultFolderName.isContained(child, in: parent), "\(child.path) in \(parentPath)")
+                }
+                XCTAssertFalse(VaultFolderName.isContained(URL(fileURLWithPath: childBase), in: parent), parentPath)
+                XCTAssertFalse(VaultFolderName.isContained(URL(fileURLWithPath: childBase + "/"), in: parent), parentPath)
+                XCTAssertFalse(VaultFolderName.isContained(URL(fileURLWithPath: childBase + "X/Vault"), in: parent), parentPath)
+                XCTAssertFalse(VaultFolderName.isContained(URL(fileURLWithPath: childBase + "/../Vault"), in: parent), parentPath)
+                XCTAssertFalse(VaultFolderName.isContained(URL(fileURLWithPath: childBase + "/Vault/../.."), in: parent), parentPath)
+            }
+        }
+
+        // An existing vault folder (cloning again after the files were
+        // deleted) must still count as inside, under either spelling.
+        try FileManager.default.createDirectory(atPath: longParent + "/Vault", withIntermediateDirectories: true)
+        XCTAssertTrue(VaultFolderName.isContained(URL(fileURLWithPath: longParent + "/Vault"),
+                                                  in: URL(fileURLWithPath: shortParent + "/")))
+        XCTAssertTrue(VaultFolderName.isContained(URL(fileURLWithPath: shortParent + "/Vault/"),
+                                                  in: URL(fileURLWithPath: longParent)))
+        XCTAssertEqual(AppState.canonicalFilePath(for: URL(fileURLWithPath: longParent + "/Vault/")),
+                       AppState.canonicalFilePath(for: URL(fileURLWithPath: shortParent + "/Vault")))
+    }
+
+    /// Neither the picked location nor the vault folder has to exist for the
+    /// check (another app's container can be unreadable until its scope is
+    /// started); `/private/var` and `/var` still compare equal.
+    func testVaultFolderContainmentAcceptsMissingParentUnderEitherVarSpelling() {
+        let container = "var/mobile/Containers/Data/Application/\(UUID().uuidString)/Documents"
+        for parentPath in ["/\(container)", "/private/\(container)", "/\(container)/"] {
+            let parent = URL(fileURLWithPath: parentPath, isDirectory: true)
+            XCTAssertTrue(VaultFolderName.isContained(URL(fileURLWithPath: "/private/\(container)/Vault"), in: parent))
+            XCTAssertTrue(VaultFolderName.isContained(URL(fileURLWithPath: "/\(container)/Vault/"), in: parent))
+            XCTAssertFalse(VaultFolderName.isContained(URL(fileURLWithPath: "/private/\(container)"), in: parent))
+            XCTAssertFalse(VaultFolderName.isContained(URL(fileURLWithPath: "/\(container)Other/Vault"), in: parent))
+        }
+        XCTAssertEqual(AppState.canonicalFilePath(for: URL(fileURLWithPath: "/private/\(container)/Vault")),
+                       "/\(container)/Vault")
+    }
+
+    func testPrivatePrefixIsOnlyStrippedFromSystemFirmlinks() {
+        XCTAssertEqual(VaultFolderName.withoutPrivatePrefix("/private/var/mobile"), "/var/mobile")
+        XCTAssertEqual(VaultFolderName.withoutPrivatePrefix("/private/var"), "/var")
+        XCTAssertEqual(VaultFolderName.withoutPrivatePrefix("/private/tmp/a"), "/tmp/a")
+        XCTAssertEqual(VaultFolderName.withoutPrivatePrefix("/private/etc/hosts"), "/etc/hosts")
+        XCTAssertEqual(VaultFolderName.withoutPrivatePrefix("/private/variable/a"), "/private/variable/a")
+        XCTAssertEqual(VaultFolderName.withoutPrivatePrefix("/private"), "/private")
+        XCTAssertEqual(VaultFolderName.withoutPrivatePrefix("/Users/private/var"), "/Users/private/var")
+    }
+
+    /// Fresh setup (issue #85): a new vault cloned into a picked parent whose
+    /// bookmark resolves with the other `/private` spelling and a trailing
+    /// slash is not reported as outside its location.
+    @MainActor
+    func testFreshCloneIntoPickedLocationIsNotOutsideItsLocation() throws {
+        let state = AppState(loadPersistedState: false)
+        let name = "fresh-\(UUID().uuidString.prefix(8))"
+        let pickedPath = "/private/tmp/\(name)/Obsidian"
+        try FileManager.default.createDirectory(atPath: pickedPath, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(atPath: "/private/tmp/\(name)") }
+        let vault = RepoConfig(repoURL: "https://github.com/Owner/Notes.git", branch: "main", authorName: "A",
+                               authorEmail: "a@example.com", vaultFolderName: "Notes", customLocationIsParent: true)
+        state.repos = [vault]
+        let anchor = URL(fileURLWithPath: "/tmp/\(name)/Obsidian/", isDirectory: true)
+        let target = URL(fileURLWithPath: pickedPath, isDirectory: true).appendingPathComponent("Notes", isDirectory: true)
+        XCTAssertNil(state.cloneTargetConflict(target, repoID: vault.id, anchor: anchor))
+        XCTAssertEqual(state.cloneTargetAssessment(target, repoID: vault.id, anchor: anchor), .replaceable)
+
+        // Cloning again after the vault's files were deleted in Files or
+        // Obsidian leaves an empty folder behind; it is still replaceable.
+        try FileManager.default.createDirectory(at: target, withIntermediateDirectories: true)
+        XCTAssertEqual(state.cloneTargetAssessment(target, repoID: vault.id, anchor: anchor), .replaceable)
+
+        let elsewhere = URL(fileURLWithPath: "/private/tmp/\(name)/Other/Notes", isDirectory: true)
+        XCTAssertEqual(state.cloneTargetConflict(elsewhere, repoID: vault.id, anchor: anchor),
+                       AppState.cloneTargetOutsideLocationMessage(folderName: "Notes", usesChosenLocation: false))
+    }
+
+    /// The recovery messages ship translated in every language the app ships,
+    /// under the keys `String(localized:)` looks up.
+    func testOutsideLocationMessagesAreTranslatedInEveryShippedLanguage() throws {
+        let keys = [
+            "GitSync.md couldn't confirm that the folder “%@” is inside the location you chose. Remove this vault, add it again and choose the location again under Clone To.",
+            "The folder “%@” is outside this vault's location. Remove this vault and add it again with a different folder name.",
+        ]
+        let appBundle = Bundle(for: AppState.self)
+        let languages = appBundle.localizations.filter { $0 != "en" && $0 != "Base" }
+        XCTAssertGreaterThanOrEqual(languages.count, 25, "\(appBundle.localizations)")
+        for language in languages {
+            let path = try XCTUnwrap(appBundle.path(forResource: language, ofType: "lproj"), language)
+            let bundle = try XCTUnwrap(Bundle(path: path), language)
+            for key in keys {
+                let value = bundle.localizedString(forKey: key, value: "<missing>", table: nil)
+                XCTAssertNotEqual(value, "<missing>", "\(language): \(key)")
+                XCTAssertNotEqual(value, key, "\(language) falls back to English")
+                XCTAssertEqual(value.components(separatedBy: "%@").count, 2, "\(language) keeps the folder placeholder")
+            }
+        }
+    }
+
+    func testOutsideLocationMessageSaysHowToRecover() {
+        let chosen = AppState.cloneTargetOutsideLocationMessage(folderName: "Notes", usesChosenLocation: true)
+        XCTAssertTrue(chosen.contains("Notes"))
+        XCTAssertTrue(chosen.contains("choose the location again"))
+        let fallback = AppState.cloneTargetOutsideLocationMessage(folderName: "Notes", usesChosenLocation: false)
+        XCTAssertTrue(fallback.contains("add it again"))
+        XCTAssertFalse(fallback.contains("Choose a different folder name"))
     }
 
     func testGitHubShorthandRejectsDotSegments() {

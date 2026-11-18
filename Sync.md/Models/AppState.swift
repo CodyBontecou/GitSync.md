@@ -3952,6 +3952,14 @@ final class AppState {
         }
     }
 
+    /// Says how to recover: the folder name can't change once a vault is
+    /// added, so the way out is to add the vault again and pick its location.
+    nonisolated static func cloneTargetOutsideLocationMessage(folderName: String, usesChosenLocation: Bool) -> String {
+        usesChosenLocation
+            ? String(localized: "GitSync.md couldn't confirm that the folder “\(folderName)” is inside the location you chose. Remove this vault, add it again and choose the location again under Clone To.")
+            : String(localized: "The folder “\(folderName)” is outside this vault's location. Remove this vault and add it again with a different folder name.")
+    }
+
     func cloneTargetAssessment(_ vaultDir: URL, repoID: UUID, anchor: URL? = nil) -> CloneTargetAssessment {
         switch cloneTargetConflictIgnoringOwnWorkingCopy(vaultDir, repoID: repoID, anchor: anchor) {
         case .some(let message): return .conflict(message)
@@ -3963,14 +3971,21 @@ final class AppState {
 
     private func cloneTargetConflictIgnoringOwnWorkingCopy(_ vaultDir: URL, repoID: UUID, anchor: URL?) -> String? {
         let name = vaultDir.lastPathComponent
-        let unsafe = String(localized: "The folder “\(name)” is outside this vault's location. Choose a different folder name.")
-        guard !vaultDir.pathComponents.contains(where: { $0 == "." || $0 == ".." }) else { return unsafe }
         let anchor = anchor ?? resolvedCustomURLs[repoID] ?? Self.appDocumentsDirectory
+        let unsafe = Self.cloneTargetOutsideLocationMessage(
+            folderName: name, usesChosenLocation: resolvedCustomURLs[repoID] != nil)
+        func refuse() -> String {
+            // Paths only, so a report of this error can be diagnosed (issue #85).
+            DebugLogger.shared.warning("clone", "Clone target is outside its location",
+                                       detail: "\(Self.canonicalFilePath(for: vaultDir)) not in \(Self.canonicalFilePath(for: anchor))")
+            return unsafe
+        }
+        guard !vaultDir.pathComponents.contains(where: { $0 == "." || $0 == ".." }) else { return refuse() }
         if Self.canonicalFilePath(for: vaultDir) == Self.canonicalFilePath(for: anchor) {
             // Only a bookmark that is itself the working copy may equal its anchor.
-            guard resolvedCustomURLs[repoID] != nil, repo(id: repoID)?.customLocationIsParent == false else { return unsafe }
+            guard resolvedCustomURLs[repoID] != nil, repo(id: repoID)?.customLocationIsParent == false else { return refuse() }
         } else if !VaultFolderName.isContained(vaultDir, in: anchor) {
-            return unsafe
+            return refuse()
         }
 
         let path = Self.canonicalFilePath(for: vaultDir).lowercased()

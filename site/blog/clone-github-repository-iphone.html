@@ -38,7 +38,7 @@
   "headline": "Clone a GitHub repository on iPhone",
   "description": "Clone a public or private GitHub repository on iPhone or iPad. Choose local storage, configure access, then review, commit, and push an edit with GitSync.md.",
   "datePublished": "2026-10-26",
-  "dateModified": "2026-10-26",
+  "dateModified": "2026-11-18",
   "author": {
     "@type": "Person",
     "name": "Cody Bontecou",
@@ -123,7 +123,7 @@
         <div class="tldr"><div class="tldr-title">Quick answer</div><ol>
           <li>Open GitSync.md and sign into the GitHub account that can access the repository.</li>
           <li>Add the repository from your account or enter its clone URL.</li>
-          <li>Choose a local destination and select <strong>Add &amp; Clone Repository</strong>.</li>
+          <li>Choose a local destination under <strong>Clone To</strong> and select <strong>Check &amp; clone</strong>.</li>
           <li>Open the working copy, make a small edit, review the diff, commit, and push if you have write access.</li>
         </ol></div>
         <p>GitSync.md requires iOS 17 or iPadOS 17 or later and costs $9.99 once on the US App Store. Local prices vary. This guide clones an existing remote; to start with files already on your phone, follow <a href="/blog/create-git-repository-iphone">Create a Git repository from your iPhone</a>.</p>
@@ -146,9 +146,9 @@
 
         <h2 id="clone">3. Add and clone the repository</h2>
         <ol>
-          <li>Open the add-repository flow and select your GitHub repository or enter the remote URL.</li>
+          <li>Tap <strong>+</strong> (<strong>Add vault</strong>). Choose <strong>Clone from GitHub</strong> and select your repository, or paste the remote URL under <strong>Or paste a URL</strong>.</li>
           <li>Select the matching authentication method. GitHub Account uses the signed-in account; manual HTTPS and SSH remotes need their own configured credentials.</li>
-          <li>Review the destination and choose <strong>Add &amp; Clone Repository</strong>.</li>
+          <li>Review the destination under <strong>Clone To</strong>. To clone somewhere other than GitSync.md’s own folder, tap <strong>Choose a different location</strong> and pick the parent folder; GitSync.md creates the repository’s folder inside it. Then choose <strong>Check &amp; clone</strong>.</li>
           <li>Wait for the clone to complete. Check the local files, current branch, and repository status before editing.</li>
         </ol>
         <p>A clone creates a Git working copy and its history, not just a ZIP download. The hidden <code>.git</code> directory holds repository metadata; keep it with the working copy. If you use SSH or a self-hosted server, follow the <a href="/blog/self-hosted-git-ssh-ios">SSH setup guide</a> for key and host-trust steps.</p>
@@ -166,6 +166,8 @@
         <h2 id="problems">Common cloning problems</h2>
         <h3>The repository does not appear</h3>
         <p>Confirm the selected GitHub account can open the repository on GitHub. Organization access, account selection, and the credential’s permissions can affect visibility. Signing in successfully does not establish access to every private repository.</p>
+        <h3>“The folder … is outside this vault's location”</h3>
+        <p>GitSync.md checks that the new folder sits inside the location you picked before it writes anything. If the check fails, remove the vault in GitSync.md, add it again and choose the location again under <strong>Clone To</strong>. Older versions could report this by mistake for Obsidian’s folder; update GitSync.md if you see it on a fresh setup.</p>
         <h3>Obsidian cannot see the vault</h3>
         <p>Check the destination. For the documented local route, the repository belongs in Obsidian’s local folder. Fully close and reopen Obsidian after cloning, then open the cloned root. Follow the <a href="/blog/obsidian-git-not-working-iphone#missing-vault">missing-vault checklist</a>.</p>
         <h3>Push is rejected</h3>

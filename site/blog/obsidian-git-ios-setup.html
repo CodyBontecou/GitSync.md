@@ -48,7 +48,7 @@
   "headline": "Set up a GitHub token in Obsidian Git on iPhone",
   "description": "Configure a GitHub Personal Access Token manually in Obsidian Git on iPhone.",
   "datePublished": "2026-02-15",
-  "dateModified": "2026-10-26",
+  "dateModified": "2026-11-18",
   "author": {
     "@type": "Person",
     "name": "Cody Bontecou",
@@ -110,7 +110,7 @@
         <nav class="eyebrow article-breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li><a href="/blog/">Guides</a></li><li aria-current="page">Manual Obsidian Git setup</li></ol></nav>
         <h1>Set up a GitHub token in Obsidian Git on iPhone</h1>
         <p class="subtitle">Use this manual setup when you want to configure GitHub credentials directly in Obsidian Git. Set the commit author and token separately, then verify a pull and push from your iPhone.</p>
-        <div class="meta-line"><span>By <a href="/about" rel="author">Cody Bontecou</a></span><span>Published February 15, 2026</span><span>Updated October 26, 2026 — Guide</span></div>
+        <div class="meta-line"><span>By <a href="/about" rel="author">Cody Bontecou</a></span><span>Published February 15, 2026</span><span>Updated November 18, 2026 — Guide</span></div>
       </div>
       </header>
       <aside class="guide-aside" aria-label="Guide sidebar">
@@ -208,21 +208,23 @@
 
     <div class="step-card" data-step="Step 1">
       <h3>Sign in to GitSync.md</h3>
-      <p>Open GitSync.md and tap <strong>Sign in with GitHub</strong>. Complete the GitHub OAuth sign-in so the app can show your repositories.</p>
+      <p>Open GitSync.md and tap <strong>Continue with GitHub</strong>. Complete the GitHub sign-in so the app can show your repositories.</p>
       <p><a href="https://www.youtube.com/watch?v=jx7DOUGNCEs&amp;t=62s" target="_blank" rel="noopener">Watch the sign-in and save-location setup →</a></p>
     </div>
 
     <div class="step-card" data-step="Step 2">
       <h3>Choose Obsidian’s local folder as the save location</h3>
-      <p>When GitSync.md asks for your <strong>default save location</strong>, open the folder picker and select:</p>
+      <p>After sign-in, GitSync.md shows a <strong>Default save location</strong> step. Tap <strong>Choose Location</strong> and select:</p>
       <pre tabindex="0" role="region" aria-label="Vault save location"><code>On My iPhone → Obsidian</code></pre>
-      <p>Choose the <strong>Obsidian folder itself</strong>. GitSync.md will create your repository’s folder inside it. You can change this location later in GitSync.md’s <strong>App Settings</strong>.</p>
+      <p>Choose the <strong>Obsidian folder itself</strong>, not a vault inside it. GitSync.md will create your repository’s folder inside it. Tap <strong>Continue</strong>. You can change this later in GitSync.md’s settings under <strong>Save new clones in</strong>.</p>
+      <p>If you skipped this step, or you deleted your vault and are starting again, you can also pick the folder for one vault while adding it: under <strong>Clone To</strong>, tap <strong>Choose a different location</strong>. To keep your vault in iCloud, choose <strong>iCloud Drive → Obsidian</strong> instead.</p>
       <p>If Obsidian’s folder is missing, open Obsidian and create a local vault with <strong>Store in iCloud</strong> turned off, then return to the folder picker.</p>
     </div>
 
     <div class="step-card" data-step="Step 3">
       <h3>Add and clone your vault repository</h3>
-      <p>In GitSync.md, add a repository and select your vault from the GitHub repository list. Tap <strong>Add and Clone Repository</strong>, or add it first and then tap <strong>Clone Repository</strong>, depending on the app version.</p>
+      <p>In GitSync.md, tap <strong>+</strong> (<strong>Add vault</strong>), then <strong>Clone from GitHub</strong>, and select your vault from your repositories. Keep <strong>GitHub Account</strong> under <strong>Sign in with</strong>, check your author name and email, and check that <strong>Clone To</strong> shows the Obsidian folder. Then tap <strong>Check &amp; clone</strong>.</p>
+      <p>If the clone stops with <em>“…is outside this vault's location”</em> or <em>“couldn't confirm that the folder … is inside the location you chose”</em>, remove the vault in GitSync.md, add it again and pick the Obsidian folder again under <strong>Clone To</strong>. Older versions could report this by mistake for Obsidian’s folder, so update GitSync.md first.</p>
       <p>Wait for the clone to finish. In the Files app, check that your notes are inside a folder such as:</p>
       <pre tabindex="0" role="region" aria-label="Example cloned vault folder"><code>On My iPhone → Obsidian → MyVault</code></pre>
       <p>The clone includes the <code>.git</code> directory the plugin needs. You don’t need to initialize another repository in Obsidian.</p>
