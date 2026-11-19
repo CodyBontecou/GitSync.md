@@ -33,6 +33,10 @@ For automation on a user's device, consult the Shortcuts guide and agent instruc
 
 - [Obsidian Git on Android](https://gitsync.md/blog/obsidian-git-android): Plugin, Termux and native-client options, vault folder and storage access, and Android background limits.
 
+## Cross-device
+
+- [Sync Obsidian with GitHub on every device](https://gitsync.md/blog/sync-obsidian-github): Private repository, desktop Git and Obsidian Git plugin settings, then iPhone, iPad and Android routes and a two-way verification.
+
 ## Compare syncing methods
 
 - [iCloud vs Git for Obsidian](https://gitsync.md/compare/icloud-vs-git-obsidian): Device compatibility, folder locations, history, privacy, and switching methods.
