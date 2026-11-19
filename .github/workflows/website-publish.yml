@@ -102,7 +102,7 @@ jobs:
       - name: Verify preview before production
         env:
           PREVIEW_URL: ${{ steps.preview.outputs.url }}
-        run: python3 .github/scripts/check-pages-release.py --site "$RUNNER_TEMP/site" --base-url "$PREVIEW_URL" --canonical-origin https://gitsync.md --preview
+        run: python3 .github/scripts/check-pages-release.py --site "$RUNNER_TEMP/site" --base-url "$PREVIEW_URL" --canonical-origin https://gitsync.md --preview --retry-seconds 180
       - name: Recheck main before production promotion
         env:
           GH_TOKEN: ${{ github.token }}
