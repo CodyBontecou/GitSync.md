@@ -58,6 +58,17 @@ class RetryTests(unittest.TestCase):
             release.retry_until(check, 0, sleep=lambda s: self.fail('slept'))
         self.assertEqual(calls, [1])
 
+    def test_a_connection_dropped_mid_response_is_retried(self):
+        from http.client import IncompleteRead
+        clock, sleep = self.fake_time()
+        results = [IncompleteRead(b'partial'), ConnectionResetError('reset'), 'Verified']
+        def check():
+            result = results.pop(0)
+            if isinstance(result, Exception):
+                raise result
+            return result
+        self.assertEqual(release.retry_until(check, 60, clock=clock, sleep=sleep), 'Verified')
+
     def test_unexpected_errors_are_not_retried(self):
         def check():
             raise KeyError('bug')

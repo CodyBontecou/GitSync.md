@@ -6,6 +6,7 @@ from pathlib import Path
 import re
 import sys
 import time
+from http.client import HTTPException
 from urllib.error import HTTPError, URLError
 from urllib.parse import unquote, urlsplit
 from urllib.request import Request, urlopen
@@ -71,14 +72,15 @@ def retry_until(check, budget, interval=10, clock=time.monotonic, sleep=time.sle
     """Run check until it passes; after budget seconds, raise its last error.
 
     Only live-content errors are retried: a stale alias still serving the previous
-    deployment, or a page the new deployment added that is not routed yet. The
+    deployment, a page the new deployment added that is not routed yet, or a
+    connection that dropped mid-response. The
     comparison itself is never relaxed, so a real mismatch still fails, just later.
     """
     deadline = clock() + budget
     while True:
         try:
             return check()
-        except (ValueError, HTTPError, URLError) as error:
+        except (ValueError, HTTPError, URLError, HTTPException, ConnectionError, TimeoutError) as error:
             remaining = deadline - clock()
             if remaining <= 0:
                 raise
