@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../favicon-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<title>Sync Obsidian with GitHub on Every Device — GitSync.md</title>
+<meta name="description" content="Sync an Obsidian vault with GitHub on Mac, Windows, iPhone and Android: create a private repo, configure Obsidian Git, add your phone and verify both ways.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Cody Bontecou">
+<meta name="theme-color" content="#ffffff">
+<link rel="canonical" href="https://gitsync.md/blog/sync-obsidian-github">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="GitSync.md">
+<meta property="og:title" content="Sync Obsidian with GitHub on Every Device — GitSync.md">
+<meta property="og:description" content="Sync an Obsidian vault with GitHub on Mac, Windows, iPhone and Android: create a private repo, configure Obsidian Git, add your phone and verify both ways.">
+<meta property="og:url" content="https://gitsync.md/blog/sync-obsidian-github">
+<meta property="og:image" content="https://gitsync.md/social/blog/sync-obsidian-github.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:alt" content="GitSync.md guide card: Sync Obsidian with GitHub on Every Device">
+<meta property="article:published_time" content="2026-11-19">
+<meta property="article:modified_time" content="2026-11-19">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Sync Obsidian with GitHub on Every Device — GitSync.md">
+<meta name="twitter:description" content="Sync an Obsidian vault with GitHub on Mac, Windows, iPhone and Android: create a private repo, configure Obsidian Git, add your phone and verify both ways.">
+<meta name="twitter:image" content="https://gitsync.md/social/blog/sync-obsidian-github.png">
+<meta name="twitter:image:alt" content="GitSync.md guide card: Sync Obsidian with GitHub on Every Device">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "How to Sync Obsidian with GitHub (Mac, Windows, iPhone & Android)",
+  "description": "Sync an Obsidian vault with GitHub on Mac, Windows, iPhone and Android: create a private repo, configure Obsidian Git, add your phone and verify both ways.",
+  "image": [
+    "https://gitsync.md/social/blog/sync-obsidian-github.png"
+  ],
+  "datePublished": "2026-11-19",
+  "dateModified": "2026-11-19",
+  "author": {
+    "@type": "Person",
+    "name": "Cody Bontecou",
+    "url": "https://gitsync.md/about"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Cody Bontecou"
+  },
+  "mainEntityOfPage": "https://gitsync.md/blog/sync-obsidian-github"
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../site.css">
+<link rel="stylesheet" href="../content.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://gitsync.md/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Guides",
+      "item": "https://gitsync.md/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Sync Obsidian with GitHub",
+      "item": "https://gitsync.md/blog/sync-obsidian-github"
+    }
+  ]
+}
+</script>
+</head>
+<body id="top">
+<a class="skip-link" href="#main">Skip to content</a>
+<svg class="icon-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 5l7 7-7 7"/></symbol>
+  <symbol id="i-branch" viewBox="0 0 24 24"><circle cx="6" cy="5" r="2.5"/><circle cx="6" cy="19" r="2.5"/><circle cx="18" cy="5" r="2.5"/><path d="M6 7.5v9M18 7.5v1a5 5 0 0 1-5 5H6"/></symbol>
+  <symbol id="i-external" viewBox="0 0 24 24"><path d="M6 18 18 6M6 6h12v12"/></symbol>
+</svg>
+
+<header class="site-header">
+  <nav class="shell navigation" aria-label="Main navigation">
+    <a class="brand" href="/" aria-label="GitSync.md home">gitsync<span class="brand-extension">.md</span></a>
+    <div class="nav-links"><a href="/#app">The app</a><a href="/#workflow">How it works</a><a href="/blog/" class="is-active">Guides</a><a href="/compare/obsidian-sync-vs-git">Compare</a><a href="/#faq">FAQ</a></div>
+    <a class="button button-small" href="/#download">Get the app</a>
+  </nav>
+</header>
+
+<main id="main">
+<div class="container guide-layout">
+      <header class="article-hero">
+        <div class="article-title">
+        <nav class="eyebrow article-breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li><a href="/blog/">Guides</a></li><li aria-current="page">Sync Obsidian with GitHub</li></ol></nav>
+        <h1>How to Sync Obsidian with GitHub (Mac, Windows, iPhone &amp; Android)<span class="accent">.</span></h1>
+        <p class="subtitle">To sync Obsidian with GitHub, put your vault folder in a private GitHub repository, then give every device a local copy of it. On a computer, Git and the Obsidian Git plugin commit, pull and push for you. On a phone, use a Git client that can reach the same folder Obsidian opens. You get full version history and no sync subscription.</p>
+        <div class="meta-line"><span>By <a href="/about" rel="author">Cody Bontecou</a></span>
+          <time datetime="2026-11-19">November 19, 2026</time>
+          <span>Guide</span>
+          <span>Mac, Windows, Linux, iPhone, Android</span>
+        </div>
+      </div>
+      </header>
+      <aside class="guide-aside" aria-label="Guide sidebar">
+        <section class="side-note" aria-label="Article notes">
+        <h2>Details checked</h2>
+        <p>Checked on November 19, 2026:</p>
+        <ul>
+          <li>Obsidian Git setting names and defaults, from the source of release 2.43.0</li>
+          <li>the plugin’s mobile limits, from its README</li>
+          <li>desktop sign-in steps, from the plugin’s documentation</li>
+          <li>GitSync.md features, from our iPhone, Android and Windows guides</li>
+        </ul>
+        <p>This page summarizes the device guides and links to them for the full steps. It has no new app screenshots.</p>
+      </section>
+        <div class="guide-aside-sticky">
+        <nav class="toc-card" aria-label="Article outline">
+        <div class="toc-title">What this covers</div>
+        <ol>
+          <li><a href="#right-method">Is Git the right sync method?</a></li>
+          <li><a href="#what-you-need">What you need</a></li>
+          <li><a href="#create-repo">Step 1: Create a private repository</a></li>
+          <li><a href="#desktop-git">Step 2: Put the vault under Git</a></li>
+          <li><a href="#plugin">Step 3: Configure Obsidian Git</a></li>
+          <li><a href="#phone">Step 4: Add your phone</a></li>
+          <li><a href="#verify">Step 5: Verify both directions</a></li>
+          <li><a href="#routine">Daily routine and conflicts</a></li>
+          <li><a href="#troubleshooting">Troubleshooting</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ol>
+      </nav>
+        <div class="aside-cta aside-cta-wide">
+          <p class="aside-cta-title">Real Git for the phone step.</p>
+          <p class="aside-cta-price">iPhone + iPad: $9.99 once · No subscription · Local store prices may vary</p>
+          <a class="aside-cta-button" href="/v/web-homepage-119" target="_blank" rel="noopener">Download on the App Store</a>
+          <p class="aside-cta-price">On Android? <a href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener">Get it on Google Play</a>.</p>
+        </div>
+        </div>
+      </aside>
+      <article class="article-body">
+        <div class="tldr">
+          <div class="tldr-title">Short version</div>
+          <ol>
+            <li>Create an empty private repository on GitHub.</li>
+            <li>On your computer, add a <code>.gitignore</code>, commit the vault folder and push it.</li>
+            <li>Install the Obsidian Git community plugin on the computer and turn on automatic commit-and-sync and pull on startup.</li>
+            <li>On iPhone, iPad or Android, clone the repository into a folder Obsidian can open, then open it with <strong>Open folder as vault</strong>.</li>
+            <li>Make one edit on each device and confirm it arrives on the other before you rely on it.</li>
+          </ol>
+        </div>
+
+        <p><strong>Jump to your device:</strong> <a href="#desktop-git">Mac, Windows or Linux</a> · <a href="#iphone">iPhone and iPad</a> · <a href="#android">Android</a></p>
+
+        <h2 id="right-method">Is Git the right sync method for you?</h2>
+        <p>Git syncs snapshots that you commit, not every keystroke. Three trade-offs come with it:</p>
+        <ul>
+          <li><strong>Sync is a step, not a background service.</strong> Obsidian’s own <a href="https://obsidian.md/help/sync-notes" target="_blank" rel="noopener">guide to syncing notes</a> lists Git as an option for Windows, macOS and Linux, and notes that you push and pull by hand. The plugin can do this on a timer on your computer. Phones need a separate client.</li>
+          <li><strong>Conflicts are yours to resolve.</strong> If two devices change the same lines before either syncs, Git stops and asks you to choose.</li>
+          <li><strong>Private is not encrypted.</strong> A private GitHub repository limits who can open it, but GitHub can still read the files. Git doesn’t add end-to-end encryption.</li>
+        </ul>
+        <p>If you’re still choosing, compare <a href="/compare/obsidian-sync-vs-git">Obsidian Sync and Git</a> or <a href="/compare/icloud-vs-git-obsidian">iCloud and Git</a>. If you want history, your own repository and no subscription, read on.</p>
+
+        <h2 id="what-you-need">What you need</h2>
+        <ul>
+          <li>A GitHub account. A private repository is free.</li>
+          <li>Obsidian on each device.</li>
+          <li>Git on your computer, and the <a href="https://github.com/Vinzent03/obsidian-git" target="_blank" rel="noopener">Obsidian Git</a> community plugin (listed as <strong>Git</strong>, by Vinzent).</li>
+          <li>For phones, a Git client: GitSync.md (iPhone, iPad and Android), or the Obsidian Git plugin itself, with the limits explained in <a href="#phone">Step 4</a>.</li>
+          <li>A separate backup of the vault before you change how it syncs.</li>
+        </ul>
+        <p>Use one sync method per vault. Turn off iCloud, OneDrive, Dropbox, Google Drive, Syncthing or Obsidian Sync for this vault, and keep the vault in a normal local folder that none of them manage. Two tools rewriting the same files cause duplicate notes and confusing conflicts.</p>
+
+        <h2 id="create-repo">Step 1: Create a private GitHub repository</h2>
+        <ol>
+          <li>On GitHub, select <strong>New repository</strong>.</li>
+          <li>Give it a name, such as <code>notes</code>, and choose <strong>Private</strong>.</li>
+          <li>Leave the README, <code>.gitignore</code> and license options off. Your vault will be the first commit, and an empty repository avoids a merge on the first push.</li>
+          <li>Create it, and copy the HTTPS URL, which looks like <code>https://github.com/YOUR_ACCOUNT/notes.git</code>.</li>
+        </ol>
+        <p>GitHub documents this in <a href="https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-new-repository" target="_blank" rel="noopener">Creating a new repository</a> and <a href="https://docs.github.com/en/migrations/importing-source-code/using-the-command-line-to-import-source-code/adding-locally-hosted-code-to-github" target="_blank" rel="noopener">Adding locally hosted code to GitHub</a>.</p>
+
+        <h2 id="desktop-git">Step 2: Put your vault under Git on your computer</h2>
+        <h3>Install Git</h3>
+        <ul>
+          <li><strong>macOS:</strong> run <code>xcode-select --install</code> in Terminal to get Apple’s Command Line Tools, which include Git, or install Git with Homebrew. See <a href="https://git-scm.com/install/mac" target="_blank" rel="noopener">Git for macOS</a>.</li>
+          <li><strong>Windows:</strong> install <a href="https://git-scm.com/download/win" target="_blank" rel="noopener">Git for Windows</a> with its default options, which include Git Bash and Git Credential Manager. The plugin’s <a href="https://publish.obsidian.md/git-doc/Installation" target="_blank" rel="noopener">installation notes</a> say GitHub Desktop alone isn’t enough and ask for Git 2.29 or later.</li>
+          <li><strong>Linux:</strong> install Git from your distribution’s package manager, for example <code>sudo apt install git</code>. See <a href="https://git-scm.com/download/linux" target="_blank" rel="noopener">Git for Linux</a>. The plugin’s notes say Obsidian installed as a Snap can’t reach Git, and Flatpak isn’t recommended. The AppImage works.</li>
+        </ul>
+        <p>Windows has a few extra details, such as OneDrive-redirected Documents folders. If that’s you, follow <a href="/blog/sync-obsidian-windows-iphone-github">the Windows and iPhone walkthrough</a>, which runs the same steps in Git Bash.</p>
+
+        <h3>Start the repository</h3>
+        <p>These examples use a vault at <code>~/Notes</code>. Replace the path, name and email with your own. Run <code>git status</code> first: if it says the folder is already a repository, skip <code>git init</code>.</p>
+        <pre tabindex="0" role="region" aria-label="Start a Git repository in the vault folder"><code>cd ~/Notes
+git init -b main
+git config user.name "Your Name"
+git config user.email "you@example.com"</code></pre>
+        <p>The email is published in every commit. GitHub’s no-reply address works if you’d rather keep yours private. <code>git init -b</code> needs Git 2.28 or later.</p>
+
+        <h3>Add a .gitignore before the first commit</h3>
+        <p>Create a file named <code>.gitignore</code> in the vault folder, next to <code>.obsidian</code>. This starter shares notes, attachments and most settings, and keeps per-device files local:</p>
+        <pre tabindex="0" role="region" aria-label="Starter .gitignore for an Obsidian vault"><code># Window layouts change on every device
+.obsidian/workspace*.json
+# Deleted notes and operating-system files
+.trash/
+.DS_Store
+Thumbs.db</code></pre>
+        <p>Obsidian rewrites <code>workspace.json</code> and <code>workspace-mobile.json</code> whenever you open a note, so tracking them creates a change on every session. Ignore rules only affect files Git isn’t tracking yet, which is why the file goes in before the first commit. If you’d rather keep all settings and plugins per device, ignore <code>.obsidian/</code> instead. <a href="/blog/obsidian-gitignore">The Obsidian .gitignore guide</a> compares both choices, and Git’s <a href="https://git-scm.com/docs/gitignore" target="_blank" rel="noopener">gitignore documentation</a> explains the pattern rules.</p>
+
+        <h3>Commit and push</h3>
+        <pre tabindex="0" role="region" aria-label="Review, commit and push the vault"><code>git add .
+git status
+git diff --cached --stat
+git commit -m "Add vault notes"
+git remote add origin https://github.com/YOUR_ACCOUNT/notes.git
+git push -u origin main</code></pre>
+        <p>Before you commit, read the <code>git status</code> list. Make sure no private documents, tokens or very large files are about to be uploaded. When the push finishes, open the repository on GitHub and check that your notes are there.</p>
+
+        <h3>Sign in on the desktop</h3>
+        <p>GitHub doesn’t accept your account password for Git over HTTPS. Use one of these:</p>
+        <ul>
+          <li><strong>HTTPS with a credential helper.</strong> On Windows, Git Credential Manager opens a browser sign-in on the first push. On macOS, the plugin’s <a href="https://publish.obsidian.md/git-doc/Authentication" target="_blank" rel="noopener">authentication page</a> suggests <code>git config --global credential.helper osxkeychain</code>, and on Linux, <code>libsecret</code>. After one successful push from the terminal, the plugin can pull and push without asking.</li>
+          <li><strong>SSH.</strong> Create a key, add it to <code>ssh-agent</code> and to GitHub, as described in <a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh" target="_blank" rel="noopener">GitHub’s SSH documentation</a>, and use the <code>git@github.com:</code> remote URL.</li>
+        </ul>
+        <p>If you use a <a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens" target="_blank" rel="noopener">personal access token</a>, enter it only when Git or an app asks for it. Never paste a token into a note: it would be committed and pushed with the vault.</p>
+
+        <h2 id="plugin">Step 3: Install and configure the Obsidian Git plugin (desktop)</h2>
+        <p>In Obsidian, open <strong>Settings → Community plugins</strong>, turn on community plugins if Obsidian asks, then select <strong>Browse</strong>. Search for <strong>Git</strong>, choose the plugin by Vinzent, then <strong>Install</strong> and <strong>Enable</strong>. Obsidian’s <a href="https://obsidian.md/help/community-plugins" target="_blank" rel="noopener">community plugins help</a> covers this screen. The plugin finds the repository in the vault folder on its own.</p>
+        <p>Then open the plugin’s settings, under <strong>Community plugins → Git</strong>. Most defaults are sensible, but automatic sync is off until you set an interval. These are the settings worth changing, with the names used in release 2.43.0:</p>
+        <div class="comparison-scroll" role="region" aria-label="Recommended Obsidian Git settings" tabindex="0"><table class="comparison-table">
+          <caption>Recommended Obsidian Git settings for a personal vault</caption>
+          <thead><tr><th scope="col">Setting</th><th scope="col">Recommended</th><th scope="col">Why</th></tr></thead><tbody>
+          <tr><th scope="row">Auto commit-and-sync interval (minutes)</th><td><code>10</code></td><td>The default is <code>0</code>, which means off. With an interval, the plugin commits, pulls and pushes on a schedule while Obsidian is open.</td></tr>
+          <tr><th scope="row">Auto commit-and-sync after stopping file edits</th><td>On</td><td>Waits until you stop typing, so a commit doesn’t land in the middle of a sentence.</td></tr>
+          <tr><th scope="row">Pull on startup</th><td>On</td><td>Off by default. Turning it on brings in your phone’s edits as soon as you open Obsidian on the computer.</td></tr>
+          <tr><th scope="row">Auto pull interval (minutes)</th><td><code>10</code></td><td>Pulls on its own timer, separate from committing. Useful when the computer stays open while you write on the phone.</td></tr>
+          <tr><th scope="row">Use separate commit and push intervals</th><td>Off</td><td>Keeps commit and push together. Turn it on only if you want frequent local commits and less frequent pushes, then set <strong>Auto push interval (minutes)</strong>.</td></tr>
+          <tr><th scope="row">Push on commit-and-sync</th><td>On (default)</td><td>Turning it off makes commit-and-sync a local commit only, and your phone never sees the change.</td></tr>
+          <tr><th scope="row">Pull on commit-and-sync</th><td>On (default)</td><td>Pulls before pushing, so the push isn’t rejected when the phone pushed first.</td></tr>
+          <tr><th scope="row">Merge strategy</th><td>Merge (default)</td><td>The simplest choice. Rebase rewrites your local commits, and the plugin doesn’t support it on mobile.</td></tr>
+          <tr><th scope="row">Commit message on auto commit-and-sync</th><td><code>vault backup: {{date}} ({{hostname}})</code></td><td>The default is <code>vault backup: {{date}}</code>. Adding <code>{{hostname}}</code> shows which device made each commit. Set a short name in <strong>{{hostname}} placeholder replacement</strong>, such as <code>laptop</code>.</td></tr>
+          </tbody></table></div>
+        <p>To sync by hand, open the command palette and run <strong>Git: Commit-and-sync</strong> or <strong>Git: Pull</strong>. The <strong>Open source control view</strong> command shows changed files and diffs.</p>
+
+        <h2 id="phone">Step 4: Add your phone</h2>
+        <p>This is where most Git vault setups break. On iPhone, iPad and Android, Obsidian plugins can’t run a native Git program. The Obsidian Git plugin uses isomorphic-git, a JavaScript implementation of Git, instead. Its <a href="https://github.com/Vinzent03/obsidian-git#mobile-support-experimental" target="_blank" rel="noopener">README</a> marks mobile support as experimental and “highly unstable”, and lists these limits:</p>
+        <ul>
+          <li>no SSH authentication</li>
+          <li>limited repository size, because of memory limits</li>
+          <li>no rebase merge strategy</li>
+          <li>no submodules</li>
+        </ul>
+        <p>It also warns that Obsidian may crash on clone or pull, depending on the device and free memory. The plugin is still the right tool on desktop. On a phone, it can be enough for a small vault with an HTTPS remote. For anything larger, or for SSH, use a native Git client that writes into the folder Obsidian opens.</p>
+        <p>GitSync.md is one such client. It is a different app from the open-source app called “GitSync” that the plugin’s README mentions. The two aren’t related.</p>
+
+        <h3 id="iphone">iPhone and iPad</h3>
+        <p>On iOS, the vault has to be a local folder both apps can reach, usually <strong>On My iPhone → Obsidian</strong> (or <strong>On My iPad → Obsidian</strong>). The Git route here doesn’t use an iCloud Drive vault folder, so leave <strong>Store in iCloud</strong> off when you create the vault. You have two routes:</p>
+        <ul>
+          <li><strong>Obsidian Git on the phone.</strong> Clone the vault into Obsidian’s local folder, then install the plugin in that vault and give it a GitHub personal access token. <a href="/blog/obsidian-git-ios-setup">Set up an Obsidian Git token on iPhone</a> walks through it. The mobile limits above apply.</li>
+          <li><strong>A native Git client.</strong> In GitSync.md, sign in with GitHub or paste a personal access token, set the save location to <strong>On My iPhone → Obsidian</strong>, and clone the vault repository. Then open that folder in Obsidian with <strong>Open folder as vault</strong>. GitSync.md uses libgit2 to pull, commit and push, over HTTPS or SSH, and stores credentials in the iOS Keychain. <a href="/blog/obsidian-git-iphone-ipad">The iPhone and iPad guide</a> has the full setup.</li>
+        </ul>
+        <p>You can also mix them: let GitSync.md clone the vault, and let the plugin do daily syncing inside Obsidian. For GitHub HTTPS vaults signed in with GitSync.md’s GitHub account, the free <a href="/blog/gitsync-connect-obsidian-git">GitSync.md Connect</a> plugin hands your sign-in to Obsidian Git, so you don’t copy a token between apps. Connect needs GitSync.md 2.8.0 or later, and it doesn’t change the plugin’s mobile limits.</p>
+        <p>GitSync.md needs iOS 17 or iPadOS 17 or later. It costs $9.99 once on the US App Store; local prices may vary.</p>
+        <p><a href="/v/web-homepage-119" target="_blank" rel="noopener">Get GitSync.md for iPhone and iPad →</a></p>
+
+        <h3 id="android">Android</h3>
+        <p>On Android, the vault must be in a device folder that both Obsidian and the Git client can open, such as <code>Documents/Obsidian/Notes</code>. Cloud folders like Google Drive can’t hold a Git working copy. You have three routes:</p>
+        <ul>
+          <li><strong>Obsidian Git plugin:</strong> everything inside Obsidian, with the mobile limits above. Fine for a small vault over HTTPS.</li>
+          <li><strong>Termux and a script:</strong> real command-line Git, but you maintain the packages, keys, scripts and any scheduling yourself.</li>
+          <li><strong>A native Git client:</strong> GitSync.md clones into a device folder you choose, shows diffs and conflicts, and supports GitHub sign-in, tokens and SSH keys. It needs Android 9 or later and all-files access to manage Git folders outside its own storage.</li>
+        </ul>
+        <p><a href="/blog/obsidian-git-android">The Android guide</a> compares the three routes and walks through storage access, the clone location and Background Sync. GitSync.md costs $9.99 once on Google Play, after a free vault check; local prices may vary.</p>
+        <p><a href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener">Get GitSync.md on Google Play →</a></p>
+
+        <div class="callout">
+          <span class="callout-label">Syncing .obsidian? Pick one Git client per phone</span>
+          <p>If your <code>.gitignore</code> shares <code>.obsidian/</code>, the Obsidian Git plugin and its timers also arrive on the phone. If GitSync.md handles Git on the phone, open the plugin’s settings there and turn on <strong>Disable on this device</strong> under <strong>Advanced</strong>. It applies to that device only, so the plugin keeps running on your computer. Two Git clients working on the same folder at once make errors hard to trace.</p>
+        </div>
+
+        <h2 id="verify">Step 5: Verify sync in both directions</h2>
+        <ol>
+          <li>On the computer, create <code>sync-test.md</code> with one line of text. Run <strong>Git: Commit-and-sync</strong>, or wait for the interval.</li>
+          <li>Open the repository on GitHub and check that the commit and the file are there.</li>
+          <li>On the phone, pull: in GitSync.md, open the vault and pull, or run <strong>Git: Pull</strong> in Obsidian if you use the plugin. Open <code>sync-test.md</code> in Obsidian.</li>
+          <li>Edit the note on the phone. Commit and push it.</li>
+          <li>Check GitHub for the new commit, then pull on the computer (or restart Obsidian with <strong>Pull on startup</strong> on) and confirm the phone’s edit is there.</li>
+        </ol>
+        <p>Only rely on automatic sync after both directions work. If you have a tablet or a second computer, repeat the test there.</p>
+
+        <h2 id="routine">Daily routine and avoiding conflicts</h2>
+        <ul>
+          <li><strong>Pull before you edit, push when you finish.</strong> On the computer the plugin does this with <strong>Pull on startup</strong> and its interval. On a phone, pull when you open the vault and push before you put the phone down.</li>
+          <li><strong>Don’t edit the same note on two devices while one is offline.</strong> Writing offline is fine, but the first device to push wins, and the second gets a conflict on any lines both changed.</li>
+          <li><strong>Resolve conflicts, don’t force-push.</strong> Keep one version, or combine both by hand, then commit. <a href="/blog/obsidian-git-merge-conflicts-iphone">The conflict recovery guide</a> explains the options.</li>
+        </ul>
+        <p>Automatic sync on a phone is limited by the operating system. GitSync.md has optional Background Sync on iPhone, iPad and Android, but iOS and Android decide when it runs, so it is never real time. On iPhone, read <a href="/blog/obsidian-git-background-sync-iphone">what background Git sync can do</a>. Open the app before you switch devices if you need the latest notes.</p>
+
+        <h2 id="troubleshooting">Troubleshooting</h2>
+        <h3>Authentication failed</h3>
+        <p>On desktop, push once from the terminal so the credential helper or SSH key is set up, then retry in Obsidian. GitHub rejects account passwords for Git: use a credential manager, SSH or a token. On a phone, check that the token or account has access to the repository, and that it hasn’t expired.</p>
+        <h3>“not a git repository”</h3>
+        <p>The vault Obsidian opened isn’t the folder that contains <code>.git</code>. Often a parent folder or a nested copy was opened. Open the repository root as the vault, the folder that holds both <code>.git</code> and <code>.obsidian</code>.</p>
+        <h3>The plugin doesn’t work on the phone</h3>
+        <p>Check the README’s mobile limits first: SSH remotes don’t work, and large vaults can crash on clone or pull. Switch to an HTTPS remote with a token, or use a native Git client. For iPhone symptoms, see <a href="/blog/obsidian-git-not-working-iphone">Obsidian Git not working on iPhone</a>.</p>
+        <h3>A commit every time you open Obsidian</h3>
+        <p>A workspace file is still tracked. Add it to <code>.gitignore</code>, then stop tracking it once with <code>git rm --cached .obsidian/workspace.json</code> and commit. See <a href="/blog/obsidian-gitignore">the .gitignore guide</a>.</p>
+        <h3>Large images, audio or PDFs</h3>
+        <p>Git keeps every version of every file, so big attachments make the repository slow to clone, especially on phones. Git LFS stores large files outside history, but every client you use has to support it. See <a href="/blog/git-lfs-ios">Git LFS on iPhone and iPad</a> for how GitSync.md handles it.</p>
+
+        <h2 id="faq">FAQ</h2>
+        <h3>Is it free?</h3>
+        <p>Git, the Obsidian Git plugin and a private GitHub repository are free. On phones, the plugin is free too. GitSync.md is a one-time $9.99 purchase on iPhone and iPad, and on Android, with no subscription. Local store prices may vary.</p>
+        <h3>Is my vault private?</h3>
+        <p>A private repository is visible only to you and the people you invite. It isn’t end-to-end encrypted: GitHub stores the files in a form it can read, and HTTPS or SSH only protects them in transit. See <a href="/compare/obsidian-sync-vs-git">Obsidian Sync vs Git</a> if you need encryption.</p>
+        <h3>Does the Obsidian Git plugin work on mobile?</h3>
+        <p>Yes, with limits. On iPhone, iPad and Android it uses a JavaScript Git implementation without SSH, and its README calls mobile support experimental and warns about crashes on larger vaults. For small HTTPS vaults it can be enough.</p>
+        <h3>Can I use GitLab or a self-hosted server?</h3>
+        <p>Yes. Git works with any remote: use its URL in <code>git remote add</code>. On iPhone and iPad, GitSync.md accepts manually entered remotes over HTTPS or SSH. See <a href="/blog/self-hosted-git-ssh-ios">self-hosted Git with SSH on iPhone</a>. On Android, use <strong>Any Git host</strong>.</p>
+        <h3>Will plugins and themes sync?</h3>
+        <p>Only if <code>.obsidian/</code> is tracked. With the starter <code>.gitignore</code> above, themes, snippets, plugins and their settings sync, while window layouts stay on each device. If you ignore <code>.obsidian/</code>, configure each device separately. Review plugin settings before committing them, because some plugins store private data.</p>
+
+        <div class="related-card">
+          <h2>Related guides</h2>
+          <ul>
+            <li><a href="/blog/obsidian-git-iphone-ipad">Sync Obsidian with Git on iPhone and iPad</a></li>
+            <li><a href="/blog/obsidian-git-android">Sync an Obsidian vault with Git on Android</a></li>
+            <li><a href="/blog/sync-obsidian-windows-iphone-github">Sync Obsidian between Windows and iPhone with GitHub</a></li>
+            <li><a href="/blog/gitsync-connect-obsidian-git">Connect Obsidian Git with your GitSync.md sign-in</a></li>
+            <li><a href="/blog/obsidian-gitignore">Choose what your .gitignore shares</a></li>
+          </ul>
+        </div>
+      </article>
+    </div>
+
+  <section class="content-download" aria-labelledby="download-heading">
+    <div class="shell content-download-layout">
+      <div>
+        <p class="eyebrow"><span class="blue-square" aria-hidden="true"></span>Take your work with you.</p>
+        <h2 id="download-heading">REAL GIT.<br>WITHIN REACH.</h2>
+        <p class="content-download-description">Your files. Your commits. Your remote.<br>Get GitSync.md for iPhone, iPad, and Android.</p>
+      </div>
+      <div>
+        <div class="store-links" role="group" aria-label="Download GitSync.md">
+          <a class="store-badge store-badge-apple" href="/v/web-homepage-119" target="_blank" rel="noopener"><img src="../assets/store-badges/download-on-app-store.svg" width="120" height="40" alt="Download GitSync.md on the App Store" decoding="async"></a>
+          <a class="store-badge store-badge-google" href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener"><img src="../assets/store-badges/get-it-on-google-play.png" width="646" height="250" alt="Get GitSync.md on Google Play" decoding="async"></a>
+        </div>
+        <p class="purchase-note"><span>iPhone + iPad: $9.99 once. Unlimited repositories.</span><span>Android: $9.99 once. All features included.</span><span>No subscriptions.</span></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="shell footer-layout">
+    <a class="brand" href="/" aria-label="GitSync.md home">gitsync<span class="brand-extension">.md</span></a>
+    <p>Independently built by <a href="https://codybontecou.com" target="_blank" rel="noopener">Cody Bontecou</a>.<br>© 2026 GitSync.md</p>
+    <div class="footer-links"><a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener">Source</a><a href="/blog/">Guides</a><a href="/compare/obsidian-sync-vs-git">Compare</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
+    <a class="back-top" href="#top" aria-label="Back to top">↑</a>
+  </div>
+</footer>
+<!-- Cloudflare Web Analytics -->
+<script>
+(function () {
+  var productionHosts = {
+    'instareply.isolated.tech': true,
+    'voxboard.isolated.tech': true,
+    'healthmd.isolated.tech': true,
+    'isome.isolated.tech': true,
+    'gitsyncmd.app': true,
+    'gitsync.md': true,
+    'timemd.isolated.tech': true,
+    'imghost.isolated.tech': true
+  };
+
+  if (!productionHosts[window.location.hostname]) {
+    return;
+  }
+
+  function loadCloudflareBeacon() {
+    if (document.querySelector('script[src="https://static.cloudflareinsights.com/beacon.min.js"]')) {
+      return;
+    }
+
+    var script = document.createElement('script');
+    script.defer = true;
+    script.src = 'https://static.cloudflareinsights.com/beacon.min.js';
+    script.setAttribute('data-cf-beacon', '{"token":"090f363070334cddad5c5cc1509b8807"}');
+    document.head.appendChild(script);
+  }
+
+  fetch('https://img-host.costream.workers.dev/analytics-gate', {
+    cache: 'no-store',
+    mode: 'cors',
+    credentials: 'omit'
+  })
+    .then(function (response) {
+      return response.ok ? response.json() : { track: false };
+    })
+    .then(function (gate) {
+      if (gate && gate.track) {
+        loadCloudflareBeacon();
+      }
+    })
+    .catch(function () {
+      // Fail closed so excluded IPs are not accidentally tracked.
+    });
+})();
+</script>
+<!-- End Cloudflare Web Analytics -->
+</body>
+</html>
