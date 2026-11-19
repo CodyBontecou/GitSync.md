@@ -66,19 +66,41 @@ def render(title, category, output):
     image.save(output, optimize=True)
 
 
+# Category label for each top-level page. A new top-level page needs an entry here.
+PAGE_CATEGORIES = {'index': 'Git on mobile', 'about': 'About', 'contact': 'Support',
+                   'privacy': 'Privacy', 'privacy-android': 'Privacy', 'terms': 'Terms', '404': 'Help'}
+
+
+def category_for(relative):
+    if relative.parts[0] == 'compare':
+        return 'Comparison'
+    if relative.as_posix() == 'blog/index.html':
+        return 'Guide library'
+    if relative.parts[0] == 'blog':
+        return 'Guide'
+    if len(relative.parts) == 1 and relative.stem in PAGE_CATEGORIES:
+        return PAGE_CATEGORIES[relative.stem]
+    raise ValueError(f'No sharing-card category for {relative}; add it to PAGE_CATEGORIES')
+
+
+def is_english(source):
+    # The bundled Manrope font has Latin glyphs only, so translated pages (e.g. zh-hans)
+    # keep the English card their metadata already points at, with their own alt text.
+    lang = re.search(r'<html\b[^>]*\blang="([^"]+)"', source, re.I)
+    return lang is None or lang[1].lower().split('-')[0] == 'en'
+
+
 def build(site, update_metadata=False):
     count = 0
     for page in sorted(site.rglob('*.html')):
         source = page.read_text()
+        if not is_english(source):
+            continue
         title = unescape(re.search(r'<title>(.*?)</title>', source, re.S)[1])
         title = title.removesuffix(' — GitSync.md')
         relative = page.relative_to(site)
         card = Path('social') / relative.with_suffix('.png')
-        category = 'Comparison' if relative.parts[0] == 'compare' else (
-            'Guide library' if relative.as_posix() == 'blog/index.html' else
-            'Guide' if relative.parts[0] == 'blog' else
-            {'index': 'Git on mobile', 'about': 'About', 'contact': 'Support',
-             'privacy': 'Privacy', 'terms': 'Terms', '404': 'Help'}[page.stem])
+        category = category_for(relative)
         render(title, category, site / card)
         if update_metadata:
             url = 'https://gitsync.md/' + card.as_posix()
