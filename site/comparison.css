@@ -2,6 +2,7 @@
 .comparison-scroll { max-width: 100%; overflow-x: auto; margin-block: 24px; }
 .comparison-scroll:focus-visible { outline: 2px solid var(--blue); outline-offset: 4px; }
 .comparison-table { width: 100%; min-width: 720px; table-layout: fixed; border-collapse: collapse; font-size: 16px; line-height: 24px; }
+.comparison-table-wide { min-width: 1500px; font-size: 15px; line-height: 22px; }
 .comparison-table caption { text-align: left; font-size: 14px; line-height: 20px; padding-block: 16px; color: var(--muted); }
 .comparison-table th, .comparison-table td { padding: 16px; border: 1px solid var(--line); text-align: left; vertical-align: top; }
 .comparison-table thead { background: var(--surface); }
