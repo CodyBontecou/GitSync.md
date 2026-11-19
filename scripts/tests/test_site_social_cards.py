@@ -30,6 +30,9 @@ class SocialCardTests(unittest.TestCase):
     def test_android_privacy_page_is_a_privacy_card(self):
         self.assertEqual(cards.category_for(Path('privacy-android.html')), 'Privacy')
 
+    def test_tool_pages_are_free_tool_cards(self):
+        self.assertEqual(cards.category_for(Path('tools/obsidian-sync-cost-calculator.html')), 'Free tool')
+
     def test_unknown_top_level_page_names_the_fix(self):
         with self.assertRaisesRegex(ValueError, 'PAGE_CATEGORIES'):
             cards.category_for(Path('new-page.html'))

@@ -74,6 +74,8 @@ PAGE_CATEGORIES = {'index': 'Git on mobile', 'about': 'About', 'contact': 'Suppo
 def category_for(relative):
     if relative.parts[0] == 'compare':
         return 'Comparison'
+    if relative.parts[0] == 'tools':
+        return 'Free tool'
     if relative.as_posix() == 'blog/index.html':
         return 'Guide library'
     if relative.parts[0] == 'blog':
