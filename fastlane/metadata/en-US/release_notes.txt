@@ -1,3 +1,5 @@
+• Cloning into another app's folder, such as Obsidian, no longer fails with "outside this vault's location"
+• Author name and email now fill in from your GitHub account
 • If a vault's folder moves, GitSync.md now follows it instead of showing "Not cloned", and it never deletes an intact working copy
 • A leftover Git lock file no longer blocks syncing: GitSync.md spots it and lets you remove it safely
 • Show hidden files such as .obsidian with the new eye toggle in the file browser
