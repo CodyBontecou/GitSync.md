@@ -205,7 +205,7 @@
         <p>For an explicit trigger, follow <a href="/blog/shortcuts-automation-ios">the Apple Shortcuts guide</a>. Avoid overlapping timers from multiple Git clients on the same folder while diagnosing the problem.</p>
 
         <h2 id="missing-note">Sync finished, but a note is missing on the other device</h2>
-        <p>Trace one note from its local folder to the remote repository, then to the receiving device. A saved note, a local commit, and a published commit are different checkpoints. A clean working copy alone does not prove the other device has your edit.</p>
+        <p>Trace one note from its local folder to the remote repository, then to the receiving device. A saved note, a local commit, and a published commit are different checkpoints. A clean working copy alone does not prove the other device has your edit. If the note was deleted rather than never sent, <a href="/blog/obsidian-backup-git#restore-deleted">restore a deleted note</a> from Git history.</p>
         <p>Use a disposable note such as <code>sync-check.md</code> containing <code>Test from phone, October 31</code>. These are synthetic examples; do not put private notes or credentials into a support report. Keep separate copies of unsynced work before changing folders or branches.</p>
         <ol>
           <li><strong>Find the saved file.</strong> In Obsidian, confirm which vault contains the note. In GitSync.md, inspect that same repository folder and the note’s relative path. Two folders with the same vault name can contain different files.</li>
