@@ -1,0 +1,3 @@
+{
+  "whatsNew": "• Clonar na pasta de outro app, como o Obsidian, não falha mais com \"fora do local deste cofre\"\n• Se o GitSync.md não conseguir confirmar onde um clone deve ficar, agora ele mostra exatamente como resolver\n• Nome e e-mail do autor agora são preenchidos pela sua conta do GitHub, usando seu endereço no-reply privado se o seu e-mail estiver oculto"
+}

@@ -1,0 +1,3 @@
+• Klonen naar de map van een andere app, zoals Obsidian, mislukt niet meer met 'buiten de locatie van deze kluis'
+• Als GitSync.md niet kan bevestigen waar een kloon moet komen, vertelt de app je nu precies hoe je dat oplost
+• Naam en e-mail van de auteur worden nu ingevuld vanuit je GitHub-account, met je privé no-reply-adres als je e-mail verborgen is

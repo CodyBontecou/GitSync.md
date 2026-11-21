@@ -1,0 +1,3 @@
+• Mengkloning ke folder aplikasi lain, seperti Obsidian, tidak lagi gagal dengan "di luar lokasi vault ini"
+• Jika GitSync.md tidak dapat memastikan lokasi klon, kini aplikasi memberi tahu Anda cara memperbaikinya dengan tepat
+• Nama dan email penulis kini terisi dari akun GitHub Anda, memakai alamat no-reply pribadi Anda jika email Anda disembunyikan

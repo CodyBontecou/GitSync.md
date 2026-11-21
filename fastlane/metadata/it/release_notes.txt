@@ -1,0 +1,3 @@
+• La clonazione nella cartella di un'altra app, come Obsidian, non fallisce più con «fuori dalla posizione di questa cassaforte»
+• Se GitSync.md non riesce a confermare dove va un clone, ora ti spiega esattamente come risolvere
+• Nome ed e-mail dell'autore ora vengono compilati dal tuo account GitHub, usando il tuo indirizzo no-reply privato se la tua e-mail è nascosta

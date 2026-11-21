@@ -1,0 +1,3 @@
+• Klonowanie do folderu innej aplikacji, np. Obsidian, nie kończy się już błędem „poza lokalizacją tego sejfu”
+• Gdy GitSync.md nie może potwierdzić, gdzie ma trafić klon, teraz dokładnie podpowiada, jak to naprawić
+• Imię i e-mail autora są teraz uzupełniane z Twojego konta GitHub, z prywatnym adresem no-reply, jeśli Twój e-mail jest ukryty

@@ -1,0 +1,3 @@
+• Cloner dans le dossier d'une autre app, comme Obsidian, n'échoue plus avec « en dehors de l'emplacement de ce coffre »
+• Si GitSync.md ne peut pas confirmer où placer un clone, l'app vous indique désormais précisément comment corriger le problème
+• Le nom et l'e-mail de l'auteur sont désormais remplis depuis votre compte GitHub, avec votre adresse no-reply privée si votre e-mail est masqué

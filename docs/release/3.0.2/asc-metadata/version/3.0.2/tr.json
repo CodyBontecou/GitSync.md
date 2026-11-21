@@ -1,0 +1,3 @@
+{
+  "whatsNew": "• Obsidian gibi başka bir uygulamanın klasörüne klonlama artık \"bu kasanın konumunun dışında\" hatasıyla başarısız olmuyor\n• GitSync.md bir klonun nereye gideceğini doğrulayamazsa artık bunu nasıl düzelteceğinizi tam olarak söylüyor\n• Yazar adı ve e-postası artık GitHub hesabınızdan dolduruluyor; e-postanız gizliyse özel no-reply adresiniz kullanılıyor"
+}

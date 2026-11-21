@@ -1,0 +1,3 @@
+{
+  "whatsNew": "• Cloning into another app's folder, such as Obsidian, no longer fails with \"outside this vault's location\"\n• If GitSync.md can't confirm where a clone should go, it now tells you exactly how to fix it\n• Author name and email now fill in from your GitHub account, using your private no-reply address if your email is hidden"
+}

@@ -1,0 +1,3 @@
+• Das Klonen in den Ordner einer anderen App, etwa Obsidian, schlägt nicht mehr mit „außerhalb des Speicherorts dieses Tresors“ fehl
+• Kann GitSync.md nicht bestätigen, wohin ein Klon gehört, erklärt die App dir jetzt genau, wie du das behebst
+• Autorname und E-Mail werden jetzt aus deinem GitHub-Konto übernommen – mit deiner privaten No-Reply-Adresse, wenn deine E-Mail verborgen ist
