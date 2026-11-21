@@ -39,6 +39,7 @@ For automation on a user's device, consult the Shortcuts guide and agent instruc
 
 ## Compare syncing methods
 
+- [Best Git clients for iPhone and iPad (2026)](https://gitsync.md/compare/best-git-client-ios): GitSync.md, Working Copy, Phogit, GitHub Mobile, a-Shell and iSH compared by job, push pricing, Files access, authentication and Android, with sources and a checked date.
 - [Obsidian Sync alternatives](https://gitsync.md/compare/obsidian-sync-alternatives): iCloud, Git, Syncthing, Self-hosted LiveSync, Remotely Save and Obsidian Sync compared by device, cost model, history, conflicts and iPhone caveats.
 - [iCloud vs Git for Obsidian](https://gitsync.md/compare/icloud-vs-git-obsidian): Device compatibility, folder locations, history, privacy, and switching methods.
 - [Obsidian Sync vs Git](https://gitsync.md/compare/obsidian-sync-vs-git): Integrated sync compared with explicit Git commits.
