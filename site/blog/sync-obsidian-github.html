@@ -219,7 +219,7 @@ git config user.email "you@example.com"</code></pre>
 .trash/
 .DS_Store
 Thumbs.db</code></pre>
-        <p>Obsidian rewrites <code>workspace.json</code> and <code>workspace-mobile.json</code> whenever you open a note, so tracking them creates a change on every session. Ignore rules only affect files Git isn’t tracking yet, which is why the file goes in before the first commit. If you’d rather keep all settings and plugins per device, ignore <code>.obsidian/</code> instead. <a href="/blog/obsidian-gitignore">The Obsidian .gitignore guide</a> compares both choices, and Git’s <a href="https://git-scm.com/docs/gitignore" target="_blank" rel="noopener">gitignore documentation</a> explains the pattern rules.</p>
+        <p>Obsidian rewrites <code>workspace.json</code> and <code>workspace-mobile.json</code> whenever you open a note, so tracking them creates a change on every session. Ignore rules only affect files Git isn’t tracking yet, which is why the file goes in before the first commit. If you’d rather keep all settings and plugins per device, ignore <code>.obsidian/</code> instead. <a href="/blog/obsidian-gitignore">The Obsidian .gitignore guide</a> compares both choices, and the <a href="/tools/obsidian-gitignore-generator">.gitignore generator</a> builds the file for you, and Git’s <a href="https://git-scm.com/docs/gitignore" target="_blank" rel="noopener">gitignore documentation</a> explains the pattern rules.</p>
 
         <h3>Commit and push</h3>
         <pre tabindex="0" role="region" aria-label="Review, commit and push the vault"><code>git add .
