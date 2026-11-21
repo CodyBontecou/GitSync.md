@@ -99,3 +99,7 @@
     public static *** v(...);
     public static *** i(...);
 }
+
+# play review-ktx 2.x references this compile-time-only Play services annotation, which
+# isn't on the classpath. R8 suggested this rule in missing_rules.txt.
+-dontwarn com.google.android.gms.common.annotation.NoNullnessRewrite
