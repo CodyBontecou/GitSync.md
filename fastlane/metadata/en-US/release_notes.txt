@@ -1,4 +1,2 @@
-• If a vault's folder moves, GitSync.md now follows it instead of showing "Not cloned", and it never deletes an intact working copy
-• A leftover Git lock file no longer blocks syncing: GitSync.md spots it and lets you remove it safely
-• Show hidden files such as .obsidian with the new eye toggle in the file browser
-• Fetch now tells you whether you're up to date, have new commits to pull, or have diverged
+• Cloning a repository during first-time setup on iPhone and iPad no longer fails with a "folder is outside this vault's location" error
+• If a clone can't go ahead, the error message now explains the problem more clearly, in every supported language
