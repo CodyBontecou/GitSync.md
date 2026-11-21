@@ -22,5 +22,6 @@ object BillingModule {
     @Singleton
     fun provideAppUnlock(@ApplicationContext context: Context): AppUnlock = AppUnlock(
         PlayBillingGateway(context), PrefsUnlockStore(context), BuildConfig.HARD_PAYWALL,
-        CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate))
+        CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate),
+        onPurchased = { com.bontecou.syncmd.review.ReviewPrompts.shared?.notePurchase() })
 }

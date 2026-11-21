@@ -279,7 +279,7 @@ struct VaultView: View {
         // The spinner still waits for it to finish.
         .refreshable {
             let id = repoID
-            await Task { @MainActor in _ = await state.pull(repoID: id) }.value
+            await Task { @MainActor in _ = await ReviewPromptContext.userStarted { await state.pull(repoID: id) } }.value
         }
     }
 
@@ -704,27 +704,27 @@ struct VaultView: View {
             switch tideState {
             case .ahead where changeCount > 0:
                 heroPrimary(String(localized: "Commit & push"), icon: "arrow.up") { showCommitSheet = true }
-                heroSecondary(String(localized: "Pull")) { Task { await state.pull(repoID: repoID, cancellationFeedback: .warning) } }
+                heroSecondary(String(localized: "Pull")) { Task { await ReviewPromptContext.userStarted { await state.pull(repoID: repoID, cancellationFeedback: .warning) } } }
             case .ahead:
                 heroPrimary(String(localized: "Push"), icon: "arrow.up") {
-                    Task { await state.pushCurrentBranch(repoID: repoID) }
+                    Task { await ReviewPromptContext.userStarted { await state.pushCurrentBranch(repoID: repoID) } }
                 }
-                heroSecondary(String(localized: "Pull")) { Task { await state.pull(repoID: repoID, cancellationFeedback: .warning) } }
+                heroSecondary(String(localized: "Pull")) { Task { await ReviewPromptContext.userStarted { await state.pull(repoID: repoID, cancellationFeedback: .warning) } } }
             case .behind:
                 heroPrimary(String(localized: "Pull"), icon: "arrow.down") {
-                    Task { await state.pull(repoID: repoID, cancellationFeedback: .warning) }
+                    Task { await ReviewPromptContext.userStarted { await state.pull(repoID: repoID, cancellationFeedback: .warning) } }
                 }
             case .diverged where changeCount > 0:
                 heroPrimary(String(localized: "Commit & push"), icon: "arrow.up") { showCommitSheet = true }
-                heroSecondary(String(localized: "Pull")) { Task { await state.pull(repoID: repoID, cancellationFeedback: .warning) } }
+                heroSecondary(String(localized: "Pull")) { Task { await ReviewPromptContext.userStarted { await state.pull(repoID: repoID, cancellationFeedback: .warning) } } }
             case .diverged:
                 heroPrimary(String(localized: "Bring theirs in"), icon: "arrow.triangle.merge") {
-                    Task { await state.mergeWithRemote(repoID: repoID) }
+                    Task { await ReviewPromptContext.userStarted { await state.mergeWithRemote(repoID: repoID) } }
                 }
-                heroSecondary(String(localized: "Rebase")) { Task { await state.pullWithRebase(repoID: repoID) } }
+                heroSecondary(String(localized: "Rebase")) { Task { await ReviewPromptContext.userStarted { await state.pullWithRebase(repoID: repoID) } } }
             case .inSync:
                 heroPrimary(String(localized: "Check for changes"), icon: "arrow.clockwise") {
-                    Task { await state.pull(repoID: repoID, cancellationFeedback: .warning) }
+                    Task { await ReviewPromptContext.userStarted { await state.pull(repoID: repoID, cancellationFeedback: .warning) } }
                 }
             }
         }
@@ -845,10 +845,10 @@ struct VaultView: View {
             } else if outcome.kind == .diverged, activeConflict == nil {
                 HStack(spacing: 8) {
                     bannerButton(String(localized: "Merge"), tint: Tide.ahead) {
-                        Task { await state.mergeWithRemote(repoID: repoID) }
+                        Task { await ReviewPromptContext.userStarted { await state.mergeWithRemote(repoID: repoID) } }
                     }
                     bannerButton(String(localized: "Rebase"), tint: Tide.behind) {
-                        Task { await state.pullWithRebase(repoID: repoID) }
+                        Task { await ReviewPromptContext.userStarted { await state.pullWithRebase(repoID: repoID) } }
                     }
                 }
                 .padding(.leading, 38)

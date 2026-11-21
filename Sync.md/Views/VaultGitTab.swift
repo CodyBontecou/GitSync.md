@@ -89,7 +89,7 @@ struct VaultGitTab: View {
                 .accessibilityLabel(String(localized: "Git Tools"))
                 TideRowDivider()
                 Button {
-                    Task { await state.pullWithRebase(repoID: repoID) }
+                    Task { await ReviewPromptContext.userStarted { await state.pullWithRebase(repoID: repoID) } }
                 } label: {
                     TideValueRow(title: String(localized: "Pull with Rebase"),
                                  value: String(localized: "replay mine on top"), mono: true)
@@ -99,7 +99,7 @@ struct VaultGitTab: View {
                 if !hasChanges && state.syncStateByRepo[repoID] == .ahead {
                     TideRowDivider()
                     Button {
-                        Task { await state.pushCurrentBranch(repoID: repoID) }
+                        Task { await ReviewPromptContext.userStarted { await state.pushCurrentBranch(repoID: repoID) } }
                     } label: {
                         TideValueRow(title: String(localized: "Push Current Branch"),
                                      value: String(localized: "committed work"), mono: true)

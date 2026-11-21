@@ -41,6 +41,8 @@ class RemoteMergeViewModel @Inject constructor(private val merge: RepositoryRemo
         if (mutable.value.plan !== expected) return
         run(true) { before ->
             val result = merge.begin(expected, publish)
+            if (publish && result.kind != RemoteMergeKind.CONFLICTS && result.push == RemoteMergePush.CONFIRMED)
+                com.bontecou.syncmd.review.ReviewPrompts.shared?.userSyncSucceeded(before.path)
             before.copy(plan = null, outcome = result, conflicts = result.kind == RemoteMergeKind.CONFLICTS,
                 retryPlan = expected.takeIf { result.push == RemoteMergePush.UNCONFIRMED })
         }
@@ -50,6 +52,7 @@ class RemoteMergeViewModel @Inject constructor(private val merge: RepositoryRemo
         if (mutable.value.outcome !== expected) return
         run(true) { before ->
             val result = merge.retryPush(plan, expected)
+            if (result.push == RemoteMergePush.CONFIRMED) com.bontecou.syncmd.review.ReviewPrompts.shared?.userSyncSucceeded(before.path)
             before.copy(outcome = result, retryPlan = plan.takeIf { result.push == RemoteMergePush.UNCONFIRMED })
         }
     }

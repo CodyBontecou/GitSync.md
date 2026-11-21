@@ -983,7 +983,7 @@ struct RepoListView: View {
                     : String(localized: "Sync all"),
                 badge: running ? nil : "↓\(counts.down) ↑\(counts.up)"
             ) {
-                Task { await state.syncAllVaults() }
+                Task { await ReviewPromptContext.userStarted { await state.syncAllVaults() } }
             }
             .lineLimit(1)
             .disabled(disabled)

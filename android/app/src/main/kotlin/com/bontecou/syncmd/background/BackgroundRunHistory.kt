@@ -118,5 +118,7 @@ internal suspend fun BackgroundSyncBackend.runAndRecord(history: BackgroundRunHi
     val before = runCatching { store.read().policies.mapValues { it.value.health.head } }.getOrDefault(emptyMap())
     val results = kotlinx.coroutines.withContext(com.bontecou.syncmd.services.diagnostics.DiagnosticScope(background = true)) { run() }
     runCatching { history.record(BackgroundRunHistory.summarize(results, before)) }
+    // Background passes count toward the review prompt but never show it.
+    if (results.any { it.health.outcome in com.bontecou.syncmd.review.syncedOutcomes }) com.bontecou.syncmd.review.ReviewPrompts.shared?.countSuccess()
     return results
 }

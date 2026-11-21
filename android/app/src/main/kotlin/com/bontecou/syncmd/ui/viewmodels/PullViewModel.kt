@@ -179,6 +179,8 @@ class PullViewModel @Inject constructor(private val pullService: PullService) : 
                     _localChangesBlock.value = blocked
                     operationNotice = failure?.takeUnless { blocked }?.notice(R.string.gitops_action_failed, "Git could not complete this action")
                     showError(operationNotice)
+                    // The Pull screen's button: a clean pull (no attention, not blocked by local edits) may prompt.
+                    if (pull && failure == null && attention == null) com.bontecou.syncmd.review.ReviewPrompts.shared?.userSyncSucceeded(expected.path)
                 }
             } catch (cancelled: CancellationException) { throw cancelled
             } catch (error: Exception) {

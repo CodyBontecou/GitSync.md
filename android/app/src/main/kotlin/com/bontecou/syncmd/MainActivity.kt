@@ -26,6 +26,8 @@ class MainActivity : ComponentActivity() {
     lateinit var authManager: GitHubAuthManager
     @Inject
     lateinit var appUnlock: com.bontecou.syncmd.billing.AppUnlock
+    @Inject
+    lateinit var syncRunner: com.bontecou.syncmd.sync.VaultSyncRunner
 
     private val settingsViewModel: SettingsViewModel by viewModels()
     private val callbacks: com.bontecou.syncmd.ui.viewmodels.RepositoryCallbackViewModel by viewModels()
@@ -40,6 +42,11 @@ class MainActivity : ComponentActivity() {
         handleCallbackIntent(intent, savedInstanceState == null)
         handleObsidianIntent(intent, savedInstanceState == null)
         handlePushLinkIntent(intent, savedInstanceState == null)
+        // Play's in-app review, for user-started moments only (see review/ReviewPrompts).
+        com.bontecou.syncmd.review.ReviewPrompts.shared?.let { prompts ->
+            com.bontecou.syncmd.review.ReviewPromptHost(this, prompts,
+                syncRunning = { syncRunner.runs.value.values.any { it.running } }).attach()
+        }
 
         setContent {
             SyncMdTheme(darkTheme = com.bontecou.syncmd.ui.theme.rememberAppDarkTheme(this)) {

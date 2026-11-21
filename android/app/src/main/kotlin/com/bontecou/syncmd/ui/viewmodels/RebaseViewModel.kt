@@ -35,7 +35,12 @@ class RebaseViewModel @Inject constructor(private val rebase: RepositoryRebase, 
         val outcome = rebase.begin(before.plan ?: gitOpsError(R.string.gitops_rebase_review_first))
         before.copy(plan = null, session = outcome.session, message = outcome.notice, status = outcome.status)
     }
-    fun continueRebase() = advance { rebase.continueRebase(it) }
+    fun continueRebase() = advance { session ->
+        rebase.continueRebase(session).also { outcome ->
+            // Continue is only needed after conflicts; when it ends the rebase, the next push is the conflict-resolved moment.
+            if (outcome.session == null) com.bontecou.syncmd.review.ReviewPrompts.shared?.conflictResolved(session.path)
+        }
+    }
     fun abort() = advance { rebase.abort(it) }
     fun skip() = advance { rebase.skip(it) }
     fun retryCheckout() = advance { rebase.retryCheckout(it) }

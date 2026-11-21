@@ -75,20 +75,54 @@ struct ContentView: View {
             Text(state.pendingSSHHostKeyTrustRequest?.message ?? "")
         }
         .appErrorAlert(isRoot: true)
-        .onChange(of: state.shouldRequestReview) { _, shouldRequest in
-            if shouldRequest {
-                state.shouldRequestReview = false
-                // Small delay so the clone-complete UI settles before the review prompt appears
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                    // Re-check: a callback banner, alert, or sync may have
-                    // started meanwhile, or the app may have left the foreground.
-                    guard state.canPresentReviewPrompt,
-                          UIApplication.shared.applicationState == .active else { return }
+        .task(id: state.reviewPromptRequestID) {
+            guard state.pendingReviewMoment != nil else { return }
+            await presentReviewPromptWhenClear()
+        }
+    }
+
+    /// Shows the system rating prompt for a pending good moment (a sync the
+    /// person started, a dismissed background summary, a resolved conflict)
+    /// once the screen has been clear for `settleSeconds`: no toast such as
+    /// Undo push, no sheet, paywall, alert or onboarding, no sync running, and
+    /// the app in the foreground. A moment that never gets a clear screen
+    /// within `giveUpSeconds` is dropped; the next good moment can try again.
+    private func presentReviewPromptWhenClear() async {
+        let settleSeconds: TimeInterval = 2
+        let giveUpSeconds: TimeInterval = 30
+        let deadline = Date().addingTimeInterval(giveUpSeconds)
+        var clearSince: Date?
+        while !Task.isCancelled, Date() < deadline {
+            if isClearForReviewPrompt {
+                let since = clearSince ?? Date()
+                clearSince = since
+                if Date().timeIntervalSince(since) >= settleSeconds {
                     state.markReviewRequested()
                     requestReview()
+                    return
                 }
+            } else {
+                clearSince = nil
             }
+            try? await Task.sleep(for: .milliseconds(250))
         }
+        if !Task.isCancelled { state.pendingReviewMoment = nil }
+    }
+
+    private var isClearForReviewPrompt: Bool {
+        state.canPresentReviewPrompt
+            && UIApplication.shared.applicationState == .active
+            && !Self.isPresentingModal
+    }
+
+    /// Any SwiftUI sheet, full-screen cover, alert or confirmation dialog
+    /// (the unlock paywall included) is a view controller presented over
+    /// the key window's root.
+    private static var isPresentingModal: Bool {
+        UIApplication.shared.connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .flatMap(\.windows)
+            .contains { $0.isKeyWindow && $0.rootViewController?.presentedViewController != nil }
     }
 
     private var hasExistingAppDataForReleaseNotes: Bool {

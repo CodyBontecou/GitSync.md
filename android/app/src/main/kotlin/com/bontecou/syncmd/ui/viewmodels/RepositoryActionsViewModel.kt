@@ -55,6 +55,8 @@ class RepositoryActionsViewModel(private val catalog: () -> List<PullAllTarget>,
         launch {
             mutable.value = mutable.value.copy(result = null)
             val result = runner.run(confirmation.plan, confirmation.action, confirmation.message)
+            // Repository actions are the Shortcuts surface: count, never prompt.
+            if (result.outcome in com.bontecou.syncmd.review.syncedOutcomes) com.bontecou.syncmd.review.ReviewPrompts.shared?.countSuccess()
             mutable.value = mutable.value.copy(result = result)
             // Never silently refresh a plan and repeat a write. A new review is an explicit action.
         }

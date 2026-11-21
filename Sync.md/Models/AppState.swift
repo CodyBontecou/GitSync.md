@@ -233,8 +233,12 @@ final class AppState {
 
     // MARK: - Review Prompt
 
-    /// Set to `true` after the user's first successful clone, so the UI can trigger a review request.
-    var shouldRequestReview: Bool = false
+    /// Counted syncs and prompt history (see `ReviewPromptPolicy`).
+    @ObservationIgnored var reviewPromptPolicy = ReviewPromptPolicy()
+    /// A good moment for the rating prompt, waiting for the screen to be
+    /// clear. `ContentView` watches `reviewPromptRequestID` and presents it.
+    var pendingReviewMoment: ReviewPromptMoment? = nil
+    var reviewPromptRequestID: Int = 0
 
     // MARK: - Errors & Confirmations
 
@@ -558,6 +562,7 @@ final class AppState {
         defaultAuthorEmail = defaults.string(forKey: "authorEmail") ?? ""
         hasCompletedOnboarding = defaults.bool(forKey: "hasCompletedOnboarding")
         hasSeenOnboarding = defaults.bool(forKey: "hasSeenOnboarding")
+        reviewPromptPolicy.migrateLegacyKeyIfNeeded()
 
         if let accountData = defaults.data(forKey: "gitHubAccounts"),
            let decodedAccounts = try? JSONDecoder().decode([GitHubAccount].self, from: accountData) {
@@ -2412,6 +2417,10 @@ final class AppState {
             detectChanges(repoID: repoID)
             await loadBranches(repoID: repoID)
             await loadConflictSession(repoID: repoID)
+            if execution.pushErrorMessage == nil, conflictSessionByRepo[repoID]?.isActive != true {
+                recordReviewSuccess()
+                requestReviewIfNeeded(.userSync)
+            }
         } catch LocalGitError.mergeConflictsDetected {
             markRepositoryMutated(repoID: repoID)
             await loadConflictSession(repoID: repoID)
@@ -2522,6 +2531,10 @@ final class AppState {
             }
             detectChanges(repoID: repoID)
             await loadConflictSession(repoID: repoID)
+            if execution.pushErrorMessage == nil, conflictSessionByRepo[repoID]?.isActive != true {
+                recordReviewSuccess()
+                requestReviewIfNeeded(.conflictResolved)
+            }
         } catch {
             await loadConflictSession(repoID: repoID)
             showError(message: error.localizedDescription)
@@ -3213,7 +3226,7 @@ final class AppState {
             clearCommitHistoryCache(for: repoID)
             syncProgress = String(localized: "Pull complete!")
             setPullOutcome(repoID: repoID, kind: .fastForwarded, message: String(localized: "Pulled latest changes (fast-forward)"))
-            requestReviewIfNeeded()
+            requestReviewIfNeeded(.userSync)
 
         case .updatedWithAttention(_, let commitSHA, let attention):
             markRepositoryMutated(repoID: repoID)
@@ -3241,6 +3254,7 @@ final class AppState {
         case .upToDate:
             syncProgress = String(localized: "Already up to date!")
             setPullOutcome(repoID: repoID, kind: .upToDate, message: String(localized: "Already up to date"))
+            requestReviewIfNeeded(.userSync)
 
         case .blockedByLocalChanges:
             syncProgress = String(localized: "Pull blocked by local changes")
@@ -3377,6 +3391,7 @@ final class AppState {
         }
 
         detectChanges(repoID: repoID)
+        if result.didPush { requestReviewIfNeeded(.userSync) }
         return result
     }
 
@@ -3462,6 +3477,12 @@ final class AppState {
             clearCommitHistoryCache(for: repoID)
         }
         detectChanges(repoID: repoID)
+        switch result.outcome {
+        case .upToDate, .pulled, .pushed, .pulledAndPushed:
+            requestReviewIfNeeded(.userSync)
+        default:
+            break
+        }
         return Self.syncResult(from: result)
     }
 
@@ -3571,7 +3592,8 @@ final class AppState {
                 )
                 detectChanges(repoID: repoID)
                 await loadBranches(repoID: repoID)
-                requestReviewIfNeeded()
+                recordReviewSuccess()
+                requestReviewIfNeeded(.userSync)
                 if showsProgressDelay { try? await Task.sleep(for: .seconds(1)) }
                 return true
             }
@@ -3725,7 +3747,7 @@ final class AppState {
             await loadBranches(repoID: repoID)
             syncProgress = String(localized: "Push complete!")
             didFinishPush(repoID: repoID, commitSHA: info?.commitSHA ?? repo.gitState.commitSHA, commits: sentCommits)
-            requestReviewIfNeeded()
+            requestReviewIfNeeded(.userSync)
             return true
         } catch is CancellationError {
             finishSyncActivity(repoID: repoID, success: false)
@@ -3819,7 +3841,7 @@ final class AppState {
             syncProgress = String(localized: "Push complete!")
             DebugLogger.shared.info("push", "Push complete", detail: "SHA: \(result.commitSHA)", repo: repo.displayName)
             didFinishPush(repoID: repoID, commitSHA: result.commitSHA, commits: sentCommits)
-            requestReviewIfNeeded()
+            requestReviewIfNeeded(.userSync)
 
             try? await Task.sleep(for: .seconds(1))
             return true
@@ -3847,25 +3869,45 @@ final class AppState {
 
     // MARK: - Review Prompt
 
-    private static let reviewRequestedKey = "hasRequestedReview"
-
-    private func requestReviewIfNeeded() {
-        // The one-time key is spent only when the prompt is actually shown
-        // (`markReviewRequested`), so a skipped moment can retry later.
-        if !UserDefaults.standard.bool(forKey: Self.reviewRequestedKey),
-           callbackNavigateToRepoID == nil, callbackResult == nil {
-            shouldRequestReview = true
-        }
+    /// Queues `moment` for the rating prompt when the policy allows it. Only
+    /// work the person started from the app's UI (`ReviewPromptContext`)
+    /// qualifies; the prompt itself waits in `ContentView` for a clear screen.
+    func requestReviewIfNeeded(_ moment: ReviewPromptMoment) {
+        guard ReviewPromptContext.isUserStarted || moment == .backgroundSummaryDismissed,
+              !isDemoMode,
+              callbackNavigateToRepoID == nil, callbackResult == nil,
+              reviewPromptPolicy.isEligible() else { return }
+        pendingReviewMoment = moment
+        reviewPromptRequestID &+= 1
     }
 
-    /// The rating prompt must not cover an x-callback run, its result
-    /// banner, an error alert, or work still in progress.
+    /// Counts a successful sync toward the rating prompt. Never prompts by
+    /// itself, so background runs count without showing anything.
+    func recordReviewSuccess() {
+        guard !isDemoMode else { return }
+        reviewPromptPolicy.recordSuccess()
+    }
+
+    /// The rating prompt must not cover an x-callback run, its result banner,
+    /// a toast (Undo push), an error alert, onboarding, or work in progress.
+    /// `ContentView` also checks for presented sheets and the foreground.
     var canPresentReviewPrompt: Bool {
-        callbackNavigateToRepoID == nil && callbackResult == nil && !showError && !isSyncing
+        pendingReviewMoment != nil
+            && !isDemoMode
+            && callbackNavigateToRepoID == nil && callbackResult == nil
+            && currentToast == nil
+            && !showError
+            && pendingSSHHostKeyTrustRequest == nil
+            && pendingLFSAutoTrackingConfirmation == nil
+            && !isSyncing && !isSyncingAllVaults
+            && !isBackgroundSyncing
+            && (hasCompletedOnboarding || !repos.isEmpty)
+            && reviewPromptPolicy.isEligible()
     }
 
     func markReviewRequested() {
-        UserDefaults.standard.set(true, forKey: Self.reviewRequestedKey)
+        pendingReviewMoment = nil
+        reviewPromptPolicy.markPrompted()
     }
 
     // MARK: - Repo Management
