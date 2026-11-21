@@ -1,0 +1,3 @@
+{
+  "whatsNew": "• Sao chép vào thư mục của ứng dụng khác, như Obsidian, không còn thất bại với lỗi \"nằm ngoài vị trí của kho này\"\n• Nếu GitSync.md không thể xác nhận nơi đặt bản sao, giờ ứng dụng sẽ chỉ rõ cho bạn cách khắc phục\n• Tên và email tác giả giờ được điền từ tài khoản GitHub của bạn, dùng địa chỉ no-reply riêng tư nếu email của bạn bị ẩn"
+}

@@ -1,0 +1,3 @@
+• Kloning til en anden apps mappe, f.eks. Obsidian, fejler ikke længere med "uden for denne boks' placering"
+• Hvis GitSync.md ikke kan bekræfte, hvor en klon skal ligge, fortæller appen dig nu præcis, hvordan du løser det
+• Forfatternavn og e-mail udfyldes nu fra din GitHub-konto, med din private no-reply-adresse, hvis din e-mail er skjult

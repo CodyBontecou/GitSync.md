@@ -1,0 +1,3 @@
+{
+  "whatsNew": "• Kloning til mappen til en annen app, som Obsidian, feiler ikke lenger med «utenfor hvelvets plassering»\n• Hvis GitSync.md ikke kan bekrefte hvor en klone skal ligge, forteller appen deg nå nøyaktig hvordan du løser det\n• Forfatternavn og e-post fylles nå ut fra GitHub-kontoen din, med din private no-reply-adresse hvis e-posten din er skjult"
+}

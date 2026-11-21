@@ -1,0 +1,3 @@
+• The app icon now matches GitSync.md on iPhone and iPad
+• After you've synced on a few different days, GitSync.md may ask for a quick rating right in the app
+• Small fixes and improvements

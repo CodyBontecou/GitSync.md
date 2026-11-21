@@ -1,0 +1,3 @@
+• Clonar en la carpeta de otra app, como Obsidian, ya no falla con «fuera de la ubicación de esta bóveda»
+• Si GitSync.md no puede confirmar dónde debe ir un clon, ahora te indica exactamente cómo solucionarlo
+• El nombre y el correo del autor ahora se rellenan desde tu cuenta de GitHub, con tu dirección no-reply privada si tu correo está oculto

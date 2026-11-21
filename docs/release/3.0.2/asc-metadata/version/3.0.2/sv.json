@@ -1,0 +1,3 @@
+{
+  "whatsNew": "• Kloning till en annan apps mapp, som Obsidian, misslyckas inte längre med ”utanför valvets plats”\n• Om GitSync.md inte kan bekräfta var en klon ska hamna talar appen nu om exakt hur du åtgärdar det\n• Författarnamn och e-post fylls nu i från ditt GitHub-konto, med din privata no-reply-adress om din e-post är dold"
+}

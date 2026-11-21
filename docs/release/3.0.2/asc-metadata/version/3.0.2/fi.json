@@ -1,0 +1,3 @@
+{
+  "whatsNew": "• Kloonaus toisen sovelluksen kansioon, kuten Obsidianiin, ei enää epäonnistu virheellä \"tämän holvin sijainnin ulkopuolella\"\n• Jos GitSync.md ei voi varmistaa, minne klooni kuuluu, se kertoo nyt tarkalleen, miten asia korjataan\n• Tekijän nimi ja sähköposti täytetään nyt GitHub-tililtäsi, ja piilotetun sähköpostin tilalla käytetään yksityistä no-reply-osoitettasi"
+}

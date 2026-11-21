@@ -1,0 +1,3 @@
+{
+  "whatsNew": "• A klónozás egy másik app mappájába, például az Obsidianéba, már nem hiúsul meg a „kívül esik a széf helyén” hibával\n• Ha a GitSync.md nem tudja megerősíteni, hová kerüljön egy klón, most pontosan elmondja, hogyan javíthatod\n• A szerző neve és e-mail-címe most a GitHub-fiókodból töltődik ki, rejtett e-mail esetén a privát no-reply címeddel"
+}
