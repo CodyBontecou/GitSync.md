@@ -92,6 +92,8 @@ final class AppUnlock {
     func refresh() async {
         guard FeatureFlags.hardPaywallEnabled else { return }
         if await hasLifetimeEntitlement() {
+            // Also covers Ask to Buy approvals and purchases on another device.
+            if reason != .purchased { ReviewPromptPolicy(defaults: defaults).notePurchase() }
             setReason(.purchased)
         } else if await boughtPaidApp() {
             setReason(.paidAppPurchase)
@@ -114,6 +116,8 @@ final class AppUnlock {
             case .success(.verified(let transaction)):
                 await transaction.finish()
                 setReason(.purchased)
+                // Someone who just paid is not asked to rate the app right away.
+                ReviewPromptPolicy(defaults: defaults).notePurchase()
                 return .unlocked
             case .success(.unverified):
                 return .failed(String(localized: "The App Store couldn't verify this purchase."))

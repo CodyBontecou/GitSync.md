@@ -445,13 +445,15 @@ struct CommitSheetView: View {
                     return
                 }
             }
-            let ok = await state.commitSelected(
-                repoID: repoID,
-                included: selection,
-                message: text,
-                push: push,
-                lfsAutoTrack: lfsAutoTrack
-            )
+            let ok = await ReviewPromptContext.userStarted {
+                await state.commitSelected(
+                    repoID: repoID,
+                    included: selection,
+                    message: text,
+                    push: push,
+                    lfsAutoTrack: lfsAutoTrack
+                )
+            }
             if ok {
                 if embedded {
                     message = ""

@@ -132,6 +132,7 @@ class HomeViewModel(
                     _syncAll.value = _syncAll.value.copy(done = results.size, current = null, results = results.toMap())
                 })
                 _syncAll.value = _syncAll.value.copy(finished = summary(results, names))
+                reviewMoment(results.values)
             } catch (cancelled: CancellationException) { throw cancelled
             } catch (_: PullAllBusy) { _syncAll.value = _syncAll.value.copy(alreadyRunning = true)
             } catch (_: Exception) { _syncAll.value = _syncAll.value.copy(failedToStart = true, finished = summary(results, names))
@@ -157,6 +158,18 @@ class HomeViewModel(
         val accountId = summary.accountId ?: activeAccountId()
         val token = withContext(Dispatchers.IO) { tokenFor(summary.accountId) } ?: return
         signInStatus?.markExpired(token, accountId)
+    }
+
+    /**
+     * Sync all is user-started: it may prompt only when every vault synced (none failed, none skipped for
+     * local edits or a merge in progress) and at least one had a remote. Any other run only counts.
+     */
+    private fun reviewMoment(outcomes: Collection<Outcome>) {
+        val prompts = com.bontecou.syncmd.review.ReviewPrompts.shared ?: return
+        val synced = outcomes.filter { !it.failed && !it.skipped }
+        val clean = outcomes.none { it.failed || (it.skipped && !it.localOnly) }
+        if (synced.isEmpty()) return
+        if (clean) prompts.userSyncSucceeded(null) else prompts.countSuccess()
     }
 
     private fun summary(results: Map<String, Outcome>, names: Map<String, String>) = Summary(

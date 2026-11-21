@@ -177,7 +177,12 @@ class ConflictViewModel @Inject constructor(private val conflictService: Conflic
         mutate(expected, onSuccess = { clearEditor(); _resolvedConflicts.value = emptySet() }) { path ->
             verifyMerge(path, before)
             val result = conflictService.completeMerge(path, message)
-            if (result.exceptionOrNull() is LfsCheckoutIncompleteException) result.exceptionOrNull()?.message?.let { UiText.Raw(it) } else { result.getOrThrow(); null }
+            if (result.exceptionOrNull() is LfsCheckoutIncompleteException) result.exceptionOrNull()?.message?.let { UiText.Raw(it) } else {
+                result.getOrThrow()
+                // The merge commit exists with nothing left conflicting; its push is the conflict-resolved moment.
+                com.bontecou.syncmd.review.ReviewPrompts.shared?.conflictResolved(path)
+                null
+            }
         }
     }
     fun abortMerge(expected: RepositorySelection) {

@@ -150,10 +150,15 @@ extension AppState {
         }
 
         var problems: [String] = []
+        var everyVaultSynced = true
         for (index, repo) in targets.enumerated() {
-            guard !Task.isCancelled else { break }
+            guard !Task.isCancelled else { everyVaultSynced = false; break }
             syncAllProgressText = String(localized: "\(index + 1) of \(targets.count) · \(repo.displayName)")
-            let result = await syncRepository(repoID: repo.id)
+            // One prompt for the whole run at most, decided below.
+            let result = await ReviewPromptContext.notUserStarted {
+                await syncRepository(repoID: repo.id)
+            }
+            if result.outcome != .synced { everyVaultSynced = false }
             switch result.outcome {
             case .synced, .pushSkipped:
                 break
@@ -170,6 +175,8 @@ extension AppState {
             DebugLogger.shared.error("sync", "Sync all finished with problems", detail: problems.joined(separator: "\n"))
             lastError = problems.joined(separator: "\n")
             showError = true
+        } else if everyVaultSynced {
+            requestReviewIfNeeded(.userSync)
         }
     }
 

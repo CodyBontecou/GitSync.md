@@ -85,6 +85,8 @@ class RepositoryShortcutService(private val context: Context, private val runner
             }
             onPrepared(record, fresh)
             val result = runner.run(fresh, record.action, record.message, ::authorize)
+            // Launcher shortcuts count toward the review prompt but never show it.
+            if (result.outcome in com.bontecou.syncmd.review.syncedOutcomes) com.bontecou.syncmd.review.ReviewPrompts.shared?.countSuccess()
             RepositoryShortcutExecution(record, fresh, result)
         }
     }

@@ -733,8 +733,11 @@ extension AppState {
                 if let author = summary?.newestAuthor, !author.isEmpty { detail += " · " + String(localized: "from \(author)") }
                 self?.showToast(TideToastItem(kind: .pulled, title: title, detail: detail, action: nil))
             }
-        case .upToDate, .blockedByLocalChanges, .diverged, .remoteBranchMissing:
+        case .upToDate:
             didSyncSuccessfully(repoID: repoID)
+        case .blockedByLocalChanges, .diverged, .remoteBranchMissing:
+            // The network round trip worked, but nothing synced.
+            didSyncSuccessfully(repoID: repoID, countsTowardReview: false)
         default:
             break
         }
@@ -753,8 +756,11 @@ extension AppState {
         ))
     }
 
-    /// Any successful network round trip clears stale blocking states.
-    func didSyncSuccessfully(repoID: UUID) {
+    /// Any successful network round trip clears stale blocking states. Every
+    /// pull, push, sync and clone success (foreground or background) passes
+    /// through here, so this is where it counts toward the rating prompt.
+    func didSyncSuccessfully(repoID: UUID, countsTowardReview: Bool = true) {
+        if countsTowardReview { recordReviewSuccess() }
         if authExpiredRepoIDs.contains(repoID) { clearAuthExpired() }
         if offlineQueue[repoID] != nil {
             offlineQueue[repoID] = nil
@@ -787,10 +793,17 @@ extension AppState {
             markAuthExpired(repoIDs: [repoID])
         }
 
+        let runNeedsAttention = health.kind == .attention || health.kind == .failed
+        if runNeedsAttention, !appIsActive, backgroundRunSummary?.dismissed == false {
+            backgroundRunSummary?.needsAttention = true
+            persistSyncStates()
+        }
+
         guard let result, result.didTransferData, !appIsActive else { return }
         var summary = backgroundRunSummary ?? BackgroundRunSummary()
         if summary.dismissed { summary = BackgroundRunSummary() }
         summary.vaultIDs.insert(repoID)
+        if runNeedsAttention { summary.needsAttention = true }
         summary.lastRunAt = Date()
         if result.push?.didPush == true { summary.pushedRuns += 1 }
         backgroundRunSummary = summary
@@ -844,8 +857,14 @@ extension AppState {
     }
 
     func dismissBackgroundRunSummary() {
+        let wasHealthy = backgroundRunSummary.map { $0.isMeaningful && !$0.needsAttention } ?? false
         backgroundRunSummary?.dismissed = true
         persistSyncStates()
+        // A healthy overnight sync the person just acknowledged is a good
+        // moment; a summary that needed attention, or stopped vaults, is not.
+        if wasHealthy, backgroundStoppedRepoIDs.isEmpty {
+            requestReviewIfNeeded(.backgroundSummaryDismissed)
+        }
     }
 
     func dismissBackgroundStopped(repoID: UUID) {
