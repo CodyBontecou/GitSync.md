@@ -1,7 +1,7 @@
 ---
 status: active
 covers: [issue#111]
-tested: 81b092955d2dfe62c422d9a100007873b369a29d
+tested: 9f0724a0226792d3c52512fa0f099c8805167e28
 updated: 2026-11-22
 ---
 
@@ -32,6 +32,9 @@ Tools fixture plus `git checkout --detach`, then **Pull** → crash. Crash repor
   push-wake work, no background scheduling), shows an alert once, marks
   Background Sync "paused" in Settings and offers **Resume Automatic Sync** in
   Background Sync settings. Turning Background Sync off or resuming clears it.
+  A pass interrupted on purpose (scene to background, BGTask or push-wake
+  budget expired) clears the marker first, so iOS suspending and later killing
+  the app mid-pass is not mistaken for a crash.
 
 People already stuck in the loop are on a pre-fix build without the marker, so the
 guard does not apply to them; the root-cause fix is what lets them open the app
@@ -41,10 +44,11 @@ after updating (the launch sync now reports the detached HEAD instead of crashin
 
 | Check | Result |
 | --- | --- |
-| `SyncMDTests` (whole suite, `TEST_RUNNER_SKIP_STOREKIT_PURCHASE_TESTS=1`, job simulator, iOS 27.0) | 583 run, 0 failures, 2 skipped |
+| `SyncMDTests` (whole suite, `TEST_RUNNER_SKIP_STOREKIT_PURCHASE_TESTS=1`, job simulator, iOS 27.0) | 585 run, 0 failures, 2 skipped |
 | New `testLocalGitPullOnDetachedHeadThrowsInsteadOfCrashing` against the pre-fix `LocalGitService.swift` | crashes: `LocalGitService.swift:1380: Fatal error: Unexpectedly found nil` |
 | Same test with the fix | passes |
 | New crash-guard tests (pause after crash, resume, turn off, no pause when off) | pass |
+| Backgrounded / expired-BGTask pass does not pause the next launch | pass; both fail with the marker clear disabled |
 | `argent e2e run issue111-detached-head-pull --platform ios --device <sim>` | 13/13, passed twice in a row ([receipt](e2e-issue111-detached-head-pull-run.txt)) |
 | `argent e2e run issue111-automatic-sync-crash-pause --platform ios --device <sim>` | 17/17, passed twice in a row ([receipt](e2e-issue111-automatic-sync-crash-pause-run.txt)) |
 
@@ -62,6 +66,8 @@ Screenshots (DEBUG fixture data only): [detached-HEAD pull error](screenshots/01
 - The older `qa-pr44`–`qa-pr46` pull tests launch the `bontecou.Sync-md.prqa`
   variant, which was not installed on the job simulator, so they errored at
   launch and were not a regression signal.
+- The first crash-pause run after a fresh install reported one passing step
+  with a warning (all 17 steps passed); it did not recur on the following runs.
 
 ## Not verified
 
