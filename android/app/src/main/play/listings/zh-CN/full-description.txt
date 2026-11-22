@@ -1,4 +1,4 @@
-Gitsync.md 将真正的 Git 工作流带到 Android。连接 GitHub，将仓库克隆到应用存储中，查看更改，并在手机上安全同步代码或 markdown。
+GitSync.md 将真正的 Git 工作流带到 Android。连接 GitHub，将仓库克隆到应用存储中，查看更改，并在手机上安全同步代码或 markdown。
 
 为真实仓库打造
 - 通过 OAuth 或个人访问令牌登录后浏览 GitHub 仓库
@@ -24,4 +24,4 @@ Gitsync.md 将真正的 Git 工作流带到 Android。连接 GitHub，将仓库�
 - 免费下载，通过 Google Play 一次性应用内购买解锁完整功能
 - 无广告，无订阅
 
-Gitsync.md 专为开发者、写作者以及在 Android 上管理 GitHub 托管文件的所有人打造。对于私有仓库，请使用 GitHub 登录或提供个人访问令牌。令牌仅存储在你的设备本地。
+GitSync.md 专为开发者、写作者以及在 Android 上管理 GitHub 托管文件的所有人打造。对于私有仓库，请使用 GitHub 登录或提供个人访问令牌。令牌仅存储在你的设备本地。

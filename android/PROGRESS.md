@@ -1,4 +1,4 @@
-# Gitsync.md Android — Pure Kotlin Implementation Progress
+# GitSync.md Android — Pure Kotlin Implementation Progress
 
 **Project**: Git client for managing GitHub repositories on mobile  
 **Tech Stack**: Pure Kotlin JVM (no Android framework) + Gradle 8.14.4 + JUnit 4  

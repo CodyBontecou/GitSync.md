@@ -1,4 +1,4 @@
-A Gitsync.md valódi Git-munkafolyamatokat hoz Androidra. Csatlakoztasd a GitHubot, klónozz tárolókat az alkalmazás tárhelyére, vizsgáld meg a módosításokat, és szinkronizálj biztonságosan kódot vagy markdown fájlokat a telefonodról.
+A GitSync.md valódi Git-munkafolyamatokat hoz Androidra. Csatlakoztasd a GitHubot, klónozz tárolókat az alkalmazás tárhelyére, vizsgáld meg a módosításokat, és szinkronizálj biztonságosan kódot vagy markdown fájlokat a telefonodról.
 
 VALÓDI TÁROLÓKHOZ KÉSZÜLT
 - GitHub-tárolók böngészése OAuth vagy személyes hozzáférési tokenes bejelentkezés után
@@ -24,4 +24,4 @@ MOBILRA TERVEZVE
 - Ingyenes letöltés, egyszeri Teljes hozzáférés alkalmazáson belüli vásárlással a Google Playen
 - Nincsenek hirdetések és előfizetések
 
-A Gitsync.md fejlesztőknek, íróknak és mindenkinek készült, aki GitHubon tárolt fájlokat kezel Androidon. Privát tárolókhoz jelentkezz be GitHubbal, vagy adj meg egy személyes hozzáférési tokent. A tokeneket az eszközödön, helyben tároljuk.
+A GitSync.md fejlesztőknek, íróknak és mindenkinek készült, aki GitHubon tárolt fájlokat kezel Androidon. Privát tárolókhoz jelentkezz be GitHubbal, vagy adj meg egy személyes hozzáférési tokent. A tokeneket az eszközödön, helyben tároljuk.

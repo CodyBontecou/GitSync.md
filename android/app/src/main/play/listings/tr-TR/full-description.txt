@@ -1,4 +1,4 @@
-Gitsync.md gerçek Git iş akışlarını Android'e getirir. GitHub'ı bağlayın, depoları uygulama depolama alanına klonlayın, değişiklikleri inceleyin ve kodu ya da markdown dosyalarını telefonunuzdan güvenle senkronize edin.
+GitSync.md gerçek Git iş akışlarını Android'e getirir. GitHub'ı bağlayın, depoları uygulama depolama alanına klonlayın, değişiklikleri inceleyin ve kodu ya da markdown dosyalarını telefonunuzdan güvenle senkronize edin.
 
 GERÇEK DEPOLAR İÇİN TASARLANDI
 - OAuth veya kişisel erişim belirteciyle oturum açtıktan sonra GitHub depolarına göz atın
@@ -24,4 +24,4 @@ MOBİL İÇİN TASARLANDI
 - Ücretsiz indirme, Google Play üzerinden tek seferlik Tam Erişim uygulama içi satın alımı
 - Reklam yok, abonelik yok
 
-Gitsync.md; geliştiriciler, yazarlar ve Android'de GitHub tabanlı dosyaları yöneten herkes için tasarlandı. Özel depolar için GitHub ile oturum açın veya kişisel erişim belirteci girin. Belirteçler cihazınızda yerel olarak saklanır.
+GitSync.md; geliştiriciler, yazarlar ve Android'de GitHub tabanlı dosyaları yöneten herkes için tasarlandı. Özel depolar için GitHub ile oturum açın veya kişisel erişim belirteci girin. Belirteçler cihazınızda yerel olarak saklanır.

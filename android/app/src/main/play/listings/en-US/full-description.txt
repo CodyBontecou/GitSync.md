@@ -1,4 +1,4 @@
-GitSync.md brings Git workflows to your Android phone, tablet and foldable. Keep a local working copy of your Markdown vault or other Git repository, review changes, and choose what to commit and sync.
+GitSync.md is a Git client for Markdown notes on your Android phone, tablet and foldable. Keep a local working copy of your notes vault or any other Git repository, edit files, review diffs, and choose what to commit, pull and push.
 
 CHECK YOUR VAULT FIRST
 Download the app and check a repository before buying. The check verifies connectivity and the selected branch. For supported GitHub connections it can also inspect write access, repository size, Git LFS usage and an Obsidian folder. Checks that cannot be completed are identified in the app.
@@ -8,7 +8,7 @@ A one-time Full Access purchase through Google Play unlocks cloning, linking and
 WORK WITH YOUR FILES
 - Clone a repository or link an existing local Git working copy
 - Use app storage or supported device folders with the required storage access
-- Browse, create, rename and edit files, with Markdown preview
+- Browse, create, rename and edit Markdown notes and other files, with Markdown preview
 - Review line-by-line diffs and stage or unstage individual files
 - Commit locally, pull remote changes and push your commits
 
@@ -18,6 +18,9 @@ KEEP CONTROL OF YOUR HISTORY
 - Browse commits, review stashes and manage tags
 - Review destructive actions before discarding work or dropping a stash
 - Review Git LFS endpoints, transfers and locks when your repository uses them
+
+SYNC NOTES WITH GIT
+Keep an Obsidian vault or any folder of Markdown notes in a Git repository and sync it between your devices with version control you can read. Every change is a commit you can review, so you can see what changed and when.
 
 CONNECT YOUR WAY
 Browse GitHub repositories with OAuth or a personal access token. Connect other supported Git hosts by URL using HTTPS credentials or SSH keys. Credentials are stored on your device; SSH server trust and separate LFS endpoint access are reviewed explicitly.

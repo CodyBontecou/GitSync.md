@@ -5,7 +5,7 @@ import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.launch
 
 /**
- * Gitsync.md application class with Hilt support.
+ * GitSync.md application class with Hilt support.
  */
 @HiltAndroidApp
 class SyncMdApplication : Application() {
