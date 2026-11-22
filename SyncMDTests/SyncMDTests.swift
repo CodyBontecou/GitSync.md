@@ -3723,6 +3723,129 @@ final class SyncMDTests: XCTestCase {
                        "Overlapping activations coalesce into the running pass instead of cancelling and restarting")
     }
 
+    // MARK: Issue #111: crash-loop guard for automatic sync
+
+    @MainActor
+    func testAutomaticSyncPausesAfterLaunchFollowingCrashDuringAutomaticPass() async {
+        let defaultsSuite = "premium-runtime-crash-pause-\(UUID().uuidString)"
+        let defaults = UserDefaults(suiteName: defaultsSuite)!
+        defaults.set(true, forKey: "premium.automatic-sync.v1")
+        defaults.set(true, forKey: "premium.automatic-pull.v1")
+        // The previous process died while an automatic pass was running.
+        defaults.set(true, forKey: PremiumRuntime.automaticPassInFlightKey)
+        var repo = RepoConfig(repoURL: "owner/repo", branch: "main", authorName: "One",
+                              authorEmail: "one@example.com", vaultFolderName: "one")
+        repo.gitState.commitSHA = String(repeating: "1", count: 40)
+        repo.assist = RepoAssistSettings(enabled: true, channel: "channel_12345678", selectedBranch: "main")
+        let scheduler = RecordingBackgroundProcessingScheduler()
+
+        let harness = await PremiumRuntimeTestHarness.make(
+            defaultsSuite: defaultsSuite,
+            repo: repo,
+            backgroundScheduler: scheduler
+        )
+        defer { harness.cleanup() }
+
+        XCTAssertTrue(harness.runtime.automaticSyncPausedAfterCrash)
+        XCTAssertTrue(harness.runtime.showsAutomaticSyncPausedNotice)
+        XCTAssertFalse(defaults.bool(forKey: PremiumRuntime.automaticPassInFlightKey))
+        XCTAssertEqual(scheduler.scheduleCount, 0, "A paused installation must not schedule background work")
+        XCTAssertTrue(harness.runtime.automaticallySyncAllRepositories, "The person's preference is kept")
+
+        await harness.runtime.reconcileForeground()
+        XCTAssertEqual(harness.repository.pullPlanCallCount, 0)
+        XCTAssertEqual(harness.repository.executePullOnlyCallCount, 0)
+
+        // A second launch while still paused stays paused without re-announcing.
+        let relaunch = await PremiumRuntimeTestHarness.make(
+            defaultsSuite: defaultsSuite,
+            repo: repo,
+            backgroundScheduler: NoopPremiumBackgroundProcessingScheduler()
+        )
+        XCTAssertTrue(relaunch.runtime.automaticSyncPausedAfterCrash)
+        XCTAssertFalse(relaunch.runtime.showsAutomaticSyncPausedNotice)
+        await relaunch.runtime.reconcileForeground()
+        XCTAssertEqual(relaunch.repository.pullPlanCallCount, 0)
+    }
+
+    @MainActor
+    func testResumingAfterCrashPauseRunsAutomaticSyncAndClearsMarker() async {
+        let defaultsSuite = "premium-runtime-crash-resume-\(UUID().uuidString)"
+        let defaults = UserDefaults(suiteName: defaultsSuite)!
+        defaults.set(true, forKey: "premium.automatic-sync.v1")
+        defaults.set(true, forKey: "premium.automatic-pull.v1")
+        defaults.set(true, forKey: PremiumRuntime.automaticPassInFlightKey)
+        var repo = RepoConfig(repoURL: "owner/repo", branch: "main", authorName: "One",
+                              authorEmail: "one@example.com", vaultFolderName: "one")
+        repo.gitState.commitSHA = String(repeating: "1", count: 40)
+        repo.assist = RepoAssistSettings(enabled: true, channel: "channel_12345678", selectedBranch: "main")
+        let scheduler = RecordingBackgroundProcessingScheduler()
+        let harness = await PremiumRuntimeTestHarness.make(
+            defaultsSuite: defaultsSuite,
+            repo: repo,
+            backgroundScheduler: scheduler
+        )
+        defer { harness.cleanup() }
+        XCTAssertTrue(harness.runtime.automaticSyncPausedAfterCrash)
+
+        await harness.runtime.resumeAutomaticSyncAfterCrash()
+
+        XCTAssertFalse(harness.runtime.automaticSyncPausedAfterCrash)
+        XCTAssertFalse(harness.runtime.showsAutomaticSyncPausedNotice)
+        XCTAssertFalse(defaults.bool(forKey: PremiumRuntime.automaticSyncPausedAfterCrashKey))
+        XCTAssertGreaterThanOrEqual(harness.repository.pullPlanCallCount, 1)
+        XCTAssertGreaterThanOrEqual(scheduler.scheduleCount, 1)
+        XCTAssertFalse(defaults.bool(forKey: PremiumRuntime.automaticPassInFlightKey),
+                       "A pass that returns removes its in-flight marker")
+
+        // A normal launch after a completed pass is not paused.
+        let relaunch = await PremiumRuntimeTestHarness.make(
+            defaultsSuite: defaultsSuite,
+            repo: repo,
+            backgroundScheduler: NoopPremiumBackgroundProcessingScheduler()
+        )
+        XCTAssertFalse(relaunch.runtime.automaticSyncPausedAfterCrash)
+        XCTAssertFalse(relaunch.runtime.showsAutomaticSyncPausedNotice)
+    }
+
+    @MainActor
+    func testTurningOffBackgroundSyncClearsCrashPause() async {
+        let defaultsSuite = "premium-runtime-crash-off-\(UUID().uuidString)"
+        let defaults = UserDefaults(suiteName: defaultsSuite)!
+        defaults.set(true, forKey: "premium.automatic-sync.v1")
+        defaults.set(true, forKey: "premium.automatic-pull.v1")
+        defaults.set(true, forKey: PremiumRuntime.automaticPassInFlightKey)
+        let harness = await PremiumRuntimeTestHarness.make(
+            defaultsSuite: defaultsSuite,
+            backgroundScheduler: NoopPremiumBackgroundProcessingScheduler()
+        )
+        defer { harness.cleanup() }
+        XCTAssertTrue(harness.runtime.automaticSyncPausedAfterCrash)
+
+        await harness.runtime.setAutomaticallySyncAllRepositories(false)
+
+        XCTAssertFalse(harness.runtime.automaticSyncPausedAfterCrash)
+        XCTAssertFalse(harness.runtime.showsAutomaticSyncPausedNotice)
+        XCTAssertFalse(defaults.bool(forKey: PremiumRuntime.automaticSyncPausedAfterCrashKey))
+    }
+
+    @MainActor
+    func testInFlightMarkerDoesNotPauseWhenBackgroundSyncIsOff() async {
+        let defaultsSuite = "premium-runtime-crash-disabled-\(UUID().uuidString)"
+        let defaults = UserDefaults(suiteName: defaultsSuite)!
+        defaults.set(false, forKey: "premium.automatic-sync.v1")
+        defaults.set(true, forKey: PremiumRuntime.automaticPassInFlightKey)
+        let harness = await PremiumRuntimeTestHarness.make(
+            defaultsSuite: defaultsSuite,
+            backgroundScheduler: NoopPremiumBackgroundProcessingScheduler()
+        )
+        defer { harness.cleanup() }
+
+        XCTAssertFalse(harness.runtime.automaticSyncPausedAfterCrash)
+        XCTAssertFalse(harness.runtime.showsAutomaticSyncPausedNotice)
+        XCTAssertFalse(defaults.bool(forKey: PremiumRuntime.automaticPassInFlightKey))
+    }
+
     @MainActor
     func testForegroundReconciliationCooldownSuppressesBouncesButExplicitSyncBypasses() async {
         var repo = RepoConfig(repoURL: "owner/repo", branch: "main", authorName: "One",
@@ -4739,6 +4862,64 @@ final class SyncMDTests: XCTestCase {
         let finalInfo = try await setup.repoInfo()
         XCTAssertEqual(finalInfo.commitSHA, remoteSHA)
         XCTAssertFalse(fm.fileExists(atPath: indexLockURL.path))
+    }
+
+    /// Issue #111: a detached HEAD made pull look up the symbolic
+    /// refs/remotes/origin/HEAD and force-unwrap its missing direct target,
+    /// crashing the app on every manual and automatic pull.
+    func testLocalGitPullOnDetachedHeadThrowsInsteadOfCrashing() async throws {
+        let fm = FileManager.default
+        let repoURL = try makeTemporaryGitRepository(prefix: "SyncMD-DetachedHeadPull")
+        defer { try? fm.removeItem(at: repoURL) }
+        let originURL = fm.temporaryDirectory.appendingPathComponent(
+            "SyncMD-DetachedHeadPull-Origin-\(UUID().uuidString)",
+            isDirectory: true
+        )
+        defer { try? fm.removeItem(at: originURL) }
+        let setup = LocalGitService(localURL: repoURL)
+        try "base\n".write(to: repoURL.appendingPathComponent("README.md"), atomically: true, encoding: .utf8)
+        try await setup.stage(path: "README.md")
+        let baseSHA = try await setup.commitLocal(message: "Base", authorName: "Tests", authorEmail: "tests@example.com")
+        try "remote\n".write(to: repoURL.appendingPathComponent("README.md"), atomically: true, encoding: .utf8)
+        try await setup.stage(path: "README.md")
+        let remoteSHA = try await setup.commitLocal(message: "Remote", authorName: "Tests", authorEmail: "tests@example.com")
+        try makeBareOrigin(at: originURL, copyingObjectsFrom: repoURL, headSHA: remoteSHA)
+        try setLocalAndRemoteTrackingRefs(repoURL: repoURL, localSHA: baseSHA, remoteSHA: baseSHA)
+        try checkoutHeadTree(repoURL: repoURL)
+        try await setup.setRemoteURL(name: "origin", url: "file://localhost\(originURL.path)")
+
+        // What `git clone` leaves behind, plus a detached HEAD (for example
+        // after an interrupted rebase or a commit checked out elsewhere).
+        do {
+            var repo: OpaquePointer?
+            defer { if let repo { git_repository_free(repo) } }
+            XCTAssertEqual(git_repository_open(&repo, repoURL.path), 0)
+            var symbolic: OpaquePointer?
+            defer { if let symbolic { git_reference_free(symbolic) } }
+            XCTAssertEqual(git_reference_symbolic_create(
+                &symbolic, repo, "refs/remotes/origin/HEAD", "refs/remotes/origin/main", 1, "test clone"
+            ), 0)
+            var baseOID = git_oid()
+            XCTAssertEqual(baseSHA.withCString { git_oid_fromstr(&baseOID, $0) }, 0)
+            XCTAssertEqual(git_repository_set_head_detached(repo, &baseOID), 0)
+        }
+
+        let service = LocalGitService(localURL: repoURL)
+        do {
+            _ = try await service.pullPlan(pat: "")
+            XCTFail("Pull planning on a detached HEAD must throw")
+        } catch LocalGitError.detachedHead {
+        }
+        do {
+            _ = try await service.executePullOnly(pat: "", expectedBranch: "main")
+            XCTFail("Pull on a detached HEAD must throw")
+        } catch LocalGitError.detachedHead {
+        }
+
+        let result = await RepositoryPullRunner().run(repository: service, credentials: "", expectedBranch: "main")
+        XCTAssertEqual(result, .failed(message: LocalGitError.detachedHead.localizedDescription))
+        let info = try await service.repoInfo()
+        XCTAssertEqual(info.commitSHA, baseSHA, "A refused pull leaves the checkout untouched")
     }
 
     func testLocalGitPullOnlyCancellationBeforeMutationPreventsCheckoutAndReleasesLease() async throws {

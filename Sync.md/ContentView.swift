@@ -3,6 +3,7 @@ import StoreKit
 
 struct ContentView: View {
     @Environment(AppState.self) private var state
+    @Environment(PremiumRuntime.self) private var premiumRuntime: PremiumRuntime?
     @Environment(\.requestReview) private var requestReview
     @State private var showContent = true
 
@@ -75,6 +76,23 @@ struct ContentView: View {
             Text(state.pendingSSHHostKeyTrustRequest?.message ?? "")
         }
         .appErrorAlert(isRoot: true)
+        .alert(
+            String(localized: "Automatic sync paused"),
+            isPresented: Binding(
+                get: { premiumRuntime?.showsAutomaticSyncPausedNotice == true },
+                set: { if !$0 { premiumRuntime?.showsAutomaticSyncPausedNotice = false } }
+            )
+        ) {
+            Button(String(localized: "Turn Off Background Sync"), role: .destructive) {
+                Task { await premiumRuntime?.setAutomaticallySyncAllRepositories(false) }
+            }
+            Button(String(localized: "Resume Automatic Sync")) {
+                Task { await premiumRuntime?.resumeAutomaticSyncAfterCrash() }
+            }
+            Button(String(localized: "Not Now"), role: .cancel) {}
+        } message: {
+            Text(String(localized: "GitSync.md stopped unexpectedly during the last automatic sync, so automatic sync is paused. Pull a vault yourself to see what went wrong, then resume automatic sync or turn off Background Sync."))
+        }
         .task(id: state.reviewPromptRequestID) {
             guard state.pendingReviewMoment != nil else { return }
             await presentReviewPromptWhenClear()

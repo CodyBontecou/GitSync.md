@@ -37,6 +37,7 @@ struct AppSettingsView: View {
     /// "on · 4 vaults" / "off"
     private var backgroundSyncValue: String {
         guard premiumRuntime.automaticallySyncAllRepositories else { return String(localized: "off") }
+        if premiumRuntime.automaticSyncPausedAfterCrash { return String(localized: "paused") }
         let included = premiumRuntime.automaticSyncSummary.included
         return included == 1
             ? String(localized: "on · 1 vault")
@@ -78,7 +79,9 @@ struct AppSettingsView: View {
                                     AppSettingsRow(
                                         title: String(localized: "Background Sync"),
                                         value: backgroundSyncValue,
-                                        valueTint: premiumRuntime.automaticallySyncAllRepositories ? Tide.synced : Tide.inkMid,
+                                        valueTint: premiumRuntime.automaticSyncPausedAfterCrash
+                                            ? Tide.ahead
+                                            : (premiumRuntime.automaticallySyncAllRepositories ? Tide.synced : Tide.inkMid),
                                         accessory: .chevron
                                     )
                                 }

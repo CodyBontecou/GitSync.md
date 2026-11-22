@@ -527,10 +527,12 @@ struct RepoListView: View {
                     }
             }
             .accessibilityAddTraits(selected ? .isSelected : [])
+            .accessibilityIdentifier("home.vault.\(repo.vaultFolderName)")
         } else {
             NavigationLink(value: repo.id) {
                 label()
             }
+            .accessibilityIdentifier("home.vault.\(repo.vaultFolderName)")
         }
     }
 

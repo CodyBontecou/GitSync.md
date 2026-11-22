@@ -335211,6 +335211,930 @@
           }
         }
       }
+    },
+    "Automatic sync paused": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تم إيقاف المزامنة التلقائية مؤقتًا"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automatisk synkronisering er sat på pause"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automatische Synchronisierung pausiert"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sincronización automática en pausa"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automaattinen synkronointi on keskeytetty"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Synchronisation automatique en pause"
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "הסנכרון האוטומטי מושהה"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "स्वचालित सिंक रोका गया"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Az automatikus szinkronizálás szünetel"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sinkronisasi otomatis dijeda"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sincronizzazione automatica in pausa"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自動同期を一時停止しました"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "자동 동기화 일시 정지됨"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automatisk synkronisering er satt på pause"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automatische synchronisatie gepauzeerd"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automatyczna synchronizacja wstrzymana"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sincronização automática pausada"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Автоматическая синхронизация приостановлена"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automatisk synkronisering har pausats"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "หยุดการซิงค์อัตโนมัติชั่วคราว"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Otomatik eşitleme duraklatıldı"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Автоматичну синхронізацію призупинено"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đã tạm dừng đồng bộ tự động"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自动同步已暂停"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自動同步已暫停"
+          }
+        }
+      }
+    },
+    "Resume Automatic Sync": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "استئناف المزامنة التلقائية"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Genoptag automatisk synkronisering"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automatische Synchronisierung fortsetzen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reanudar sincronización automática"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jatka automaattista synkronointia"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reprendre la synchronisation automatique"
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "חידוש סנכרון אוטומטי"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "स्वचालित सिंक फिर से शुरू करें"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automatikus szinkronizálás folytatása"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lanjutkan sinkronisasi otomatis"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Riprendi sincronizzazione automatica"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自動同期を再開"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "자동 동기화 재개"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gjenoppta automatisk synkronisering"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automatische synchronisatie hervatten"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wznów automatyczną synchronizację"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Retomar sincronização automática"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Возобновить автоматическую синхронизацию"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Återuppta automatisk synkronisering"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ซิงค์อัตโนมัติต่อ"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Otomatik eşitlemeyi sürdür"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Відновити автоматичну синхронізацію"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tiếp tục đồng bộ tự động"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "恢复自动同步"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "恢復自動同步"
+          }
+        }
+      }
+    },
+    "Turn Off Background Sync": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إيقاف Background Sync"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Slå Background Sync fra"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Background Sync ausschalten"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desactivar Background Sync"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Poista Background Sync käytöstä"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Désactiver Background Sync"
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "כיבוי Background Sync"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Background Sync बंद करें"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Background Sync kikapcsolása"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Matikan Background Sync"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Disattiva Background Sync"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Background Syncをオフにする"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Background Sync 끄기"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Slå av Background Sync"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Background Sync uitschakelen"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wyłącz Background Sync"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desativar Background Sync"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Выключить Background Sync"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stäng av Background Sync"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ปิด Background Sync"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Background Sync’i kapat"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Вимкнути Background Sync"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tắt Background Sync"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "关闭 Background Sync"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "關閉 Background Sync"
+          }
+        }
+      }
+    },
+    "GitSync.md stopped unexpectedly during the last automatic sync, so automatic sync is paused. Pull a vault yourself to see what went wrong, then resume automatic sync or turn off Background Sync.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "توقف GitSync.md بشكل غير متوقع أثناء آخر مزامنة تلقائية، لذا تم إيقاف المزامنة التلقائية مؤقتًا. اسحب مخزنًا بنفسك لمعرفة ما حدث، ثم استأنف المزامنة التلقائية أو أوقف Background Sync."
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md stoppede uventet under den seneste automatiske synkronisering, så automatisk synkronisering er sat på pause. Lav selv et pull af en boks for at se, hvad der gik galt, og genoptag derefter automatisk synkronisering eller slå Background Sync fra."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md wurde während der letzten automatischen Synchronisierung unerwartet beendet, daher ist die automatische Synchronisierung pausiert. Führe selbst einen Pull für einen Vault aus, um zu sehen, was schiefgelaufen ist, und setze dann die automatische Synchronisierung fort oder schalte Background Sync aus."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md se detuvo inesperadamente durante la última sincronización automática, así que la sincronización automática está en pausa. Haz pull de una bóveda tú mismo para ver qué falló y luego reanuda la sincronización automática o desactiva Background Sync."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md pysähtyi odottamatta viimeisimmän automaattisen synkronoinnin aikana, joten automaattinen synkronointi on keskeytetty. Tee holvin pull itse nähdäksesi, mikä meni vikaan, ja jatka sitten automaattista synkronointia tai poista Background Sync käytöstä."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md s’est arrêté de façon inattendue pendant la dernière synchronisation automatique, qui est donc en pause. Faites vous-même un pull d’un coffre pour voir ce qui n’a pas marché, puis reprenez la synchronisation automatique ou désactivez Background Sync."
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md נעצר באופן בלתי צפוי במהלך הסנכרון האוטומטי האחרון, ולכן הסנכרון האוטומטי מושהה. בצעו pull לכספת בעצמכם כדי לראות מה השתבש, ולאחר מכן חדשו את הסנכרון האוטומטי או כבו את Background Sync."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "पिछले स्वचालित सिंक के दौरान GitSync.md अचानक बंद हो गया, इसलिए स्वचालित सिंक रोक दिया गया है। क्या गड़बड़ हुई यह देखने के लिए किसी वॉल्ट को खुद pull करें, फिर स्वचालित सिंक फिर से शुरू करें या Background Sync बंद करें।"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A GitSync.md váratlanul leállt a legutóbbi automatikus szinkronizálás közben, ezért az automatikus szinkronizálás szünetel. Végezz kézzel pullt egy tárolón, hogy lásd, mi romlott el, majd folytasd az automatikus szinkronizálást, vagy kapcsold ki a Background Syncet."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md berhenti secara tak terduga saat sinkronisasi otomatis terakhir, jadi sinkronisasi otomatis dijeda. Lakukan pull pada vault sendiri untuk melihat apa yang salah, lalu lanjutkan sinkronisasi otomatis atau matikan Background Sync."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md si è chiuso in modo imprevisto durante l’ultima sincronizzazione automatica, quindi la sincronizzazione automatica è in pausa. Esegui tu il pull di un vault per vedere cosa non ha funzionato, poi riprendi la sincronizzazione automatica o disattiva Background Sync."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "前回の自動同期中にGitSync.mdが予期せず終了したため、自動同期を一時停止しました。保管庫を手動でプルして原因を確認し、自動同期を再開するかBackground Syncをオフにしてください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "마지막 자동 동기화 중에 GitSync.md가 예기치 않게 종료되어 자동 동기화를 일시 정지했습니다. 보관함을 직접 Pull해서 무엇이 잘못되었는지 확인한 다음 자동 동기화를 재개하거나 Background Sync를 끄세요."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md stoppet uventet under den siste automatiske synkroniseringen, så automatisk synkronisering er satt på pause. Gjør en pull av et hvelv selv for å se hva som gikk galt, og gjenoppta deretter automatisk synkronisering eller slå av Background Sync."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md stopte onverwacht tijdens de laatste automatische synchronisatie, daarom is automatische synchronisatie gepauzeerd. Pull zelf een kluis om te zien wat er misging en hervat daarna de automatische synchronisatie of schakel Background Sync uit."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md nieoczekiwanie przestał działać podczas ostatniej automatycznej synchronizacji, więc automatyczna synchronizacja jest wstrzymana. Wykonaj samodzielnie pull sejfu, aby zobaczyć, co poszło nie tak, a potem wznów automatyczną synchronizację lub wyłącz Background Sync."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O GitSync.md parou inesperadamente durante a última sincronização automática, por isso a sincronização automática está pausada. Faça você mesmo o pull de um cofre para ver o que deu errado e depois retome a sincronização automática ou desative o Background Sync."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md неожиданно завершился во время последней автоматической синхронизации, поэтому автоматическая синхронизация приостановлена. Выполните pull хранилища вручную, чтобы увидеть, что пошло не так, а затем возобновите автоматическую синхронизацию или выключите Background Sync."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md stoppade oväntat under den senaste automatiska synkroniseringen, så automatisk synkronisering har pausats. Gör en pull av ett valv själv för att se vad som gick fel och återuppta sedan automatisk synkronisering eller stäng av Background Sync."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md หยุดทำงานโดยไม่คาดคิดระหว่างการซิงค์อัตโนมัติครั้งล่าสุด จึงหยุดการซิงค์อัตโนมัติไว้ชั่วคราว ลอง pull ห้องนิรภัยด้วยตัวเองเพื่อดูว่าเกิดอะไรขึ้น แล้วซิงค์อัตโนมัติต่อหรือปิด Background Sync"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md son otomatik eşitleme sırasında beklenmedik şekilde durdu, bu yüzden otomatik eşitleme duraklatıldı. Neyin ters gittiğini görmek için bir kasayı kendiniz pull edin, ardından otomatik eşitlemeyi sürdürün veya Background Sync’i kapatın."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md неочікувано зупинився під час останньої автоматичної синхронізації, тому автоматичну синхронізацію призупинено. Виконайте pull сховища вручну, щоб побачити, що пішло не так, а потім відновіть автоматичну синхронізацію або вимкніть Background Sync."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md đã dừng đột ngột trong lần đồng bộ tự động gần nhất, nên đồng bộ tự động đã được tạm dừng. Hãy tự pull một kho để xem lỗi là gì, rồi tiếp tục đồng bộ tự động hoặc tắt Background Sync."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md 在上一次自动同步时意外停止，因此自动同步已暂停。请手动拉取一个仓库查看出了什么问题，然后恢复自动同步或关闭 Background Sync。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md 在上一次自動同步時意外停止，因此自動同步已暫停。請手動拉取一個儲存庫查看出了什麼問題，然後恢復自動同步或關閉 Background Sync。"
+          }
+        }
+      }
+    },
+    "This vault isn't on a branch (detached HEAD), so there is nothing to pull into. Open Git Tools, switch to a branch, then pull again.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "هذا المخزن ليس على فرع (detached HEAD)، لذا لا يوجد ما يمكن السحب إليه. افتح أدوات Git، وانتقل إلى فرع، ثم اسحب مجددًا."
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Denne boks er ikke på en gren (detached HEAD), så der er intet at lave pull ind i. Åbn Git-værktøjer, skift til en gren, og lav pull igen."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieser Vault ist auf keinem Branch (detached HEAD), daher gibt es nichts, wohin gepullt werden kann. Öffne die Git-Werkzeuge, wechsle zu einem Branch und führe den Pull erneut aus."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esta bóveda no está en una rama (detached HEAD), así que no hay dónde hacer pull. Abre Herramientas de Git, cambia a una rama y vuelve a hacer pull."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tämä holvi ei ole haarassa (detached HEAD), joten pullille ei ole kohdetta. Avaa Git-työkalut, vaihda haaraan ja tee pull uudelleen."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ce coffre n’est sur aucune branche (detached HEAD) : le pull n’a nulle part où aller. Ouvrez Outils Git, passez sur une branche, puis refaites un pull."
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "הכספת הזו אינה על ענף (detached HEAD), כך שאין לאן לבצע pull. פתחו את כלי Git, עברו לענף ובצעו pull שוב."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "यह वॉल्ट किसी ब्रांच पर नहीं है (detached HEAD), इसलिए pull करने की कोई जगह नहीं है। Git उपकरण खोलें, किसी ब्रांच पर स्विच करें, फिर दोबारा pull करें।"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ez a tároló nincs ágon (detached HEAD), így nincs hová pullolni. Nyisd meg a Git-eszközöket, válts egy ágra, majd pullolj újra."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vault ini tidak berada di cabang (detached HEAD), jadi tidak ada tujuan pull. Buka Alat Git, beralih ke cabang, lalu pull lagi."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Questo vault non è su un branch (detached HEAD), quindi il pull non ha una destinazione. Apri Strumenti Git, passa a un branch e ripeti il pull."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "この保管庫はブランチ上にありません（detached HEAD）。そのためプルする先がありません。Gitツールを開いてブランチに切り替えてから、もう一度プルしてください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이 보관함은 브랜치에 있지 않아서(detached HEAD) Pull할 대상이 없습니다. Git 도구를 열고 브랜치로 전환한 다음 다시 Pull하세요."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dette hvelvet er ikke på en gren (detached HEAD), så det finnes ingenting å gjøre pull inn i. Åpne Git-verktøy, bytt til en gren og gjør pull på nytt."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deze kluis staat niet op een branch (detached HEAD), dus er is niets om in te pullen. Open Git-tools, schakel naar een branch en pull opnieuw."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ten sejf nie jest na gałęzi (detached HEAD), więc nie ma dokąd wykonać pull. Otwórz Narzędzia Git, przełącz się na gałąź i ponów pull."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este cofre não está em um branch (detached HEAD), então não há para onde fazer pull. Abra Ferramentas Git, mude para um branch e faça pull de novo."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Это хранилище не находится на ветке (detached HEAD), поэтому pull некуда выполнять. Откройте «Инструменты Git», переключитесь на ветку и повторите pull."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Det här valvet är inte på en gren (detached HEAD), så det finns inget att göra pull till. Öppna Git-verktyg, byt till en gren och gör pull igen."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ห้องนิรภัยนี้ไม่ได้อยู่บนสาขาใด (detached HEAD) จึงไม่มีที่ให้ pull เข้ามา เปิดเครื่องมือ Git สลับไปยังสาขา แล้ว pull อีกครั้ง"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu kasa bir dalda değil (detached HEAD), bu yüzden pull yapılacak bir yer yok. Git Araçları’nı açın, bir dala geçin ve tekrar pull yapın."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Це сховище не на гілці (detached HEAD), тому pull нікуди виконувати. Відкрийте «Інструменти Git», перейдіть на гілку й повторіть pull."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kho này không nằm trên nhánh nào (detached HEAD), nên không có chỗ để pull vào. Mở Công cụ Git, chuyển sang một nhánh rồi pull lại."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "此仓库不在任何分支上（detached HEAD），因此无处可拉取。请打开 Git 工具，切换到一个分支，然后重新拉取。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "此儲存庫不在任何分支上（detached HEAD），因此無處可拉取。請開啟 Git 工具，切換到一個分支，然後重新拉取。"
+          }
+        }
+      }
+    },
+    "Git reference '%@' does not point at a commit.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "مرجع Git ‏'%@' لا يشير إلى commit."
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git-referencen '%@' peger ikke på en commit."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Git-Referenz '%@' zeigt auf keinen Commit."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La referencia de Git '%@' no apunta a un commit."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git-viite '%@' ei osoita committiin."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La référence Git '%@' ne pointe pas vers un commit."
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "הפניית ה-Git‏ '%@' אינה מצביעה על commit."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git संदर्भ '%@' किसी commit की ओर संकेत नहीं करता।"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A(z) '%@' Git-hivatkozás nem mutat commitra."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Referensi Git '%@' tidak menunjuk ke commit."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Il riferimento Git '%@' non punta a un commit."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git参照 '%@' はコミットを指していません。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git 참조 '%@'이(가) 커밋을 가리키지 않습니다."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git-referansen '%@' peker ikke på en commit."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git-referentie '%@' verwijst niet naar een commit."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Odwołanie Git '%@' nie wskazuje na commit."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A referência Git '%@' não aponta para um commit."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ссылка Git '%@' не указывает на коммит."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git-referensen '%@' pekar inte på en commit."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "การอ้างอิง Git '%@' ไม่ได้ชี้ไปที่ commit"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "'%@' Git referansı bir commit’i göstermiyor."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Посилання Git '%@' не вказує на коміт."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tham chiếu Git '%@' không trỏ tới commit nào."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git 引用“%@”没有指向提交。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git 參照「%@」沒有指向提交。"
+          }
+        }
+      }
     }
   },
   "version": "1.0"

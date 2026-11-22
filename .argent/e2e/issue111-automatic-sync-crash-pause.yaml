@@ -1,0 +1,115 @@
+# Issue #111 crash-loop guard: when the previous launch died during an automatic
+# (Background Sync) pass, the next launch must open to a usable screen, pause
+# automatic sync, explain it, show "paused" in Settings, and resume on request.
+# Prerequisites: a DEBUG build of GitSync.md installed on an iOS simulator, and the
+# app's notification permission prompt already answered once (the app asks when
+# Background Sync is on; iOS shows it only the first time, over the alert below).
+# The launch arguments seed the local-only `behind` fixture (file:// remote under
+# /tmp/syncmd-uitest-fixtures) and set, through the NSArgumentDomain, Background
+# Sync on plus the automatic-pass in-flight marker the crashed launch would leave.
+# Side effects: resets the fixture area and repo list; stores the crash-pause flag
+# in the app's UserDefaults until Resume clears it; Resume runs one automatic pass
+# against the local fixture remote (no network, accounts or personal data).
+version: 1
+requires:
+  platform: ios
+steps:
+  - echo: Launch with Background Sync on and the automatic-pass in-flight marker
+      set, as if the last launch died mid automatic sync. Expect the Automatic
+      sync paused alert
+  - launch:
+      native: bontecou.Sync-md
+      ios:
+        app: bontecou.Sync-md
+        args:
+          - -UITestGitToolsFixture
+          - behind
+          - -premium.automatic-sync.v1
+          - YES
+          - -premium.automatic-pull.v1
+          - YES
+          - -premium.automatic-sync.pass-in-flight.v1
+          - YES
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Resume Automatic Sync
+        role: button
+      timeoutMs: 15000
+  - await: { idle: true }
+  # Coordinate exception: alert buttons are only in the accessibility tree, so a
+  # `tap: { text: Not Now }` directive (runner tree) cannot reach them. The raw
+  # waits before and after prove the alert's buttons and its dismissal.
+  - tool: gesture-tap
+    args:
+      x: 0.5
+      y: 0.679
+  - tool: await-ui-element
+    args:
+      condition: hidden
+      selector:
+        text: Resume Automatic Sync
+        role: button
+      timeoutMs: 10000
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: home.vault.git-tools-fixture
+      timeoutMs: 10000
+  - await: { idle: true }
+  # Coordinate exception: the App Settings gear has no id and the runner tree
+  # resolves its role to another button; the next wait proves Settings opened.
+  - tool: gesture-tap
+    args:
+      x: 0.896
+      y: 0.0965
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: appSettings.shortcuts
+      timeoutMs: 10000
+  - tool: await-ui-element
+    args:
+      condition: text
+      selector:
+        text: Background Sync
+        role: button
+      expectedText: paused
+      timeoutMs: 5000
+  - await: { idle: true }
+  # Coordinate exception: the Background Sync row (proven above) is not in the
+  # runner tree; the next wait proves the Background Sync screen opened.
+  - tool: gesture-tap
+    args:
+      x: 0.5
+      y: 0.389
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Resume Automatic Sync
+      timeoutMs: 10000
+  - await: { idle: true }
+  - echo: Background Sync settings show the paused card. Tap Resume Automatic Sync;
+      expect the card to disappear
+  # Coordinate exception: the Resume button (proven visible above) is not in the
+  # runner tree; the hidden wait below proves the tap resumed automatic sync.
+  - tool: gesture-tap
+    args:
+      x: 0.5
+      y: 0.516
+  - tool: await-ui-element
+    args:
+      condition: hidden
+      selector:
+        text: Resume Automatic Sync
+      timeoutMs: 15000
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Pull remote changes, Clean fast-forwards only
+      timeoutMs: 5000
