@@ -630,7 +630,8 @@ enum MarketingDemoSeeder {
                     message: "Local note"
                 )
             }
-            if scenario == "behind" || scenario == "diverged" || scenario == "checkout-incomplete" {
+            if scenario == "behind" || scenario == "diverged" || scenario == "checkout-incomplete"
+                || scenario == "detached-head" {
                 files["notes/hello.md"] = Data("# Hello\n\nUpdated remote note.\n".utf8)
                 try UITestGitFixtures.commitToBare(atPath: remotePath, files: files, message: "Remote note")
                 try UITestGitFixtures.fetchOrigin(atPath: vaultURL.path)
@@ -682,7 +683,7 @@ enum MarketingDemoSeeder {
             let syncState: RepoSyncState
             switch scenario {
             case "ahead": syncState = .ahead
-            case "behind", "checkout-incomplete": syncState = .behind
+            case "behind", "checkout-incomplete", "detached-head": syncState = .behind
             case "diverged": syncState = .diverged
             default: syncState = .upToDate
             }
@@ -699,6 +700,8 @@ enum MarketingDemoSeeder {
                 )
             } else if scenario == "external-branch" {
                 try UITestGitFixtures.selectExistingFeatureHEAD(atPath: vaultURL.path)
+            } else if scenario == "detached-head" {
+                try UITestGitFixtures.detachHEAD(atPath: vaultURL.path)
             }
             if scenario == "syncing" {
                 state.isSyncing = true
@@ -1015,6 +1018,16 @@ enum UITestGitFixtures {
         try check(makeSignature(&signature), "stash signature")
         var stashOID = git_oid()
         try check(git_stash_save(&stashOID, repo, signature, "Saved Git Tools note", 0), "save fixture stash")
+    }
+
+    /// Issue #111: points HEAD straight at its commit (detached), the state an
+    /// interrupted rebase leaves behind. The clone's symbolic
+    /// `refs/remotes/origin/HEAD` stays, which is what pull used to crash on.
+    static func detachHEAD(atPath path: String) throws {
+        var repo: OpaquePointer?
+        defer { if let repo { git_repository_free(repo) } }
+        try check(git_repository_open(&repo, path), "open detached-head fixture")
+        try check(git_repository_detach_head(repo), "detach HEAD")
     }
 
     /// Both branches already name the same tree. Changing symbolic HEAD is an

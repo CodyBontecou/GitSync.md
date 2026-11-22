@@ -1,0 +1,91 @@
+# Issue #111 regression: Pull on a vault whose HEAD is detached crashed the app
+# (force-unwrapped git_reference_target on the symbolic refs/remotes/origin/HEAD,
+# LocalGitService.swift:1380). Expects a readable error and the vault screen to stay.
+# Prerequisites: a DEBUG build of GitSync.md installed on an iOS simulator. The
+# `-UITestGitToolsFixture detached-head` launch argument seeds a local-only vault
+# (file:// remote under /tmp/syncmd-uitest-fixtures) one commit behind origin
+# with HEAD detached; no network, accounts or personal data.
+# Side effects: resets /tmp/syncmd-uitest-fixtures and the app's
+# Documents/git-tools-fixture folder and repo list on the simulator.
+version: 1
+requires:
+  platform: ios
+steps:
+  - echo: Launch with the detached-head fixture (vault one commit behind origin,
+      HEAD detached). Expect Home with the fixture vault
+  - launch:
+      native: bontecou.Sync-md
+      ios:
+        app: bontecou.Sync-md
+        args:
+          - -UITestGitToolsFixture
+          - detached-head
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: home.vault.git-tools-fixture
+      timeoutMs: 15000
+  # Coordinate exception: the SwiftUI id home.vault.git-tools-fixture is in the
+  # accessibility tree (raw waits above/below use it) but not in the runner's
+  # native tree, so a `tap: { id }` directive cannot resolve it. The fixture row
+  # sits at a fixed spot on the iPhone 17 home list; the next wait proves it opened.
+  - tool: gesture-tap
+    args:
+      x: 0.5
+      y: 0.522
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: vault.hero.primary
+      timeoutMs: 10000
+  - await: { idle: true }
+  - echo: Vault open with HEAD detached. Tap Pull. Before the fix the app crashed
+      here (LocalGitService.swift:1380); expect a readable detached-HEAD error
+  # Coordinate exception: same tree mismatch for vault.hero.primary (the Pull
+  # button, proven visible above); the following OK/detached-HEAD waits prove the tap.
+  - tool: gesture-tap
+    args:
+      x: 0.5
+      y: 0.512
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: OK
+        role: button
+      timeoutMs: 15000
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: detached HEAD
+      timeoutMs: 5000
+  - await: { idle: true }
+  # Coordinate exception: the error alert's OK button is only in the
+  # accessibility tree (raw waits before/after see it); a `tap: { text: OK }`
+  # directive resolves against the runner's tree and missed it on replay.
+  - tool: gesture-tap
+    args:
+      x: 0.5
+      y: 0.591
+  - tool: await-ui-element
+    args:
+      condition: hidden
+      selector:
+        text: OK
+        role: button
+      timeoutMs: 10000
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Pull failed
+      timeoutMs: 10000
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: vault.title
+      timeoutMs: 5000

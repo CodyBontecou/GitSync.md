@@ -746,6 +746,7 @@ struct VaultView: View {
             .contentShape(Capsule())
         }
         .buttonStyle(.plain)
+        .accessibilityIdentifier("vault.hero.primary")
     }
 
     private func heroSecondary(_ title: String, action: @escaping () -> Void) -> some View {

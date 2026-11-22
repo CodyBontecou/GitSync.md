@@ -21,6 +21,10 @@ enum LocalGitError: LocalizedError {
     case pullDiverged
     case pullRemoteBranchMissing(String)
     case wrongBranch(expected: String, actual: String)
+    /// HEAD points at a commit instead of a branch (an interrupted rebase,
+    /// or a commit checked out in another Git app). Pull has no branch to
+    /// fast-forward until the person switches back to one.
+    case detachedHead
     case checkoutBlockedByLocalChanges
     case branchAlreadyExists(String)
     case branchNotFound(String)
@@ -73,6 +77,8 @@ enum LocalGitError: LocalizedError {
             return String(localized: "Remote branch '\(branch)' was not found on origin.")
         case .wrongBranch(let expected, let actual):
             return String(localized: "Background Sync expected branch '\(expected)', but '\(actual)' is checked out.")
+        case .detachedHead:
+            return String(localized: "This vault isn't on a branch (detached HEAD), so there is nothing to pull into. Open Git Tools, switch to a branch, then pull again.")
         case .checkoutBlockedByLocalChanges:
             return String(localized: "Switching branches is blocked to protect local edits. Commit, stash, or discard changes first.")
         case .branchAlreadyExists(let name):
@@ -235,6 +241,16 @@ private func git2ErrorMessage(fallback: String? = nil) -> String {
     }
 
     return String(localized: "Unknown git error")
+}
+
+/// The commit a direct reference points at. A symbolic reference (such as
+/// `refs/remotes/origin/HEAD`) has no direct target, and force-unwrapping
+/// `git_reference_target` for one crashed every pull (issue #111).
+nonisolated private func directTarget(of reference: OpaquePointer?, name: String) throws -> UnsafePointer<git_oid> {
+    guard let reference, let oid = git_reference_target(reference) else {
+        throw LocalGitError.libgit2(String(localized: "Git reference '\(name)' does not point at a commit."))
+    }
+    return oid
 }
 
 /// Call a libgit2 function and throw if it returns an error code.
@@ -1269,7 +1285,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                 branch = "main"
             }
 
-            let commitSHA = oidToHex(git_reference_target(head)!)
+            let commitSHA = try oidToHex(directTarget(of: head, name: "HEAD"))
             let fileCount = Self.countFiles(in: localURL)
 
             return LocalCloneResult(commitSHA: commitSHA, branch: branch, fileCount: fileCount)
@@ -1345,8 +1361,11 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             var head: OpaquePointer?
             defer { if let head { git_reference_free(head) } }
             try git2Check(git_repository_head(&head, repo), context: "Read HEAD")
+            // A detached HEAD's shorthand is "HEAD", which would select the
+            // symbolic refs/remotes/origin/HEAD below (issue #111).
+            if git_repository_head_detached(repo) == 1 { throw LocalGitError.detachedHead }
 
-            let localOidPtr = git_reference_target(head)!
+            let localOidPtr = try directTarget(of: head, name: "HEAD")
             let localCommitSHA = oidToHex(localOidPtr)
             let branch: String
             if let name = git_reference_shorthand(head) {
@@ -1377,7 +1396,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             }
             try git2Check(remoteLookupCode, context: "Lookup \(remoteRefName)")
 
-            let remoteOidPtr = git_reference_target(remoteRef)!
+            let remoteOidPtr = try directTarget(of: remoteRef, name: remoteRefName)
             let remoteCommitSHA = oidToHex(remoteOidPtr)
 
             // Fast path for unchanged repositories: when local and remote
@@ -1542,6 +1561,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             var head: OpaquePointer?
             defer { if let head { git_reference_free(head) } }
             try git2Check(git_repository_head(&head, repo), context: "Read HEAD")
+            if git_repository_head_detached(repo) == 1 { throw LocalGitError.detachedHead }
 
             // HEAD can be changed by another process after fetch/planning.
             // Re-read and verify it immediately before any checkout so the
@@ -1551,8 +1571,8 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                 throw LocalGitError.wrongBranch(expected: branch, actual: actualBranch)
             }
 
-            let localOidPtr = git_reference_target(head)!
-            let remoteOidPtr = git_reference_target(remoteRef)!
+            let localOidPtr = try directTarget(of: head, name: "HEAD")
+            let remoteOidPtr = try directTarget(of: remoteRef, name: remoteRefName)
             var expectedLocalOid = localOidPtr.pointee
 
             if git_oid_equal(localOidPtr, remoteOidPtr) != 0 {
@@ -4765,7 +4785,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             } else {
                 branch = "main"
             }
-            let commitSHA = oidToHex(git_reference_target(head)!)
+            let commitSHA = try oidToHex(directTarget(of: head, name: "HEAD"))
 
             let entries = (try? Self.statusEntries(repo: repo)) ?? []
             let changeCount = entries.count
