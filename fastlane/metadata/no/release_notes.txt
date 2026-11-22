@@ -1,3 +1,2 @@
-• Kloning til mappen til en annen app, som Obsidian, feiler ikke lenger med «utenfor hvelvets plassering»
-• Hvis GitSync.md ikke kan bekrefte hvor en klone skal ligge, forteller appen deg nå nøyaktig hvordan du løser det
-• Forfatternavn og e-post fylles nå ut fra GitHub-kontoen din, med din private no-reply-adresse hvis e-posten din er skjult
+• Retter et krasj ved pull av et hvelv som ikke er på en gren (detached HEAD). Pull forklarer nå i stedet hvordan du løser det.
+• Hvis GitSync.md lukkes under automatisk synkronisering, setter neste oppstart automatisk synkronisering på pause og spør hva du vil gjøre, så appen ikke krasjer ved hver oppstart.

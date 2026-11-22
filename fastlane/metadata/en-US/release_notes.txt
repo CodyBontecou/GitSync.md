@@ -1,3 +1,2 @@
-• Cloning into another app's folder, such as Obsidian, no longer fails with "outside this vault's location"
-• If GitSync.md can't confirm where a clone should go, it now tells you exactly how to fix it
-• Author name and email now fill in from your GitHub account, using your private no-reply address if your email is hidden
+• Fixes a crash when pulling a vault that isn't on a branch (detached HEAD). Pull now explains how to fix it instead.
+• If GitSync.md ever closes during automatic sync, the next launch pauses automatic sync and asks what to do, so it can't crash again on every launch.

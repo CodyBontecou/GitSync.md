@@ -1,3 +1,2 @@
-• Kloning till en annan apps mapp, som Obsidian, misslyckas inte längre med ”utanför valvets plats”
-• Om GitSync.md inte kan bekräfta var en klon ska hamna talar appen nu om exakt hur du åtgärdar det
-• Författarnamn och e-post fylls nu i från ditt GitHub-konto, med din privata no-reply-adress om din e-post är dold
+• Åtgärdar en krasch vid pull av ett valv som inte är på en gren (detached HEAD). Pull förklarar nu i stället hur du löser det.
+• Om GitSync.md stängs under automatisk synkronisering pausar nästa start den automatiska synkroniseringen och frågar vad du vill göra, så att appen inte kraschar vid varje start.

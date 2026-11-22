@@ -1,3 +1,2 @@
-• La clonazione nella cartella di un'altra app, come Obsidian, non fallisce più con «fuori dalla posizione di questa cassaforte»
-• Se GitSync.md non riesce a confermare dove va un clone, ora ti spiega esattamente come risolvere
-• Nome ed e-mail dell'autore ora vengono compilati dal tuo account GitHub, usando il tuo indirizzo no-reply privato se la tua e-mail è nascosta
+• Risolto un arresto anomalo durante il pull di un vault che non si trova su un ramo (HEAD scollegato). Ora il pull spiega come risolvere il problema.
+• Se GitSync.md si chiude durante la sincronizzazione automatica, all'avvio successivo la sincronizzazione automatica viene sospesa e l'app ti chiede cosa fare, così non si blocca a ogni avvio.

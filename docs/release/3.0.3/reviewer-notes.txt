@@ -1,0 +1,27 @@
+Version 3.0.3 is an urgent bug-fix update to 3.0.2. GitSync.md is free to download with a one-time non-consumable in-app purchase, "Lifetime unlock" (gitsync.md.lifetime, $9.99 US). There is no subscription.
+
+What is free: onboarding, sign-in, the demo vault, browsing GitHub repositories and the vault check, which tests a repository (connection, access, branch, size, Git LFS, Obsidian setup) without downloading any notes.
+What needs the purchase: cloning a vault, linking an existing clone, or publishing a folder.
+
+LOOK AROUND WITHOUT A GITHUB ACCOUNT
+On the first screen tap "Look around with a demo vault →". This opens a seeded sample vault with sample notes, so you can browse files, the Git tab and Settings without an account or your own repository. The demo uses sample data only.
+
+REACH THE LIFETIME UNLOCK WITHOUT A GITHUB ACCOUNT
+On a fresh install (the demo vault link is only shown before setup):
+1. On the first screen tap "SSH, token or another host", then "Continue without GitHub", then "Skip for Now". Tap "Add your first vault".
+2. In "Or paste a URL" enter a public repository, e.g. https://github.com/obsidianmd/obsidian-help, and press Return.
+3. Keep Sign in with: None, enter any Author name and email (e.g. App Review / review@example.com), then tap "Check your vault".
+4. When the check reports "Your vault is ready", tap "Clone into Obsidian" or "Clone vault", depending on the selected destination. The unlock sheet shows the price, "Unlock & clone" and "Restore purchase".
+
+Anyone who bought GitSync.md while it was a paid app is recognised from AppTransaction.originalAppVersion and is unlocked automatically; Restore purchase also re-checks this. Existing vaults on the device keep working.
+
+BACKGROUND SYNC
+Background Sync is included in the app; it is not a subscription and has no separate in-app purchase or entitlement. It runs on-device using the vault's existing Git credentials. iOS decides when background work runs, so updates are discretionary and best effort, not guaranteed or real time.
+
+To inspect it, finish onboarding, open Settings, then Background Sync in the Sync section. If it is off, tap Turn on Background Sync to see the explanation and choices. Pull remote changes and Commit & push mine are controlled independently. Automatic push requires consent and may stage non-ignored edits, create a commit using the configured author and default message, and push to the configured remote. Each vault can be excluded in its settings. Pull applies only clean fast-forwards; divergence, conflicts and authentication requirements stop and ask for attention.
+
+The same screen offers optional Push Sync. Connect opens the GitSync.md GitHub App installation/authorization flow. This separately enabled feature uses GitHub events and APNs to request background reconciliation; iOS still controls execution. The Push Sync relay handles GitHub installation/account identifiers, repository names, APNs registration data and branch/commit hints, never local file contents, local paths or Git credentials.
+
+WHAT'S NEW IN 3.0.3 (BUILD 202611220658)
+- Fixes a crash on Pull, including the automatic Background Sync pass at launch, for a vault whose Git HEAD is detached (not on a branch). Pull now shows a readable error explaining how to switch back to a branch.
+- If the app is ever terminated in the middle of an automatic sync, the next launch pauses automatic sync and shows an alert (Turn Off Background Sync / Resume Automatic Sync / Not Now) instead of retrying straight away. Settings > Background Sync then shows the paused state with a Resume option.

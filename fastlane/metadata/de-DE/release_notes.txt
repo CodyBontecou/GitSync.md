@@ -1,3 +1,2 @@
-• Das Klonen in den Ordner einer anderen App, etwa Obsidian, schlägt nicht mehr mit „außerhalb des Speicherorts dieses Tresors“ fehl
-• Kann GitSync.md nicht bestätigen, wohin ein Klon gehört, erklärt die App dir jetzt genau, wie du das behebst
-• Autorname und E-Mail werden jetzt aus deinem GitHub-Konto übernommen – mit deiner privaten No-Reply-Adresse, wenn deine E-Mail verborgen ist
+• Behebt einen Absturz beim Pull eines Tresors, der auf keinem Branch ist (Detached HEAD). Pull erklärt jetzt stattdessen, wie du das behebst.
+• Wird GitSync.md während der automatischen Synchronisierung beendet, pausiert der nächste Start die automatische Synchronisierung und fragt dich, wie es weitergehen soll. So stürzt die App nicht bei jedem Start erneut ab.

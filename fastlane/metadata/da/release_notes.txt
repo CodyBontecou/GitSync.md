@@ -1,3 +1,2 @@
-• Kloning til en anden apps mappe, f.eks. Obsidian, fejler ikke længere med "uden for denne boks' placering"
-• Hvis GitSync.md ikke kan bekræfte, hvor en klon skal ligge, fortæller appen dig nu præcis, hvordan du løser det
-• Forfatternavn og e-mail udfyldes nu fra din GitHub-konto, med din private no-reply-adresse, hvis din e-mail er skjult
+• Retter et nedbrud ved pull af en boks, der ikke er på en gren (detached HEAD). Pull forklarer nu i stedet, hvordan du løser det.
+• Hvis GitSync.md lukker under automatisk synkronisering, sætter næste start den automatiske synkronisering på pause og spørger, hvad du vil, så appen ikke går ned ved hver start.

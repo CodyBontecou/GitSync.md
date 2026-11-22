@@ -1,3 +1,2 @@
-• Mengkloning ke folder aplikasi lain, seperti Obsidian, tidak lagi gagal dengan "di luar lokasi vault ini"
-• Jika GitSync.md tidak dapat memastikan lokasi klon, kini aplikasi memberi tahu Anda cara memperbaikinya dengan tepat
-• Nama dan email penulis kini terisi dari akun GitHub Anda, memakai alamat no-reply pribadi Anda jika email Anda disembunyikan
+• Memperbaiki crash saat melakukan pull vault yang tidak berada di branch (detached HEAD). Pull kini menjelaskan cara memperbaikinya.
+• Jika GitSync.md tertutup saat sinkronisasi otomatis, peluncuran berikutnya akan menjeda sinkronisasi otomatis dan menanyakan apa yang harus dilakukan, sehingga aplikasi tidak crash setiap kali dibuka.

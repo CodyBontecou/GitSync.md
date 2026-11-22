@@ -1,9 +1,11 @@
 ---
-status: active
+status: merged
 covers: [issue#111]
 tested: 9f0724a0226792d3c52512fa0f099c8805167e28
 updated: 2026-11-22
 ---
+
+> Merged in PR #112 as `c3d0398d14c651b496ffa9be6312b3cc44c5d714` (2026-11-22). Ships in iOS 3.0.3.
 
 # Issue #111: Pull crashes the app (and the launch sync crash-loops)
 

@@ -1,3 +1,2 @@
-• Klonowanie do folderu innej aplikacji, np. Obsidian, nie kończy się już błędem „poza lokalizacją tego sejfu”
-• Gdy GitSync.md nie może potwierdzić, gdzie ma trafić klon, teraz dokładnie podpowiada, jak to naprawić
-• Imię i e-mail autora są teraz uzupełniane z Twojego konta GitHub, z prywatnym adresem no-reply, jeśli Twój e-mail jest ukryty
+• Naprawiono awarię podczas pobierania (pull) sejfu, który nie jest na żadnej gałęzi (odłączony HEAD). Pull wyjaśnia teraz, jak to naprawić.
+• Jeśli GitSync.md zamknie się podczas automatycznej synchronizacji, przy następnym uruchomieniu automatyczna synchronizacja zostanie wstrzymana, a aplikacja zapyta, co zrobić, więc nie będzie się zawieszać przy każdym uruchomieniu.

@@ -1,3 +1,2 @@
-• Kloonaus toisen sovelluksen kansioon, kuten Obsidianiin, ei enää epäonnistu virheellä "tämän holvin sijainnin ulkopuolella"
-• Jos GitSync.md ei voi varmistaa, minne klooni kuuluu, se kertoo nyt tarkalleen, miten asia korjataan
-• Tekijän nimi ja sähköposti täytetään nyt GitHub-tililtäsi, ja piilotetun sähköpostin tilalla käytetään yksityistä no-reply-osoitettasi
+• Korjaa kaatumisen, kun haet (pull) holvia, joka ei ole haaralla (irrotettu HEAD). Pull kertoo nyt sen sijaan, miten tilanne korjataan.
+• Jos GitSync.md sulkeutuu automaattisen synkronoinnin aikana, seuraava käynnistys keskeyttää automaattisen synkronoinnin ja kysyy, mitä tehdään, joten sovellus ei kaadu joka käynnistyksellä.

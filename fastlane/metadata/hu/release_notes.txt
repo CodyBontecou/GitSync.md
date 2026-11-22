@@ -1,3 +1,2 @@
-• A klónozás egy másik app mappájába, például az Obsidianéba, már nem hiúsul meg a „kívül esik a széf helyén” hibával
-• Ha a GitSync.md nem tudja megerősíteni, hová kerüljön egy klón, most pontosan elmondja, hogyan javíthatod
-• A szerző neve és e-mail-címe most a GitHub-fiókodból töltődik ki, rejtett e-mail esetén a privát no-reply címeddel
+• Javítottuk az összeomlást, amely olyan tároló lekérésekor (pull) történt, amely nincs ágon (leválasztott HEAD). A pull most elmagyarázza, hogyan javíthatod.
+• Ha a GitSync.md automatikus szinkronizálás közben bezárul, a következő indításkor az automatikus szinkronizálás szünetel, és az app megkérdezi, mit tegyen, így nem omlik össze minden indításkor.
