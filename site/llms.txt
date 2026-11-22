@@ -54,6 +54,7 @@ For automation on a user's device, consult the Shortcuts guide and agent instruc
 
 - [Obsidian Sync cost calculator](https://gitsync.md/tools/obsidian-sync-cost-calculator): Client-side calculator for whether a vault fits Sync Standard or Plus, and its multi-year cost next to Git and iCloud. Prices and limits are dated on the page.
 - [Obsidian .gitignore generator](https://gitsync.md/tools/obsidian-gitignore-generator): Client-side generator for a commented .gitignore for an Obsidian vault: notes-only, shared-settings or everything-except-device-state presets, custom config folder name, and rules that never ignore a parent directory before negating a child.
+- [GitHub token link builder](https://gitsync.md/tools/github-token-generator): Client-side builder for a pre-filled GitHub fine-grained personal access token link with least-privilege presets for Obsidian Git, Git apps, read-only clones and GitHub Actions publishing. It cannot pre-select the repository.
 
 ## Reading this site
 

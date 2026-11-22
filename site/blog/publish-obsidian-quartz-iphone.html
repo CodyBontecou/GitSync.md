@@ -349,7 +349,7 @@ This note was written on a phone. See also [[index]].</code></pre>
         <h3>A draft got published</h3>
         <p>Check the note has <code>draft: true</code> (or has no <code>publish: true</code> if you enabled <code>ExplicitPublish</code>) and that <code>drafts.publish</code> isn't <code>true</code>. Images and PDFs also publish by default; see <code>publishAssets</code> above (<a href="https://quartz.jzhao.xyz/features/private-pages">Private Pages</a>). A page that was already live stays readable in the repository's history, so remove sensitive content from Git as well.</p>
         <h3>A push is rejected when you edit the workflow from your phone</h3>
-        <p>A token that changes files under <code>.github/workflows</code> needs the <code>workflow</code> scope; ordinary note edits don't. The scope note is in <a href="/blog/obsidian-git-ios-setup">the Personal Access Token guide</a>. Simpler: change the workflow on your computer.</p>
+        <p>A token that changes files under <code>.github/workflows</code> needs the <code>workflow</code> scope; ordinary note edits don't. The scope note is in <a href="/blog/obsidian-git-ios-setup">the Personal Access Token guide</a>, and the <a href="/tools/github-token-generator">GitHub token link builder</a> has a fine-grained preset with the workflows permission. Simpler: change the workflow on your computer.</p>
         <h3>A pull conflict after editing on two devices</h3>
         <p>Follow <a href="/blog/obsidian-git-merge-conflicts-iphone">Fix Obsidian Git merge conflicts on iPhone</a>, then push again.</p>
 
