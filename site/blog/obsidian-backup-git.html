@@ -107,7 +107,7 @@
         <p>Reviewed on November 20, 2026:</p>
         <ul>
           <li>Restore commands run on a throwaway repository with Git 2.39.5</li>
-          <li>Retention periods (File recovery 7 days, Sync 1 month or 12 months) and the “syncing is not a backup” wording read from the linked Obsidian help pages on that date</li>
+          <li>Retention periods (File recovery 7 days, Sync 1 month or 12 months), the File recovery menu path and the backup page wording read from the linked Obsidian help pages on that date</li>
           <li>GitSync.md claims limited to commit history, diffs, commit and push</li>
         </ul>
       </section>
@@ -142,9 +142,9 @@
         <div class="comparison-scroll" role="region" aria-label="Sync, backup and version history compared" tabindex="0"><table class="comparison-table">
           <caption>What each layer protects, checked November 20, 2026</caption>
           <thead><tr><th scope="col">Option</th><th scope="col">Off-device copy?</th><th scope="col">Protects against accidental delete?</th><th scope="col">How far back?</th><th scope="col">Works on iPhone?</th></tr></thead><tbody>
-          <tr><th scope="row"><a href="https://obsidian.md/help/plugins/file-recovery" target="_blank" rel="noopener">File recovery</a> core plugin</th><td>No. Snapshots stay on each device and do not sync.</td><td>Yes, on the device where the edit was made.</td><td>7 days by default. You can change it in settings.</td><td>Yes, per device.</td></tr>
+          <tr><th scope="row"><a href="https://obsidian.md/help/plugins/file-recovery" target="_blank" rel="noopener">File recovery</a> core plugin</th><td>No. Snapshots are device-specific and stay local.</td><td>Yes, on the device where the edit was made.</td><td>7 days by default. You can change it in settings.</td><td>Not stated on the help page.</td></tr>
           <tr><th scope="row"><a href="https://obsidian.md/help/sync/version-history" target="_blank" rel="noopener">Obsidian Sync</a> version history</th><td>Yes, on Obsidian’s servers.</td><td>Yes. Obsidian documents restoring a deleted file.</td><td>1 month on Standard, 12 months on Plus.</td><td>Yes.</td></tr>
-          <tr><th scope="row">iCloud Drive</th><td>Yes, in iCloud.</td><td>Not as a backup. A deletion syncs to your other devices, and Obsidian lists iCloud among services not designed for backups.</td><td>No per-note history of its own.</td><td>Yes.</td></tr>
+          <tr><th scope="row">iCloud Drive</th><td>Yes, in iCloud.</td><td>Not as a backup. Obsidian lists iCloud among the services that sync notes between devices, and says syncing is not a backup.</td><td>Not documented by Obsidian as a history source.</td><td>Yes.</td></tr>
           <tr><th scope="row">Git with a remote</th><td>Yes, once you push.</td><td>Yes, for anything that was committed.</td><td>Every pushed commit, until you delete the history.</td><td>Yes, with a Git client such as GitSync.md.</td></tr>
           </tbody></table></div>
         <p>Two limits apply to Git. It records only what you commit, so an edit you never committed is not in history. And it protects only what reached the remote. For the full comparison of sync methods, see <a href="/compare/obsidian-sync-alternatives">Obsidian Sync alternatives by device</a> and <a href="/compare/icloud-vs-git-obsidian">iCloud vs Git for Obsidian</a>. If you are weighing a subscription, the <a href="/tools/obsidian-sync-cost-calculator">Obsidian Sync cost calculator</a> compares the cost with Git.</p>
@@ -152,9 +152,9 @@
         <h2 id="setup">Set up Git as the backup layer</h2>
         <p>This is the short version. <a href="/blog/sync-obsidian-github">Sync Obsidian with GitHub on every device</a> has the full setup, and <a href="/blog/obsidian-git-iphone-ipad">Obsidian Git on iPhone and iPad</a> covers the phone side.</p>
         <ol>
-          <li><strong>Use a private repository.</strong> Create it on GitHub or your own Git server and push the vault to it. A private repository limits who can read it, but <a href="https://docs.github.com/en/repositories/creating-and-managing-repositories/about-repositories" target="_blank" rel="noopener">it is not end-to-end encrypted</a>: the host can read the files. Keep secrets out of the vault.</li>
+          <li><strong>Use a private repository.</strong> Create it on GitHub or your own Git server and push the vault to it. A private repository is <a href="https://docs.github.com/en/repositories/creating-and-managing-repositories/about-repositories" target="_blank" rel="noopener">only accessible to you and people you share it with</a>, but your notes still live on the host’s servers. Keep secrets out of the vault.</li>
           <li><strong>Add a <code>.gitignore</code>.</strong> Window layouts change on every device and create noise in history. <a href="/blog/obsidian-gitignore">Choose what your .gitignore shares</a> shows a starter file. Ignored files are never backed up, so do not ignore notes or attachments.</li>
-          <li><strong>Commit on a schedule on the desktop.</strong> In the <a href="https://github.com/Vinzent03/obsidian-git" target="_blank" rel="noopener">Obsidian Git</a> plugin, set an auto commit-and-sync interval in minutes. The default is 0, which means off. With an interval, the plugin commits, pulls and pushes on a timer while Obsidian is open. Without it, nothing is backed up until you run a command.</li>
+          <li><strong>Commit on a schedule on the desktop.</strong> In the <a href="https://github.com/Vinzent03/obsidian-git" target="_blank" rel="noopener">Obsidian Git</a> plugin, turn on its automatic commit-and-sync (commit, pull and push on a schedule) and set the interval in its settings. Without it, nothing is backed up until you run a command.</li>
         </ol>
 
         <h2 id="phone">Back up notes written on your phone</h2>
@@ -204,7 +204,7 @@ git commit -m "Roll back Projects to &lt;commit&gt;"</code></pre>
 
         <h3 id="restore-no-desktop">Without a desktop</h3>
         <ul>
-          <li><strong>GitHub in a browser.</strong> Open the file in your repository and choose <strong>History</strong>. Open the commit you want, view the file at that commit, and copy its text back into the note. For a deleted file, open the commit that removed it: its diff shows the old text in full, which you can copy. GitHub documents <a href="https://docs.github.com/en/repositories/working-with-files/using-files/viewing-a-file" target="_blank" rel="noopener">viewing a file</a>.</li>
+          <li><strong>GitHub in a browser.</strong> Open the file in your repository and choose <strong>History</strong> (the commit list for that file). Open the commit you want, view the file at that commit, and copy its text back into the note. For a deleted file, open the commit that removed it: its diff shows the old text in full, which you can copy. GitHub documents <a href="https://docs.github.com/en/repositories/working-with-files/using-files/viewing-a-file" target="_blank" rel="noopener">viewing a file</a>.</li>
           <li><strong>GitSync.md.</strong> Use its commit history, with the files changed in each commit and their diffs, to find the commit and the old text. Copy the old content back into the note in Obsidian. This guide does not rely on an in-app restore button; confirm the result by reviewing the diff before you commit.</li>
         </ul>
 
@@ -219,9 +219,9 @@ git commit -m "Roll back Projects to &lt;commit&gt;"</code></pre>
 
         <h2 id="checklist">Backup checklist</h2>
         <ul class="checklist" style="list-style:none;padding-left:0">
-          <li>☐ The vault is pushed to a <strong>private</strong> remote, and you know it is not end-to-end encrypted.</li>
+          <li>☐ The vault is pushed to a <strong>private</strong> remote, and secrets are kept out of the vault.</li>
           <li>☐ A <code>.gitignore</code> excludes workspace files but not your notes.</li>
-          <li>☐ Desktop auto commit-and-sync is on, with an interval above 0.</li>
+          <li>☐ Desktop auto commit-and-sync is on.</li>
           <li>☐ Your phone commits and pushes, and the latest commit on the remote shows a phone edit.</li>
           <li>☐ You restored a test note once, so the steps are not new to you in a panic.</li>
           <li>☐ A second copy exists outside Git.</li>
@@ -229,15 +229,15 @@ git commit -m "Roll back Projects to &lt;commit&gt;"</code></pre>
 
         <h2 id="faq">FAQ</h2>
         <h3>Is Obsidian Sync a backup?</h3>
-        <p>Not by Obsidian’s own definition. Its backup page says sync services are not designed for backups. Sync does keep version history, for 1 month on Standard and 12 months on Plus, which helps you restore a note, but it is not a separate copy.</p>
+        <p>Not by Obsidian’s own definition. Its backup page says sync services such as Obsidian Sync are “not designed for backups.” Sync does keep version history, for 1 month on Standard and 12 months on Plus, which helps you restore a note, but it is not a separate copy.</p>
         <h3>Does iCloud keep old versions of my notes?</h3>
-        <p>iCloud Drive keeps your current files in sync and has no per-note history of its own that Obsidian can show you. Obsidian lists it among services that are not designed for backups. Use Git history, File recovery or a separate backup for old versions.</p>
+        <p>Obsidian’s backup page lists iCloud among the services that sync notes across devices, which is not the same as a backup, and this guide does not rely on iCloud for old versions. Use Git history, File recovery or a separate backup for old versions.</p>
         <h3>Can I back up Obsidian from my iPhone?</h3>
         <p>Yes, if the phone commits and pushes. In GitSync.md, review the changes, commit and push, then check the commit on the remote. See <a href="/blog/obsidian-git-iphone-ipad">the iPhone and iPad setup</a>.</p>
         <h3>How do I recover a note I deleted?</h3>
         <p>If it was committed, find the deleting commit with <code>git log --diff-filter=D -- &lt;path&gt;</code> and restore from its parent with <code>git restore --source=&lt;commit&gt;^ -- &lt;path&gt;</code>. If it was never committed, try the File recovery plugin on that device.</p>
         <h3>Is a GitHub backup private?</h3>
-        <p>A private repository restricts access to people you allow, but it is not end-to-end encrypted, so GitHub can read the files. Do not store secrets in the vault.</p>
+        <p>GitHub says private repositories are only accessible to you and people you explicitly share access with, but the files are still hosted on GitHub’s servers. Do not store secrets in the vault.</p>
 
         <h2>Related guides</h2>
         <div class="related-card">
