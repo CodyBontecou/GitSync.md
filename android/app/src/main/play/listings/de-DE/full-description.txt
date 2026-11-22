@@ -1,4 +1,4 @@
-Gitsync.md bringt echte Git-Workflows auf Android. Verbinde GitHub, klone Repositories in den App-Speicher, prüfe Änderungen und synchronisiere Code oder Markdown sicher von deinem Smartphone aus.
+GitSync.md bringt echte Git-Workflows auf Android. Verbinde GitHub, klone Repositories in den App-Speicher, prüfe Änderungen und synchronisiere Code oder Markdown sicher von deinem Smartphone aus.
 
 FÜR ECHTE REPOS GEBAUT
 - GitHub-Repositories nach Anmeldung per OAuth oder Personal Access Token durchsuchen
@@ -24,4 +24,4 @@ FÜR MOBILGERÄTE GESTALTET
 - Kostenloser Download mit einmaligem In-App-Kauf für Vollzugriff über Google Play
 - Keine Werbung und keine Abos
 
-Gitsync.md ist für Entwickler, Autoren und alle gemacht, die GitHub-basierte Dateien auf Android verwalten. Für private Repositories meldest du dich mit GitHub an oder gibst ein Personal Access Token ein. Tokens werden lokal auf deinem Gerät gespeichert.
+GitSync.md ist für Entwickler, Autoren und alle gemacht, die GitHub-basierte Dateien auf Android verwalten. Für private Repositories meldest du dich mit GitHub an oder gibst ein Personal Access Token ein. Tokens werden lokal auf deinem Gerät gespeichert.

@@ -150,7 +150,7 @@ fun LoginScreen(
                 onBack = { showPatFlow = false; patToken = ""; viewModel.clearError() },
                 onCreateToken = {
                     runCatching { CustomTabsIntent.Builder().build().launchUrl(context,
-                        Uri.parse("https://github.com/settings/tokens/new?scopes=repo,user:email&description=Gitsync.md")) }
+                        Uri.parse("https://github.com/settings/tokens/new?scopes=repo,user:email&description=GitSync.md")) }
                 },
                 onSubmit = { focusManager.clearFocus(); viewModel.signInWithPAT(patToken.trim()) },
             )

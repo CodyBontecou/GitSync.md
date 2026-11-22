@@ -151,7 +151,7 @@ private fun List<com.bontecou.syncmd.ui.viewmodels.SavedRepository>.subtitleFor(
  *                    →  settings
  *   repos  →  login  →  repo_picker  →  clone
  *
- * Gitsync.md is now a paid-up-front app on Google Play, so every installed
+ * GitSync.md is now a paid-up-front app on Google Play, so every installed
  * copy has full access. No in-app purchase SDK or repository-limit gate is enforced here.
  */
 @Composable

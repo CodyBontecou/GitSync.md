@@ -186,7 +186,7 @@ class GitHubAuthManager @Inject constructor(
         store.resolve(path, url) { id -> id?.let(::tokenForAccount) ?: defaultToken() ?: error(text(R.string.account_select_repository_account)) }
     fun authorForAccount(id: String?): Pair<String, String> {
         val profile = id?.let(::accountSummary)
-        return (profile?.name?.takeIf { it.isNotBlank() } ?: profile?.login ?: "Gitsync.md User") to
+        return (profile?.name?.takeIf { it.isNotBlank() } ?: profile?.login ?: "GitSync.md User") to
             (profile?.email?.takeIf { it.isNotBlank() } ?: "${profile?.login ?: "user"}@users.noreply.github.com")
     }
 
@@ -250,7 +250,7 @@ class GitHubAuthManager @Inject constructor(
     fun getAuthorName(): String =
         _cachedName.value?.takeIf { it.isNotBlank() }
             ?: _cachedLogin.value
-            ?: "Gitsync.md User"
+            ?: "GitSync.md User"
 
     /**
      * Best author email — primary email if known, otherwise the GitHub noreply address.

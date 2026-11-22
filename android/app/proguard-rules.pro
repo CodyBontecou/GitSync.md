@@ -1,4 +1,4 @@
-# Gitsync.md ProGuard/R8 Rules
+# GitSync.md ProGuard/R8 Rules
 # Keep all Kotlin metadata for reflection
 -keepattributes *Annotation*
 -keepattributes Signature
