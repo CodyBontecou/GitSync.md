@@ -37,6 +37,7 @@ For automation on a user's device, consult the Shortcuts guide and agent instruc
 
 - [Sync Obsidian with GitHub on every device](https://gitsync.md/blog/sync-obsidian-github): Private repository, desktop Git and Obsidian Git plugin settings, then iPhone, iPad and Android routes and a two-way verification.
 - [Back up an Obsidian vault with Git](https://gitsync.md/blog/obsidian-backup-git): Sync vs backup vs version history, a backup routine that includes notes written on iPhone, tested commands to restore a changed note, a deleted note or a folder, and a checklist.
+- [Sync Logseq with Git on iPhone, iPad and desktop](https://gitsync.md/blog/logseq-git-sync-iphone): Logseq file graphs (not DB graphs), one private repository, clone with GitSync.md, round-trip check and conflicts.
 
 ## Publish
 
