@@ -1,0 +1,18 @@
+E2E test "issue111-detached-head-pull"
+  › Launch with the detached-head fixture (vault one commit behind origin, HEAD detached). Expect Home with the fixture vault
+  ✓  1 launch (1.7s)
+  ✓  2 tool await-ui-element (0.5s)
+  ✓  3 tool gesture-tap (0.1s)
+  ✓  4 tool await-ui-element (0.3s)
+  ✓  5 idle (1.3s)
+  › Vault open with HEAD detached. Tap Pull. Before the fix the app crashed here (LocalGitService.swift:1380); expect a readable detached-HEAD error
+  ✓  6 tool gesture-tap (0.1s)
+  ✓  7 tool await-ui-element (0.2s)
+  ✓  8 tool await-ui-element (0.0s)
+  ✓  9 idle (0.9s)
+  ✓ 10 tool gesture-tap (0.1s)
+  ✓ 11 tool await-ui-element (0.5s)
+  ✓ 12 tool await-ui-element (0.0s)
+  ✓ 13 tool await-ui-element (0.0s)
+
+PASS (started on <job simulator>) — 13 passed, 0 failed, 0 errored, 0 skipped (5.8s)

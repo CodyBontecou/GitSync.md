@@ -1,0 +1,7 @@
+Pre-fix Debug build, iOS simulator 27.0, Pull on detached-HEAD fixture vault
+exception: EXC_BREAKPOINT SIGTRAP
+0 libswiftCore.dylib closure #1 in closure #1 in _assertionFailure(_:_:file:line:flags:)  
+1 libswiftCore.dylib _assertionFailure(_:_:file:line:flags:)  
+2 Sync.md.debug.dylib closure #1 in closure #1 in LocalGitService.pullPlan(pat:) LocalGitService.swift 1380
+3 Sync.md.debug.dylib partial apply for closure #1 in closure #1 in LocalGitService.pullPlan(pat:) /<compiler-generated> 
+4 libswift_Concurrency.dylib completeTaskWithClosure(swift::AsyncContext*, swift::SwiftError*)  
