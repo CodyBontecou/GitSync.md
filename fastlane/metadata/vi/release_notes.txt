@@ -1,3 +1,2 @@
-• Sao chép vào thư mục của ứng dụng khác, như Obsidian, không còn thất bại với lỗi "nằm ngoài vị trí của kho này"
-• Nếu GitSync.md không thể xác nhận nơi đặt bản sao, giờ ứng dụng sẽ chỉ rõ cho bạn cách khắc phục
-• Tên và email tác giả giờ được điền từ tài khoản GitHub của bạn, dùng địa chỉ no-reply riêng tư nếu email của bạn bị ẩn
+• Sửa lỗi ứng dụng bị dừng khi pull một kho không nằm trên nhánh nào (detached HEAD). Giờ đây pull sẽ giải thích cách khắc phục.
+• Nếu GitSync.md bị đóng trong khi đồng bộ tự động, lần mở tiếp theo sẽ tạm dừng đồng bộ tự động và hỏi bạn muốn làm gì, để ứng dụng không bị dừng mỗi lần mở.

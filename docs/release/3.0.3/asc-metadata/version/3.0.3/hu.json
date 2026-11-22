@@ -1,0 +1,3 @@
+{
+  "whatsNew": "• Javítottuk az összeomlást, amely olyan tároló lekérésekor (pull) történt, amely nincs ágon (leválasztott HEAD). A pull most elmagyarázza, hogyan javíthatod.\n• Ha a GitSync.md automatikus szinkronizálás közben bezárul, a következő indításkor az automatikus szinkronizálás szünetel, és az app megkérdezi, mit tegyen, így nem omlik össze minden indításkor."
+}

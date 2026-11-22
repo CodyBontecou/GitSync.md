@@ -1,0 +1,3 @@
+{
+  "whatsNew": "• Fixes a crash when pulling a vault that isn't on a branch (detached HEAD). Pull now explains how to fix it instead.\n• If GitSync.md ever closes during automatic sync, the next launch pauses automatic sync and asks what to do, so it can't crash again on every launch."
+}

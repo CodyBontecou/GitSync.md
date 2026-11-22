@@ -1,3 +1,2 @@
-• Clonar na pasta de outro app, como o Obsidian, não falha mais com "fora do local deste cofre"
-• Se o GitSync.md não conseguir confirmar onde um clone deve ficar, agora ele mostra exatamente como resolver
-• Nome e e-mail do autor agora são preenchidos pela sua conta do GitHub, usando seu endereço no-reply privado se o seu e-mail estiver oculto
+• Corrige um travamento ao fazer pull de um cofre que não está em um branch (HEAD desanexado). Agora o pull explica como resolver.
+• Se o GitSync.md fechar durante a sincronização automática, a próxima abertura pausa a sincronização automática e pergunta o que fazer, para que o app não trave toda vez que for aberto.

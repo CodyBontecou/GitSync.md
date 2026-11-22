@@ -1,0 +1,3 @@
+{
+  "whatsNew": "• Corrige um travamento ao fazer pull de um cofre que não está em um branch (HEAD desanexado). Agora o pull explica como resolver.\n• Se o GitSync.md fechar durante a sincronização automática, a próxima abertura pausa a sincronização automática e pergunta o que fazer, para que o app não trave toda vez que for aberto."
+}

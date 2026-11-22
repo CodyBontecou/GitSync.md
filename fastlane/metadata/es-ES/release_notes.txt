@@ -1,3 +1,2 @@
-• Clonar en la carpeta de otra app, como Obsidian, ya no falla con «fuera de la ubicación de esta bóveda»
-• Si GitSync.md no puede confirmar dónde debe ir un clon, ahora te indica exactamente cómo solucionarlo
-• El nombre y el correo del autor ahora se rellenan desde tu cuenta de GitHub, con tu dirección no-reply privada si tu correo está oculto
+• Corrige un cierre inesperado al hacer pull de una bóveda que no está en una rama (HEAD separado). Ahora pull explica cómo solucionarlo.
+• Si GitSync.md se cierra durante la sincronización automática, el siguiente inicio pausa la sincronización automática y te pregunta qué hacer, para que no vuelva a cerrarse en cada inicio.

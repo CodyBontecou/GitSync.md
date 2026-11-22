@@ -1,3 +1,2 @@
-• Obsidian gibi başka bir uygulamanın klasörüne klonlama artık "bu kasanın konumunun dışında" hatasıyla başarısız olmuyor
-• GitSync.md bir klonun nereye gideceğini doğrulayamazsa artık bunu nasıl düzelteceğinizi tam olarak söylüyor
-• Yazar adı ve e-postası artık GitHub hesabınızdan dolduruluyor; e-postanız gizliyse özel no-reply adresiniz kullanılıyor
+• Bir dala bağlı olmayan (ayrık HEAD) bir kasayı çekerken (pull) yaşanan çökme düzeltildi. Pull artık bunun nasıl düzeltileceğini açıklıyor.
+• GitSync.md otomatik eşitleme sırasında kapanırsa, bir sonraki açılışta otomatik eşitleme duraklatılır ve ne yapılacağı sorulur; böylece uygulama her açılışta çökmez.

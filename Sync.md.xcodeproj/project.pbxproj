@@ -515,7 +515,7 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_ENTITLEMENTS = SyncWidget/SyncWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 202611211217;
+				CURRENT_PROJECT_VERSION = 202611220658;
 				DEVELOPMENT_TEAM = 67KC823C9A;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = SyncWidget/Info.plist;
@@ -525,7 +525,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 3.0.2;
+				MARKETING_VERSION = 3.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = bontecou.Sync-md.widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -544,7 +544,7 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_ENTITLEMENTS = SyncWidget/SyncWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 202611211217;
+				CURRENT_PROJECT_VERSION = 202611220658;
 					DEVELOPMENT_TEAM = 67KC823C9A;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = SyncWidget/Info.plist;
@@ -554,7 +554,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 3.0.2;
+				MARKETING_VERSION = 3.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = bontecou.Sync-md.widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -733,7 +733,7 @@
 		"ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME" = AccentColor;
 		"CODE_SIGN_ENTITLEMENTS" = "Sync.md/Sync_md.entitlements";
 		"CODE_SIGN_STYLE" = Automatic;
-		"CURRENT_PROJECT_VERSION" = 202611211217;
+		"CURRENT_PROJECT_VERSION" = 202611220658;
 		"DEVELOPMENT_TEAM" = 67KC823C9A;
 		"ENABLE_PREVIEWS" = YES;
 		"GENERATE_INFOPLIST_FILE" = YES;
@@ -747,7 +747,7 @@
 			"$(inherited)",
 			"@executable_path/Frameworks",
 		);
-		"MARKETING_VERSION" = 3.0.2;
+		"MARKETING_VERSION" = 3.0.3;
 		"PRODUCT_BUNDLE_IDENTIFIER" = "bontecou.Sync-md";
 		"PRODUCT_NAME" = "$(TARGET_NAME)";
 		"STRING_CATALOG_GENERATE_SYMBOLS" = YES;
@@ -767,7 +767,7 @@
 		"ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME" = AccentColor;
 		"CODE_SIGN_ENTITLEMENTS" = "Sync.md/Sync_md.entitlements";
 		"CODE_SIGN_STYLE" = Automatic;
-		"CURRENT_PROJECT_VERSION" = 202611211217;
+		"CURRENT_PROJECT_VERSION" = 202611220658;
 		"DEVELOPMENT_TEAM" = 67KC823C9A;
 		"ENABLE_PREVIEWS" = YES;
 		"GENERATE_INFOPLIST_FILE" = YES;
@@ -781,7 +781,7 @@
 			"$(inherited)",
 			"@executable_path/Frameworks",
 		);
-		"MARKETING_VERSION" = 3.0.2;
+		"MARKETING_VERSION" = 3.0.3;
 		"PRODUCT_BUNDLE_IDENTIFIER" = "bontecou.Sync-md";
 		"PRODUCT_NAME" = "$(TARGET_NAME)";
 		"STRING_CATALOG_GENERATE_SYMBOLS" = YES;
