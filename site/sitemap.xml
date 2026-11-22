@@ -109,6 +109,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://gitsync.md/compare/gitsync-vs-gitsync-md</loc>
+    <lastmod>2026-11-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://gitsync.md/compare/gitsync-vs-working-copy</loc>
     <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
