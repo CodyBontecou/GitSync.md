@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../favicon-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<title>Publish Obsidian notes with Quartz from your iPhone — GitSync.md</title>
+<meta name="description" content="Publish an Obsidian vault as a free website with Quartz 5 and GitHub Pages. Set up once on a computer, then write on iPhone or iPad and publish with a push from GitSync.md.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Cody Bontecou">
+<meta name="theme-color" content="#ffffff">
+<link rel="canonical" href="https://gitsync.md/blog/publish-obsidian-quartz-iphone">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="GitSync.md">
+<meta property="og:title" content="Publish Obsidian notes with Quartz from your iPhone — GitSync.md">
+<meta property="og:description" content="A current Quartz 5 tutorial: one-time setup on a computer, then write in Obsidian on iPhone, push with GitSync.md, and GitHub Actions rebuilds your GitHub Pages site.">
+<meta property="og:url" content="https://gitsync.md/blog/publish-obsidian-quartz-iphone">
+<meta property="og:image" content="https://gitsync.md/social/blog/publish-obsidian-quartz-iphone.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:alt" content="GitSync.md guide card: Publish Obsidian notes with Quartz from your iPhone">
+<meta property="article:published_time" content="2026-11-22">
+<meta property="article:modified_time" content="2026-11-22">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Publish Obsidian notes with Quartz from your iPhone — GitSync.md">
+<meta name="twitter:description" content="Quartz 5 + GitHub Pages: set up once, then publish Obsidian notes from your phone with a push.">
+<meta name="twitter:image" content="https://gitsync.md/social/blog/publish-obsidian-quartz-iphone.png">
+<meta name="twitter:image:alt" content="GitSync.md guide card: Publish Obsidian notes with Quartz from your iPhone">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Publish Obsidian notes with Quartz from your iPhone",
+  "description": "Publish an Obsidian vault as a free website with Quartz 5 and GitHub Pages. Set up once on a computer, then write on iPhone or iPad and publish with a push from GitSync.md.",
+  "image": [
+    "https://gitsync.md/social/blog/publish-obsidian-quartz-iphone.png"
+  ],
+  "datePublished": "2026-11-22",
+  "dateModified": "2026-11-22",
+  "author": {
+    "@type": "Person",
+    "name": "Cody Bontecou",
+    "url": "https://gitsync.md/about"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Cody Bontecou"
+  },
+  "mainEntityOfPage": "https://gitsync.md/blog/publish-obsidian-quartz-iphone"
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../site.css">
+<link rel="stylesheet" href="../content.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://gitsync.md/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Guides",
+      "item": "https://gitsync.md/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Publish Obsidian with Quartz",
+      "item": "https://gitsync.md/blog/publish-obsidian-quartz-iphone"
+    }
+  ]
+}
+</script>
+</head>
+<body id="top">
+<a class="skip-link" href="#main">Skip to content</a>
+<svg class="icon-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 5l7 7-7 7"/></symbol>
+  <symbol id="i-branch" viewBox="0 0 24 24"><circle cx="6" cy="5" r="2.5"/><circle cx="6" cy="19" r="2.5"/><circle cx="18" cy="5" r="2.5"/><path d="M6 7.5v9M18 7.5v1a5 5 0 0 1-5 5H6"/></symbol>
+  <symbol id="i-external" viewBox="0 0 24 24"><path d="M6 18 18 6M6 6h12v12"/></symbol>
+</svg>
+
+<header class="site-header">
+  <nav class="shell navigation" aria-label="Main navigation">
+    <a class="brand" href="/" aria-label="GitSync.md home">gitsync<span class="brand-extension">.md</span></a>
+    <div class="nav-links"><a href="/#app">The app</a><a href="/#workflow">How it works</a><a href="/blog/" class="is-active">Guides</a><a href="/compare/obsidian-sync-vs-git">Compare</a><a href="/#faq">FAQ</a></div>
+    <a class="button button-small" href="/#download">Get the app</a>
+  </nav>
+</header>
+
+<main id="main">
+<div class="container guide-layout">
+      <header class="article-hero">
+        <div class="article-title">
+        <nav class="eyebrow article-breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li><a href="/blog/">Guides</a></li><li aria-current="page">Publish Obsidian with Quartz</li></ol></nav>
+        <h1>Publish Obsidian notes with Quartz from your iPhone<span class="accent">.</span></h1>
+        <p class="subtitle"><a href="https://quartz.jzhao.xyz/">Quartz</a> turns a folder of Markdown notes into a static website, and GitHub Pages can host that site for free. You set Quartz up once on a computer. After that you write in Obsidian on your iPhone or iPad, push with GitSync.md, and GitHub rebuilds the site for you.</p>
+        <div class="meta-line"><span>By <a href="/about" rel="author">Cody Bontecou</a></span>
+          <span>November 22, 2026</span>
+          <span>Tutorial</span>
+          <span>iPhone + iPad</span>
+        </div>
+      </div>
+      </header>
+      <aside class="guide-aside" aria-label="Guide sidebar">
+        <section class="side-note" aria-label="Article notes">
+        <h2>Details checked</h2>
+        <p>Quartz steps follow the Quartz 5 docs (the site showed v5.2.0 on November 22, 2026):</p>
+        <ul>
+          <li>Node 22 or later to build locally; Node 24 in the workflow</li>
+          <li><code>quartz.config.yaml</code> and the <code>v5</code> branch</li>
+          <li>GitHub Actions as the Pages source</li>
+          <li>GitSync.md only clones, commits and pushes; GitHub builds the site</li>
+        </ul>
+      </section>
+        <div class="guide-aside-sticky">
+        <nav class="toc-card" aria-label="Article outline">
+        <div class="toc-title">What this covers</div>
+        <ol>
+          <li><a href="#how-it-fits">How the pieces fit</a></li>
+          <li><a href="#public">What will be public</a></li>
+          <li><a href="#setup">One-time setup on a computer</a></li>
+          <li><a href="#phone">Put the repo on your iPhone</a></li>
+          <li><a href="#obsidian">Open it in Obsidian</a></li>
+          <li><a href="#daily-loop">Daily loop: write, push, live</a></li>
+          <li><a href="#troubleshooting">Troubleshooting</a></li>
+          <li><a href="#vs-publish">Quartz vs Obsidian Publish</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ol>
+      </nav>
+        <div class="aside-cta aside-cta-wide">
+          <p class="aside-cta-title">Real Git on your iPhone.</p>
+          <p class="aside-cta-price">iPhone + iPad: $9.99 once · No subscription</p>
+          <a class="aside-cta-button" href="/v/web-homepage-125" target="_blank" rel="noopener">Download on the App Store</a>
+        </div>
+        </div>
+      </aside>
+      <article class="article-body">
+        <div class="tldr">
+          <div class="tldr-title">Short version</div>
+          <ol>
+            <li>Decide what is public first: a GitHub Pages site is on the open internet.</li>
+            <li>On a computer, create a repo from the Quartz template, set <code>baseUrl</code>, add the <code>deploy.yml</code> workflow, and set <strong>Settings → Pages → Source</strong> to <strong>GitHub Actions</strong>.</li>
+            <li>Push once and confirm the site loads at <code>&lt;user&gt;.github.io/&lt;repo&gt;</code>.</li>
+            <li>On your iPhone or iPad, clone the repo with GitSync.md into <strong>On My iPhone → Obsidian</strong> and open it in Obsidian.</li>
+            <li>Write notes in <code>content/</code>, then commit and push in GitSync.md.</li>
+            <li>Watch the GitHub Actions run, then reload your site.</li>
+          </ol>
+        </div>
+
+        <p>This guide uses <strong>Quartz 5</strong>. Older tutorials describe Quartz v4 (<code>quartz.config.ts</code>, a <code>v4</code> branch). Quartz 5 uses <code>quartz.config.yaml</code>, a <code>v5</code> branch and a plugin install step, so don't mix the two. The commands below come from the <a href="https://quartz.jzhao.xyz/getting-started/installation">Quartz installation docs</a> and <a href="https://quartz.jzhao.xyz/hosting">hosting docs</a>; check them for changes before you start.</p>
+
+        <h2 id="how-it-fits">How the pieces fit</h2>
+        <div class="flow-diagram" aria-label="Publishing workflow from Obsidian on iPhone to a GitHub Pages site">
+          <div class="flow-node">Obsidian (iPhone)</div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-node highlight">GitSync.md commit + push</div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-node">GitHub repo</div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-node">GitHub Actions (Quartz build)</div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-node">GitHub Pages site</div>
+        </div>
+        <p>The phone never builds anything. GitSync.md clones the repository, Obsidian edits the Markdown files, and GitSync.md commits and pushes your changes. It doesn't run Node or Quartz and can't preview the site. The build happens on GitHub's servers in an Actions workflow. For the clone-and-edit part, see <a href="/blog/obsidian-git-iphone-ipad">syncing Obsidian with Git on iPhone and iPad</a> and <a href="/blog/sync-obsidian-github">syncing Obsidian with GitHub on every device</a>.</p>
+
+        <h2 id="public">What will be public</h2>
+        <div class="callout warning">
+          <span class="callout-label">Read this before you set anything up</span>
+          <p>GitHub says Pages sites are publicly available on the internet, even if the repository behind them is private (where your plan allows that). See <a href="https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages">About GitHub Pages</a>, and check GitHub's docs for which plans can publish Pages from a private repository. Treat everything that reaches the built site as published.</p>
+        </div>
+        <p>Quartz has several ways to keep notes out of the site. They are described on its <a href="https://quartz.jzhao.xyz/features/private-pages">Private Pages</a> docs page:</p>
+        <ul>
+          <li><strong>Drafts.</strong> By default Quartz leaves out any note with <code>draft: true</code> in its frontmatter. Setting <code>configuration.drafts.publish: true</code> publishes drafts anyway, so leave that off.</li>
+          <li><strong>Publish only what you mark.</strong> The <code>ExplicitPublish</code> plugin is in the default <code>quartz.config.yaml</code> but disabled. Set <code>enabled: true</code> on its entry and only notes with <code>publish: true</code> in frontmatter are published. That is the safest choice for a vault with private notes.</li>
+          <li><strong><code>ignorePatterns</code>.</strong> A list in <code>quartz.config.yaml</code> of <a href="https://github.com/mrmlnc/fast-glob#pattern-syntax">fast-glob</a> patterns that Quartz doesn't read at all, for example <code>**/private</code> for any file or folder named <code>private</code>.</li>
+          <li><strong>Attachments.</strong> By default (<code>publishAssets: "all"</code>) every non-Markdown file in <code>content/</code> (images, PDFs, audio) is published, even if only an unpublished note uses it. Set <code>publishAssets: "referenced"</code> to publish only files that published pages link to or embed.</li>
+        </ul>
+        <div class="callout warning">
+          <span class="callout-label">Hidden from the site is not hidden from the repo</span>
+          <p>These settings only affect the built site. If the repository is public, anyone can read the Markdown source. The Quartz docs say to also add private paths to your <code>.gitignore</code> so they are never committed. Quartz's own <code>.gitignore</code> already lists <code>private/</code>, but a folder ignored by Git is also not backed up or synced by Git, so notes you must keep private are better in a separate private repository.</p>
+        </div>
+        <p>Keep secrets out of the repo too: no tokens, passwords or API keys in notes or config files. If one is committed, adding an ignore rule doesn't remove it from history; revoke it first, as <a href="/blog/obsidian-gitignore#secrets">the .gitignore guide</a> explains.</p>
+
+        <h2 id="setup">One-time setup on a computer</h2>
+        <p>You need Node.js 22 or later, Git and a GitHub account, per the <a href="https://quartz.jzhao.xyz/getting-started/installation">installation docs</a>. Node and npm run on the computer, not on your phone.</p>
+
+        <div class="step-card" data-step="Step 1">
+          <h3>Create the repo and preview locally</h3>
+          <p>On the <a href="https://github.com/jackyzha0/quartz">Quartz repository</a>, use the template (the docs' Option A) to create your own repository, for example <code>my-garden</code>. Then clone it and run the setup:</p>
+          <pre tabindex="0" role="region" aria-label="Clone and create"><code>git clone https://github.com/&lt;your-username&gt;/my-garden.git
+cd my-garden
+npm i
+npx quartz create</code></pre>
+          <p>The <code>create</code> wizard asks for a template (<code>default</code>, <code>obsidian</code>, <code>ttrpg</code>, <code>blog</code> or <code>docs</code>), how to fill <code>content/</code>, a base URL without <code>https://</code>, and a link resolution strategy. Then preview the site:</p>
+          <pre tabindex="0" role="region" aria-label="Preview"><code>npx quartz build --serve</code></pre>
+          <p>Open <code>http://localhost:8080</code>. It reloads when files change.</p>
+        </div>
+
+        <div class="step-card" data-step="Step 2">
+          <h3>Set <code>baseUrl</code> before the first deploy</h3>
+          <p>In <code>quartz.config.yaml</code>, <code>baseUrl</code> is the address where your site lives, without the protocol or leading and trailing slashes. For a GitHub Pages project site that is <code>&lt;user&gt;.github.io/&lt;repo&gt;</code>, for example <code>example-user.github.io/my-garden</code>. The <a href="https://quartz.jzhao.xyz/hosting">hosting docs</a> say the RSS feed and sitemap need it: "Make sure you set this before deploying!"</p>
+        </div>
+
+        <div class="step-card" data-step="Step 3">
+          <h3>Add the deploy workflow</h3>
+          <p>Create <code>.github/workflows/deploy.yml</code> at the repository root with the workflow from the <a href="https://quartz.jzhao.xyz/hosting">GitHub Pages section of the hosting docs</a>. On November 22, 2026 it read:</p>
+          <pre tabindex="0" role="region" aria-label="deploy.yml"><code>name: Deploy Quartz site to GitHub Pages
+
+on:
+  push:
+    branches:
+      - v5
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0 # Fetch all history for git info
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+      - name: Cache dependencies
+        uses: actions/cache@v5
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: Cache Quartz plugins
+        uses: actions/cache@v5
+        with:
+          path: .quartz/plugins
+          key: ${{ runner.os }}-plugins-${{ hashFiles('quartz.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-plugins-
+      - name: Install Dependencies
+        run: npm ci
+      - name: Install Quartz plugins
+        run: npx quartz plugin install
+      - name: Build Quartz
+        run: npx quartz build
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+  deploy:
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4</code></pre>
+          <p>In plain words:</p>
+          <ul>
+            <li><code>on: push: branches: - v5</code> runs the workflow when you push to <code>v5</code>, the branch of the Quartz 5 template. <strong>This must match your repository's default branch.</strong> If yours is named differently, change it here.</li>
+            <li><code>permissions</code> lets the job publish to Pages. <code>concurrency</code> keeps two deploys from running at once.</li>
+            <li><code>fetch-depth: 0</code> downloads the full Git history so Quartz can read each note's dates from Git.</li>
+            <li><code>setup-node</code> with <code>node-version: 24</code> installs Node on the GitHub runner. The two cache steps just speed up later runs.</li>
+            <li><code>npm ci</code> installs the dependencies, <code>npx quartz plugin install</code> installs Quartz's plugins, and <code>npx quartz build</code> builds the site into <code>public/</code>.</li>
+            <li>The upload step packages <code>public/</code>, and the <code>deploy</code> job publishes it with <code>actions/deploy-pages</code>.</li>
+          </ul>
+          <p>Action versions change. If the hosting docs show newer ones when you read this, use theirs.</p>
+        </div>
+
+        <div class="step-card" data-step="Step 4">
+          <h3>Turn on GitHub Pages and push</h3>
+          <p>In your repository, open <strong>Settings → Pages</strong> and set <strong>Source</strong> to <strong>GitHub Actions</strong> (GitHub: <a href="https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site">Configuring a publishing source</a>). Then commit and push. The Quartz docs use <code>npx quartz sync</code>; for a first push with nothing to pull, they give:</p>
+          <pre tabindex="0" role="region" aria-label="First push"><code>npx quartz sync --no-pull</code></pre>
+          <p>A plain <code>git add</code>, <code>git commit</code> and <code>git push</code> works too. Watch the run in the repository's <strong>Actions</strong> tab. When it finishes, your site should be at <code>&lt;user&gt;.github.io/&lt;repo&gt;</code>.</p>
+        </div>
+
+        <div class="step-card" data-step="Step 5">
+          <h3>Check what got committed</h3>
+          <p>Run <code>git status</code> and make sure the build output (<code>public/</code>), <code>node_modules/</code> and Quartz's caches aren't tracked. Quartz's own <a href="https://github.com/jackyzha0/quartz">.gitignore</a> lists <code>public</code>, <code>node_modules</code>, <code>.quartz-cache</code>, <code>.quartz/</code>, <code>.obsidian</code> and <code>private/</code>, so keep those lines. If you add rules, see <a href="/blog/obsidian-gitignore">the Obsidian .gitignore guide</a>.</p>
+        </div>
+
+        <h2 id="phone">Put the repo on your iPhone or iPad</h2>
+        <ol>
+          <li>Install GitSync.md from the App Store (iPhone and iPad) or <a href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd">Google Play</a> (Android), and sign in to GitHub.</li>
+          <li>When it asks for a default save location, choose <strong>On My iPhone → Obsidian</strong> (on iPad, <strong>On My iPad → Obsidian</strong>). The <a href="/blog/obsidian-git-ios-setup">Obsidian Git iOS setup guide</a> shows this step.</li>
+          <li>Clone your Quartz repository. The <a href="/blog/clone-github-repository-iphone">clone guide</a> covers HTTPS and SSH remotes in detail.</li>
+        </ol>
+        <p><a href="/v/web-homepage-125">Get GitSync.md for iPhone and iPad →</a> · <a href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd">Get it on Google Play →</a></p>
+
+        <h2 id="obsidian">Open it in Obsidian</h2>
+        <p>In Obsidian's vault picker choose <strong>Open folder as vault</strong> and select the cloned folder. The repository root becomes the vault, so Quartz's own source files (<code>quartz/</code>, <code>package.json</code>, the workflow) show up next to your notes. Your notes belong in <code>content/</code>.</p>
+        <div class="callout warning">
+          <span class="callout-label">Avoid nested vault confusion</span>
+          <p>Open the repository root, the folder that contains <code>.git</code>, not its parent or a subfolder. See the nested-vault warning in <a href="/blog/obsidian-git-iphone-ipad">the Obsidian Git guide</a>.</p>
+        </div>
+        <p>Two settings under <strong>Settings → Files and links</strong> make this tidier (see <a href="https://obsidian.md/help/settings">Obsidian's settings help</a>):</p>
+        <ul>
+          <li><strong>Excluded files:</strong> add <code>quartz</code> and other non-note folders. Obsidian hides excluded files in Search, Graph view and Unlinked mentions. This only changes what Obsidian shows; Git and Quartz are unaffected.</li>
+          <li><strong>Default location for new notes:</strong> choose a folder you specify and enter <code>content</code>, so new notes land where Quartz reads them.</li>
+        </ul>
+
+        <h2 id="daily-loop">Daily loop: write, push, live</h2>
+        <ol>
+          <li>In Obsidian, create <code>content/hello-from-iphone.md</code> (a made-up example):
+          <pre tabindex="0" role="region" aria-label="content/hello-from-iphone.md"><code>---
+title: Hello from my iPhone
+---
+
+This note was written on a phone. See also [[index]].</code></pre>
+          Quartz converts <code>[[wikilinks]]</code> into normal links (<a href="https://quartz.jzhao.xyz/features/Obsidian-compatibility">Obsidian compatibility</a>). Link to a note that exists in <code>content/</code>; <code>[[index]]</code> works if your site has an <code>index.md</code>.</li>
+          <li>Open GitSync.md, review the changed file, then commit and push. Or tap a link in a note:
+          <pre tabindex="0" role="region" aria-label="Sync URL"><code>syncmd://x-callback-url/sync?repo=my-garden&amp;message=Add%20hello%20note</code></pre>
+          <code>sync</code> pulls first, commits local changes with your message and pushes. The <code>repo</code> value should match the folder name shown in GitSync.md.</li>
+          <li>Open the repository's <strong>Actions</strong> tab on GitHub in your phone's browser. The deploy workflow starts from the push.</li>
+          <li>When the run is green, reload <code>&lt;user&gt;.github.io/&lt;repo&gt;/hello-from-iphone</code>.</li>
+        </ol>
+        <p>Optionally, build a <a href="/blog/shortcuts-automation-ios">Shortcut</a> that runs GitSync.md's sync action so publishing is one tap. It is still something you trigger. For what automatic sync can and can't do on iOS, read <a href="/blog/obsidian-git-background-sync-iphone">the background sync guide</a>.</p>
+
+        <h2 id="troubleshooting">Troubleshooting</h2>
+        <h3>The site shows a 404 or old content</h3>
+        <p>Check <strong>Settings → Pages → Source</strong> is <strong>GitHub Actions</strong>. Confirm the workflow's <code>branches:</code> value matches the branch you pushed to, then look in the <strong>Actions</strong> tab for a failed run. Per the <a href="https://quartz.jzhao.xyz/hosting">hosting docs</a>, hosted builds fail on a broken plugin instead of publishing a site without it; run <code>npx quartz plugin doctor</code> on your computer to find the cause.</p>
+        <h3>Links or RSS point to the wrong place</h3>
+        <p><code>baseUrl</code> is probably wrong or missing in <code>quartz.config.yaml</code>. It must be the deployed address without <code>https://</code> or slashes (<a href="https://quartz.jzhao.xyz/hosting">hosting docs</a>).</p>
+        <h3>A draft got published</h3>
+        <p>Check the note has <code>draft: true</code> (or has no <code>publish: true</code> if you enabled <code>ExplicitPublish</code>) and that <code>drafts.publish</code> isn't <code>true</code>. Images and PDFs also publish by default; see <code>publishAssets</code> above (<a href="https://quartz.jzhao.xyz/features/private-pages">Private Pages</a>). A page that was already live stays readable in the repository's history, so remove sensitive content from Git as well.</p>
+        <h3>A push is rejected when you edit the workflow from your phone</h3>
+        <p>A token that changes files under <code>.github/workflows</code> needs the <code>workflow</code> scope; ordinary note edits don't. The scope note is in <a href="/blog/obsidian-git-ios-setup">the Personal Access Token guide</a>. Simpler: change the workflow on your computer.</p>
+        <h3>A pull conflict after editing on two devices</h3>
+        <p>Follow <a href="/blog/obsidian-git-merge-conflicts-iphone">Fix Obsidian Git merge conflicts on iPhone</a>, then push again.</p>
+
+        <h2 id="vs-publish">Quartz vs Obsidian Publish</h2>
+        <div class="comparison-scroll" role="region" aria-label="Quartz compared with Obsidian Publish" tabindex="0"><table class="comparison-table"><thead><tr><th></th><th>Quartz + GitHub Pages</th><th>Obsidian Publish</th></tr></thead><tbody>
+          <tr><th scope="row">Hosting and cost</th><td>Free static site you host yourself on GitHub Pages (plan limits apply to private repos)</td><td>Hosted service by Obsidian; see <a href="https://obsidian.md/publish">Obsidian's Publish page</a> for the current price</td></tr>
+          <tr><th scope="row">Who builds it</th><td>GitHub Actions runs Quartz when you push</td><td>Obsidian's service</td></tr>
+          <tr><th scope="row">Publishing from mobile</th><td>Commit and push with a Git client such as GitSync.md</td><td>Check Obsidian's Publish page for how it works in the mobile app</td></tr>
+        </tbody></table></div>
+
+        <h2 id="faq">FAQ</h2>
+        <h3>Do I need a computer?</h3>
+        <p>Yes, once. Quartz setup needs Node.js 22 or later and a terminal. After that, writing and publishing happen from your phone.</p>
+        <h3>Can the GitHub repository be private?</h3>
+        <p>Yes, but the published site is still public, and GitHub limits which plans can use Pages with private repositories. See <a href="https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages">About GitHub Pages</a>. GitSync.md can clone private repositories.</p>
+        <h3>Can I use Cloudflare Pages or Netlify instead?</h3>
+        <p>Yes. The <a href="https://quartz.jzhao.xyz/hosting">Quartz hosting docs</a> have sections for other hosts, and the phone workflow (commit and push) stays the same. Their build settings differ from the GitHub workflow above, so follow the docs for your host.</p>
+        <h3>Does this work on Android?</h3>
+        <p>The push-to-publish loop is the same with a Git client on Android. See <a href="/blog/obsidian-git-android">Obsidian Git on Android</a> for the options, including GitSync.md on <a href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd">Google Play</a>.</p>
+
+        <h2>Related guides</h2>
+        <div class="related-card">
+          <ul>
+            <li><a href="/blog/obsidian-git-iphone-ipad">Sync Obsidian with Git on iPhone and iPad</a></li>
+            <li><a href="/blog/sync-obsidian-github">Sync Obsidian with GitHub on every device</a></li>
+            <li><a href="/blog/obsidian-gitignore">Obsidian .gitignore: choose what to sync</a></li>
+            <li><a href="/blog/clone-github-repository-iphone">Clone a GitHub repository on iPhone</a></li>
+          </ul>
+        </div>
+      </article>
+    </div>
+
+  <section class="content-download" aria-labelledby="download-heading">
+    <div class="shell content-download-layout">
+      <div>
+        <p class="eyebrow"><span class="blue-square" aria-hidden="true"></span>Take your work with you.</p>
+        <h2 id="download-heading">REAL GIT.<br>WITHIN REACH.</h2>
+        <p class="content-download-description">Your files. Your commits. Your remote.<br>Get GitSync.md for iPhone, iPad, and Android.</p>
+      </div>
+      <div>
+        <div class="store-links" role="group" aria-label="Download GitSync.md">
+          <a class="store-badge store-badge-apple" href="/v/web-homepage-125" target="_blank" rel="noopener"><img src="../assets/store-badges/download-on-app-store.svg" width="120" height="40" alt="Download GitSync.md on the App Store" decoding="async"></a>
+          <a class="store-badge store-badge-google" href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener"><img src="../assets/store-badges/get-it-on-google-play.png" width="646" height="250" alt="Get GitSync.md on Google Play" decoding="async"></a>
+        </div>
+        <p class="purchase-note"><span>iPhone + iPad: $9.99 once. Unlimited repositories.</span><span>Android: $9.99 once. All features included.</span><span>No subscriptions.</span></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="shell footer-layout">
+    <a class="brand" href="/" aria-label="GitSync.md home">gitsync<span class="brand-extension">.md</span></a>
+    <p>Independently built by <a href="https://codybontecou.com" target="_blank" rel="noopener">Cody Bontecou</a>.<br>© 2026 GitSync.md</p>
+    <div class="footer-links"><a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener">Source</a><a href="/blog/">Guides</a><a href="/compare/obsidian-sync-vs-git">Compare</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
+    <a class="back-top" href="#top" aria-label="Back to top">↑</a>
+  </div>
+</footer>
+<!-- Cloudflare Web Analytics -->
+<script>
+(function () {
+  var productionHosts = {
+    'instareply.isolated.tech': true,
+    'voxboard.isolated.tech': true,
+    'healthmd.isolated.tech': true,
+    'isome.isolated.tech': true,
+    'gitsyncmd.app': true,
+    'gitsync.md': true,
+    'timemd.isolated.tech': true,
+    'imghost.isolated.tech': true
+  };
+
+  if (!productionHosts[window.location.hostname]) {
+    return;
+  }
+
+  function loadCloudflareBeacon() {
+    if (document.querySelector('script[src="https://static.cloudflareinsights.com/beacon.min.js"]')) {
+      return;
+    }
+
+    var script = document.createElement('script');
+    script.defer = true;
+    script.src = 'https://static.cloudflareinsights.com/beacon.min.js';
+    script.setAttribute('data-cf-beacon', '{"token":"090f363070334cddad5c5cc1509b8807"}');
+    document.head.appendChild(script);
+  }
+
+  fetch('https://img-host.costream.workers.dev/analytics-gate', {
+    cache: 'no-store',
+    mode: 'cors',
+    credentials: 'omit'
+  })
+    .then(function (response) {
+      return response.ok ? response.json() : { track: false };
+    })
+    .then(function (gate) {
+      if (gate && gate.track) {
+        loadCloudflareBeacon();
+      }
+    })
+    .catch(function () {
+      // Fail closed so excluded IPs are not accidentally tracked.
+    });
+})();
+</script>
+<!-- End Cloudflare Web Analytics -->
+</body>
+</html>

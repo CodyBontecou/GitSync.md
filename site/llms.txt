@@ -38,6 +38,10 @@ For automation on a user's device, consult the Shortcuts guide and agent instruc
 - [Sync Obsidian with GitHub on every device](https://gitsync.md/blog/sync-obsidian-github): Private repository, desktop Git and Obsidian Git plugin settings, then iPhone, iPad and Android routes and a two-way verification.
 - [Back up an Obsidian vault with Git](https://gitsync.md/blog/obsidian-backup-git): Sync vs backup vs version history, a backup routine that includes notes written on iPhone, tested commands to restore a changed note, a deleted note or a folder, and a checklist.
 
+## Publish
+
+- [Publish Obsidian notes with Quartz from your iPhone](https://gitsync.md/blog/publish-obsidian-quartz-iphone): Quartz 5 and GitHub Pages set up once on a computer, then publish from a phone with a commit and push; what stays public and what stays private.
+
 ## Compare syncing methods
 
 - [Best Git clients for iPhone and iPad (2026)](https://gitsync.md/compare/best-git-client-ios): GitSync.md, Working Copy, Phogit, GitHub Mobile, a-Shell and iSH compared by job, push pricing, Files access, authentication and Android, with sources and a checked date.
