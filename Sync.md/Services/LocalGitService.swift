@@ -243,8 +243,6 @@ private func git2ErrorMessage(fallback: String? = nil) -> String {
     return String(localized: "Unknown git error")
 }
 
-/// Call a libgit2 function and throw if it returns an error code.
-@discardableResult
 /// The commit a direct reference points at. A symbolic reference (such as
 /// `refs/remotes/origin/HEAD`) has no direct target, and force-unwrapping
 /// `git_reference_target` for one crashed every pull (issue #111).
@@ -255,6 +253,8 @@ nonisolated private func directTarget(of reference: OpaquePointer?, name: String
     return oid
 }
 
+/// Call a libgit2 function and throw if it returns an error code.
+@discardableResult
 private func git2Check(_ code: Int32, context: String = "", fallback: String? = nil) throws -> Int32 {
     guard code >= 0 else {
         let msg = git2ErrorMessage(fallback: fallback)

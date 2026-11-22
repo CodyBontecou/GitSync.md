@@ -8,10 +8,14 @@ final class PremiumBackgroundProcessingExecution {
     private var operation: Task<Void, Never>?
     private weak var coordinator: BackgroundSyncCoordinator?
     private var completed = false
+    private let onExpire: @MainActor () -> Void
 
-    init(task: any PremiumBackgroundProcessingTask, coordinator: BackgroundSyncCoordinator) {
+    init(task: any PremiumBackgroundProcessingTask,
+         coordinator: BackgroundSyncCoordinator,
+         onExpire: @escaping @MainActor () -> Void = {}) {
         backgroundTask = task
         self.coordinator = coordinator
+        self.onExpire = onExpire
         task.expirationHandler = { [weak self] in self?.expire() }
     }
 
@@ -24,6 +28,7 @@ final class PremiumBackgroundProcessingExecution {
 
     private func expire() {
         guard !completed else { return }
+        onExpire()
         operation?.cancel()
         coordinator?.cancelProcessingReconciliation()
         finish(success: false)
@@ -268,6 +273,7 @@ final class PremiumRuntime {
     }
 
     func cancelForegroundReconciliation() {
+        clearAutomaticPassMarker()
         coordinator.cancelForegroundReconciliation()
     }
 
@@ -286,6 +292,14 @@ final class PremiumRuntime {
         automaticSyncPausedAfterCrash = false
         defaults.removeObject(forKey: Self.automaticSyncPausedAfterCrashKey)
         updateBackgroundProcessingSchedule()
+    }
+
+    /// A pass interrupted on purpose (the scene went to the background, the
+    /// BGTask or push-wake budget ran out) may not unwind before iOS suspends
+    /// and later kills the process. That is not a crash, so the next launch
+    /// must not pause automatic sync for it.
+    private func clearAutomaticPassMarker() {
+        defaults.removeObject(forKey: Self.automaticPassInFlightKey)
     }
 
     /// Runs automatic Git work with the in-flight marker persisted, so a
@@ -325,6 +339,7 @@ final class PremiumRuntime {
         // Cancel by the ownership hint captured when work began. Recomputing
         // repository matches here could miss a flight if its branch or local
         // inclusion changed while the notification was running.
+        clearAutomaticPassMarker()
         coordinator.cancelPush(hintID: event.hintID)
     }
 
@@ -351,7 +366,11 @@ final class PremiumRuntime {
 
     private func handleBackgroundProcessing(_ task: any PremiumBackgroundProcessingTask) {
         updateBackgroundProcessingSchedule()
-        let execution = PremiumBackgroundProcessingExecution(task: task, coordinator: coordinator)
+        let execution = PremiumBackgroundProcessingExecution(
+            task: task,
+            coordinator: coordinator,
+            onExpire: { [weak self] in self?.clearAutomaticPassMarker() }
+        )
         let budget = task.kind?.approximateBudget
         execution.start { [weak self] in
             guard let self else { return false }

@@ -1020,8 +1020,6 @@ enum UITestGitFixtures {
         try check(git_stash_save(&stashOID, repo, signature, "Saved Git Tools note", 0), "save fixture stash")
     }
 
-    /// Both branches already name the same tree. Changing symbolic HEAD is an
-    /// independent Git client operation and must not touch any worktree bytes.
     /// Issue #111: points HEAD straight at its commit (detached), the state an
     /// interrupted rebase leaves behind. The clone's symbolic
     /// `refs/remotes/origin/HEAD` stays, which is what pull used to crash on.
@@ -1032,6 +1030,8 @@ enum UITestGitFixtures {
         try check(git_repository_detach_head(repo), "detach HEAD")
     }
 
+    /// Both branches already name the same tree. Changing symbolic HEAD is an
+    /// independent Git client operation and must not touch any worktree bytes.
     static func selectExistingFeatureHEAD(atPath path: String) throws {
         var repo: OpaquePointer?
         defer { if let repo { git_repository_free(repo) } }

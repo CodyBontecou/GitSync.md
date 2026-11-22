@@ -3808,6 +3808,82 @@ final class SyncMDTests: XCTestCase {
         XCTAssertFalse(relaunch.runtime.showsAutomaticSyncPausedNotice)
     }
 
+    /// A pass the scene cancelled by going to the background can stay stuck in
+    /// libgit2 until iOS suspends and kills the app. That is not a crash.
+    @MainActor
+    func testBackgroundedAutomaticPassDoesNotPauseNextLaunch() async {
+        let defaultsSuite = "premium-runtime-crash-backgrounded-\(UUID().uuidString)"
+        let defaults = UserDefaults(suiteName: defaultsSuite)!
+        var repo = RepoConfig(repoURL: "owner/repo", branch: "main", authorName: "One",
+                              authorEmail: "one@example.com", vaultFolderName: "one")
+        repo.gitState.commitSHA = String(repeating: "1", count: 40)
+        let harness = await PremiumRuntimeTestHarness.make(
+            defaultsSuite: defaultsSuite,
+            repo: repo,
+            backgroundScheduler: NoopPremiumBackgroundProcessingScheduler()
+        )
+        defer { harness.cleanup() }
+        let lifecycle = ForegroundSyncLifecycle(runtime: harness.runtime)
+        await harness.runtime.setAutomaticallySyncAllRepositories(true)
+        let gate = AsyncGate()
+        harness.repository.executePullOnlyGate = gate
+
+        lifecycle.scenePhaseChanged(to: .active)
+        await waitUntil { harness.repository.executePullOnlyCallCount == 1 }
+        XCTAssertTrue(defaults.bool(forKey: PremiumRuntime.automaticPassInFlightKey),
+                      "A running automatic pass holds the marker")
+
+        // Backgrounded while Git work is still blocked: iOS may now suspend
+        // and later kill the process before the pass returns.
+        lifecycle.scenePhaseChanged(to: .background)
+        XCTAssertFalse(defaults.bool(forKey: PremiumRuntime.automaticPassInFlightKey))
+
+        let relaunch = await PremiumRuntimeTestHarness.make(
+            defaultsSuite: defaultsSuite,
+            repo: repo,
+            backgroundScheduler: NoopPremiumBackgroundProcessingScheduler()
+        )
+        XCTAssertFalse(relaunch.runtime.automaticSyncPausedAfterCrash)
+        XCTAssertFalse(relaunch.runtime.showsAutomaticSyncPausedNotice)
+        await gate.open()
+    }
+
+    @MainActor
+    func testExpiredBackgroundProcessingPassDoesNotPauseNextLaunch() async {
+        let defaultsSuite = "premium-runtime-crash-bgtask-\(UUID().uuidString)"
+        let defaults = UserDefaults(suiteName: defaultsSuite)!
+        var repo = RepoConfig(repoURL: "owner/repo", branch: "main", authorName: "One",
+                              authorEmail: "one@example.com", vaultFolderName: "one")
+        repo.gitState.commitSHA = String(repeating: "1", count: 40)
+        let scheduler = RecordingBackgroundProcessingScheduler()
+        let harness = await PremiumRuntimeTestHarness.make(
+            defaultsSuite: defaultsSuite,
+            repo: repo,
+            backgroundScheduler: scheduler
+        )
+        defer { harness.cleanup() }
+        await harness.runtime.setAutomaticallySyncAllRepositories(true)
+        let gate = AsyncGate()
+        harness.repository.executePullOnlyGate = gate
+
+        let task = RecordingBackgroundProcessingTask()
+        scheduler.invoke(task)
+        await waitUntil { harness.repository.executePullOnlyCallCount == 1 }
+        XCTAssertTrue(defaults.bool(forKey: PremiumRuntime.automaticPassInFlightKey))
+
+        task.expirationHandler?()
+        XCTAssertFalse(defaults.bool(forKey: PremiumRuntime.automaticPassInFlightKey),
+                       "An expired BGTask is an interruption, not a crash")
+
+        let relaunch = await PremiumRuntimeTestHarness.make(
+            defaultsSuite: defaultsSuite,
+            repo: repo,
+            backgroundScheduler: NoopPremiumBackgroundProcessingScheduler()
+        )
+        XCTAssertFalse(relaunch.runtime.automaticSyncPausedAfterCrash)
+        await gate.open()
+    }
+
     @MainActor
     func testTurningOffBackgroundSyncClearsCrashPause() async {
         let defaultsSuite = "premium-runtime-crash-off-\(UUID().uuidString)"
