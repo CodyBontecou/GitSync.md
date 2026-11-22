@@ -120,6 +120,7 @@
         </div>
       </aside>
       <article class="article-body">
+        <div class="callout tip"><span class="callout-label">Generate your file</span><p>Want the file instead of the explanation? The <a href="/tools/obsidian-gitignore-generator">Obsidian .gitignore generator</a> builds a commented one from the choices below, and handles the folder-versus-contents rule for you.</p></div>
         <div class="tldr"><div class="tldr-title">Pick a policy first</div><ul>
           <li><strong>Notes only:</strong> ignore the entire <code>.obsidian/</code> directory and configure plugins separately on each device.</li>
           <li><strong>Share selected settings:</strong> track the configuration you have reviewed while ignoring workspace state and sensitive plugin data.</li>
@@ -190,6 +191,7 @@ git check-ignore -v -- .obsidian/workspace.json</code></pre>
         <p>Adding an ignore rule or making a later deletion commit does not erase earlier revisions. Revoke or rotate an exposed credential first. Then assess repository history, other clones, and remote copies using <a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository">GitHub’s sensitive-data removal guidance</a>.</p>
         <p>A private repository still has a provider and authorized readers. If notes need encryption where the service cannot read them, compare <a href="/compare/obsidian-sync-vs-git">Obsidian Sync and Git</a> before choosing your storage model.</p>
         <div class="related-card"><h2>Put the policy into a workflow</h2><ul>
+          <li><a href="/tools/obsidian-gitignore-generator">Generate your file</a> with the Obsidian .gitignore generator</li>
           <li><a href="/blog/sync-obsidian-windows-iphone-github">Windows and iPhone Git setup</a></li>
           <li><a href="/blog/obsidian-git-background-sync-iphone">Check automatic publication settings</a></li>
           <li><a href="/blog/obsidian-git-merge-conflicts-iphone">Resolve conflicting notes</a></li>

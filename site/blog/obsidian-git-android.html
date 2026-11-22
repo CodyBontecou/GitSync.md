@@ -213,7 +213,7 @@
         <ul>
           <li><strong>The vault is already in a Git repository.</strong> Commit and push it from your computer first. The repository root should be the vault root, the folder that contains <code>.obsidian</code>. For the desktop side, see <a href="/blog/sync-obsidian-windows-iphone-github">the Windows and GitHub workflow</a>. Its desktop steps apply to Android too.</li>
           <li><strong>Only one sync method.</strong> Turn off or exclude Google Drive, FolderSync, Syncthing, Obsidian Sync and any other folder-sync tool for this vault on the phone. Two tools rewriting the same files cause duplicate notes and confusing conflicts. Choose one of the routes above, not two. Not sure which method you want? Compare <a href="/compare/obsidian-sync-vs-git">Obsidian Sync and Git</a>. iCloud isn’t available on Android, but <a href="/compare/icloud-vs-git-obsidian">the iCloud and Git comparison</a> covers the same trade-offs.</li>
-          <li><strong>Keep workspace files out of Git.</strong> Obsidian rewrites <code>.obsidian/workspace.json</code> and <code>workspace-mobile.json</code> as you move around the app. Ignore them so every phone session doesn’t create a commit. See <a href="/blog/obsidian-gitignore">the Obsidian .gitignore guide</a>.</li>
+          <li><strong>Keep workspace files out of Git.</strong> Obsidian rewrites <code>.obsidian/workspace.json</code> and <code>workspace-mobile.json</code> as you move around the app. Ignore them so every phone session doesn’t create a commit. See <a href="/blog/obsidian-gitignore">the Obsidian .gitignore guide</a>, or generate the file with the <a href="/tools/obsidian-gitignore-generator">Obsidian .gitignore generator</a>.</li>
           <li><strong>A backup.</strong> Keep an independent copy of the vault before changing how it syncs.</li>
         </ul>
         <p>GitSync.md needs Android 9 or later.</p>
@@ -343,7 +343,7 @@
         <div class="related-card">
           <h2>Choose your next step</h2>
           <p><a href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener">Get GitSync.md on Google Play →</a></p>
-          <ul><li><a href="/blog/sync-obsidian-github">Set up GitHub sync on your computer and every other device</a></li><li><a href="/blog/obsidian-gitignore">Keep Obsidian workspace files out of Git</a></li><li><a href="/blog/obsidian-git-merge-conflicts-iphone">Understand and recover from Git conflicts</a></li><li><a href="/compare/obsidian-sync-vs-git">Compare Obsidian Sync and Git</a></li><li><a href="/blog/sync-obsidian-windows-iphone-github">Set up the desktop side with GitHub</a></li></ul>
+          <ul><li><a href="/blog/sync-obsidian-github">Set up GitHub sync on your computer and every other device</a></li><li><a href="/blog/obsidian-gitignore">Keep Obsidian workspace files out of Git</a></li><li><a href="/tools/obsidian-gitignore-generator">Generate a commented .gitignore for your vault</a></li><li><a href="/blog/obsidian-git-merge-conflicts-iphone">Understand and recover from Git conflicts</a></li><li><a href="/compare/obsidian-sync-vs-git">Compare Obsidian Sync and Git</a></li><li><a href="/blog/sync-obsidian-windows-iphone-github">Set up the desktop side with GitHub</a></li></ul>
         </div>
       </article>
     </div>
