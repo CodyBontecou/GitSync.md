@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../favicon-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<title>Sync Obsidian with GitLab on iPhone, iPad &amp; Android — GitSync.md</title>
+<meta name="description" content="Sync an Obsidian vault with GitLab on iPhone, iPad and Android: create a token or SSH key, clone with GitSync.md, check host keys and fix push errors.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Cody Bontecou">
+<meta name="theme-color" content="#ffffff">
+<link rel="canonical" href="https://gitsync.md/blog/obsidian-gitlab-sync">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="GitSync.md">
+<meta property="og:title" content="Sync Obsidian with GitLab on iPhone, iPad &amp; Android — GitSync.md">
+<meta property="og:description" content="Sync an Obsidian vault with GitLab on iPhone, iPad and Android: create a token or SSH key, clone with GitSync.md, check host keys and fix push errors.">
+<meta property="og:url" content="https://gitsync.md/blog/obsidian-gitlab-sync">
+<meta property="og:image" content="https://gitsync.md/social/blog/obsidian-gitlab-sync.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:alt" content="GitSync.md guide card: Sync Obsidian with GitLab on iPhone, iPad &amp; Android">
+<meta property="article:published_time" content="2026-11-23">
+<meta property="article:modified_time" content="2026-11-23">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Sync Obsidian with GitLab on iPhone, iPad &amp; Android — GitSync.md">
+<meta name="twitter:description" content="Real Git for your GitLab vault on iPhone, iPad and Android: token or SSH key, host-key checks and protected-branch fixes.">
+<meta name="twitter:image" content="https://gitsync.md/social/blog/obsidian-gitlab-sync.png">
+<meta name="twitter:image:alt" content="GitSync.md guide card: Sync Obsidian with GitLab on iPhone, iPad &amp; Android">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Sync Obsidian with GitLab on iPhone, iPad and Android",
+  "description": "Sync an Obsidian vault with GitLab on iPhone, iPad and Android: create a token or SSH key, clone with GitSync.md, check host keys and fix push errors.",
+  "image": [
+    "https://gitsync.md/screenshots/workflow-vault-view.png"
+  ],
+  "datePublished": "2026-11-23",
+  "dateModified": "2026-11-23",
+  "author": {
+    "@type": "Person",
+    "name": "Cody Bontecou",
+    "url": "https://gitsync.md/about"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Cody Bontecou"
+  },
+  "mainEntityOfPage": "https://gitsync.md/blog/obsidian-gitlab-sync"
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../site.css">
+<link rel="stylesheet" href="../content.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://gitsync.md/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Guides",
+      "item": "https://gitsync.md/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Obsidian and GitLab",
+      "item": "https://gitsync.md/blog/obsidian-gitlab-sync"
+    }
+  ]
+}
+</script>
+</head>
+<body id="top">
+<a class="skip-link" href="#main">Skip to content</a>
+<svg class="icon-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 5l7 7-7 7"/></symbol>
+  <symbol id="i-branch" viewBox="0 0 24 24"><circle cx="6" cy="5" r="2.5"/><circle cx="6" cy="19" r="2.5"/><circle cx="18" cy="5" r="2.5"/><path d="M6 7.5v9M18 7.5v1a5 5 0 0 1-5 5H6"/></symbol>
+  <symbol id="i-external" viewBox="0 0 24 24"><path d="M6 18 18 6M6 6h12v12"/></symbol>
+</svg>
+
+<header class="site-header">
+  <nav class="shell navigation" aria-label="Main navigation">
+    <a class="brand" href="/" aria-label="GitSync.md home">gitsync<span class="brand-extension">.md</span></a>
+    <div class="nav-links"><a href="/#app">The app</a><a href="/#workflow">How it works</a><a href="/blog/" class="is-active">Guides</a><a href="/compare/obsidian-sync-vs-git">Compare</a><a href="/#faq">FAQ</a></div>
+    <a class="button button-small" href="/#download">Get the app</a>
+  </nav>
+</header>
+
+<main id="main">
+<div class="container guide-layout">
+      <header class="article-hero">
+        <div class="article-title">
+        <nav class="eyebrow article-breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li><a href="/blog/">Guides</a></li><li aria-current="page">Obsidian and GitLab</li></ol></nav>
+        <h1>Sync Obsidian with GitLab on iPhone, iPad and Android<span class="accent">.</span></h1>
+        <p class="subtitle">Keep your vault in a GitLab project, on gitlab.com or your own server, and edit it on your phone. Create a personal access token or an SSH key, clone with GitSync.md, open the folder in Obsidian, then pull, commit and push.</p>
+        <div class="meta-line"><span>By <a href="/about" rel="author">Cody Bontecou</a></span>
+          <span>November 23, 2026</span>
+          <span>Guide</span>
+          <span>iPhone, iPad + Android</span>
+        </div>
+      </div>
+      </header>
+      <aside class="guide-aside" aria-label="Guide sidebar">
+        <section class="side-note" aria-label="Article notes">
+        <h2>Details checked</h2>
+        <p>GitLab details come from GitLab’s own documentation, linked in each section. App details match these guides:</p>
+        <ul>
+          <li>iPhone and iPad: manual remote, HTTPS token/password or SSH private key, host-key trust</li>
+          <li>Android: <strong>Any Git host</strong> with <strong>SSH key</strong>, <strong>Token</strong> or <strong>None</strong></li>
+          <li>Custom SSH ports through the <code>ssh://</code> URL form</li>
+          <li>Pushes are verified, so a rejected push shows as an error</li>
+        </ul>
+      </section>
+        <div class="guide-aside-sticky">
+        <nav class="toc-card" aria-label="Article outline">
+        <div class="toc-title">What this covers</div>
+        <ol>
+          <li><a href="#before-you-start">Before you start</a></li>
+          <li><a href="#token-or-ssh">Choose an HTTPS token or an SSH key</a></li>
+          <li><a href="#token">Create a GitLab personal access token</a></li>
+          <li><a href="#ssh-key">Or add an SSH key</a></li>
+          <li><a href="#iphone">iPhone and iPad: clone the vault</a></li>
+          <li><a href="#android">Android: clone the vault</a></li>
+          <li><a href="#open-in-obsidian">Open the folder in Obsidian</a></li>
+          <li><a href="#who-runs-git">GitSync.md or the Obsidian Git plugin?</a></li>
+          <li><a href="#verify">Verify the first round trip</a></li>
+          <li><a href="#troubleshooting">Troubleshooting</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ol>
+      </nav>
+        <div class="aside-cta aside-cta-wide">
+          <p class="aside-cta-title">Real Git for your GitLab vault.</p>
+          <p class="aside-cta-price">iPhone, iPad and Android · $9.99 once</p>
+          <a class="aside-cta-button" href="/v/web-homepage-128" target="_blank" rel="noopener">Download on the App Store</a>
+          <a class="aside-cta-button" href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener">Get it on Google Play</a>
+        </div>
+        </div>
+      </aside>
+      <article class="article-body">
+        <div class="tldr">
+          <div class="tldr-title">Short version</div>
+          <ol>
+            <li>On your computer, create a GitLab project and push the vault to it, so the project root is the vault root.</li>
+            <li>Create a personal access token with <code>read_repository</code> and <code>write_repository</code>, or add an SSH key to your GitLab account.</li>
+            <li>In GitSync.md, add the repository by URL (<strong>Enter URL Manually</strong> on iPhone and iPad, <strong>Any Git host</strong> on Android).</li>
+            <li>Clone it into the folder Obsidian uses.</li>
+            <li>Open that folder as a vault in Obsidian, then pull, edit and push.</li>
+          </ol>
+        </div>
+
+        <p>This works the same on gitlab.com and on a self-managed GitLab server. GitSync.md runs real Git on the phone, so the GitHub sign-in and the GitHub-only tools on this site don’t apply here: you give it a GitLab remote URL and a token or key instead. <a href="/v/web-homepage-128">Get GitSync.md for iPhone and iPad →</a> · <a href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener">Get it on Google Play →</a></p>
+
+        <h2 id="before-you-start">Before you start</h2>
+        <ul>
+          <li><strong>A GitLab project that holds the vault.</strong> Create it and push the vault from your computer first. The project root should be the vault root, the folder that contains <code>.obsidian</code>.</li>
+          <li><strong>GitSync.md and Obsidian on the phone.</strong> GitSync.md needs iOS or iPadOS 17 or later, or Android 9 or later.</li>
+          <li><strong>A <code>.gitignore</code> that keeps device state out.</strong> Obsidian rewrites <code>.obsidian/workspace.json</code> as you move around, which would make a commit every session. Generate a file with the <a href="/tools/obsidian-gitignore-generator">Obsidian .gitignore generator</a> before the first push.</li>
+          <li><strong>A backup.</strong> Keep an independent copy of the vault before you change how it syncs. <a href="/blog/obsidian-backup-git">Back up an Obsidian vault with Git</a> explains why sync and backup aren’t the same thing.</li>
+        </ul>
+        <div class="callout warning">
+          <span class="callout-label">Avoid nested vaults</span>
+          <p>If the project contains a folder named after the vault, and the notes are inside it, Obsidian may open the wrong level. Push a project whose root is the vault, or open the subfolder deliberately.</p>
+        </div>
+        <p>Only one app should run Git on the vault at a time. Turn off any other sync tool for this vault on the phone first. Not sure Git is the right method? See the <a href="/compare/obsidian-sync-alternatives">Obsidian Sync alternatives</a>.</p>
+
+        <h2 id="token-or-ssh">Choose an HTTPS token or an SSH key</h2>
+        <div class="comparison-scroll" role="region" aria-label="Compare GitLab HTTPS token and SSH key" tabindex="0"><table class="comparison-table"><thead><tr><th></th><th>HTTPS token</th><th>SSH key</th></tr></thead><tbody>
+<tr><td>Setup</td><td>Create a token in GitLab, paste it into the app</td><td>Make an Ed25519 key, add the public half to GitLab, give the private key to the app</td></tr>
+<tr><td>Expiry</td><td>Expires. <a href="https://docs.gitlab.com/user/profile/personal_access_tokens/" target="_blank" rel="noopener">GitLab’s default is 365 days</a>, so calendar a renewal</td><td>No expiry of its own, unless you set one in GitLab or remove the key</td></tr>
+<tr><td>First connect</td><td>Nothing extra</td><td>Check the server’s host-key fingerprint, then trust it once</td></tr>
+<tr><td>Works with the Obsidian Git plugin on mobile</td><td>Yes</td><td><a href="https://publish.obsidian.md/git-doc/Getting+Started" target="_blank" rel="noopener">No</a>, the plugin’s docs say SSH isn’t supported on mobile</td></tr>
+<tr><td>Self-managed GitLab</td><td><code>https://git.example.com/group/vault.git</code></td><td><code>ssh://git@git.example.com:2222/group/vault.git</code> if SSH uses a custom port</td></tr>
+</tbody></table></div>
+        <p>A token is simpler. An SSH key is worth it if you already use one or don’t want a token to renew. For a token limited to one vault, GitLab also documents <a href="https://docs.gitlab.com/user/project/settings/project_access_tokens/" target="_blank" rel="noopener">project access tokens</a>, which belong to a single project instead of your account. Check that page for which plans and roles can create them.</p>
+
+        <h2 id="token">Create a GitLab personal access token</h2>
+        <p>These steps follow <a href="https://docs.gitlab.com/user/profile/personal_access_tokens/" target="_blank" rel="noopener">GitLab’s personal access token documentation</a>. Menu names can shift between GitLab versions, so use that page if yours differs.</p>
+        <ol>
+          <li>In GitLab, open your avatar, then <strong>Edit profile</strong>, then <strong>Personal access tokens</strong>.</li>
+          <li>Choose to add a new token and give it a name such as <code>obsidian-phone</code>.</li>
+          <li>Set an expiry date. Tokens expire: the default is 365 days, and you can choose a shorter life.</li>
+          <li>Select the scopes <code>read_repository</code> and <code>write_repository</code>. Read lets the phone clone and pull. Write lets it push. Nothing else is needed for Git.</li>
+          <li>Create the token and copy it right away. GitLab shows it once.</li>
+        </ol>
+        <p>The username isn’t checked for a personal access token over HTTPS: any non-empty value works, per the same documentation. GitSync.md’s HTTPS form needs a username, so type your GitLab username or anything else. Never paste the token into a note: it would be committed with the vault.</p>
+        <pre tabindex="0" role="region" aria-label="Code example"><code>https://gitlab.com/you/vault.git
+https://git.example.com/group/vault.git</code></pre>
+
+        <h2 id="ssh-key">Or add an SSH key</h2>
+        <p>GitLab’s <a href="https://docs.gitlab.com/user/ssh/" target="_blank" rel="noopener">SSH key documentation</a> covers key types and where to add them. In short:</p>
+        <ol>
+          <li>Create an Ed25519 key in OpenSSH format. On a computer, <code>ssh-keygen -t ed25519 -C "obsidian-phone"</code> writes a private key and a <code>.pub</code> public key. On Android, GitSync.md can also make a key on the phone and copy its public half.</li>
+          <li>In GitLab, open your avatar, then <strong>Edit profile</strong> (or <strong>Preferences</strong>), then <strong>SSH Keys</strong>, and add the <strong>public</strong> key. Never upload the private one.</li>
+          <li>Keep the private key somewhere you can reach from the phone for the next step, and give it a passphrase if you can.</li>
+        </ol>
+        <p>The remote URL has two forms:</p>
+        <pre tabindex="0" role="region" aria-label="Code example"><code>git@gitlab.com:you/vault.git
+ssh://git@git.example.com:2222/group/vault.git</code></pre>
+        <p>Use the <code>ssh://</code> form when a self-managed server listens on a custom port. The <code>git@host:path</code> form can’t carry a port. See <a href="/blog/self-hosted-git-ssh-ios">self-hosted Git with SSH on iPhone and iPad</a> for more on SSH remotes.</p>
+
+        <h2 id="iphone">iPhone and iPad: clone the vault with GitSync.md</h2>
+        <div class="step-card" data-step="Step 1">
+          <h3>Add the repository by URL</h3>
+          <p>Tap <strong>Add Repository</strong>, then <strong>Enter URL Manually</strong>, and paste the GitLab remote URL. Under Authentication, choose <strong>HTTPS Token/Password</strong> and enter a username plus your token, or <strong>SSH Private Key</strong> and paste your OpenSSH private key and passphrase. Set your author name and email: they go on every commit. Credentials are stored in the iOS Keychain.</p>
+        </div>
+        <div class="step-card" data-step="Step 2">
+          <h3>Save into Obsidian’s folder</h3>
+          <p>Set the save location to <strong>On My iPhone → Obsidian</strong> (on iPad, <strong>On My iPad → Obsidian</strong>), so the cloned folder is ready to open as a vault.</p>
+        </div>
+        <div class="step-card" data-step="Step 3">
+          <h3>Trust the host key (SSH only)</h3>
+          <p>On the first SSH connection, GitSync.md shows the server’s SHA-256 fingerprint. For gitlab.com, compare it with the list in the SSH host keys fingerprints section of <a href="https://docs.gitlab.com/user/gitlab_com/" target="_blank" rel="noopener">GitLab’s gitlab.com documentation</a>. For a self-managed server, compare it with a fingerprint your administrator gives you. Tap <strong>Trust Host</strong> only if it matches. GitSync.md pins it per host and port and retries the clone.</p>
+        </div>
+        <div class="step-card" data-step="Step 4">
+          <h3>Clone</h3>
+          <p>Start the clone. GitSync.md writes the files and the full <code>.git</code> directory to the folder you chose. For the general clone flow, see <a href="/blog/obsidian-git-iphone-ipad">the Obsidian Git on iPhone and iPad guide</a>.</p>
+        </div>
+
+        <h2 id="android">Android: clone the vault with GitSync.md</h2>
+        <p>On the first screen, choose <strong>SSH, token or another host</strong> to open <strong>Any Git host</strong>. Paste the GitLab remote URL, then choose <strong>Token</strong> or <strong>SSH key</strong>. For a token, enter the username and the token. For SSH, either tap <strong>Copy public key</strong> after the app makes a key, and add that to GitLab under SSH Keys, or import an existing key file. Confirm the server’s SSH host key when asked, after comparing the fingerprint as described above. Then use <strong>Test &amp; clone</strong>.</p>
+        <p>Android needs the vault to land in a device folder that Obsidian can open, such as <code>Documents/Obsidian</code>, and it needs storage access for that. <a href="/blog/obsidian-git-android">The Android guide</a> walks through the folder steps, the vault check and the price prompt, so they aren’t repeated here.</p>
+
+        <h2 id="open-in-obsidian">Open the folder as a vault in Obsidian</h2>
+        <p>In Obsidian’s vault picker, choose <strong>Open folder as vault</strong> and select the folder GitSync.md cloned, the one that contains <code>.obsidian</code>. If your <code>.obsidian</code> settings are committed, themes and plugin settings come along. If notes don’t show up, you’ve probably opened a parent or sibling folder.</p>
+
+        <h2 id="who-runs-git">Who runs Git: GitSync.md or the Obsidian Git plugin?</h2>
+        <p>Recommended: let GitSync.md own Git on the phone. It runs native Git, so SSH works, and you get pull, commit and push controls plus a diff view. From Obsidian, a link such as the one below pulls, commits and pushes in one go. Replace <code>MyVault</code> with the vault folder name shown in GitSync.md.</p>
+        <pre tabindex="0" role="region" aria-label="Code example"><code>syncmd://x-callback-url/sync?repo=MyVault&amp;message=Update%20from%20Obsidian</code></pre>
+        <p>On iOS, the same actions are available from <a href="/blog/shortcuts-automation-ios">Apple Shortcuts</a>.</p>
+        <p>You can run the Obsidian Git plugin on the phone instead, but its <a href="https://publish.obsidian.md/git-doc/Getting+Started" target="_blank" rel="noopener">documentation</a> lists limits on mobile: no SSH authentication, the isomorphic-git implementation, limited repository size, no rebase merge strategy, and the mobile mode is marked unstable. With the plugin, use HTTPS: your GitLab username plus a personal access token, with the scopes above. GitSync.md Connect, the companion that hands a sign-in to the plugin, is GitHub-only, so it doesn’t help with GitLab.</p>
+        <div class="callout warning">
+          <span class="callout-label">One app at a time</span>
+          <p>If the plugin runs Git, don’t also run GitSync.md’s pulls, pushes or automation on the same vault. Two Git clients on one folder is how duplicate commits and conflicts start. If you want the plugin as a backup route, leave its auto-sync off.</p>
+        </div>
+
+        <h2 id="verify">Verify the first round trip</h2>
+        <ol>
+          <li>On your computer, edit a test note such as <code>Phone test.md</code>, commit and push it to GitLab.</li>
+          <li>On the phone, pull in GitSync.md and open the note in Obsidian. The change should be there.</li>
+          <li>Edit the note on the phone, then commit and push in GitSync.md.</li>
+          <li>In GitLab, open the project’s <strong>Code → Commits</strong> list and confirm the new commit and the note’s contents. Pull on the computer to see it there too.</li>
+        </ol>
+        <p>Turn on any automation only after both directions work by hand. If something fails, start with <a href="/blog/obsidian-git-not-working-iphone">Obsidian Git not working on iPhone</a>.</p>
+
+        <h2 id="troubleshooting">Troubleshooting</h2>
+        <h3>HTTP 401 or 403</h3>
+        <p>The token is missing a scope or has expired. Check that it has <code>read_repository</code> and <code>write_repository</code>, and look at its expiry on GitLab’s <a href="https://docs.gitlab.com/user/profile/personal_access_tokens/" target="_blank" rel="noopener">personal access tokens</a> page. Make a new token and update it in the repository’s settings in GitSync.md. Also confirm the username field isn’t empty.</p>
+        <h3>Push rejected on a protected branch</h3>
+        <p>Your account’s role or the branch’s rules don’t allow you to push. GitLab’s <a href="https://docs.gitlab.com/user/project/repository/branches/protected/" target="_blank" rel="noopener">protected branches documentation</a> explains that a protected <code>main</code> restricts who can push. For example, members with the Developer role can’t push directly if only Maintainers are allowed. GitSync.md verifies pushes, so a rejection appears as an error instead of fake success. Ask a maintainer to change the rule, or push to another branch and merge it in GitLab.</p>
+        <h3>SSH key rejected</h3>
+        <p>The key is valid but GitLab doesn’t know it. Confirm the public half is added under your account’s <a href="https://docs.gitlab.com/user/ssh/" target="_blank" rel="noopener">SSH Keys</a>, and that the passphrase, if any, is right.</p>
+        <h3>Host key changed</h3>
+        <p>Treat this as a security event, unless you know the server was migrated or its keys rotated. GitSync.md blocks the connection instead of continuing. Verify the new fingerprint through GitLab’s <a href="https://docs.gitlab.com/user/gitlab_com/" target="_blank" rel="noopener">published list</a> or your administrator before trusting it.</p>
+        <h3>A custom SSH port is ignored</h3>
+        <p>Use the full form: <code>ssh://git@git.example.com:2222/group/vault.git</code>.</p>
+        <h3>Large attachments</h3>
+        <p>Big images, PDFs and video bloat a vault’s history. Read <a href="/blog/git-lfs-ios">Git LFS on iPhone and iPad</a> before you add many of them.</p>
+        <h3>Conflicts</h3>
+        <p>Pull before editing on each device. If two devices changed the same note, follow <a href="/blog/obsidian-git-merge-conflicts-iphone">the conflict recovery guide</a>.</p>
+
+        <h2 id="faq">FAQ</h2>
+        <h3>GitHub or GitLab for an Obsidian vault?</h3>
+        <p>Either works. Both host private repositories, and GitSync.md treats them as ordinary Git remotes. Pick the one you already use or the one your team runs. GitHub has the faster setup in GitSync.md, because it can sign in and browse your repositories; see <a href="/blog/sync-obsidian-github">Sync Obsidian with GitHub on every device</a>. Check each host’s current terms for storage and repository limits.</p>
+        <h3>Can I publish notes from GitLab?</h3>
+        <p>GitLab has a static site feature, <a href="https://docs.gitlab.com/user/project/pages/" target="_blank" rel="noopener">GitLab Pages</a>. This site’s <a href="/blog/publish-obsidian-quartz-iphone">Quartz tutorial</a> is built on GitHub, so treat it as a similar idea rather than a GitLab walkthrough.</p>
+        <h3>Does it work with self-managed GitLab?</h3>
+        <p>Yes. Use your server’s URL, an HTTPS token or an SSH key, and the <code>ssh://</code> form for a custom port.</p>
+        <h3>Can I use a project access token?</h3>
+        <p>Yes. GitLab’s <a href="https://docs.gitlab.com/user/project/settings/project_access_tokens/" target="_blank" rel="noopener">project access tokens</a> work over HTTPS like a personal one. Choose the repository read and write scopes, and check that page for the role needed.</p>
+
+        <h2 id="recap">Recap</h2>
+        <p>Push the vault to a GitLab project, make a token with <code>read_repository</code> and <code>write_repository</code> (or an SSH key), add the URL in GitSync.md, clone into Obsidian’s folder and open it as a vault. Let GitSync.md own Git, check SSH host keys against GitLab’s list, and test a round trip. For comparisons and routines, see <a href="/compare/obsidian-sync-alternatives">Obsidian Sync alternatives</a> and <a href="/blog/obsidian-backup-git">backing up a vault with Git</a>.</p>
+        <p><a href="/v/web-homepage-128">Real Git for your GitLab vault on iPhone and iPad →</a> · <a href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener">Android on Google Play →</a> $9.99 once.</p>
+
+        <div class="related-card">
+          <h2>Related guides</h2>
+          <ul>
+            <li><a href="/blog/self-hosted-git-ssh-ios">Self-hosted Git with SSH on iPhone and iPad</a></li>
+            <li><a href="/blog/obsidian-git-iphone-ipad">How to use Obsidian Git on iPhone and iPad</a></li>
+            <li><a href="/blog/obsidian-git-android">Sync an Obsidian vault with Git on Android</a></li>
+          </ul>
+        </div>
+      </article>
+    </div>
+
+  <section class="content-download" aria-labelledby="download-heading">
+    <div class="shell content-download-layout">
+      <div>
+        <p class="eyebrow"><span class="blue-square" aria-hidden="true"></span>Take your work with you.</p>
+        <h2 id="download-heading">REAL GIT.<br>WITHIN REACH.</h2>
+        <p class="content-download-description">Your files. Your commits. Your remote.<br>Get GitSync.md for iPhone, iPad, and Android.</p>
+      </div>
+      <div>
+        <div class="store-links" role="group" aria-label="Download GitSync.md">
+          <a class="store-badge store-badge-apple" href="/v/web-homepage-128" target="_blank" rel="noopener"><img src="../assets/store-badges/download-on-app-store.svg" width="120" height="40" alt="Download GitSync.md on the App Store" decoding="async"></a>
+          <a class="store-badge store-badge-google" href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener"><img src="../assets/store-badges/get-it-on-google-play.png" width="646" height="250" alt="Get GitSync.md on Google Play" decoding="async"></a>
+        </div>
+        <p class="purchase-note"><span>iPhone + iPad: $9.99 once. Unlimited repositories.</span><span>Android: $9.99 once. All features included.</span><span>No subscriptions.</span></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+
+<footer class="site-footer">
+  <div class="shell footer-layout">
+    <a class="brand" href="/" aria-label="GitSync.md home">gitsync<span class="brand-extension">.md</span></a>
+    <p>Independently built by <a href="https://codybontecou.com" target="_blank" rel="noopener">Cody Bontecou</a>.<br>© 2026 GitSync.md</p>
+    <div class="footer-links"><a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener">Source</a><a href="/blog/">Guides</a><a href="/compare/obsidian-sync-vs-git">Compare</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
+    <a class="back-top" href="#top" aria-label="Back to top">↑</a>
+  </div>
+</footer>
+<!-- Cloudflare Web Analytics -->
+<script>
+(function () {
+  var productionHosts = {
+    'instareply.isolated.tech': true,
+    'voxboard.isolated.tech': true,
+    'healthmd.isolated.tech': true,
+    'isome.isolated.tech': true,
+    'gitsyncmd.app': true,
+    'gitsync.md': true,
+    'timemd.isolated.tech': true,
+    'imghost.isolated.tech': true
+  };
+
+  if (!productionHosts[window.location.hostname]) {
+    return;
+  }
+
+  function loadCloudflareBeacon() {
+    if (document.querySelector('script[src="https://static.cloudflareinsights.com/beacon.min.js"]')) {
+      return;
+    }
+
+    var script = document.createElement('script');
+    script.defer = true;
+    script.src = 'https://static.cloudflareinsights.com/beacon.min.js';
+    script.setAttribute('data-cf-beacon', '{"token":"090f363070334cddad5c5cc1509b8807"}');
+    document.head.appendChild(script);
+  }
+
+  fetch('https://img-host.costream.workers.dev/analytics-gate', {
+    cache: 'no-store',
+    mode: 'cors',
+    credentials: 'omit'
+  })
+    .then(function (response) {
+      return response.ok ? response.json() : { track: false };
+    })
+    .then(function (gate) {
+      if (gate && gate.track) {
+        loadCloudflareBeacon();
+      }
+    })
+    .catch(function () {
+      // Fail closed so excluded IPs are not accidentally tracked.
+    });
+})();
+</script>
+<!-- End Cloudflare Web Analytics -->
+</body>
+</html>
