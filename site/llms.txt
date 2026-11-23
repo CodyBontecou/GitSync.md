@@ -37,6 +37,7 @@ For automation on a user's device, consult the Shortcuts guide and agent instruc
 
 - [Sync Obsidian with GitHub on every device](https://gitsync.md/blog/sync-obsidian-github): Private repository, desktop Git and Obsidian Git plugin settings, then iPhone, iPad and Android routes and a two-way verification.
 - [Sync Obsidian with GitLab on iPhone, iPad and Android](https://gitsync.md/blog/obsidian-gitlab-sync): gitlab.com and self-managed GitLab with an HTTPS personal access token (read_repository and write_repository) or an SSH key, host-key checks, cloning with GitSync.md, and GitLab-specific push and token errors.
+- [Obsidian and Google Drive](https://gitsync.md/blog/obsidian-google-drive-sync): Per-device verdicts for Google Drive, OneDrive and Dropbox on desktop, Android and iPhone, Remotely Save free vs PRO, one sync method per vault, and moving a vault to Git.
 - [Back up an Obsidian vault with Git](https://gitsync.md/blog/obsidian-backup-git): Sync vs backup vs version history, a backup routine that includes notes written on iPhone, tested commands to restore a changed note, a deleted note or a folder, and a checklist.
 
 ## Publish
