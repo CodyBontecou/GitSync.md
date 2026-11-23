@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../favicon-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<title>Obsidian iCloud Sync: Setup and Fixes for iPhone and Mac</title>
+<meta name="description" content="Set up Obsidian iCloud sync on iPhone, iPad and Mac, then fix missing vaults, duplicate files and notes that stopped syncing. Know when to use Git instead.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Cody Bontecou">
+<meta name="theme-color" content="#ffffff">
+<link rel="canonical" href="https://gitsync.md/blog/obsidian-icloud-sync">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="GitSync.md">
+<meta property="og:title" content="Obsidian iCloud Sync: Setup and Fixes for iPhone and Mac">
+<meta property="og:description" content="Set up Obsidian iCloud sync on iPhone, iPad and Mac, then fix missing vaults, duplicate files and notes that stopped syncing. Know when to use Git instead.">
+<meta property="og:url" content="https://gitsync.md/blog/obsidian-icloud-sync">
+<meta property="og:image" content="https://gitsync.md/social/blog/obsidian-icloud-sync.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:alt" content="GitSync.md guide card: Obsidian iCloud Sync: Setup and Fixes for iPhone and Mac">
+<meta property="article:published_time" content="2026-11-23">
+<meta property="article:modified_time" content="2026-11-23">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Obsidian iCloud Sync: Setup and Fixes for iPhone and Mac">
+<meta name="twitter:description" content="Set up Obsidian iCloud sync on iPhone, iPad and Mac, then fix missing vaults, duplicate files and notes that stopped syncing. Know when to use Git instead.">
+<meta name="twitter:image" content="https://gitsync.md/social/blog/obsidian-icloud-sync.png">
+<meta name="twitter:image:alt" content="GitSync.md guide card: Obsidian iCloud Sync: Setup and Fixes for iPhone and Mac">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Obsidian iCloud Sync: Setup and Fixes",
+  "description": "Set up Obsidian iCloud sync on iPhone, iPad and Mac, then fix missing vaults, duplicate files and notes that stopped syncing. Know when to use Git instead.",
+  "image": [
+    "https://gitsync.md/social/blog/obsidian-icloud-sync.png"
+  ],
+  "datePublished": "2026-11-23",
+  "dateModified": "2026-11-23",
+  "author": {
+    "@type": "Person",
+    "name": "Cody Bontecou",
+    "url": "https://gitsync.md/about"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Cody Bontecou"
+  },
+  "mainEntityOfPage": "https://gitsync.md/blog/obsidian-icloud-sync"
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../site.css">
+<link rel="stylesheet" href="../content.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://gitsync.md/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Guides",
+      "item": "https://gitsync.md/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Obsidian iCloud sync",
+      "item": "https://gitsync.md/blog/obsidian-icloud-sync"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is Obsidian iCloud sync free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Obsidian doesn't charge for it, but the vault counts against your iCloud storage. Check your plan if the vault is large."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I use iCloud and Obsidian Sync together?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No, not on the same vault. Obsidian's help says to avoid syncing the same vault across multiple services, and gives Obsidian Sync with iCloud as an example."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does Obsidian iCloud sync work on Windows?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Obsidian's help warns that iCloud Drive on Windows may lead to file duplication or corruption. For a Windows vault, use another method such as Git."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why is my vault not showing on my iPhone?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Most often it is not inside the Obsidian folder in iCloud Drive, or the other device is not signed in to the same Apple Account with iCloud Drive turned on. Obsidian's help says vaults should be inside the Obsidian folder within iCloud Drive."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I keep iCloud for my Mac and use Git for Windows?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not on the same active vault. Keep iCloud for a vault that lives only on Apple devices, and give any vault you need on Windows its own Git working copy."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body id="top">
+<a class="skip-link" href="#main">Skip to content</a>
+<svg class="icon-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 5l7 7-7 7"/></symbol>
+  <symbol id="i-branch" viewBox="0 0 24 24"><circle cx="6" cy="5" r="2.5"/><circle cx="6" cy="19" r="2.5"/><circle cx="18" cy="5" r="2.5"/><path d="M6 7.5v9M18 7.5v1a5 5 0 0 1-5 5H6"/></symbol>
+  <symbol id="i-external" viewBox="0 0 24 24"><path d="M6 18 18 6M6 6h12v12"/></symbol>
+</svg>
+
+<header class="site-header">
+  <nav class="shell navigation" aria-label="Main navigation">
+    <a class="brand" href="/" aria-label="GitSync.md home">gitsync<span class="brand-extension">.md</span></a>
+    <div class="nav-links"><a href="/#app">The app</a><a href="/#workflow">How it works</a><a href="/blog/" class="is-active">Guides</a><a href="/compare/obsidian-sync-vs-git">Compare</a><a href="/#faq">FAQ</a></div>
+    <a class="button button-small" href="/#download">Get the app</a>
+  </nav>
+</header>
+
+<main id="main">
+<div class="container guide-layout">
+      <header class="article-hero">
+        <div class="article-title">
+        <nav class="eyebrow article-breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li><a href="/blog/">Guides</a></li><li aria-current="page">Obsidian iCloud sync</li></ol></nav>
+        <h1>Obsidian iCloud sync: setup and fixes<span class="accent">.</span></h1>
+        <p class="subtitle">One checklist for putting an Obsidian vault in iCloud on iPhone, iPad and Mac, and for working out why it stopped syncing, is duplicating files or is missing on another device.</p>
+        <div class="meta-line"><span>By <a href="/about" rel="author">Cody Bontecou</a></span>
+          <span>November 23, 2026</span>
+          <span>Guide</span>
+          <span>iPhone + iPad + Mac</span>
+        </div>
+      </div>
+      </header>
+      <aside class="guide-aside" aria-label="Guide sidebar">
+        <section class="side-note" aria-label="Article notes">
+        <h2>Sources</h2>
+        <p>Setup steps and warnings follow <a href="https://obsidian.md/help/sync-notes" target="_blank" rel="noopener">Obsidian Help: Sync your notes across devices</a> (checked 2026-11-23). This guide does not describe iCloud internals beyond what that page and Apple's support pages say.</p>
+        </section>
+        <div class="guide-aside-sticky">
+        <nav class="toc-card" aria-label="Article outline">
+        <div class="toc-title">What this covers</div>
+        <ol>
+          <li><a href="#before">Before you start</a></li>
+          <li><a href="#setup">Set up a new iCloud vault</a></li>
+          <li><a href="#move">Move an existing vault into iCloud</a></li>
+          <li><a href="#fix">iCloud sync not working</a></li>
+          <li><a href="#duplicates">Duplicate files</a></li>
+          <li><a href="#wrong-tool">When iCloud is the wrong tool</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ol>
+      </nav>
+        <div class="aside-cta aside-cta-wide">
+          <p class="aside-cta-title">Windows or Android too?</p>
+          <p class="aside-cta-price">iPhone + iPad: $9.99 once · No subscription</p>
+          <a class="aside-cta-button" href="/v/web-homepage-130" target="_blank" rel="noopener">Download on the App Store</a>
+        </div>
+        </div>
+      </aside>
+      <article class="article-body">
+        <div class="tldr">
+          <div class="tldr-title">Short answer</div>
+          <p>Obsidian works with iCloud on iPhone, iPad and Mac when the vault sits in the <strong>Obsidian</strong> folder inside iCloud Drive (<code>iCloud Drive/Obsidian/Your Vault</code>) and its files are kept downloaded. On Windows or Android, use something else: Obsidian warns that iCloud Drive on Windows may lead to file duplication or corruption, and this guide covers Apple devices only. Choosing between methods? See <a href="/compare/icloud-vs-git-obsidian">iCloud vs Git for Obsidian</a>.</p>
+        </div>
+
+        <h2 id="before">Before you start</h2>
+        <ul>
+          <li><strong>iCloud Drive is on.</strong> On a Mac, open System Settings, choose your name, then iCloud, then Drive (<a href="https://support.apple.com/en-us/109344" target="_blank" rel="noopener">Apple Support: iCloud Drive on Mac</a>). On iPhone and iPad, the Settings path is Settings → your name → iCloud → Drive; you can then see the files in the Files app under Browse → Locations → iCloud Drive.</li>
+          <li><strong>The same Apple Account on every device.</strong> Files only travel between devices signed in to the account that owns the iCloud storage.</li>
+          <li><strong>Enough iCloud storage.</strong> The vault uses your iCloud storage quota, attachments included.</li>
+        </ul>
+
+        <h2 id="setup">Set up a new iCloud vault</h2>
+        <p>The rule that matters most, from <a href="https://obsidian.md/help/sync-notes" target="_blank" rel="noopener">Obsidian Help: Sync your notes across devices</a>: vaults should be inside the Obsidian folder within iCloud Drive. That is the folder created by Obsidian, not a plain folder you made yourself with a similar name.</p>
+        <h3>On iPhone or iPad</h3>
+        <ol>
+          <li>Open Obsidian and choose <strong>Create new vault</strong>.</li>
+          <li>Name the vault.</li>
+          <li>Turn on <strong>Store in iCloud</strong>.</li>
+          <li>Tap <strong>Create</strong>.</li>
+        </ol>
+        <h3>On a Mac</h3>
+        <ol>
+          <li>Choose <strong>Create new vault</strong> and name it.</li>
+          <li>Set the location to <code>iCloud Drive/Obsidian</code>, so the vault is <code>iCloud Drive/Obsidian/Your Vault</code>.</li>
+        </ol>
+        <h3>On a second Apple device</h3>
+        <ol>
+          <li>Open the vault switcher and choose <strong>Open folder as vault</strong>.</li>
+          <li>Browse to <strong>iCloud Drive → Obsidian</strong> and pick the vault.</li>
+        </ol>
+        <h3>Keep the files downloaded</h3>
+        <p>Obsidian can only read notes that are on the device. Per Obsidian's help:</p>
+        <ul>
+          <li><strong>macOS 15 or later (and iOS/iPadOS 18 or later):</strong> right-click the Obsidian folder in iCloud Drive and choose <strong>Keep Downloaded</strong>.</li>
+          <li><strong>macOS 14 and earlier:</strong> turn off <strong>Optimize Mac Storage</strong> in iCloud settings. This setting applies to all of iCloud Drive on that Mac, not only Obsidian.</li>
+        </ul>
+
+        <h2 id="move">Move an existing vault into iCloud</h2>
+        <ol>
+          <li><strong>Make a copy first.</strong> A separate backup gives you a way back; see <a href="/blog/obsidian-backup-git">how to back up an Obsidian vault with Git</a>.</li>
+          <li>Close Obsidian on every device that has the vault open.</li>
+          <li>Move the vault folder into <code>iCloud Drive/Obsidian</code> with Finder or the Files app.</li>
+          <li>Wait for the upload to finish on the first device before opening the vault anywhere else.</li>
+          <li>On each other device, use <strong>Open folder as vault</strong> and pick it under iCloud Drive → Obsidian.</li>
+        </ol>
+
+        <h2 id="fix">iCloud sync not working: symptom, cause, fix</h2>
+        <p>Check these first: Is the vault inside <code>iCloud Drive/Obsidian</code>? Does the Files app show a cloud or download icon next to notes? Is Obsidian Sync or another plugin or service also syncing this vault? Are all devices signed in to the same Apple Account with iCloud Drive on, with iCloud storage free?</p>
+        <div class="comparison-scroll" role="region" aria-label="iCloud sync symptoms, causes and fixes" tabindex="0"><table class="comparison-table">
+          <caption>Obsidian iCloud problems and what to do</caption>
+          <thead><tr><th scope="col">Symptom</th><th scope="col">Likely cause</th><th scope="col">Fix</th></tr></thead><tbody>
+          <tr><th scope="row">Vault missing on the other device</th><td>Not signed in to the same Apple Account, iCloud Drive is off, or the vault isn't in the Obsidian folder.</td><td>Check the account and iCloud Drive setting, then use <strong>Open folder as vault</strong> and browse to iCloud Drive → Obsidian.</td></tr>
+          <tr><th scope="row">Notes not updating</th><td>The upload hasn't finished, or files are not downloaded on the receiving device.</td><td>Let the sending device finish, then set Keep Downloaded (or turn off Optimize Mac Storage on macOS 14 and earlier).</td></tr>
+          <tr><th scope="row">Duplicate files ending in " 2"</th><td>Two versions of the same note exist, often after edits on two devices or two sync services touching one vault.</td><td>Compare and merge by hand (see below), then delete the extra copy.</td></tr>
+          <tr><th scope="row">Files show a cloud icon and won't open</th><td>The files are stored in iCloud but not downloaded to this device.</td><td>Use <strong>Keep Downloaded</strong> on the Obsidian folder (macOS 15+ / iOS 18+), or turn off Optimize Mac Storage on older macOS.</td></tr>
+          <tr><th scope="row">Both iCloud and Obsidian Sync are on for one vault</th><td>Obsidian's help says to avoid syncing the same vault across multiple services.</td><td>Pick one method for that vault and turn the other off.</td></tr>
+          <tr><th scope="row">Vault created outside the Obsidian folder</th><td>Obsidian's help says vaults should be inside the Obsidian folder within iCloud Drive.</td><td>Close Obsidian, copy the vault into <code>iCloud Drive/Obsidian</code>, then open that copy. Keep the original until it checks out.</td></tr>
+          </tbody></table></div>
+
+        <h2 id="duplicates">Duplicate and conflicted files</h2>
+        <p>A note named like <code>Meeting 2.md</code> next to <code>Meeting.md</code> is a second copy of the same note. It usually means two versions existed at once, for example after editing on two devices before they synced. Obsidian's help warns that iCloud Drive on Windows can duplicate files and that mixing sync services on one vault should be avoided, and both make this worse.</p>
+        <ol>
+          <li>Close Obsidian on every device so nothing writes while you work.</li>
+          <li>Open both files side by side in a text editor and compare them.</li>
+          <li>Copy any lines you want to keep into the file you will retain.</li>
+          <li>Delete the extra copy, then wait for the change to sync before reopening Obsidian elsewhere.</li>
+        </ol>
+
+        <h2 id="wrong-tool">When iCloud is the wrong tool</h2>
+        <ul>
+          <li><strong>Windows:</strong> Obsidian's help says iCloud Drive on Windows may lead to file duplication or corruption.</li>
+          <li><strong>Android:</strong> this guide covers Apple devices, and iCloud Drive isn't how Obsidian syncs on Android. See <a href="/blog/obsidian-git-android">Obsidian Git on Android</a>.</li>
+          <li><strong>History you can restore:</strong> Git records the commits you make.</li>
+        </ul>
+        <p>Git is the alternative. The vault lives in a GitHub or GitLab repository; on iPhone and iPad, GitSync.md clones it into a local folder, usually <strong>On My iPhone/iPad → Obsidian</strong>, which is not iCloud, and Obsidian opens it with <strong>Open folder as vault</strong>. The full steps are in <a href="/blog/obsidian-git-iphone-ipad">Obsidian Git on iPhone and iPad</a>; for a Windows and iPhone pair, see <a href="/blog/sync-obsidian-windows-iphone-github">Sync Obsidian between Windows and iPhone with GitHub</a>. Android users can get <a href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener">GitSync.md on Google Play</a>. Other options are in <a href="/compare/obsidian-sync-alternatives">Obsidian Sync alternatives</a> and <a href="/blog/obsidian-google-drive-sync">Obsidian and Google Drive</a>.</p>
+        <p><strong>Don't run iCloud and Git on the same active vault.</strong> To switch, make a separate copy of the vault, set Git up on that copy, and stop iCloud syncing that copy. Keep the original until the new setup is verified. The <a href="/blog/obsidian-git-background-sync-iphone">background-sync guide</a> explains what to expect from pulls and pushes on iOS.</p>
+        <div class="related-card">
+          <p>Need Windows or Android, or real version history? Sync the vault with Git using GitSync.md.</p>
+          <a href="/v/web-homepage-130" target="_blank" rel="noopener">Get GitSync.md →</a>
+        </div>
+
+        <h2 id="faq">FAQ</h2>
+        <h3>Is Obsidian iCloud sync free?</h3>
+        <p>Obsidian doesn't charge for it, but the vault counts against your iCloud storage. Check your plan if the vault is large.</p>
+        <h3>Can I use iCloud and Obsidian Sync together?</h3>
+        <p>No, not on the same vault. Obsidian's help says to avoid syncing the same vault across multiple services, and gives Obsidian Sync with iCloud as an example.</p>
+        <h3>Does Obsidian iCloud sync work on Windows?</h3>
+        <p>Obsidian's help warns that iCloud Drive on Windows may lead to file duplication or corruption. For a Windows vault, use another method such as Git.</p>
+        <h3>Why is my vault not showing on my iPhone?</h3>
+        <p>Most often it is not inside the Obsidian folder in iCloud Drive, or the other device is not signed in to the same Apple Account with iCloud Drive turned on. Obsidian's help says vaults should be inside the Obsidian folder within iCloud Drive.</p>
+        <h3>Can I keep iCloud for my Mac and use Git for Windows?</h3>
+        <p>Not on the same active vault. Keep iCloud for a vault that lives only on Apple devices, and give any vault you need on Windows its own Git working copy.</p>
+        
+        <h2>Related guides</h2>
+        <div class="related-card">
+          <p>Need Windows or Android, or real version history? Sync the vault with Git using GitSync.md.</p>
+          <a href="/blog/obsidian-git-iphone-ipad">Obsidian Git on iPhone and iPad →</a>
+        </div>
+      </article>
+    </div>
+
+  <section class="content-download" aria-labelledby="download-heading">
+    <div class="shell content-download-layout">
+      <div>
+        <p class="eyebrow"><span class="blue-square" aria-hidden="true"></span>Take your work with you.</p>
+        <h2 id="download-heading">REAL GIT.<br>WITHIN REACH.</h2>
+        <p class="content-download-description">Your files. Your commits. Your remote.<br>Get GitSync.md for iPhone, iPad, and Android.</p>
+      </div>
+      <div>
+        <div class="store-links" role="group" aria-label="Download GitSync.md">
+          <a class="store-badge store-badge-apple" href="/v/web-homepage-130" target="_blank" rel="noopener"><img src="../assets/store-badges/download-on-app-store.svg" width="120" height="40" alt="Download GitSync.md on the App Store" decoding="async"></a>
+          <a class="store-badge store-badge-google" href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener"><img src="../assets/store-badges/get-it-on-google-play.png" width="646" height="250" alt="Get GitSync.md on Google Play" decoding="async"></a>
+        </div>
+        <p class="purchase-note"><span>iPhone + iPad: $9.99 once. Unlimited repositories.</span><span>Android: $9.99 once. All features included.</span><span>No subscriptions.</span></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="shell footer-layout">
+    <a class="brand" href="/" aria-label="GitSync.md home">gitsync<span class="brand-extension">.md</span></a>
+    <p>Independently built by <a href="https://codybontecou.com" target="_blank" rel="noopener">Cody Bontecou</a>.<br>© 2026 GitSync.md</p>
+    <div class="footer-links"><a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener">Source</a><a href="/blog/">Guides</a><a href="/compare/obsidian-sync-vs-git">Compare</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
+    <a class="back-top" href="#top" aria-label="Back to top">↑</a>
+  </div>
+</footer>
+<!-- Cloudflare Web Analytics -->
+<script>
+(function () {
+  var productionHosts = {
+    'instareply.isolated.tech': true,
+    'voxboard.isolated.tech': true,
+    'healthmd.isolated.tech': true,
+    'isome.isolated.tech': true,
+    'gitsyncmd.app': true,
+    'gitsync.md': true,
+    'timemd.isolated.tech': true,
+    'imghost.isolated.tech': true
+  };
+
+  if (!productionHosts[window.location.hostname]) {
+    return;
+  }
+
+  function loadCloudflareBeacon() {
+    if (document.querySelector('script[src="https://static.cloudflareinsights.com/beacon.min.js"]')) {
+      return;
+    }
+
+    var script = document.createElement('script');
+    script.defer = true;
+    script.src = 'https://static.cloudflareinsights.com/beacon.min.js';
+    script.setAttribute('data-cf-beacon', '{"token":"090f363070334cddad5c5cc1509b8807"}');
+    document.head.appendChild(script);
+  }
+
+  fetch('https://img-host.costream.workers.dev/analytics-gate', {
+    cache: 'no-store',
+    mode: 'cors',
+    credentials: 'omit'
+  })
+    .then(function (response) {
+      return response.ok ? response.json() : { track: false };
+    })
+    .then(function (gate) {
+      if (gate && gate.track) {
+        loadCloudflareBeacon();
+      }
+    })
+    .catch(function () {
+      // Fail closed so excluded IPs are not accidentally tracked.
+    });
+})();
+</script>
+<!-- End Cloudflare Web Analytics -->
+</body>
+</html>
