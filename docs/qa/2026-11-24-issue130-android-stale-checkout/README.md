@@ -1,6 +1,6 @@
 ---
 status: active
-covers: [issue#130]
+covers: [pr#139, issue#130]
 tested: f17538aa6ac109aa7bbe5e26379c362b7c0fef13
 updated: 2026-11-24
 ---
