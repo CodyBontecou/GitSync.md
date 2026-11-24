@@ -1,7 +1,7 @@
 ---
 status: active
 covers: [pr#138, issue#137]
-tested: a4640503ea2bce5764804502f00cd46d5f32fb6e
+tested: e37a0a0c945db2045349bb0bc2c89e2a5a548518
 updated: 2026-11-24
 ---
 
@@ -43,6 +43,7 @@ Run on 2026-11-24 with the debug build (`com.bontecou.syncmd.debug`, a separate 
 - **E2E:** `argent e2e run issue137-android-pull-after-remote-stops-tracking --platform android --device <serial>`. Result: **PASS 8/8, twice** (`e2e-pixel7-run.txt`). `check-result.sh` passed after each run (`pixel7-check-result.txt`): HEAD is the stop-tracking commit, the file still holds the local edit, and `git status --ignored` shows only `!! .obsidian/workspace-mobile.json`.
 - **The test file can't check the outcome itself.** On this phone, Argent's element tree freezes on the pre-pull screen as soon as Pull is tapped. This happened three times, and the tree only recovers after restarting Argent's services for the device. So a post-pull `await` can't pass even when the screen shows "Up to date with origin/main". The outcome is checked by `check-result.sh` and the app's diagnostics instead, as the YAML header explains.
 - **One unexplained failure.** The app's diagnostics record **9 pulls `COMPLETED` and 1 `STOPPED LOCAL_CHANGES`**. The stop was the first valid run, at 13:39:48, and it stopped 21 ms after starting, so the carry-over didn't apply that time. The phone's repo afterwards had only the workspace edit, and HEAD hadn't moved. The same repo copied to the Mac pulls correctly through `executePull`. Five further runs with a temporary log (the exact launch sequence, and a tap after 8 seconds) and three runs on the clean build all completed. The cause is unknown, and the diagnostics don't record which paths blocked. **Treat this as an open item before merging.**
+- **Follow-up run with blocked-pull diagnostics (commit `e37a0a0c`).** A stopped pull's debug-log entry now records which check stopped it, the kinds of change in the way, how many paths, and how many edits were set aside (no paths). With that build, the scenario ran **10 more times, all `PASS 8/8` with `check-result.sh` PASS and the pull `COMPLETED`**. Two of those runs came straight after reinstalling the APK, which matches the conditions of the original failure. The stop didn't come back, so its cause is still unknown. If it happens again, the Debug log entry will say what was in the way. Android unit tests: 1155, 0 failures. On these runs Argent's tree didn't freeze between CLI runs, so no service restart was needed.
 - **Cleanup:** the debug app's original sample workspace was restored from a backup taken before the run. The `obsidian-help` vault in the debug app was never touched.
 
 ## Not covered
