@@ -741,6 +741,10 @@ struct TideModalSheet<Content: View>: View {
                 .frame(maxWidth: 560, alignment: .leading)
                 .background(RoundedRectangle(cornerRadius: 32, style: .continuous).fill(Tide.paper))
                 .padding(10)
+                // Without an explicit container, `.isModal` on the stack drops
+                // most of its children from the device accessibility tree
+                // (VoiceOver and XCUITest saw only the Cancel button).
+                .accessibilityElement(children: .contain)
                 .accessibilityAddTraits(.isModal)
         }
     }

@@ -25,6 +25,7 @@
 		F01D00000000000000000001 /* FolderGitServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F01D00000000000000000004 /* FolderGitServiceTests.swift */; };
 		E5050000000000000000A001 /* Issue50WorkingCopyRecoveryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5050000000000000000A002 /* Issue50WorkingCopyRecoveryTests.swift */; };
 		E5137000000000000000A001 /* IncomingUntrackPullTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5137000000000000000A002 /* IncomingUntrackPullTests.swift */; };
+		E5132000000000000000A001 /* StopTrackingPathTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5132000000000000000A002 /* StopTrackingPathTests.swift */; };
 		F01D00000000000000000002 /* GitHubRepositoryPublisherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F01D00000000000000000005 /* GitHubRepositoryPublisherTests.swift */; };
 		A9B1C0DE0000000000000001 /* AppUnlockStoreKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B1C0DE0000000000000002 /* AppUnlockStoreKitTests.swift */; };
 		B1E7A0C00000000000000001 /* ReviewPromptPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E7A0C00000000000000002 /* ReviewPromptPolicyTests.swift */; };
@@ -86,6 +87,7 @@
 		F01D00000000000000000004 /* FolderGitServiceTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FolderGitServiceTests.swift; sourceTree = "<group>"; };
 		E5050000000000000000A002 /* Issue50WorkingCopyRecoveryTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Issue50WorkingCopyRecoveryTests.swift; sourceTree = "<group>"; };
 		E5137000000000000000A002 /* IncomingUntrackPullTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = IncomingUntrackPullTests.swift; sourceTree = "<group>"; };
+		E5132000000000000000A002 /* StopTrackingPathTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = StopTrackingPathTests.swift; sourceTree = "<group>"; };
 		F01D00000000000000000005 /* GitHubRepositoryPublisherTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GitHubRepositoryPublisherTests.swift; sourceTree = "<group>"; };
 		A9B1C0DE0000000000000002 /* AppUnlockStoreKitTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppUnlockStoreKitTests.swift; sourceTree = "<group>"; };
 		B1E7A0C00000000000000002 /* ReviewPromptPolicyTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ReviewPromptPolicyTests.swift; sourceTree = "<group>"; };
@@ -182,6 +184,7 @@
 				D37A00000000000000000002 /* GitTrackingRemovalServiceTests.swift */,
 				E5050000000000000000A002 /* Issue50WorkingCopyRecoveryTests.swift */,
 				E5137000000000000000A002 /* IncomingUntrackPullTests.swift */,
+				E5132000000000000000A002 /* StopTrackingPathTests.swift */,
 			);
 			name = SyncMDTests;
 			path = SyncMDTests;
@@ -459,6 +462,7 @@
 				336367C9178D693793FC2E54 /* SyncMDTests.swift in Sources */,
 				E5050000000000000000A001 /* Issue50WorkingCopyRecoveryTests.swift in Sources */,
 				E5137000000000000000A001 /* IncomingUntrackPullTests.swift in Sources */,
+				E5132000000000000000A001 /* StopTrackingPathTests.swift in Sources */,
 				B6C100000000000000000001 /* BackgroundProcessingSchedulerTests.swift in Sources */,
 				F01D00000000000000000003 /* FolderPublicationCoordinatorTests.swift in Sources */,
 				F01D00000000000000000002 /* GitHubRepositoryPublisherTests.swift in Sources */,

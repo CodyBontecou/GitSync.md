@@ -17,6 +17,8 @@ struct VaultView: View {
     @State private var showRevertAllConfirm = false
     @State private var revertFilePath: String? = nil
     @State private var showRevertFileModal = false
+    @State private var stopTrackingPath: String? = nil
+    @State private var showStopTrackingWorkspace = false
     @State private var showResolveLocalSheet = false
     @State private var resolveLocalMessage = ""
     @State private var showReconnectFolder = false
@@ -251,9 +253,19 @@ struct VaultView: View {
                 )
                 .transition(.opacity.combined(with: .scale(scale: 0.96)))
             }
+            if let path = stopTrackingPath {
+                StopTrackingPathSheet(repoID: repoID, path: path) { _ in stopTrackingPath = nil }
+                    .transition(.opacity.combined(with: .scale(scale: 0.96)))
+            }
+            if showStopTrackingWorkspace {
+                StopTrackingPathSheet(repoID: repoID, path: nil) { _ in showStopTrackingWorkspace = false }
+                    .transition(.opacity.combined(with: .scale(scale: 0.96)))
+            }
         }
         .animation(.easeOut(duration: 0.18), value: showRevertAllConfirm)
         .animation(.easeOut(duration: 0.18), value: showRevertFileModal)
+        .animation(.easeOut(duration: 0.18), value: stopTrackingPath)
+        .animation(.easeOut(duration: 0.18), value: showStopTrackingWorkspace)
 
         #if DEBUG
         .onReceive(NotificationCenter.default.publisher(for: MarketingCapture.showGitSheetNotification)) { _ in
@@ -1072,11 +1084,27 @@ struct VaultView: View {
             } label: {
                 Label(String(localized: "Revert Changes"), systemImage: "arrow.uturn.backward")
             }
+            if Self.canStopTracking(entry) {
+                Button {
+                    stopTrackingPath = entry.path
+                } label: {
+                    Label(String(localized: "Stop Tracking…"), systemImage: "eye.slash")
+                }
+            }
         }
         .accessibilityAction(named: String(localized: "Revert Changes")) {
             revertFilePath = entry.path
             showRevertFileModal = true
         }
+        .accessibilityAction(named: String(localized: "Stop Tracking")) {
+            if Self.canStopTracking(entry) { stopTrackingPath = entry.path }
+        }
+    }
+
+    /// Files Git already tracks or has staged; untracked and conflicted files
+    /// have nothing to stop tracking.
+    static func canStopTracking(_ entry: GitStatusEntry) -> Bool {
+        !entry.isConflicted && entry.workTreeStatus != .untracked && entry.path != GitIgnoreFile.name
     }
 
     private func changedFileRowContent(_ entry: GitStatusEntry) -> some View {
@@ -1435,7 +1463,8 @@ struct VaultView: View {
             repoID: repoID,
             onDiscardChanges: { showRevertAllConfirm = true },
             onOpenSettings: { showSettings = true },
-            onOpenGitTools: { showGitTools = true }
+            onOpenGitTools: { showGitTools = true },
+            onStopTrackingWorkspace: { showStopTrackingWorkspace = true }
         )
     }
 

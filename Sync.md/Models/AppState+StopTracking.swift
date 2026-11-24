@@ -36,3 +36,71 @@ extension AppState {
         }?.id
     }
 }
+
+// MARK: - Stop tracking one file or folder
+
+extension AppState {
+    /// Tracked paths that `target` would stop tracking (empty on errors).
+    func trackedPaths(repoID: UUID, matching target: GitUntrackTarget) async -> [String] {
+        guard let repo = repo(id: repoID), repo.isCloned, !isDemoMode,
+              let repository = try? serializedRepository(repoID: repoID) else { return [] }
+        return (try? await repository.withLease { git in
+            guard git.hasGitDirectory else { return [String]() }
+            return try await git.trackedPaths(matching: target)
+        }) ?? []
+    }
+
+    /// Removes `target` from Git, ignores it in `.gitignore` and commits both.
+    /// The commit waits on this device until the next push.
+    @discardableResult
+    func stopTracking(repoID: UUID, target: GitUntrackTarget) async -> GitUntrackResult? {
+        guard let repo = repo(id: repoID), repo.isCloned else {
+            showError(message: String(localized: "Repository not found"))
+            return nil
+        }
+        if isDemoMode { return nil }
+        guard !isSyncing else {
+            showError(message: String(localized: "Wait for the current Git operation to finish."), category: "untrack")
+            return nil
+        }
+
+        isSyncing = true
+        syncingRepoID = repoID
+        syncProgress = String(localized: "Stopping tracking...")
+        defer { isSyncing = false; syncingRepoID = nil }
+
+        do {
+            let repository = try serializedRepository(repoID: repoID)
+            let result = try await withCheckoutMutation(repoID: repoID) {
+                try await repository.withLease { git in
+                    guard git.hasGitDirectory else { throw LocalGitError.notCloned }
+                    return try await git.stopTracking(
+                        target,
+                        authorName: repo.authorName,
+                        authorEmail: repo.authorEmail
+                    )
+                }
+            }
+            if let sha = result.commitSHA {
+                if let index = repoIndex(id: repoID) {
+                    repos[index].gitState.commitSHA = sha
+                    saveRepos()
+                }
+                clearCommitHistoryCache(for: repoID)
+                syncStateByRepo[repoID] = .ahead
+            }
+            detectChanges(repoID: repoID)
+            syncProgress = String(localized: "Stopped tracking")
+            DebugLogger.shared.info(
+                "untrack",
+                "Stopped tracking \(target.displayName)",
+                detail: "Removed \(result.removedPaths.count) path(s); ignore entry: \(result.addedIgnoreEntry ?? "already ignored"); commit: \(result.commitSHA ?? "none")"
+            )
+            return result
+        } catch {
+            showError(message: error.localizedDescription, category: "untrack")
+            detectChanges(repoID: repoID)
+            return nil
+        }
+    }
+}
