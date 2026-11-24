@@ -176,7 +176,7 @@
         <ul>
           <li><strong>Objects upload first</strong> — before the Git push, every LFS object referenced by your new commits is uploaded (batch API, verified by the server).</li>
           <li><strong>Lock guard</strong> — if a teammate holds an LFS lock on a file you changed, the push stops with the file and lock owner named, instead of clobbering their work.</li>
-          <li><strong>Large-blob guard</strong> — a big file that isn't LFS-tracked blocks the push with a clear message ("track them with Git LFS before pushing"), protecting you from accidentally bloating history.</li>
+          <li><strong>Large-blob guard</strong> — a big file that isn't LFS-tracked blocks the push with a clear message ("track them with Git LFS before pushing"), protecting you from accidentally bloating history. To see which files in a folder are over GitHub's limits before you push, use the <a href="/tools/github-file-size-checker">GitHub file size checker</a>.</li>
           <li><strong>File locking</strong> — on servers that support LFS locking, lock and unlock files from the repo's Git sheet; servers without it degrade silently.</li>
         </ul>
 

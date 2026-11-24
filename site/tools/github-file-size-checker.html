@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../favicon-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<title>GitHub File Size Checker: Find Files Over 100 MB Before You Push — GitSync.md</title>
+<meta name="description" content="Free GitHub file size checker. Pick a folder or Obsidian vault and see which files GitHub blocks (over 100 MiB), warns about (over 50 MiB) or rejects in the browser uploader (over 25 MiB). Runs locally; nothing is uploaded.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Cody Bontecou">
+<meta name="theme-color" content="#ffffff">
+<link rel="canonical" href="https://gitsync.md/tools/github-file-size-checker">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="GitSync.md">
+<meta property="og:title" content="GitHub File Size Checker: Find Files Over 100 MB Before You Push — GitSync.md">
+<meta property="og:description" content="Free GitHub file size checker. Pick a folder or Obsidian vault and see which files GitHub blocks (over 100 MiB), warns about (over 50 MiB) or rejects in the browser uploader (over 25 MiB). Runs locally; nothing is uploaded.">
+<meta property="og:url" content="https://gitsync.md/tools/github-file-size-checker">
+<meta property="og:image" content="https://gitsync.md/social/blog/github-file-size-checker.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:alt" content="GitSync.md free tool card: GitHub File Size Checker: Find Files Over 100 MB Before You Push">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="GitHub File Size Checker: Find Files Over 100 MB Before You Push — GitSync.md">
+<meta name="twitter:description" content="Free GitHub file size checker. Pick a folder or Obsidian vault and see which files GitHub blocks (over 100 MiB), warns about (over 50 MiB) or rejects in the browser uploader (over 25 MiB). Runs locally; nothing is uploaded.">
+<meta name="twitter:image" content="https://gitsync.md/social/blog/github-file-size-checker.png">
+<meta name="twitter:image:alt" content="GitSync.md free tool card: GitHub File Size Checker: Find Files Over 100 MB Before You Push">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "GitHub file size checker",
+  "description": "Free GitHub file size checker. Pick a folder or Obsidian vault and see which files GitHub blocks (over 100 MiB), warns about (over 50 MiB) or rejects in the browser uploader (over 25 MiB). Runs locally; nothing is uploaded.",
+  "url": "https://gitsync.md/tools/github-file-size-checker",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Any (runs in a web browser)",
+  "browserRequirements": "Requires JavaScript",
+  "isAccessibleForFree": true,
+  "inLanguage": "en",
+  "datePublished": "2026-11-24",
+  "dateModified": "2026-11-24",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Person",
+    "name": "Cody Bontecou",
+    "url": "https://gitsync.md/about"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Cody Bontecou"
+  }
+}
+</script>
+<link rel="stylesheet" href="../site.css">
+<link rel="stylesheet" href="../content.css">
+<link rel="stylesheet" href="../comparison.css">
+<style>
+.calc { background: var(--surface); border: 2px solid var(--line); padding: 25px 28px; margin-bottom: 39px; }
+.calc fieldset { border: 0; padding: 0; margin: 0 0 22px; min-width: 0; }
+.calc legend, .calc .field-label { display: block; font-weight: 650; font-size: 16px; line-height: 24px; margin-bottom: 8px; padding: 0; }
+.calc .checks { display: flex; flex-direction: column; gap: 2px; }
+.calc .checks label { display: flex; align-items: flex-start; gap: 10px; font-size: 16px; line-height: 24px; min-height: 44px; padding-block: 10px 0; }
+.calc .checks label span small { display: block; font-size: 14px; line-height: 20px; color: var(--muted); }
+.calc input[type="checkbox"], .calc input[type="radio"] { flex: none; width: 20px; height: 20px; margin: 2px 0 0; accent-color: var(--blue-deep); }
+.calc input[type="text"], .calc textarea { width: 100%; min-height: 44px; padding: 8px 12px; font: inherit; font-size: 16px; color: var(--ink); background: var(--paper); border: 2px solid var(--line); border-radius: 8px; box-sizing: border-box; }
+.calc textarea { font-family: var(--mono); min-height: 88px; resize: vertical; }
+.calc .hint { display: block; font-size: 14px; line-height: 20px; color: var(--muted); margin-top: 6px; }
+.calc .field { margin-bottom: 22px; }
+.calc .secret-warning { background: var(--ahead-wash); color: var(--ahead-text); padding: 12px 16px; margin: 8px 0 0 30px; font-size: 15px; line-height: 22px; }
+.calc .secret-warning[hidden] { display: none; }
+.calc .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-block: 16px 8px; }
+.calc .tool-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 22px; border: 0; border-radius: 999px; background: var(--ink); color: var(--paper); font: 600 16px/1.2 var(--sans); cursor: pointer; }
+.calc .tool-btn.secondary { background: var(--paper); color: var(--ink); border: 2px solid var(--ink); }
+.calc .tool-btn:focus-visible, .calc input:focus-visible, .calc textarea:focus-visible { outline: 3px solid var(--blue-deep); outline-offset: 2px; }
+.calc .status { min-height: 24px; font-size: 15px; color: var(--muted); }
+.calc-results { border-top: 2px solid var(--line); padding-top: 22px; }
+.calc-results h3 { margin-top: 0; }
+.calc-results pre { margin-top: 12px; max-height: 480px; overflow: auto; }
+.calc-warnings { background: var(--ahead-wash); color: var(--ahead-text); padding: 14px 18px; margin-block: 16px; }
+.calc-warnings ul { margin: 0; }
+.calc-warnings li { color: var(--ahead-text); }
+.keeps { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0 28px; }
+@media (max-width: 960px) { .tool-layout > .guide-aside { order: 3; margin-block: 32px 0; } .calc { padding: 20px 16px; } .calc .secret-warning { margin-left: 0; } }
+.calc input[type="file"] { display: block; width: 100%; min-height: 44px; font: inherit; font-size: 16px; padding: 8px 0; }
+.calc .file-picks { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 0 28px; }
+.calc .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-block: 12px 16px; }
+.calc .stat { background: var(--paper); border: 2px solid var(--line); padding: 10px 14px; }
+.calc .stat b { display: block; font-size: 22px; line-height: 30px; overflow-wrap: anywhere; }
+.calc .stat span { font-size: 14px; line-height: 20px; color: var(--muted); }
+.calc .stat.blocked { background: var(--danger-wash); border-color: var(--danger); }
+.calc .stat.warn { background: var(--ahead-wash); border-color: var(--ahead); }
+.calc .stat.browser { background: var(--blue-wash); border-color: var(--blue-deep); }
+.band { display: inline-block; padding: 2px 10px; font-size: 14px; line-height: 20px; font-weight: 650; white-space: nowrap; }
+.band.blocked { background: var(--danger-wash); color: var(--danger); }
+.band.warn { background: var(--ahead-wash); color: var(--ahead-text); }
+.band.browser { background: var(--blue-wash); color: var(--blue-deep); }
+.calc .snippet { margin-top: 18px; }
+.calc .snippet pre { max-height: 240px; }
+.calc .path { font-family: var(--mono); font-size: 14px; overflow-wrap: anywhere; }
+.calc .comparison-table { min-width: 640px; }
+.calc .comparison-table th:first-child { width: auto; }
+.calc-note { background: var(--blue-wash); color: var(--ink); padding: 12px 16px; margin-block: 12px; font-size: 15px; line-height: 22px; }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://gitsync.md/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Guides",
+      "item": "https://gitsync.md/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "GitHub file size checker",
+      "item": "https://gitsync.md/tools/github-file-size-checker"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is GitHub's file size limit?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "GitHub blocks files larger than 100 MiB and warns about files larger than 50 MiB. Files you add through the browser on github.com are limited to 25 MiB. Larger files can be stored with Git Large File Storage (Git LFS), which has its own per-file maximum that depends on your plan."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is there a repository size limit?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "GitHub's documentation recommends keeping repositories ideally under 1 GB and strongly recommends staying under 5 GB. That is guidance rather than a hard cap, but big repositories are slower to clone, especially on a phone."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I push files over 100 MB?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not as regular Git files. GitHub blocks them. Track the file with Git LFS, which stores the real bytes outside the repository, or keep the file out of the repository. If the file is already in your history, you also have to remove it from the commits that contain it."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is my vault uploaded?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. This page reads file names and sizes with your browser's File API and makes no network requests. File contents are never read, and nothing leaves your device or is saved."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does this check my Git history?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. It measures the files as they are on disk now. A large file that you committed earlier and later deleted can still be in history and make a push fail. See the history section below for the command that finds those."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body id="top">
+<a class="skip-link" href="#main">Skip to content</a>
+<svg class="icon-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 5l7 7-7 7"/></symbol>
+  <symbol id="i-branch" viewBox="0 0 24 24"><circle cx="6" cy="5" r="2.5"/><circle cx="6" cy="19" r="2.5"/><circle cx="18" cy="5" r="2.5"/><path d="M6 7.5v9M18 7.5v1a5 5 0 0 1-5 5H6"/></symbol>
+  <symbol id="i-external" viewBox="0 0 24 24"><path d="M6 18 18 6M6 6h12v12"/></symbol>
+</svg>
+
+<header class="site-header">
+  <nav class="shell navigation" aria-label="Main navigation">
+    <a class="brand" href="/" aria-label="GitSync.md home">gitsync<span class="brand-extension">.md</span></a>
+    <div class="nav-links"><a href="/#app">The app</a><a href="/#workflow">How it works</a><a href="/blog/" class="is-active">Guides</a><a href="/compare/obsidian-sync-vs-git">Compare</a><a href="/#faq">FAQ</a></div>
+    <a class="button button-small" href="/#download">Get the app</a>
+  </nav>
+</header>
+
+<main id="main">
+  <div class="container guide-layout tool-layout">
+      <header class="article-hero">
+        <div class="article-title"><nav class="eyebrow article-breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li><a href="/blog/">Guides</a></li><li aria-current="page">GitHub file size checker</li></ol></nav>
+      <h1>GitHub file size checker<span class="accent">.</span></h1>
+      <p class="subtitle">See which files GitHub will block before you push.</p>
+      <div class="meta-line"><time datetime="2026-11-24">November 24, 2026</time><span>By <a href="/about" rel="author">Cody Bontecou</a></span><span>Free tool · Runs in your browser</span></div>
+    </div>
+      </header>
+      <aside class="guide-aside" aria-label="Tool sidebar">
+        <div class="guide-aside-sticky">
+        <nav class="toc-card" aria-label="Page outline"><div class="toc-title">On this page</div><ol><li><a href="#checker">Checker</a></li><li><a href="#limits">GitHub’s size limits</a></li><li><a href="#fix">What to do with each file</a></li><li><a href="#history">Already committed a big file?</a></li><li><a href="#obsidian">Obsidian vaults</a></li><li><a href="#mobile">iPhone and iPad</a></li><li><a href="#faq">FAQ</a></li></ol></nav>
+        <div class="aside-cta aside-cta-wide">
+          <p class="aside-cta-title">Push big vaults from your iPhone</p>
+          <p class="aside-cta-price">iPhone + iPad: free to download, $9.99 once to unlock · No subscription</p>
+          <a class="aside-cta-button" href="/v/web-homepage-132" target="_blank" rel="noopener">Download on the App Store</a>
+          <p class="aside-cta-price">On Android? <a href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener">Get it on Google Play</a>.</p>
+        </div>
+        </div>
+      </aside>
+      <article class="article-body">
+        <p><strong>Short answer:</strong> GitHub blocks any file over 100 MiB, warns about files over 50 MiB, and the github.com uploader takes files up to 25 MiB. Pick your folder below to see which of your files cross those lines and what to do about each one. Your files stay on your device: the page reads names and sizes only and makes no network requests.</p>
+
+        <section class="calc" id="checker" aria-labelledby="checker-heading">
+          <h2 id="checker-heading" style="margin-top:0">Check a folder or vault</h2>
+          <noscript><p><strong>Turn on JavaScript to run the checker.</strong> It works entirely in your browser. The limits are listed in the table below.</p></noscript>
+          <form id="fs-form" hidden onsubmit="return false">
+            <div class="file-picks">
+              <div class="field">
+                <label class="field-label" for="pick-folder">Pick a folder</label>
+                <input type="file" id="pick-folder" webkitdirectory multiple aria-describedby="pick-hint">
+              </div>
+              <div class="field">
+                <label class="field-label" for="pick-files">Or pick files</label>
+                <input type="file" id="pick-files" multiple aria-describedby="pick-hint">
+              </div>
+            </div>
+            <span class="hint" id="pick-hint">On iPhone, pick files or run it on a computer. Safari on iPhone may not offer folder picking. The page reads sizes, not contents.</span>
+            <div class="checks" style="margin-top:14px">
+              <label><input type="checkbox" id="exclude-obsidian" checked> <span>Exclude .obsidian/ and .trash/<small>Skips those folders anywhere in the path. If you renamed your config folder, move it out of the way or ignore its rows.</small></span></label>
+            </div>
+            <p class="hint">Anything under <code>.git/</code> is always skipped, because Git manages those files itself.</p>
+          </form>
+          <p class="status" id="fs-status" role="status"></p>
+
+          <div class="calc-results" id="fs-results" aria-live="polite" hidden>
+            <h3>Summary</h3>
+            <div class="stat-grid" id="fs-stats"></div>
+            <p id="fs-total-note"></p>
+            <h3>Flagged files</h3>
+            <p id="fs-none" hidden><strong>No file is over 25 MiB.</strong> Nothing here would be blocked, warned about or rejected by the browser uploader.</p>
+            <div id="fs-table-wrap" hidden><div class="comparison-scroll" role="region" aria-label="Flagged files sorted by size" tabindex="0"><table class="comparison-table"><thead><tr><th scope="col">Path</th><th scope="col">Size</th><th scope="col">Band</th><th scope="col">Suggested action</th></tr></thead><tbody id="fs-rows"></tbody></table></div></div>
+            <p class="hint" id="fs-cap" hidden></p>
+
+            <div id="fs-snippets" hidden>
+              <div class="snippet">
+                <h3 id="lfs-heading">.gitattributes (Git LFS)</h3>
+                <p class="hint">Add to the <code>.gitattributes</code> at the repository root, then run <code>git lfs install</code> once. An extension line such as <code>*.mp4</code> tracks every file with that extension, including small ones. Files already committed as regular Git files are not rewritten by this; see the history section.</p>
+                <pre tabindex="0" role="region" aria-labelledby="lfs-heading"><code id="lfs-out"></code></pre>
+                <div class="actions"><button type="button" class="tool-btn" data-copy="lfs-out">Copy .gitattributes lines</button></div>
+              </div>
+              <div class="snippet">
+                <h3 id="ign-heading">.gitignore (optional)</h3>
+                <p class="hint">Use these instead of LFS when the files do not need to be in the repository. Ignoring does not untrack a file that is already committed.</p>
+                <pre tabindex="0" role="region" aria-labelledby="ign-heading"><code id="ign-out"></code></pre>
+                <div class="actions"><button type="button" class="tool-btn secondary" data-copy="ign-out">Copy .gitignore lines</button></div>
+              </div>
+            </div>
+            <p class="status" id="copy-status" role="status"></p>
+            <div class="calc-note"><strong>This checks files as they are now.</strong> It cannot see large files that are already in Git history, so a push can still fail on an old commit. <a href="#history">How to find them</a>.</div>
+          </div>
+        </section>
+
+        <h2 id="limits">GitHub’s size limits</h2>
+        <p>These come from GitHub’s documentation: <a href="https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-large-files-on-github">About large files on GitHub</a> and <a href="https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-git-large-file-storage">About Git Large File Storage</a>. The checker uses binary units (1 MiB = 1,048,576 bytes).</p>
+        <div class="comparison-scroll" role="region" aria-label="GitHub size limits" tabindex="0"><table class="comparison-table">
+          <caption>GitHub file and repository size limits</caption>
+          <thead><tr><th scope="col">Limit</th><th scope="col">Value</th><th scope="col">What happens</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Warning</th><td>50 MiB</td><td>Git warns you when you push a file larger than this.</td></tr>
+            <tr><th scope="row">Block</th><td>100 MiB</td><td>GitHub blocks files larger than this. The error reads “File exceeds GitHub’s file size limit of 100.00 MB”.</td></tr>
+            <tr><th scope="row">Browser upload</th><td>25 MiB</td><td>Files added through the browser on github.com can’t be larger than this.</td></tr>
+            <tr><th scope="row">Repository size</th><td>1 GB / 5 GB</td><td>Guidance: ideally under 1 GB, strongly recommended under 5 GB. A recommendation, not a hard cap.</td></tr>
+            <tr><th scope="row">Git LFS, per file</th><td>Free 2 GB<br>Pro 2 GB<br>Team 4 GB<br>Enterprise Cloud 5 GB</td><td>Maximum file size when you store the file with Git LFS.</td></tr>
+          </tbody>
+        </table></div>
+
+        <h2 id="fix">What to do with each flagged file</h2>
+        <ul>
+          <li><strong>Track it with Git LFS.</strong> Git LFS replaces the file in your repository with a small pointer and stores the real bytes separately. Use the <code>.gitattributes</code> lines the checker generates, or run <code>git lfs track "*.mp4"</code>. Do it <em>before</em> you commit the file. Project site: <a href="https://git-lfs.com">git-lfs.com</a>.</li>
+          <li><strong>Ignore it.</strong> If the file doesn’t need to travel with the repository (a render, a download, a build output), add it to <code>.gitignore</code> and keep it on one device.</li>
+          <li><strong>Compress it.</strong> A video re-exported at a lower bitrate, a PDF run through a compressor or an image saved at a sensible size can come under the limit.</li>
+          <li><strong>Keep it out of the vault.</strong> Store big media in a folder outside the repository and link to it from your notes.</li>
+        </ul>
+
+        <h2 id="history">Already committed a big file?</h2>
+        <p>Ignoring or LFS-tracking a file now does not change commits that already contain it. If a push still fails after you removed the file from your folder, an older commit probably holds it. On a computer, this lists the biggest objects in all of your history, largest last:</p>
+        <pre tabindex="0" role="region" aria-label="Find large files in Git history"><code>git rev-list --objects --all \
+  | git cat-file --batch-check='%(objecttype) %(objectname) %(objectsize) %(rest)' \
+  | awk '$1 == "blob" &amp;&amp; $3 &gt; 50*1024*1024' \
+  | sort -k3 -n</code></pre>
+        <p>That prints blobs over 50 MiB with their sizes and paths. To remove a file from history, follow GitHub’s docs: <a href="https://docs.github.com/en/repositories/working-with-files/managing-large-files/removing-files-from-git-large-file-storage">Removing files from Git Large File Storage</a> and <a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository">Removing sensitive data from a repository</a>. Rewriting history changes commit IDs, so everyone with a clone has to re-clone or reset.</p>
+
+        <h2 id="obsidian">Obsidian vaults and big attachments</h2>
+        <p>Notes are tiny. What breaks a push is attachments: screen recordings, exported videos, long audio recordings, scanned PDFs and zip archives. A single file past 100 MiB is enough to block a push, and one past 50 MiB makes Git warn. Decide per file type: LFS for what you want on every device, <code>.gitignore</code> for what you don’t. The <a href="/tools/obsidian-gitignore-generator">Obsidian .gitignore generator</a> builds the ignore file for the vault, and <a href="/blog/obsidian-backup-git">backing up Obsidian with Git</a> covers the wider routine. Setting up the repository in the first place: <a href="/blog/sync-obsidian-github">Sync Obsidian with GitHub</a>. If you are weighing the whole setup, the <a href="/tools/obsidian-sync-cost-calculator">Obsidian Sync cost calculator</a> compares Git with the paid options.</p>
+
+        <h2 id="mobile">On iPhone and iPad</h2>
+        <p>GitSync.md downloads Git LFS files after a clone and after a pull, asks before it tracks a large binary in LFS, and stops a push that contains a big file that isn’t LFS-tracked. Details are in <a href="/blog/git-lfs-ios">Git LFS on iPhone and iPad</a>.</p>
+        <div class="callout tip"><span class="callout-label">Push big vaults from your iPhone</span>
+          <p>GitSync.md syncs your vault with real Git on iPhone and iPad. Free to download, $9.99 once to unlock.</p>
+          <p><a href="/v/web-homepage-132" target="_blank" rel="noopener">Download on the App Store</a> · <a href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener">Get it on Google Play</a></p>
+        </div>
+
+        <h2 id="faq">Frequently asked questions</h2>
+        <h3>What is GitHub's file size limit?</h3>
+        <p>GitHub blocks files larger than 100 MiB and warns about files larger than 50 MiB. Files you add through the browser on github.com are limited to 25 MiB. Larger files can be stored with Git Large File Storage (Git LFS), which has its own per-file maximum that depends on your plan.</p>
+        <h3>Is there a repository size limit?</h3>
+        <p>GitHub's documentation recommends keeping repositories ideally under 1 GB and strongly recommends staying under 5 GB. That is guidance rather than a hard cap, but big repositories are slower to clone, especially on a phone.</p>
+        <h3>Can I push files over 100 MB?</h3>
+        <p>Not as regular Git files. GitHub blocks them. Track the file with Git LFS, which stores the real bytes outside the repository, or keep the file out of the repository. If the file is already in your history, you also have to remove it from the commits that contain it.</p>
+        <h3>Is my vault uploaded?</h3>
+        <p>No. This page reads file names and sizes with your browser's File API and does no network requests. File contents are never read, and nothing leaves your device or is saved.</p>
+        <h3>Does this check my Git history?</h3>
+        <p>No. It measures the files as they are on disk now. A large file that you committed earlier and later deleted can still be in history and make a push fail. See the history section below for the command that finds those.</p>
+        <div class="related-card"><h2 id="next">Related</h2><ul>
+          <li><a href="/blog/git-lfs-ios">Large files and Git LFS on iPhone</a></li>
+          <li><a href="/tools/obsidian-gitignore-generator">Obsidian .gitignore generator</a></li>
+          <li><a href="/blog/obsidian-backup-git">Back up Obsidian with Git</a></li>
+          <li><a href="/blog/sync-obsidian-github">Sync Obsidian with GitHub on every device</a></li>
+          <li><a href="/tools/obsidian-sync-cost-calculator">Obsidian Sync cost calculator</a></li>
+        </ul></div>
+  </article>
+    </div>
+  <section class="content-download" aria-labelledby="download-heading">
+    <div class="shell content-download-layout">
+      <div>
+        <p class="eyebrow"><span class="blue-square" aria-hidden="true"></span>Take your work with you.</p>
+        <h2 id="download-heading">REAL GIT.<br>WITHIN REACH.</h2>
+        <p class="content-download-description">Your files. Your commits. Your remote.<br>Get GitSync.md for iPhone, iPad, and Android.</p>
+      </div>
+      <div>
+        <div class="store-links" role="group" aria-label="Download GitSync.md">
+          <a class="store-badge store-badge-apple" href="/v/web-homepage-132" target="_blank" rel="noopener"><img src="../assets/store-badges/download-on-app-store.svg" width="120" height="40" alt="Download GitSync.md on the App Store" decoding="async"></a>
+          <a class="store-badge store-badge-google" href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener"><img src="../assets/store-badges/get-it-on-google-play.png" width="646" height="250" alt="Get GitSync.md on Google Play" decoding="async"></a>
+        </div>
+        <p class="purchase-note"><span>iPhone + iPad: free to download, $9.99 once to unlock.</span><span>Android: $9.99 once. All features included.</span><span>No subscriptions.</span></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="shell footer-layout">
+    <a class="brand" href="/" aria-label="GitSync.md home">gitsync<span class="brand-extension">.md</span></a>
+    <p>Independently built by <a href="https://codybontecou.com" target="_blank" rel="noopener">Cody Bontecou</a>.<br>© 2026 GitSync.md</p>
+    <div class="footer-links"><a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener">Source</a><a href="/blog/">Guides</a><a href="/compare/obsidian-sync-vs-git">Compare</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
+    <a class="back-top" href="#top" aria-label="Back to top">↑</a>
+  </div>
+</footer>
+<script>
+/* GitHub file size checker. Runs locally: no network requests, nothing stored, file contents never read.
+   Only File.name, File.size and File.webkitRelativePath are used.
+
+   Thresholds follow GitHub's docs (binary units):
+   https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-large-files-on-github
+   Tests in scripts/tests/file-size-checker.test.mjs run SizeCheck.selfTest() and more. */
+var SizeCheck = (function () {
+  var MIB = 1048576;
+  var GIB = 1073741824;
+  var BLOCK = 100 * MIB;   // GitHub blocks files larger than this
+  var WARN = 50 * MIB;     // Git warns for files larger than this
+  var BROWSER = 25 * MIB;  // github.com browser uploads are limited to this
+  var REPO_IDEAL = 1 * GIB;
+  var REPO_STRONG = 5 * GIB;
+  var LFS_FREE_MAX = 2 * GIB;
+  var MAX_ROWS = 1000;
+
+  function classify(bytes) {
+    if (bytes > BLOCK) return "blocked";
+    if (bytes > WARN) return "warn";
+    if (bytes > BROWSER) return "browser";
+    return "";
+  }
+  var LABELS = { blocked: "Blocked by GitHub", warn: "Git warns", browser: "Too big for browser upload on github.com" };
+
+  function formatSize(bytes) {
+    if (bytes >= GIB) return (bytes / GIB).toFixed(2) + " GiB";
+    if (bytes >= MIB) return (bytes / MIB).toFixed(1) + " MiB";
+    if (bytes >= 1024) return (bytes / 1024).toFixed(1) + " KiB";
+    return bytes + " B";
+  }
+
+  // Path segments for a File: strips the picked folder's own name when the browser gives a relative path.
+  function pathFor(name, relative) {
+    if (relative) {
+      var parts = String(relative).split("/");
+      if (parts.length > 1) parts.shift();
+      return parts.join("/");
+    }
+    return name;
+  }
+
+  function isExcluded(path, excludeObsidian, rootName) {
+    var segs = path.split("/");
+    for (var i = 0; i < segs.length - 1; i++) {   // directories only
+      if (segs[i] === ".git") return true;
+      if (excludeObsidian && (segs[i] === ".obsidian" || segs[i] === ".trash")) return true;
+    }
+    if (rootName === ".git") return true;
+    return false;
+  }
+
+  function extensionOf(path) {
+    var base = path.split("/").pop();
+    var i = base.lastIndexOf(".");
+    if (i <= 0 || i === base.length - 1) return "";
+    return base.slice(i + 1);
+  }
+
+  // Escape glob characters; quote when the pattern has whitespace (gitattributes / gitignore syntax).
+  function escapeGlob(s) { return s.replace(/[\\*?\[\]]/g, "\\$&"); }
+  function attrPattern(p) {
+    var s = escapeGlob(p);
+    if (/[\s"]/.test(s)) s = '"' + s.replace(/\\/g, "\\\\").replace(/"/g, '\\"') + '"';
+    return s;
+  }
+  function ignorePattern(p) {
+    var s = escapeGlob(p);
+    if (/^[#!]/.test(s)) s = "\\" + s;
+    return s.replace(/ +$/, function (m) { return m.replace(/ /g, "\\ "); });
+  }
+
+  function actionFor(item) {
+    var lfs = item.ext ? "Track *." + item.ext + " with Git LFS" : "Track this file with Git LFS";
+    if (item.size > LFS_FREE_MAX) {
+      return lfs + " only if it fits your plan’s LFS file maximum (2 GB on Free and Pro); otherwise compress it, split it or keep it out of the repository.";
+    }
+    if (item.band === "blocked") return lfs + ", or ignore it or move it out of the repository. GitHub will not accept it as a regular file.";
+    if (item.band === "warn") return lfs + ", or compress or ignore it. Git warns on push, and the file bloats every clone.";
+    return "Fine for git push. Add it with Git or the GitHub app instead of the web uploader, or track it with Git LFS.";
+  }
+
+  // files: [{ path, size }]
+  function analyze(files, opts) {
+    opts = opts || {};
+    var counted = [], excluded = 0, total = 0, largest = null;
+    files.forEach(function (f) {
+      if (isExcluded(f.path, !!opts.excludeObsidian, "")) { excluded++; return; }
+      counted.push(f);
+      total += f.size;
+      if (!largest || f.size > largest.size) largest = f;
+    });
+    var counts = { blocked: 0, warn: 0, browser: 0 };
+    var flagged = [];
+    counted.forEach(function (f) {
+      var band = classify(f.size);
+      if (!band) return;
+      counts[band]++;
+      var item = { path: f.path, size: f.size, band: band, ext: extensionOf(f.path) };
+      item.action = actionFor(item);
+      flagged.push(item);
+    });
+    flagged.sort(function (a, b) { return b.size - a.size || (a.path < b.path ? -1 : 1); });
+
+    var exts = [], exact = [], seenExt = {}, seenPath = {};
+    flagged.forEach(function (it) {
+      if (it.ext) {
+        if (!seenExt[it.ext]) { seenExt[it.ext] = 1; exts.push(it.ext); }
+      } else if (!seenPath[it.path]) { seenPath[it.path] = 1; exact.push(it.path); }
+    });
+    var lfs = exts.map(function (e) { return "*." + escapeGlob(e) + " filter=lfs diff=lfs merge=lfs -text"; })
+      .concat(exact.map(function (p) { return attrPattern("/" + p) + " filter=lfs diff=lfs merge=lfs -text"; }));
+    var ignore = flagged.map(function (it) { return "/" + ignorePattern(it.path); });
+
+    var totalNote;
+    if (total > REPO_STRONG) totalNote = "GitHub strongly recommends repositories under 5 GB. These files alone add up to more than that.";
+    else if (total > REPO_IDEAL) totalNote = "GitHub recommends repositories ideally under 1 GB. These files alone add up to more than that, so clones will be slow, especially on a phone.";
+    else totalNote = "Under GitHub’s 1 GB guidance for the files measured here.";
+    return {
+      count: counted.length, excluded: excluded, total: total, largest: largest,
+      counts: counts, flagged: flagged, lfsLines: lfs, ignoreLines: ignore, totalNote: totalNote
+    };
+  }
+
+  function selfTest() {
+    var errs = [];
+    function eq(a, b, m) { if (a !== b) errs.push(m + ": expected " + b + ", got " + a); }
+    eq(classify(100 * MIB), "warn", "exactly 100 MiB is not over the block limit");
+    eq(classify(100 * MIB + 1), "blocked", "100 MiB + 1 byte");
+    eq(classify(50 * MIB), "browser", "exactly 50 MiB");
+    eq(classify(50 * MIB + 1), "warn", "50 MiB + 1");
+    eq(classify(25 * MIB), "", "exactly 25 MiB");
+    eq(classify(25 * MIB + 1), "browser", "25 MiB + 1");
+    var r = analyze([
+      { path: "media/big.mp4", size: 120 * MIB },
+      { path: "docs/mid.pdf", size: 60 * MIB },
+      { path: "data/LICENSE", size: 30 * MIB },
+      { path: "note.md", size: 1024 },
+      { path: ".git/objects/pack/x.pack", size: 500 * MIB },
+      { path: ".obsidian/plugins/a/main.js", size: 90 * MIB },
+      { path: ".trash/old.mov", size: 70 * MIB }
+    ], { excludeObsidian: true });
+    eq(r.counts.blocked, 1, "blocked count");
+    eq(r.counts.warn, 1, "warn count");
+    eq(r.counts.browser, 1, "browser count");
+    eq(r.count, 4, "counted files");
+    eq(r.excluded, 3, "excluded files");
+    eq(r.lfsLines.length, 3, "lfs line count");
+    eq(r.lfsLines[0], "*.mp4 filter=lfs diff=lfs merge=lfs -text", "extension line first (largest file first)");
+    eq(r.lfsLines[2], "/data/LICENSE filter=lfs diff=lfs merge=lfs -text", "exact path for no extension");
+    var r2 = analyze([{ path: ".obsidian/x.bin", size: 200 * MIB }, { path: ".git/y", size: 200 * MIB }], { excludeObsidian: false });
+    eq(r2.counts.blocked, 1, "obsidian kept when the box is off, .git still skipped");
+    return errs;
+  }
+
+  return {
+    MIB: MIB, GIB: GIB, BLOCK: BLOCK, WARN: WARN, BROWSER: BROWSER, MAX_ROWS: MAX_ROWS,
+    classify: classify, labels: LABELS, formatSize: formatSize, pathFor: pathFor, isExcluded: isExcluded,
+    analyze: analyze, selfTest: selfTest
+  };
+})();
+
+(function () {
+  if (typeof document === "undefined") return;
+  var form = document.getElementById("fs-form");
+  if (!form) return;
+  form.hidden = false;
+  var $ = function (id) { return document.getElementById(id); };
+  var lastFiles = [];
+
+  function el(tag, cls, text) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text != null) n.textContent = text;
+    return n;
+  }
+  function stat(cls, value, label) {
+    var d = el("div", "stat " + cls);
+    d.appendChild(el("b", null, value));
+    d.appendChild(el("span", null, label));
+    return d;
+  }
+
+  function render() {
+    var r = SizeCheck.analyze(lastFiles, { excludeObsidian: $("exclude-obsidian").checked });
+    var stats = $("fs-stats");
+    stats.textContent = "";
+    stats.appendChild(stat("", String(r.count), "files checked" + (r.excluded ? " (" + r.excluded + " skipped)" : "")));
+    stats.appendChild(stat("", SizeCheck.formatSize(r.total), "total size"));
+    stats.appendChild(stat("", r.largest ? SizeCheck.formatSize(r.largest.size) : "none", r.largest ? "largest: " + r.largest.path : "largest file"));
+    stats.appendChild(stat("blocked", String(r.counts.blocked), "Blocked by GitHub (over 100 MiB)"));
+    stats.appendChild(stat("warn", String(r.counts.warn), "Git warns (over 50 MiB)"));
+    stats.appendChild(stat("browser", String(r.counts.browser), "Too big for browser upload on github.com (over 25 MiB)"));
+    $("fs-total-note").textContent = r.totalNote + " This adds up file sizes on disk; it is not the size of your repository.";
+
+    var rows = $("fs-rows");
+    rows.textContent = "";
+    var any = r.flagged.length > 0;
+    $("fs-none").hidden = any;
+    $("fs-table-wrap").hidden = !any;
+    $("fs-snippets").hidden = !any;
+    r.flagged.slice(0, SizeCheck.MAX_ROWS).forEach(function (it) {
+      var tr = el("tr");
+      tr.appendChild(el("td", "path", it.path));
+      tr.appendChild(el("td", null, SizeCheck.formatSize(it.size)));
+      var td = el("td");
+      td.appendChild(el("span", "band " + it.band, SizeCheck.labels[it.band]));
+      tr.appendChild(td);
+      tr.appendChild(el("td", null, it.action));
+      rows.appendChild(tr);
+    });
+    var cap = $("fs-cap");
+    cap.hidden = r.flagged.length <= SizeCheck.MAX_ROWS;
+    if (!cap.hidden) cap.textContent = "Showing the largest " + SizeCheck.MAX_ROWS + " of " + r.flagged.length + " flagged files. The snippets cover all of them.";
+    $("lfs-out").textContent = r.lfsLines.join("\n");
+    $("ign-out").textContent = r.ignoreLines.join("\n");
+    $("fs-results").hidden = false;
+    $("copy-status").textContent = "";
+  }
+
+  function load(input) {
+    var list = Array.prototype.slice.call(input.files || []);
+    lastFiles = list.map(function (f) {
+      return { path: SizeCheck.pathFor(f.name, f.webkitRelativePath), size: f.size };
+    });
+    $("fs-status").textContent = list.length ? "Read " + list.length + " file" + (list.length === 1 ? "" : "s") + " locally. Nothing was uploaded." : "No files were selected.";
+    if (list.length) render(); else $("fs-results").hidden = true;
+  }
+  $("pick-folder").addEventListener("change", function () { load(this); });
+  $("pick-files").addEventListener("change", function () { load(this); });
+  $("exclude-obsidian").addEventListener("change", function () { if (lastFiles.length) render(); });
+
+  function copyText(text, done) {
+    function fallback() {
+      var ta = document.createElement("textarea");
+      ta.value = text; ta.setAttribute("readonly", ""); ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.select();
+      var ok = false;
+      try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+      document.body.removeChild(ta);
+      done(ok);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { done(true); }, fallback);
+    } else fallback();
+  }
+  Array.prototype.forEach.call(document.querySelectorAll("[data-copy]"), function (btn) {
+    btn.addEventListener("click", function () {
+      var text = $(btn.getAttribute("data-copy")).textContent;
+      copyText(text, function (ok) {
+        $("copy-status").textContent = ok ? "Copied." : "Copy failed. Select the text and copy it manually.";
+      });
+    });
+  });
+  if (location.hash === "#selftest") console.log("SizeCheck self-test:", SizeCheck.selfTest());
+})();
+</script>
+</body>
+</html>

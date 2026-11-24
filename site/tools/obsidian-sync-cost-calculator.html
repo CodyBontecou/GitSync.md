@@ -327,7 +327,7 @@
         <h3>Is 1 GB of Obsidian Sync storage enough?</h3>
         <p>For a text-only vault, usually yes: a Markdown note is a few kilobytes. Attachments and version history fill it faster, because Obsidian counts both toward the storage limit. Standard also skips any file over 5 MB, so a vault with large PDFs, images or recordings may need Sync Plus.</p>
         <h3>Can I sync Obsidian with GitHub for free?</h3>
-        <p>On desktop computers, yes. GitHub Free includes unlimited private repositories, and Git and the community Obsidian Git plugin are free. On a phone you need a Git client that can reach the vault folder. GitSync.md is free to download and costs $9.99 once to unlock on iPhone and iPad, and $9.99 once on Android. GitHub blocks files over 100 MiB, so very large attachments need Git LFS or another home.</p>
+        <p>On desktop computers, yes. GitHub Free includes unlimited private repositories, and Git and the community Obsidian Git plugin are free. On a phone you need a Git client that can reach the vault folder. GitSync.md is free to download and costs $9.99 once to unlock on iPhone and iPad, and $9.99 once on Android. GitHub blocks files over 100 MiB, so very large attachments need Git LFS or another home. To find which files are too big, use the <a href="/tools/github-file-size-checker">GitHub file size checker</a>.</p>
         <h3>Does a private GitHub repository encrypt my notes?</h3>
         <p>No. A private repository limits who can open it, and HTTPS or SSH protects the transfer, but the notes are not end-to-end encrypted: GitHub can read them. Obsidian Sync uses end-to-end encryption by default. If your notes need that, choose Sync or encrypt them yourself before they reach the repository.</p>
 
@@ -502,7 +502,7 @@ var PRICES = {
     var warnings = [];
     if (x.history === "full") warnings.push("Obsidian Sync keeps at most 12 months of version history. Git keeps every commit until you delete it.");
     if (r.plan && x.sizeMB > r.plan.storageMB * 0.8) warnings.push("Your vault uses over 80% of " + r.plan.name + "’s storage. Version history counts toward the same limit, so you may run out.");
-    if (x.largestMB > PRICES.githubBlockFileMB) warnings.push('GitHub blocks files over 100 MiB. Track them with Git LFS (see <a href="/blog/git-lfs-ios">Git LFS on iPhone and iPad</a>) or keep them out of the repository.');
+    if (x.largestMB > PRICES.githubBlockFileMB) warnings.push('GitHub blocks files over 100 MiB. Track them with Git LFS (see <a href="/blog/git-lfs-ios">Git LFS on iPhone and iPad</a>) or keep them out of the repository. <a href="/tools/github-file-size-checker">Check your files</a>.');
     else if (x.largestMB > PRICES.githubWarnFileMB) warnings.push('Git warns about files over 50 MiB, and GitHub blocks files over 100 MiB. Consider <a href="/blog/git-lfs-ios">Git LFS</a> for large attachments.');
     if (x.sizeMB > PRICES.githubRepoStrongMB) warnings.push('GitHub strongly recommends repositories under 5 GB (ideally under 1 GB). A vault this size is slow to clone on a phone; move big attachments to <a href="/blog/git-lfs-ios">Git LFS</a> or out of the vault.');
     else if (x.sizeMB > PRICES.githubRepoIdealMB) warnings.push('GitHub recommends repositories under 1 GB. Large attachments make every clone slower; see <a href="/blog/git-lfs-ios">Git LFS</a>.');
