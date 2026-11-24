@@ -1,0 +1,41 @@
+E2E test "issue132-stop-tracking-workspace-file"
+  › Launch with the workspace-file fixture (tracked .obsidian/workspace-mobile.json with a local edit). Expect Home with the fixture vault
+  ✓  1 launch (1.7s)
+  ✓  2 tool await-ui-element (0.3s)
+  ✓  3 idle (0.5s)
+  ✓  4 tap (0.5, 0.522) (0.3s)
+  ✓  5 tool await-ui-element (0.2s)
+  ✓  6 idle (1.4s)
+  › Vault open with the tracked workspace file changed. Open the Git tab; expect the workspace-file suggestion
+  ✓  7 tap (0.841, 0.547) (0.3s)
+  ✓  8 tool await-ui-element (0.1s)
+  ✓  9 idle (0.7s)
+  › Suggestion shown. Go back to Changes and open the workspace file's diff
+  ✓ 10 tap (0.159, 0.547) (0.3s)
+  ✓ 11 tool await-ui-element (0.1s)
+  ✓ 12 idle (0.8s)
+  ✓ 13 tap (0.5, 0.625) (0.3s)
+  ✓ 14 tool await-ui-element (0.2s)
+  ✓ 15 idle (1.3s)
+  › Diff for the workspace file open. Open the More menu and choose Stop Tracking; expect the stop-tracking sheet
+  ✓ 16 tap (0.367, 0.92) (0.3s)
+  ✓ 17 tool await-ui-element (0.1s)
+  ✓ 18 tap "Stop Tracking…" (0.3s)
+  ✓ 19 tool await-ui-element (0.5s)
+  ✓ 20 idle (0.5s)
+  › Sheet open. Choose "All Obsidian workspace files" and confirm; expect the sheet to close and the diff screen to pop back to the vault
+  ✓ 21 tap (0.5, 0.747) (0.3s)
+  ✓ 22 tap (0.5, 0.835) (0.3s)
+  ✓ 23 tool await-ui-element (0.2s)
+  ✓ 24 tool await-ui-element (0.0s)
+  ✓ 25 idle (1.4s)
+  ✓ 26 tool await-ui-element (0.0s)
+  ✓ 27 tool await-ui-element (0.0s)
+  ✓ 28 tool await-ui-element (0.0s)
+  › Committed. Open the Git tab; expect the workspace-file suggestion to be gone
+  ✓ 29 tap (0.841, 0.556) (0.3s)
+  ✓ 30 tool await-ui-element (0.1s)
+  ✓ 31 idle (0.8s)
+  ✓ 32 tool await-ui-element (0.1s)
+
+PASS (started on <iPhone 18 Pro sim>) — 32 passed, 0 failed, 0 errored, 0 skipped (14.1s)
