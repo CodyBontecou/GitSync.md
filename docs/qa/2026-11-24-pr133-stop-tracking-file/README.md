@@ -1,7 +1,7 @@
 ---
 status: active
 covers: [pr#133, issue#132]
-tested: 7ad72ecc4e5d14dfee486ddaaf712a684ead5deb
+tested: cb14e6d33e879f3ed89b069688068cb7037bdb79
 updated: 2026-11-24
 ---
 
@@ -68,6 +68,15 @@ The branch was rebased onto main after #131 merged. The one conflict was in `Git
 - **Unit tests:** `SyncMDTests` passed 612/612 on the iPhone 18 Pro simulator.
 - **E2E:** main's Home screen moved the vault row up, so both simulator tests now tap it at y 0.44 instead of 0.522. That's still a coordinate exception, for the same reason as before. After that change, `issue132-stop-tracking-workspace-file` (37 steps) and `issue132-longpress-stop-tracking-file` (19 steps) each passed twice in a row.
 - **Not re-run:** the physical-iPhone tests. The rebase changed nothing in this feature's code.
+
+## After rebasing onto main with #138 (cb14e6d3)
+
+#138 merged first, so this branch was rebased again. Both PRs had added code at the same spots in `LocalGitService.swift`, `MarketingCapture.swift` and the project file, and both sides were kept. The two debug fixtures now share `workspacePath`. Merging dropped the closing braces of #138's last function, and a follow-up commit restores them.
+- **Unit tests:** iOS `SyncMDTests` passed 618/618, which includes #138's tests.
+- **E2E on the iPhone 18 Pro simulator:** each test passed twice in a row.
+  - `issue132-stop-tracking-workspace-file`: 37/37
+  - `issue132-longpress-stop-tracking-file`: 19/19
+  - `issue137-pull-after-remote-stops-tracking`: 14/14
 
 ## Side effects and exceptions
 
