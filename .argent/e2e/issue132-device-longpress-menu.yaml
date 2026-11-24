@@ -1,0 +1,166 @@
+# Issue #132 on a physical iPhone: the Changes list's long-press context menu.
+# Edits daily-note.md in the app, long-presses its row (menu shows Revert
+# Changes and Stop Tracking…), opens Stop Tracking… (sheet fully exposed to the
+# device accessibility tree, "This file" option, red other-devices warning),
+# cancels, then long-presses again and discards the edit through Revert
+# Changes (Discard sheet fully exposed). Commits and pushes nothing.
+# Prerequisites: a Debug build of GitSync.md on the owner's own iPhone with the
+# owner's private QA repo `gitsync-tide-qa` added as a vault, in sync, whose
+# daily-note.md ends with "Nov 3." (made-up QA content). Run with
+# `--device <iPhone udid>`; a physical phone is never auto-selected. Never use
+# the -UITestGitToolsFixture launch argument on a real phone.
+# Side effects: none on GitHub. With "Stash a copy first" on (the default), the
+# discard saves a stash in the test vault on the phone.
+#
+# Coordinate exceptions:
+# - The editor tap at (0.5, 0.6) lands below the note's last line so the caret
+#   goes to the end of the text; the value check after typing proves it.
+# - The two long-presses are raw 900 ms gestures on the daily-note.md row
+#   (frame centre from `describe`); the menu waits right after prove they
+#   opened that row's context menu.
+version: 1
+requires:
+  platform: ios
+steps:
+  - echo: Relaunch GitSync.md. Expect Home with the gitsync-tide-qa test vault in
+      sync
+  - launch: bontecou.Sync-md
+  - await:
+      visible:
+        id: home.vault.gitsync-tide-qa
+      timeout: 20000
+  - await: { idle: true }
+  - tap:
+      id: home.vault.gitsync-tide-qa
+  - await:
+      visible:
+        id: vault.title
+      timeout: 10000
+  - await: { idle: true }
+  - echo: Vault open. Open daily-note.md from Files and append a line so the Changes
+      list has a tracked, modified file
+  - tap:
+      text: Files
+  - await:
+      visible:
+        text: daily-note.md, edited
+      timeout: 10000
+  - tap:
+      text: daily-note.md
+  - await:
+      visible:
+        text: Preview
+        role: button
+      timeout: 10000
+  - await: { idle: true }
+  # Coordinate exception: below the last line of the editor (see header).
+  - tap:
+      x: 0.5
+      y: 0.6
+  - tool: keyboard
+    args:
+      text: " Device QA edit."
+  - assert:
+      text:
+        in:
+          role: textfield
+        contains: Nov 3. Device QA edit.
+  - tap:
+      text: Save
+  - tap:
+      id: BackButton
+  - await:
+      visible:
+        text: 1, change on this iPhone
+      timeout: 10000
+  - tap:
+      text: Changes
+  - await:
+      visible:
+        text: daily-note.md, modified
+      timeout: 10000
+  - await: { idle: true }
+  - echo: daily-note.md modified. Long-press its row; expect Revert Changes and Stop
+      Tracking… in the menu. Open Stop Tracking…; expect the fully exposed sheet
+      with "This file" and the red other-devices warning, then Cancel
+  # Coordinate exception: long-press on the daily-note.md row (see header).
+  - tool: gesture-custom
+    args:
+      events:
+        - type: Down
+          x: 0.5
+          y: 0.625
+        - type: Up
+          x: 0.5
+          y: 0.625
+          delayMs: 900
+  - await:
+      visible:
+        text: Stop Tracking…
+      timeout: 5000
+  - assert:
+      visible:
+        text: Revert Changes
+  - tap:
+      text: Stop Tracking…
+  - await:
+      visible:
+        id: stopTracking.confirm
+      timeout: 5000
+  - await: { idle: true }
+  - assert:
+      visible:
+        id: stopTracking.option.file
+  - assert:
+      text:
+        in:
+          id: stopTracking.otherDevicesNote
+        contains: Save it there first if they need it
+  - tap:
+      id: stopTracking.cancel
+  - await:
+      hidden:
+        id: stopTracking.confirm
+      timeout: 5000
+  - assert:
+      visible:
+        text: daily-note.md, modified
+  - echo: Sheet cancelled, file still modified. Long-press again and choose Revert
+      Changes; expect the Discard sheet with all its controls exposed, then
+      discard; expect no changes left
+  # Coordinate exception: long-press on the daily-note.md row (see header).
+  - tool: gesture-custom
+    args:
+      events:
+        - type: Down
+          x: 0.5
+          y: 0.625
+        - type: Up
+          x: 0.5
+          y: 0.625
+          delayMs: 900
+  - await:
+      visible:
+        text: Revert Changes
+      timeout: 5000
+  - tap:
+      text: Revert Changes
+  - await:
+      visible:
+        text: Discard changes to this file?
+      timeout: 5000
+  - await: { idle: true }
+  - assert:
+      visible:
+        text: Discard changes
+        role: button
+  - tap:
+      text: Discard changes
+      role: button
+  - await:
+      visible:
+        text: No changes on this iPhone
+      timeout: 15000
+  - assert:
+      hidden:
+        text: daily-note.md, modified

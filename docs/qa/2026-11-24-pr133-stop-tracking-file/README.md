@@ -57,6 +57,11 @@ All three were fixed in `4d0036cc` and re-verified on the simulator and the iPho
 
 After the fixes, the device e2e test was re-recorded with no coordinate taps: **PASS 22/22** (`e2e-device-iphone17pro-run.txt`). It checks the plural copy, the preselected option, the note text, the commit and the push. On GitHub the push produced `46e7925` (live recording) and a second commit from the replay. The message body is "Removed from Git and added to .gitignore by GitSync.md. The copy on this device was kept. Obsidian recreates them on each device." The long-press context menu on the phone was also checked by hand: it shows Revert Changes and Stop Tracking…, and the per-file sheet shows the red warning.
 
+### Long-press context menu (e2e)
+
+- Simulator: `.argent/e2e/issue132-longpress-stop-tracking-file.yaml`. It long-presses the changed workspace file and checks the menu (Revert Changes, Stop Tracking…). It then opens the sheet (workspace option preselected), switches to **This file** (red warning) and confirms. In the fixture repo afterwards, the commit is "Stop tracking .obsidian/workspace-mobile.json": `.gitignore` gets `/.obsidian/workspace-mobile.json`, only that file is removed, and the body has the "deletes the copy on other devices" text. Command: `argent e2e run issue132-longpress-stop-tracking-file --platform ios --device <sim>`. **PASS 19/19, twice** (`e2e-longpress-sim-run.txt`). Coordinate exceptions: the vault row, the long-press, the option and confirm (simulator tree limit). The menu item itself is a text tap.
+- iPhone 17 Pro: `.argent/e2e/issue132-device-longpress-menu.yaml`. It edits `daily-note.md` in the app and long-presses it. It opens Stop Tracking… and checks the full sheet, "This file" and the warning, then cancels. It long-presses again and uses **Revert Changes**, which opens the Discard sheet (also fully exposed on device), and discards. Nothing is committed or pushed. Command: `argent e2e run issue132-device-longpress-menu --platform ios --device <iPhone udid>`. **PASS 40/40, twice** (`e2e-device-longpress-run.txt`). Coordinate exceptions: the editor tap (caret at the end) and the two long-presses.
+
 ## Side effects and exceptions
 
 - The e2e test resets the fixture area and the fixture vault on the simulator. It makes one local commit and pushes nothing.
@@ -66,4 +71,4 @@ After the fixes, the device e2e test was re-recorded with no coordinate taps: **
 ## Not covered
 
 - Android has no equivalent.
-- The long-press context-menu entry is only checked by hand on the phone, not in an e2e test.
+- How the receiving device handles a pulled stop-tracking commit while it has local edits to the same file. On iOS and Android, any local change blocks the pull; "Resolve" then commits everything and merges, which turns into a modify/delete conflict. This is tracked as a follow-up, not fixed here.

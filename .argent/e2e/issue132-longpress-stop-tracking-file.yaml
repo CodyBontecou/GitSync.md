@@ -1,0 +1,134 @@
+# Issue #132: stop tracking a single file from the Changes list's long-press
+# context menu. Long-presses the tracked, edited .obsidian/workspace-mobile.json,
+# checks the menu (Revert Changes, Stop Tracking…), opens the sheet (workspace
+# option preselected with the Obsidian note), switches to "This file" (red
+# warning that other devices lose their copy) and confirms. Expects the commit
+# "Stop tracking .obsidian/workspace-mobile.json", an empty changes list and
+# 1 to push.
+# Prerequisites: a DEBUG build of GitSync.md installed on an iOS SIMULATOR
+# (recorded on an iPhone 18 Pro). Never run it on a real phone: the
+# `-UITestGitToolsFixture workspace-file` launch argument replaces the app's
+# vault list. The fixture is a local-only vault (file:// remote under
+# /tmp/syncmd-uitest-fixtures); no network, accounts or personal data.
+# Side effects: resets /tmp/syncmd-uitest-fixtures and the app's
+# Documents/git-tools-fixture folder and repo list on the simulator, and makes
+# one local commit in that fixture vault (nothing is pushed).
+#
+# Coordinate exceptions: SwiftUI ids and labels on these screens are in the
+# accessibility tree but not in the simulator runner's native tree, so tap
+# directives cannot resolve them (same constraint as
+# issue111-detached-head-pull.yaml). Each point is the element's frame centre
+# from `describe` on the iPhone 18 Pro, and the wait right after each tap
+# proves where it landed. The context-menu item itself is a text tap.
+version: 1
+requires:
+  platform: ios
+steps:
+  - echo: Launch with the workspace-file fixture (tracked
+      .obsidian/workspace-mobile.json with a local edit). Expect Home with the
+      fixture vault
+  - launch:
+      native: bontecou.Sync-md
+      ios:
+        app: bontecou.Sync-md
+        args:
+          - -UITestGitToolsFixture
+          - workspace-file
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: home.vault.git-tools-fixture
+      timeoutMs: 15000
+  # Coordinate exception: the fixture vault row (home.vault.git-tools-fixture).
+  - tap:
+      x: 0.5
+      y: 0.522
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: workspace-mobile.json, modified
+      timeoutMs: 10000
+  - await: { idle: true }
+  - echo: Vault open on Changes with the workspace file listed. Long-press its row;
+      expect the context menu with Revert Changes and Stop Tracking…
+  # Coordinate exception: a 900 ms long-press on the workspace-mobile.json row
+  # proven visible above (its label is only in the accessibility tree). The
+  # menu waits right after prove it opened the row's context menu.
+  - tool: gesture-custom
+    args:
+      events:
+        - type: Down
+          x: 0.5
+          y: 0.625
+        - type: Up
+          x: 0.5
+          y: 0.625
+          delayMs: 900
+  - await:
+      visible:
+        text: Stop Tracking…
+      timeout: 5000
+  - assert:
+      visible:
+        text: Revert Changes
+  - tap:
+      text: Stop Tracking…
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: stopTracking.confirm
+      timeoutMs: 5000
+  - await: { idle: true }
+  - tool: await-ui-element
+    args:
+      condition: text
+      selector:
+        identifier: stopTracking.otherDevicesNote
+      expectedText: Obsidian creates a new one
+      timeoutMs: 5000
+  - echo: Sheet open from the context menu with the workspace option preselected.
+      Choose "This file"; expect the other-devices warning, then confirm; expect
+      a "Stop tracking .obsidian/workspace-mobile.json" commit
+  # Coordinate exception: stopTracking.option.file; the warning text checked
+  # next proves the tap selected it.
+  - tap:
+      x: 0.5
+      y: 0.533
+  - tool: await-ui-element
+    args:
+      condition: text
+      selector:
+        identifier: stopTracking.otherDevicesNote
+      expectedText: Save it there first if they need it
+      timeoutMs: 5000
+  # Coordinate exception: stopTracking.confirm, proven visible above.
+  - tap:
+      x: 0.5
+      y: 0.835
+  - tool: await-ui-element
+    args:
+      condition: hidden
+      selector:
+        identifier: stopTracking.confirm
+      timeoutMs: 10000
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Stop tracking .obsidian/workspace-mobile.json
+      timeoutMs: 10000
+  - tool: await-ui-element
+    args:
+      condition: hidden
+      selector:
+        text: workspace-mobile.json, modified
+      timeoutMs: 5000
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: 1 to push
+      timeoutMs: 5000
