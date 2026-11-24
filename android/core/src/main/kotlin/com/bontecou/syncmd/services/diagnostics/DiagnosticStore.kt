@@ -20,7 +20,7 @@ class DiagnosticStore(private val directory: File, private val limit: Int = 500,
     /** Copy of [export] limited to the given entries (Debug log › "Copy visible entries"). */
     fun export(entries: List<DiagnosticEntry>): String = entries.joinToString("\n") { line(it) }
     private fun line(it: DiagnosticEntry) = "[${Instant.ofEpochMilli(it.time)}] [${it.level}]${if (it.background) " [BG]" else ""} [${it.operation}] ${it.outcome}" +
-        if (it.reason == DiagnosticReason.NONE) "" else " · ${it.reason}"
+        (if (it.reason == DiagnosticReason.NONE) "" else " · ${it.reason}") + (it.localChanges?.let { facts -> " · ${facts.describe()}" } ?: "")
     private val file get() = File(directory, "events.json")
     private var loaded = false
     private var unreadable = false
@@ -53,9 +53,14 @@ class DiagnosticStore(private val directory: File, private val limit: Int = 500,
                 require(time in 0..253402300799999L)
                 val vault = row.get("vault")?.takeIf { !it.isJsonNull }?.asString
                 require(vault == null || vault.matches(Regex("[0-9a-f]{16}")))
+                val facts = row.get("localChanges")?.takeIf { !it.isJsonNull }?.asJsonObject?.let { raw ->
+                    LocalChangesFacts(PullCheck.valueOf(raw.get("check").asString),
+                        raw.getAsJsonArray("kinds").map { LocalChangeKind.valueOf(it.asString) }.toSet(),
+                        raw.get("blocking").asInt, raw.get("setAside").asInt)
+                }
                 DiagnosticEntry(id, time, DiagnosticOperation.valueOf(row.get("operation").asString),
                     DiagnosticOutcome.valueOf(row.get("outcome").asString), DiagnosticReason.valueOf(row.get("reason").asString),
-                    vault, row.get("background")?.takeIf { !it.isJsonNull }?.asBoolean ?: false)
+                    vault, row.get("background")?.takeIf { !it.isJsonNull }?.asBoolean ?: false, facts)
             }
         } catch (_: Exception) { unreadable = true; _storageProblem.value = true }
     }
@@ -69,8 +74,7 @@ class DiagnosticStore(private val directory: File, private val limit: Int = 500,
     }
     @Synchronized fun clear() { persist(emptyList()); unreadable = false; loaded = true }
     fun export(level: DiagnosticLevel? = null): String = entries.value.filter { level == null || it.level == level }
-        .joinToString("\n") { "[${Instant.ofEpochMilli(it.time)}] [${it.level}]${if (it.background) " [BG]" else ""} [${it.operation}] ${it.outcome}" +
-            if (it.reason == DiagnosticReason.NONE) "" else " · ${it.reason}" }
+        .joinToString("\n") { line(it) }
 
     private fun safeDirectory() {
         require(directory.absoluteFile == directory.canonicalFile && !Files.isSymbolicLink(directory.toPath()))
@@ -84,6 +88,11 @@ class DiagnosticStore(private val directory: File, private val limit: Int = 500,
             addProperty("outcome", entry.outcome.name); addProperty("reason", entry.reason.name)
             entry.vault?.let { addProperty("vault", it) }
             if (entry.background) addProperty("background", true)
+            entry.localChanges?.let { facts -> add("localChanges", JsonObject().apply {
+                addProperty("check", facts.check.name)
+                add("kinds", JsonArray().apply { facts.kinds.sorted().forEach { add(it.name) } })
+                addProperty("blocking", facts.blocking); addProperty("setAside", facts.setAside)
+            }) }
         }) } })
     }.toString().toByteArray(Charsets.UTF_8)
     private fun persist(next: List<DiagnosticEntry>) {

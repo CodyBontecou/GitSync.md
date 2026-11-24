@@ -119,7 +119,12 @@ class IncomingUntrackPullTest {
         val repository = LocalPullRepository()
 
         assertThat(repository.planPull(fixture.vault.path).getOrThrow().canPull).isFalse()
-        assertThat(repository.executePull(fixture.vault.path).isFailure).isTrue()
+        val failure = repository.executePull(fixture.vault.path).exceptionOrNull()
+        // The debug log says what was in the way, without paths: both edits, nothing set aside.
+        val facts = (failure as com.bontecou.syncmd.data.models.DirtyRepoException).facts
+        assertThat(facts).isEqualTo(com.bontecou.syncmd.services.diagnostics.LocalChangesFacts(
+            com.bontecou.syncmd.services.diagnostics.PullCheck.BEFORE_UPDATE,
+            setOf(com.bontecou.syncmd.services.diagnostics.LocalChangeKind.MODIFIED), blocking = 2, setAside = 0))
 
         assertThat(read(fixture.vault, workspace)).isEqualTo("{\"active\":\"edited\"}\n")
         assertThat(read(fixture.vault, "a.md")).isEqualTo("my unsaved note\n")

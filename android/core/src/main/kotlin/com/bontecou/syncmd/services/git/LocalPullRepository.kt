@@ -1,6 +1,8 @@
 package com.bontecou.syncmd.services.git
 
 import com.bontecou.syncmd.data.models.DirtyRepoException
+import com.bontecou.syncmd.services.diagnostics.LocalChangesFacts
+import com.bontecou.syncmd.services.diagnostics.PullCheck
 import com.bontecou.syncmd.data.models.GitFileStatusKind
 import com.bontecou.syncmd.data.models.MergeType
 import com.bontecou.syncmd.data.models.PullPlan
@@ -146,11 +148,11 @@ class LocalPullRepository(
                     check(ahead == 0 || behind == 0) { "Branches have diverged. Choose an explicit merge or rebase; no changes were applied." }
                     val carried = if (behind > 0) IncomingUntrack.setAside(git, target) else emptyList()
                     try {
-                        requireClean(git)
+                        requireClean(git, PullCheck.BEFORE_UPDATE, carried.size)
                         if (behind > 0) {
                             protectUntracked(git, target)
                             verifySnapshot(git, before)
-                            requireClean(git)
+                            requireClean(git, PullCheck.BEFORE_MERGE, carried.size)
                             kotlinx.coroutines.currentCoroutineContext().ensureActive()
                             val merged = git.merge().include(target).setFastForward(MergeCommand.FastForwardMode.FF_ONLY).call()
                             check(merged.mergeStatus.isSuccessful) { "Pull could not fast-forward; refresh repository status before retrying" }
@@ -349,8 +351,10 @@ class LocalPullRepository(
     internal fun requireFinishedCheckout(git: Git) {
         PendingCheckoutInspector.inspect(git.repository)?.takeIf { it.needsFinishing }?.let { throw PullNotFinishedException(it) }
     }
-    internal fun requireClean(git: Git) {
-        if (!git.status().call().isClean) throw DirtyRepoException("Cannot update this branch with uncommitted changes")
+    internal fun requireClean(git: Git, check: PullCheck = PullCheck.BEFORE_UPDATE, setAside: Int = 0) {
+        val status = git.status().call()
+        if (!status.isClean) throw DirtyRepoException("Cannot update this branch with uncommitted changes",
+            LocalChangesFacts.of(check, status, setAside))
     }
     internal fun count(git: Git, from: ObjectId, excluding: ObjectId) = git.log().add(from).not(excluding).call().count()
 
