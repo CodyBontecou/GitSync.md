@@ -1,11 +1,13 @@
 ---
-status: active
+status: merged
 covers: [pr#138, issue#137]
 tested: 143333819e598040ce25df61baa400984210aa3f
 updated: 2026-11-24
 ---
 
 # Pull after another device stops tracking a file (issue #137, PR #138)
+
+Merged to main in #138 as `12ac88d0b67974aed9120fcd9db960419429e890` on 2026-11-24.
 
 QA for the receiving side of "Stop tracking" (#132). A device with a local edit to a file the incoming commits delete and ignore must fast-forward and keep its copy as an ignored file, without a local-changes block or a modify/delete conflict. Also covers the Android dead end when a path is tracked again over an ignored local copy.
 
