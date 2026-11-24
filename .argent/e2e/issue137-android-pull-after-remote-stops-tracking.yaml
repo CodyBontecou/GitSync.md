@@ -1,0 +1,58 @@
+# Issue #137 on the owner's Pixel 7: the Android receiving side of "Stop
+# tracking". The debug app's sample vault is one commit behind a remote that
+# stopped tracking .obsidian/workspace-mobile.json (deleted it, added it to
+# .gitignore) and has a local edit to that file. Tap Pull: it must fast-forward
+# instead of "Local edits block this pull".
+# Prerequisites: the debug build (com.bontecou.syncmd.debug) installed with
+# its sample vault registered, and the scenario restored into the app's
+# files/sample-workspace by docs/qa/2026-11-24-pr138-incoming-untrack-pull/
+# pixel-scenario/ (make-scenario.sh, then reset-scenario.sh). Run with
+# `--device <Pixel serial>`.
+# Side effects: replaces the debug app's sample workspace; pulls in it.
+#
+# OUTCOME CHECK IS OUTSIDE THIS FILE: on this phone, Argent's element tree
+# freezes on the pre-pull screen as soon as Pull is tapped (reproduced 3 times;
+# it only recovers after `stop-all-simulator-servers` for the device), so a
+# post-pull `await` cannot pass even when the screen shows "Up to date with
+# origin/main". After the run, verify with pixel-scenario/check-result.sh (HEAD
+# is the stop-tracking commit, the file is kept and ignored, nothing pending) and
+# the app's diagnostics (PULL COMPLETED, not STOPPED LOCAL_CHANGES).
+version: 1
+requires:
+  platform: android
+steps:
+  - echo: Relaunch the debug app. Expect Home with the Sample repository vault (one
+      commit behind a remote that stopped tracking
+      .obsidian/workspace-mobile.json, with a local edit to that file)
+  - launch: com.bontecou.syncmd.debug
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: 1 edited
+      timeoutMs: 15000
+  - await: { idle: true }
+  - tap:
+      text: Sample repository
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: workspace-mobile.json
+      timeoutMs: 10000
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: change on this phone
+      timeoutMs: 10000
+  - await: { idle: true }
+  - echo: Vault open with the workspace file edited locally. Tap Pull (it fetches,
+      then fast-forwards); expect no "Local edits block this pull", the vault in
+      sync and no changes left
+  # Coordinate exception: the hero's Pull button (frame 0.689,0.305,0.223,0.052
+  # in `describe`); its label is on a parent View, so a selector resolves to a
+  # different Button.
+  - tap:
+      x: 0.8
+      y: 0.331
