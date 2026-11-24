@@ -245,6 +245,11 @@ fun ChangesPane(
                 VaultSyncResult.Cancelled -> M3Note(stringResource(R.string.vault_m3_sync_cancelled), note, tone = M3NoteTone.Muted, action = {
                     M3Button(dismiss, { syncViewModel?.dismiss() }, style = M3ButtonStyle.OutlinedContent, size = M3ButtonSize.XSmall)
                 })
+                is VaultSyncResult.PullNotFinished -> M3Note(pluralStringResource(R.plurals.pending_checkout_body, result.stale, result.stale),
+                    note.testTag("vault-pull-not-finished"), tone = M3NoteTone.Warn, title = stringResource(R.string.pending_checkout_title), action = {
+                        M3Button(stringResource(R.string.pending_checkout_action), { syncViewModel?.finishUpdate() },
+                            Modifier.testTag("vault-finish-update"), style = M3ButtonStyle.Filled, size = M3ButtonSize.XSmall)
+                    })
                 VaultSyncResult.LocalChangesBlocked -> M3Note(stringResource(R.string.resolve_local_title), note, tone = M3NoteTone.Ahead, action = {
                     M3Button(dismiss, { syncViewModel?.dismiss(); viewModel.clearLocalChangesBlock(requestContext) }, style = M3ButtonStyle.Text, size = M3ButtonSize.XSmall)
                 })

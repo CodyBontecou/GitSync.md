@@ -1,0 +1,90 @@
+# QA (issue #130, Android): while a vault's branch moved without a checkout, committing
+# its pre-pull files must be refused, because the commit would silently revert the
+# incoming changes on the remote. The commit sheet shows "Finish the update before
+# pulling or committing" and HEAD stays at the remote commit.
+# Prerequisites: DEBUG build of GitSync.md Android (com.bontecou.syncmd.debug) on an
+# Android device with onboarding completed. The debug-only link
+# syncmd://qa-fixture/stale-worktree rebuilds ONLY the app's own sample workspace
+# (files/sample-workspace: on-device bare remote + working copy): main moved to
+# origin/main, index and files still at the base commit. No network, accounts or
+# personal data; other vaults are untouched.
+# Side effects: resets the sample workspace and selects the sample vault; nothing is
+# committed or pushed (the guard refuses it). Leaves the sample vault stale; the next
+# run's fixture link rebuilds it.
+# Waits are raw `tool: await-ui-element` steps (recorded against the describe tree; the
+# runner's tree disagreed on Compose row labels).
+version: 1
+requires:
+  platform: android
+steps:
+  - launch: com.bontecou.syncmd.debug
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Add a vault
+      timeoutMs: 15000
+  - await: { idle: true }
+  - echo: "Setup: debug-only fixture link rebuilds the sample vault with main moved
+      to origin/main but files at the base commit (Obsidian Git <= 2.41 failure)
+      and opens it"
+  - tool: open-url
+    args:
+      url: syncmd://qa-fixture/stale-worktree
+  # Let the vault screen settle before reading the tree: on Android the runner's
+  # tree can lag a navigation (Argent tree freeze); the idle read refreshes it.
+  - await: { idle: true }
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: M / hello.md
+      timeoutMs: 15000
+  - await: { idle: true }
+  - echo: "Baseline: stale hello.md is listed as a change on this phone. Commit it
+      locally; acceptance: the commit is refused with Finish the update, and the
+      latest commit is still the remote's"
+  - tap:
+      text: Commit & push
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Commit 1 file
+      timeoutMs: 5000
+  - await: { idle: true }
+  - tap:
+      text: Update hello
+  - tap:
+      text: Commit locally
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Finish the update before pulling or committing
+      timeoutMs: 10000
+  - echo: Close the sheet; HEAD must not have moved
+  - tool: button
+    args:
+      button: back
+  - tool: await-ui-element
+    args:
+      condition: hidden
+      selector:
+        text: Finish the update before pulling or committing
+      timeoutMs: 5000
+  - await: { idle: true }
+  # "Remote note / <short sha>": the fixture's sha is time-based, so match the
+  # message plus the separator that starts the row's metadata.
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: "Remote note / "
+      timeoutMs: 5000
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: M / hello.md
+      timeoutMs: 5000

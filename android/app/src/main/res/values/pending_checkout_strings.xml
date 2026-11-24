@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Issue #130: an earlier update moved the branch but its checkout never finished. -->
+<resources>
+    <string name="pending_checkout_title">Pull didn\'t finish</string>
+    <plurals name="pending_checkout_body">
+        <item quantity="one">%d file still has its version from before the last pull. Tap Finish update to bring it up to date. Committing now would undo that incoming change.</item>
+        <item quantity="other">%d files still have their versions from before the last pull. Tap Finish update to bring them up to date. Committing now would undo those incoming changes.</item>
+    </plurals>
+    <string name="pending_checkout_action">Finish update</string>
+    <plurals name="pending_checkout_done">
+        <item quantity="one">Updated %d file to the latest version.</item>
+        <item quantity="other">Updated %d files to the latest version.</item>
+    </plurals>
+    <string name="pending_checkout_kept">These files changed on this device and kept your version: %1$s</string>
+    <plurals name="pending_checkout_remaining">
+        <item quantity="one">%d file still couldn\'t be updated. Close other apps that may be editing the vault and try again.</item>
+        <item quantity="other">%d files still couldn\'t be updated. Close other apps that may be editing the vault and try again.</item>
+    </plurals>
+</resources>
