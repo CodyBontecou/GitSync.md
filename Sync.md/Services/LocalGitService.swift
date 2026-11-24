@@ -18,6 +18,8 @@ enum LocalGitError: LocalizedError {
     case stashNotFound(Int)
     case stashApplyConflict
     case pullBlockedByLocalChanges
+    /// A commit would record pre-pull file versions over HEAD (issue #130).
+    case pullNotFinished(paths: [String])
     case pullDiverged
     case pullRemoteBranchMissing(String)
     case wrongBranch(expected: String, actual: String)
@@ -71,6 +73,10 @@ enum LocalGitError: LocalizedError {
             return String(localized: "Applying stash would overwrite local changes. Commit, stash, or discard local edits first.")
         case .pullBlockedByLocalChanges:
             return String(localized: "Pull blocked to protect local edits. Commit, stash, or discard local changes first.")
+        case .pullNotFinished(let paths):
+            return paths.count == 1
+                ? String(localized: "The last pull didn't finish updating 1 file, so committing now would undo that incoming change. Pull again and tap Finish Update first.")
+                : String(localized: "The last pull didn't finish updating \(paths.count) files, so committing now would undo those incoming changes. Pull again and tap Finish Update first.")
         case .pullDiverged:
             return String(localized: "Pull requires a merge because local and remote have diverged.")
         case .pullRemoteBranchMissing(let branch):
@@ -168,6 +174,11 @@ enum PullPostUpdateAttention: Sendable, Equatable, LocalizedError {
     case lfsHydrationFailed(message: String)
     case lfsAuthenticationOrTrustRequired(message: String)
     case checkoutIncomplete(message: String)
+    /// The branch is current, but files still hold their pre-update versions.
+    case workingTreeNotUpdated(PendingCheckoutReport)
+    /// The update landed, except for files that were also changed on this
+    /// device; those keep the local version.
+    case localEditsKept(paths: [String])
     case cancelledAfterUpdate
 
     var errorDescription: String? {
@@ -180,9 +191,26 @@ enum PullPostUpdateAttention: Sendable, Equatable, LocalizedError {
             return String(localized: "Git updated, but Git LFS authentication or trust needs attention: \(message)")
         case .checkoutIncomplete(let message):
             return String(localized: "Git references updated, but the working tree checkout needs attention. Concurrent local bytes were preserved: \(message)")
+        case .workingTreeNotUpdated(let report):
+            let count = report.stalePaths.count
+            var text = count == 1
+                ? String(localized: "1 file still has its version from before the last pull. Tap Finish Update to bring it up to date. Committing now would undo that incoming change.")
+                : String(localized: "\(count) files still have their versions from before the last pull. Tap Finish Update to bring them up to date. Committing now would undo those incoming changes.")
+            if !report.localEditPaths.isEmpty {
+                text += " " + PullPostUpdateAttention.keptLocalSentence(report.localEditPaths)
+            }
+            return text
+        case .localEditsKept(let paths):
+            return String(localized: "Pulled the latest changes.") + " " + PullPostUpdateAttention.keptLocalSentence(paths)
         case .cancelledAfterUpdate:
             return String(localized: "Git updated before cancellation completed. Verify the working tree before the next sync.")
         }
+    }
+
+    static func keptLocalSentence(_ paths: [String]) -> String {
+        let shown = paths.prefix(3).joined(separator: ", ")
+        let more = paths.count > 3 ? String(localized: " and \(paths.count - 3) more") : ""
+        return String(localized: "These files changed on this device and kept your version: \(shown)\(more)")
     }
 }
 
@@ -1407,6 +1435,10 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             // meaningful when the OIDs differ; no consumer reads it for an
             // up-to-date plan.
             if git_oid_equal(localOidPtr, remoteOidPtr) != 0 {
+                // Equal OIDs only prove the *refs* agree. An earlier update can
+                // have moved the branch without finishing its checkout (issue
+                // #130). The inspector checks just the paths of the last update,
+                // not the whole vault, and is cached per HEAD.
                 return PullPlan(
                     action: .upToDate,
                     branch: branch,
@@ -1415,11 +1447,15 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                     hasLocalChanges: false,
                     aheadBy: 0,
                     behindBy: 0,
-                    remoteIdentity: plannedRemoteIdentity
+                    remoteIdentity: plannedRemoteIdentity,
+                    pendingCheckout: try? PendingCheckoutInspector.inspect(repo: repo)
                 )
             }
 
             let hasLocalChanges = try Self.hasUncommittedChanges(repo: repo)
+            // Stale pre-update files also look like local changes; tell them apart
+            // so the user is offered Finish Update instead of commit/discard.
+            let pendingCheckout = hasLocalChanges ? (try? PendingCheckoutInspector.inspect(repo: repo)) : nil
 
             var ahead: Int = 0
             var behind: Int = 0
@@ -1442,7 +1478,8 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                     hasLocalChanges: hasLocalChanges,
                     aheadBy: ahead,
                     behindBy: behind,
-                    remoteIdentity: plannedRemoteIdentity
+                    remoteIdentity: plannedRemoteIdentity,
+                    pendingCheckout: pendingCheckout
                 )
             }.value
             try cancellationSignal.checkCancellation()
@@ -1745,6 +1782,14 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                     paths: changedPaths
                 )
                 if isPullOnly { try self.pullOnlyBeforeIndexPublication?() }
+                // Record the update before the branch moves. If checkout does not
+                // finish (conflict, crash, file provider error), the next pull
+                // still knows which files are behind HEAD (issue #130).
+                PendingCheckoutInspector.writeMarker(
+                    repo: repo,
+                    oldOID: oidToHex(&expectedLocalOid),
+                    newOID: oidToHex(&remoteOidCopy)
+                )
                 try indexLock.publishPreparedIndexRetainingLock()
                 try git2Check(git_transaction_commit(refTransaction), context: "Commit branch ref update")
 
@@ -1753,7 +1798,24 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                 // write; preserve it and return an explicit updated-with-attention
                 // outcome instead of force-overwriting or reporting no update.
                 if isPullOnly { self.pullOnlyBeforeFinalCheckout?() }
-                let checkoutCode = git_checkout_tree(repo, remoteTree, &checkoutOpts)
+                var checkoutCode = git_checkout_tree(repo, remoteTree, &checkoutOpts)
+                var retriedReport: PendingCheckoutReport?
+                if checkoutCode == GIT_ECONFLICT.rawValue {
+                    // SAFE checkout writes nothing when any file conflicts, so a
+                    // single rewritten file (e.g. .obsidian/workspace-mobile.json)
+                    // would hold back every other note. Write the files that are
+                    // safe to write and keep the conflicting ones as local edits.
+                    checkoutOpts.checkout_strategy = GIT_CHECKOUT_SAFE.rawValue
+                        | GIT_CHECKOUT_ALLOW_CONFLICTS.rawValue
+                    checkoutCode = git_checkout_tree(repo, remoteTree, &checkoutOpts)
+                    if checkoutCode == 0 {
+                        var baseOID = expectedLocalOid
+                        var targetOID = remoteOidCopy
+                        retriedReport = try? PendingCheckoutInspector.classify(
+                            repo: repo, baseOID: &baseOID, headOID: &targetOID, index: nil
+                        )
+                    }
+                }
                 let indexLockReleased = indexLock.finalizePublishedIndex()
                 if checkoutCode != 0 {
                     GitLFSService.rollbackHydratedFilesAfterFailedCheckout(lfsNormalizations)
@@ -1781,7 +1843,30 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                         changedPaths: changedPaths
                     )
                 }
+                if let retriedReport, retriedReport.needsFinishing {
+                    return (
+                        result: LocalPullResult(
+                            updated: true,
+                            newCommitSHA: oidToHex(&remoteOidCopy),
+                            attention: .workingTreeNotUpdated(retriedReport)
+                        ),
+                        changedPaths: changedPaths
+                    )
+                }
+                PendingCheckoutInspector.clearMarker(repo: repo)
+                PendingCheckoutInspector.markVerified(repo: repo, headOID: oidToHex(&remoteOidCopy))
+                if let kept = retriedReport?.localEditPaths, !kept.isEmpty {
+                    return (
+                        result: LocalPullResult(
+                            updated: true,
+                            newCommitSHA: oidToHex(&remoteOidCopy),
+                            attention: .localEditsKept(paths: kept)
+                        ),
+                        changedPaths: changedPaths
+                    )
+                }
             } catch {
+                PendingCheckoutInspector.clearMarker(repo: repo)
                 // No operation after a successful ref commit throws. Therefore
                 // this path still has the old ref; lock release swaps the old
                 // index back, and LFS rollback is compare-and-atomic.
@@ -1798,7 +1883,14 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
         // The ref transaction has committed before this point. Preserve an
         // explicit checkout attention outcome and do not attempt LFS hydration
         // against a worktree whose SAFE checkout did not fully complete.
-        if fastForward.result.attention != nil { return fastForward.result }
+        switch fastForward.result.attention {
+        case nil, .localEditsKept:
+            // The working tree is coherent apart from kept local edits; LFS
+            // hydration still has to run for the files that were written.
+            break
+        default:
+            return fastForward.result
+        }
 
         // Every later cancellation or hydration failure must return the new SHA
         // with attention instead of implying HEAD did not move.
@@ -3078,6 +3170,11 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             defer { if let index { git_index_free(index) } }
             try git2Check(git_repository_index(&index, repo), context: "Get index")
             try Self.ensureNoActiveConflict(repo: repo, index: index)
+            // Never record pre-pull file versions over HEAD: that silently
+            // reverts the incoming changes on the remote (issue #130).
+            if let pending = try? PendingCheckoutInspector.inspect(repo: repo), !pending.staleIndexPaths.isEmpty {
+                throw LocalGitError.pullNotFinished(paths: pending.staleIndexPaths)
+            }
             let baselineIndexChecksum = try Self.indexChecksumHex(index)
 
             guard try Self.hasStagedChanges(repo: repo, index: index) else {
@@ -3493,6 +3590,23 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
 
     func discardChanges(path: String) async throws {
         try await performDiscardChanges(path: path)
+    }
+
+    /// Brings files that a previous update left behind HEAD up to date, without
+    /// touching files changed on this device (issue #130).
+    func finishPendingCheckout() async throws -> PendingCheckoutCompletion {
+        let repoPath = self.localURL.path
+        return try await Task.detached {
+            var repo: OpaquePointer?
+            defer { if let repo { git_repository_free(repo) } }
+            try git2Check(git_repository_open(&repo, repoPath), context: "Open repo")
+            Self.setPrecomposeUnicode(repo: repo)
+            var index: OpaquePointer?
+            defer { if let index { git_index_free(index) } }
+            try git2Check(git_repository_index(&index, repo), context: "Get index")
+            try Self.ensureNoActiveConflict(repo: repo, index: index)
+            return try PendingCheckoutInspector.finish(repo: repo)
+        }.value
     }
 
     func discardAllChanges() async throws {
@@ -4026,6 +4140,11 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             try Self.ensureNoActiveConflict(repo: repo, index: index)
             if expectedBranch != nil {
                 try Self.ensureNoUnstagedWorktreeChanges(repo: repo)
+            }
+            // Never record pre-pull file versions over HEAD: that silently
+            // reverts the incoming changes on the remote (issue #130).
+            if let pending = try? PendingCheckoutInspector.inspect(repo: repo), !pending.staleIndexPaths.isEmpty {
+                throw LocalGitError.pullNotFinished(paths: pending.staleIndexPaths)
             }
             let baselineIndexChecksum = try Self.indexChecksumHex(index)
 

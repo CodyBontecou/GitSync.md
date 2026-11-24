@@ -272,6 +272,10 @@ final class SerializedGitRepository: GitRepositoryProtocol, @unchecked Sendable 
         try await run { try await $0.pullFastForward(branch: branch, pat: pat) }
     }
 
+    func finishPendingCheckout() async throws -> PendingCheckoutCompletion {
+        try await run { try await $0.finishPendingCheckout() }
+    }
+
     func pullRebase(branch: String, pat: String, authorName: String, authorEmail: String) async throws -> LocalPullResult {
         try await run { try await $0.pullRebase(branch: branch, pat: pat, authorName: authorName, authorEmail: authorEmail) }
     }

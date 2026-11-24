@@ -631,7 +631,7 @@ enum MarketingDemoSeeder {
                 )
             }
             if scenario == "behind" || scenario == "diverged" || scenario == "checkout-incomplete"
-                || scenario == "detached-head" {
+                || scenario == "detached-head" || scenario == "stale-worktree" {
                 files["notes/hello.md"] = Data("# Hello\n\nUpdated remote note.\n".utf8)
                 try UITestGitFixtures.commitToBare(atPath: remotePath, files: files, message: "Remote note")
                 try UITestGitFixtures.fetchOrigin(atPath: vaultURL.path)
@@ -644,6 +644,9 @@ enum MarketingDemoSeeder {
                 try FileManager.default.setAttributes(
                     [.modificationDate: Date().addingTimeInterval(-600)], ofItemAtPath: lockURL.path
                 )
+            }
+            if scenario == "stale-worktree" {
+                try UITestGitFixtures.moveBranchToOriginWithoutCheckout(atPath: vaultURL.path)
             }
             if isDirty {
                 try Data("# Git Tools Fixture\n\nUnstaged local note.\n".utf8)
@@ -1023,6 +1026,23 @@ enum UITestGitFixtures {
     /// Issue #111: points HEAD straight at its commit (detached), the state an
     /// interrupted rebase leaves behind. The clone's symbolic
     /// `refs/remotes/origin/HEAD` stays, which is what pull used to crash on.
+    /// Issue #130: what Obsidian Git <= 2.41 left behind on mobile. The branch
+    /// moves to origin/main, but the index and files keep the old commit.
+    static func moveBranchToOriginWithoutCheckout(atPath path: String) throws {
+        var repo: OpaquePointer?
+        defer { if let repo { git_repository_free(repo) } }
+        try check(git_repository_open(&repo, path), "open stale-worktree fixture")
+        var origin: OpaquePointer?
+        defer { if let origin { git_reference_free(origin) } }
+        try check(git_reference_lookup(&origin, repo, "refs/remotes/origin/main"), "lookup origin/main")
+        guard let target = git_reference_target(origin) else {
+            throw NSError(domain: "UITestGitFixtures", code: -1)
+        }
+        var moved: OpaquePointer?
+        defer { if let moved { git_reference_free(moved) } }
+        try check(git_reference_create(&moved, repo, "refs/heads/main", target, 1, nil), "move main without checkout")
+    }
+
     static func detachHEAD(atPath path: String) throws {
         var repo: OpaquePointer?
         defer { if let repo { git_repository_free(repo) } }
