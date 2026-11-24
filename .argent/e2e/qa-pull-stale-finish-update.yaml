@@ -1,0 +1,168 @@
+# QA (issue #130): a vault whose branch moved without a checkout must not report
+# "Already up to date". Pull shows "Pull didn't finish" with Finish Update, and
+# Finish Update brings the file on disk to the pulled version.
+# Prerequisites: DEBUG build of GitSync.md on an iOS simulator (iPhone 18 Pro
+# layout). `-UITestGitToolsFixture stale-worktree` rebuilds a local-only vault on
+# every launch (file:// remote under /tmp/syncmd-uitest-fixtures): refs/heads/main
+# moved to origin/main, index and files still at the base commit. No network,
+# accounts or personal data. Deterministic: each run starts from the same fixture.
+# Side effects: resets /tmp/syncmd-uitest-fixtures and the app's
+# Documents/git-tools-fixture folder and repo list on the simulator.
+# Waits are raw `tool: await-ui-element` steps: these SwiftUI ids/labels are in
+# the accessibility tree but not in the runner's native tree.
+version: 1
+requires:
+  platform: ios
+steps:
+  - echo: "Baseline: launch with the stale-worktree fixture (main moved to
+      origin/main, index and files still at the base commit). Expect Home with
+      the fixture vault"
+  - launch:
+      native: bontecou.Sync-md
+      ios:
+        app: bontecou.Sync-md
+        args:
+          - -UITestGitToolsFixture
+          - stale-worktree
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: home.vault.git-tools-fixture
+      timeoutMs: 15000
+  - await: { idle: true }
+  - echo: Home lists the fixture vault as in sync (the misleading state). Open it;
+      expect the vault screen
+  # Coordinate exception: home.vault.git-tools-fixture (proven above) is not in
+  # the runner tree. It is the only row on Home (Discord promo is hidden for
+  # fixtures); the vault.title wait proves the tap.
+  - tool: gesture-tap
+    args:
+      x: 0.233
+      y: 0.35
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: vault.title
+      timeoutMs: 10000
+  - await: { idle: true }
+  - tool: await-ui-element
+    args:
+      condition: text
+      selector:
+        identifier: vault.hero.primary
+      expectedText: Check for changes
+      timeoutMs: 5000
+  - echo: "Baseline proven: vault reads In sync with Check for changes. Tap it
+      (pull). Acceptance: must NOT say Already up to date; expect Pull didn't
+      finish with Finish Update"
+  # Coordinate exception: vault.hero.primary (proven above) is not in the runner
+  # tree; the recorder's role-only AXScrollArea fallback is not this button. The
+  # banner waits below prove the tap.
+  - tool: gesture-tap
+    args:
+      x: 0.5
+      y: 0.462
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Pull didn't finish
+      timeoutMs: 15000
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: still has its version from before the last pull
+      timeoutMs: 5000
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: pull.finishUpdate
+      timeoutMs: 5000
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: notes/hello.md, modified
+      timeoutMs: 5000
+  # Banner buttons stay disabled during the pull's 1 s progress delay
+  # (AppState.pullOnly showsProgressDelay), and a "Pulled" toast fades out.
+  # Require 1.5 s of stillness before tapping Finish Update.
+  - await: { idle: true, stableFor: 1500, timeout: 9000 }
+  - echo: Banner shows Finish Update; hello.md is listed as a staged change
+      (pre-pull content). Tap Finish Update
+  # Coordinate exception: pull.finishUpdate (proven above) is not in the runner
+  # tree. The hidden waits on the same selectors below prove the tap.
+  - tool: gesture-tap
+    args:
+      x: 0.328
+      y: 0.669
+  - tool: await-ui-element
+    args:
+      condition: hidden
+      selector:
+        identifier: pull.finishUpdate
+      timeoutMs: 10000
+  - tool: await-ui-element
+    args:
+      condition: hidden
+      selector:
+        text: notes/hello.md, modified
+      timeoutMs: 10000
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Updated 1 file to the latest version.
+      timeoutMs: 10000
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: No changes on this iPhone
+      timeoutMs: 5000
+  - await: { idle: true }
+  - echo: Finish Update done; no changes left. Open the Files tab to read
+      notes/hello.md; expect the pulled text Updated remote note.
+  # Coordinate exception: the Files segment has no id and the recorder fell back
+  # to a role-only selector; the folder-row wait below proves the tap.
+  - tool: gesture-tap
+    args:
+      x: 0.386
+      y: 0.636
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: notes, 1
+      timeoutMs: 5000
+  - await: { idle: true }
+  # Coordinate exception: folder row has no id (role-only fallback); the
+  # hello.md row wait below proves the tap.
+  - tool: gesture-tap
+    args:
+      x: 0.213
+      y: 0.762
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: hello.md, edited
+      timeoutMs: 5000
+  - await: { idle: true }
+  # Coordinate exception: file row has no id (role-only fallback); the editor
+  # content wait below proves the tap.
+  - tool: gesture-tap
+    args:
+      x: 0.238
+      y: 0.225
+  - tool: await-ui-element
+    args:
+      condition: text
+      selector:
+        role: TextField
+      expectedText: Updated remote note.
+      timeoutMs: 5000

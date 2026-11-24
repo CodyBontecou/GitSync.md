@@ -1,0 +1,220 @@
+# QA (issue #130): when one incoming file is edited on the device during the
+# pull's SAFE checkout, every other incoming file must still be written (before
+# the fix, one conflict wrote nothing), the edited file keeps the device's bytes
+# and is named, and the next pull is "Already up to date" (a kept local edit is
+# not an unfinished pull).
+# Prerequisites: DEBUG build of GitSync.md on an iOS simulator (iPhone 18 Pro
+# layout). `-UITestGitToolsFixture checkout-partial` rebuilds a local-only vault
+# on every launch (file:// remote under /tmp/syncmd-uitest-fixtures), one commit
+# behind; the remote commit changes README.md and notes/hello.md; the app's
+# pullOnlyBeforeFinalCheckout hook rewrites notes/hello.md during checkout. No
+# network, accounts or personal data. Deterministic: each run starts from the
+# same fixture.
+# Side effects: resets /tmp/syncmd-uitest-fixtures and the app's
+# Documents/git-tools-fixture folder and repo list on the simulator.
+# Waits are raw `tool: await-ui-element` steps: these SwiftUI ids/labels are in
+# the accessibility tree but not in the runner's native tree.
+version: 1
+requires:
+  platform: ios
+steps:
+  - echo: "Baseline: launch with the checkout-partial fixture (vault one commit
+      behind; the remote commit changes README.md and notes/hello.md; hello.md
+      is rewritten on the device during checkout). Expect Home with the fixture
+      vault"
+  - launch:
+      native: bontecou.Sync-md
+      ios:
+        app: bontecou.Sync-md
+        args:
+          - -UITestGitToolsFixture
+          - checkout-partial
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: home.vault.git-tools-fixture
+      timeoutMs: 15000
+  - await: { idle: true }
+  - echo: Home shows the vault with 1 to pull. Open it; expect the vault screen
+  # Coordinate exception: home.vault.git-tools-fixture (proven above) is not in
+  # the runner tree; it is the only row on Home. vault.title proves the tap.
+  - tool: gesture-tap
+    args:
+      x: 0.258
+      y: 0.411
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: vault.title
+      timeoutMs: 10000
+  - await: { idle: true }
+  - tool: await-ui-element
+    args:
+      condition: text
+      selector:
+        identifier: vault.hero.primary
+      expectedText: Pull
+      textMatch: equals
+      timeoutMs: 5000
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: No changes on this iPhone
+      timeoutMs: 5000
+  - echo: "Baseline proven: 1 to pull, no local changes. Tap Pull; the fixture
+      rewrites hello.md during checkout. Acceptance: Working tree needs
+      attention naming notes/hello.md as kept; README.md still updated"
+  # Coordinate exception: vault.hero.primary (proven above) is not in the runner
+  # tree; the banner wait proves the tap.
+  - tool: gesture-tap
+    args:
+      x: 0.5
+      y: 0.462
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Working tree needs attention
+      timeoutMs: 15000
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Pulled 1 change
+      timeoutMs: 5000
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: "kept your version: notes/hello.md"
+      timeoutMs: 5000
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: notes/hello.md, modified
+      timeoutMs: 5000
+  - tool: await-ui-element
+    args:
+      condition: hidden
+      selector:
+        text: Pulled 1 change
+      timeoutMs: 15000
+  - await: { idle: true }
+  - echo: Toast gone (it covers the file list). Open Files and README.md; expect the
+      pulled text Updated remote readme. (the non-conflicting file was still
+      written)
+  # Coordinate exception: the Files segment has no id (role-only fallback);
+  # the README row wait proves the tap.
+  - tool: gesture-tap
+    args:
+      x: 0.386
+      y: 0.664
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: README.md, edited
+      timeoutMs: 5000
+  - await: { idle: true, stableFor: 1500, timeout: 9000 }
+  # Coordinate exception: file row has no id (role-only fallback); the editor
+  # content wait proves the tap.
+  - tool: gesture-tap
+    args:
+      x: 0.273
+      y: 0.846
+  - tool: await-ui-element
+    args:
+      condition: text
+      selector:
+        role: TextField
+      expectedText: Updated remote readme.
+      timeoutMs: 5000
+  - await: { idle: true }
+  - echo: README.md has the pulled text. Go back, open notes/hello.md; expect the
+      device's concurrent edit kept (PR45 concurrent local edit preserved.)
+  - tap:
+      id: chevron.backward
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: notes, modified
+      timeoutMs: 5000
+  - await: { idle: true, stableFor: 1500, timeout: 9000 }
+  # Coordinate exception: folder row has no id (role-only fallback); the
+  # hello.md row wait proves the tap.
+  - tool: gesture-tap
+    args:
+      x: 0.213
+      y: 0.791
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: hello.md, edited
+      timeoutMs: 5000
+  - await: { idle: true, stableFor: 1500, timeout: 9000 }
+  # Coordinate exception: file row has no id (role-only fallback); the editor
+  # content wait proves the tap.
+  - tool: gesture-tap
+    args:
+      x: 0.238
+      y: 0.225
+  - tool: await-ui-element
+    args:
+      condition: text
+      selector:
+        role: TextField
+      expectedText: PR45 concurrent local edit preserved.
+      timeoutMs: 5000
+  - await: { idle: true }
+  - echo: "Local edit kept. Go back to the vault and Pull again; acceptance: the
+      kept local edit is not treated as an unfinished pull (expect Already up to
+      date)"
+  - tap:
+      id: chevron.backward
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: hello.md, edited
+      timeoutMs: 5000
+  - await: { idle: true }
+  - tap:
+      id: chevron.backward
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Working tree needs attention
+      timeoutMs: 5000
+  # Banner buttons stay disabled briefly after navigation settles.
+  - await: { idle: true, stableFor: 1500, timeout: 9000 }
+  # Coordinate exception: the secondary Pull button has no id (role-only
+  # fallback); the outcome waits prove the tap.
+  - tool: gesture-tap
+    args:
+      x: 0.833
+      y: 0.453
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Already up to date
+      timeoutMs: 15000
+  - tool: await-ui-element
+    args:
+      condition: hidden
+      selector:
+        text: Working tree needs attention
+      timeoutMs: 5000
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: notes, modified
+      timeoutMs: 5000

@@ -3119,6 +3119,79 @@ final class AppState {
         syncingRepoID = nil
     }
 
+    /// Maps a post-update attention to the progress line and banner outcome.
+    func applyPostUpdateAttention(repoID: UUID, attention: PullPostUpdateAttention) {
+        let outcomeKind: PullOutcomeKind
+        switch attention {
+        case .checkoutIncomplete:
+            syncProgress = String(localized: "Pull updated Git, but working tree checkout needs attention")
+            outcomeKind = .checkoutIncomplete
+        case .workingTreeNotUpdated:
+            syncProgress = String(localized: "Some files weren't updated by the last pull")
+            outcomeKind = .workingTreeBehind
+        case .localEditsKept:
+            syncProgress = String(localized: "Pull complete!")
+            outcomeKind = .checkoutIncomplete
+        case .lfsHydrationBlockedByLocalChanges, .lfsHydrationFailed,
+             .lfsAuthenticationOrTrustRequired, .cancelledAfterUpdate:
+            syncProgress = String(localized: "Pull updated Git, but Git LFS needs attention")
+            outcomeKind = .lfsHydrationBlocked
+        }
+        setPullOutcome(
+            repoID: repoID,
+            kind: outcomeKind,
+            message: attention.localizedDescription
+        )
+    }
+
+    /// "Finish Update": check out the files an earlier update left behind HEAD,
+    /// keeping anything changed on this device (issue #130).
+    @discardableResult
+    func finishPendingCheckout(repoID: UUID) async -> Bool {
+        guard repoIndex(id: repoID) != nil, !isDemoMode else { return false }
+        isSyncing = true
+        syncingRepoID = repoID
+        syncProgress = String(localized: "Finishing update...")
+        defer { isSyncing = false; syncingRepoID = nil }
+        do {
+            let serialized = try serializedRepository(repoID: repoID)
+            let completion = try await serialized.withLease { repository in
+                try await repository.finishPendingCheckout()
+            }
+            markRepositoryMutated(repoID: repoID)
+            if !completion.remainingStalePaths.isEmpty {
+                let message = completion.remainingStalePaths.count == 1
+                    ? String(localized: "1 file still couldn't be updated. Close other apps that may be editing the vault and try again.")
+                    : String(localized: "\(completion.remainingStalePaths.count) files still couldn't be updated. Close other apps that may be editing the vault and try again.")
+                setPullOutcome(repoID: repoID, kind: .workingTreeBehind, message: message)
+            } else if !completion.keptLocalPaths.isEmpty {
+                setPullOutcome(
+                    repoID: repoID,
+                    kind: .checkoutIncomplete,
+                    message: (completion.restoredPaths.count == 1
+                        ? String(localized: "Updated 1 file.")
+                        : String(localized: "Updated \(completion.restoredPaths.count) files.")) + " "
+                        + PullPostUpdateAttention.keptLocalSentence(completion.keptLocalPaths)
+                )
+            } else {
+                setPullOutcome(
+                    repoID: repoID,
+                    kind: .fastForwarded,
+                    message: completion.restoredPaths.count == 1
+                        ? String(localized: "Updated 1 file to the latest version.")
+                        : String(localized: "Updated \(completion.restoredPaths.count) files to the latest version.")
+                )
+            }
+            syncProgress = String(localized: "Update finished")
+            detectChanges(repoID: repoID)
+            return completion.remainingStalePaths.isEmpty
+        } catch {
+            setPullOutcome(repoID: repoID, kind: .failed, message: error.localizedDescription)
+            showError(message: error.localizedDescription, category: "pull")
+            return false
+        }
+    }
+
     @discardableResult
     func pull(
         repoID: UUID,
@@ -3235,21 +3308,7 @@ final class AppState {
                 saveRepos()
             }
             clearCommitHistoryCache(for: repoID)
-            let outcomeKind: PullOutcomeKind
-            switch attention {
-            case .checkoutIncomplete:
-                syncProgress = String(localized: "Pull updated Git, but working tree checkout needs attention")
-                outcomeKind = .checkoutIncomplete
-            case .lfsHydrationBlockedByLocalChanges, .lfsHydrationFailed,
-                 .lfsAuthenticationOrTrustRequired, .cancelledAfterUpdate:
-                syncProgress = String(localized: "Pull updated Git, but Git LFS needs attention")
-                outcomeKind = .lfsHydrationBlocked
-            }
-            setPullOutcome(
-                repoID: repoID,
-                kind: outcomeKind,
-                message: attention.localizedDescription
-            )
+            applyPostUpdateAttention(repoID: repoID, attention: attention)
 
         case .upToDate:
             syncProgress = String(localized: "Already up to date!")
@@ -3562,6 +3621,11 @@ final class AppState {
                 }
             }
             let plan = execution.plan
+            if plan.action == .upToDate || plan.action == .blockedByLocalChanges,
+               let pending = plan.pendingCheckout, pending.needsFinishing {
+                applyPostUpdateAttention(repoID: repoID, attention: .workingTreeNotUpdated(pending))
+                return false
+            }
             switch plan.action {
             case .upToDate:
                 setPullOutcome(repoID: repoID, kind: .upToDate, message: String(localized: "Already up to date"))
@@ -3581,15 +3645,19 @@ final class AppState {
                     saveRepos()
                     clearCommitHistoryCache(for: repoID)
                 }
-                setPullOutcome(
-                    repoID: repoID,
-                    kind: result.updated ? (plan.action == .diverged ? .rebased : .fastForwarded) : .upToDate,
-                    message: result.updated
-                        ? (plan.action == .diverged
-                            ? String(localized: "Rebased local commits onto origin/\(plan.branch)")
-                            : String(localized: "Pulled latest changes (fast-forward)"))
-                        : String(localized: "Already up to date")
-                )
+                if let attention = result.attention {
+                    applyPostUpdateAttention(repoID: repoID, attention: attention)
+                } else {
+                    setPullOutcome(
+                        repoID: repoID,
+                        kind: result.updated ? (plan.action == .diverged ? .rebased : .fastForwarded) : .upToDate,
+                        message: result.updated
+                            ? (plan.action == .diverged
+                                ? String(localized: "Rebased local commits onto origin/\(plan.branch)")
+                                : String(localized: "Pulled latest changes (fast-forward)"))
+                            : String(localized: "Already up to date")
+                    )
+                }
                 detectChanges(repoID: repoID)
                 await loadBranches(repoID: repoID)
                 recordReviewSuccess()

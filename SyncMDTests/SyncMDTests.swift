@@ -10224,9 +10224,9 @@ final class SyncMDTests: XCTestCase {
 
         XCTAssertEqual(execution.plan.action, .fastForward)
         XCTAssertEqual(execution.pullResult?.newCommitSHA, remoteSHA)
-        guard case .checkoutIncomplete = execution.pullResult?.attention else {
-            return XCTFail("Expected explicit post-update checkout attention")
-        }
+        // The conflicting file keeps its local bytes and is named explicitly
+        // (issue #130); other incoming files would still be written.
+        XCTAssertEqual(execution.pullResult?.attention, .localEditsKept(paths: ["Note.md"]))
         XCTAssertEqual(try String(contentsOf: fileURL, encoding: .utf8), "external write\n")
         let finalInfo = try await setup.repoInfo()
         XCTAssertEqual(finalInfo.commitSHA, remoteSHA)
@@ -14075,5 +14075,386 @@ final class NameValidationTests: XCTestCase {
         guard case .conflict = state.cloneTargetAssessment(dir, repoID: vault.id) else {
             return XCTFail("A different repository is never this vault's working copy")
         }
+    }
+}
+
+// MARK: - Issue #130: HEAD ahead of the working tree after a pull
+// Real libgit2, no mocks. A pull must never report "Already up to date" over
+// files that an earlier update never checked out, and must never commit them.
+
+private func blobText(repoURL: URL, spec: String) throws -> String? {
+    var repo: OpaquePointer?
+    defer { if let repo { git_repository_free(repo) } }
+    guard git_repository_open(&repo, repoURL.path) == 0 else { return nil }
+    var object: OpaquePointer?
+    defer { if let object { git_object_free(object) } }
+    guard git_revparse_single(&object, repo, spec) == 0 else { return nil }
+    guard let raw = git_blob_rawcontent(object) else { return nil }
+    let size = Int(git_blob_rawsize(object))
+    return String(data: Data(bytes: raw, count: size), encoding: .utf8)
+}
+
+/// Moves refs/heads/main with a reflog message and replaces the index with the
+/// target tree, leaving the working tree untouched.
+private func moveBranchAndIndexLeavingWorktree(repoURL: URL, sha: String, reflogMessage: String) throws {
+    var repo: OpaquePointer?
+    defer { if let repo { git_repository_free(repo) } }
+    XCTAssertEqual(git_repository_open(&repo, repoURL.path), 0)
+    var oid = git_oid()
+    XCTAssertEqual(sha.withCString { git_oid_fromstr(&oid, $0) }, 0)
+    var ref: OpaquePointer?
+    defer { if let ref { git_reference_free(ref) } }
+    XCTAssertEqual(git_reference_create(&ref, repo, "refs/heads/main", &oid, 1, reflogMessage), 0)
+    var commit: OpaquePointer?, tree: OpaquePointer?, index: OpaquePointer?
+    defer {
+        if let index { git_index_free(index) }
+        if let tree { git_tree_free(tree) }
+        if let commit { git_commit_free(commit) }
+    }
+    XCTAssertEqual(git_commit_lookup(&commit, repo, &oid), 0)
+    XCTAssertEqual(git_commit_tree(&tree, commit), 0)
+    XCTAssertEqual(git_repository_index(&index, repo), 0)
+    XCTAssertEqual(git_index_read_tree(index, tree), 0)
+    XCTAssertEqual(git_index_write(index), 0)
+}
+
+final class StaleWorktreeAfterPullTests: XCTestCase {
+    private struct Fixture {
+        let repoURL: URL
+        let originURL: URL
+        let baseSHA: String
+        let remoteSHA: String
+        func url(_ path: String) -> URL { repoURL.appendingPathComponent(path) }
+        func read(_ path: String) throws -> String { try String(contentsOf: url(path), encoding: .utf8) }
+        func exists(_ path: String) -> Bool { FileManager.default.fileExists(atPath: url(path).path) }
+        var service: LocalGitService { LocalGitService(localURL: repoURL) }
+    }
+
+    /// base: Note.md="base", Gone.md="gone", .obsidian/workspace-mobile.json="w0"
+    /// remote (one commit ahead): Note.md="remote", Added.md="added", Gone.md
+    /// deleted and, optionally, workspace-mobile.json="w1".
+    private func makeFixture(remoteTouchesWorkspace: Bool) async throws -> Fixture {
+        let fm = FileManager.default
+        let repoURL = try makeTemporaryGitRepository(prefix: "SyncMD-StaleWorktree")
+        let originURL = fm.temporaryDirectory.appendingPathComponent("SyncMD-StaleWorktree-Origin-\(UUID().uuidString)", isDirectory: true)
+        try fm.createDirectory(at: repoURL.appendingPathComponent(".obsidian"), withIntermediateDirectories: true)
+        let setup = LocalGitService(localURL: repoURL)
+        try "base\n".write(to: repoURL.appendingPathComponent("Note.md"), atomically: true, encoding: .utf8)
+        try "gone\n".write(to: repoURL.appendingPathComponent("Gone.md"), atomically: true, encoding: .utf8)
+        try "w0\n".write(to: repoURL.appendingPathComponent(".obsidian/workspace-mobile.json"), atomically: true, encoding: .utf8)
+        try await setup.stageAll()
+        let baseSHA = try await setup.commitLocal(message: "Base", authorName: "Tests", authorEmail: "tests@example.com")
+        try "remote\n".write(to: repoURL.appendingPathComponent("Note.md"), atomically: true, encoding: .utf8)
+        try "added\n".write(to: repoURL.appendingPathComponent("Added.md"), atomically: true, encoding: .utf8)
+        try fm.removeItem(at: repoURL.appendingPathComponent("Gone.md"))
+        if remoteTouchesWorkspace {
+            try "w1\n".write(to: repoURL.appendingPathComponent(".obsidian/workspace-mobile.json"), atomically: true, encoding: .utf8)
+        }
+        try await setup.stageAll()
+        let remoteSHA = try await setup.commitLocal(message: "Remote edit from desktop", authorName: "Tests", authorEmail: "tests@example.com")
+        try makeBareOrigin(at: originURL, copyingObjectsFrom: repoURL, headSHA: remoteSHA)
+        try setLocalAndRemoteTrackingRefs(repoURL: repoURL, localSHA: baseSHA, remoteSHA: baseSHA)
+        try checkoutHeadTree(repoURL: repoURL)
+        try? fm.removeItem(at: repoURL.appendingPathComponent("Added.md"))
+        try await setup.setRemoteURL(name: "origin", url: "file://localhost\(originURL.path)")
+        return Fixture(repoURL: repoURL, originURL: originURL, baseSHA: baseSHA, remoteSHA: remoteSHA)
+    }
+
+    private func cleanup(_ f: Fixture) {
+        try? FileManager.default.removeItem(at: f.repoURL)
+        try? FileManager.default.removeItem(at: f.originURL)
+    }
+
+    private func assertCoherentAtRemote(_ f: Fixture, file: StaticString = #filePath, line: UInt = #line) async throws {
+        XCTAssertEqual(try f.read("Note.md"), "remote\n", file: file, line: line)
+        XCTAssertEqual(try f.read("Added.md"), "added\n", file: file, line: line)
+        XCTAssertFalse(f.exists("Gone.md"), file: file, line: line)
+        let info = try await f.service.repoInfo()
+        XCTAssertEqual(info.commitSHA, f.remoteSHA, file: file, line: line)
+        XCTAssertEqual(info.statusEntries, [], "index and working tree must equal HEAD", file: file, line: line)
+    }
+
+    /// Obsidian Git <= 2.41.x mobile pull: `git.merge` moved the branch, then
+    /// `git.checkout` threw. Branch and tracking ref are at the remote commit;
+    /// index and files are not. isomorphic-git writes no reflog.
+    private func simulateOldObsidianGitPullWithFailedCheckout(_ f: Fixture) throws {
+        try setLocalAndRemoteTrackingRefs(repoURL: f.repoURL, localSHA: f.remoteSHA, remoteSHA: f.remoteSHA)
+    }
+
+    // MARK: Mechanism A: another client moved the branch
+
+    func testExternalRefMoveIsReportedAsUnfinishedNotUpToDate() async throws {
+        let f = try await makeFixture(remoteTouchesWorkspace: false)
+        defer { cleanup(f) }
+        try simulateOldObsidianGitPullWithFailedCheckout(f)
+
+        let execution = try await f.service.executePullOnly(pat: "", expectedBranch: "main")
+        XCTAssertEqual(execution.plan.action, .upToDate)
+        let pending = try XCTUnwrap(execution.plan.pendingCheckout)
+        XCTAssertEqual(pending.baseCommitSHA, f.baseSHA)
+        XCTAssertEqual(pending.staleWorktreePaths, ["Added.md", "Gone.md", "Note.md"])
+        XCTAssertEqual(pending.staleIndexPaths, ["Added.md", "Gone.md", "Note.md"])
+        XCTAssertEqual(pending.localEditPaths, [])
+
+        let result = await RepositoryPullRunner().run(repository: f.service, credentials: "")
+        guard case .updatedWithAttention(_, let sha, .workingTreeNotUpdated(let report)) = result else {
+            return XCTFail("expected workingTreeNotUpdated, got \(result)")
+        }
+        XCTAssertEqual(sha, f.remoteSHA)
+        XCTAssertEqual(report, pending)
+        let callback = await MainActor.run { CallbackURLHandler.mapPullResult(result) }
+        XCTAssertEqual(callback.params["updated"], "false")
+        XCTAssertEqual(try f.read("Note.md"), "base\n", "detection alone never rewrites files")
+    }
+
+    func testFinishUpdateAfterExternalRefMoveRestoresHEADAndClearsTheReport() async throws {
+        let f = try await makeFixture(remoteTouchesWorkspace: false)
+        defer { cleanup(f) }
+        try simulateOldObsidianGitPullWithFailedCheckout(f)
+
+        let completion = try await f.service.finishPendingCheckout()
+        XCTAssertEqual(completion.restoredPaths, ["Added.md", "Gone.md", "Note.md"])
+        XCTAssertEqual(completion.keptLocalPaths, [])
+        XCTAssertEqual(completion.remainingStalePaths, [])
+        try await assertCoherentAtRemote(f)
+
+        let next = try await f.service.executePullOnly(pat: "", expectedBranch: "main")
+        XCTAssertEqual(next.plan.action, .upToDate)
+        XCTAssertNil(next.plan.pendingCheckout)
+    }
+
+    func testCommitIsRefusedWhileIndexHoldsPrePullVersions() async throws {
+        let f = try await makeFixture(remoteTouchesWorkspace: false)
+        defer { cleanup(f) }
+        try simulateOldObsidianGitPullWithFailedCheckout(f)
+
+        do {
+            try await f.service.stageAll()
+            _ = try await f.service.commitLocal(message: "vault backup", authorName: "Tests", authorEmail: "tests@example.com")
+            XCTFail("committing pre-pull versions must be refused")
+        } catch LocalGitError.pullNotFinished(let paths) {
+            XCTAssertTrue(paths.contains("Note.md"))
+        }
+        XCTAssertEqual(try referenceTargetSHA(repositoryURL: f.repoURL, name: "refs/heads/main"), f.remoteSHA)
+        XCTAssertEqual(try blobText(repoURL: f.repoURL, spec: "HEAD:Note.md"), "remote\n")
+    }
+
+    func testFinishUpdateKeepsALocalEditToAnIncomingFile() async throws {
+        let f = try await makeFixture(remoteTouchesWorkspace: false)
+        defer { cleanup(f) }
+        try simulateOldObsidianGitPullWithFailedCheckout(f)
+        try "phone edit\n".write(to: f.url("Note.md"), atomically: true, encoding: .utf8)
+
+        let plan = try await f.service.executePullOnly(pat: "", expectedBranch: "main").plan
+        let pending = try XCTUnwrap(plan.pendingCheckout)
+        XCTAssertEqual(pending.localEditPaths, ["Note.md"])
+        XCTAssertTrue(pending.staleIndexPaths.contains("Note.md"), "index still holds the pre-pull blob")
+
+        let completion = try await f.service.finishPendingCheckout()
+        XCTAssertEqual(completion.keptLocalPaths, ["Note.md"])
+        XCTAssertEqual(completion.remainingStalePaths, [])
+        XCTAssertEqual(try f.read("Note.md"), "phone edit\n", "a real local edit is never overwritten")
+        XCTAssertEqual(try f.read("Added.md"), "added\n")
+        let note = try await f.service.repoInfo().statusEntries.first { $0.path == "Note.md" }
+        XCTAssertNil(note?.indexStatus, "stale index entry reset to HEAD")
+        XCTAssertEqual(note?.workTreeStatus, .modified)
+
+        // Committing the edit is now an ordinary change on top of HEAD.
+        try await f.service.stageAll()
+        _ = try await f.service.commitLocal(message: "phone edit", authorName: "Tests", authorEmail: "tests@example.com")
+        XCTAssertEqual(try blobText(repoURL: f.repoURL, spec: "HEAD:Note.md"), "phone edit\n")
+        XCTAssertEqual(try blobText(repoURL: f.repoURL, spec: "HEAD:Added.md"), "added\n")
+    }
+
+    // MARK: Mechanism B: GitSync's own fast-forward
+
+    func testOneConflictingIncomingFileNoLongerHoldsBackTheRest() async throws {
+        let f = try await makeFixture(remoteTouchesWorkspace: true)
+        defer { cleanup(f) }
+        let wsURL = f.url(".obsidian/workspace-mobile.json")
+        let service = LocalGitService(localURL: f.repoURL, pullOnlyBeforeFinalCheckout: {
+            // Obsidian rewrites workspace-mobile.json while the pull is running.
+            try? "phone layout\n".write(to: wsURL, atomically: true, encoding: .utf8)
+        })
+
+        let first = try await service.executePullOnly(pat: "", expectedBranch: "main")
+        XCTAssertEqual(first.pullResult?.attention, .localEditsKept(paths: [".obsidian/workspace-mobile.json"]))
+        XCTAssertEqual(try f.read("Note.md"), "remote\n", "non-conflicting files are written")
+        XCTAssertEqual(try f.read("Added.md"), "added\n")
+        XCTAssertFalse(f.exists("Gone.md"))
+        XCTAssertEqual(try f.read(".obsidian/workspace-mobile.json"), "phone layout\n", "local bytes preserved")
+        XCTAssertFalse(f.exists(".git/\(PendingCheckoutInspector.markerFileName)"))
+
+        let second = try await f.service.executePullOnly(pat: "", expectedBranch: "main")
+        XCTAssertEqual(second.plan.action, .upToDate)
+        XCTAssertNil(second.plan.pendingCheckout, "a kept local edit is not a pending checkout")
+    }
+
+    func testInterruptedGitSyncCheckoutLeavesAMarkerThatTheNextPullFinds() async throws {
+        let f = try await makeFixture(remoteTouchesWorkspace: false)
+        defer { cleanup(f) }
+        // State a crash between the ref commit and checkout leaves behind:
+        // marker written, branch + index at remote, files at base.
+        try moveBranchAndIndexLeavingWorktree(repoURL: f.repoURL, sha: f.remoteSHA, reflogMessage: "test: no hint")
+        try setLocalAndRemoteTrackingRefs(repoURL: f.repoURL, localSHA: f.remoteSHA, remoteSHA: f.remoteSHA)
+        try "\(f.baseSHA) \(f.remoteSHA)\n".write(
+            to: f.url(".git/\(PendingCheckoutInspector.markerFileName)"), atomically: true, encoding: .utf8
+        )
+
+        let plan = try await f.service.executePullOnly(pat: "", expectedBranch: "main").plan
+        let pending = try XCTUnwrap(plan.pendingCheckout)
+        XCTAssertEqual(pending.staleWorktreePaths, ["Added.md", "Gone.md", "Note.md"])
+        XCTAssertEqual(pending.staleIndexPaths, [], "index already published at HEAD")
+
+        _ = try await f.service.finishPendingCheckout()
+        try await assertCoherentAtRemote(f)
+        XCTAssertFalse(f.exists(".git/\(PendingCheckoutInspector.markerFileName)"))
+    }
+
+    func testRepositoryAlreadyStuckBeforeThisFixIsFoundFromTheReflog() async throws {
+        let f = try await makeFixture(remoteTouchesWorkspace: false)
+        defer { cleanup(f) }
+        // Older GitSync: ref + index moved by "pull: fast-forward", checkout
+        // aborted, no marker. Every later pull said "Already up to date".
+        try moveBranchAndIndexLeavingWorktree(repoURL: f.repoURL, sha: f.remoteSHA, reflogMessage: "pull: fast-forward")
+        var repo: OpaquePointer?
+        XCTAssertEqual(git_repository_open(&repo, f.repoURL.path), 0)
+        var remoteOID = git_oid()
+        XCTAssertEqual(f.remoteSHA.withCString { git_oid_fromstr(&remoteOID, $0) }, 0)
+        var remoteRef: OpaquePointer?
+        XCTAssertEqual(git_reference_create(&remoteRef, repo, "refs/remotes/origin/main", &remoteOID, 1, "fetch"), 0)
+        git_reference_free(remoteRef)
+        git_repository_free(repo)
+
+        let plan = try await f.service.executePullOnly(pat: "", expectedBranch: "main").plan
+        let pending = try XCTUnwrap(plan.pendingCheckout)
+        XCTAssertEqual(pending.baseCommitSHA, f.baseSHA)
+        XCTAssertEqual(pending.staleWorktreePaths, ["Added.md", "Gone.md", "Note.md"])
+
+        // Stage-all + commit is refused once the stale files reach the index.
+        do {
+            try await f.service.stageAll()
+            _ = try await f.service.commitLocal(message: "vault backup", authorName: "Tests", authorEmail: "tests@example.com")
+            XCTFail("committing pre-pull versions must be refused")
+        } catch LocalGitError.pullNotFinished {}
+
+        _ = try await f.service.finishPendingCheckout()
+        try await assertCoherentAtRemote(f)
+    }
+
+    // MARK: Controls
+
+    func testCleanPullLeavesIndexAndWorktreeEqualToHEAD() async throws {
+        let f = try await makeFixture(remoteTouchesWorkspace: true)
+        defer { cleanup(f) }
+        let result = try await f.service.executePullOnly(pat: "", expectedBranch: "main")
+        XCTAssertNil(result.pullResult?.attention)
+        XCTAssertEqual(try f.read(".obsidian/workspace-mobile.json"), "w1\n")
+        try await assertCoherentAtRemote(f)
+        XCTAssertFalse(f.exists(".git/\(PendingCheckoutInspector.markerFileName)"))
+    }
+
+    func testDirtyFileNotTouchedByIncomingDoesNotBlockCheckout() async throws {
+        let f = try await makeFixture(remoteTouchesWorkspace: false)
+        defer { cleanup(f) }
+        let wsURL = f.url(".obsidian/workspace-mobile.json")
+        let service = LocalGitService(localURL: f.repoURL, pullOnlyBeforeFinalCheckout: {
+            try? "phone layout\n".write(to: wsURL, atomically: true, encoding: .utf8)
+        })
+        let result = try await service.executePullOnly(pat: "", expectedBranch: "main")
+        XCTAssertNil(result.pullResult?.attention)
+        XCTAssertEqual(try f.read("Note.md"), "remote\n")
+        XCTAssertEqual(try f.read(".obsidian/workspace-mobile.json"), "phone layout\n")
+    }
+
+    func testDirtyWorkspaceAtPlanTimeIsStillReportedAsBlocked() async throws {
+        let f = try await makeFixture(remoteTouchesWorkspace: false)
+        defer { cleanup(f) }
+        try "phone layout\n".write(to: f.url(".obsidian/workspace-mobile.json"), atomically: true, encoding: .utf8)
+        let result = try await f.service.executePullOnly(pat: "", expectedBranch: "main")
+        XCTAssertEqual(result.plan.action, .blockedByLocalChanges)
+        XCTAssertNil(result.plan.pendingCheckout)
+        XCTAssertEqual(try f.read("Note.md"), "base\n")
+    }
+
+    func testEditingAFileBackToAnOlderVersionIsNotMistakenForAStaleCheckout() async throws {
+        let f = try await makeFixture(remoteTouchesWorkspace: false)
+        defer { cleanup(f) }
+        _ = try await f.service.executePullOnly(pat: "", expectedBranch: "main")
+        try await assertCoherentAtRemote(f)
+        // The user commits on top, then edits Note.md back to the exact
+        // pre-pull text. The latest branch update is a commit, so this is a
+        // local edit, not an unfinished pull.
+        try "new\n".write(to: f.url("New.md"), atomically: true, encoding: .utf8)
+        try await f.service.stageAll()
+        let commitSHA = try await f.service.commitLocal(message: "phone", authorName: "Tests", authorEmail: "tests@example.com")
+        try setLocalAndRemoteTrackingRefs(repoURL: f.repoURL, localSHA: commitSHA, remoteSHA: commitSHA)
+        try "base\n".write(to: f.url("Note.md"), atomically: true, encoding: .utf8)
+
+        let plan = try await f.service.executePullOnly(pat: "", expectedBranch: "main").plan
+        XCTAssertEqual(plan.action, .upToDate)
+        XCTAssertNil(plan.pendingCheckout)
+        try await f.service.stageAll()
+        _ = try await f.service.commitLocal(message: "deliberate revert", authorName: "Tests", authorEmail: "tests@example.com")
+        XCTAssertEqual(try blobText(repoURL: f.repoURL, spec: "HEAD:Note.md"), "base\n")
+    }
+
+    // MARK: AppState presentation
+
+    @MainActor
+    func testAppStateRebasePullSurfacesCheckoutAttentionInsteadOfSuccess() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        let newCommit = "abababababababababababababababababababab"
+        let attention = PullPostUpdateAttention.checkoutIncomplete(message: "Inbox.md changed during checkout")
+        fixture.repository.pullPlanResult = PullPlan(
+            action: .fastForward, branch: "main",
+            localCommitSHA: fixture.repoConfig.gitState.commitSHA, remoteCommitSHA: newCommit,
+            hasLocalChanges: false, aheadBy: 0, behindBy: 1
+        )
+        fixture.repository.pullResult = .success(LocalPullResult(updated: true, newCommitSHA: newCommit, attention: attention))
+        let state = AppState(
+            gitRepositoryFactory: { _ in fixture.repository },
+            reposFileURL: fixture.rootURL.appendingPathComponent("repos.json"),
+            loadPersistedState: false
+        )
+        state.repos = [fixture.repoConfig]
+
+        _ = await state.pullWithRebase(repoID: fixture.repoConfig.id, showsProgressDelay: false)
+
+        XCTAssertEqual(state.pullOutcomeByRepo[fixture.repoConfig.id]?.kind, .checkoutIncomplete)
+        XCTAssertEqual(state.pullOutcomeByRepo[fixture.repoConfig.id]?.message, attention.localizedDescription)
+    }
+
+    @MainActor
+    func testAppStateUpToDatePlanWithPendingCheckoutOffersFinishUpdate() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        let sha = fixture.repoConfig.gitState.commitSHA
+        let report = PendingCheckoutReport(
+            baseCommitSHA: "cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd", headCommitSHA: sha,
+            staleWorktreePaths: ["Inbox.md"], staleIndexPaths: [], localEditPaths: []
+        )
+        fixture.repository.pullPlanResult = PullPlan(
+            action: .upToDate, branch: "main", localCommitSHA: sha, remoteCommitSHA: sha,
+            hasLocalChanges: false, aheadBy: 0, behindBy: 0, pendingCheckout: report
+        )
+        let state = AppState(
+            gitRepositoryFactory: { _ in fixture.repository },
+            reposFileURL: fixture.rootURL.appendingPathComponent("repos.json"),
+            loadPersistedState: false
+        )
+        state.repos = [fixture.repoConfig]
+
+        let result = await state.pullOnly(repoID: fixture.repoConfig.id, showsProgressDelay: false)
+        XCTAssertEqual(result, .updatedWithAttention(branch: "main", commitSHA: sha, attention: .workingTreeNotUpdated(report)))
+        XCTAssertEqual(state.pullOutcomeByRepo[fixture.repoConfig.id]?.kind, .workingTreeBehind)
+        XCTAssertNotEqual(state.syncProgress, String(localized: "Already up to date!"))
+        // No "Pulled N changes" toast: nothing was pulled (found in Argent QA).
+        try await Task.sleep(for: .milliseconds(500))
+        XCTAssertNil(state.currentToast)
+
+        _ = await state.pullWithRebase(repoID: fixture.repoConfig.id, showsProgressDelay: false)
+        XCTAssertEqual(state.pullOutcomeByRepo[fixture.repoConfig.id]?.kind, .workingTreeBehind)
     }
 }

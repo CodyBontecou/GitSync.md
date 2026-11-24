@@ -1,0 +1,157 @@
+# QA (issue #130): while a pull is unfinished (pre-pull files still staged),
+# Commit & push must be refused with an explanation instead of committing the
+# old file over HEAD and pushing a silent revert of the incoming change.
+# Prerequisites: DEBUG build of GitSync.md on an iOS simulator (iPhone 18 Pro
+# layout). `-UITestGitToolsFixture stale-worktree` rebuilds a local-only vault on
+# every launch (file:// remote under /tmp/syncmd-uitest-fixtures): refs/heads/main
+# moved to origin/main, index and files still at the base commit. No network,
+# accounts or personal data. Deterministic: each run starts from the same fixture.
+# Side effects: resets /tmp/syncmd-uitest-fixtures and the app's
+# Documents/git-tools-fixture folder and repo list on the simulator. The refused
+# commit creates nothing (verified host-side with git log during authoring).
+# Waits are raw `tool: await-ui-element` steps: these SwiftUI ids/labels are in
+# the accessibility tree but not in the runner's native tree.
+version: 1
+requires:
+  platform: ios
+steps:
+  - echo: "Baseline: launch with the stale-worktree fixture (main moved to
+      origin/main, files still at the base commit). Expect Home with the fixture
+      vault"
+  - launch:
+      native: bontecou.Sync-md
+      ios:
+        app: bontecou.Sync-md
+        args:
+          - -UITestGitToolsFixture
+          - stale-worktree
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: home.vault.git-tools-fixture
+      timeoutMs: 15000
+  - await: { idle: true }
+  - echo: Open the fixture vault; expect the vault screen
+  # Coordinate exception: home.vault.git-tools-fixture (proven above) is not in
+  # the runner tree; it is the only row on Home. vault.title proves the tap.
+  - tool: gesture-tap
+    args:
+      x: 0.233
+      y: 0.35
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: vault.title
+      timeoutMs: 10000
+  - await: { idle: true }
+  - tool: await-ui-element
+    args:
+      condition: text
+      selector:
+        identifier: vault.hero.primary
+      expectedText: Check for changes
+      timeoutMs: 5000
+  - echo: Pull; expect Pull didn't finish and the hero offering Commit and push (the
+      risky action)
+  # Coordinate exception: vault.hero.primary (proven above) is not in the runner
+  # tree; the Finish Update wait proves the tap.
+  - tool: gesture-tap
+    args:
+      x: 0.5
+      y: 0.462
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: pull.finishUpdate
+      timeoutMs: 15000
+  - tool: await-ui-element
+    args:
+      condition: text
+      selector:
+        identifier: vault.hero.primary
+      expectedText: Commit & push
+      timeoutMs: 5000
+  # Hero buttons stay disabled during the pull's 1 s progress delay.
+  - await: { idle: true, stableFor: 1500, timeout: 9000 }
+  - echo: "Tap Commit and push while the pull is unfinished. Acceptance: the commit
+      is refused with a didn't finish updating explanation (committing would
+      revert the incoming change)"
+  # Coordinate exception: vault.hero.primary now reads Commit & push (proven
+  # above) and is not in the runner tree; commitSheet.title proves the tap.
+  - tool: gesture-tap
+    args:
+      x: 0.412
+      y: 0.453
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: commitSheet.title
+      timeoutMs: 5000
+  - await: { idle: true }
+  # Coordinate exception: commitSheet.commit is not in the runner tree (the
+  # recorder kept the point); the refusal text below proves the tap.
+  - tool: gesture-tap
+    args:
+      x: 0.5
+      y: 0.917
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: didn't finish updating 1 file, so committing now would undo that incoming
+          change
+      timeoutMs: 15000
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: OK
+        role: button
+      timeoutMs: 5000
+  - await: { idle: true }
+  - echo: Commit refused. Dismiss the alert and cancel the sheet; expect the vault
+      with Finish Update still offered and hello.md still an uncommitted change
+  # Coordinate exception: the alert's OK button is only in the accessibility tree
+  # (same as issue111-detached-head-pull); the hidden wait proves the tap.
+  - tool: gesture-tap
+    args:
+      x: 0.5
+      y: 0.591
+  - tool: await-ui-element
+    args:
+      condition: hidden
+      selector:
+        text: OK
+        role: button
+      timeoutMs: 5000
+  # Coordinate exception: the sheet's Cancel has no id; the recorder derived
+  # `id: chevron.backward`, which is the vault's Back button behind the sheet.
+  # The hidden commitSheet.title wait proves the sheet closed, and the
+  # pull.finishUpdate wait (vault-only) proves the app stayed on the vault.
+  - tool: gesture-tap
+    args:
+      x: 0.109
+      y: 0.107
+  - tool: await-ui-element
+    args:
+      condition: hidden
+      selector:
+        identifier: commitSheet.title
+      timeoutMs: 5000
+  - await: { idle: true }
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: pull.finishUpdate
+      timeoutMs: 5000
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: notes/hello.md, modified
+      timeoutMs: 5000

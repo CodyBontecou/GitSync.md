@@ -843,6 +843,12 @@ struct VaultView: View {
                     showResolveLocalSheet = true
                 }
                 .padding(.leading, 38)
+            } else if outcome.kind == .workingTreeBehind {
+                bannerButton(String(localized: "Finish Update"), tint: Tide.behind) {
+                    Task { await state.finishPendingCheckout(repoID: repoID) }
+                }
+                .accessibilityIdentifier("pull.finishUpdate")
+                .padding(.leading, 38)
             } else if outcome.kind == .diverged, activeConflict == nil {
                 HStack(spacing: 8) {
                     bannerButton(String(localized: "Merge"), tint: Tide.ahead) {
@@ -865,6 +871,7 @@ struct VaultView: View {
         case .rebaseConflicts:       String(localized: "Rebase stopped on conflicts")
         case .blockedByLocalChanges: String(localized: "Local edits block this pull")
         case .checkoutIncomplete:    String(localized: "Working tree needs attention")
+        case .workingTreeBehind:     String(localized: "Pull didn't finish")
         case .lfsHydrationBlocked:   String(localized: "Large files couldn't download")
         case .diverged:              String(localized: "Needs a decision")
         case .remoteBranchMissing:   String(localized: "Remote branch missing")
@@ -879,7 +886,7 @@ struct VaultView: View {
         case .fastForwarded:         return "arrow.down"
         case .rebased:               return "arrow.triangle.2.circlepath"
         case .rebaseConflicts:       return "exclamationmark.triangle.fill"
-        case .blockedByLocalChanges, .checkoutIncomplete: return "exclamationmark.triangle.fill"
+        case .blockedByLocalChanges, .checkoutIncomplete, .workingTreeBehind: return "exclamationmark.triangle.fill"
         case .lfsHydrationBlocked:   return "externaldrive.badge.exclamationmark"
         case .diverged:              return "arrow.triangle.branch"
         case .remoteBranchMissing:   return "questionmark"
@@ -892,7 +899,7 @@ struct VaultView: View {
         switch kind {
         case .upToDate, .rebased:    return Tide.synced
         case .fastForwarded:         return Tide.behind
-        case .rebaseConflicts, .blockedByLocalChanges, .checkoutIncomplete, .lfsHydrationBlocked,
+        case .rebaseConflicts, .blockedByLocalChanges, .checkoutIncomplete, .workingTreeBehind, .lfsHydrationBlocked,
              .diverged, .remoteBranchMissing, .cancelled:
             return Tide.ahead
         case .failed:                return Tide.danger

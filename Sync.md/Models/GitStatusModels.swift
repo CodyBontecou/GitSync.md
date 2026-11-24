@@ -70,6 +70,9 @@ struct PullPlan: Codable, Sendable, Equatable {
     /// Exact configured origin identity used for this fetch. LocalGitService
     /// always supplies it; nil preserves compatibility for synthetic callers.
     let remoteIdentity: GitRemoteIdentity?
+    /// Set when HEAD is ahead of the index or working tree: an earlier update
+    /// moved the branch but its checkout never finished (issue #130).
+    let pendingCheckout: PendingCheckoutReport?
 
     init(
         action: PullPlanAction,
@@ -79,7 +82,8 @@ struct PullPlan: Codable, Sendable, Equatable {
         hasLocalChanges: Bool,
         aheadBy: Int,
         behindBy: Int,
-        remoteIdentity: GitRemoteIdentity? = nil
+        remoteIdentity: GitRemoteIdentity? = nil,
+        pendingCheckout: PendingCheckoutReport? = nil
     ) {
         self.action = action
         self.branch = branch
@@ -89,6 +93,21 @@ struct PullPlan: Codable, Sendable, Equatable {
         self.aheadBy = aheadBy
         self.behindBy = behindBy
         self.remoteIdentity = remoteIdentity
+        self.pendingCheckout = pendingCheckout
+    }
+
+    func withPendingCheckout(_ report: PendingCheckoutReport?) -> PullPlan {
+        PullPlan(
+            action: action,
+            branch: branch,
+            localCommitSHA: localCommitSHA,
+            remoteCommitSHA: remoteCommitSHA,
+            hasLocalChanges: hasLocalChanges,
+            aheadBy: aheadBy,
+            behindBy: behindBy,
+            remoteIdentity: remoteIdentity,
+            pendingCheckout: report
+        )
     }
 }
 
@@ -106,6 +125,9 @@ enum PullOutcomeKind: String, Codable, Sendable {
     case blockedByLocalChanges
     /// References advanced, but SAFE checkout could not finish the working tree.
     case checkoutIncomplete
+    /// HEAD is current but some files still hold their pre-pull versions.
+    /// Offers "Finish Update" (issue #130).
+    case workingTreeBehind
     case lfsHydrationBlocked
     case diverged
     case remoteBranchMissing
