@@ -82,6 +82,8 @@ protocol GitRepositoryProtocol: Sendable {
     func unstage(path: String, oldPath: String?) async throws
     func discardChanges(path: String) async throws
     func discardAllChanges() async throws
+    func trackedPaths(matching target: GitUntrackTarget) async throws -> [String]
+    func stopTracking(_ target: GitUntrackTarget, authorName: String, authorEmail: String) async throws -> GitUntrackResult
     func commitAndPush(
         message: String,
         authorName: String,
@@ -109,6 +111,14 @@ extension GitRepositoryProtocol {
     /// Test doubles that never leave a checkout behind HEAD have nothing to finish.
     func finishPendingCheckout() async throws -> PendingCheckoutCompletion {
         PendingCheckoutCompletion(restoredPaths: [], keptLocalPaths: [], remainingStalePaths: [])
+    }
+
+    func trackedPaths(matching target: GitUntrackTarget) async throws -> [String] {
+        throw LocalGitError.notCloned
+    }
+
+    func stopTracking(_ target: GitUntrackTarget, authorName: String, authorEmail: String) async throws -> GitUntrackResult {
+        throw LocalGitError.notCloned
     }
 
     func clone(remoteURL: String, pat: String) async throws -> LocalCloneResult {

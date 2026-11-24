@@ -623,8 +623,11 @@ enum MarketingDemoSeeder {
         // (deleted it and added it to .gitignore) while this vault, one commit
         // behind, has a local edit to it.
         let isIncomingUntrack = scenario == "incoming-untrack"
+        // Issue #132: a tracked device-specific Obsidian layout file with a
+        // local edit, as Obsidian leaves it after opening the vault.
+        let isWorkspaceFile = scenario == "workspace-file"
         let workspacePath = ".obsidian/workspace-mobile.json"
-        if isIncomingUntrack {
+        if isIncomingUntrack || isWorkspaceFile {
             files[".obsidian/app.json"] = Data("{}\n".utf8)
             files[workspacePath] = Data("{\n  \"active\": \"README.md\"\n}\n".utf8)
         }
@@ -675,6 +678,10 @@ enum MarketingDemoSeeder {
                 try Data("# Git Tools Fixture\n\nUnstaged local note.\n".utf8)
                     .write(to: vaultURL.appendingPathComponent("README.md"))
             }
+            if isWorkspaceFile {
+                try Data("{\n  \"active\": \"notes/hello.md\"\n}\n".utf8)
+                    .write(to: vaultURL.appendingPathComponent(workspacePath))
+            }
 
             let headSHA = try UITestGitFixtures.headHexSHA(atPath: vaultURL.path)
             // The simulator test runner can inspect the actual index, refs,
@@ -702,10 +709,10 @@ enum MarketingDemoSeeder {
                 )
             )
             state.repos = [repo]
-            state.changeCounts = [repo.id: isDirty || isIncomingUntrack ? 1 : 0]
+            state.changeCounts = [repo.id: isDirty || isIncomingUntrack || isWorkspaceFile ? 1 : 0]
             state.statusEntriesByRepo = [repo.id: isDirty ? [
                 GitStatusEntry(path: "README.md", indexStatus: nil, workTreeStatus: .modified)
-            ] : isIncomingUntrack ? [
+            ] : isIncomingUntrack || isWorkspaceFile ? [
                 GitStatusEntry(path: workspacePath, indexStatus: nil, workTreeStatus: .modified)
             ] : []]
             let syncState: RepoSyncState

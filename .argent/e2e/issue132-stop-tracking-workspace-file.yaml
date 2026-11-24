@@ -1,0 +1,170 @@
+# Issue #132: stop tracking Obsidian's device-specific workspace file from the
+# app. Opens the tracked, locally edited .obsidian/workspace-mobile.json from the
+# changes list, picks "All Obsidian workspace files" in the Stop Tracking sheet
+# and expects one local commit, an empty changes list and no Git-tab suggestion.
+# Prerequisites: a DEBUG build of GitSync.md installed on an iOS simulator
+# (recorded on an iPhone 18 Pro). The `-UITestGitToolsFixture workspace-file`
+# launch argument seeds a local-only vault (file:// remote under
+# /tmp/syncmd-uitest-fixtures) with the workspace file tracked and edited; no
+# network, accounts or personal data.
+# Side effects: resets /tmp/syncmd-uitest-fixtures and the app's
+# Documents/git-tools-fixture folder and repo list on the simulator, and makes
+# one local commit in that fixture vault (nothing is pushed).
+#
+# Coordinate exceptions: SwiftUI ids and labels on these screens are in the
+# accessibility tree (the raw await-ui-element steps use it) but not in the
+# runner's native tree, so `tap: { id }`/`{ text }` directives cannot resolve
+# them and the recorder fell back to a bare role or a point. Each point is the
+# element's frame centre from `describe` on the iPhone 18 Pro, and the wait right
+# after each tap proves where it landed. Same constraint as
+# issue111-detached-head-pull.yaml.
+version: 1
+requires:
+  platform: ios
+steps:
+  - echo: Launch with the workspace-file fixture (tracked
+      .obsidian/workspace-mobile.json with a local edit). Expect Home with the
+      fixture vault
+  - launch:
+      native: bontecou.Sync-md
+      ios:
+        app: bontecou.Sync-md
+        args:
+          - -UITestGitToolsFixture
+          - workspace-file
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: home.vault.git-tools-fixture
+      timeoutMs: 15000
+  - await: { idle: true }
+  # Coordinate exception: the fixture vault row (home.vault.git-tools-fixture).
+  - tap:
+      x: 0.5
+      y: 0.522
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: vault.title
+      timeoutMs: 10000
+  - await: { idle: true }
+  - echo: Vault open with the tracked workspace file changed. Open the Git tab;
+      expect the workspace-file suggestion
+  # Coordinate exception: the "Git" segment of the vault tabs.
+  - tap:
+      x: 0.841
+      y: 0.547
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: git.stopTrackingWorkspace
+      timeoutMs: 10000
+  - await: { idle: true }
+  - echo: Suggestion shown. Go back to Changes and open the workspace file's diff
+  # Coordinate exception: the "Changes" segment of the vault tabs.
+  - tap:
+      x: 0.159
+      y: 0.547
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: workspace-mobile.json, modified
+      timeoutMs: 10000
+  - await: { idle: true }
+  # Coordinate exception: the workspace-mobile.json row proven visible above.
+  - tap:
+      x: 0.5
+      y: 0.625
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: diff.more
+      timeoutMs: 10000
+  - await: { idle: true }
+  - echo: Diff for the workspace file open. Open the More menu and choose Stop
+      Tracking; expect the stop-tracking sheet
+  # Coordinate exception: the diff.more menu button proven visible above.
+  - tap:
+      x: 0.367
+      y: 0.92
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: diff.stopTracking
+      timeoutMs: 5000
+  - tap:
+      text: Stop Tracking…
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: stopTracking.confirm
+      timeoutMs: 5000
+  - await: { idle: true }
+  - echo: Sheet open. Choose "All Obsidian workspace files" and confirm; expect the
+      sheet to close and the diff screen to pop back to the vault
+  # Coordinate exception: stopTracking.option.workspace. The commit subject
+  # checked below ("…workspace*.json") proves this option was the one chosen.
+  - tap:
+      x: 0.5
+      y: 0.747
+  # Coordinate exception: stopTracking.confirm, proven visible above.
+  - tap:
+      x: 0.5
+      y: 0.835
+  - tool: await-ui-element
+    args:
+      condition: hidden
+      selector:
+        identifier: stopTracking.confirm
+      timeoutMs: 10000
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: vault.title
+      timeoutMs: 10000
+  - await: { idle: true }
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Stop tracking .obsidian/workspace*.json
+      timeoutMs: 10000
+  - tool: await-ui-element
+    args:
+      condition: hidden
+      selector:
+        text: workspace-mobile.json, modified
+      timeoutMs: 5000
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: 1 to push
+      timeoutMs: 5000
+  - echo: Committed. Open the Git tab; expect the workspace-file suggestion to be
+      gone
+  # Coordinate exception: the "Git" segment of the vault tabs.
+  - tap:
+      x: 0.841
+      y: 0.556
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Current branch
+      timeoutMs: 10000
+  - await: { idle: true }
+  - tool: await-ui-element
+    args:
+      condition: hidden
+      selector:
+        identifier: git.stopTrackingWorkspace
+      timeoutMs: 5000

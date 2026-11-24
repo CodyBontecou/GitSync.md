@@ -388,6 +388,14 @@ final class SerializedGitRepository: GitRepositoryProtocol, @unchecked Sendable 
 
     func discardAllChanges() async throws { try await run { try await $0.discardAllChanges() } }
 
+    func trackedPaths(matching target: GitUntrackTarget) async throws -> [String] {
+        try await run { try await $0.trackedPaths(matching: target) }
+    }
+
+    func stopTracking(_ target: GitUntrackTarget, authorName: String, authorEmail: String) async throws -> GitUntrackResult {
+        try await run { try await $0.stopTracking(target, authorName: authorName, authorEmail: authorEmail) }
+    }
+
     func commitAndPush(
         message: String,
         authorName: String,

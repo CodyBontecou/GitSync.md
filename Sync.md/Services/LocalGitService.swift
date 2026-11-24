@@ -6214,7 +6214,6 @@ extension LocalGitService {
     }
 }
 
-
 // MARK: - Local edits to files the incoming commits stop tracking (issue #137)
 
 /// A local edit set aside during a fast-forward. `data` is nil when the edit
@@ -6388,6 +6387,188 @@ extension LocalGitService {
             } else if fm.fileExists(atPath: url.path) {
                 try? fm.removeItem(at: url)
             }
+// MARK: - Stop tracking one path
+
+extension LocalGitService {
+    /// Index paths (tracked or staged) that `target` would stop tracking.
+    func trackedPaths(matching target: GitUntrackTarget) async throws -> [String] {
+        try target.validate()
+        let repoPath = self.localURL.path
+        return try await Task.detached {
+            var repo: OpaquePointer?
+            defer { if let repo { git_repository_free(repo) } }
+            try git2Check(git_repository_open(&repo, repoPath), context: "Open repo")
+            var index: OpaquePointer?
+            defer { if let index { git_index_free(index) } }
+            try git2Check(git_repository_index(&index, repo), context: "Get index")
+            return Self.untrackIndexPaths(index).filter(target.matches).sorted()
+        }.value
+    }
+
+    /// `git rm --cached` for `target`, plus a root `.gitignore` entry, committed
+    /// together so the next push stops tracking it on every device. Files stay
+    /// on disk. Only the removal and `.gitignore` go into the commit: anything
+    /// else that is staged stays staged. The working `.gitignore` is committed
+    /// as it is on disk, so its uncommitted rules go along.
+    func stopTracking(
+        _ target: GitUntrackTarget,
+        authorName: String,
+        authorEmail: String
+    ) async throws -> GitUntrackResult {
+        try target.validate()
+        let repoPath = self.localURL.path
+        let ignoreURL = self.localURL.appendingPathComponent(GitIgnoreFile.name)
+
+        return try await Task.detached {
+            var repo: OpaquePointer?
+            defer { if let repo { git_repository_free(repo) } }
+            try git2Check(git_repository_open(&repo, repoPath), context: "Open repo")
+
+            var index: OpaquePointer?
+            defer { if let index { git_index_free(index) } }
+            try git2Check(git_repository_index(&index, repo), context: "Get index")
+            try Self.ensureNoActiveConflict(repo: repo, index: index)
+            let baselineIndexChecksum = try Self.indexChecksumHex(index)
+
+            // HEAD (absent on an unborn branch).
+            var headRef: OpaquePointer?
+            defer { if let headRef { git_reference_free(headRef) } }
+            var headCommit: OpaquePointer?
+            defer { if let headCommit { git_commit_free(headCommit) } }
+            var headTree: OpaquePointer?
+            defer { if let headTree { git_tree_free(headTree) } }
+            let headCode = git_repository_head(&headRef, repo)
+            if headCode == 0 {
+                guard let headOid = git_reference_target(headRef) else {
+                    throw LocalGitError.repositoryCorrupted(String(localized: "Could not resolve HEAD for commit"))
+                }
+                var oid = headOid.pointee
+                try git2Check(git_commit_lookup(&headCommit, repo, &oid), context: "Lookup HEAD commit")
+                try git2Check(git_commit_tree(&headTree, headCommit), context: "Lookup HEAD tree")
+            } else if headCode != GIT_EUNBORNBRANCH.rawValue && headCode != GIT_ENOTFOUND.rawValue {
+                try git2Check(headCode, context: "Read HEAD")
+            }
+
+            // The commit is built from HEAD's tree, not the shared index, so
+            // unrelated staged changes stay out of it.
+            var commitIndex: OpaquePointer?
+            defer { if let commitIndex { git_index_free(commitIndex) } }
+            try git2Check(git_index_new(&commitIndex), context: "Create stop-tracking index")
+            if let headTree {
+                try git2Check(git_index_read_tree(commitIndex, headTree), context: "Read HEAD tree")
+            }
+
+            let removed = Set(Self.untrackIndexPaths(index).filter(target.matches))
+                .union(Self.untrackIndexPaths(commitIndex).filter(target.matches))
+                .sorted()
+
+            // Does `.gitignore` (or any other ignore rule) already cover it?
+            let originalIgnore: String? = FileManager.default.fileExists(atPath: ignoreURL.path)
+                ? try String(contentsOf: ignoreURL, encoding: .utf8)
+                : nil
+            let entry = target.ignoreEntry
+            var covered = GitIgnoreFile.contains(entry, in: originalIgnore ?? "")
+            if !covered {
+                let probes: [String]
+                switch target {
+                case .file: probes = [target.path]
+                case .folder: probes = [target.path + "/"]
+                case .pattern: probes = removed
+                }
+                covered = try !probes.isEmpty && probes.allSatisfy { probe in
+                    var ignored: Int32 = 0
+                    try git2Check(git_ignore_path_is_ignored(&ignored, repo, probe), context: "Check ignore rules")
+                    return ignored == 1
+                }
+            }
+            guard !removed.isEmpty || !covered else {
+                throw GitUntrackError.notTracked(target.displayName)
+            }
+
+            let indexLock = try Self.lockUnchangedIndex(
+                repo: repo,
+                index: index,
+                baselineChecksum: baselineIndexChecksum
+            )
+            defer { indexLock.release() }
+
+            var wroteIgnore = false
+            var committed = false
+            do {
+                if !covered {
+                    try GitIgnoreFile.appending(entry, to: originalIgnore ?? "")
+                        .write(to: ignoreURL, atomically: true, encoding: .utf8)
+                    wroteIgnore = true
+                }
+
+                for path in removed {
+                    for target in [index, commitIndex] {
+                        let code = path.withCString { git_index_remove_bypath(target, $0) }
+                        if code != 0 && code != GIT_ENOTFOUND.rawValue {
+                            try git2Check(code, context: "Stop tracking \(path)")
+                        }
+                    }
+                }
+                if FileManager.default.fileExists(atPath: ignoreURL.path) {
+                    try git2Check(git_index_add_bypath(index, GitIgnoreFile.name), context: "Stage .gitignore")
+                    guard let ignoreEntry = git_index_get_bypath(index, GitIgnoreFile.name, 0) else {
+                        throw LocalGitError.repositoryCorrupted(String(localized: "Could not read the Git index."))
+                    }
+                    try git2Check(git_index_add(commitIndex, ignoreEntry), context: "Add .gitignore to commit")
+                }
+
+                try indexLock.prepare(index: index)
+
+                var treeOid = git_oid()
+                try git2Check(git_index_write_tree_to(&treeOid, commitIndex, repo), context: "Write tree")
+                var commitSHA: String?
+                let unchanged = headTree.map { git_oid_equal(git_tree_id($0), &treeOid) == 1 } ?? false
+                if !unchanged {
+                    var tree: OpaquePointer?
+                    defer { if let tree { git_tree_free(tree) } }
+                    try git2Check(git_tree_lookup(&tree, repo, &treeOid), context: "Lookup tree")
+                    var sig: UnsafeMutablePointer<git_signature>?
+                    defer { if let sig { git_signature_free(sig) } }
+                    try createGitSignature(&sig, authorName: authorName, authorEmail: authorEmail)
+                    var commitOid = git_oid()
+                    var parents: [OpaquePointer?] = headCommit.map { [$0] } ?? []
+                    try parents.withUnsafeMutableBufferPointer { buffer in
+                        try git2Check(
+                            git_commit_create(
+                                &commitOid, repo, "HEAD", sig, sig, nil,
+                                target.commitMessage, tree,
+                                buffer.count, buffer.count == 0 ? nil : buffer.baseAddress
+                            ),
+                            context: "Create stop-tracking commit"
+                        )
+                    }
+                    commitSHA = oidToHex(&commitOid)
+                    committed = true
+                }
+
+                try indexLock.commitPreparedIndex()
+                return GitUntrackResult(
+                    removedPaths: removed,
+                    addedIgnoreEntry: covered ? nil : entry,
+                    commitSHA: commitSHA
+                )
+            } catch {
+                // Once the commit exists the new rule belongs to it; keep it.
+                if wroteIgnore, !committed {
+                    if let originalIgnore {
+                        try? originalIgnore.write(to: ignoreURL, atomically: true, encoding: .utf8)
+                    } else {
+                        try? FileManager.default.removeItem(at: ignoreURL)
+                    }
+                }
+                throw error
+            }
+        }.value
+    }
+
+    private static func untrackIndexPaths(_ index: OpaquePointer?) -> [String] {
+        (0..<git_index_entrycount(index)).compactMap { position in
+            git_index_get_byindex(index, position).map { String(cString: $0.pointee.path) }
         }
     }
 }
