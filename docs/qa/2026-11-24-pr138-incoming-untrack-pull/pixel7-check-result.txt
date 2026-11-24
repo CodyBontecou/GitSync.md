@@ -1,0 +1,10 @@
+recent PULL outcomes:
+  13:42:41 COMPLETED NONE
+  13:43:55 COMPLETED NONE
+  13:44:18 COMPLETED NONE
+  13:44:42 COMPLETED NONE
+  13:46:19 COMPLETED NONE
+  13:47:54 COMPLETED NONE
+  13:49:33 COMPLETED NONE
+  13:49:49 COMPLETED NONE
+PASS: fast-forwarded, local copy kept as an ignored file, nothing pending

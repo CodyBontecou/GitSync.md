@@ -619,6 +619,15 @@ enum MarketingDemoSeeder {
             files[".gitignore"] = Data("*.tmp\n".utf8)
             files[".obsidian/app.json"] = Data("{\n  \"livePreview\": true\n}\n".utf8)
         }
+        // Issue #137: another device stopped tracking Obsidian's workspace file
+        // (deleted it and added it to .gitignore) while this vault, one commit
+        // behind, has a local edit to it.
+        let isIncomingUntrack = scenario == "incoming-untrack"
+        let workspacePath = ".obsidian/workspace-mobile.json"
+        if isIncomingUntrack {
+            files[".obsidian/app.json"] = Data("{}\n".utf8)
+            files[workspacePath] = Data("{\n  \"active\": \"README.md\"\n}\n".utf8)
+        }
 
         do {
             try UITestGitFixtures.resetFixtureArea()
@@ -641,6 +650,14 @@ enum MarketingDemoSeeder {
                 }
                 try UITestGitFixtures.commitToBare(atPath: remotePath, files: files, message: "Remote note")
                 try UITestGitFixtures.fetchOrigin(atPath: vaultURL.path)
+            }
+            if isIncomingUntrack {
+                files[workspacePath] = nil
+                files[".gitignore"] = Data("/.obsidian/workspace*.json\n".utf8)
+                try UITestGitFixtures.commitToBare(atPath: remotePath, files: files, message: "Stop tracking .obsidian/workspace*.json")
+                try UITestGitFixtures.fetchOrigin(atPath: vaultURL.path)
+                try Data("{\n  \"active\": \"notes/hello.md\"\n}\n".utf8)
+                    .write(to: vaultURL.appendingPathComponent(workspacePath))
             }
             if isIssueQA {
                 files["notes/hello.md"] = Data("# Hello\n\nUnfetched remote note.\n".utf8)
@@ -685,14 +702,16 @@ enum MarketingDemoSeeder {
                 )
             )
             state.repos = [repo]
-            state.changeCounts = [repo.id: isDirty ? 1 : 0]
+            state.changeCounts = [repo.id: isDirty || isIncomingUntrack ? 1 : 0]
             state.statusEntriesByRepo = [repo.id: isDirty ? [
                 GitStatusEntry(path: "README.md", indexStatus: nil, workTreeStatus: .modified)
+            ] : isIncomingUntrack ? [
+                GitStatusEntry(path: workspacePath, indexStatus: nil, workTreeStatus: .modified)
             ] : []]
             let syncState: RepoSyncState
             switch scenario {
             case "ahead": syncState = .ahead
-            case "behind", "checkout-incomplete", "checkout-partial", "detached-head": syncState = .behind
+            case "behind", "checkout-incomplete", "checkout-partial", "detached-head", "incoming-untrack": syncState = .behind
             case "diverged": syncState = .diverged
             default: syncState = .upToDate
             }

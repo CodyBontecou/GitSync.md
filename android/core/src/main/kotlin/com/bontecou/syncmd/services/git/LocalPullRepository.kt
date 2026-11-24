@@ -1,6 +1,8 @@
 package com.bontecou.syncmd.services.git
 
 import com.bontecou.syncmd.data.models.DirtyRepoException
+import com.bontecou.syncmd.services.diagnostics.LocalChangesFacts
+import com.bontecou.syncmd.services.diagnostics.PullCheck
 import com.bontecou.syncmd.data.models.GitFileStatusKind
 import com.bontecou.syncmd.data.models.MergeType
 import com.bontecou.syncmd.data.models.PullPlan
@@ -89,9 +91,11 @@ class LocalPullRepository(
                     // them so the person is offered Finish update instead of commit (issue #130).
                     val pending = runCatching { PendingCheckoutInspector.inspect(git.repository) }.getOrNull()
                         ?.takeIf { it.needsFinishing }
-                    val isDirty = !git.status().call().isClean
                     val ahead = count(git, before.head, target)
                     val behind = count(git, target, before.head)
+                    // Edits to files the incoming commits stop tracking don't block a fast-forward:
+                    // executePull carries them over as ignored files (issue #137).
+                    val isDirty = IncomingUntrack.hasBlockingChanges(git, target.takeIf { ahead == 0 && behind > 0 })
                     val checkoutBlock = if (!isDirty && ahead == 0 && behind > 0)
                         runCatching { protectUntracked(git, target) }.exceptionOrNull()?.message else null
 
@@ -134,25 +138,32 @@ class LocalPullRepository(
             try {
                 open(repoPath).use { git ->
                     requireFinishedCheckout(git)
-                    requireClean(git)
+                    // A dirty tree only blocks once we know what is incoming (after the fetch): edits
+                    // to files the remote stopped tracking are carried over instead (issue #137).
                     val before = snapshot(git)
                     val auth = RemoteAuthentication.provider(git.repository, before.remote, false, tokenProvider, credentialResolver)
                     val target = fetchTarget(git, before, auth)
-                    requireClean(git)
                     val ahead = count(git, before.head, target)
                     val behind = count(git, target, before.head)
                     check(ahead == 0 || behind == 0) { "Branches have diverged. Choose an explicit merge or rebase; no changes were applied." }
-                    if (behind > 0) {
-                        protectUntracked(git, target)
-                        verifySnapshot(git, before)
-                        requireClean(git)
-                        kotlinx.coroutines.currentCoroutineContext().ensureActive()
-                        val merged = git.merge().include(target).setFastForward(MergeCommand.FastForwardMode.FF_ONLY).call()
-                        check(merged.mergeStatus.isSuccessful) { "Pull could not fast-forward; refresh repository status before retrying" }
-                        // JGit checks out before moving the branch, so the new HEAD is known coherent.
-                        git.repository.resolve("HEAD")?.let { head ->
-                            runCatching { File(git.repository.directory, PendingCheckoutInspector.VERIFIED_FILE).writeText(head.name + "\n") }
+                    val carried = if (behind > 0) IncomingUntrack.setAside(git, target) else emptyList()
+                    try {
+                        requireClean(git, PullCheck.BEFORE_UPDATE, carried.size)
+                        if (behind > 0) {
+                            protectUntracked(git, target)
+                            verifySnapshot(git, before)
+                            requireClean(git, PullCheck.BEFORE_MERGE, carried.size)
+                            kotlinx.coroutines.currentCoroutineContext().ensureActive()
+                            val merged = git.merge().include(target).setFastForward(MergeCommand.FastForwardMode.FF_ONLY).call()
+                            check(merged.mergeStatus.isSuccessful) { "Pull could not fast-forward; refresh repository status before retrying" }
+                            // JGit checks out before moving the branch, so the new HEAD is known coherent.
+                            git.repository.resolve("HEAD")?.let { head ->
+                                runCatching { File(git.repository.directory, PendingCheckoutInspector.VERIFIED_FILE).writeText(head.name + "\n") }
+                            }
                         }
+                    } finally {
+                        // After the update the edits come back as ignored files; on failure as they were.
+                        IncomingUntrack.restore(git.repository.workTree, carried)
                     }
                     val lfsAttention = try {
                         com.bontecou.syncmd.services.git.lfs.LfsRepository.hydrate(git.repository, auth)
@@ -235,6 +246,30 @@ class LocalPullRepository(
             }
         }
 
+    override suspend fun hasBlockingLocalChanges(repoPath: String): Result<Boolean> =
+        RepositoryOperationCoordinator.withRepository(repoPath) {
+            try {
+                open(repoPath).use { git ->
+                    val repository = git.repository
+                    val head = repository.resolve("HEAD")
+                    val target = repository.trackingTarget()
+                    val fastForward = head != null && target != null && head != target &&
+                        count(git, head, target) == 0 && count(git, target, head) > 0
+                    Result.success(IncomingUntrack.hasBlockingChanges(git, target.takeIf { fastForward }))
+                }
+            } catch (e: Exception) {
+                if (e is kotlinx.coroutines.CancellationException) throw e
+                Result.failure(e)
+            }
+        }
+
+    /** The fetched upstream commit of the current branch, if configured. */
+    private fun Repository.trackingTarget(): ObjectId? {
+        val branchName = branch?.takeIf { it.isNotEmpty() } ?: return null
+        val tracking = BranchConfig(config, branchName).trackingBranch ?: return null
+        return exactRef(tracking)?.objectId
+    }
+
     override suspend fun getCommitsBehind(repoPath: String): Result<Int> =
         RepositoryOperationCoordinator.withRepository(repoPath) {
             try {
@@ -316,8 +351,10 @@ class LocalPullRepository(
     internal fun requireFinishedCheckout(git: Git) {
         PendingCheckoutInspector.inspect(git.repository)?.takeIf { it.needsFinishing }?.let { throw PullNotFinishedException(it) }
     }
-    internal fun requireClean(git: Git) {
-        if (!git.status().call().isClean) throw DirtyRepoException("Cannot update this branch with uncommitted changes")
+    internal fun requireClean(git: Git, check: PullCheck = PullCheck.BEFORE_UPDATE, setAside: Int = 0) {
+        val status = git.status().call()
+        if (!status.isClean) throw DirtyRepoException("Cannot update this branch with uncommitted changes",
+            LocalChangesFacts.of(check, status, setAside))
     }
     internal fun count(git: Git, from: ObjectId, excluding: ObjectId) = git.log().add(from).not(excluding).call().count()
 

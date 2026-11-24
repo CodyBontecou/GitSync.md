@@ -104,7 +104,8 @@ internal object CheckoutProtection {
         }
         (if (ignoredOnly) status.ignoredNotInIndex else status.untracked + status.ignoredNotInIndex).forEach { protect(it.trimEnd('/')) }
     }
-    private fun collision(path: String): Nothing = throw DirtyRepoException(
+    private fun collision(path: String): Nothing = throw com.bontecou.syncmd.data.models.OverwriteBlockedException(
+        path,
         "Untracked or ignored files would be overwritten. Move them to a safe location before updating this branch.\n\nPath: $path"
     )
 

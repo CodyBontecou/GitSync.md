@@ -26,6 +26,24 @@ class DiagnosticStoreTest {
         val fresh = DiagnosticStore(folder, limit = 5); fresh.load(); assertTrue(fresh.entries.value.isEmpty())
         assertTrue(folder.listFiles()!!.none { it.name.endsWith(".tmp") })
     }
+    @Test fun `local-changes facts survive restart and appear in the export without paths`() {
+        val folder = temporary.newFolder().canonicalFile; val store = DiagnosticStore(folder)
+        val facts = LocalChangesFacts(PullCheck.BEFORE_MERGE, setOf(LocalChangeKind.UNTRACKED, LocalChangeKind.MODIFIED), blocking = 3, setAside = 1)
+        val stopped = DiagnosticEntry(operation = DiagnosticOperation.PULL, outcome = DiagnosticOutcome.STOPPED,
+            reason = DiagnosticReason.LOCAL_CHANGES, localChanges = facts)
+        store.append(entry()); store.append(stopped)
+        val fresh = DiagnosticStore(folder); fresh.load()
+        assertEquals(listOf(null, facts), fresh.entries.value.map { it.localChanges })
+        assertTrue(fresh.export().endsWith("[PULL] STOPPED · LOCAL_CHANGES · BEFORE_MERGE, MODIFIED+UNTRACKED, blocking 3, set aside 1"))
+    }
+    @Test fun `a stopped pull records the facts its exception carries`() = runBlocking {
+        val seen = mutableListOf<DiagnosticEntry>(); Diagnostics.install { seen += it }
+        val facts = LocalChangesFacts(PullCheck.BEFORE_UPDATE, setOf(LocalChangeKind.MODIFIED), blocking = 1, setAside = 0)
+        runCatching { Diagnostics.track(DiagnosticOperation.PULL) { throw DirtyRepoException("blocked", facts) } }
+        val viaResult = Diagnostics.track(DiagnosticOperation.PULL) { Result.failure<SafePullResult>(DirtyRepoException("blocked", facts)) }
+        assertTrue(viaResult.isFailure)
+        assertEquals(listOf(null, facts, null, facts), seen.map { it.localChanges })
+    }
     @Test fun `byte limit bounds persisted data independently of entry count`() {
         val folder = temporary.newFolder().canonicalFile; val store = DiagnosticStore(folder, byteLimit = 1024)
         repeat(100) { store.append(entry()) }

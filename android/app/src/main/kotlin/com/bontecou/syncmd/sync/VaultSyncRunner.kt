@@ -164,7 +164,7 @@ class VaultSyncRunner @Inject constructor(
         val inTheWay = when {
             behind == 0 -> null
             (before.ahead ?: 0) > 0 -> R.plurals.files_m3_sync_diverged
-            !pullService.isClean(path).getOrThrow() ->
+            pullService.hasBlockingLocalChanges(path).getOrThrow() ->
                 R.plurals.files_m3_sync_local_changes
             else -> null
         }
@@ -323,6 +323,9 @@ class VaultSyncRunner @Inject constructor(
                 session.block()
             } catch (cancelled: CancellationException) {
                 VaultSyncResult.Cancelled
+            } catch (inTheWay: com.bontecou.syncmd.data.models.OverwriteBlockedException) {
+                // Committing can't clear an ignored file in the way; say which file (issue #137).
+                VaultSyncResult.Failed(UiText.Raw(inTheWay.message ?: inTheWay.path))
             } catch (blocked: DirtyRepoException) {
                 VaultSyncResult.LocalChangesBlocked
             } catch (unfinished: com.bontecou.syncmd.services.git.PullNotFinishedException) {
