@@ -1,7 +1,7 @@
 ---
 status: active
 covers: [pr#133, issue#132]
-tested: 4d0036ccdf3d6f9b681db1fc2616da510fb309ff
+tested: 7ad72ecc4e5d14dfee486ddaaf712a684ead5deb
 updated: 2026-11-24
 ---
 
@@ -61,6 +61,13 @@ After the fixes, the device e2e test was re-recorded with no coordinate taps: **
 
 - Simulator: `.argent/e2e/issue132-longpress-stop-tracking-file.yaml`. It long-presses the changed workspace file and checks the menu (Revert Changes, Stop Tracking…). It then opens the sheet (workspace option preselected), switches to **This file** (red warning) and confirms. In the fixture repo afterwards, the commit is "Stop tracking .obsidian/workspace-mobile.json": `.gitignore` gets `/.obsidian/workspace-mobile.json`, only that file is removed, and the body has the "deletes the copy on other devices" text. Command: `argent e2e run issue132-longpress-stop-tracking-file --platform ios --device <sim>`. **PASS 19/19, twice** (`e2e-longpress-sim-run.txt`). Coordinate exceptions: the vault row, the long-press, the option and confirm (simulator tree limit). The menu item itself is a text tap.
 - iPhone 17 Pro: `.argent/e2e/issue132-device-longpress-menu.yaml`. It edits `daily-note.md` in the app and long-presses it. It opens Stop Tracking… and checks the full sheet, "This file" and the warning, then cancels. It long-presses again and uses **Revert Changes**, which opens the Discard sheet (also fully exposed on device), and discards. Nothing is committed or pushed. Command: `argent e2e run issue132-device-longpress-menu --platform ios --device <iPhone udid>`. **PASS 40/40, twice** (`e2e-device-longpress-run.txt`). Coordinate exceptions: the editor tap (caret at the end) and the two long-presses.
+
+## After rebasing onto main (7ad72ecc)
+
+The branch was rebased onto main after #131 merged. The one conflict was in `GitRepositoryProtocol.swift`, where both sides added protocol defaults, and both were kept.
+- **Unit tests:** `SyncMDTests` passed 612/612 on the iPhone 18 Pro simulator.
+- **E2E:** main's Home screen moved the vault row up, so both simulator tests now tap it at y 0.44 instead of 0.522. That's still a coordinate exception, for the same reason as before. After that change, `issue132-stop-tracking-workspace-file` (37 steps) and `issue132-longpress-stop-tracking-file` (19 steps) each passed twice in a row.
+- **Not re-run:** the physical-iPhone tests. The rebase changed nothing in this feature's code.
 
 ## Side effects and exceptions
 
