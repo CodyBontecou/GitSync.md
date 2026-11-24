@@ -211,6 +211,17 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
         guide.consumeTarget()
     }
 
+    LaunchedEffect(Unit) {
+        // DEBUG Argent QA fixture: open the rebuilt sample vault (see debug/QaFixtures). Collected
+        // in one coroutine so clearing the request cannot cancel the open in progress.
+        com.bontecou.syncmd.debug.QaFixtures.openSample.collect { requested ->
+            if (!requested) return@collect
+            com.bontecou.syncmd.debug.QaFixtures.openSample.value = false
+            navController.awaitResumedNavigationEntry()
+            settingsViewModel.openSampleRepository { navController.navigateSafe(Routes.VAULT) }
+        }
+    }
+
     LaunchedEffect(pullAllRequest) {
         val request = pullAllRequest ?: return@LaunchedEffect
         navController.awaitResumedNavigationEntry()

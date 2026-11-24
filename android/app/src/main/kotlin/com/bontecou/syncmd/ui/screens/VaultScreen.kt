@@ -249,6 +249,7 @@ fun VaultScreen(
         onCommit = { committing = true },
         onCancelSync = { syncViewModel?.cancel() },
         onDismissSync = { syncViewModel?.dismiss() },
+        onFinishUpdate = { syncViewModel?.finishUpdate() },
         onPullThenPush = { syncViewModel?.pullThenPush() },
         onReviewFirst = { syncViewModel?.dismiss(); onReviewIncoming() },
         onPushToBranch = { syncViewModel?.pushToBranch() },
@@ -378,6 +379,7 @@ private fun VaultContent(
     onCommit: (() -> Unit)? = null,
     onCancelSync: () -> Unit = {},
     onDismissSync: () -> Unit = {},
+    onFinishUpdate: () -> Unit = {},
     onPullThenPush: () -> Unit = {},
     onReviewFirst: () -> Unit = {},
     onPushToBranch: () -> Unit = {},
@@ -413,7 +415,7 @@ private fun VaultContent(
                         onPullThenPush = onPullThenPush, onReviewFirst = onReviewFirst, onPushToBranch = onPushToBranch)
                     else -> {
                         VaultStateHero(ui, onOpenGit, onPull, onCommit ?: onOpenGit, onPush, onPullThenPush, onOpenConflicts)
-                        VaultNotices(ui, onDismissError, onDismissAttention, onResolveLocalChanges, onDismissLocalChanges, onDismissSync)
+                        VaultNotices(ui, onDismissError, onDismissAttention, onResolveLocalChanges, onDismissLocalChanges, onDismissSync, onFinishUpdate)
                         if (status != null) {
                             VaultChanges(status.allChanges, ui.overview?.lineCounts.orEmpty(), onOpenDiff, selectedFile, onOpenFileConflict)
                             VaultLatestCommit(status, ui.overview, onOpen = { onSelectTab(VaultTab.HISTORY) })
@@ -621,6 +623,7 @@ private fun VaultNotices(
     onResolveLocalChanges: () -> Unit,
     onDismissLocalChanges: () -> Unit,
     onDismissSync: () -> Unit,
+    onFinishUpdate: () -> Unit,
 ) {
     val dismiss = stringResource(R.string.ui_dismiss_48845bff)
     val notice = Modifier.padding(start = 16.dp, end = 16.dp, top = 12.dp)
@@ -638,6 +641,14 @@ private fun VaultNotices(
         VaultSyncResult.Cancelled -> M3Note(stringResource(R.string.vault_m3_sync_cancelled), notice.testTag("vault-sync-cancelled"), tone = M3NoteTone.Muted, action = {
             M3Button(dismiss, onDismissSync, Modifier.testTag("vault-sync-dismiss"), M3ButtonStyle.OutlinedContent, M3ButtonSize.XSmall)
         })
+        is VaultSyncResult.PullNotFinished -> M3Note(pluralStringResource(R.plurals.pending_checkout_body, result.stale, result.stale),
+            notice.testTag("vault-pull-not-finished"), tone = M3NoteTone.Warn, title = stringResource(R.string.pending_checkout_title), action = {
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    M3Button(stringResource(R.string.pending_checkout_action), onFinishUpdate, Modifier.testTag("vault-finish-update"),
+                        M3ButtonStyle.Filled, M3ButtonSize.XSmall)
+                    M3Button(dismiss, onDismissSync, Modifier.testTag("vault-sync-dismiss"), M3ButtonStyle.Text, M3ButtonSize.XSmall)
+                }
+            })
         else -> Unit
     }
     if (ui.localChangesBlock) M3Note(stringResource(R.string.resolve_local_title), notice.testTag("vault-local-changes-block"), tone = M3NoteTone.Ahead, action = {
