@@ -43,7 +43,7 @@ steps:
   # Coordinate exception: the fixture vault row (home.vault.git-tools-fixture).
   - tap:
       x: 0.5
-      y: 0.522
+      y: 0.44
   - tool: await-ui-element
     args:
       condition: visible
