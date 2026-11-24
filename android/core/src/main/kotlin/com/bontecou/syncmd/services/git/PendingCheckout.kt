@@ -42,7 +42,11 @@ data class PendingCheckoutCompletion(
 
 /** Thrown instead of a pull or commit while a previous update has not been checked out. */
 class PullNotFinishedException(val report: PendingCheckoutReport) :
-    IllegalStateException("The last pull didn't finish updating ${report.stalePaths.size} files. Finish the update before pulling or committing.")
+    IllegalStateException(
+        "The last pull didn't finish updating ${report.stalePaths.size} " +
+            (if (report.stalePaths.size == 1) "file" else "files") +
+            ". Finish the update before pulling or committing.",
+    )
 
 object PendingCheckoutInspector {
     const val VERIFIED_FILE = "gitsync-checkout-verified"

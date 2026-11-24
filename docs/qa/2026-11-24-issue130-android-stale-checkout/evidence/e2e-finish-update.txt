@@ -1,0 +1,30 @@
+argent e2e run qa-android-pull-stale-finish-update --platform android --device emulator-5554
+Device: pool emulator whereday-priority-20261111-api35 (API 35), debug build of f17538aa
+Before pass 1: argent run stop-all-simulator-servers --devices emulator-5554
+
+Pass 1:
+  ✓  1 launch (2.4s)
+  ✓  2 tool await-ui-element (0.6s)        Add a vault
+  ✓  3 idle (1.1s)
+  ✓  4 tool open-url (0.0s)                syncmd://qa-fixture/stale-worktree
+  ✓  5 tool await-ui-element (0.1s)        Sample repository
+  ✓  6 idle (1.4s)
+  ✓  7 tool await-ui-element (0.1s)        M / hello.md
+  ✓  8 tap (0.8, 0.331) (0.4s)             hero Pull (coordinate exception)
+  ✓  9 tool await-ui-element (0.6s)        Pull didn't finish
+  ✓ 10 tool await-ui-element (0.6s)        still has its version from before the last pull
+  ✓ 11 tool await-ui-element (0.5s)        Finish update
+  ✓ 12 idle (0.5s)
+  ✓ 13 tap "Finish update" (0.4s)
+  ✓ 14 tool await-ui-element (1.1s)        to the latest version
+  ✓ 15 tool await-ui-element (0.6s)        hidden: Pull didn't finish
+  ✓ 16 tool await-ui-element (0.1s)        hidden: M / hello.md
+  ✓ 17 tool await-ui-element (0.1s)        No changes on this phone
+PASS — 17 passed, 0 failed, 0 errored, 0 skipped (10.6s)
+
+Pass 2 (immediately, no reset):
+PASS — 17 passed, 0 failed, 0 errored, 0 skipped (10.3s)
+
+On-device check after pass 2 (run-as, files/sample-workspace/sample-repository):
+  notes/hello.md = "# Hello\n\nUpdated remote note.\n"
+  refs/heads/main == .git/gitsync-checkout-verified (HEAD verified as checked out)
