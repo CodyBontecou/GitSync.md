@@ -1,11 +1,13 @@
 ---
-status: active
+status: merged
 covers: [pr#131, issue#130]
 tested: 0f465bd141104dc1eef7f3d1e89c4fab9d263946
 updated: 2026-11-24
 ---
 
 # Issue #130: pull says "Already up to date" over pre-pull files
+
+> PR #131 merged on 2026-11-24 as `593fc1fc944de4d450634aa62ee0d6abf3da7838`. The final PR head `d81e7087` added a `#if DEBUG` guard for the Release build; Debug behavior and the QA above are unchanged.
 
 Fix for #130 (follow-up to closed #41). A pull compared OIDs only, so a branch that moved without its checkout left the vault on old files. Committing in that state reverted the incoming changes on the remote.
 

@@ -1,5 +1,5 @@
 ---
-status: active
+status: merged
 covers: [pr#139, issue#130]
 tested: f17538aa6ac109aa7bbe5e26379c362b7c0fef13
 updated: 2026-11-24
@@ -48,3 +48,5 @@ Receipts: `evidence/e2e-finish-update.txt`, `evidence/e2e-commit-guard.txt`.
 - **Argent tree freeze:** on Android, the runner's tree can keep showing the previous screen after navigation. This was seen on both the Pixel 7 and the emulator, on Argent 0.33 and 0.34. The commit-guard test's first streak failed on it while the screenshot showed the right screen. An `idle` step right after the fixture link refreshes the tree, and the streak restarted after that edit.
 - **Physical Pixel 7:** earlier on the same day, the fix was checked by hand: the banner showed, Finish update ran, and on-device files and refs were correct. The Argent runs there were unreliable because of the tree freeze.
 - **Side effects:** the tests reset the debug app's sample workspace only. No network, accounts or personal data.
+
+Merged: PR #139, squash commit `15fb27a6d1b072d10511c1233aeff54c823f0c6c` (2026-11-24).
