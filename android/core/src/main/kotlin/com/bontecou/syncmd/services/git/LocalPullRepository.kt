@@ -85,6 +85,10 @@ class LocalPullRepository(
                     val before = snapshot(git)
                     val auth = RemoteAuthentication.provider(git.repository, before.remote, false, tokenProvider, credentialResolver)
                     val target = fetchTarget(git, before, auth)
+                    // Pre-update files left by an unfinished checkout look like local edits; name
+                    // them so the person is offered Finish update instead of commit (issue #130).
+                    val pending = runCatching { PendingCheckoutInspector.inspect(git.repository) }.getOrNull()
+                        ?.takeIf { it.needsFinishing }
                     val isDirty = !git.status().call().isClean
                     val ahead = count(git, before.head, target)
                     val behind = count(git, target, before.head)
@@ -92,6 +96,7 @@ class LocalPullRepository(
                         runCatching { protectUntracked(git, target) }.exceptionOrNull()?.message else null
 
                     val (mergeType, canPull, blockingReason) = when {
+                        pending != null  -> Triple(MergeType.UP_TO_DATE, false, PullNotFinishedException(pending).message)
                         isDirty          -> Triple(MergeType.UP_TO_DATE, false, "Working tree has uncommitted changes")
                         checkoutBlock != null -> Triple(MergeType.FAST_FORWARD, false, checkoutBlock)
                         behind == 0 && ahead == 0 -> Triple(MergeType.UP_TO_DATE, true, null)
@@ -114,6 +119,7 @@ class LocalPullRepository(
                             ),
                             canPull       = canPull,
                             blockingReason = blockingReason,
+                            pendingCheckout = pending,
                         )
                     )
                 }
@@ -127,6 +133,7 @@ class LocalPullRepository(
         RepositoryOperationCoordinator.withRepository(repoPath, com.bontecou.syncmd.services.diagnostics.DiagnosticOperation.PULL) {
             try {
                 open(repoPath).use { git ->
+                    requireFinishedCheckout(git)
                     requireClean(git)
                     val before = snapshot(git)
                     val auth = RemoteAuthentication.provider(git.repository, before.remote, false, tokenProvider, credentialResolver)
@@ -142,6 +149,10 @@ class LocalPullRepository(
                         kotlinx.coroutines.currentCoroutineContext().ensureActive()
                         val merged = git.merge().include(target).setFastForward(MergeCommand.FastForwardMode.FF_ONLY).call()
                         check(merged.mergeStatus.isSuccessful) { "Pull could not fast-forward; refresh repository status before retrying" }
+                        // JGit checks out before moving the branch, so the new HEAD is known coherent.
+                        git.repository.resolve("HEAD")?.let { head ->
+                            runCatching { File(git.repository.directory, PendingCheckoutInspector.VERIFIED_FILE).writeText(head.name + "\n") }
+                        }
                     }
                     val lfsAttention = try {
                         com.bontecou.syncmd.services.git.lfs.LfsRepository.hydrate(git.repository, auth)
@@ -159,6 +170,29 @@ class LocalPullRepository(
                             attention = lfsAttention,
                         )
                     )
+                }
+            } catch (e: Exception) {
+                if (e is kotlinx.coroutines.CancellationException) throw e
+                Result.failure(e)
+            }
+        }
+
+    override suspend fun inspectPendingCheckout(repoPath: String): Result<PendingCheckoutReport?> =
+        RepositoryOperationCoordinator.withRepository(repoPath) {
+            try {
+                open(repoPath).use { git -> Result.success(PendingCheckoutInspector.inspect(git.repository)?.takeIf { it.needsFinishing }) }
+            } catch (e: Exception) {
+                if (e is kotlinx.coroutines.CancellationException) throw e
+                Result.failure(e)
+            }
+        }
+
+    override suspend fun finishPendingCheckout(repoPath: String): Result<PendingCheckoutCompletion> =
+        RepositoryOperationCoordinator.withRepository(repoPath, com.bontecou.syncmd.services.diagnostics.DiagnosticOperation.PULL) {
+            try {
+                open(repoPath).use { git ->
+                    require(git.repository.repositoryState == RepositoryState.SAFE) { "Finish the active Git operation before updating this branch" }
+                    Result.success(PendingCheckoutInspector.finish(git))
                 }
             } catch (e: Exception) {
                 if (e is kotlinx.coroutines.CancellationException) throw e
@@ -278,6 +312,9 @@ class LocalPullRepository(
         val target = fetched.getAdvertisedRef(before.remoteBranch)?.objectId ?: error("The upstream branch no longer exists")
         check(git.repository.exactRef(before.tracking)?.objectId == target) { "The upstream changed during fetch. Refresh before continuing." }
         return target
+    }
+    internal fun requireFinishedCheckout(git: Git) {
+        PendingCheckoutInspector.inspect(git.repository)?.takeIf { it.needsFinishing }?.let { throw PullNotFinishedException(it) }
     }
     internal fun requireClean(git: Git) {
         if (!git.status().call().isClean) throw DirtyRepoException("Cannot update this branch with uncommitted changes")

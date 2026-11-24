@@ -29,6 +29,16 @@ interface PullRepository {
     suspend fun executePull(repoPath: String): Result<SafePullResult>
 
     /**
+     * Check out files that an earlier update left behind HEAD (issue #130), keeping files changed
+     * on this device.
+     */
+    suspend fun inspectPendingCheckout(repoPath: String): Result<com.bontecou.syncmd.services.git.PendingCheckoutReport?> =
+        Result.success(null)
+
+    suspend fun finishPendingCheckout(repoPath: String): Result<com.bontecou.syncmd.services.git.PendingCheckoutCompletion> =
+        Result.failure(UnsupportedOperationException("Finishing an update is not supported here"))
+
+    /**
      * Fetch updates from remote without merging
      * Safe to execute even with uncommitted changes
      */

@@ -41,7 +41,9 @@ data class SafePullPlan(
     val blockingReason: String? = null,
     val expectedConflicts: List<String> = emptyList(),
     val autoMergeableFiles: Int = 0,
-    val conflictingFiles: Int = 0
+    val conflictingFiles: Int = 0,
+    /** Set when an earlier update moved the branch but its checkout never finished (issue #130). */
+    val pendingCheckout: com.bontecou.syncmd.services.git.PendingCheckoutReport? = null,
 ) {
     /**
      * Convenience properties for commit counts

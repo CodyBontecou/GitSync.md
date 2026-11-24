@@ -47,6 +47,15 @@ class PullService(private val pullRepository: PullRepository) {
     }
 
     /**
+     * Check out files an earlier update left behind HEAD, keeping local edits (issue #130).
+     */
+    suspend fun inspectPendingCheckout(repoPath: String): Result<PendingCheckoutReport?> =
+        pullRepository.inspectPendingCheckout(repoPath)
+
+    suspend fun finishPendingCheckout(repoPath: String): Result<PendingCheckoutCompletion> =
+        pullRepository.finishPendingCheckout(repoPath)
+
+    /**
      * Fetch from remote without merging (safe with dirty tree)
      */
     suspend fun fetch(repoPath: String): Result<Unit> {

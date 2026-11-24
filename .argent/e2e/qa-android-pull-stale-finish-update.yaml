@@ -1,0 +1,100 @@
+# QA (issue #130, Android): a vault whose branch moved without a checkout must not
+# show its pre-pull files as ordinary local changes to commit. Pull shows "Pull
+# didn't finish" with Finish update, and Finish update brings the files up to date.
+# Prerequisites: DEBUG build of GitSync.md Android (com.bontecou.syncmd.debug) on an
+# Android device with onboarding completed. The debug-only link
+# syncmd://qa-fixture/stale-worktree rebuilds ONLY the app's own sample workspace
+# (files/sample-workspace: on-device bare remote + working copy): main moved to
+# origin/main, index and files still at the base commit. No network, accounts or
+# personal data; other vaults are untouched.
+# Side effects: resets the sample workspace and selects the sample vault.
+# Waits are raw `tool: await-ui-element` steps (recorded against the describe tree).
+version: 1
+requires:
+  platform: android
+steps:
+  - echo: Launch the debug app (com.bontecou.syncmd.debug); onboarding must already
+      be complete on the device
+  - launch: com.bontecou.syncmd.debug
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Add a vault
+      timeoutMs: 15000
+  - await: { idle: true }
+  - echo: "Setup: debug-only fixture link rebuilds the sample vault with main moved
+      to origin/main but files at the base commit (Obsidian Git <= 2.41 failure)
+      and opens it"
+  - tool: open-url
+    args:
+      url: syncmd://qa-fixture/stale-worktree
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Sample repository
+      timeoutMs: 15000
+  - await: { idle: true }
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: M / hello.md
+      timeoutMs: 5000
+  - echo: "Baseline: the stale hello.md is listed as a change on this phone (the
+      misleading state). Tap Pull; acceptance: Pull didn't finish with Finish
+      update, not local-changes or up to date"
+  # Coordinate exception: the hero's secondary Pull button; a `text: Pull`
+  # selector is ambiguous with other "Pull" labels and the recorder's role
+  # fallback resolved a different Button. The banner waits below prove the tap.
+  - tap:
+      x: 0.8
+      y: 0.331
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Pull didn't finish
+      timeoutMs: 15000
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: still has its version from before the last pull
+      timeoutMs: 5000
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Finish update
+      timeoutMs: 5000
+  - await: { idle: true }
+  - echo: Tap Finish update; expect the banner and the hello.md change to go away
+      and an updated message
+  - tap:
+      text: Finish update
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: to the latest version
+      timeoutMs: 10000
+  - tool: await-ui-element
+    args:
+      condition: hidden
+      selector:
+        text: Pull didn't finish
+      timeoutMs: 5000
+  - tool: await-ui-element
+    args:
+      condition: hidden
+      selector:
+        text: M / hello.md
+      timeoutMs: 5000
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: No changes on this phone
+      timeoutMs: 5000
