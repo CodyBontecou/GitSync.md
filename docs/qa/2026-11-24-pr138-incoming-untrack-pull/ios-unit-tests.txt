@@ -1,0 +1,8 @@
+Executed 604 tests, with 0 failures (0 unexpected) in 51.769 (51.924) seconds
+Test Case '-[SyncMDTests.IncomingUntrackPullTests testEditToAFileThatIsIgnoredButStillTrackedRemotelyStillBlocks]' passed (0.049 seconds).
+Test Case '-[SyncMDTests.IncomingUntrackPullTests testLocalDeletionOfTheFileIsFine]' passed (0.058 seconds).
+Test Case '-[SyncMDTests.IncomingUntrackPullTests testLocalEditToFileTheRemoteStoppedTrackingDoesNotBlockAndIsKept]' passed (0.059 seconds).
+Test Case '-[SyncMDTests.IncomingUntrackPullTests testOtherLocalChangesStillBlockAndNothingIsTouched]' passed (0.051 seconds).
+Test Case '-[SyncMDTests.IncomingUntrackPullTests testPullOnlyPathCarriesTheEditToo]' passed (0.054 seconds).
+Test Case '-[SyncMDTests.IncomingUntrackPullTests testRemoteDeletionWithoutIgnoreRuleStillBlocks]' passed (0.040 seconds).
+Test Suite 'IncomingUntrackPullTests' passed at 2026-11-24 13:19:59.243.

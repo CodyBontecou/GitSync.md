@@ -1,0 +1,18 @@
+ok   ResolveLocalChangesTest: otherPullFailuresStayErrorsAndDoNotOfferLocalResolution
+ok   ResolveLocalChangesTest: pullBlockedByLocalEditsIsTypedWithoutRawErrorAndKeepsEveryByte
+ok   ResolveLocalChangesTest: manualConflictCounterCountsUserPerceivedCharacters
+ok   ResolveLocalChangesTest: supersededRequestQueuedBehindTheLeaseStagesAndCommitsNothing
+ok   ResolveLocalChangesTest: ignoredFileInTheWayNamesThePathInsteadOfOfferingCommitResolution
+ok   ResolveLocalChangesTest: copiedRemoteUrlsNeverCarryHttpCredentials
+ok   ResolveLocalChangesTest: selectionChangeClearsTheBlock
+ok   ResolveLocalChangesTest: blankMessageIsRejectedBeforeTouchingTheRepository
+ok   ResolveLocalChangesTest: commitAllRecordsModifiedDeletedAndUntrackedFilesWithTheResolvedAuthor
+ok   IncomingUntrackPullTest: fast-forward check used by the Files tab agrees
+ok   IncomingUntrackPullTest: other local changes still block and nothing is touched
+ok   IncomingUntrackPullTest: edit to a file the remote stopped tracking does not block and is kept as an ignored file
+ok   IncomingUntrackPullTest: local deletion of the file is fine
+ok   IncomingUntrackPullTest: remote deletion without an ignore rule still blocks
+ok   IncomingUntrackPullTest: ignored but still tracked remotely still blocks
+ok   IncomingUntrackPullTest: folder rule covers files below it
+ok   IncomingUntrackPullTest: re-tracking over an ignored local copy names the file instead of asking to commit
+TOTAL :core:test + :app:testDebugUnitTest: 941 tests, 0 failures
