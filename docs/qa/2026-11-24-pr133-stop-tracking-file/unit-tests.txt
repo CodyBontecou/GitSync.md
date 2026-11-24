@@ -1,16 +1,17 @@
-Executed 599 tests, with 0 failures (0 unexpected) in 48.955 (49.093) seconds
-Test Case '-[SyncMDTests.StopTrackingPathTests testAlreadyIgnoredFileIsUntrackedWithoutDuplicatingTheRule]' passed (0.023 seconds).
-Test Case '-[SyncMDTests.StopTrackingPathTests testAppendsToExistingGitIgnoreWithoutFinalNewline]' passed (0.022 seconds).
-Test Case '-[SyncMDTests.StopTrackingPathTests testExactRuleIsNotDuplicatedAndRepeatIsRejected]' passed (0.019 seconds).
-Test Case '-[SyncMDTests.StopTrackingPathTests testFolderRemovesEveryFileBelowIt]' passed (0.028 seconds).
-Test Case '-[SyncMDTests.StopTrackingPathTests testGitIgnoreContainsAndAppend]' passed (0.000 seconds).
-Test Case '-[SyncMDTests.StopTrackingPathTests testIgnoreEntriesAreRootAnchoredAndEscaped]' passed (0.000 seconds).
-Test Case '-[SyncMDTests.StopTrackingPathTests testMatching]' passed (0.000 seconds).
-Test Case '-[SyncMDTests.StopTrackingPathTests testNestedPathWithSpacesAndGlobCharacters]' passed (0.028 seconds).
-Test Case '-[SyncMDTests.StopTrackingPathTests testOtherStagedChangesStayStagedAndOutOfTheCommit]' passed (0.022 seconds).
-Test Case '-[SyncMDTests.StopTrackingPathTests testRejectsPathsOutsideTheVaultOrInsideGit]' passed (0.001 seconds).
-Test Case '-[SyncMDTests.StopTrackingPathTests testStagedOnlyFileIsUnstagedAndIgnored]' passed (0.020 seconds).
-Test Case '-[SyncMDTests.StopTrackingPathTests testStopTrackingFileKeepsItOnDiskIgnoresAndCommits]' passed (0.026 seconds).
-Test Case '-[SyncMDTests.StopTrackingPathTests testUntrackedIgnoredPathIsRejected]' passed (0.015 seconds).
-Test Case '-[SyncMDTests.StopTrackingPathTests testWorkspacePatternRemovesAllWorkspaceFiles]' passed (0.023 seconds).
-Test Suite 'StopTrackingPathTests' passed at 2026-11-24 11:33:04.162.
+Executed 599 tests, with 0 failures (0 unexpected) in 54.382 (54.589) seconds
+Executed 599 tests, with 0 failures (0 unexpected) in 54.382 (54.590) seconds
+Test Case '-[SyncMDTests.StopTrackingPathTests testAlreadyIgnoredFileIsUntrackedWithoutDuplicatingTheRule]' passed (0.037 seconds).
+Test Case '-[SyncMDTests.StopTrackingPathTests testAppendsToExistingGitIgnoreWithoutFinalNewline]' passed (0.032 seconds).
+Test Case '-[SyncMDTests.StopTrackingPathTests testExactRuleIsNotDuplicatedAndRepeatIsRejected]' passed (0.028 seconds).
+Test Case '-[SyncMDTests.StopTrackingPathTests testFolderRemovesEveryFileBelowIt]' passed (0.048 seconds).
+Test Case '-[SyncMDTests.StopTrackingPathTests testGitIgnoreContainsAndAppend]' passed (0.001 seconds).
+Test Case '-[SyncMDTests.StopTrackingPathTests testIgnoreEntriesAreRootAnchoredAndEscaped]' passed (0.001 seconds).
+Test Case '-[SyncMDTests.StopTrackingPathTests testMatching]' passed (0.001 seconds).
+Test Case '-[SyncMDTests.StopTrackingPathTests testNestedPathWithSpacesAndGlobCharacters]' passed (0.043 seconds).
+Test Case '-[SyncMDTests.StopTrackingPathTests testOtherStagedChangesStayStagedAndOutOfTheCommit]' passed (0.041 seconds).
+Test Case '-[SyncMDTests.StopTrackingPathTests testRejectsPathsOutsideTheVaultOrInsideGit]' passed (0.002 seconds).
+Test Case '-[SyncMDTests.StopTrackingPathTests testStagedOnlyFileIsUnstagedAndIgnored]' passed (0.036 seconds).
+Test Case '-[SyncMDTests.StopTrackingPathTests testStopTrackingFileKeepsItOnDiskIgnoresAndCommits]' passed (0.041 seconds).
+Test Case '-[SyncMDTests.StopTrackingPathTests testUntrackedIgnoredPathIsRejected]' passed (0.025 seconds).
+Test Case '-[SyncMDTests.StopTrackingPathTests testWorkspacePatternRemovesAllWorkspaceFiles]' passed (0.040 seconds).
+Test Suite 'StopTrackingPathTests' passed at 2026-11-24 12:31:01.006.
