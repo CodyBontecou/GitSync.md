@@ -1,0 +1,35 @@
+E2E test "qa-pull-stale-finish-update"
+  › Baseline: launch with the stale-worktree fixture (main moved to origin/main, index and files still at the base commit). Expect Home with the fixture vault
+  ✓  1 launch (2.4s)
+  ✓  2 tool await-ui-element (1.8s)
+  ✓  3 idle (0.9s)
+  › Home lists the fixture vault as in sync (the misleading state). Open it; expect the vault screen
+  ✓  4 tool gesture-tap (0.6s)
+  ✓  5 tool await-ui-element (0.2s)
+  ✓  6 idle (1.5s)
+  ✓  7 tool await-ui-element (0.0s)
+  › Baseline proven: vault reads In sync with Check for changes. Tap it (pull). Acceptance: must NOT say Already up to date; expect Pull didn't finish with Finish Update
+  ✓  8 tool gesture-tap (0.1s)
+  ✓  9 tool await-ui-element (0.1s)
+  ✓ 10 tool await-ui-element (0.0s)
+  ✓ 11 tool await-ui-element (0.0s)
+  ✓ 12 tool await-ui-element (0.0s)
+  ✓ 13 idle (2.7s)
+  › Banner shows Finish Update; hello.md is listed as a staged change (pre-pull content). Tap Finish Update
+  ✓ 14 tool gesture-tap (0.1s)
+  ✓ 15 tool await-ui-element (0.1s)
+  ✓ 16 tool await-ui-element (0.0s)
+  ✓ 17 tool await-ui-element (0.0s)
+  ✓ 18 tool await-ui-element (0.0s)
+  ✓ 19 idle (0.7s)
+  › Finish Update done; no changes left. Open the Files tab to read notes/hello.md; expect the pulled text Updated remote note.
+  ✓ 20 tool gesture-tap (0.1s)
+  ✓ 21 tool await-ui-element (0.1s)
+  ✓ 22 idle (0.8s)
+  ✓ 23 tool gesture-tap (0.1s)
+  ✓ 24 tool await-ui-element (0.1s)
+  ✓ 25 idle (0.9s)
+  ✓ 26 tool gesture-tap (0.1s)
+  ✓ 27 tool await-ui-element (0.1s)
+
+PASS (started on 9A45202D-BD45-4AF2-8B8E-CA0BE5F2F07A) — 27 passed, 0 failed, 0 errored, 0 skipped (13.7s)

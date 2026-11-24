@@ -1,0 +1,33 @@
+E2E test "qa-pull-stale-commit-guard"
+  › Baseline: launch with the stale-worktree fixture (main moved to origin/main, files still at the base commit). Expect Home with the fixture vault
+  ✓  1 launch (2.4s)
+  ✓  2 tool await-ui-element (1.8s)
+  ✓  3 idle (0.8s)
+  › Open the fixture vault; expect the vault screen
+  ✓  4 tool gesture-tap (0.6s)
+  ✓  5 tool await-ui-element (0.2s)
+  ✓  6 idle (1.4s)
+  ✓  7 tool await-ui-element (0.1s)
+  › Pull; expect Pull didn't finish and the hero offering Commit and push (the risky action)
+  ✓  8 tool gesture-tap (0.1s)
+  ✓  9 tool await-ui-element (0.1s)
+  ✓ 10 tool await-ui-element (1.4s)
+  ✓ 11 idle (1.5s)
+  › Tap Commit and push while the pull is unfinished. Acceptance: the commit is refused with a didn't finish updating explanation (committing would revert the incoming change)
+  ✓ 12 tool gesture-tap (0.1s)
+  ✓ 13 tool await-ui-element (0.2s)
+  ✓ 14 idle (0.9s)
+  ✓ 15 tool gesture-tap (0.1s)
+  ✓ 16 tool await-ui-element (0.2s)
+  ✓ 17 tool await-ui-element (0.0s)
+  ✓ 18 idle (1.7s)
+  › Commit refused. Dismiss the alert and cancel the sheet; expect the vault with Finish Update still offered and hello.md still an uncommitted change
+  ✓ 19 tool gesture-tap (0.1s)
+  ✓ 20 tool await-ui-element (0.5s)
+  ✓ 21 tool gesture-tap (0.1s)
+  ✓ 22 tool await-ui-element (0.5s)
+  ✓ 23 idle (0.7s)
+  ✓ 24 tool await-ui-element (0.0s)
+  ✓ 25 tool await-ui-element (0.0s)
+
+PASS (started on 9A45202D-BD45-4AF2-8B8E-CA0BE5F2F07A) — 25 passed, 0 failed, 0 errored, 0 skipped (15.7s)
