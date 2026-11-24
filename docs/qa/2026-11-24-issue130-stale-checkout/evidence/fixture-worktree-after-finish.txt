@@ -1,0 +1,20 @@
+Host-side check of the simulator fixture worktree right after Finish Update in
+the recording run (2026-11-24 09:23, iPhone 18 Pro simulator). The fixture area
+has since been reset by later runs; values copied from that session's output.
+
+$ git status --short
+(empty)
+$ git log --oneline -2
+d29fcca Remote note
+52e94c7 Base state
+$ git rev-parse HEAD origin/main
+d29fcca283ef3c14ecb9171a62af3cbc11c0b71a
+d29fcca283ef3c14ecb9171a62af3cbc11c0b71a
+$ diff <(git show HEAD:notes/hello.md) notes/hello.md && echo "hello.md == HEAD"
+hello.md == HEAD
+$ cat notes/hello.md
+# Hello
+
+Updated remote note.
+$ ls .git | grep gitsync
+gitsync-checkout-verified        (no gitsync-pending-checkout marker left)

@@ -1,0 +1,21 @@
+E2E test "issue130-finish-stale-pull"
+  › Launch with the stale-worktree fixture (branch moved to origin/main without checkout). Expect Home with the fixture vault
+  ✓  1 launch (1.7s)
+  ✓  2 tool await-ui-element (0.4s)
+  ✓  3 idle (0.5s)
+  › Home shows the fixture vault. Open it; expect the vault screen with the Pull button
+  ✓  4 tool gesture-tap (0.1s)
+  ✓  5 tool await-ui-element (0.2s)
+  ✓  6 idle (1.3s)
+  › Vault open; branch equals origin/main but notes/hello.md still has the old text. Tap the primary pull button. Before the fix this said Already up to date; expect the Pull didn't finish banner with Finish Update
+  ✓  7 tool gesture-tap (0.1s)
+  ✓  8 tool await-ui-element (0.1s)
+  ✓  9 tool await-ui-element (0.0s)
+  ✓ 10 idle (2.9s)
+  › Banner offers Finish Update and hello.md shows as a staged change. Tap Finish Update; expect the banner to go away, the change to clear and the vault to read In sync
+  ✓ 11 tool gesture-tap (0.1s)
+  ✓ 12 tool await-ui-element (0.1s)
+  ✓ 13 tool await-ui-element (0.0s)
+  ✓ 14 tool await-ui-element (0.0s)
+
+PASS (started on 9A45202D-BD45-4AF2-8B8E-CA0BE5F2F07A) — 14 passed, 0 failed, 0 errored, 0 skipped (7.7s)
