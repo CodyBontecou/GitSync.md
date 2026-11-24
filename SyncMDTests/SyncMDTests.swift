@@ -14450,6 +14450,9 @@ final class StaleWorktreeAfterPullTests: XCTestCase {
         XCTAssertEqual(result, .updatedWithAttention(branch: "main", commitSHA: sha, attention: .workingTreeNotUpdated(report)))
         XCTAssertEqual(state.pullOutcomeByRepo[fixture.repoConfig.id]?.kind, .workingTreeBehind)
         XCTAssertNotEqual(state.syncProgress, String(localized: "Already up to date!"))
+        // No "Pulled N changes" toast: nothing was pulled (found in Argent QA).
+        try await Task.sleep(for: .milliseconds(500))
+        XCTAssertNil(state.currentToast)
 
         _ = await state.pullWithRebase(repoID: fixture.repoConfig.id, showsProgressDelay: false)
         XCTAssertEqual(state.pullOutcomeByRepo[fixture.repoConfig.id]?.kind, .workingTreeBehind)

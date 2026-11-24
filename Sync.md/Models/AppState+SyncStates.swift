@@ -722,6 +722,11 @@ extension AppState {
     /// Called by the sync paths after a pull finished.
     func didFinishPull(repoID: UUID, result: RepositoryPullResult, previousSHA: String) {
         switch result {
+        case .updatedWithAttention(_, _, .workingTreeNotUpdated):
+            // Nothing was pulled: files from an earlier update still need
+            // Finish Update (issue #130). A "Pulled" toast would contradict the
+            // banner.
+            didSyncSuccessfully(repoID: repoID, countsTowardReview: false)
         case .updated(_, let newSHA), .updatedWithAttention(_, let newSHA, _):
             didSyncSuccessfully(repoID: repoID)
             guard let repo = repo(id: repoID), let url = vaultURL(for: repoID) else { return }

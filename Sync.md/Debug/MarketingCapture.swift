@@ -270,7 +270,10 @@ enum MarketingDemoSeeder {
     /// Exercise a real post-ref SAFE-checkout race through the normal foreground
     /// runner. The fixture has no credentials/network and never loads user repos.
     static func checkoutRaceAppStateIfRequested() -> AppState? {
-        guard MarketingCapture.gitToolsUITestScenario == "checkout-incomplete" else { return nil }
+        // "checkout-partial" (issue #130): two incoming files, one of which is
+        // written concurrently; the other must still be checked out.
+        guard MarketingCapture.gitToolsUITestScenario == "checkout-incomplete"
+                || MarketingCapture.gitToolsUITestScenario == "checkout-partial" else { return nil }
         let inventoryURL = FileManager.default.temporaryDirectory.appendingPathComponent("pr45-qa/repos.json")
         // Every launch starts from one fixture inventory, rather than merging
         // random IDs from prior runs into the persistence store after Pull.
@@ -631,8 +634,11 @@ enum MarketingDemoSeeder {
                 )
             }
             if scenario == "behind" || scenario == "diverged" || scenario == "checkout-incomplete"
-                || scenario == "detached-head" || scenario == "stale-worktree" {
+                || scenario == "detached-head" || scenario == "stale-worktree" || scenario == "checkout-partial" {
                 files["notes/hello.md"] = Data("# Hello\n\nUpdated remote note.\n".utf8)
+                if scenario == "checkout-partial" {
+                    files["README.md"] = Data("# Git Tools Fixture\n\nUpdated remote readme.\n".utf8)
+                }
                 try UITestGitFixtures.commitToBare(atPath: remotePath, files: files, message: "Remote note")
                 try UITestGitFixtures.fetchOrigin(atPath: vaultURL.path)
             }
@@ -686,7 +692,7 @@ enum MarketingDemoSeeder {
             let syncState: RepoSyncState
             switch scenario {
             case "ahead": syncState = .ahead
-            case "behind", "checkout-incomplete", "detached-head": syncState = .behind
+            case "behind", "checkout-incomplete", "checkout-partial", "detached-head": syncState = .behind
             case "diverged": syncState = .diverged
             default: syncState = .upToDate
             }

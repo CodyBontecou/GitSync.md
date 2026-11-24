@@ -9,7 +9,8 @@ struct DiscordPromoBanner: View {
     private static let inviteURL = URL(string: "https://discord.gg/RaQYS4t6gn")!
 
     var body: some View {
-        if !dismissed {
+        // Seeded Git Tools UI-test fixtures need a deterministic Home layout.
+        if !dismissed, MarketingCapture.gitToolsUITestScenario == nil {
             HStack(spacing: 8) {
                 VStack(alignment: .leading, spacing: 2) {
                     Text(String(localized: "Join the GitSync.md Discord"))
