@@ -1,23 +1,27 @@
 # Issue #132: stop tracking Obsidian's device-specific workspace file from the
 # app. Opens the tracked, locally edited .obsidian/workspace-mobile.json from the
-# changes list, picks "All Obsidian workspace files" in the Stop Tracking sheet
-# and expects one local commit, an empty changes list and no Git-tab suggestion.
-# Prerequisites: a DEBUG build of GitSync.md installed on an iOS simulator
-# (recorded on an iPhone 18 Pro). The `-UITestGitToolsFixture workspace-file`
-# launch argument seeds a local-only vault (file:// remote under
+# changes list. The Stop Tracking sheet preselects "All Obsidian workspace files"
+# with a note that Obsidian recreates them; choosing "This file" shows the
+# warning that other devices lose their copy on pull. Confirms the workspace
+# option and expects one local commit, an empty changes list and no Git-tab
+# suggestion.
+# Prerequisites: a DEBUG build of GitSync.md installed on an iOS SIMULATOR
+# (recorded on an iPhone 18 Pro). Never run it on a real phone: the
+# `-UITestGitToolsFixture workspace-file` launch argument replaces the app's
+# vault list. It seeds a local-only vault (file:// remote under
 # /tmp/syncmd-uitest-fixtures) with the workspace file tracked and edited; no
 # network, accounts or personal data.
 # Side effects: resets /tmp/syncmd-uitest-fixtures and the app's
 # Documents/git-tools-fixture folder and repo list on the simulator, and makes
 # one local commit in that fixture vault (nothing is pushed).
 #
-# Coordinate exceptions: SwiftUI ids and labels on these screens are in the
-# accessibility tree (the raw await-ui-element steps use it) but not in the
-# runner's native tree, so `tap: { id }`/`{ text }` directives cannot resolve
-# them and the recorder fell back to a bare role or a point. Each point is the
-# element's frame centre from `describe` on the iPhone 18 Pro, and the wait right
-# after each tap proves where it landed. Same constraint as
-# issue111-detached-head-pull.yaml.
+# Coordinate exceptions: on the simulator, SwiftUI ids and labels on these
+# screens are in the accessibility tree (the raw await-ui-element steps use it)
+# but not in the runner's native tree, so `tap: { id }`/`{ text }` directives
+# cannot resolve them. Each point is the element's frame centre from `describe`
+# on the iPhone 18 Pro, and the wait right after each tap proves where it
+# landed. Same constraint as issue111-detached-head-pull.yaml. On a physical
+# iPhone the trees match; see issue132-device-stop-tracking-workspace.yaml.
 version: 1
 requires:
   platform: ios
@@ -63,7 +67,14 @@ steps:
         identifier: git.stopTrackingWorkspace
       timeoutMs: 10000
   - await: { idle: true }
-  - echo: Suggestion shown. Go back to Changes and open the workspace file's diff
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Stop tracking it to keep it on each device only
+      timeoutMs: 5000
+  - echo: Suggestion shown (singular wording). Go back to Changes and open the
+      workspace file's diff
   # Coordinate exception: the "Changes" segment of the vault tabs.
   - tap:
       x: 0.159
@@ -87,7 +98,8 @@ steps:
       timeoutMs: 10000
   - await: { idle: true }
   - echo: Diff for the workspace file open. Open the More menu and choose Stop
-      Tracking; expect the stop-tracking sheet
+      Tracking; expect the stop-tracking sheet with the workspace option
+      preselected
   # Coordinate exception: the diff.more menu button proven visible above.
   - tap:
       x: 0.367
@@ -107,13 +119,41 @@ steps:
         identifier: stopTracking.confirm
       timeoutMs: 5000
   - await: { idle: true }
-  - echo: Sheet open. Choose "All Obsidian workspace files" and confirm; expect the
-      sheet to close and the diff screen to pop back to the vault
-  # Coordinate exception: stopTracking.option.workspace. The commit subject
-  # checked below ("…workspace*.json") proves this option was the one chosen.
+  - tool: await-ui-element
+    args:
+      condition: text
+      selector:
+        identifier: stopTracking.otherDevicesNote
+      expectedText: Obsidian creates a new one
+      timeoutMs: 5000
+  - echo: Workspace option preselected with the Obsidian note. Choose "This file";
+      expect the warning that other devices lose their copy
+  # Coordinate exception: stopTracking.option.file; the warning text checked
+  # next proves the tap selected it.
   - tap:
       x: 0.5
-      y: 0.747
+      y: 0.533
+  - tool: await-ui-element
+    args:
+      condition: text
+      selector:
+        identifier: stopTracking.otherDevicesNote
+      expectedText: Save it there first if they need it
+      timeoutMs: 5000
+  - echo: Warning shown. Switch back to "All Obsidian workspace files" and confirm;
+      expect the sheet to close and the diff screen to pop back to the vault
+  # Coordinate exception: stopTracking.option.workspace; the note text checked
+  # next and the commit subject below prove the tap selected it.
+  - tap:
+      x: 0.5
+      y: 0.675
+  - tool: await-ui-element
+    args:
+      condition: text
+      selector:
+        identifier: stopTracking.otherDevicesNote
+      expectedText: Obsidian creates a new one
+      timeoutMs: 5000
   # Coordinate exception: stopTracking.confirm, proven visible above.
   - tap:
       x: 0.5

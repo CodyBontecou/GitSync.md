@@ -108,6 +108,11 @@ final class StopTrackingPathTests: XCTestCase {
         XCTAssertEqual(GitUntrackTarget.obsidianWorkspace.ignoreEntry, "/.obsidian/workspace*.json")
         XCTAssertEqual(GitUntrackTarget.folder("a/b").displayName, "a/b/")
         XCTAssertEqual(GitUntrackTarget.file("a.md").commitMessage.components(separatedBy: "\n").first, "Stop tracking a.md")
+        // Pulling the commit deletes the path on other devices; the message says so.
+        XCTAssertTrue(GitUntrackTarget.file("a.md").commitMessage.contains("deletes the copy on other devices"))
+        XCTAssertTrue(GitUntrackTarget.folder("a").commitMessage.contains("deletes the copy on other devices"))
+        XCTAssertTrue(GitUntrackTarget.obsidianWorkspace.commitMessage.contains("Obsidian recreates them"))
+        XCTAssertFalse(GitUntrackTarget.obsidianWorkspace.commitMessage.contains("deletes the copy"))
     }
 
     func testMatching() {

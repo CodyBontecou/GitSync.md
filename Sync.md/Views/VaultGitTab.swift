@@ -180,7 +180,9 @@ struct VaultGitTab: View {
                      : String(localized: "\(trackedWorkspaceFiles.count) Obsidian workspace files are tracked"))
                     .font(TideFont.sans(16, .semibold, relativeTo: .headline))
                     .foregroundStyle(Tide.ink)
-                Text(String(localized: "Each device saves its own window layout there, so it often conflicts. Stop tracking it to keep it on each device only."))
+                Text(trackedWorkspaceFiles.count == 1
+                     ? String(localized: "Each device saves its own window layout there, so it often conflicts. Stop tracking it to keep it on each device only.")
+                     : String(localized: "Each device saves its own window layout in these files, so they often conflict. Stop tracking them to keep them on each device only."))
                     .font(TideFont.sans(14, relativeTo: .subheadline))
                     .foregroundStyle(Tide.inkMid)
                     .fixedSize(horizontal: false, vertical: true)

@@ -32,7 +32,10 @@ enum GitUntrackTarget: Hashable, Sendable {
     }
 
     var commitMessage: String {
-        "Stop tracking \(displayName)\n\nRemoved from Git and added to .gitignore by GitSync.md. The files stay on each device."
+        let otherDevices = self == .obsidianWorkspace
+            ? "Obsidian recreates them on each device."
+            : "Git deletes the copy on other devices when they pull this commit; it stays in Git history."
+        return "Stop tracking \(displayName)\n\nRemoved from Git and added to .gitignore by GitSync.md. The copy on this device was kept. \(otherDevices)"
     }
 
     /// The root `.gitignore` line that ignores this target.

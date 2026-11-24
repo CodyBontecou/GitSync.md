@@ -4,17 +4,12 @@
 # to GitHub, with the owner's private QA repo `gitsync-tide-qa` added as a vault,
 # in sync, and with exactly two tracked .obsidian/workspace*.json files (fake
 # content, no personal data). Run with `--device <iPhone udid>`; a physical
-# phone is never auto-selected.
+# phone is never auto-selected. Never use the -UITestGitToolsFixture launch
+# argument on a real phone: it can wipe the saved vault list.
 # Side effects: makes and PUSHES one commit to gitsync-tide-qa that removes the
 # workspace files from Git and adds `/.obsidian/workspace*.json` to .gitignore.
 # To run it again, revert that commit on GitHub and Pull on the phone first.
-#
-# Coordinate exception: on device the stop-tracking sheet's title, option and
-# "Stop tracking" button (stopTracking.confirm) are missing from the runner's
-# tree; only stopTracking.cancel is listed (open finding in PR #133). The
-# confirm button sits directly above Cancel, at the same place as in the
-# simulator tree, where its frame centre was (0.5, 0.835). The commit check
-# right after proves the tap landed.
+# No coordinate steps: on device the runner tree is the describe tree.
 version: 1
 requires:
   platform: ios
@@ -35,7 +30,7 @@ steps:
       timeout: 10000
   - await: { idle: true }
   - echo: Vault open and in sync. Open the Git tab; expect the workspace-file
-      suggestion
+      suggestion with plural wording
   - tap:
       text: Git
   - await:
@@ -46,23 +41,31 @@ steps:
   - assert:
       visible:
         text: 2 Obsidian workspace files are tracked
+  - assert:
+      visible:
+        text: Stop tracking them to keep them on each device only
   - tap:
       id: git.stopTrackingWorkspace
   - await:
       visible:
-        id: stopTracking.cancel
+        id: stopTracking.confirm
       timeout: 5000
   - await: { idle: true }
-  - echo: Stop-tracking sheet open (workspace files option only). Confirm; expect
-      the sheet to close and a "Stop tracking .obsidian/workspace*.json" commit
-      waiting to push
-  # Coordinate exception: stopTracking.confirm (see header).
+  - assert:
+      visible:
+        id: stopTracking.option.workspace
+  - assert:
+      text:
+        in:
+          id: stopTracking.otherDevicesNote
+        contains: Git deletes their copy. Obsidian creates a new one
+  - echo: Sheet fully exposed (title, option, other-devices note, confirm). Confirm;
+      expect a commit waiting to push and the suggestion gone
   - tap:
-      x: 0.5
-      y: 0.835
+      id: stopTracking.confirm
   - await:
       hidden:
-        id: stopTracking.cancel
+        id: stopTracking.confirm
       timeout: 15000
   - await:
       visible:

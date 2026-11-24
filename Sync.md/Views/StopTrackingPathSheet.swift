@@ -21,7 +21,11 @@ struct StopTrackingPathSheet: View {
         self.repoID = repoID
         self.path = path
         self.onDone = onDone
-        let fallback: GitUntrackTarget = path.map { GitUntrackTarget.file($0) } ?? .obsidianWorkspace
+        // Workspace files default to the workspace pattern: Obsidian recreates
+        // those on other devices, so it is the safe choice.
+        let fallback: GitUntrackTarget = path.map {
+            GitUntrackTarget.isObsidianWorkspaceFile($0) ? .obsidianWorkspace : .file($0)
+        } ?? .obsidianWorkspace
         _choice = State(initialValue: initial ?? fallback)
     }
 
@@ -47,7 +51,7 @@ struct StopTrackingPathSheet: View {
                 .accessibilityAddTraits(.isHeader)
                 .accessibilityIdentifier("stopTracking.title")
 
-            Text(String(localized: "GitSync.md removes it from Git, adds it to .gitignore and commits that. The files stay on this device. After your next push, other devices stop syncing it too."))
+            Text(String(localized: "GitSync.md removes it from Git, adds it to .gitignore and commits that. It stays on this device."))
                 .font(TideFont.sans(15, relativeTo: .subheadline))
                 .foregroundStyle(Tide.inkMid)
                 .lineSpacing(3)
@@ -65,6 +69,8 @@ struct StopTrackingPathSheet: View {
             .padding(.horizontal, 16)
             .background(RoundedRectangle(cornerRadius: 18, style: .continuous).fill(Tide.card))
             .padding(.top, 16)
+
+            otherDevicesNote.padding(.top, 12)
 
             VStack(spacing: 8) {
                 BPrimaryButton(title: String(localized: "Stop tracking"), isLoading: isWorking, isDisabled: isWorking || state.isSyncing) {
@@ -87,6 +93,27 @@ struct StopTrackingPathSheet: View {
                 matches[option] = await state.trackedPaths(repoID: repoID, matching: option).count
             }
         }
+    }
+
+    /// Git deletes an untracked path from every other clone when it pulls the
+    /// commit. Harmless for Obsidian's workspace files, not for notes.
+    private var otherDevicesNote: some View {
+        let isWorkspace: Bool
+        if case .pattern = choice { isWorkspace = true } else { isWorkspace = false }
+        return HStack(alignment: .firstTextBaseline, spacing: 8) {
+            Image(systemName: isWorkspace ? "info.circle" : "exclamationmark.triangle.fill")
+                .font(.system(size: 13, weight: .semibold))
+                .foregroundStyle(isWorkspace ? Tide.inkMid : Tide.danger)
+                .accessibilityHidden(true)
+            Text(isWorkspace
+                 ? String(localized: "When other devices pull this commit, Git deletes their copy. Obsidian creates a new one the next time it opens the vault.")
+                 : String(localized: "When other devices pull this commit, Git deletes their copy. Save it there first if they need it. It stays in Git history."))
+                .font(TideFont.sans(13, relativeTo: .footnote))
+                .foregroundStyle(isWorkspace ? Tide.inkMid : Tide.danger)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .accessibilityElement(children: .combine)
+        .accessibilityIdentifier("stopTracking.otherDevicesNote")
     }
 
     private func optionRow(_ option: GitUntrackTarget) -> some View {
