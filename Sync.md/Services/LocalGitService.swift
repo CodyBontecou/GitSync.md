@@ -6387,6 +6387,10 @@ extension LocalGitService {
             } else if fm.fileExists(atPath: url.path) {
                 try? fm.removeItem(at: url)
             }
+        }
+    }
+}
+
 // MARK: - Stop tracking one path
 
 extension LocalGitService {
