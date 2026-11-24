@@ -32,6 +32,10 @@ class PullService(private val pullRepository: PullRepository) {
         return pullRepository.getStatus(repoPath).map { it.isClean }
     }
 
+    /** Whether local changes would block a fast-forward to the fetched upstream (issue #137). */
+    suspend fun hasBlockingLocalChanges(repoPath: String): Result<Boolean> =
+        pullRepository.hasBlockingLocalChanges(repoPath)
+
     /**
      * Get number of uncommitted changes
      */

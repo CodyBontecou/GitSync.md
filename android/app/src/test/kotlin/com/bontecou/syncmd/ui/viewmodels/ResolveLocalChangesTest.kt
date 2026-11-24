@@ -84,6 +84,40 @@ class ResolveLocalChangesTest {
         assertNotNull(model.errorMessage.value)
     }
 
+    /** Issue #137: a remote that tracks a path this clone has as an ignored local file. */
+    private fun ignoredFileInTheWay(): File {
+        val remote = temporary.newFolder("remote-ignored.git").canonicalFile
+        Git.init().setBare(true).setDirectory(remote).setInitialBranch("main").call().close()
+        val seed = temporary.newFolder("seed-ignored").canonicalFile
+        Git.cloneRepository().setURI(remote.toURI().toString()).setDirectory(seed).call().use { git ->
+            File(seed, "notes.md").writeText("base\n"); File(seed, ".gitignore").writeText("/workspace.json\n")
+            git.add().addFilepattern(".").call()
+            git.commit().setMessage("Base").setAuthor("Seed", "seed@example.invalid").call()
+            git.push().setRemote("origin").setRefSpecs(org.eclipse.jgit.transport.RefSpec("HEAD:refs/heads/main")).call()
+        }
+        val local = temporary.newFolder("local-ignored").canonicalFile
+        Git.cloneRepository().setURI(remote.toURI().toString()).setDirectory(local).setBranch("main").call().close()
+        File(local, "workspace.json").writeText("this device\n")
+        Git.open(seed).use { git ->
+            File(seed, ".gitignore").writeText("")
+            File(seed, "workspace.json").writeText("tracked again\n")
+            git.add().addFilepattern(".").call()
+            git.commit().setMessage("Track workspace.json again").setAuthor("Seed", "seed@example.invalid").call()
+            git.push().setRemote("origin").setRefSpecs(org.eclipse.jgit.transport.RefSpec("HEAD:refs/heads/main")).call()
+        }
+        return local
+    }
+
+    @Test fun ignoredFileInTheWayNamesThePathInsteadOfOfferingCommitResolution() {
+        val local = ignoredFileInTheWay()
+        val model = PullViewModel(PullService(LocalPullRepository()))
+        model.setRepositoryPath(local.path); awaitIdle(model)
+        model.executePull(model.selection.value!!); awaitIdle(model)
+        assertFalse("Committing can't clear an ignored file, so don't offer it", model.localChangesBlock.value)
+        assertTrue(model.errorMessage.value.orEmpty().contains("Path: workspace.json"))
+        assertEquals("this device\n", File(local, "workspace.json").readText())
+    }
+
     @Test fun selectionChangeClearsTheBlock() {
         val local = dirtyCloneBehindRemote()
         val model = PullViewModel(PullService(LocalPullRepository()))

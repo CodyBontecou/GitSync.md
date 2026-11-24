@@ -53,4 +53,11 @@ interface PullRepository {
      * Get the number of commits behind remote
      */
     suspend fun getCommitsBehind(repoPath: String): Result<Int>
+
+    /**
+     * Whether uncommitted changes would block a fast-forward to the fetched upstream. Edits to files
+     * the incoming commits stop tracking (deleted and ignored there) don't count (issue #137).
+     */
+    suspend fun hasBlockingLocalChanges(repoPath: String): Result<Boolean> =
+        getStatus(repoPath).map { !it.isClean }
 }

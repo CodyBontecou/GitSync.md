@@ -68,4 +68,11 @@ data class PushResult(
 /**
  * Exception indicating the repository has uncommitted changes
  */
-class DirtyRepoException(message: String = "Repository has uncommitted changes") : Exception(message)
+open class DirtyRepoException(message: String = "Repository has uncommitted changes") : Exception(message)
+
+/**
+ * An update would overwrite an untracked or ignored local file at [path]. Committing can't clear
+ * this (ignored files are never staged), so callers show the message with the path instead of
+ * the "Resolve local changes" commit flow.
+ */
+class OverwriteBlockedException(val path: String, message: String) : DirtyRepoException(message)
