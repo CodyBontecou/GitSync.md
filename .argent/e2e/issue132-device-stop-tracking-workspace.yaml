@@ -1,0 +1,81 @@
+# Issue #132 on a physical iPhone: stop tracking Obsidian's workspace files
+# from the Git tab suggestion, then push the commit to GitHub.
+# Prerequisites: a Debug build of GitSync.md on the owner's own iPhone, signed in
+# to GitHub, with the owner's private QA repo `gitsync-tide-qa` added as a vault,
+# in sync, and with exactly two tracked .obsidian/workspace*.json files (fake
+# content, no personal data). Run with `--device <iPhone udid>`; a physical
+# phone is never auto-selected.
+# Side effects: makes and PUSHES one commit to gitsync-tide-qa that removes the
+# workspace files from Git and adds `/.obsidian/workspace*.json` to .gitignore.
+# To run it again, revert that commit on GitHub and Pull on the phone first.
+#
+# Coordinate exception: on device the stop-tracking sheet's title, option and
+# "Stop tracking" button (stopTracking.confirm) are missing from the runner's
+# tree; only stopTracking.cancel is listed (open finding in PR #133). The
+# confirm button sits directly above Cancel, at the same place as in the
+# simulator tree, where its frame centre was (0.5, 0.835). The commit check
+# right after proves the tap landed.
+version: 1
+requires:
+  platform: ios
+steps:
+  - echo: Relaunch GitSync.md. Expect Home with the gitsync-tide-qa test vault
+      (tracked .obsidian/workspace*.json files)
+  - launch: bontecou.Sync-md
+  - await:
+      visible:
+        id: home.vault.gitsync-tide-qa
+      timeout: 20000
+  - await: { idle: true }
+  - tap:
+      id: home.vault.gitsync-tide-qa
+  - await:
+      visible:
+        id: vault.title
+      timeout: 10000
+  - await: { idle: true }
+  - echo: Vault open and in sync. Open the Git tab; expect the workspace-file
+      suggestion
+  - tap:
+      text: Git
+  - await:
+      visible:
+        id: git.stopTrackingWorkspace
+      timeout: 10000
+  - await: { idle: true }
+  - assert:
+      visible:
+        text: 2 Obsidian workspace files are tracked
+  - tap:
+      id: git.stopTrackingWorkspace
+  - await:
+      visible:
+        id: stopTracking.cancel
+      timeout: 5000
+  - await: { idle: true }
+  - echo: Stop-tracking sheet open (workspace files option only). Confirm; expect
+      the sheet to close and a "Stop tracking .obsidian/workspace*.json" commit
+      waiting to push
+  # Coordinate exception: stopTracking.confirm (see header).
+  - tap:
+      x: 0.5
+      y: 0.835
+  - await:
+      hidden:
+        id: stopTracking.cancel
+      timeout: 15000
+  - await:
+      visible:
+        text: 1 to push, Committed, not pushed yet
+      timeout: 10000
+  - assert:
+      hidden:
+        id: git.stopTrackingWorkspace
+  - echo: Commit waiting and suggestion gone. Tap Push; expect the vault back in
+      sync with GitHub
+  - tap:
+      text: Push
+  - await:
+      visible:
+        text: In sync, Nothing waiting on this iPhone
+      timeout: 45000
