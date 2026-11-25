@@ -1,11 +1,13 @@
 ---
-status: active
+status: merged
 covers: [pr#133, issue#132]
 tested: cb14e6d33e879f3ed89b069688068cb7037bdb79
 updated: 2026-11-24
 ---
 
 # Stop tracking a single file (issue #132, PR #133)
+
+Merged to main in #133 as `83254d2e864ea72d44c0f26e199a32a66eb48f0b` on 2026-11-24.
 
 QA for the iOS "Stop Tracking…" action. It removes a file, its folder or the Obsidian workspace files from Git, adds a `.gitignore` entry and commits both.
 
