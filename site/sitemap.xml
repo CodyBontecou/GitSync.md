@@ -43,6 +43,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://gitsync.md/blog/obsidian-git-plugin</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://gitsync.md/blog/git-lfs-ios</loc>
     <lastmod>2026-08-22</lastmod>
     <changefreq>monthly</changefreq>

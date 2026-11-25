@@ -254,7 +254,7 @@ git push -u origin main</code></pre>
           <tr><th scope="row">Merge strategy</th><td>Merge (default)</td><td>The simplest choice. Rebase rewrites your local commits, and the plugin doesn’t support it on mobile.</td></tr>
           <tr><th scope="row">Commit message on auto commit-and-sync</th><td><code>vault backup: {{date}} ({{hostname}})</code></td><td>The default is <code>vault backup: {{date}}</code>. Adding <code>{{hostname}}</code> shows which device made each commit. Set a short name in <strong>{{hostname}} placeholder replacement</strong>, such as <code>laptop</code>.</td></tr>
           </tbody></table></div>
-        <p>To sync by hand, open the command palette and run <strong>Git: Commit-and-sync</strong> or <strong>Git: Pull</strong>. The <strong>Open source control view</strong> command shows changed files and diffs.</p>
+        <p>To sync by hand, open the command palette and run <strong>Git: Commit-and-sync</strong> or <strong>Git: Pull</strong>. The <strong>Open source control view</strong> command shows changed files and diffs. Every command, setting and error message is explained in the <a href="/blog/obsidian-git-plugin">Obsidian Git plugin guide</a>.</p>
 
         <h2 id="phone">Step 4: Add your phone</h2>
         <p>This is where most Git vault setups break. On iPhone, iPad and Android, Obsidian plugins can’t run a native Git program. The Obsidian Git plugin uses isomorphic-git, a JavaScript implementation of Git, instead. Its <a href="https://github.com/Vinzent03/obsidian-git#mobile-support-experimental" target="_blank" rel="noopener">README</a> marks mobile support as experimental and “highly unstable”, and lists these limits:</p>
