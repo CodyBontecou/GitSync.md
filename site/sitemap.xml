@@ -121,6 +121,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://gitsync.md/compare/best-git-client-android</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://gitsync.md/compare/best-git-client-ios</loc>
     <lastmod>2026-11-20</lastmod>
     <changefreq>monthly</changefreq>
