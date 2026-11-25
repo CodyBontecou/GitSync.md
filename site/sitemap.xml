@@ -187,6 +187,12 @@
   <url><loc>https://gitsync.md/privacy-android</loc><lastmod>2026-10-26</lastmod><changefreq>yearly</changefreq><priority>0.4</priority></url>
   <url><loc>https://gitsync.md/blog/git-on-ipad</loc><lastmod>2026-10-30</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url>
+    <loc>https://gitsync.md/tools/markdown-diff</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://gitsync.md/tools/obsidian-gitignore-generator</loc>
     <lastmod>2026-11-20</lastmod>
     <changefreq>monthly</changefreq>
