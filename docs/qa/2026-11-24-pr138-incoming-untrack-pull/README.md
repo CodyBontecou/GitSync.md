@@ -2,7 +2,7 @@
 status: merged
 covers: [pr#138, issue#137]
 tested: 143333819e598040ce25df61baa400984210aa3f
-updated: 2026-11-24
+updated: 2026-11-25
 ---
 
 # Pull after another device stops tracking a file (issue #137, PR #138)
@@ -54,6 +54,14 @@ The branch was rebased onto main after #131 merged. #131 had added an "unfinishe
 - **Unit tests:** iOS `SyncMDTests` passed 604/604. Android `./gradlew test` ran 1164 tests with 0 failures.
 - **E2E:** `issue137-pull-after-remote-stops-tracking` passed on the iPhone 18 Pro simulator, 14/14, twice in a row.
 - **Pixel 7 not re-run on this build:** the phone disconnected from USB before the run. The 10 Pixel runs above used the pre-rebase build `e37a0a0c`.
+
+## Pixel 7 after merge (main at 90b2bcf7, 2026-11-25)
+
+This is the Android run that was missing after the rebase onto #131. The debug build came from main, which includes #131, #138 and #133.
+- **E2E:** `issue137-android-pull-after-remote-stops-tracking` passed 8/8 on **5 of 5 runs**.
+- **Check script and diagnostics:** `check-result.sh` passed after every run, and every pull was recorded as `COMPLETED`.
+- **On screen afterwards:** "In sync", "Up to date with origin/main", "No changes on this phone", and the latest commit is the stop-tracking commit. #131's "Finish update" prompt didn't appear, so its unfinished-update check doesn't flag the carried-over ignored file.
+- **Cleanup:** the debug app's sample workspace was restored from a backup taken before the run.
 
 ## Not covered
 
