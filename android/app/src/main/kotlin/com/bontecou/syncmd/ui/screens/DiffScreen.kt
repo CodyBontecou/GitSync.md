@@ -1,3 +1,5 @@
+@file:OptIn(androidx.compose.ui.ExperimentalComposeUiApi::class)
+
 package com.bontecou.syncmd.ui.screens
 
 import androidx.compose.foundation.background
@@ -25,11 +27,14 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
@@ -58,6 +63,8 @@ import com.bontecou.syncmd.ui.theme.M3Note
 import com.bontecou.syncmd.ui.theme.M3NoteTone
 import com.bontecou.syncmd.ui.theme.M3Segmented
 import com.bontecou.syncmd.ui.theme.M3Spinner
+import com.bontecou.syncmd.ui.theme.M3DropdownMenu
+import com.bontecou.syncmd.ui.theme.M3MenuItem
 import com.bontecou.syncmd.ui.theme.M3TextButton
 import com.bontecou.syncmd.ui.theme.M3TopBar
 import com.bontecou.syncmd.ui.theme.M3Type
@@ -100,6 +107,8 @@ fun DiffScreen(
     val reviewingDiscard by diffVM.isReviewingDiscard.collectAsState()
     val discarding by diffVM.isDiscarding.collectAsState()
     val isReverting = reviewingDiscard || discarding
+    // "…" › Stop tracking… (issue #149), for files Git tracks or has staged.
+    var stopTracking by rememberSaveable(repositoryPath, current) { mutableStateOf(false) }
     DisposableEffect(repositoryPath, current) { onDispose { diffVM.dismissDiscard() } }
 
     com.bontecou.syncmd.ui.util.RepositoryUpdatesEffect(repositoryPath) {
@@ -132,7 +141,19 @@ fun DiffScreen(
         onNext = { if (index >= 0 && index < paths.lastIndex) current = paths[index + 1] },
         onDiscard = { diffVM.requestDiscard(current) },
         onOpenEditor = openEditor,
+        onStopTracking = if (changes != null && com.bontecou.syncmd.ui.viewmodels.canStopTracking(changes!!.files, current)) ({ stopTracking = true }) else null,
     )
+    if (stopTracking) {
+        com.bontecou.syncmd.ui.components.StopTrackingHost(repositoryPath, current, onClose = { stopped ->
+            stopTracking = false
+            if (stopped) {
+                // Once untracked, the file has left the changes list: move on, or leave when it was the last one.
+                val rest = paths.filter { it != current }
+                if (rest.isEmpty()) onNavigateBack() else current = rest[index.coerceIn(0, rest.lastIndex)]
+                diffVM.refreshRepositoryPath(repositoryPath)
+            }
+        })
+    }
 
     if (diffError != null) {
         M3Dialog(
@@ -173,6 +194,7 @@ private fun DiffContent(
     onNext: () -> Unit,
     onDiscard: () -> Unit,
     onOpenEditor: (() -> Unit)?,
+    onStopTracking: (() -> Unit)? = null,
 ) {
     val c = M3.colors
     val filename = filePath.substringAfterLast('/').ifEmpty { filePath }
@@ -193,6 +215,15 @@ private fun DiffContent(
                         Modifier.testTag("diff-previous"), enabled = position.first > 0)
                     M3IconButton(R.drawable.ic_m3_chevron_right, stringResource(R.string.diff_m3_next), onNext,
                         Modifier.testTag("diff-next"), enabled = position.first < position.second - 1)
+                }
+                if (onStopTracking != null) Box(Modifier.semantics { testTagsAsResourceId = true }) {
+                    var menu by remember { mutableStateOf(false) }
+                    M3IconButton(R.drawable.ic_m3_more_vert, stringResource(R.string.ui_more_d47d7cb0), { menu = true }, Modifier.testTag("diff-more"),
+                        enabled = !isReverting)
+                    M3DropdownMenu(expanded = menu, onDismissRequest = { menu = false }, modifier = Modifier.semantics { testTagsAsResourceId = true }) {
+                        M3MenuItem(stringResource(R.string.stop_tracking_menu), { menu = false; onStopTracking() },
+                            Modifier.testTag("diff-stop-tracking"), icon = R.drawable.ic_m3_visibility_off)
+                    }
                 }
             },
         )

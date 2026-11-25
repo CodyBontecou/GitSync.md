@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Stop tracking a file, folder or Obsidian workspace files (#149). Wording from the iOS catalog. -->
+<resources>
+    <string name="stop_tracking_menu" formatted="false">"停止跟踪…"</string>
+    <string name="stop_tracking_title" formatted="false">"停止在 Git 中跟踪？"</string>
+    <string name="stop_tracking_body" formatted="false">"GitSync.md 会将其从 Git 中移除、添加到 .gitignore 并提交。它仍保留在此设备上。"</string>
+    <string name="stop_tracking_option_file" formatted="false">"此文件"</string>
+    <string name="stop_tracking_option_folder" formatted="false">"所在文件夹"</string>
+    <string name="stop_tracking_option_workspace" formatted="false">"所有 Obsidian 工作区文件"</string>
+    <string name="stop_tracking_one_file" formatted="false">"1 个文件"</string>
+    <string name="stop_tracking_files">"%1$d 个文件"</string>
+    <string name="stop_tracking_note_workspace" formatted="false">"其他设备拉取此提交时，Git 会删除它们的副本。Obsidian 下次打开仓库时会重新创建。"</string>
+    <string name="stop_tracking_note_file" formatted="false">"其他设备拉取此提交时，Git 会删除它们的副本。如有需要，请先在那些设备上保存。它仍保留在 Git 历史中。"</string>
+    <string name="stop_tracking_confirm" formatted="false">"停止跟踪"</string>
+    <string name="stop_tracking_done" formatted="false">"已停止跟踪"</string>
+    <string name="stop_tracking_suggestion" formatted="false">"建议"</string>
+    <string name="stop_tracking_suggestion_title_one" formatted="false">"Obsidian 的工作区文件正被跟踪"</string>
+    <string name="stop_tracking_suggestion_title_many">"%1$d 个 Obsidian 工作区文件正被跟踪"</string>
+    <string name="stop_tracking_suggestion_body_one" formatted="false">"每台设备都会在其中保存自己的窗口布局，因此经常冲突。停止跟踪后，它只保留在各台设备上。"</string>
+    <string name="stop_tracking_suggestion_body_many" formatted="false">"每台设备都会在这些文件中保存自己的窗口布局，因此经常冲突。停止跟踪后，它们只保留在各台设备上。"</string>
+    <string name="stop_tracking_suggestion_action" formatted="false">"停止跟踪工作区文件…"</string>
+    <string name="stop_tracking_error_invalid">"GitSync.md 无法停止跟踪“%1$s”。"</string>
+    <string name="stop_tracking_error_not_tracked">"“%1$s”未被 Git 跟踪，且已被忽略。"</string>
+    <string name="stop_tracking_error_busy" formatted="false">"请等待当前 Git 操作完成。"</string>
+    <string name="stop_tracking_error_conflicts" formatted="false">"请先解决冲突"</string>
+</resources>

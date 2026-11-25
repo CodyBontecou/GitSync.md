@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Stop tracking a file, folder or Obsidian workspace files (#149). Wording from the iOS catalog. -->
+<resources>
+    <string name="stop_tracking_menu" formatted="false">"إيقاف التتبع…"</string>
+    <string name="stop_tracking_title" formatted="false">"إيقاف التتبع في Git؟"</string>
+    <string name="stop_tracking_body" formatted="false">"يزيله GitSync.md من Git ويضيفه إلى .gitignore ثم ينشئ commit بذلك. يبقى على هذا الجهاز."</string>
+    <string name="stop_tracking_option_file" formatted="false">"هذا الملف"</string>
+    <string name="stop_tracking_option_folder" formatted="false">"مجلده"</string>
+    <string name="stop_tracking_option_workspace" formatted="false">"كل ملفات مساحة عمل Obsidian"</string>
+    <string name="stop_tracking_one_file" formatted="false">"ملف واحد"</string>
+    <string name="stop_tracking_files">"%1$d ملفات"</string>
+    <string name="stop_tracking_note_workspace" formatted="false">"عندما تسحب الأجهزة الأخرى هذا الـ commit، يحذف Git نسختها. ينشئ Obsidian نسخة جديدة في المرة التالية التي يفتح فيها الخزنة."</string>
+    <string name="stop_tracking_note_file" formatted="false">"عندما تسحب الأجهزة الأخرى هذا الـ commit، يحذف Git نسختها. احفظه هناك أولًا إذا كانت تحتاج إليه. يبقى في سجل Git."</string>
+    <string name="stop_tracking_confirm" formatted="false">"إيقاف التتبع"</string>
+    <string name="stop_tracking_done" formatted="false">"تم إيقاف التتبع"</string>
+    <string name="stop_tracking_suggestion" formatted="false">"اقتراح"</string>
+    <string name="stop_tracking_suggestion_title_one" formatted="false">"ملف مساحة عمل Obsidian متتبَّع"</string>
+    <string name="stop_tracking_suggestion_title_many">"%1$d من ملفات مساحة عمل Obsidian متتبَّعة"</string>
+    <string name="stop_tracking_suggestion_body_one" formatted="false">"يحفظ كل جهاز تخطيط نوافذه الخاص هناك، لذلك يحدث تعارض كثيرًا. أوقف تتبعه ليبقى على كل جهاز فقط."</string>
+    <string name="stop_tracking_suggestion_body_many" formatted="false">"يحفظ كل جهاز تخطيط نوافذه الخاص في هذه الملفات، لذلك تتعارض كثيرًا. أوقف تتبعها لتبقى على كل جهاز فقط."</string>
+    <string name="stop_tracking_suggestion_action" formatted="false">"إيقاف تتبع ملفات مساحة العمل…"</string>
+    <string name="stop_tracking_error_invalid">"لا يمكن لـ GitSync.md إيقاف تتبع “%1$s”."</string>
+    <string name="stop_tracking_error_not_tracked">"“%1$s” غير متتبَّع في Git وهو مُتجاهَل بالفعل."</string>
+    <string name="stop_tracking_error_busy" formatted="false">"انتظر حتى تنتهي عملية Git الحالية."</string>
+    <string name="stop_tracking_error_conflicts" formatted="false">"حل التعارضات أولًا"</string>
+</resources>

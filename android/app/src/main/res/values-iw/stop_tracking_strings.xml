@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Stop tracking a file, folder or Obsidian workspace files (#149). Wording from the iOS catalog. -->
+<resources>
+    <string name="stop_tracking_menu" formatted="false">"הפסקת מעקב…"</string>
+    <string name="stop_tracking_title" formatted="false">"להפסיק מעקב ב-Git?"</string>
+    <string name="stop_tracking_body" formatted="false">"GitSync.md מסיר אותו מ-Git, מוסיף אותו ל-.gitignore ויוצר commit. הוא נשאר במכשיר הזה."</string>
+    <string name="stop_tracking_option_file" formatted="false">"הקובץ הזה"</string>
+    <string name="stop_tracking_option_folder" formatted="false">"התיקייה שלו"</string>
+    <string name="stop_tracking_option_workspace" formatted="false">"כל קובצי סביבת העבודה של Obsidian"</string>
+    <string name="stop_tracking_one_file" formatted="false">"קובץ אחד"</string>
+    <string name="stop_tracking_files">"%1$d קבצים"</string>
+    <string name="stop_tracking_note_workspace" formatted="false">"כשמכשירים אחרים מושכים את ה-commit הזה, Git מוחק את העותק שלהם. Obsidian יוצר עותק חדש בפעם הבאה שהוא פותח את הכספת."</string>
+    <string name="stop_tracking_note_file" formatted="false">"כשמכשירים אחרים מושכים את ה-commit הזה, Git מוחק את העותק שלהם. שמור אותו שם קודם אם הם צריכים אותו. הוא נשאר בהיסטוריית Git."</string>
+    <string name="stop_tracking_confirm" formatted="false">"הפסקת מעקב"</string>
+    <string name="stop_tracking_done" formatted="false">"המעקב הופסק"</string>
+    <string name="stop_tracking_suggestion" formatted="false">"הצעה"</string>
+    <string name="stop_tracking_suggestion_title_one" formatted="false">"קובץ סביבת העבודה של Obsidian במעקב"</string>
+    <string name="stop_tracking_suggestion_title_many">"%1$d קובצי סביבת עבודה של Obsidian במעקב"</string>
+    <string name="stop_tracking_suggestion_body_one" formatted="false">"כל מכשיר שומר שם את פריסת החלונות שלו, ולכן נוצרות התנגשויות לעתים קרובות. הפסק לעקוב אחריו כדי שיישאר רק בכל מכשיר."</string>
+    <string name="stop_tracking_suggestion_body_many" formatted="false">"כל מכשיר שומר בקבצים האלה את פריסת החלונות שלו, ולכן נוצרות התנגשויות לעתים קרובות. הפסק לעקוב אחריהם כדי שיישארו רק בכל מכשיר."</string>
+    <string name="stop_tracking_suggestion_action" formatted="false">"הפסקת מעקב אחר קובצי סביבת עבודה…"</string>
+    <string name="stop_tracking_error_invalid">"‏GitSync.md לא יכול להפסיק לעקוב אחרי “%1$s”."</string>
+    <string name="stop_tracking_error_not_tracked">"‏Git לא עוקב אחרי “%1$s” והוא כבר מוחרג."</string>
+    <string name="stop_tracking_error_busy" formatted="false">"המתן לסיום פעולת ה-Git הנוכחית."</string>
+    <string name="stop_tracking_error_conflicts" formatted="false">"פתרו קודם התנגשויות"</string>
+</resources>

@@ -2,7 +2,7 @@ package com.bontecou.syncmd.services.diagnostics
 
 import java.util.UUID
 
-enum class DiagnosticOperation { APP, CLONE, FETCH, PULL, PUSH, STAGE, UNSTAGE, DISCARD, COMMIT, BRANCH, MERGE, REBASE, CONFLICT, LFS, STASH, TAG, REVERT }
+enum class DiagnosticOperation { APP, CLONE, FETCH, PULL, PUSH, STAGE, UNSTAGE, DISCARD, COMMIT, BRANCH, MERGE, REBASE, CONFLICT, LFS, STASH, TAG, REVERT, UNTRACK }
 enum class DiagnosticLevel { INFO, WARNING, ERROR }
 enum class DiagnosticOutcome { STARTED, COMPLETED, STOPPED, ATTENTION, CANCELLED }
 enum class DiagnosticReason { NONE, LOCAL_CHANGES, LFS_CONTENTS, LFS_LOCK, TRUST_REQUIRED, CANCELLED, NETWORK, STORAGE, REVIEW_REQUIRED, UNKNOWN }
