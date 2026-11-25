@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../favicon-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<title>Markdown Diff: Compare Two Notes or Fix Git Conflicts</title>
+<meta name="description" content="Paste two versions of a Markdown note to see what changed, line by line and word by word, or paste a file with Git conflict markers and keep ours, theirs or both. Runs in your browser.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Cody Bontecou">
+<meta name="theme-color" content="#ffffff">
+<link rel="canonical" href="https://gitsync.md/tools/markdown-diff">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="GitSync.md">
+<meta property="og:title" content="Markdown Diff: Compare Two Notes or Fix Git Conflicts">
+<meta property="og:description" content="Paste two versions of a Markdown note to see what changed, line by line and word by word, or paste a file with Git conflict markers and keep ours, theirs or both. Runs in your browser.">
+<meta property="og:url" content="https://gitsync.md/tools/markdown-diff">
+<meta property="og:image" content="https://gitsync.md/social/tools/markdown-diff.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:alt" content="GitSync.md free tool card: Markdown Diff: Compare Two Notes or Fix Git Conflicts">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Markdown Diff: Compare Two Notes or Fix Git Conflicts">
+<meta name="twitter:description" content="Paste two versions of a Markdown note to see what changed, line by line and word by word, or paste a file with Git conflict markers and keep ours, theirs or both. Runs in your browser.">
+<meta name="twitter:image" content="https://gitsync.md/social/tools/markdown-diff.png">
+<meta name="twitter:image:alt" content="GitSync.md free tool card: Markdown Diff: Compare Two Notes or Fix Git Conflicts">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Markdown diff",
+  "description": "Paste two versions of a Markdown note to see what changed, line by line and word by word, or paste a file with Git conflict markers and keep ours, theirs or both. Runs in your browser.",
+  "url": "https://gitsync.md/tools/markdown-diff",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Any (runs in a web browser)",
+  "browserRequirements": "Requires JavaScript",
+  "isAccessibleForFree": true,
+  "inLanguage": "en",
+  "datePublished": "2026-11-25",
+  "dateModified": "2026-11-25",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Person",
+    "name": "Cody Bontecou",
+    "url": "https://gitsync.md/about"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Cody Bontecou"
+  }
+}
+</script>
+<link rel="stylesheet" href="../site.css">
+<link rel="stylesheet" href="../content.css">
+<link rel="stylesheet" href="../comparison.css">
+<style>
+.calc { background: var(--surface); border: 2px solid var(--line); padding: 25px 28px; margin-bottom: 39px; }
+.calc fieldset { border: 0; padding: 0; margin: 0 0 18px; min-width: 0; }
+.calc legend, .calc .field-label { display: block; font-weight: 650; font-size: 16px; line-height: 24px; margin-bottom: 8px; padding: 0; }
+.calc .checks { display: flex; flex-wrap: wrap; gap: 0 24px; }
+.calc .checks label { display: flex; align-items: flex-start; gap: 10px; font-size: 16px; line-height: 24px; min-height: 44px; padding-block: 10px 0; }
+.calc input[type="checkbox"], .calc input[type="radio"] { flex: none; width: 20px; height: 20px; margin: 2px 0 0; accent-color: var(--blue-deep); }
+.calc textarea { width: 100%; min-height: 200px; padding: 8px 12px; font-family: var(--mono); font-size: 16px; line-height: 1.5; color: var(--ink); background: var(--paper); border: 2px solid var(--line); border-radius: 8px; box-sizing: border-box; resize: vertical; }
+.calc .hint { display: block; font-size: 14px; line-height: 20px; color: var(--muted); margin-top: 6px; }
+.calc .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 8px; }
+.calc .pair > div { min-width: 0; }
+.calc .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-block: 12px 8px; }
+.calc .tool-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 22px; border: 0; border-radius: 999px; background: var(--ink); color: var(--paper); font: 600 16px/1.2 var(--sans); cursor: pointer; }
+.calc .tool-btn.secondary { background: var(--paper); color: var(--ink); border: 2px solid var(--ink); }
+.calc .tool-btn[disabled] { opacity: .45; cursor: not-allowed; }
+.calc .tool-btn:focus-visible, .calc input:focus-visible, .calc textarea:focus-visible, .calc summary:focus-visible { outline: 3px solid var(--blue-deep); outline-offset: 2px; }
+.calc .status { min-height: 24px; font-size: 15px; color: var(--muted); margin: 4px 0; }
+.calc .summary { font-weight: 650; font-size: 17px; margin: 14px 0 8px; }
+.calc .notice { background: var(--ahead-wash); color: var(--ahead-text); padding: 12px 16px; margin: 12px 0; font-size: 15px; line-height: 22px; }
+.calc .notice[hidden], .calc [hidden] { display: none; }
+.calc .mode-switch { display: flex; flex-wrap: wrap; gap: 0 24px; }
+.dview { border: 2px solid var(--line); border-radius: 8px; overflow: auto; max-height: 560px; font-family: var(--mono); font-size: 14px; line-height: 1.5; background: var(--paper); }
+.dview .drow { display: flex; gap: 8px; padding: 1px 10px; }
+.dview .sign { flex: none; width: 1.2em; text-align: center; font-weight: 700; user-select: none; }
+.dview .txt { flex: 1; min-width: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.dview .d-add { background: #e3f5e8; color: #0b3d1b; }
+.dview .d-del { background: #fbe7e7; color: #5c1010; }
+.dview .d-eq { color: var(--body); }
+.dview ins { text-decoration: underline; background: #a6e3b8; font-weight: 700; }
+.dview del { text-decoration: line-through; background: #f4b6b6; }
+.dview .expand { display: block; width: 100%; min-height: 44px; padding: 6px 10px; border: 0; border-block: 1px dashed var(--line); background: var(--surface); color: var(--blue-deep); font: 600 14px/1.4 var(--sans); cursor: pointer; text-align: left; }
+.dview .expand:focus-visible, .dview [tabindex="-1"]:focus-visible { outline: 3px solid var(--blue-deep); outline-offset: -3px; }
+.dview table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+.dview th { text-align: left; font: 650 14px/1.4 var(--sans); padding: 6px 10px; background: var(--surface); border-bottom: 2px solid var(--line); }
+.dview td { vertical-align: top; padding: 1px 0; width: 50%; }
+.dview td + td, .dview th + th { border-left: 2px solid var(--line); }
+.dview td .drow { padding-block: 0; }
+.dview td.d-empty { background: var(--surface); }
+.dview td.expand-cell { padding: 0; width: auto; }
+.conflict { border: 2px solid var(--line) !important; border-radius: 8px; padding: 14px 16px !important; margin-bottom: 18px !important; }
+.conflict .dview { max-height: 260px; margin-block: 8px; }
+.conflict details { margin-block: 8px; }
+.conflict summary { cursor: pointer; min-height: 32px; font-weight: 600; }
+.conflict pre { margin: 6px 0 0; max-height: 200px; overflow: auto; }
+.conflict .checks label { min-height: 40px; padding-block: 8px 0; }
+.preview { max-height: 360px; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; margin-top: 8px; }
+@media (max-width: 960px) { .tool-layout > .guide-aside { order: 3; margin-block: 32px 0; } .calc { padding: 20px 14px; } .calc .pair { grid-template-columns: 1fr; } }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://gitsync.md/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Guides",
+      "item": "https://gitsync.md/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Markdown diff",
+      "item": "https://gitsync.md/tools/markdown-diff"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is my text uploaded?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The comparison, the conflict parsing and the copy buttons all run as JavaScript in your browser. The page makes no network requests for your text and does not store it."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does it render Markdown?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. It compares the source text of your notes, so you see the # marks, asterisks and brackets exactly as they are in the file. It does not draw headings, lists or links."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I compare more than two files?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The tool compares one older version with one newer version. To compare three copies, compare them in pairs. Each side is limited to 5,000 lines."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What does ||||||| mean in a conflict?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It starts the base section that Git writes when merge.conflictStyle is diff3 or zdiff3. The base is the text as it was before either side edited it, shown between the ours section and the ======= line. The default merge style leaves it out."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body id="top">
+<a class="skip-link" href="#main">Skip to content</a>
+<svg class="icon-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 5l7 7-7 7"/></symbol>
+  <symbol id="i-branch" viewBox="0 0 24 24"><circle cx="6" cy="5" r="2.5"/><circle cx="6" cy="19" r="2.5"/><circle cx="18" cy="5" r="2.5"/><path d="M6 7.5v9M18 7.5v1a5 5 0 0 1-5 5H6"/></symbol>
+  <symbol id="i-external" viewBox="0 0 24 24"><path d="M6 18 18 6M6 6h12v12"/></symbol>
+</svg>
+
+<header class="site-header">
+  <nav class="shell navigation" aria-label="Main navigation">
+    <a class="brand" href="/" aria-label="GitSync.md home">gitsync<span class="brand-extension">.md</span></a>
+    <div class="nav-links"><a href="/#app">The app</a><a href="/#workflow">How it works</a><a href="/blog/" class="is-active">Guides</a><a href="/compare/obsidian-sync-vs-git">Compare</a><a href="/#faq">FAQ</a></div>
+    <a class="button button-small" href="/#download">Get the app</a>
+  </nav>
+</header>
+
+<main id="main">
+  <div class="container guide-layout tool-layout">
+      <header class="article-hero">
+        <div class="article-title"><nav class="eyebrow article-breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li><a href="/blog/">Guides</a></li><li aria-current="page">Markdown diff</li></ol></nav>
+      <h1>Markdown Diff: Compare Two Versions of a Note</h1>
+      <p class="subtitle">Paste two versions to see what changed, or paste a file full of Git conflict markers and keep the side you want.</p>
+      <div class="meta-line"><time datetime="2026-11-25">November 25, 2026</time><span>By <a href="/about" rel="author">Cody Bontecou</a></span><span>Free tool · Runs in your browser</span></div>
+    </div>
+      </header>
+      <aside class="guide-aside" aria-label="Tool sidebar">
+        <div class="guide-aside-sticky">
+        <nav class="toc-card" aria-label="Page outline"><div class="toc-title">On this page</div><ol><li><a href="#tool">The tool</a></li><li><a href="#read">How to read the result</a></li><li><a href="#markers">Resolve Git conflict markers</a></li><li><a href="#sources">Where conflicting notes come from</a></li><li><a href="#older">Get the older version from Git</a></li><li><a href="#faq">FAQ</a></li></ol></nav>
+        <div class="aside-cta aside-cta-wide">
+          <p class="aside-cta-title">See diffs and resolve conflicts on your phone.</p>
+          <p class="aside-cta-price">iPhone + iPad: $9.99 once · No subscription</p>
+          <a class="aside-cta-button" href="/v/web-homepage-132" target="_blank" rel="noopener">Download on the App Store</a>
+          <p class="aside-cta-price">On Android? <a href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener">Get it on Google Play</a>.</p>
+        </div>
+        </div>
+      </aside>
+      <article class="article-body">
+        <p><strong>Short answer:</strong> paste the older note on the left and the newer one on the right. Added lines start with <code>+</code>, removed lines with <code>−</code>, and inside a changed line the edited words are underlined or struck through. If you have one file full of <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code> lines instead, switch to the conflict mode and choose a side for each conflict. <strong>Your text never leaves this page.</strong></p>
+
+        <section class="calc" id="tool" aria-labelledby="tool-heading">
+          <h2 id="tool-heading" style="margin-top:0">Compare notes or resolve conflicts</h2>
+          <fieldset class="mode-switch">
+            <legend>What do you have?</legend>
+            <div class="checks">
+              <label><input type="radio" name="mode" value="compare" checked> <span>Two versions of a note</span></label>
+              <label><input type="radio" name="mode" value="conflict"> <span>One file with Git conflict markers</span></label>
+            </div>
+          </fieldset>
+
+          <div id="panel-compare">
+            <div class="pair">
+              <div>
+                <label class="field-label" for="text-a">Original (older)</label>
+                <textarea id="text-a" rows="10" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false"></textarea>
+              </div>
+              <div>
+                <label class="field-label" for="text-b">Changed (newer)</label>
+                <textarea id="text-b" rows="10" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false"></textarea>
+              </div>
+            </div>
+            <div class="actions">
+              <button type="button" class="tool-btn secondary" id="btn-example">Load example</button>
+              <button type="button" class="tool-btn secondary" id="btn-swap">Swap</button>
+              <button type="button" class="tool-btn secondary" id="btn-clear">Clear</button>
+            </div>
+            <fieldset>
+              <legend>Options</legend>
+              <div class="checks">
+                <label><input type="checkbox" id="opt-ws"> <span>Ignore trailing and repeated spaces</span></label>
+                <label><input type="checkbox" id="opt-case"> <span>Ignore case</span></label>
+                <label><input type="checkbox" id="opt-para"> <span>Compare by paragraph (ignore line wrapping)</span></label>
+                <label><input type="checkbox" id="opt-fm"> <span>Treat front matter as one block</span></label>
+                <label><input type="checkbox" id="opt-collapse" checked> <span>Collapse unchanged lines</span></label>
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend>View</legend>
+              <div class="checks">
+                <label><input type="radio" name="view" value="unified"> <span>Unified</span></label>
+                <label><input type="radio" name="view" value="side"> <span>Side by side</span></label>
+              </div>
+            </fieldset>
+            <p class="summary" id="summary" aria-live="polite">Paste two versions, or load the example.</p>
+            <div class="notice" id="notice" role="status" hidden></div>
+            <div class="dview" id="diff-out" tabindex="0" role="region" aria-label="Diff result" hidden></div>
+            <div class="actions">
+              <button type="button" class="tool-btn" id="btn-copy-diff" disabled>Copy unified diff</button>
+            </div>
+            <p class="status" id="status-diff" aria-live="polite"></p>
+          </div>
+
+          <div id="panel-conflict" hidden>
+            <label class="field-label" for="text-c">File with conflict markers</label>
+            <textarea id="text-c" rows="12" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false"></textarea>
+            <span class="hint">Handles the default style and the diff3 or zdiff3 style with a <code>|||||||</code> base section.</span>
+            <div class="actions">
+              <button type="button" class="tool-btn secondary" id="btn-example-c">Load example</button>
+              <button type="button" class="tool-btn secondary" id="btn-clear-c">Clear</button>
+            </div>
+            <div class="notice" id="conflict-error" role="alert" hidden></div>
+            <p class="summary" id="conflict-summary" aria-live="polite">Paste a file that contains conflict markers, or load the example.</p>
+            <div id="conflict-list"></div>
+            <h3 id="preview-heading">Resolved note preview</h3>
+            <div class="notice" id="marker-warning" role="status" hidden></div>
+            <pre class="preview" id="preview" tabindex="0" aria-labelledby="preview-heading"></pre>
+            <div class="actions">
+              <button type="button" class="tool-btn" id="btn-copy-resolved" disabled>Copy resolved note</button>
+            </div>
+            <p class="status" id="status-resolved" aria-live="polite"></p>
+          </div>
+          <p class="hint">Runs in your browser. Nothing is uploaded, and your text is not saved anywhere.</p>
+        </section>
+
+        <h2 id="read">How to read the result</h2>
+        <ul>
+          <li><strong>Added (<code>+</code>).</strong> A line that is only in the newer version.</li>
+          <li><strong>Removed (<code>−</code>).</strong> A line that is only in the older version.</li>
+          <li><strong>Changed.</strong> A removed line directly followed by an added line is counted as one changed line, and the words that differ inside it are marked: added words are bold and underlined, removed words are struck through. The marks work without color.</li>
+          <li><strong>Unchanged.</strong> Runs of identical lines are folded into a button. Press it to see them, or untick <em>Collapse unchanged lines</em>.</li>
+        </ul>
+        <p>Word marks matter for prose. A note is mostly long paragraphs on one line each, so a plain line diff flags the whole paragraph when you changed one word. The tool compares the two lines word by word and marks only what differs.</p>
+        <p><em>Compare by paragraph</em> joins wrapped lines into paragraphs, so the same text wrapped at 60 columns and at 80 columns shows no changes. The tool compares source text only; it does not render Markdown. The line diff itself is the classic shortest-edit-script approach described in Myers, <a href="http://www.xmailserver.org/diff2.pdf" target="_blank" rel="noopener">“An O(ND) Difference Algorithm and Its Variations”</a> (1986).</p>
+
+        <h2 id="markers">Resolve Git conflict markers in a note</h2>
+        <p>When Git cannot combine two edits of the same lines, it writes both into the file. Git’s documentation, <a href="https://git-scm.com/docs/git-merge#_how_conflicts_are_presented" target="_blank" rel="noopener">How conflicts are presented</a>, describes the default layout:</p>
+        <pre tabindex="0" role="region" aria-label="Conflict marker layout"><code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+your side (ours)
+=======
+the other side (theirs)
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; branch-name</code></pre>
+        <p>Everything between <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code> and <code>=======</code> is ours, and everything between <code>=======</code> and <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code> is theirs. Which side is “yours” depends on the operation: in a rebase the two are reversed from what many people expect, as the <a href="/blog/obsidian-git-merge-conflicts-iphone">phone conflict guide</a> explains.</p>
+        <p>The <code>merge.conflictStyle</code> setting in <a href="https://git-scm.com/docs/git-config" target="_blank" rel="noopener">git config</a> can be <code>merge</code> (the default), <code>diff3</code> or <code>zdiff3</code>. With <code>diff3</code> or <code>zdiff3</code>, Git adds a base section that starts with <code>|||||||</code>: the text as it was before either side changed it. It shows what each side started from, so you can tell an edit from a deletion. This tool reads all three styles.</p>
+        <p>Choose <em>Keep ours</em>, <em>Keep theirs</em> or one of the two <em>Keep both</em> options for each conflict, check the preview, then copy the resolved note. The copy button stays off while any marker is left. If the markers are unbalanced, the tool tells you the line number to fix first.</p>
+        <p>After you paste the result into the file and save it, stage and commit the file so Git records the resolution. To do this on a phone, follow <a href="/blog/obsidian-git-merge-conflicts-iphone">resolving Obsidian Git merge conflicts on iPhone</a>. Plain <code>=======</code> lines outside a conflict, such as a Markdown heading underline, are left alone.</p>
+
+        <h2 id="sources">Where duplicate or conflicting notes come from</h2>
+        <h3>Git</h3>
+        <p>Git writes the markers above into the note when a merge, rebase or pull cannot combine two edits of the same lines. Paste the file in conflict mode.</p>
+        <h3>Syncthing</h3>
+        <p>When both devices change a file while apart, Syncthing keeps both and renames the older one to <code>name.sync-conflict-&lt;date&gt;-&lt;time&gt;-&lt;modifiedBy&gt;.md</code>, per the Syncthing docs on <a href="https://docs.syncthing.net/users/syncing.html#conflict-handling" target="_blank" rel="noopener">conflict handling</a>. Paste the original as “Original” and the conflict copy as “Changed” to see which edits are in which. The <a href="/blog/obsidian-syncthing-iphone">Syncthing on iPhone guide</a> covers the rest.</p>
+        <h3>Cloud drives</h3>
+        <p>A cloud drive that cannot merge two edits may leave a second copy of the note next to the first. The names differ by service, so look in the folder for a near-duplicate of the note, then compare the two files here. See <a href="/blog/obsidian-google-drive-sync">Obsidian with Google Drive</a> and <a href="/compare/icloud-vs-git-obsidian">iCloud vs Git for Obsidian</a>.</p>
+        <h3>Obsidian Sync</h3>
+        <p>Obsidian’s page on <a href="https://obsidian.md/help/sync/troubleshoot" target="_blank" rel="noopener">how Sync handles conflicts</a> says Markdown notes are merged automatically by default, and that Sync can be set to create conflict files instead. If you end up with a conflict file, compare it with the note here.</p>
+
+        <h2 id="older">Get the older version from Git</h2>
+        <p>If the vault is in Git, <code>git show &lt;commit&gt;:path/to/note.md</code> prints the note as it was in that commit (<a href="https://git-scm.com/docs/git-show" target="_blank" rel="noopener">git show</a>). Paste that into “Original” and the current file into “Changed”. Your Git client’s file history gives you the same text. <a href="/blog/obsidian-backup-git">Back up an Obsidian vault with Git and restore notes</a> shows how to find the commit.</p>
+
+        <h2 id="faq">Frequently asked questions</h2>
+        <h3>Is my text uploaded?</h3>
+        <p>No. The comparison, the conflict parsing and the copy buttons all run as JavaScript in your browser. The page makes no network requests for your text and does not store it.</p>
+        <h3>Does it render Markdown?</h3>
+        <p>No. It compares the source text of your notes, so you see the <code>#</code> marks, asterisks and brackets exactly as they are in the file. It does not draw headings, lists or links.</p>
+        <h3>Can I compare more than two files?</h3>
+        <p>No. The tool compares one older version with one newer version. To compare three copies, compare them in pairs. Each side is limited to 5,000 lines.</p>
+        <h3>What does ||||||| mean in a conflict?</h3>
+        <p>It starts the base section that Git writes when <code>merge.conflictStyle</code> is <code>diff3</code> or <code>zdiff3</code>. The base is the text as it was before either side edited it, shown between the ours section and the <code>=======</code> line. The default <code>merge</code> style leaves it out.</p>
+
+        <div class="related-card"><h2 id="next">Related guides</h2><ul>
+          <li><a href="/blog/obsidian-git-merge-conflicts-iphone">Resolve Obsidian Git merge conflicts on iPhone</a></li>
+          <li><a href="/blog/obsidian-syncthing-iphone">Obsidian with Syncthing on iPhone</a></li>
+          <li><a href="/blog/obsidian-backup-git">Back up an Obsidian vault with Git and restore notes</a></li>
+          <li><a href="/blog/sync-obsidian-github">Sync Obsidian with GitHub on every device</a></li>
+          <li><a href="/blog/obsidian-google-drive-sync">Obsidian with Google Drive</a></li>
+          <li><a href="/compare/icloud-vs-git-obsidian">iCloud vs Git for Obsidian</a></li>
+          <li><a href="/tools/obsidian-gitignore-generator">Obsidian .gitignore generator</a></li>
+        </ul></div>
+
+        <div class="related-card">
+          <h2 style="margin-top:0">See diffs and resolve conflicts on your phone.</h2>
+          <p>GitSync.md shows changed files, diffs and conflicts for a Git-synced Obsidian vault on iPhone, iPad and Android. It needs iOS 17 or iPadOS 17 or later on iPhone and iPad, and Android 9 or later on Android.</p>
+          <p><a href="/v/web-homepage-132" target="_blank" rel="noopener">Download on the App Store</a> · <a href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener">Get it on Google Play</a></p>
+        </div>
+  </article>
+    </div>
+  <section class="content-download" aria-labelledby="download-heading">
+    <div class="shell content-download-layout">
+      <div>
+        <p class="eyebrow"><span class="blue-square" aria-hidden="true"></span>Take your work with you.</p>
+        <h2 id="download-heading">REAL GIT.<br>WITHIN REACH.</h2>
+        <p class="content-download-description">Your files. Your commits. Your remote.<br>Get GitSync.md for iPhone, iPad, and Android.</p>
+      </div>
+      <div>
+        <div class="store-links" role="group" aria-label="Download GitSync.md">
+          <a class="store-badge store-badge-apple" href="/v/web-homepage-132" target="_blank" rel="noopener"><img src="../assets/store-badges/download-on-app-store.svg" width="120" height="40" alt="Download GitSync.md on the App Store" decoding="async"></a>
+          <a class="store-badge store-badge-google" href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener"><img src="../assets/store-badges/get-it-on-google-play.png" width="646" height="250" alt="Get GitSync.md on Google Play" decoding="async"></a>
+        </div>
+        <p class="purchase-note"><span>iPhone + iPad: free to download, $9.99 once to unlock.</span><span>Android: $9.99 once. All features included.</span><span>No subscriptions.</span></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="shell footer-layout">
+    <a class="brand" href="/" aria-label="GitSync.md home">gitsync<span class="brand-extension">.md</span></a>
+    <p>Independently built by <a href="https://codybontecou.com" target="_blank" rel="noopener">Cody Bontecou</a>.<br>© 2026 GitSync.md</p>
+    <div class="footer-links"><a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener">Source</a><a href="/blog/">Guides</a><a href="/compare/obsidian-sync-vs-git">Compare</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
+    <a class="back-top" href="#top" aria-label="Back to top">↑</a>
+  </div>
+</footer>
+<script>
+/* Markdown diff. Runs locally: no network requests, nothing stored.
+
+   Line diff: shortest edit script (Myers, "An O(ND) Difference Algorithm and Its Variations", 1986),
+   then a second pass over the words of each removed/added line pair.
+   Conflict mode: parses default and diff3/zdiff3 conflict markers (git-merge, "How conflicts are
+   presented"; git-config merge.conflictStyle).
+
+   Sanity cases (run with #selftest in the URL, or by scripts/tests/markdown-diff.test.mjs). */
+var MdDiff = (function () {
+  var MAX_LINES = 5000;
+  var MAX_EDITS = 3000;
+  var MAX_TOKENS = 3000;
+  var MINUS = "−";
+
+  var EXAMPLE_A = [
+    "---", "title: Weekly plan", "tags: [planning, work]", "---", "",
+    "# Weekly plan", "",
+    "- [x] Send the agenda", "- [ ] Book the room", "- [ ] Review the budget draft", "",
+    "The planning call starts at 10:00 on Thursday. Bring the budget draft and a list of open questions for the team.", ""
+  ].join("\n");
+  var EXAMPLE_B = EXAMPLE_A.replace("- [ ] Book the room", "- [x] Book the room").replace("10:00", "11:00");
+  var EXAMPLE_C = [
+    "# Weekly plan", "",
+    "<<<<<<< HEAD", "Start: 10:00", "Bring the budget draft.", "=======", "Start: 11:00", "Bring the agenda.", ">>>>>>> origin/main", "",
+    "## Tasks", "",
+    "<<<<<<< HEAD", "- [ ] Book the room", "||||||| 3f2a9c1", "- [ ] Book a room", "=======", "- [x] Book a room", ">>>>>>> origin/main", "",
+    "Thanks!", ""
+  ].join("\n");
+
+  function splitLines(text) {
+    text = String(text == null ? "" : text).replace(/\r\n?/g, "\n");
+    if (text === "") return [];
+    var lines = text.split("\n");
+    if (lines[lines.length - 1] === "") lines.pop();
+    return lines;
+  }
+
+  function norm(s, o) {
+    if (o.ws) s = s.replace(/\s+$/, "").replace(/(\S)[ \t]+/g, "$1 ");
+    if (o.icase) s = s.toLowerCase();
+    return s;
+  }
+
+  var BLOCK_START = /^\s*([-*+]\s|\d+[.)]\s|#{1,6}\s|>|\x60{3}|~{3}|\|)/;
+
+  // Turns text into comparison units: lines, or paragraphs; front matter can be one unit.
+  function buildUnits(text, o) {
+    var lines = splitLines(text), units = [], i = 0, j, k;
+    if (o.fm && lines.length && lines[0].replace(/\s+$/, "") === "---") {
+      for (j = 1; j < lines.length; j++) {
+        var t = lines[j].replace(/\s+$/, "");
+        if (t === "---" || t === "...") break;
+      }
+      if (j < lines.length) {
+        var fmLines = lines.slice(0, j + 1);
+        units.push({ lines: fmLines, key: fmLines.map(function (l) { return norm(l, o); }).join("\n") });
+        i = j + 1;
+      }
+    }
+    if (o.para) {
+      var cur = null;
+      var flush = function () {
+        if (cur) {
+          var joined = cur.join(" ");
+          units.push({ lines: [joined], key: norm(joined.replace(/\s+/g, " "), o) });
+          cur = null;
+        }
+      };
+      for (k = i; k < lines.length; k++) {
+        var line = lines[k];
+        if (/^\s*$/.test(line)) { flush(); continue; }
+        if (cur && BLOCK_START.test(line)) flush();
+        if (!cur) cur = [line.replace(/\s+$/, "")]; else cur.push(line.trim());
+      }
+      flush();
+    } else {
+      for (k = i; k < lines.length; k++) units.push({ lines: [lines[k]], key: norm(lines[k], o) });
+    }
+    return units;
+  }
+
+  // Myers shortest edit script. Returns null when more than limit edits are needed.
+  function myers(a, b, limit) {
+    var n = a.length, m = b.length, max = Math.min(n + m, limit), off = max + 1;
+    var v = new Int32Array(2 * max + 3), trace = [], d, k, x, y, found = false;
+    for (d = 0; d <= max && !found; d++) {
+      for (k = -d; k <= d; k += 2) {
+        if (k === -d || (k !== d && v[off + k - 1] < v[off + k + 1])) x = v[off + k + 1]; else x = v[off + k - 1] + 1;
+        y = x - k;
+        while (x < n && y < m && a[x] === b[y]) { x++; y++; }
+        v[off + k] = x;
+        if (x >= n && y >= m) found = true;
+      }
+      trace.push(v.slice(off - d - 1, off + d + 2));
+    }
+    if (!found) return null;
+    var ops = [];
+    x = n; y = m;
+    for (d = trace.length - 1; d > 0; d--) {
+      var vp = trace[d - 1], t = d - 1;
+      k = x - y;
+      var down = (k === -d || (k !== d && vp[k - 1 + t + 1] < vp[k + 1 + t + 1]));
+      var pk = down ? k + 1 : k - 1;
+      var px = vp[pk + t + 1], py = px - pk;
+      while (x > px && y > py) { ops.push(["eq", x - 1, y - 1]); x--; y--; }
+      if (down) ops.push(["add", -1, py]); else ops.push(["del", px, -1]);
+      x = px; y = py;
+    }
+    while (x > 0 && y > 0) { ops.push(["eq", x - 1, y - 1]); x--; y--; }
+    return ops.reverse();
+  }
+
+  // Diff of two key arrays -> [["eq"|"del"|"add", i, j], ...]
+  function diffKeys(a, b) {
+    var s = 0, ea = a.length, eb = b.length, ops = [], i, j;
+    while (s < ea && s < eb && a[s] === b[s]) s++;
+    while (ea > s && eb > s && a[ea - 1] === b[eb - 1]) { ea--; eb--; }
+    for (i = 0; i < s; i++) ops.push(["eq", i, i]);
+    var mid = myers(a.slice(s, ea), b.slice(s, eb), MAX_EDITS), coarse = false;
+    if (mid === null) {
+      coarse = true;
+      mid = [];
+      for (i = s; i < ea; i++) mid.push(["del", i - s, -1]);
+      for (j = s; j < eb; j++) mid.push(["add", -1, j - s]);
+    }
+    mid.forEach(function (op) { ops.push([op[0], op[1] < 0 ? -1 : op[1] + s, op[2] < 0 ? -1 : op[2] + s]); });
+    for (i = 0; i < a.length - ea; i++) ops.push(["eq", ea + i, eb + i]);
+    ops.coarse = coarse;
+    return ops;
+  }
+
+  function tokenize(s) { return s.match(/\s+|[\wÀ-￿]+|[^\s\w]/g) || []; }
+
+  // Word-level diff of two strings -> { a: [{s, ch}], b: [{s, ch}] }
+  function wordDiff(sa, sb, o) {
+    var ta = tokenize(sa), tb = tokenize(sb);
+    var plain = function (t) { return [{ s: t.join(""), ch: true }]; };
+    if (ta.length + tb.length > MAX_TOKENS) return { a: plain(ta), b: plain(tb) };
+    var key = function (t) { return /^\s/.test(t) ? (o.ws ? " " : t) : (o.icase ? t.toLowerCase() : t); };
+    var ops = diffKeys(ta.map(key), tb.map(key));
+    var ra = [], rb = [];
+    var push = function (arr, s, ch) {
+      var last = arr[arr.length - 1];
+      if (last && last.ch === ch) last.s += s; else arr.push({ s: s, ch: ch });
+    };
+    ops.forEach(function (op) {
+      if (op[0] === "eq") { push(ra, ta[op[1]], false); push(rb, tb[op[2]], false); }
+      else if (op[0] === "del") push(ra, ta[op[1]], true);
+      else push(rb, tb[op[2]], true);
+    });
+    // A changed whitespace-only token between two changed words reads better as part of the change.
+    return { a: ra, b: rb };
+  }
+
+  // Diff of two texts -> { items, added, removed, changed, coarse }
+  // items: { t: "eq", a, b } or { t: "run", dels: [unit], adds: [unit], words: [pairDiff...] }
+  function diff(textA, textB, o) {
+    o = o || {};
+    var ua = buildUnits(textA, o), ub = buildUnits(textB, o);
+    var ops = diffKeys(ua.map(function (u) { return u.key; }), ub.map(function (u) { return u.key; }));
+    var items = [], added = 0, removed = 0, changed = 0, run = null;
+    var close = function () {
+      if (!run) return;
+      var pairs = Math.min(run.dels.length, run.adds.length);
+      run.words = [];
+      for (var p = 0; p < pairs; p++) run.words.push(wordDiff(run.dels[p].lines.join("\n"), run.adds[p].lines.join("\n"), o));
+      changed += pairs;
+      removed += run.dels.length - pairs;
+      added += run.adds.length - pairs;
+      items.push(run);
+      run = null;
+    };
+    ops.forEach(function (op) {
+      if (op[0] === "eq") { close(); items.push({ t: "eq", a: ua[op[1]], b: ub[op[2]] }); return; }
+      if (!run) run = { t: "run", dels: [], adds: [] };
+      if (op[0] === "del") run.dels.push(ua[op[1]]); else run.adds.push(ub[op[2]]);
+    });
+    close();
+    return { items: items, added: added, removed: removed, changed: changed, coarse: ops.coarse, para: !!o.para };
+  }
+
+  function plural(n, one, many) { return n + " " + (n === 1 ? one : many); }
+
+  function summaryText(res) {
+    var w = res.para ? ["paragraph", "paragraphs"] : ["line", "lines"];
+    if (!res.added && !res.removed && !res.changed) return "No differences found.";
+    return plural(res.added, w[0], w[1]) + " added, " + res.removed + " removed, " + res.changed + " changed";
+  }
+
+  // Standard unified diff text with 3 lines of context.
+  function unifiedText(res, nameA, nameB) {
+    var ctx = 3, entries = [], oc = 0, nc = 0, i, e;
+    res.items.forEach(function (it) {
+      if (it.t === "eq") {
+        it.a.lines.forEach(function (l) { entries.push({ c: " ", s: l, o0: oc, n0: nc }); oc++; nc++; });
+      } else {
+        it.dels.forEach(function (u) { u.lines.forEach(function (l) { entries.push({ c: "-", s: l, o0: oc, n0: nc }); oc++; }); });
+        it.adds.forEach(function (u) { u.lines.forEach(function (l) { entries.push({ c: "+", s: l, o0: oc, n0: nc }); nc++; }); });
+      }
+    });
+    var ranges = [];
+    for (i = 0; i < entries.length; i++) {
+      if (entries[i].c === " ") continue;
+      var lo = Math.max(0, i - ctx), hi = Math.min(entries.length - 1, i + ctx);
+      var last = ranges[ranges.length - 1];
+      if (last && lo <= last[1] + 1) last[1] = hi; else ranges.push([lo, hi]);
+    }
+    if (!ranges.length) return "";
+    var out = ["--- " + nameA, "+++ " + nameB];
+    ranges.forEach(function (r) {
+      var oldN = 0, newN = 0, oldStart = null, newStart = null, body = [];
+      for (i = r[0]; i <= r[1]; i++) {
+        e = entries[i];
+        if (e.c !== "+") { oldN++; if (oldStart === null) oldStart = e.o0 + 1; }
+        if (e.c !== "-") { newN++; if (newStart === null) newStart = e.n0 + 1; }
+        body.push(e.c + e.s);
+      }
+      if (oldStart === null) oldStart = entries[r[0]].o0;
+      if (newStart === null) newStart = entries[r[0]].n0;
+      out.push("@@ -" + oldStart + "," + oldN + " +" + newStart + "," + newN + " @@");
+      out = out.concat(body);
+    });
+    return out.join("\n") + "\n";
+  }
+
+  // ---- Conflict markers ----
+  var RE_OURS = /^<{7}(?: (.*))?$/;
+  var RE_BASE = /^\|{7}(?: (.*))?$/;
+  var RE_SEP = /^={7}$/;
+  var RE_THEIRS = /^>{7}(?: (.*))?$/;
+
+  // -> { error, errorLine, segments, conflicts }
+  function parseConflicts(text) {
+    var lines = String(text == null ? "" : text).replace(/\r\n?/g, "\n").split("\n");
+    var segments = [], conflicts = [], plain = [], cur = null, state = 0, m, i, line;
+    var fail = function (n, msg) { return { error: "Line " + n + ": " + msg, errorLine: n, segments: [], conflicts: [] }; };
+    for (i = 0; i < lines.length; i++) {
+      line = lines[i];
+      var n = i + 1;
+      if ((m = RE_OURS.exec(line))) {
+        if (state !== 0) return fail(n, "found another <<<<<<< before the conflict that opened on line " + cur.start + " was closed. Add the missing ======= or >>>>>>> line.");
+        if (plain.length) { segments.push({ type: "text", lines: plain }); plain = []; }
+        cur = { type: "conflict", start: n, end: n, oursLabel: m[1] || "", baseLabel: "", theirsLabel: "", ours: [], base: null, theirs: [], raw: [line] };
+        state = 1;
+        continue;
+      }
+      if (state === 0) {
+        if (RE_BASE.test(line)) return fail(n, "found ||||||| outside a conflict. A conflict must start with <<<<<<<.");
+        if (RE_THEIRS.test(line)) return fail(n, "found >>>>>>> without a matching <<<<<<< above it.");
+        plain.push(line);
+        continue;
+      }
+      cur.raw.push(line);
+      if ((m = RE_BASE.exec(line))) {
+        if (state !== 1) return fail(n, "found ||||||| in the wrong place. The base section comes right after the ours section.");
+        cur.base = []; cur.baseLabel = m[1] || ""; state = 2; continue;
+      }
+      if (RE_SEP.test(line)) {
+        if (state === 3) return fail(n, "found a second ======= in the conflict that opened on line " + cur.start + ".");
+        state = 3; continue;
+      }
+      if ((m = RE_THEIRS.exec(line))) {
+        if (state !== 3) return fail(n, "found >>>>>>> before the ======= line of the conflict that opened on line " + cur.start + ".");
+        cur.theirsLabel = m[1] || ""; cur.end = n;
+        cur.id = conflicts.length;
+        conflicts.push(cur); segments.push(cur); cur = null; state = 0; continue;
+      }
+      (state === 1 ? cur.ours : state === 2 ? cur.base : cur.theirs).push(line);
+    }
+    if (state !== 0) return fail(cur.start, "the conflict that starts here is never closed. It needs " + (state === 3 ? ">>>>>>>" : "======= and >>>>>>>") + " after it.");
+    if (plain.length) segments.push({ type: "text", lines: plain });
+    return { error: "", errorLine: 0, segments: segments, conflicts: conflicts };
+  }
+
+  // choices: array indexed by conflict id of "ours" | "theirs" | "ours-theirs" | "theirs-ours" | undefined.
+  // -> { text, unresolved }
+  function resolve(parsed, choices) {
+    var out = [], unresolved = 0;
+    parsed.segments.forEach(function (seg) {
+      if (seg.type === "text") { out = out.concat(seg.lines); return; }
+      var c = choices[seg.id];
+      if (c === "ours") out = out.concat(seg.ours);
+      else if (c === "theirs") out = out.concat(seg.theirs);
+      else if (c === "ours-theirs") out = out.concat(seg.ours, seg.theirs);
+      else if (c === "theirs-ours") out = out.concat(seg.theirs, seg.ours);
+      else { unresolved++; out = out.concat(seg.raw); }
+    });
+    return { text: out.join("\n"), unresolved: unresolved };
+  }
+
+  function selfTest() {
+    var fails = [];
+    var check = function (name, ok) { if (!ok) fails.push(name); };
+    var o = {};
+    // 1. Example: one changed task line and one changed word in a paragraph.
+    var r = diff(EXAMPLE_A, EXAMPLE_B, o);
+    check("example counts", r.changed === 2 && r.added === 0 && r.removed === 0);
+    var para = r.items.filter(function (it) { return it.t === "run" && it.dels[0].lines[0].indexOf("planning call") >= 0; })[0];
+    var marked = para.words[0].b.filter(function (s) { return s.ch; }).map(function (s) { return s.s; });
+    check("word highlight is the single word", marked.length === 1 && marked[0] === "11");
+    // 2. Identical text.
+    check("identical", summaryText(diff("a\nb\n", "a\nb\n", o)) === "No differences found.");
+    // 3. Added, removed.
+    var r3 = diff("a\nb\nc\n", "a\nc\nd\n", o);
+    check("add/remove", r3.added === 1 && r3.removed === 1 && r3.changed === 0);
+    // 4. Wrapping.
+    var long1 = "First sentence of the note is here. Second sentence follows it directly.\n\n- item one\n- item two\n";
+    var long2 = "First sentence of the note\nis here. Second sentence\nfollows it directly.\n\n- item one\n- item two\n";
+    check("wrap differs by line", diff(long1, long2, {}).changed + diff(long1, long2, {}).added > 0);
+    var rw = diff(long1, long2, { para: true });
+    check("wrap ignored by paragraph", !rw.added && !rw.removed && !rw.changed);
+    // 5. Whitespace and case.
+    check("trailing ws", !diff("a  \nb\n", "a\nb\n", { ws: true }).changed && diff("a  \nb\n", "a\nb\n", {}).changed === 1);
+    check("case", !diff("Hello\n", "hello\n", { icase: true }).changed);
+    // 6. Front matter as one block.
+    var fmA = "---\na: 1\nb: 2\n---\nBody\n", fmB = "---\na: 1\nb: 3\n---\nBody\n";
+    var rf = diff(fmA, fmB, { fm: true });
+    check("front matter block", rf.changed === 1 && rf.items[0].t === "run" && rf.items[0].dels[0].lines.length === 4);
+    // 7. Unified diff text.
+    var u = unifiedText(diff("a\nb\nc\n", "a\nB\nc\n", o), "original", "changed");
+    check("unified text", u === "--- original\n+++ changed\n@@ -1,3 +1,3 @@\n a\n-b\n+B\n c\n");
+    var u2 = unifiedText(diff("", "x\n", o), "original", "changed");
+    check("unified from empty", u2 === "--- original\n+++ changed\n@@ -0,0 +1,1 @@\n+x\n");
+    // 8. Larger diff exercises the shortest edit script.
+    var big1 = [], big2 = [], i;
+    for (i = 0; i < 400; i++) { big1.push("line " + i); big2.push(i % 50 === 7 ? "edited " + i : "line " + i); }
+    var rb = diff(big1.join("\n"), big2.join("\n"), o);
+    check("big diff", rb.changed === 8 && !rb.added && !rb.removed);
+    // 9. Conflicts: two conflicts, one diff3.
+    var p = parseConflicts(EXAMPLE_C);
+    check("two conflicts", !p.error && p.conflicts.length === 2 && p.conflicts[1].base && p.conflicts[0].base === null);
+    check("labels", p.conflicts[0].oursLabel === "HEAD" && p.conflicts[0].theirsLabel === "origin/main" && p.conflicts[1].baseLabel === "3f2a9c1");
+    check("unresolved keeps markers", resolve(p, []).unresolved === 2 && resolve(p, []).text === EXAMPLE_C);
+    var half = resolve(p, ["ours"]);
+    check("half resolved", half.unresolved === 1);
+    var opts = ["ours", "theirs", "ours-theirs", "theirs-ours"];
+    opts.forEach(function (c) {
+      var res = resolve(p, [c, c]);
+      var t = res.text;
+      var hasMarkers = /^(<{7}|>{7}|\|{7})/m.test(t);
+      var first = { ours: "Start: 10:00\nBring the budget draft.", theirs: "Start: 11:00\nBring the agenda.",
+        "ours-theirs": "Start: 10:00\nBring the budget draft.\nStart: 11:00\nBring the agenda.",
+        "theirs-ours": "Start: 11:00\nBring the agenda.\nStart: 10:00\nBring the budget draft." }[c];
+      var second = { ours: "- [ ] Book the room", theirs: "- [x] Book a room",
+        "ours-theirs": "- [ ] Book the room\n- [x] Book a room", "theirs-ours": "- [x] Book a room\n- [ ] Book the room" }[c];
+      var expected = "# Weekly plan\n\n" + first + "\n\n## Tasks\n\n" + second + "\n\nThanks!\n";
+      check("resolve " + c, res.unresolved === 0 && !hasMarkers && t === expected);
+    });
+    // 10. Malformed markers report a line number.
+    var e1 = parseConflicts("a\n<<<<<<< HEAD\nx\n=======\ny\n");
+    check("unclosed", e1.error.indexOf("Line 2:") === 0);
+    var e2 = parseConflicts("a\nb\n>>>>>>> other\n");
+    check("stray close", e2.error.indexOf("Line 3:") === 0);
+    var e3 = parseConflicts("<<<<<<< a\nx\n<<<<<<< b\n");
+    check("nested open", e3.error.indexOf("Line 3:") === 0);
+    var e4 = parseConflicts("<<<<<<< a\nx\n=======\ny\n=======\nz\n>>>>>>> b\n");
+    check("second separator", e4.error.indexOf("Line 5:") === 0);
+    var e5 = parseConflicts("<<<<<<< a\nx\n>>>>>>> b\n");
+    check("missing separator", e5.error.indexOf("Line 3:") === 0);
+    // 11. A Markdown heading underline outside a conflict is not a marker.
+    var h = parseConflicts("Title\n=======\ntext\n");
+    check("setext heading", !h.error && h.conflicts.length === 0);
+    return fails;
+  }
+
+  return {
+    MAX_LINES: MAX_LINES, MINUS: MINUS, EXAMPLE_A: EXAMPLE_A, EXAMPLE_B: EXAMPLE_B, EXAMPLE_C: EXAMPLE_C,
+    splitLines: splitLines, diff: diff, wordDiff: wordDiff, summaryText: summaryText, unifiedText: unifiedText,
+    parseConflicts: parseConflicts, resolve: resolve, selfTest: selfTest
+  };
+})();
+
+(function () {
+  if (typeof document === "undefined") return;
+  var $ = function (id) { return document.getElementById(id); };
+  var MINUS = MdDiff.MINUS;
+
+  function el(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+
+  function copyText(text, statusEl) {
+    var done = function () { statusEl.textContent = "Copied."; };
+    var fallback = function () {
+      var ta = document.createElement("textarea");
+      ta.value = text;
+      ta.setAttribute("readonly", "");
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      ta.setSelectionRange(0, text.length);
+      var ok = false;
+      try { ok = document.execCommand("copy"); } catch (err) { ok = false; }
+      document.body.removeChild(ta);
+      statusEl.textContent = ok ? "Copied." : "Copy failed. Select the text and copy it by hand.";
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, fallback);
+    else fallback();
+  }
+
+  // ---- Compare mode ----
+  var ta = $("text-a"), tb = $("text-b"), out = $("diff-out");
+  var lastResult = null;
+  var timer = null;
+
+  function options() {
+    return { ws: $("opt-ws").checked, icase: $("opt-case").checked, para: $("opt-para").checked, fm: $("opt-fm").checked };
+  }
+  function viewMode() { return document.querySelector('input[name="view"]:checked').value; }
+
+  function fillText(txt, segs, side) {
+    if (!segs) { txt.textContent = side; return; }
+    segs.forEach(function (s) {
+      if (s.ch) txt.appendChild(el(side === "del" ? "del" : "ins", "", s.s));
+      else txt.appendChild(document.createTextNode(s.s));
+    });
+  }
+
+  function row(kind, sign, unit, segs) {
+    var r = el("div", "drow d-" + kind);
+    r.appendChild(el("span", "sign", sign));
+    var t = el("span", "txt");
+    fillText(t, segs, unit.lines.join("\n"));
+    r.appendChild(t);
+    return r;
+  }
+
+  // Builds the visible entries; hidden eq runs become expandable groups.
+  function layout(items, collapse) {
+    var vis = items.map(function () { return !collapse; });
+    if (collapse) {
+      items.forEach(function (it, i) {
+        if (it.t !== "run") return;
+        for (var j = Math.max(0, i - 3); j <= Math.min(items.length - 1, i + 3); j++) vis[j] = true;
+      });
+    }
+    var groups = [], hidden = null;
+    items.forEach(function (it, i) {
+      if (vis[i]) { hidden = null; groups.push({ items: [it], hidden: false }); }
+      else {
+        if (!hidden) { hidden = { items: [], hidden: true }; groups.push(hidden); }
+        hidden.items.push(it);
+      }
+    });
+    return groups;
+  }
+
+  function unitCount(items, unitName) {
+    var n = 0;
+    items.forEach(function (it) { n += it.a.lines.length; });
+    return n === 1 ? "Show 1 unchanged " + unitName : "Show " + n + " unchanged " + unitName + "s";
+  }
+
+  function unifiedRows(it) {
+    var rows = [];
+    if (it.t === "eq") { rows.push(row("eq", " ", it.b, null)); return rows; }
+    it.dels.forEach(function (u, i) { rows.push(row("del", MINUS, u, it.words[i] ? it.words[i].a : null)); });
+    it.adds.forEach(function (u, i) { rows.push(row("add", "+", u, it.words[i] ? it.words[i].b : null)); });
+    return rows;
+  }
+
+  function renderUnified(parent, res, collapse, unitName) {
+    layout(res.items, collapse).forEach(function (g) {
+      if (!g.hidden) { unifiedRows(g.items[0]).forEach(function (r) { parent.appendChild(r); }); return; }
+      var btn = el("button", "expand", unitCount(g.items, unitName));
+      btn.type = "button";
+      btn.addEventListener("click", function () {
+        var first = null;
+        g.items.forEach(function (it) {
+          var r = unifiedRows(it)[0];
+          if (!first) { first = r; r.tabIndex = -1; }
+          parent.insertBefore(r, btn);
+        });
+        parent.removeChild(btn);
+        if (first) first.focus();
+      });
+      parent.appendChild(btn);
+    });
+  }
+
+  function cell(tr, kind, sign, unit, segs, side) {
+    var td = el("td", unit ? "" : "d-empty");
+    if (unit) td.appendChild(row(kind, sign, unit, segs));
+    tr.appendChild(td);
+    return td;
+  }
+
+  function sideRows(it) {
+    var rows = [];
+    if (it.t === "eq") {
+      var tr = el("tr");
+      cell(tr, "eq", " ", it.a, null);
+      cell(tr, "eq", " ", it.b, null);
+      return [tr];
+    }
+    var n = Math.max(it.dels.length, it.adds.length);
+    for (var i = 0; i < n; i++) {
+      var r = el("tr");
+      cell(r, "del", MINUS, it.dels[i], it.words[i] ? it.words[i].a : null);
+      cell(r, "add", "+", it.adds[i], it.words[i] ? it.words[i].b : null);
+      rows.push(r);
+    }
+    return rows;
+  }
+
+  function renderSide(parent, res, collapse, unitName) {
+    var table = el("table");
+    var head = el("thead"), hr = el("tr");
+    var h1 = el("th", "", "Original (older)"), h2 = el("th", "", "Changed (newer)");
+    h1.scope = "col"; h2.scope = "col";
+    hr.appendChild(h1); hr.appendChild(h2); head.appendChild(hr); table.appendChild(head);
+    var body = el("tbody");
+    table.appendChild(body);
+    layout(res.items, collapse).forEach(function (g) {
+      if (!g.hidden) { sideRows(g.items[0]).forEach(function (r) { body.appendChild(r); }); return; }
+      var tr = el("tr"), td = el("td", "expand-cell");
+      td.colSpan = 2;
+      var btn = el("button", "expand", unitCount(g.items, unitName));
+      btn.type = "button";
+      btn.addEventListener("click", function () {
+        var first = null;
+        g.items.forEach(function (it) {
+          var r = sideRows(it)[0];
+          if (!first) { first = r; r.tabIndex = -1; }
+          body.insertBefore(r, tr);
+        });
+        body.removeChild(tr);
+        if (first) first.focus();
+      });
+      td.appendChild(btn); tr.appendChild(td); body.appendChild(tr);
+    });
+    parent.appendChild(table);
+  }
+
+  function showNotice(node, msg) {
+    node.textContent = msg || "";
+    node.hidden = !msg;
+  }
+
+  function updateCompare() {
+    var a = ta.value, b = tb.value;
+    out.textContent = "";
+    lastResult = null;
+    $("btn-copy-diff").disabled = true;
+    $("status-diff").textContent = "";
+    if (!a && !b) {
+      $("summary").textContent = "Paste two versions, or load the example.";
+      showNotice($("notice"), "");
+      out.hidden = true;
+      return;
+    }
+    var la = MdDiff.splitLines(a).length, lb = MdDiff.splitLines(b).length;
+    if (la > MdDiff.MAX_LINES || lb > MdDiff.MAX_LINES) {
+      $("summary").textContent = "These notes are too long to compare here.";
+      showNotice($("notice"), "This tool compares up to 5,000 lines on each side, and these have " + la + " and " + lb + ". Compare a section at a time, or use git diff on your computer.");
+      out.hidden = true;
+      return;
+    }
+    var res = MdDiff.diff(a, b, options());
+    lastResult = res;
+    $("summary").textContent = MdDiff.summaryText(res);
+    showNotice($("notice"), res.coarse ? "These versions differ so much that word-level matching was skipped for part of them. Every line in the differing section is shown as removed or added." : "");
+    var unitName = options().para ? "paragraph" : "line";
+    var hasChange = res.added || res.removed || res.changed;
+    if (!hasChange) { out.hidden = true; return; }
+    out.hidden = false;
+    var collapse = $("opt-collapse").checked;
+    if (viewMode() === "side") renderSide(out, res, collapse, unitName); else renderUnified(out, res, collapse, unitName);
+    $("btn-copy-diff").disabled = false;
+  }
+
+  function schedule() {
+    clearTimeout(timer);
+    timer = setTimeout(updateCompare, 120);
+  }
+
+  ta.addEventListener("input", schedule);
+  tb.addEventListener("input", schedule);
+  ["opt-ws", "opt-case", "opt-para", "opt-fm", "opt-collapse"].forEach(function (id) { $(id).addEventListener("change", updateCompare); });
+  Array.prototype.forEach.call(document.querySelectorAll('input[name="view"]'), function (r) { r.addEventListener("change", updateCompare); });
+  $("btn-example").addEventListener("click", function () { ta.value = MdDiff.EXAMPLE_A; tb.value = MdDiff.EXAMPLE_B; updateCompare(); });
+  $("btn-swap").addEventListener("click", function () { var t = ta.value; ta.value = tb.value; tb.value = t; updateCompare(); });
+  $("btn-clear").addEventListener("click", function () { ta.value = ""; tb.value = ""; updateCompare(); ta.focus(); });
+  $("btn-copy-diff").addEventListener("click", function () {
+    if (!lastResult) return;
+    var txt = MdDiff.unifiedText(lastResult, "original", "changed");
+    if (!txt) { $("status-diff").textContent = "Nothing to copy: no differences."; return; }
+    copyText(txt, $("status-diff"));
+  });
+
+  // ---- Conflict mode ----
+  var tc = $("text-c"), parsed = null, choices = [];
+  var CHOICES = [["ours", "Keep ours"], ["theirs", "Keep theirs"], ["ours-theirs", "Keep both (ours first)"], ["theirs-ours", "Keep both (theirs first)"]];
+
+  function updatePreview() {
+    if (!parsed || parsed.error || !parsed.conflicts.length) {
+      $("preview").textContent = "";
+      $("btn-copy-resolved").disabled = true;
+      showNotice($("marker-warning"), "");
+      return;
+    }
+    var res = MdDiff.resolve(parsed, choices);
+    $("preview").textContent = res.text;
+    var left = res.unresolved;
+    $("conflict-summary").textContent = (parsed.conflicts.length - left) + " of " + plural(parsed.conflicts.length, "conflict", "conflicts") + " resolved.";
+    showNotice($("marker-warning"), left ? plural(left, "conflict still has", "conflicts still have") + " markers in the preview. Choose a side for each one to get a clean note." : "");
+    $("btn-copy-resolved").disabled = left > 0;
+    $("status-resolved").textContent = "";
+  }
+
+  function plural(n, one, many) { return n + " " + (n === 1 ? one : many); }
+
+  function conflictLabel(prefix, label) { return label ? prefix + " (" + label + ")" : prefix; }
+
+  function renderConflicts() {
+    var list = $("conflict-list");
+    list.textContent = "";
+    choices = [];
+    parsed = null;
+    $("btn-copy-resolved").disabled = true;
+    $("status-resolved").textContent = "";
+    if (!tc.value.trim()) {
+      showNotice($("conflict-error"), "");
+      $("conflict-summary").textContent = "Paste a file that contains conflict markers, or load the example.";
+      updatePreview();
+      return;
+    }
+    parsed = MdDiff.parseConflicts(tc.value);
+    showNotice($("conflict-error"), parsed.error ? "Cannot read the markers. " + parsed.error : "");
+    if (parsed.error) {
+      $("conflict-summary").textContent = "Fix the markers on line " + parsed.errorLine + " to continue.";
+      updatePreview();
+      return;
+    }
+    if (!parsed.conflicts.length) {
+      $("conflict-summary").textContent = "No conflict markers found in this text. Nothing to resolve.";
+      updatePreview();
+      return;
+    }
+    parsed.conflicts.forEach(function (c) {
+      var fs = el("fieldset", "conflict");
+      fs.appendChild(el("legend", "", "Conflict " + (c.id + 1) + " (lines " + c.start + "–" + c.end + ")"));
+      fs.appendChild(el("p", "hint", conflictLabel("Ours", c.oursLabel) + " compared with " + conflictLabel("theirs", c.theirsLabel) + ". Lines marked " + MINUS + " are only in ours; lines marked + are only in theirs."));
+      var box = el("div", "dview");
+      box.tabIndex = 0;
+      box.setAttribute("role", "region");
+      box.setAttribute("aria-label", "Differences between ours and theirs in conflict " + (c.id + 1));
+      var res = MdDiff.diff(c.ours.join("\n"), c.theirs.join("\n"), {});
+      if (res.items.length) renderUnified(box, res, false, "line"); else box.appendChild(el("div", "drow d-eq", "(both sides are empty)"));
+      fs.appendChild(box);
+      if (c.base) {
+        var det = el("details");
+        det.appendChild(el("summary", "", conflictLabel("Base section", c.baseLabel) + ": the text before either side changed it"));
+        det.appendChild(el("pre", "", c.base.length ? c.base.join("\n") : "(empty)"));
+        fs.appendChild(det);
+      }
+      var group = el("div", "checks");
+      CHOICES.forEach(function (ch) {
+        var label = el("label"), input = document.createElement("input");
+        input.type = "radio"; input.name = "conflict-" + c.id; input.value = ch[0];
+        input.addEventListener("change", function () { choices[c.id] = ch[0]; updatePreview(); });
+        label.appendChild(input);
+        label.appendChild(el("span", "", ch[1]));
+        group.appendChild(label);
+      });
+      fs.appendChild(group);
+      list.appendChild(fs);
+    });
+    $("conflict-summary").textContent = "0 of " + plural(parsed.conflicts.length, "conflict", "conflicts") + " resolved.";
+    updatePreview();
+  }
+
+  tc.addEventListener("input", renderConflicts);
+  $("btn-example-c").addEventListener("click", function () { tc.value = MdDiff.EXAMPLE_C; renderConflicts(); });
+  $("btn-clear-c").addEventListener("click", function () { tc.value = ""; renderConflicts(); tc.focus(); });
+  $("btn-copy-resolved").addEventListener("click", function () {
+    if (!parsed || parsed.error) return;
+    var res = MdDiff.resolve(parsed, choices);
+    if (res.unresolved) return;
+    copyText(res.text + (/\n$/.test(tc.value) ? "\n" : ""), $("status-resolved"));
+  });
+
+  // ---- Mode switch and defaults ----
+  function setMode() {
+    var m = document.querySelector('input[name="mode"]:checked').value;
+    $("panel-compare").hidden = m !== "compare";
+    $("panel-conflict").hidden = m !== "conflict";
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('input[name="mode"]'), function (r) { r.addEventListener("change", setMode); });
+  var wide = window.matchMedia && window.matchMedia("(min-width: 900px)").matches;
+  document.querySelector('input[name="view"][value="' + (wide ? "side" : "unified") + '"]').checked = true;
+  setMode();
+  if (/selftest/.test(location.hash)) console.log("Markdown diff self-test failures:", MdDiff.selfTest());
+})();
+</script>
+</body>
+</html>

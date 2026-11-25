@@ -174,7 +174,7 @@
         <ol>
           <li><strong>Find the commit.</strong> List the commits that changed the file. See <a href="https://git-scm.com/docs/git-log" target="_blank" rel="noopener">git log</a>.
 <pre tabindex="0" role="region" aria-label="List commits that changed a note"><code>git log --oneline -- "Projects/Plan.md"</code></pre></li>
-          <li><strong>Check it.</strong> Compare the old version with the current one: <code>git diff &lt;commit&gt; -- "Projects/Plan.md"</code>.</li>
+          <li><strong>Check it.</strong> Compare the old version with the current one: <code>git diff &lt;commit&gt; -- "Projects/Plan.md"</code>. Without a terminal, paste both versions into the <a href="/tools/markdown-diff">free Markdown diff tool</a>, which compares them word by word in your browser.</li>
           <li><strong>Restore it.</strong> This overwrites the file in your working folder with the old version, so make sure the current content is committed or copied first. See <a href="https://git-scm.com/docs/git-restore" target="_blank" rel="noopener">git restore</a>.
 <pre tabindex="0" role="region" aria-label="Restore an earlier version of a note"><code>git restore --source=&lt;commit&gt; -- "Projects/Plan.md"
 git add "Projects/Plan.md"
