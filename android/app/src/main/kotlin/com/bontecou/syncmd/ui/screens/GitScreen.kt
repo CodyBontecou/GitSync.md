@@ -200,7 +200,9 @@ fun GitScreen(
             onSwitch = { navigate(GitDestination.Branches) },
         )
 
-        if (workspaceFiles > 0) WorkspaceSuggestionCard(workspaceFiles, enabled = !pullBusy, onStop = { stoppingWorkspace = true })
+        // Always enabled, like iOS outside a sync: Git work is serialized per repository, and a status
+        // read on entering the tab must not swallow the tap.
+        if (workspaceFiles > 0) WorkspaceSuggestionCard(workspaceFiles, onStop = { stoppingWorkspace = true })
 
         GitRecoveryNotes(pullVM, pullContext)
 
@@ -281,7 +283,7 @@ fun GitScreen(
  * between devices (iOS `VaultGitTab.workspaceSuggestionCard`).
  */
 @Composable
-private fun WorkspaceSuggestionCard(count: Int, enabled: Boolean, onStop: () -> Unit) {
+private fun WorkspaceSuggestionCard(count: Int, onStop: () -> Unit) {
     val c = M3.colors
     com.bontecou.syncmd.ui.theme.M3OutlinedCard(Modifier.padding(start = 16.dp, end = 16.dp, top = 12.dp).testTag("git-workspace-suggestion").semantics { testTagsAsResourceId = true }) {
         Text(stringResource(R.string.stop_tracking_suggestion), style = M3Type.badge, color = c.onVar)
@@ -290,7 +292,7 @@ private fun WorkspaceSuggestionCard(count: Int, enabled: Boolean, onStop: () -> 
         Text(stringResource(if (count == 1) R.string.stop_tracking_suggestion_body_one else R.string.stop_tracking_suggestion_body_many),
             Modifier.padding(top = 4.dp), style = M3Type.bodyMedium, color = c.onVar)
         M3OutlinedButton(stringResource(R.string.stop_tracking_suggestion_action), onStop, Modifier.padding(top = 12.dp).testTag("git-stop-tracking-workspace"),
-            size = M3ButtonSize.Medium, enabled = enabled)
+            size = M3ButtonSize.Medium)
     }
 }
 

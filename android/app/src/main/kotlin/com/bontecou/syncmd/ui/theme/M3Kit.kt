@@ -1,3 +1,5 @@
+@file:OptIn(androidx.compose.ui.ExperimentalComposeUiApi::class)
+
 package com.bontecou.syncmd.ui.theme
 
 import com.bontecou.syncmd.ui.util.CountedPhrase
@@ -101,6 +103,7 @@ import androidx.compose.ui.semantics.paneTitle
 import androidx.compose.ui.semantics.progressBarRangeInfo
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
@@ -2260,7 +2263,8 @@ fun VaultTab.m3Label(): String = stringResource(
 /** The 4-tab vault navigation bar (Changes · Files · History · Git) with the change count on Changes. */
 @Composable
 fun M3VaultNavigationBar(selected: VaultTab, onSelect: (VaultTab) -> Unit, modifier: Modifier = Modifier, changes: Int? = null) {
-    M3NavigationBar(modifier.testTag("vault-navigation")) {
+    // Tab tags double as resource ids so device e2e tests can select a tab (issue #149).
+    M3NavigationBar(modifier.testTag("vault-navigation").semantics { testTagsAsResourceId = true }) {
         VaultTab.values().forEach { tab ->
             M3NavigationBarItem(
                 tab.m3Label(), tab.icon, tab == selected, onClick = { if (tab != selected) onSelect(tab) },
