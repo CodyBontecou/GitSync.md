@@ -8523,6 +8523,24 @@
     },
     "%lld files": {
       "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld file"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld files"
+                }
+              }
+            }
+          }
+        },
         "ar": {
           "stringUnit": {
             "state": "translated",
@@ -11150,6 +11168,24 @@
     },
     "%lld notes & images": {
       "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld note or image"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld notes & images"
+                }
+              }
+            }
+          }
+        },
         "ar": {
           "stringUnit": {
             "state": "translated",
@@ -12998,6 +13034,24 @@
     },
     "%lld sensitive files": {
       "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld sensitive file"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld sensitive files"
+                }
+              }
+            }
+          }
+        },
         "ar": {
           "stringUnit": {
             "state": "translated",
@@ -13614,6 +13668,24 @@
     },
     "%lld unchecked files": {
       "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld unchecked file"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld unchecked files"
+                }
+              }
+            }
+          }
+        },
         "ar": {
           "stringUnit": {
             "state": "translated",
@@ -240377,6 +240449,24 @@
     },
     "Show all %lld files": {
       "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Show %lld file"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Show all %lld files"
+                }
+              }
+            }
+          }
+        },
         "ar": {
           "stringUnit": {
             "state": "translated",

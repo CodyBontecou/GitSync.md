@@ -56,6 +56,18 @@ struct FolderPublicationView: View {
         coordinator.records.filter { $0.phase != .completed }
     }
     private var isBusy: Bool { coordinator.isBusy || operation != nil }
+
+    /// `.creatingRemote` is saved before the GitHub request goes out. While
+    /// that request is running it is a normal step; only a record left in it
+    /// (app quit or crashed mid-request) or `.creationUnknown` needs the
+    /// "check GitHub before retrying" recovery copy.
+    private func needsRemoteCheck(_ phase: FolderPublicationPhase?) -> Bool {
+        switch phase {
+        case .creationUnknown: return true
+        case .creatingRemote: return !isBusy
+        default: return false
+        }
+    }
     private var availableAccounts: [GitHubAccount] {
         state.gitHubAccounts.filter { state.gitHubToken(for: $0.login)?.isEmpty == false }
     }
@@ -176,7 +188,7 @@ struct FolderPublicationView: View {
         case nil, .review, .preparing:
             title = String(localized: "Your folder,")
             muted = String(localized: "on GitHub.")
-        case .creatingRemote, .creationUnknown:
+        case .creationUnknown, .creatingRemote where needsRemoteCheck(phase):
             title = String(localized: "Check GitHub")
             muted = String(localized: "before retrying.")
         case .published:
@@ -371,7 +383,7 @@ struct FolderPublicationView: View {
                             .font(TideFont.sans(16, .semibold, relativeTo: .body))
                             .foregroundStyle(Tide.ink)
                             .lineLimit(1)
-                        Text(verbatim: "\(RepoDiscoveryView.friendlyLocation(for: URL(fileURLWithPath: record.folderPath))) · \(record.files.count) files")
+                        Text(verbatim: "\(RepoDiscoveryView.friendlyLocation(for: URL(fileURLWithPath: record.folderPath))) · \(String(localized: "\(record.files.count) files"))")
                             .font(TideFont.mono(11))
                             .foregroundStyle(Tide.inkFaint)
                             .lineLimit(2)
@@ -401,7 +413,9 @@ struct FolderPublicationView: View {
                 .padding(.vertical, 14)
             }
             AddVaultStatusLine(
-                text: phaseLabel(record.phase),
+                text: record.phase == .creatingRemote && !needsRemoteCheck(record.phase)
+                    ? String(localized: "Local commit prepared")
+                    : phaseLabel(record.phase),
                 tint: record.phase == .published ? Tide.synced : Tide.behind,
                 systemImage: record.phase == .published ? "checkmark" : "circle.fill"
             )
@@ -827,7 +841,7 @@ struct FolderPublicationView: View {
                             .font(TideFont.mono(11.5))
                             .foregroundStyle(Tide.inkMid)
                             .textSelection(.enabled)
-                        Text(verbatim: "\(record.selectedPaths.count) files · main")
+                        Text(verbatim: "\(String(localized: "\(record.selectedPaths.count) files")) · main")
                             .font(TideFont.mono(11.5))
                             .foregroundStyle(Tide.inkMid)
                         if let oid = record.commitOID {
@@ -865,11 +879,12 @@ struct FolderPublicationView: View {
     @ViewBuilder
     private func publicationNotes(_ record: FolderPublicationRecord) -> some View {
         switch record.phase {
-        case .creationUnknown, .creatingRemote:
+        case .creationUnknown, .creatingRemote where needsRemoteCheck(record.phase):
             AddVaultFootnote(text: String(localized: "GitHub may have created the repository before the response was lost. Check its current state before continuing. A matching repository requires your explicit approval."))
         case .published:
             AddVaultFootnote(text: String(localized: "Your commit is on GitHub. Finish adding this folder to GitSync.md to enable normal repository controls."))
-        case .prepared, .remoteCreated, .pushing, .pushUnknown:
+        case .prepared, .creatingRemote, .remoteCreated, .pushing, .pushUnknown:
+            // `.creatingRemote` reaches here only while its request is running.
             AddVaultFootnote(text: record.remote == nil
                  ? (record.repositoryIsPrivate
                     ? String(localized: "This uploads the saved commit to a new private GitHub repository. Later edits to your files are not included in this upload.")
