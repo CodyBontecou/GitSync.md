@@ -1,0 +1,16 @@
+Commit b65fe5bf9cb9d7272797af888eb756db06bb13b8 on the Pixel 7, 2026-11-25.
+
+Phone layout (density 420):
+issue149-android-stop-tracking-changes-longpress run 1: exit 0 | PASS (started on 2C061FDH200CJN) — 17 passed, 0 failed, 0 errored, 0 skipped (16.1s) | PASS (file): one commit with only the index removal and .gitignore; files kept on disk
+issue149-android-stop-tracking-changes-longpress run 2: exit 0 | PASS (started on 2C061FDH200CJN) — 17 passed, 0 failed, 0 errored, 0 skipped (16.0s) | PASS (file): one commit with only the index removal and .gitignore; files kept on disk
+issue149-android-stop-tracking-diff-menu run 1: exit 0 | PASS (started on 2C061FDH200CJN) — 23 passed, 0 failed, 0 errored, 0 skipped (23.7s) | PASS (workspace): one commit with only the index removal and .gitignore; files kept on disk
+issue149-android-stop-tracking-diff-menu run 2: exit 0 | PASS (started on 2C061FDH200CJN) — 23 passed, 0 failed, 0 errored, 0 skipped (23.6s) | PASS (workspace): one commit with only the index removal and .gitignore; files kept on disk
+issue149-android-stop-tracking-git-suggestion run 1: exit 0 | PASS (started on 2C061FDH200CJN) — 16 passed, 0 failed, 0 errored, 0 skipped (16.6s) | PASS (workspace): one commit with only the index removal and .gitignore; files kept on disk
+issue149-android-stop-tracking-git-suggestion run 2: exit 0 | PASS (started on 2C061FDH200CJN) — 16 passed, 0 failed, 0 errored, 0 skipped (16.4s) | PASS (workspace): one commit with only the index removal and .gitignore; files kept on disk
+
+Large-screen layouts (wm density 260 = 664dp Medium, 160 = 1080dp Expanded; reset afterwards):
+large-screen-d160-1: PASS (started on 2C061FDH200CJN) — 27 passed, 0 failed, 0 errored, 0 skipped (22.7s)
+large-screen-d160-2: PASS (started on 2C061FDH200CJN) — 27 passed, 0 failed, 0 errored, 0 skipped (22.8s)
+large-screen-d260-1: PASS (started on 2C061FDH200CJN) — 27 passed, 0 failed, 0 errored, 0 skipped, 1 warning (23.5s)
+large-screen-d260-2: PASS (started on 2C061FDH200CJN) — 27 passed, 0 failed, 0 errored, 0 skipped (24.7s)
+check-result.sh both: PASS after each of the 4 large-screen runs

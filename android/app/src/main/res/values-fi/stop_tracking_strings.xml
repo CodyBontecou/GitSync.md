@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Stop tracking a file, folder or Obsidian workspace files (#149). Wording from the iOS catalog. -->
+<resources>
+    <string name="stop_tracking_menu" formatted="false">"Lopeta seuranta…"</string>
+    <string name="stop_tracking_title" formatted="false">"Lopetetaanko seuranta Gitissä?"</string>
+    <string name="stop_tracking_body" formatted="false">"GitSync.md poistaa sen Gitistä, lisää sen .gitignore-tiedostoon ja tekee siitä commitin. Se jää tälle laitteelle."</string>
+    <string name="stop_tracking_option_file" formatted="false">"Tämä tiedosto"</string>
+    <string name="stop_tracking_option_folder" formatted="false">"Sen kansio"</string>
+    <string name="stop_tracking_option_workspace" formatted="false">"Kaikki Obsidianin työtilatiedostot"</string>
+    <string name="stop_tracking_one_file" formatted="false">"1 tiedosto"</string>
+    <string name="stop_tracking_files">"%1$d tiedostoa"</string>
+    <string name="stop_tracking_note_workspace" formatted="false">"Kun muut laitteet pullaavat tämän commitin, Git poistaa niiden kopion. Obsidian luo uuden, kun se seuraavan kerran avaa holvin."</string>
+    <string name="stop_tracking_note_file" formatted="false">"Kun muut laitteet pullaavat tämän commitin, Git poistaa niiden kopion. Tallenna se niillä ensin, jos sitä tarvitaan. Se säilyy Git-historiassa."</string>
+    <string name="stop_tracking_confirm" formatted="false">"Lopeta seuranta"</string>
+    <string name="stop_tracking_done" formatted="false">"Seuranta lopetettu"</string>
+    <string name="stop_tracking_suggestion" formatted="false">"Ehdotus"</string>
+    <string name="stop_tracking_suggestion_title_one" formatted="false">"Obsidianin työtilatiedostoa seurataan"</string>
+    <string name="stop_tracking_suggestion_title_many">"%1$d Obsidianin työtilatiedostoa on seurannassa"</string>
+    <string name="stop_tracking_suggestion_body_one" formatted="false">"Jokainen laite tallentaa sinne oman ikkunaasettelunsa, joten se aiheuttaa usein ristiriitoja. Lopeta seuranta, niin se pysyy vain kullakin laitteella."</string>
+    <string name="stop_tracking_suggestion_body_many" formatted="false">"Jokainen laite tallentaa näihin tiedostoihin oman ikkunaasettelunsa, joten ne aiheuttavat usein ristiriitoja. Lopeta seuranta, niin ne pysyvät vain kullakin laitteella."</string>
+    <string name="stop_tracking_suggestion_action" formatted="false">"Lopeta työtilatiedostojen seuranta…"</string>
+    <string name="stop_tracking_error_invalid">"GitSync.md ei voi lopettaa kohteen ”%1$s” seurantaa."</string>
+    <string name="stop_tracking_error_not_tracked">"Git ei seuraa kohdetta ”%1$s”, ja se on jo ohitettu."</string>
+    <string name="stop_tracking_error_busy" formatted="false">"Odota, että nykyinen Git-toiminto valmistuu."</string>
+    <string name="stop_tracking_error_conflicts" formatted="false">"Ratkaise ensin ristiriidat"</string>
+</resources>

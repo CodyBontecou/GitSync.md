@@ -1,3 +1,5 @@
+@file:OptIn(androidx.compose.ui.ExperimentalComposeUiApi::class)
+
 package com.bontecou.syncmd.ui.screens
 
 import com.bontecou.syncmd.ui.util.quantityPhrase
@@ -38,6 +40,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.invisibleToUser
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.semantics.text
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
@@ -142,6 +145,8 @@ fun VaultScreen(
     syncViewModel: VaultSyncViewModel? = rememberVaultSyncViewModel(),
     onOpenConflicts: () -> Unit = onOpenGit,
     onOpenFileConflict: (String) -> Unit = { onOpenConflicts() },
+    /** Long-press › Stop tracking… on a changed file; off in hosts without Hilt. */
+    onStopTrackingEnabled: Boolean = syncViewModel != null,
 ) {
     var committing by rememberSaveable(repositoryPath) { mutableStateOf(false) }
     com.bontecou.syncmd.ui.util.RepositoryUpdatesEffect(repositoryPath) {
@@ -182,6 +187,8 @@ fun VaultScreen(
     val openInFilesFailed = stringResource(R.string.vault_open_in_files_failed)
     val copiedLabel = stringResource(R.string.vault_url_copied)
     var resolving by rememberSaveable(repositoryPath) { mutableStateOf(false) }
+    // Changes › long-press › Stop tracking… (issue #149); null in hosts that don't offer it.
+    var stopTrackingPath by rememberSaveable(repositoryPath) { mutableStateOf<String?>(null) }
 
     // A finished sync changed the repository: re-read status and the overview.
     LaunchedEffect(run?.result) { if (run?.result != null) { viewModel.loadStatus(); syncViewModel?.refresh() } }
@@ -253,7 +260,14 @@ fun VaultScreen(
         onPullThenPush = { syncViewModel?.pullThenPush() },
         onReviewFirst = { syncViewModel?.dismiss(); onReviewIncoming() },
         onPushToBranch = { syncViewModel?.pushToBranch() },
+        onStopTracking = if (onStopTrackingEnabled) ({ path: String -> stopTrackingPath = path }) else null,
     )
+    stopTrackingPath?.takeIf { requestContext != null }?.let { path ->
+        com.bontecou.syncmd.ui.components.StopTrackingHost(repositoryPath, path, onClose = {
+            stopTrackingPath = null
+            viewModel.loadStatus(); syncViewModel?.refresh()
+        })
+    }
     if (committing && requestContext != null) {
         com.bontecou.syncmd.ui.components.CommitSheet(repositoryPath, repoDisplayName,
             onDismiss = { committing = false; viewModel.loadStatus(); syncViewModel?.refresh(); onCommitSheetClosed() },
@@ -385,6 +399,7 @@ private fun VaultContent(
     onPushToBranch: () -> Unit = {},
     onOpenConflicts: () -> Unit = onOpenGit,
     onOpenFileConflict: (String) -> Unit = { onOpenConflicts() },
+    onStopTracking: ((String) -> Unit)? = null,
 ) {
     val c = M3.colors
     val status = ui.status
@@ -417,7 +432,7 @@ private fun VaultContent(
                         VaultStateHero(ui, onOpenGit, onPull, onCommit ?: onOpenGit, onPush, onPullThenPush, onOpenConflicts)
                         VaultNotices(ui, onDismissError, onDismissAttention, onResolveLocalChanges, onDismissLocalChanges, onDismissSync, onFinishUpdate)
                         if (status != null) {
-                            VaultChanges(status.allChanges, ui.overview?.lineCounts.orEmpty(), onOpenDiff, selectedFile, onOpenFileConflict)
+                            VaultChanges(status.allChanges, ui.overview?.lineCounts.orEmpty(), onOpenDiff, selectedFile, onOpenFileConflict, onStopTracking)
                             VaultLatestCommit(status, ui.overview, onOpen = { onSelectTab(VaultTab.HISTORY) })
                             if (ui.showDebugInfo) VaultDebugInfo(ui.repositoryPath, status)
                         }
@@ -680,7 +695,7 @@ private fun VaultNoRepository() {
 
 @Composable
 private fun VaultChanges(changes: List<GitStatusEntry>, counts: Map<String, FileLineCount>, onOpenDiff: (String) -> Unit, selectedFile: String? = null,
-    onOpenConflict: (String) -> Unit = onOpenDiff) {
+    onOpenConflict: (String) -> Unit = onOpenDiff, onStopTracking: ((String) -> Unit)? = null) {
     val c = M3.colors
     Column(Modifier.fillMaxWidth().testTag("vault-changes")) {
         M3SectionLabel(stringResource(R.string.ui_changes_bbd4b6a8), count = changes.size.takeIf { it > 0 }?.toString(),
@@ -693,7 +708,8 @@ private fun VaultChanges(changes: List<GitStatusEntry>, counts: Map<String, File
                 }
             } else changes.sortedBy { it.filePath }.forEachIndexed { index, entry ->
                 ChangedFileRow(entry, counts[entry.filePath], divider = index > 0, selected = entry.filePath == selectedFile,
-                    onClick = { if (entry.isConflicted) onOpenConflict(entry.filePath) else onOpenDiff(entry.filePath) })
+                    onClick = { if (entry.isConflicted) onOpenConflict(entry.filePath) else onOpenDiff(entry.filePath) },
+                    onStopTracking = onStopTracking?.takeIf { com.bontecou.syncmd.ui.viewmodels.canStopTracking(entry) }?.let { { it(entry.filePath) } })
             }
         }
     }
@@ -708,25 +724,38 @@ internal fun changeBadge(entry: GitStatusEntry): Pair<String, M3Tone> = when {
 }
 
 @Composable
-private fun ChangedFileRow(entry: GitStatusEntry, count: FileLineCount?, divider: Boolean, selected: Boolean = false, onClick: () -> Unit = {}) {
+private fun ChangedFileRow(entry: GitStatusEntry, count: FileLineCount?, divider: Boolean, selected: Boolean = false, onClick: () -> Unit = {},
+    onStopTracking: (() -> Unit)? = null) {
     val (letter, tone) = changeBadge(entry)
     val name = entry.filePath.substringAfterLast('/')
     val dir = entry.filePath.substringBeforeLast('/', "").let { if (it.isEmpty()) "/" else "$it/" }
     val stat: (@Composable RowScope.() -> Unit)? = if (count != null && !count.binary && (count.added > 0 || count.removed > 0)) { {
         M3DiffStat(count.added.takeIf { it > 0 }?.let { "+$it" }, count.removed.takeIf { it > 0 }?.let { "−$it" })
     } } else null
-    M3ListRow(
-        title = name,
-        meta = dir,
-        titleMaxLines = 1,
-        divider = divider,
-        selected = selected,
-        modifier = Modifier.testTag("vault-change:${entry.filePath}"),
-        contentPadding = PaddingValues(start = 16.dp, end = 20.dp, top = 8.dp, bottom = 8.dp),
-        leading = { M3LeadingLetter(letter, tone) },
-        trailing = stat,
-        onClick = onClick,
-    )
+    // Long-press opens the row's actions (issue #149: Stop tracking…), like the Files tab.
+    var menuOpen by remember { mutableStateOf(false) }
+    Box(Modifier.semantics { testTagsAsResourceId = true }) {
+        M3ListRow(
+            title = name,
+            meta = dir,
+            titleMaxLines = 1,
+            divider = divider,
+            selected = selected || menuOpen,
+            modifier = Modifier.testTag("vault-change:${entry.filePath}"),
+            contentPadding = PaddingValues(start = 16.dp, end = 20.dp, top = 8.dp, bottom = 8.dp),
+            leading = { M3LeadingLetter(letter, tone) },
+            trailing = stat,
+            onClick = onClick,
+            onLongClick = onStopTracking?.let { { menuOpen = true } },
+            onLongClickLabel = onStopTracking?.let { stringResource(R.string.files_m3_actions_for, name) },
+        )
+        if (onStopTracking != null) Box(Modifier.align(Alignment.TopEnd).padding(end = 12.dp)) {
+            M3DropdownMenu(expanded = menuOpen, onDismissRequest = { menuOpen = false }, modifier = Modifier.semantics { testTagsAsResourceId = true }) {
+                M3MenuItem(stringResource(R.string.stop_tracking_menu), { menuOpen = false; onStopTracking() },
+                    Modifier.testTag("vault-change-stop-tracking"), icon = R.drawable.ic_m3_visibility_off)
+            }
+        }
+    }
 }
 
 // ─── Latest commit ──────────────────────────────────────────────────────────

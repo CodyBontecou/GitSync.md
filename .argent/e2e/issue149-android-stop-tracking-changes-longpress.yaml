@@ -1,0 +1,63 @@
+# Issue #149 (PR #150), Android: stop tracking one file from the Changes list.
+# Long-press notes/draft.md › Stop tracking… › "This file" (preselected, with the
+# red other-devices warning) › Stop tracking. Expect the row to leave Changes and
+# the latest commit to be "Stop tracking notes/draft.md".
+# Prerequisites: the debug build (com.bontecou.syncmd.debug) installed with its
+# sample vault registered, and the scenario restored into the app's
+# files/sample-workspace by docs/qa/2026-11-25-pr150-android-stop-tracking/
+# pixel-scenario/ (make-scenario.sh once, then reset-scenario.sh <serial> before
+# each run). Run with `--platform android --device <serial>`.
+# Side effects: replaces the debug app's sample workspace; makes one local commit
+# there (nothing is pushed).
+# Outcome on disk: pixel-scenario/check-result.sh <serial> file (the commit holds
+# only the index removal and .gitignore; the file is kept and ignored).
+version: 1
+requires:
+  platform: android
+steps:
+  - echo: Relaunch the debug app. Expect Home with the Sample repository vault (2
+      local edits)
+  - launch: com.bontecou.syncmd.debug
+  - await:
+      visible: { text: 2 edited }
+      timeout: 15000
+  - await: { idle: true }
+  - tap:
+      text: Sample repository
+  - await:
+      visible: { id: "vault-change:notes/draft.md" }
+      timeout: 10000
+  - await: { idle: true }
+  - echo: Vault open with notes/draft.md edited. Long-press its row; expect a menu
+      with Stop tracking…
+  - long-press:
+      id: "vault-change:notes/draft.md"
+  - await:
+      visible: { id: vault-change-stop-tracking }
+      timeout: 5000
+  - tap:
+      id: vault-change-stop-tracking
+  - await:
+      visible: { id: stop-tracking-option-file }
+      timeout: 5000
+  - await: { idle: true }
+  - await:
+      visible: { id: stop-tracking-option-folder }
+      timeout: 5000
+  - await:
+      visible: { text: Save it there first if they need it }
+      timeout: 5000
+  - echo: Sheet open with This file preselected and the other-devices warning. Tap
+      Stop tracking; expect the sheet to close and draft.md to leave the Changes
+      list
+  - tap:
+      id: stop-tracking-confirm
+  - await:
+      visible: { text: Stop tracking notes/draft.md }
+      timeout: 10000
+  - await:
+      hidden: { id: "vault-change:notes/draft.md" }
+      timeout: 5000
+  - await:
+      visible: { id: "vault-change:.obsidian/workspace-mobile.json" }
+      timeout: 5000

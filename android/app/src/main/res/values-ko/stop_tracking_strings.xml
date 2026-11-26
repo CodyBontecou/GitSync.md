@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Stop tracking a file, folder or Obsidian workspace files (#149). Wording from the iOS catalog. -->
+<resources>
+    <string name="stop_tracking_menu" formatted="false">"추적 중지…"</string>
+    <string name="stop_tracking_title" formatted="false">"Git에서 추적을 중지할까요?"</string>
+    <string name="stop_tracking_body" formatted="false">"GitSync.md가 Git에서 제거하고 .gitignore에 추가한 뒤 커밋합니다. 이 기기에는 그대로 남습니다."</string>
+    <string name="stop_tracking_option_file" formatted="false">"이 파일"</string>
+    <string name="stop_tracking_option_folder" formatted="false">"해당 폴더"</string>
+    <string name="stop_tracking_option_workspace" formatted="false">"모든 Obsidian 작업 공간 파일"</string>
+    <string name="stop_tracking_one_file" formatted="false">"파일 1개"</string>
+    <string name="stop_tracking_files">"파일 %1$d개"</string>
+    <string name="stop_tracking_note_workspace" formatted="false">"다른 기기가 이 커밋을 풀하면 Git이 해당 기기의 사본을 삭제합니다. Obsidian은 다음에 보관소를 열 때 새로 만듭니다."</string>
+    <string name="stop_tracking_note_file" formatted="false">"다른 기기가 이 커밋을 풀하면 Git이 해당 기기의 사본을 삭제합니다. 필요하다면 먼저 그 기기에 저장해 두세요. Git 기록에는 남습니다."</string>
+    <string name="stop_tracking_confirm" formatted="false">"추적 중지"</string>
+    <string name="stop_tracking_done" formatted="false">"추적을 중지함"</string>
+    <string name="stop_tracking_suggestion" formatted="false">"제안"</string>
+    <string name="stop_tracking_suggestion_title_one" formatted="false">"Obsidian 작업 공간 파일이 추적되고 있습니다"</string>
+    <string name="stop_tracking_suggestion_title_many">"Obsidian 작업 공간 파일 %1$d개가 추적되고 있습니다"</string>
+    <string name="stop_tracking_suggestion_body_one" formatted="false">"각 기기가 자체 창 레이아웃을 여기에 저장하므로 충돌이 자주 발생합니다. 추적을 중지하면 각 기기에만 남습니다."</string>
+    <string name="stop_tracking_suggestion_body_many" formatted="false">"각 기기가 이 파일들에 자체 창 레이아웃을 저장하므로 충돌이 자주 발생합니다. 추적을 중지하면 각 기기에만 남습니다."</string>
+    <string name="stop_tracking_suggestion_action" formatted="false">"작업 공간 파일 추적 중지…"</string>
+    <string name="stop_tracking_error_invalid">"GitSync.md에서 “%1$s”의 추적을 중지할 수 없습니다."</string>
+    <string name="stop_tracking_error_not_tracked">"“%1$s”은(는) Git에서 추적되지 않으며 이미 무시되고 있습니다."</string>
+    <string name="stop_tracking_error_busy" formatted="false">"현재 Git 작업이 끝날 때까지 기다려 주세요."</string>
+    <string name="stop_tracking_error_conflicts" formatted="false">"먼저 충돌을 해결하십시오"</string>
+</resources>

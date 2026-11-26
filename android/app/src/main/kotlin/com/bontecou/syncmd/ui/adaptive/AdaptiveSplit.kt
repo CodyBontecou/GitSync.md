@@ -1,8 +1,13 @@
+@file:OptIn(androidx.compose.ui.ExperimentalComposeUiApi::class, androidx.compose.foundation.ExperimentalFoundationApi::class)
+
 package com.bontecou.syncmd.ui.adaptive
 
 import com.bontecou.syncmd.ui.util.quantityPhrase
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.ui.semantics.testTagsAsResourceId
+import androidx.compose.runtime.remember
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -85,6 +90,8 @@ fun SplitVaultPanel(
     val state by model.state.collectAsState()
     val auto by model.autoCommit.collectAsState()
     var committing by rememberSaveable(repositoryPath) { mutableStateOf(false) }
+    // Long-press › Stop tracking… (issue #149).
+    var stopTrackingPath by rememberSaveable(repositoryPath) { mutableStateOf<String?>(null) }
     val files = state.files.takeIf { state.path == repositoryPath }.orEmpty()
     SplitVaultContent(
         vaultName = vaultName,
@@ -92,17 +99,23 @@ fun SplitVaultPanel(
         ahead = state.ahead,
         rows = files.map { f ->
             val (letter, tone) = changeBadge(f.entry)
-            SplitRowUi(f.entry.filePath, letter, tone, f.count?.added, f.count?.removed, AutoCommitPolicy.isTyping(f.modifiedAt, state.now))
+            SplitRowUi(f.entry.filePath, letter, tone, f.count?.added, f.count?.removed, AutoCommitPolicy.isTyping(f.modifiedAt, state.now),
+                canStopTracking = com.bontecou.syncmd.ui.viewmodels.canStopTracking(f.entry))
         },
         autoCommit = auto,
         onAutoCommit = model::setAutoCommit,
         onOpen = onOpenDiff,
         onCommit = { committing = true },
+        onStopTracking = if (syncViewModel != null) ({ path: String -> stopTrackingPath = path }) else null,
     )
+    stopTrackingPath?.let { path ->
+        com.bontecou.syncmd.ui.components.StopTrackingHost(repositoryPath, path, onClose = { stopTrackingPath = null; syncViewModel?.refresh() })
+    }
     if (committing) CommitSheet(repositoryPath, vaultName, onDismiss = { committing = false }, syncViewModel = syncViewModel)
 }
 
-data class SplitRowUi(val path: String, val letter: String, val tone: M3Tone, val added: Int?, val removed: Int?, val typing: Boolean)
+data class SplitRowUi(val path: String, val letter: String, val tone: M3Tone, val added: Int?, val removed: Int?, val typing: Boolean,
+    val canStopTracking: Boolean = false)
 
 /** Stateless split-screen panel. */
 @Composable
@@ -115,6 +128,8 @@ fun SplitVaultContent(
     onAutoCommit: (Boolean) -> Unit,
     onOpen: (String) -> Unit,
     onCommit: () -> Unit,
+    /** Long-press › Stop tracking… on rows that allow it; null hides the action. */
+    onStopTracking: ((String) -> Unit)? = null,
 ) {
     val c = M3.colors
     val typing = rows.count { it.typing }
@@ -151,8 +166,13 @@ fun SplitVaultContent(
             .verticalScroll(rememberScrollState()).padding(vertical = 4.dp)) {
             rows.forEachIndexed { index, row ->
                 if (index > 0) Box(Modifier.fillMaxWidth().heightIn(min = 1.dp).background(c.outlineVar))
+                val stop = onStopTracking?.takeIf { row.canStopTracking }
+                var menu by remember { mutableStateOf(false) }
+                Box(Modifier.semantics { testTagsAsResourceId = true }) {
                 Row(
-                    Modifier.fillMaxWidth().heightIn(min = 56.dp).clickable(role = Role.Button) { onOpen(row.path) }
+                    Modifier.fillMaxWidth().heightIn(min = 56.dp)
+                        .combinedClickable(role = Role.Button, onClick = { onOpen(row.path) }, onLongClick = stop?.let { { menu = true } },
+                            onLongClickLabel = stop?.let { stringResource(R.string.files_m3_actions_for, nameOf(row.path)) })
                         .padding(horizontal = 16.dp, vertical = 6.dp).testTag("split-file-${row.path}"),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -164,6 +184,10 @@ fun SplitVaultContent(
                     }
                     if (row.typing) Text(stringResource(R.string.adaptive_split_typing), style = M3Type.metaStrong.copy(fontStyle = FontStyle.Italic), color = c.ahead)
                     else ChangeDelta(row.added, row.removed)
+                }
+                if (stop != null) Box(Modifier.align(Alignment.TopEnd).padding(end = 16.dp)) {
+                    com.bontecou.syncmd.ui.components.StopTrackingRowMenu(menu, { menu = false }, { stop(row.path) }, tag = "split-stop-tracking")
+                }
                 }
             }
         }

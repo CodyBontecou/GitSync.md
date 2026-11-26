@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Stop tracking a file, folder or Obsidian workspace files (#149). Wording from the iOS catalog. -->
+<resources>
+    <string name="stop_tracking_menu" formatted="false">"Stop tracking…"</string>
+    <string name="stop_tracking_title" formatted="false">"Stop tracking in Git?"</string>
+    <string name="stop_tracking_body" formatted="false">"GitSync.md removes it from Git, adds it to .gitignore and commits that. It stays on this device."</string>
+    <string name="stop_tracking_option_file" formatted="false">"This file"</string>
+    <string name="stop_tracking_option_folder" formatted="false">"Its folder"</string>
+    <string name="stop_tracking_option_workspace" formatted="false">"All Obsidian workspace files"</string>
+    <string name="stop_tracking_one_file" formatted="false">"1 file"</string>
+    <string name="stop_tracking_files">"%1$d files"</string>
+    <string name="stop_tracking_note_workspace" formatted="false">"When other devices pull this commit, Git deletes their copy. Obsidian creates a new one the next time it opens the vault."</string>
+    <string name="stop_tracking_note_file" formatted="false">"When other devices pull this commit, Git deletes their copy. Save it there first if they need it. It stays in Git history."</string>
+    <string name="stop_tracking_confirm" formatted="false">"Stop tracking"</string>
+    <string name="stop_tracking_done" formatted="false">"Stopped tracking"</string>
+    <string name="stop_tracking_suggestion" formatted="false">"Suggestion"</string>
+    <string name="stop_tracking_suggestion_title_one" formatted="false">"Obsidian\'s workspace file is tracked"</string>
+    <string name="stop_tracking_suggestion_title_many">"%1$d Obsidian workspace files are tracked"</string>
+    <string name="stop_tracking_suggestion_body_one" formatted="false">"Each device saves its own window layout there, so it often conflicts. Stop tracking it to keep it on each device only."</string>
+    <string name="stop_tracking_suggestion_body_many" formatted="false">"Each device saves its own window layout in these files, so they often conflict. Stop tracking them to keep them on each device only."</string>
+    <string name="stop_tracking_suggestion_action" formatted="false">"Stop tracking workspace files…"</string>
+    <string name="stop_tracking_error_invalid">"GitSync.md can\'t stop tracking “%1$s”."</string>
+    <string name="stop_tracking_error_not_tracked">"“%1$s” isn\'t tracked by Git and is already ignored."</string>
+    <string name="stop_tracking_error_busy" formatted="false">"Wait for the current Git operation to finish."</string>
+    <string name="stop_tracking_error_conflicts" formatted="false">"Resolve conflicts first"</string>
+</resources>

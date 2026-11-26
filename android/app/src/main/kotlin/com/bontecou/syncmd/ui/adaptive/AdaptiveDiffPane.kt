@@ -1,3 +1,5 @@
+@file:OptIn(androidx.compose.ui.ExperimentalComposeUiApi::class)
+
 package com.bontecou.syncmd.ui.adaptive
 
 import androidx.compose.foundation.background
@@ -21,6 +23,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -95,6 +101,9 @@ fun DiffPane(
     }
     val paths = changes?.files?.map { it.filePath }?.distinct().orEmpty()
     val index = paths.indexOf(filePath)
+    // "…" › Stop tracking… (issue #149), for files Git tracks or has staged.
+    var stopTracking by rememberSaveable(repositoryPath, filePath) { mutableStateOf(false) }
+    val canStop = changes?.files?.let { com.bontecou.syncmd.ui.viewmodels.canStopTracking(it, filePath) } == true
 
     DiffPaneContent(
         filePath = filePath,
@@ -110,7 +119,17 @@ fun DiffPane(
         onDiscard = { diffVM.requestDiscard(filePath) },
         onOpenEditor = { onOpenEditor(filePath) },
         modifier = modifier,
+        onStopTracking = if (canStop) ({ stopTracking = true }) else null,
     )
+    if (stopTracking) com.bontecou.syncmd.ui.components.StopTrackingHost(repositoryPath, filePath, onClose = { stopped ->
+        stopTracking = false
+        if (stopped) {
+            // Once untracked, the file has left the changes list: show the next one, as after a discard.
+            val rest = paths.filter { it != filePath }
+            onDiscarded(rest.getOrNull(index.coerceIn(0, (rest.size - 1).coerceAtLeast(0))))
+            diffVM.refreshRepositoryPath(repositoryPath)
+        }
+    })
 
     if (error != null) M3Dialog(
         onDismissRequest = diffVM::clearError,
@@ -149,6 +168,8 @@ fun DiffPaneContent(
     onDiscard: () -> Unit,
     onOpenEditor: () -> Unit,
     modifier: Modifier = Modifier,
+    /** "…" › Stop tracking…; null hides the menu. */
+    onStopTracking: (() -> Unit)? = null,
 ) {
     val c = M3.colors
     val markdown = isMarkdownPath(filePath)
@@ -181,6 +202,8 @@ fun DiffPaneContent(
                 }) }
                 CompactSegmented(labels, selected.coerceIn(0, views.lastIndex), { selected = it })
             }
+            // Tabletop has no footer, so "…" sits with previous / next.
+            if (tabletop && onStopTracking != null) DiffMoreMenu(busy, onStopTracking)
         }
         Box(Modifier.weight(1f).fillMaxWidth()) {
             when {
@@ -201,10 +224,28 @@ fun DiffPaneContent(
         if (!tabletop) DetailFooter {
             M3TextButton(stringResource(R.string.diff_m3_discard), onDiscard, Modifier.testTag("diff-discard"),
                 enabled = !busy && !loading && diff != null, destructive = true)
+            // Beside Discard, as iOS puts "…" beside Revert: the header has no room left on a foldable.
+            if (onStopTracking != null) DiffMoreMenu(busy, onStopTracking)
             if (diff?.binary != true && diff?.deleted != true) {
                 M3Button(stringResource(R.string.m3_open_in_editor), onOpenEditor, Modifier.testTag("diff-open-editor"),
                     style = M3ButtonStyle.Tonal, size = M3ButtonSize.Medium)
             }
+        }
+    }
+}
+
+/** "…" with Stop tracking… (issue #149); ids `diff-more` and `diff-stop-tracking`, as on the phone diff. */
+@Composable
+private fun DiffMoreMenu(busy: Boolean, onStopTracking: () -> Unit) {
+    Box(Modifier.semantics { testTagsAsResourceId = true }) {
+        var menu by remember { mutableStateOf(false) }
+        M3IconButton(R.drawable.ic_m3_more_vert, stringResource(R.string.ui_more_d47d7cb0), { menu = true }, Modifier.testTag("diff-more"),
+            tint = M3.colors.on, size = 44.dp, enabled = !busy)
+        // The menu is its own popup window, so it needs its own resource-id flag.
+        com.bontecou.syncmd.ui.theme.M3DropdownMenu(expanded = menu, onDismissRequest = { menu = false },
+            modifier = Modifier.semantics { testTagsAsResourceId = true }) {
+            com.bontecou.syncmd.ui.theme.M3MenuItem(stringResource(R.string.stop_tracking_menu), { menu = false; onStopTracking() },
+                Modifier.testTag("diff-stop-tracking"), icon = R.drawable.ic_m3_visibility_off)
         }
     }
 }

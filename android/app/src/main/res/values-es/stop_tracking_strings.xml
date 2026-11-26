@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Stop tracking a file, folder or Obsidian workspace files (#149). Wording from the iOS catalog. -->
+<resources>
+    <string name="stop_tracking_menu" formatted="false">"Dejar de seguir…"</string>
+    <string name="stop_tracking_title" formatted="false">"¿Dejar de rastrear en Git?"</string>
+    <string name="stop_tracking_body" formatted="false">"GitSync.md lo quita de Git, lo añade a .gitignore y hace commit de ello. Se queda en este dispositivo."</string>
+    <string name="stop_tracking_option_file" formatted="false">"Este archivo"</string>
+    <string name="stop_tracking_option_folder" formatted="false">"Su carpeta"</string>
+    <string name="stop_tracking_option_workspace" formatted="false">"Todos los archivos de espacio de trabajo de Obsidian"</string>
+    <string name="stop_tracking_one_file" formatted="false">"1 archivo"</string>
+    <string name="stop_tracking_files">"%1$d archivos"</string>
+    <string name="stop_tracking_note_workspace" formatted="false">"Cuando otros dispositivos hagan pull de este commit, Git borrará su copia. Obsidian creará una nueva la próxima vez que abra la bóveda."</string>
+    <string name="stop_tracking_note_file" formatted="false">"Cuando otros dispositivos hagan pull de este commit, Git borrará su copia. Guárdala allí antes si la necesitan. Seguirá en el historial de Git."</string>
+    <string name="stop_tracking_confirm" formatted="false">"Dejar de seguir"</string>
+    <string name="stop_tracking_done" formatted="false">"Ya no se rastrea"</string>
+    <string name="stop_tracking_suggestion" formatted="false">"Sugerencia"</string>
+    <string name="stop_tracking_suggestion_title_one" formatted="false">"El archivo de espacio de trabajo de Obsidian se rastrea"</string>
+    <string name="stop_tracking_suggestion_title_many">"Se rastrean %1$d archivos de espacio de trabajo de Obsidian"</string>
+    <string name="stop_tracking_suggestion_body_one" formatted="false">"Cada dispositivo guarda ahí su propia disposición de ventanas, así que suele causar conflictos. Deja de rastrearlo para que se quede solo en cada dispositivo."</string>
+    <string name="stop_tracking_suggestion_body_many" formatted="false">"Cada dispositivo guarda en estos archivos su propia disposición de ventanas, así que suelen causar conflictos. Deja de rastrearlos para que se queden solo en cada dispositivo."</string>
+    <string name="stop_tracking_suggestion_action" formatted="false">"Dejar de rastrear archivos de espacio de trabajo…"</string>
+    <string name="stop_tracking_error_invalid">"GitSync.md no puede dejar de rastrear «%1$s»."</string>
+    <string name="stop_tracking_error_not_tracked">"Git no rastrea «%1$s» y ya se ignora."</string>
+    <string name="stop_tracking_error_busy" formatted="false">"Espera a que termine la operación de Git en curso."</string>
+    <string name="stop_tracking_error_conflicts" formatted="false">"Resuelve primero los conflictos"</string>
+</resources>

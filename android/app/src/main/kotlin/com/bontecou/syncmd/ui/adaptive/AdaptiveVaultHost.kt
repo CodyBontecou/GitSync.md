@@ -186,6 +186,8 @@ fun ChangesPane(
     conflictVM: ConflictViewModel = hiltViewModel(),
 ) {
     var committing by rememberSaveable(repositoryPath) { mutableStateOf(false) }
+    // Long-press › Stop tracking… (issue #149).
+    var stopTrackingPath by rememberSaveable(repositoryPath) { mutableStateOf<String?>(null) }
     com.bontecou.syncmd.ui.util.RepositoryUpdatesEffect(repositoryPath) { viewModel.setRepositoryPath(repositoryPath); syncViewModel?.refresh() }
     LaunchedEffect(repositoryPath) {
         if (repositoryPath.isNotBlank()) { viewModel.setRepositoryPath(repositoryPath); syncViewModel?.setRepositoryPath(repositoryPath) }
@@ -204,7 +206,8 @@ fun ChangesPane(
     val rows = status?.allChanges.orEmpty().distinctBy { it.filePath }.sortedBy { it.filePath }.map { entry ->
         val (letter, tone) = changeBadge(entry)
         val count = counts[entry.filePath]?.takeIf { !it.binary }
-        ChangeRowUi(entry.filePath, letter, tone, count?.added, count?.removed, entry.isConflicted)
+        ChangeRowUi(entry.filePath, letter, tone, count?.added, count?.removed, entry.isConflicted,
+            canStopTracking = com.bontecou.syncmd.ui.viewmodels.canStopTracking(entry))
     }
     LaunchedEffect(rows) { if (status != null) onRows(rows) }
     val conflicts = rows.count { it.conflict }
@@ -266,6 +269,7 @@ fun ChangesPane(
             } }
             else -> null
         },
+        onStopTracking = if (syncViewModel != null && run?.running != true) ({ path: String -> stopTrackingPath = path }) else null,
         footer = {
             val busy = run?.running == true
             val wide = Modifier.fillMaxWidth().testTag("changes-primary")
@@ -283,6 +287,12 @@ fun ChangesPane(
             }
         },
     )
+    stopTrackingPath?.takeIf { requestContext != null }?.let { path ->
+        com.bontecou.syncmd.ui.components.StopTrackingHost(repositoryPath, path, onClose = {
+            stopTrackingPath = null
+            viewModel.loadStatus(); syncViewModel?.refresh()
+        })
+    }
     if (committing && requestContext != null) CommitSheet(repositoryPath, vaultName,
         onDismiss = { committing = false; viewModel.loadStatus(); syncViewModel?.refresh(); onCommitSheetClosed() },
         syncViewModel = syncViewModel)

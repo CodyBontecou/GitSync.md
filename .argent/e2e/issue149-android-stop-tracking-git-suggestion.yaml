@@ -1,0 +1,59 @@
+# Issue #149 (PR #150), Android: the Git tab's suggestion for tracked Obsidian
+# workspace files. The card reads "2 Obsidian workspace files are tracked";
+# "Stop tracking workspace files…" opens the sheet with only the workspace pattern
+# (2 files) and the info note; Stop tracking commits it, the branch shows
+# "1 ahead" and the card goes away.
+# Prerequisites: the debug build (com.bontecou.syncmd.debug) installed with its
+# sample vault registered, and the scenario restored into the app's
+# files/sample-workspace by docs/qa/2026-11-25-pr150-android-stop-tracking/
+# pixel-scenario/ (make-scenario.sh once, then reset-scenario.sh <serial> before
+# each run). Run with `--platform android --device <serial>`.
+# Side effects: replaces the debug app's sample workspace; makes one local commit
+# there (nothing is pushed).
+# Outcome on disk: pixel-scenario/check-result.sh <serial> workspace.
+version: 1
+requires:
+  platform: android
+steps:
+  - echo: Relaunch the debug app. Expect Home with the Sample repository vault (2
+      local edits)
+  - launch: com.bontecou.syncmd.debug
+  - await:
+      visible: { text: 2 edited }
+      timeout: 15000
+  - await: { idle: true }
+  - tap:
+      text: Sample repository
+  - await:
+      visible: { id: "vault-change:.obsidian/workspace-mobile.json" }
+      timeout: 10000
+  - await: { idle: true }
+  - echo: Vault open. Open the Git tab; expect the suggestion card for 2 tracked
+      Obsidian workspace files
+  - tap:
+      id: vault-tab-git
+  - await:
+      text: { in: { id: git-workspace-suggestion-title }, equals: 2 Obsidian workspace files are tracked }
+      timeout: 10000
+  - await: { idle: true }
+  - await:
+      visible: { id: git-stop-tracking-workspace }
+      timeout: 5000
+  - echo: Git tab shows the workspace suggestion. Tap Stop tracking workspace
+      files…; expect the sheet with only the workspace option
+  - tap:
+      id: git-stop-tracking-workspace
+  - await:
+      visible: { id: stop-tracking-option-workspace }
+      timeout: 5000
+  - await: { idle: true }
+  - echo: Sheet open with the workspace pattern. Tap Stop tracking; expect the
+      suggestion card to go away
+  - tap:
+      id: stop-tracking-confirm
+  - await:
+      visible: { text: 1 ahead }
+      timeout: 10000
+  - await:
+      hidden: { id: git-workspace-suggestion-title }
+      timeout: 5000

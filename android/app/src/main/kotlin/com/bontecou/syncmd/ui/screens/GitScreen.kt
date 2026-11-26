@@ -1,3 +1,5 @@
+@file:OptIn(androidx.compose.ui.ExperimentalComposeUiApi::class)
+
 package com.bontecou.syncmd.ui.screens
 
 import android.text.format.Formatter
@@ -17,10 +19,13 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
@@ -87,6 +92,8 @@ fun GitScreen(
     workspaceVM: GitWorkspaceViewModel = hiltViewModel(),
     showNavigation: Boolean = false,
     onSelectTab: (VaultTab) -> Unit = {},
+    /** Counts tracked Obsidian workspace files for the suggestion card (issue #149). */
+    stopTrackingVM: com.bontecou.syncmd.ui.viewmodels.StopTrackingViewModel = hiltViewModel(),
 ) {
     val navigate: (GitDestination) -> Unit = onNavigate ?: { destination ->
         when (destination) {
@@ -103,9 +110,11 @@ fun GitScreen(
     com.bontecou.syncmd.ui.util.RepositoryUpdatesEffect(repositoryPath) {
         pullVM.setRepositoryPath(repositoryPath); diffVM.refreshRepositoryPath(repositoryPath); conflictVM.setRepositoryPath(repositoryPath)
         workspaceVM.load(repositoryPath); workspaceVM.loadRebase(repositoryPath)
+        stopTrackingVM.loadWorkspaceSuggestion(repositoryPath)
     }
     LaunchedEffect(repositoryPath) {
         if (repositoryPath.isNotBlank()) {
+            stopTrackingVM.loadWorkspaceSuggestion(repositoryPath)
             pullVM.setRepositoryPath(repositoryPath); diffVM.setRepositoryPath(repositoryPath); conflictVM.setRepositoryPath(repositoryPath)
             workspaceVM.load(repositoryPath); workspaceVM.loadRebase(repositoryPath)
         }
@@ -138,6 +147,8 @@ fun GitScreen(
     val reviewingDiscard by diffVM.isReviewingDiscard.collectAsState()
     val discarding by diffVM.isDiscarding.collectAsState()
     val diffError = diffVM.errorMessage.collectAsState().value?.asString()
+    val workspaceFiles by stopTrackingVM.workspaceFiles.collectAsState()
+    var stoppingWorkspace by androidx.compose.runtime.saveable.rememberSaveable(repositoryPath) { androidx.compose.runtime.mutableStateOf(false) }
 
     val vaultName = repositoryName?.takeIf { it.isNotBlank() } ?: repositoryPath.substringAfterLast('/')
     val branchName = summary?.branch ?: status?.currentBranch?.takeUnless { it.length == 40 }
@@ -188,6 +199,10 @@ fun GitScreen(
             },
             onSwitch = { navigate(GitDestination.Branches) },
         )
+
+        // Always enabled, like iOS outside a sync: Git work is serialized per repository, and a status
+        // read on entering the tab must not swallow the tap.
+        if (workspaceFiles > 0) WorkspaceSuggestionCard(workspaceFiles, onStop = { stoppingWorkspace = true })
 
         GitRecoveryNotes(pullVM, pullContext)
 
@@ -245,6 +260,11 @@ fun GitScreen(
         }
     }
 
+    if (stoppingWorkspace) com.bontecou.syncmd.ui.components.StopTrackingHost(repositoryPath, null, onClose = {
+        stoppingWorkspace = false
+        refresh(); stopTrackingVM.loadWorkspaceSuggestion(repositoryPath)
+    }, viewModel = stopTrackingVM)
+
     discardReview?.takeIf { it.filePath == null }?.let { review ->
         RevertConfirmDialog(review, onConfirmDiscard = { diffVM.confirmDiscard(review, stashFirst = it) }, onDismiss = { diffVM.dismissDiscard(review) })
     }
@@ -255,6 +275,24 @@ fun GitScreen(
             content = {
                 Text(error, Modifier.heightIn(max = 360.dp).verticalScroll(rememberScrollState()).testTag("git-operation-message"), style = M3Type.bodyMedium)
             }) { M3DialogAction(stringResource(R.string.ui_ok_565339bc), clear) }
+    }
+}
+
+/**
+ * Obsidian rewrites `.obsidian/workspace*.json` on every device, so a tracked copy conflicts
+ * between devices (iOS `VaultGitTab.workspaceSuggestionCard`).
+ */
+@Composable
+private fun WorkspaceSuggestionCard(count: Int, onStop: () -> Unit) {
+    val c = M3.colors
+    com.bontecou.syncmd.ui.theme.M3OutlinedCard(Modifier.padding(start = 16.dp, end = 16.dp, top = 12.dp).testTag("git-workspace-suggestion").semantics { testTagsAsResourceId = true }) {
+        Text(stringResource(R.string.stop_tracking_suggestion), style = M3Type.badge, color = c.onVar)
+        Text(if (count == 1) stringResource(R.string.stop_tracking_suggestion_title_one) else stringResource(R.string.stop_tracking_suggestion_title_many, count),
+            Modifier.padding(top = 4.dp).testTag("git-workspace-suggestion-title"), style = M3Type.bodyStrong, color = c.on)
+        Text(stringResource(if (count == 1) R.string.stop_tracking_suggestion_body_one else R.string.stop_tracking_suggestion_body_many),
+            Modifier.padding(top = 4.dp), style = M3Type.bodyMedium, color = c.onVar)
+        M3OutlinedButton(stringResource(R.string.stop_tracking_suggestion_action), onStop, Modifier.padding(top = 12.dp).testTag("git-stop-tracking-workspace"),
+            size = M3ButtonSize.Medium)
     }
 }
 

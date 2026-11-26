@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Stop tracking a file, folder or Obsidian workspace files (#149). Wording from the iOS catalog. -->
+<resources>
+    <string name="stop_tracking_menu" formatted="false">"Przestań śledzić…"</string>
+    <string name="stop_tracking_title" formatted="false">"Przestać śledzić w Git?"</string>
+    <string name="stop_tracking_body" formatted="false">"GitSync.md usuwa go z Git, dodaje do .gitignore i tworzy commit. Zostaje na tym urządzeniu."</string>
+    <string name="stop_tracking_option_file" formatted="false">"Ten plik"</string>
+    <string name="stop_tracking_option_folder" formatted="false">"Jego folder"</string>
+    <string name="stop_tracking_option_workspace" formatted="false">"Wszystkie pliki obszaru roboczego Obsidian"</string>
+    <string name="stop_tracking_one_file" formatted="false">"1 plik"</string>
+    <string name="stop_tracking_files">"Pliki: %1$d"</string>
+    <string name="stop_tracking_note_workspace" formatted="false">"Gdy inne urządzenia pobiorą ten commit, Git usunie ich kopię. Obsidian utworzy nową przy następnym otwarciu sejfu."</string>
+    <string name="stop_tracking_note_file" formatted="false">"Gdy inne urządzenia pobiorą ten commit, Git usunie ich kopię. Jeśli jest im potrzebna, najpierw ją tam zapisz. Zostaje w historii Git."</string>
+    <string name="stop_tracking_confirm" formatted="false">"Przestań śledzić"</string>
+    <string name="stop_tracking_done" formatted="false">"Zatrzymano śledzenie"</string>
+    <string name="stop_tracking_suggestion" formatted="false">"Sugestia"</string>
+    <string name="stop_tracking_suggestion_title_one" formatted="false">"Plik obszaru roboczego Obsidian jest śledzony"</string>
+    <string name="stop_tracking_suggestion_title_many">"Śledzone pliki obszaru roboczego Obsidian: %1$d"</string>
+    <string name="stop_tracking_suggestion_body_one" formatted="false">"Każde urządzenie zapisuje tam własny układ okien, więc często dochodzi do konfliktów. Przestań go śledzić, aby został tylko na każdym urządzeniu."</string>
+    <string name="stop_tracking_suggestion_body_many" formatted="false">"Każde urządzenie zapisuje w tych plikach własny układ okien, więc często dochodzi do konfliktów. Przestań je śledzić, aby zostały tylko na każdym urządzeniu."</string>
+    <string name="stop_tracking_suggestion_action" formatted="false">"Przestań śledzić pliki obszaru roboczego…"</string>
+    <string name="stop_tracking_error_invalid">"GitSync.md nie może przestać śledzić „%1$s”."</string>
+    <string name="stop_tracking_error_not_tracked">"„%1$s” nie jest śledzony przez Git i jest już ignorowany."</string>
+    <string name="stop_tracking_error_busy" formatted="false">"Poczekaj, aż bieżąca operacja Git się zakończy."</string>
+    <string name="stop_tracking_error_conflicts" formatted="false">"Najpierw rozwiąż konflikty"</string>
+</resources>

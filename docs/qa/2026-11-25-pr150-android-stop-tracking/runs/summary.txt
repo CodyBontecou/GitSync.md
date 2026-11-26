@@ -1,0 +1,11 @@
+issue149-android-stop-tracking-changes-longpress run 1: exit 0 | PASS (started on 2C061FDH200CJN) — 17 passed, 0 failed, 0 errored, 0 skipped, 1 warning (16.1s) | PASS (file): one commit with only the index removal and .gitignore; files kept on disk
+issue149-android-stop-tracking-changes-longpress run 2: exit 0 | PASS (started on 2C061FDH200CJN) — 17 passed, 0 failed, 0 errored, 0 skipped, 1 warning (15.8s) | PASS (file): one commit with only the index removal and .gitignore; files kept on disk
+issue149-android-stop-tracking-diff-menu run 1: exit 0 | PASS (started on 2C061FDH200CJN) — 23 passed, 0 failed, 0 errored, 0 skipped (23.5s) | PASS (workspace): one commit with only the index removal and .gitignore; files kept on disk
+issue149-android-stop-tracking-diff-menu run 2: exit 0 | PASS (started on 2C061FDH200CJN) — 23 passed, 0 failed, 0 errored, 0 skipped (23.5s) | PASS (workspace): one commit with only the index removal and .gitignore; files kept on disk
+issue149-android-stop-tracking-git-suggestion run 1: exit 0 | PASS (started on 2C061FDH200CJN) — 16 passed, 0 failed, 0 errored, 0 skipped (15.9s) | PASS (workspace): one commit with only the index removal and .gitignore; files kept on disk
+issue149-android-stop-tracking-git-suggestion run 2: exit 0 | PASS (started on 2C061FDH200CJN) — 16 passed, 0 failed, 0 errored, 0 skipped (16.4s) | PASS (workspace): one commit with only the index removal and .gitignore; files kept on disk
+
+Round trip (receiving side, issue137-android-pull-after-remote-stops-tracking on the round-trip scenario):
+roundtrip-1: e2e PASS 8/8, pull COMPLETED 19:57:43 (outcome re-checked with the corrected check-roundtrip.sh after run 2: PASS)
+roundtrip-2: e2e PASS 8/8, pull COMPLETED 19:57:57, check-roundtrip.sh PASS
+roundtrip-3: e2e PASS 8/8, pull COMPLETED 19:58:20, check-roundtrip.sh PASS
