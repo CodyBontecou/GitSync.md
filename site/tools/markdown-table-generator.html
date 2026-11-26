@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../favicon-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<title>Markdown Table Generator for GitHub and Obsidian</title>
+<meta name="description" content="Build or edit a Markdown table for GitHub and Obsidian. Paste an existing table, CSV or spreadsheet cells, escape pipes in wikilinks, and pick a Git-friendly output style. Runs in your browser.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Cody Bontecou">
+<meta name="theme-color" content="#ffffff">
+<link rel="canonical" href="https://gitsync.md/tools/markdown-table-generator">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="GitSync.md">
+<meta property="og:title" content="Markdown Table Generator for GitHub and Obsidian">
+<meta property="og:description" content="Build or edit a Markdown table for GitHub and Obsidian. Paste an existing table, CSV or spreadsheet cells, escape pipes in wikilinks, and pick a Git-friendly output style. Runs in your browser.">
+<meta property="og:url" content="https://gitsync.md/tools/markdown-table-generator">
+<meta property="og:image" content="https://gitsync.md/social/tools/markdown-table-generator.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:alt" content="GitSync.md free tool card: Markdown Table Generator for GitHub and Obsidian">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Markdown Table Generator for GitHub and Obsidian">
+<meta name="twitter:description" content="Build or edit a Markdown table for GitHub and Obsidian. Paste an existing table, CSV or spreadsheet cells, escape pipes in wikilinks, and pick a Git-friendly output style. Runs in your browser.">
+<meta name="twitter:image" content="https://gitsync.md/social/tools/markdown-table-generator.png">
+<meta name="twitter:image:alt" content="GitSync.md free tool card: Markdown Table Generator for GitHub and Obsidian">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Markdown table generator",
+  "description": "Build or edit a Markdown table for GitHub and Obsidian. Paste an existing table, CSV or spreadsheet cells, escape pipes in wikilinks, and pick a Git-friendly output style. Runs in your browser.",
+  "url": "https://gitsync.md/tools/markdown-table-generator",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Any (runs in a web browser)",
+  "browserRequirements": "Requires JavaScript",
+  "isAccessibleForFree": true,
+  "inLanguage": "en",
+  "datePublished": "2026-11-26",
+  "dateModified": "2026-11-26",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Person",
+    "name": "Cody Bontecou",
+    "url": "https://gitsync.md/about"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Cody Bontecou"
+  }
+}
+</script>
+<link rel="stylesheet" href="../site.css">
+<link rel="stylesheet" href="../content.css">
+<link rel="stylesheet" href="../comparison.css">
+<style>
+.calc { background: var(--surface); border: 2px solid var(--line); padding: 25px 28px; margin-bottom: 39px; }
+.calc fieldset { border: 0; padding: 0; margin: 0 0 18px; min-width: 0; }
+.calc legend, .calc .field-label { display: block; font-weight: 650; font-size: 16px; line-height: 24px; margin-bottom: 8px; padding: 0; }
+.calc .checks { display: flex; flex-wrap: wrap; gap: 0 24px; }
+.calc .checks label { display: flex; align-items: flex-start; gap: 10px; font-size: 16px; line-height: 24px; min-height: 44px; padding-block: 10px 0; }
+.calc input[type="checkbox"], .calc input[type="radio"] { flex: none; width: 20px; height: 20px; margin: 2px 0 0; accent-color: var(--blue-deep); }
+.calc textarea { width: 100%; min-height: 120px; padding: 8px 12px; font-family: var(--mono); font-size: 16px; line-height: 1.5; color: var(--ink); background: var(--paper); border: 2px solid var(--line); border-radius: 8px; box-sizing: border-box; resize: vertical; }
+.calc select { min-height: 44px; font: 16px/1.2 var(--sans); padding: 0 8px; border: 2px solid var(--line); border-radius: 8px; background: var(--paper); color: var(--ink); max-width: 100%; }
+.calc .hint { display: block; font-size: 14px; line-height: 20px; color: var(--muted); margin-top: 6px; }
+.calc .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-block: 12px 8px; }
+.calc .tool-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; min-width: 48px; padding: 0 22px; border: 0; border-radius: 999px; background: var(--ink); color: var(--paper); font: 600 16px/1.2 var(--sans); cursor: pointer; }
+.calc .tool-btn.secondary { background: var(--paper); color: var(--ink); border: 2px solid var(--ink); }
+.calc .tool-btn.small { white-space: nowrap; min-height: 44px; min-width: 44px; padding: 0 12px; font-size: 15px; }
+.calc .tool-btn[disabled] { opacity: .45; cursor: not-allowed; }
+.calc .tool-btn:focus-visible, .calc input:focus-visible, .calc textarea:focus-visible, .calc select:focus-visible { outline: 3px solid var(--blue-deep); outline-offset: 2px; }
+.calc .status { min-height: 24px; font-size: 15px; color: var(--muted); margin: 4px 0; }
+.calc .notice { background: var(--ahead-wash); color: var(--ahead-text); padding: 12px 16px; margin: 12px 0; font-size: 15px; line-height: 22px; }
+.calc .notice[hidden], .calc [hidden] { display: none; }
+.calc .import-row { display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; }
+.calc .import-row label { display: flex; align-items: center; gap: 8px; font-size: 16px; }
+.grid-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; border: 2px solid var(--line); border-radius: 8px; background: var(--paper); margin-block: 8px; }
+.grid { border-collapse: collapse; }
+.grid th, .grid td { padding: 6px; vertical-align: top; border-bottom: 1px solid var(--line); text-align: left; }
+.grid .colctl { min-width: 200px; background: var(--surface); }
+.grid .colctl .btns { display: flex; gap: 6px; margin-top: 6px; }
+.grid .rowhead { font: 600 14px/44px var(--sans); color: var(--muted); padding-inline: 10px; }
+.grid textarea { width: 190px; min-height: 44px; height: 44px; padding: 8px 10px; resize: none; overflow: hidden; }
+.out textarea { min-height: 160px; white-space: pre; overflow-x: auto; }
+.mdprev { overflow-x: auto; border: 2px solid var(--line); border-radius: 8px; background: var(--paper); padding: 8px; }
+.mdprev table { border-collapse: collapse; font-size: 16px; }
+.mdprev th, .mdprev td { border: 1px solid var(--line); padding: 6px 12px; }
+.mdprev th { background: var(--surface); }
+@media (max-width: 960px) { .tool-layout > .guide-aside { order: 3; margin-block: 32px 0; } .calc { padding: 20px 14px; } }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://gitsync.md/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Guides",
+      "item": "https://gitsync.md/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Markdown table generator",
+      "item": "https://gitsync.md/tools/markdown-table-generator"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Can a Markdown table have merged cells?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The GitHub Flavored Markdown spec has no syntax for merged cells or for block content in a cell. Repeat the value, leave the cell empty, or split the table in two."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I put several lines in one cell?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A table row has to stay on one line, so write a <br> tag where the line break goes. GFM allows raw HTML and does not filter <br>, so GitHub renders it. This tool converts line breaks to <br> for you."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I convert CSV to a Markdown table?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Paste the CSV into the import box and press Import. The tool detects CSV, reads quoted fields the way RFC 4180 describes (commas and doubled quotes inside quotes), and fills the grid. Copy cells from Excel, Google Sheets or Numbers the same way."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does Obsidian need a plugin for tables?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Obsidian's Help describes pipe and hyphen table syntax as part of its Markdown, and Live Preview has a context menu for adding, deleting, sorting and moving rows and columns. Plugins are optional."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body id="top">
+<a class="skip-link" href="#main">Skip to content</a>
+<svg class="icon-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 5l7 7-7 7"/></symbol>
+  <symbol id="i-branch" viewBox="0 0 24 24"><circle cx="6" cy="5" r="2.5"/><circle cx="6" cy="19" r="2.5"/><circle cx="18" cy="5" r="2.5"/><path d="M6 7.5v9M18 7.5v1a5 5 0 0 1-5 5H6"/></symbol>
+  <symbol id="i-external" viewBox="0 0 24 24"><path d="M6 18 18 6M6 6h12v12"/></symbol>
+</svg>
+
+<header class="site-header">
+  <nav class="shell navigation" aria-label="Main navigation">
+    <a class="brand" href="/" aria-label="GitSync.md home">gitsync<span class="brand-extension">.md</span></a>
+    <div class="nav-links"><a href="/#app">The app</a><a href="/#workflow">How it works</a><a href="/blog/" class="is-active">Guides</a><a href="/compare/obsidian-sync-vs-git">Compare</a><a href="/#faq">FAQ</a></div>
+    <a class="button button-small" href="/#download">Get the app</a>
+  </nav>
+</header>
+
+<main id="main">
+  <div class="container guide-layout tool-layout">
+      <header class="article-hero">
+        <div class="article-title"><nav class="eyebrow article-breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li><a href="/blog/">Guides</a></li><li aria-current="page">Markdown table generator</li></ol></nav>
+      <h1>Markdown table generator for GitHub and Obsidian</h1>
+      <p class="subtitle">Build a table, or paste one you already have, edit it in a grid and copy it back out with the pipes escaped.</p>
+      <div class="meta-line"><time datetime="2026-11-26">November 26, 2026</time><span>By <a href="/about" rel="author">Cody Bontecou</a></span><span>Free tool · Runs in your browser</span></div>
+    </div>
+      </header>
+      <aside class="guide-aside" aria-label="Tool sidebar">
+        <div class="guide-aside-sticky">
+        <nav class="toc-card" aria-label="Page outline"><div class="toc-title">On this page</div><ol><li><a href="#tool">The tool</a></li><li><a href="#how">How Markdown tables work</a></li><li><a href="#obsidian">Tables in Obsidian</a></li><li><a href="#github">Tables on GitHub</a></li><li><a href="#diffs">Keep table diffs small in Git</a></li><li><a href="#phone">Edit tables on your phone</a></li><li><a href="#faq">FAQ</a></li><li><a href="#sources">Checked against</a></li></ol></nav>
+        <div class="aside-cta aside-cta-wide">
+          <p class="aside-cta-title">Edit and commit Markdown notes from your iPhone with GitSync.md.</p>
+          <p class="aside-cta-price">iPhone + iPad: $9.99 once · No subscription</p>
+          <a class="aside-cta-button" href="/v/web-homepage-135" target="_blank" rel="noopener">Download on the App Store</a>
+          <p class="aside-cta-price">On Android? <a href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener">Get it on Google Play</a>.</p>
+        </div>
+        </div>
+      </aside>
+      <article class="article-body">
+        <p><strong>Short answer:</strong> edit the grid below, or paste a Markdown table, CSV or cells copied from a spreadsheet and press Import. Copy the result into your README or note. It escapes literal pipes (including the pipe in an Obsidian <code>[[Note|Alias]]</code> link) and can write the table compactly so a later edit changes one line in <code>git diff</code>. <strong>Everything runs in this page. Nothing is uploaded.</strong></p>
+
+        <section class="calc" id="tool" aria-labelledby="tool-heading">
+          <h2 id="tool-heading" style="margin-top:0">Build or edit a table</h2>
+
+          <label class="field-label" for="src">Paste table / CSV / TSV</label>
+          <textarea id="src" rows="5" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" placeholder="Paste a Markdown table, CSV, or cells copied from Excel, Google Sheets or Numbers"></textarea>
+          <div class="actions import-row">
+            <button type="button" class="tool-btn" id="btn-import">Import</button>
+            <label for="fmt">Format <select id="fmt"><option value="auto">Auto-detect</option><option value="md">Markdown table</option><option value="tsv">Tab-separated (TSV)</option><option value="csv">CSV</option></select></label>
+          </div>
+          <p class="status" id="status-import" aria-live="polite"></p>
+
+          <h3>Grid</h3>
+          <p class="hint" style="margin-top:0">Scroll sideways for more columns. Press Enter inside a cell for a line break.</p>
+          <div class="grid-scroll" id="grid-scroll" tabindex="0" role="region" aria-label="Table grid. Scroll sideways to see all columns."></div>
+          <div class="actions">
+            <button type="button" class="tool-btn secondary" id="btn-add-row">Add row</button>
+            <button type="button" class="tool-btn secondary" id="btn-add-col">Add column</button>
+            <button type="button" class="tool-btn secondary" id="btn-example">Reset example</button>
+            <button type="button" class="tool-btn secondary" id="btn-clear">Clear</button>
+          </div>
+
+          <fieldset>
+            <legend>Options</legend>
+            <div class="checks">
+              <label><input type="checkbox" id="opt-header" checked> <span>Header row (GFM requires one)</span></label>
+              <label><input type="checkbox" id="opt-escape" checked> <span>Escape pipes (<code>|</code> becomes <code>\|</code>)</span></label>
+              <label><input type="checkbox" id="opt-wiki" checked> <span>Escape pipes in wikilinks (Obsidian)</span></label>
+              <label><input type="checkbox" id="opt-br" checked> <span>Line breaks in a cell become &lt;br&gt;</span></label>
+              <label><input type="checkbox" id="opt-trim" checked> <span>Trim whitespace in cells</span></label>
+            </div>
+            <span class="hint">GFM tables need a header row. With it off, the output starts with an empty header row. GFM cells can’t contain a newline; <code>&lt;br&gt;</code> is raw HTML, which GFM allows and GitHub renders. Without it, line breaks turn into spaces. The wikilink option only matters when “Escape pipes” is off, because that option already escapes every pipe.</span>
+          </fieldset>
+          <fieldset>
+            <legend>Output style</legend>
+            <div class="checks">
+              <label><input type="radio" name="style" value="aligned"> <span>Aligned (padded columns)</span></label>
+              <label><input type="radio" name="style" value="compact" checked> <span>Compact (minimal spaces)</span></label>
+            </div>
+            <span class="hint">Aligned reads better as plain text, but when one cell gets longer every row in that column is re-padded, so <code>git diff</code> shows the whole table as changed. Compact keeps diffs to the rows you edited. Aligned pads by character count, so CJK text and emoji can look misaligned in some editors; the table still renders correctly.</span>
+          </fieldset>
+
+          <div class="notice" id="notice" role="status" hidden></div>
+          <div class="out">
+            <label class="field-label" for="out">Markdown output</label>
+            <textarea id="out" rows="8" readonly spellcheck="false"></textarea>
+          </div>
+          <div class="actions">
+            <button type="button" class="tool-btn" id="btn-copy">Copy</button>
+            <button type="button" class="tool-btn secondary" id="btn-download">Download .md</button>
+          </div>
+          <p class="status" id="status-out" aria-live="polite"></p>
+
+          <h3>Preview</h3>
+          <div class="mdprev" id="preview" tabindex="0" role="region" aria-label="Table preview"></div>
+          <p class="hint">The preview is drawn by this page from the grid, so it shows what the cells contain. GitHub and Obsidian use their own styles.</p>
+          <p class="hint">Runs in your browser. Nothing is uploaded, and your text is not saved anywhere.</p>
+        </section>
+
+        <h2 id="how">How Markdown tables work</h2>
+        <p>A table is a header row, a separator row of hyphens, then any number of body rows. Cells are split by pipes. Colons in the separator row set alignment: <code>:---</code> left, <code>:---:</code> center, <code>---:</code> right. Per the <a href="https://github.github.com/gfm/#tables-extension-" target="_blank" rel="noopener">GFM spec</a>, the header row must match the separator row in number of cells, or no table is recognised. Leading and trailing pipes are optional but recommended. A body row with fewer cells gets empty cells, and extra cells are ignored. The table ends at the first empty line.</p>
+        <pre tabindex="0" role="region" aria-label="Markdown table example"><code>| Task | Owner | Done |
+| :--- | :---: | ---: |
+| Book the room | Sam | 1 |
+| Use a \| pipe | Alex | 2 |</code></pre>
+        <p>To put a pipe in a cell, write <code>\|</code>. GitHub Docs say the same in <a href="https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/organizing-information-with-tables" target="_blank" rel="noopener">Organizing information with tables</a>. The GFM spec adds that this also works inside other inline spans: a pipe inside a code span still splits the cell unless it is escaped, so the tool escapes it there too.</p>
+        <p>When you import, a row with fewer cells than the header is padded with empty cells. A row with more cells than the header gets new columns instead of losing data, which differs from GitHub, where the extra cells are ignored. Importing a Markdown table also reads <code>\|</code> as a pipe, so it is never escaped twice.</p>
+
+        <h2 id="obsidian">Tables in Obsidian</h2>
+        <p>Obsidian’s Help page on <a href="https://obsidian.md/help/advanced-syntax" target="_blank" rel="noopener">Advanced formatting syntax</a> describes tables made from vertical bars and hyphens, with outer bars optional and at least two hyphens in the header separator. You add colons to that row to align a column, or right-click a table in Live Preview to align it. Also in Live Preview, you can right-click a table to add or delete columns and rows, and sort and move them from the same menu.</p>
+        <p>The page also warns that if you want to use aliases, or resize an image, in a table, you need to add a <code>\</code> before the vertical bar. So <code>[[Note|Alias]]</code> becomes <code>[[Note\|Alias]]</code> inside a table. Without it the pipe splits the cell, which is how those tables break. Turn on “Escape pipes in wikilinks (Obsidian)” and the tool does this for you. When you import a table, a pipe inside <code>[[…]]</code> is treated as part of the link rather than a cell break.</p>
+        <p>Obsidian’s Help doesn’t say anything about <code>&lt;br&gt;</code> in table cells, so check a note with line breaks in your own vault before you rely on it. Obsidian also has Bases, which is a separate view for notes and not a Markdown table; this tool doesn’t produce it.</p>
+
+        <h2 id="github">Tables on GitHub</h2>
+        <p>GitHub renders the <a href="https://github.github.com/gfm/#tables-extension-" target="_blank" rel="noopener">GFM tables extension</a>. GitHub Docs say to leave a blank line before the table, and that cells can hold formatting such as links, inline code and text styling. The spec says block-level elements can’t be inserted in a table, so a cell can’t hold a list or a code block, and a raw newline would end the row. For a line break inside a cell, use <code>&lt;br&gt;</code>: the spec’s raw HTML rules allow it, and its tag filter lists only <code>title</code>, <code>textarea</code>, <code>style</code>, <code>xmp</code>, <code>iframe</code>, <code>noembed</code>, <code>noframes</code>, <code>script</code> and <code>plaintext</code>.</p>
+
+        <h2 id="diffs">Keep table diffs small in Git</h2>
+        <p>If your notes live in Git, the output style matters. In an aligned table every cell in a column is padded to the longest one. Change “Open” to “In progress” and the whole column gets wider, so every row changes:</p>
+        <pre tabindex="0" role="region" aria-label="Aligned table diff"><code>-| Task          | Status |
+-| ------------- | ------ |
+-| Book the room | Open   |
+-| Send agenda   | Done   |
++| Task          | Status      |
++| ------------- | ----------- |
++| Book the room | In progress |
++| Send agenda   | Done        |</code></pre>
+        <p>The same edit in a compact table touches one line:</p>
+        <pre tabindex="0" role="region" aria-label="Compact table diff"><code> | Task | Status |
+ | --- | --- |
+-| Book the room | Open |
++| Book the room | In progress |
+ | Send agenda | Done |</code></pre>
+        <p>That makes reviews and merge conflicts smaller too: two people editing different rows of a compact table don’t touch the same lines. The trade-off is that the raw text is harder to read. If the note is mostly read as plain text, choose Aligned. To see what a change looks like, paste both versions into the <a href="/tools/markdown-diff">Markdown diff tool</a>.</p>
+
+        <h2 id="phone">Edit tables on your phone</h2>
+        <p>Tables in notes kept in Git can be edited and committed from an iPhone, iPad or Android phone with GitSync.md. The setup guides cover cloning the vault and the daily workflow: <a href="/blog/obsidian-git-iphone-ipad">Obsidian Git on iPhone and iPad</a>, <a href="/blog/obsidian-git-android">Obsidian Git on Android</a> and <a href="/blog/sync-obsidian-github">Sync Obsidian with GitHub on every device</a>. To keep generated files out of the repository, use the <a href="/tools/obsidian-gitignore-generator">Obsidian .gitignore generator</a>.</p>
+        <p>Edit and commit Markdown notes from your iPhone with GitSync.md: <a href="/v/web-homepage-135" target="_blank" rel="noopener">Download on the App Store</a> · <a href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener">Get it on Google Play</a>.</p>
+
+        <h2 id="faq">Frequently asked questions</h2>
+        <h3>Can a Markdown table have merged cells?</h3>
+        <p>No. The GFM spec has no syntax for merged cells or for block content in a cell. Repeat the value, leave the cell empty, or split the table in two.</p>
+        <h3>How do I put several lines in one cell?</h3>
+        <p>A table row has to stay on one line, so write a <code>&lt;br&gt;</code> tag where the line break goes. GFM allows raw HTML and does not filter <code>&lt;br&gt;</code>, so GitHub renders it. This tool converts line breaks to <code>&lt;br&gt;</code> for you.</p>
+        <h3>How do I convert CSV to a Markdown table?</h3>
+        <p>Paste the CSV into the import box and press Import. The tool detects CSV, reads quoted fields the way <a href="https://www.rfc-editor.org/rfc/rfc4180" target="_blank" rel="noopener">RFC 4180</a> describes (commas and doubled quotes inside quotes), and fills the grid. Cells copied from Excel, Google Sheets or Numbers arrive as tab-separated text and are detected the same way. You can override the detected format.</p>
+        <h3>Does Obsidian need a plugin for tables?</h3>
+        <p>No. Obsidian’s Help describes the pipe and hyphen syntax as part of its Markdown, and Live Preview has a context menu for rows and columns. Plugins are optional.</p>
+
+        <h2 id="sources">Checked against</h2>
+        <p>Updated <time datetime="2026-11-26">November 26, 2026</time>. Checked against:</p>
+        <ul>
+          <li><a href="https://github.github.com/gfm/#tables-extension-" target="_blank" rel="noopener">GitHub Flavored Markdown spec, Tables extension</a> (and its raw HTML and tag filter sections)</li>
+          <li><a href="https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/organizing-information-with-tables" target="_blank" rel="noopener">GitHub Docs, Organizing information with tables</a></li>
+          <li><a href="https://obsidian.md/help/advanced-syntax" target="_blank" rel="noopener">Obsidian Help, Advanced formatting syntax</a></li>
+          <li><a href="https://www.rfc-editor.org/rfc/rfc4180" target="_blank" rel="noopener">RFC 4180, CSV</a></li>
+        </ul>
+
+        <div class="related-card"><h2 id="next">Related guides</h2><ul>
+          <li><a href="/tools/markdown-diff">Markdown diff: compare two versions of a note</a></li>
+          <li><a href="/tools/obsidian-gitignore-generator">Obsidian .gitignore generator</a></li>
+          <li><a href="/blog/obsidian-git-iphone-ipad">Obsidian Git on iPhone and iPad</a></li>
+          <li><a href="/blog/obsidian-git-android">Obsidian Git on Android</a></li>
+          <li><a href="/blog/sync-obsidian-github">Sync Obsidian with GitHub on every device</a></li>
+        </ul></div>
+
+        <div class="related-card">
+          <h2 style="margin-top:0">Edit and commit Markdown notes from your iPhone with GitSync.md.</h2>
+          <p><a href="/v/web-homepage-135" target="_blank" rel="noopener">Download on the App Store</a> · <a href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener">Get it on Google Play</a></p>
+        </div>
+  </article>
+    </div>
+  <section class="content-download" aria-labelledby="download-heading">
+    <div class="shell content-download-layout">
+      <div>
+        <p class="eyebrow"><span class="blue-square" aria-hidden="true"></span>Take your work with you.</p>
+        <h2 id="download-heading">REAL GIT.<br>WITHIN REACH.</h2>
+        <p class="content-download-description">Your files. Your commits. Your remote.<br>Get GitSync.md for iPhone, iPad, and Android.</p>
+      </div>
+      <div>
+        <div class="store-links" role="group" aria-label="Download GitSync.md">
+          <a class="store-badge store-badge-apple" href="/v/web-homepage-135" target="_blank" rel="noopener"><img src="../assets/store-badges/download-on-app-store.svg" width="120" height="40" alt="Download GitSync.md on the App Store" decoding="async"></a>
+          <a class="store-badge store-badge-google" href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener"><img src="../assets/store-badges/get-it-on-google-play.png" width="646" height="250" alt="Get GitSync.md on Google Play" decoding="async"></a>
+        </div>
+        <p class="purchase-note"><span>iPhone + iPad: free to download, $9.99 once to unlock.</span><span>Android: $9.99 once. All features included.</span><span>No subscriptions.</span></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="shell footer-layout">
+    <a class="brand" href="/" aria-label="GitSync.md home">gitsync<span class="brand-extension">.md</span></a>
+    <p>Independently built by <a href="https://codybontecou.com" target="_blank" rel="noopener">Cody Bontecou</a>.<br>© 2026 GitSync.md</p>
+    <div class="footer-links"><a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener">Source</a><a href="/blog/">Guides</a><a href="/compare/obsidian-sync-vs-git">Compare</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
+    <a class="back-top" href="#top" aria-label="Back to top">↑</a>
+  </div>
+</footer>
+<script>
+/* Markdown table generator. Runs locally: no network requests, nothing stored.
+   Parsing follows the GFM tables extension (github.github.com/gfm/#tables-extension-) and RFC 4180 for CSV.
+   Sanity cases: run with #selftest in the URL, or by scripts/tests/markdown-table.test.mjs. */
+var MdTable = (function () {
+  var MAX_ROWS = 1000;
+  var MAX_COLS = 60;
+  var EXAMPLE = "| Task | Owner | Done |\n| --- | :---: | ---: |\n| Book the room | Sam | 1 |\n| Send the agenda | Alex | 2 |";
+
+  function cpLen(s) { return Array.from(s).length; }
+  function rep(ch, n) { var r = ""; while (n-- > 0) r += ch; return r; }
+  function unescapePipes(s) { return s.replace(/\\\|/g, "|"); }
+  function escapeHtml(s) {
+    return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+  }
+
+  // Splits one Markdown table row. "\|" is a literal pipe; a pipe inside [[...]] is part of the link.
+  function splitMdRow(line) {
+    var s = line.trim(), pieces = [], cur = "", depth = 0, startSplit = false, endSplit = false, i, ch;
+    for (i = 0; i < s.length; i++) {
+      ch = s.charAt(i);
+      endSplit = false;
+      if (ch === "\\" && s.charAt(i + 1) === "|") { cur += "|"; i++; continue; }
+      if (ch === "[" && s.charAt(i + 1) === "[" && !depth && s.indexOf("]]", i + 2) >= 0) { depth = 1; cur += "[["; i++; continue; }
+      if (ch === "]" && s.charAt(i + 1) === "]" && depth) { depth = 0; cur += "]]"; i++; continue; }
+      if (ch === "|" && !depth) {
+        if (i === 0) startSplit = true;
+        pieces.push(cur); cur = ""; endSplit = true; continue;
+      }
+      cur += ch;
+    }
+    pieces.push(cur);
+    if (startSplit) pieces.shift();
+    if (endSplit) pieces.pop();
+    return pieces.map(function (c) { return c.trim(); });
+  }
+
+  function isSepRow(line) {
+    if (!/-/.test(line)) return false;
+    var cells = splitMdRow(line);
+    if (!cells.length || (cells.length === 1 && line.indexOf("|") < 0)) return false;
+    return cells.every(function (c) { return /^:?-+:?$/.test(c); });
+  }
+
+  function alignOf(c) {
+    var l = c.charAt(0) === ":", r = c.charAt(c.length - 1) === ":";
+    return l && r ? "center" : l ? "left" : r ? "right" : "";
+  }
+
+  function nonEmptyLines(text) {
+    return String(text == null ? "" : text).replace(/\r\n?/g, "\n").split("\n").filter(function (l) { return l.trim() !== ""; });
+  }
+
+  function looksLikeMd(text) {
+    var lines = nonEmptyLines(text);
+    if (lines.length >= 2 && lines[0].indexOf("|") >= 0 && isSepRow(lines[1])) return true;
+    return lines.length >= 1 && lines.every(function (l) { return /^\s*\|/.test(l); });
+  }
+
+  function detectFormat(text) {
+    if (looksLikeMd(text)) return "md";
+    return /\t/.test(text) ? "tsv" : "csv";
+  }
+
+  // RFC 4180 style records. Quotes open only at the start of a field; "" is a quote inside quotes.
+  function parseDelimited(text, delim) {
+    var rows = [], row = [], cur = "", inQ = false, atStart = true, i = 0, ch;
+    text = String(text == null ? "" : text).replace(/\r\n?/g, "\n");
+    var endField = function () { row.push(cur); cur = ""; atStart = true; };
+    var endRow = function () { endField(); rows.push(row); row = []; };
+    for (; i < text.length; i++) {
+      ch = text.charAt(i);
+      if (inQ) {
+        if (ch === '"') {
+          if (text.charAt(i + 1) === '"') { cur += '"'; i++; } else inQ = false;
+        } else cur += ch;
+        continue;
+      }
+      if (ch === '"' && atStart) { inQ = true; atStart = false; continue; }
+      if (ch === delim) { endField(); continue; }
+      if (ch === "\n") { endRow(); continue; }
+      cur += ch; atStart = false;
+    }
+    if (cur !== "" || row.length) endRow();
+    return rows.filter(function (r) { return !(r.length === 1 && r[0] === ""); });
+  }
+
+  // -> { rows, aligns, header, format, truncated }
+  function parseTable(text, format) {
+    var fmt = !format || format === "auto" ? detectFormat(text) : format;
+    var rows, aligns = [], header = true;
+    if (fmt === "md") {
+      var lines = nonEmptyLines(text);
+      if (lines.length >= 2 && isSepRow(lines[1])) {
+        aligns = splitMdRow(lines[1]).map(alignOf);
+        lines.splice(1, 1);
+      }
+      rows = lines.map(splitMdRow);
+    } else {
+      rows = parseDelimited(text, fmt === "tsv" ? "\t" : ",");
+    }
+    if (fmt !== "md") rows = rows.map(function (r) { return r.map(unescapePipes); });
+    var truncated = rows.length > MAX_ROWS;
+    if (truncated) rows = rows.slice(0, MAX_ROWS);
+    var cols = 0;
+    rows.forEach(function (r) { if (r.length > cols) cols = r.length; });
+    if (cols > MAX_COLS) { cols = MAX_COLS; truncated = true; }
+    rows = rows.map(function (r) { r = r.slice(0, cols); while (r.length < cols) r.push(""); return r; });
+    while (aligns.length < cols) aligns.push("");
+    aligns = aligns.slice(0, cols);
+    return { rows: rows, aligns: aligns, header: header, format: fmt, truncated: truncated };
+  }
+
+  function escPipes(s, o) {
+    if (o.escape) return s.replace(/\|/g, "\\|");
+    if (o.wiki) return s.replace(/\[\[[^\]\n]*\]\]/g, function (m) { return m.replace(/\|/g, "\\|"); });
+    return s;
+  }
+
+  // Text of one cell as it is written into the table.
+  function cellOut(raw, o) {
+    var s = unescapePipes(String(raw == null ? "" : raw));
+    if (o.trim) s = s.trim();
+    s = s.replace(/\r\n|\r|\n/g, o.br ? "<br>" : " ");
+    if (o.trim) s = s.trim();
+    return escPipes(s, o);
+  }
+
+  function padCell(s, w, align) {
+    var d = w - cpLen(s);
+    if (d <= 0) return s;
+    if (align === "right") return rep(" ", d) + s;
+    if (align === "center") { var l = Math.floor(d / 2); return rep(" ", l) + s + rep(" ", d - l); }
+    return s + rep(" ", d);
+  }
+
+  function sepCell(align, w) {
+    if (!w) return { left: ":---", right: "---:", center: ":---:" }[align] || "---";
+    if (align === "left") return ":" + rep("-", w - 1);
+    if (align === "right") return rep("-", w - 1) + ":";
+    if (align === "center") return ":" + rep("-", w - 2) + ":";
+    return rep("-", w);
+  }
+
+  // model: { rows, aligns }; o: { header, style, escape, wiki, br, trim }
+  function render(model, o) {
+    var cols = model.aligns.length, aligned = o.style === "aligned", i, j;
+    if (!cols) return "";
+    var body = model.rows.map(function (r) { return r.map(function (c) { return cellOut(c, o); }); });
+    var head;
+    if (o.header && body.length) head = body.shift();
+    else { head = []; for (j = 0; j < cols; j++) head.push(""); }
+    var all = [head].concat(body), widths = [];
+    for (j = 0; j < cols; j++) {
+      var w = 3;
+      if (aligned) all.forEach(function (r) { var n = cpLen(r[j] || ""); if (n > w) w = n; });
+      widths.push(w);
+    }
+    var line = function (cells) { return "| " + cells.join(" | ") + " |"; };
+    var fmtRow = function (r) {
+      return line(r.map(function (c, k) { return aligned ? padCell(c, widths[k], model.aligns[k]) : c; }));
+    };
+    var out = [fmtRow(head), line(model.aligns.map(function (a, k) { return sepCell(a, aligned ? widths[k] : 0); }))];
+    body.forEach(function (r) { out.push(fmtRow(r)); });
+    return out.join("\n");
+  }
+
+  function previewCell(raw, o) {
+    var s = unescapePipes(String(raw == null ? "" : raw));
+    if (o.trim) s = s.trim();
+    return s.split(/\r\n|\r|\n|<br\s*\/?>/i).map(escapeHtml).join("<br>");
+  }
+
+  // HTML string for the preview. All cell text goes through escapeHtml.
+  function previewHtml(model, o) {
+    var cols = model.aligns.length, j;
+    if (!cols) return "";
+    var rows = model.rows.slice(), head;
+    if (o.header && rows.length) head = rows.shift();
+    else { head = []; for (j = 0; j < cols; j++) head.push(""); }
+    var tag = function (name, text, k) {
+      var a = model.aligns[k];
+      return "<" + name + (a ? ' style="text-align:' + a + '"' : "") + ">" + previewCell(text, o) + "</" + name + ">";
+    };
+    var h = "<table><thead><tr>" + head.map(function (c, k) { return tag("th", c, k); }).join("") + "</tr></thead><tbody>";
+    rows.forEach(function (r) { h += "<tr>" + r.map(function (c, k) { return tag("td", c, k); }).join("") + "</tr>"; });
+    return h + "</tbody></table>";
+  }
+
+  function selfTest() {
+    var fails = [], check = function (n, ok) { if (!ok) fails.push(n); };
+    var all = { header: true, style: "compact", escape: true, wiki: true, br: true, trim: true };
+    var off = { header: true, style: "compact", escape: false, wiki: true, br: true, trim: true };
+    // Acceptance: wikilink alias pipe.
+    var t = parseTable("| a | b |\n|---|:-:|\n| [[Note|Alias]] | x |");
+    check("wikilink one row", t.rows.length === 2 && t.rows[1][0] === "[[Note|Alias]]" && t.rows[1][1] === "x");
+    check("aligns", t.aligns.join(",") === ",center");
+    var out = render(t, all);
+    check("wikilink escaped", out === "| a | b |\n| --- | :---: |\n| [[Note\\|Alias]] | x |");
+    check("reimport unchanged", render(parseTable(out), all) === out);
+    check("wiki only", render(parseTable("| a | b |\n|---|---|\n| [[N|A]] | p\\|q |"), off) === "| a | b |\n| --- | --- |\n| [[N\\|A]] | p|q |");
+    // Round trip of a compact, escaped table with an empty cell and a code span pipe.
+    var rt = "| Name | Code | Note |\n| :--- | ---: | :---: |\n| a | \x60x\\|y\x60 |  |\n| [[N\\|A]] | 2 | z |";
+    check("round trip", render(parseTable(rt), all) === rt);
+    // Pipes layouts and padding.
+    var np = parseTable("a | b\n--- | ---\n1 | 2");
+    check("no outer pipes", np.rows.length === 2 && np.rows[1][1] === "2");
+    var lp = parseTable("| a | b\n|---|---\n| 1 | 2");
+    check("leading only", lp.rows[0].length === 2 && lp.rows[1][1] === "2");
+    var tp = parseTable("a | b |\n--|--|\n1 | 2 |");
+    check("trailing only", tp.rows[0].length === 2 && tp.rows[1][1] === "2");
+    var sh = parseTable("| a | b | c |\n|---|---|---|\n| 1 |");
+    check("short row padded", sh.rows[1].length === 3 && sh.rows[1][2] === "");
+    check("empty cell", render(parseTable("| a | b |\n|---|---|\n|  | 2 |"), all).split("\n")[2] === "|  | 2 |");
+    var cs = parseTable("| a | b |\n|---|---|\n| \x60x|y\x60 | 1 |");
+    check("unescaped code pipe splits", cs.rows[1].length === 3 && cs.rows[1][0] === "\x60x");
+    check("escaped code pipe", parseTable("| a |\n|---|\n| \x60x\\|y\x60 |").rows[1][0] === "\x60x|y\x60");
+    check("no double escape", render(parseTable("| a |\n|---|\n| p\\|q |"), all).split("\n")[2] === "| p\\|q |");
+    // TSV and CSV.
+    var tsv = parseTable("Name\tCity\nAda\tLondon\nBo\t\"New\nYork\"");
+    check("tsv detect", tsv.format === "tsv" && tsv.rows.length === 3 && tsv.rows[2][1] === "New\nYork");
+    var csv = parseTable('a,b\n"a, b","say ""hi"""\r\n1,2\r\n');
+    check("csv detect", csv.format === "csv" && csv.rows.length === 3);
+    check("csv quoted comma", csv.rows[1][0] === "a, b");
+    check("csv doubled quotes", csv.rows[1][1] === 'say "hi"');
+    check("csv no trailing row", csv.rows[2].join("|") === "1|2");
+    check("csv newline br", render(parseTable('a,b\n"x\ny",z'), all) === "| a | b |\n| --- | --- |\n| x<br>y | z |");
+    check("csv newline space", render(parseTable('a,b\n"x\ny",z'), { header: true, style: "compact", escape: true, wiki: true, br: false, trim: true }).split("\n")[2] === "| x y | z |");
+    check("md forced", parseTable("a,b", "md").rows.length === 1);
+    // Aligned output.
+    var al = render(parseTable("| Task | Status |\n|:--|--:|\n| Book the room | Open |\n| x | Done |"), { header: true, style: "aligned", escape: true, wiki: true, br: true, trim: true });
+    check("aligned", al === "| Task          | Status |\n| :------------ | -----: |\n| Book the room |   Open |\n| x             |   Done |");
+    check("aligned reparses", render(parseTable(al), all) === "| Task | Status |\n| :--- | ---: |\n| Book the room | Open |\n| x | Done |");
+    check("cjk width by chars", render(parseTable("| 名前 | b |\n|---|---|\n| ab | c |"), { header: true, style: "aligned", escape: true, wiki: true, br: true, trim: true }).split("\n")[0] === "| 名前  | b   |");
+    // Header off writes an empty header row.
+    check("header off", render(parseTable("a,b\n1,2"), { header: false, style: "compact", escape: true, wiki: true, br: true, trim: true }) === "|  |  |\n| --- | --- |\n| a | b |\n| 1 | 2 |");
+    // Preview escapes cell text.
+    var ph = previewHtml(parseTable("a,b\n<b onclick=x>hi</b>,x<br>y"), all);
+    check("preview escaped", ph.indexOf("<b ") < 0 && ph.indexOf("&lt;b onclick=x&gt;") >= 0 && ph.indexOf("x<br>y") >= 0);
+    check("preview align", previewHtml(parseTable("| a |\n|--:|\n| 1 |"), all).indexOf('text-align:right') >= 0);
+    return fails;
+  }
+
+  return {
+    EXAMPLE: EXAMPLE, MAX_ROWS: MAX_ROWS, MAX_COLS: MAX_COLS,
+    detectFormat: detectFormat, parseTable: parseTable, parseDelimited: parseDelimited, splitMdRow: splitMdRow,
+    render: render, previewHtml: previewHtml, escapeHtml: escapeHtml, cellOut: cellOut, selfTest: selfTest
+  };
+})();
+
+(function () {
+  if (typeof document === "undefined") return;
+  var $ = function (id) { return document.getElementById(id); };
+  var model = MdTable.parseTable(MdTable.EXAMPLE, "md");
+
+  function el(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+  function btn(label, aria, onclick, disabled) {
+    var b = el("button", "tool-btn secondary small", label);
+    b.type = "button";
+    b.setAttribute("aria-label", aria);
+    if (disabled) b.disabled = true;
+    b.addEventListener("click", onclick);
+    return b;
+  }
+  function options() {
+    return {
+      header: $("opt-header").checked, escape: $("opt-escape").checked, wiki: $("opt-wiki").checked,
+      br: $("opt-br").checked, trim: $("opt-trim").checked,
+      style: document.querySelector('input[name="style"]:checked').value
+    };
+  }
+  function fit(t) {
+    t.style.height = "44px";
+    if (t.scrollHeight > 44) t.style.height = t.scrollHeight + "px";
+  }
+
+  function update() {
+    var o = options(), text = MdTable.render(model, o);
+    $("out").value = text;
+    $("preview").innerHTML = MdTable.previewHtml(model, o);
+    var n = $("notice");
+    var risky = !o.escape && model.rows.some(function (r) {
+      return r.some(function (c) { return c.indexOf("|") >= 0 && (o.wiki ? c.replace(/\[\[[^\]\n]*\]\]/g, "").indexOf("|") >= 0 : true); });
+    });
+    n.hidden = !risky;
+    n.textContent = risky ? "A cell contains a pipe that isn’t escaped. GitHub and Obsidian will split that cell in two. Turn on “Escape pipes”." : "";
+  }
+
+  function swap(arr, a, b) { var t = arr[a]; arr[a] = arr[b]; arr[b] = t; }
+
+  function renderGrid() {
+    var cols = model.aligns.length, wrap = $("grid-scroll");
+    wrap.textContent = "";
+    var table = el("table", "grid"), thead = el("thead"), tr = el("tr");
+    tr.appendChild(el("th"));
+    model.aligns.forEach(function (a, c) {
+      var th = el("th", "colctl");
+      th.scope = "col";
+      var sel = el("select");
+      sel.setAttribute("aria-label", "Column " + (c + 1) + " alignment");
+      [["", "No alignment"], ["left", "Left"], ["center", "Center"], ["right", "Right"]].forEach(function (p) {
+        var op = el("option", "", p[1]); op.value = p[0]; sel.appendChild(op);
+      });
+      sel.value = a;
+      sel.addEventListener("change", function () { model.aligns[c] = sel.value; update(); });
+      th.appendChild(sel);
+      var bs = el("div", "btns");
+      bs.appendChild(btn("←", "Move column " + (c + 1) + " left", function () {
+        swap(model.aligns, c, c - 1); model.rows.forEach(function (r) { swap(r, c, c - 1); }); renderGrid(); update();
+      }, c === 0));
+      bs.appendChild(btn("→", "Move column " + (c + 1) + " right", function () {
+        swap(model.aligns, c, c + 1); model.rows.forEach(function (r) { swap(r, c, c + 1); }); renderGrid(); update();
+      }, c === cols - 1));
+      bs.appendChild(btn("Delete", "Delete column " + (c + 1), function () {
+        model.aligns.splice(c, 1); model.rows.forEach(function (r) { r.splice(c, 1); }); renderGrid(); update();
+      }, cols <= 1));
+      th.appendChild(bs);
+      tr.appendChild(th);
+    });
+    thead.appendChild(tr);
+    table.appendChild(thead);
+    var tbody = el("tbody");
+    model.rows.forEach(function (row, r) {
+      var rt = el("tr");
+      var rh = el("th", "rowhead", String(r + 1));
+      rh.scope = "row";
+      rt.appendChild(rh);
+      row.forEach(function (val, c) {
+        var td = el("td"), t = el("textarea");
+        t.rows = 1;
+        t.value = val;
+        t.setAttribute("aria-label", "Row " + (r + 1) + ", column " + (c + 1));
+        t.setAttribute("autocapitalize", "off");
+        t.setAttribute("autocorrect", "off");
+        t.spellcheck = false;
+        t.addEventListener("input", function () { model.rows[r][c] = t.value; fit(t); update(); });
+        td.appendChild(t);
+        rt.appendChild(td);
+        fit(t);
+      });
+      var last = el("td");
+      last.appendChild(btn("Delete", "Delete row " + (r + 1), function () { model.rows.splice(r, 1); renderGrid(); update(); }, model.rows.length <= 1));
+      rt.appendChild(last);
+      tbody.appendChild(rt);
+    });
+    table.appendChild(tbody);
+    wrap.appendChild(table);
+    Array.prototype.forEach.call(wrap.querySelectorAll("textarea"), fit);
+  }
+
+  function copyText(text, statusEl) {
+    var fallback = function () {
+      var t = document.createElement("textarea");
+      t.value = text; t.setAttribute("readonly", "");
+      t.style.position = "fixed"; t.style.opacity = "0";
+      document.body.appendChild(t); t.select(); t.setSelectionRange(0, text.length);
+      var ok = false;
+      try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+      document.body.removeChild(t);
+      statusEl.textContent = ok ? "Copied." : "Copy failed. Select the text and copy it by hand.";
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(function () { statusEl.textContent = "Copied."; }, fallback);
+    else fallback();
+  }
+
+  $("btn-import").addEventListener("click", function () {
+    var text = $("src").value, st = $("status-import");
+    if (!text.trim()) { st.textContent = "Paste a table, CSV or tab-separated text first."; return; }
+    var t = MdTable.parseTable(text, $("fmt").value);
+    if (!t.rows.length || !t.aligns.length) { st.textContent = "Nothing to import. Check the format setting."; return; }
+    model = { rows: t.rows, aligns: t.aligns };
+    if (t.format === "md") $("opt-header").checked = true;
+    var names = { md: "Markdown table", tsv: "tab-separated text", csv: "CSV" };
+    st.textContent = "Imported " + t.rows.length + " rows × " + t.aligns.length + " columns as " + names[t.format] + "." +
+      (t.truncated ? " Rows or columns beyond " + MdTable.MAX_ROWS + " × " + MdTable.MAX_COLS + " were dropped." : "");
+    renderGrid(); update();
+  });
+  $("btn-add-row").addEventListener("click", function () {
+    var r = []; model.aligns.forEach(function () { r.push(""); }); model.rows.push(r); renderGrid(); update();
+  });
+  $("btn-add-col").addEventListener("click", function () {
+    if (model.aligns.length >= MdTable.MAX_COLS) return;
+    model.aligns.push(""); model.rows.forEach(function (r) { r.push(""); }); renderGrid(); update();
+  });
+  $("btn-example").addEventListener("click", function () { model = MdTable.parseTable(MdTable.EXAMPLE, "md"); renderGrid(); update(); });
+  $("btn-clear").addEventListener("click", function () { model = { rows: [["", ""], ["", ""]], aligns: ["", ""] }; renderGrid(); update(); });
+  $("btn-copy").addEventListener("click", function () { copyText($("out").value, $("status-out")); });
+  $("btn-download").addEventListener("click", function () {
+    var blob = new Blob([$("out").value + "\n"], { type: "text/markdown" });
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "table.md";
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+    $("status-out").textContent = "Downloaded table.md.";
+  });
+  Array.prototype.forEach.call(document.querySelectorAll(".calc input[type=checkbox], .calc input[name=style]"), function (i) { i.addEventListener("change", update); });
+  renderGrid();
+  update();
+  if (/selftest/.test(location.hash)) console.log("Markdown table self-test failures:", MdTable.selfTest());
+})();
+</script>
+</body>
+</html>
