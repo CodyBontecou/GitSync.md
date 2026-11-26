@@ -1,0 +1,2 @@
+• Bir dala bağlı olmayan (ayrık HEAD) bir kasayı çekerken (pull) yaşanan çökme düzeltildi. Pull artık bunun nasıl düzeltileceğini açıklıyor.
+• GitSync.md otomatik eşitleme sırasında kapanırsa, bir sonraki açılışta otomatik eşitleme duraklatılır ve ne yapılacağı sorulur; böylece uygulama her açılışta çökmez.

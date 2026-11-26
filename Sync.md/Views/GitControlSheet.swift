@@ -374,9 +374,9 @@ struct GitControlSheet: View {
                 Task {
                     let ok: Bool
                     if canPushCurrentBranch {
-                        ok = await state.pushCurrentBranch(repoID: repoID)
+                        ok = await ReviewPromptContext.userStarted { await state.pushCurrentBranch(repoID: repoID) }
                     } else {
-                        ok = await state.push(repoID: repoID, message: commitMessage)
+                        ok = await ReviewPromptContext.userStarted { await state.push(repoID: repoID, message: commitMessage) }
                     }
                     if ok {
                         commitMessage = ""
@@ -601,7 +601,7 @@ struct GitControlSheet: View {
                                 .disabled(state.isSyncing)
                             ToolPill(title: String(localized: "Complete"), style: .filled(Tide.synced)) {
                                 Task {
-                                    await state.completeMerge(repoID: repoID, message: mergeCommitMessage)
+                                    await ReviewPromptContext.userStarted { await state.completeMerge(repoID: repoID, message: mergeCommitMessage) }
                                     mergeCommitMessage = ""
                                 }
                             }
@@ -815,7 +815,7 @@ struct GitControlSheet: View {
                       title: String(localized: "Pull"),
                       subtitle: String(localized: "Fetch and apply remote changes")) {
                 Task {
-                    let ok = await state.pull(repoID: repoID, cancellationFeedback: .warning)
+                    let ok = await ReviewPromptContext.userStarted { await state.pull(repoID: repoID, cancellationFeedback: .warning) }
                     if ok { dismiss() }
                 }
             }
@@ -824,7 +824,7 @@ struct GitControlSheet: View {
                       title: String(localized: "Pull with Rebase"),
                       subtitle: String(localized: "Replay local commits on top of remote")) {
                 Task {
-                    let ok = await state.pullWithRebase(repoID: repoID)
+                    let ok = await ReviewPromptContext.userStarted { await state.pullWithRebase(repoID: repoID) }
                     if ok { dismiss() }
                 }
             }

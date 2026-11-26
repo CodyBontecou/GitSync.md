@@ -73,6 +73,61 @@ extension OnboardingAnalyticsClient {
         ))
     }
 
+    // MARK: - Unlock paywall
+
+    /// Sent once per paywall presentation, after the product load settles.
+    /// `productLoaded == false` means the buy button can only fail.
+    func trackPaywallViewed(context: OnboardingAnalyticsPaywallContext, productLoaded: Bool) {
+        track(OnboardingAnalyticsEvent(
+            name: .paywallViewed,
+            properties: OnboardingAnalyticsProperties(
+                errorCategory: productLoaded ? nil : .productUnavailable,
+                paywallContext: context,
+                productId: .lifetime
+            )
+        ))
+    }
+
+    func trackPaywallPurchaseStarted(context: OnboardingAnalyticsPaywallContext) {
+        track(OnboardingAnalyticsEvent(
+            name: .paywallPurchaseStarted,
+            properties: OnboardingAnalyticsProperties(
+                paywallContext: context,
+                productId: .lifetime
+            )
+        ))
+    }
+
+    func trackPaywallPurchaseCompleted(
+        context: OnboardingAnalyticsPaywallContext,
+        outcome: OnboardingAnalyticsPurchaseOutcome,
+        errorCategory: OnboardingAnalyticsErrorCategory? = nil
+    ) {
+        track(OnboardingAnalyticsEvent(
+            name: .paywallPurchaseCompleted,
+            properties: OnboardingAnalyticsProperties(
+                errorCategory: errorCategory,
+                paywallContext: context,
+                productId: .lifetime,
+                purchaseOutcome: outcome
+            )
+        ))
+    }
+
+    func trackPaywallRestoreCompleted(
+        context: OnboardingAnalyticsPaywallContext,
+        restored: Bool
+    ) {
+        track(OnboardingAnalyticsEvent(
+            name: .paywallRestoreCompleted,
+            properties: OnboardingAnalyticsProperties(
+                paywallContext: context,
+                productId: .lifetime,
+                purchaseOutcome: restored ? .restored : .notFound
+            )
+        ))
+    }
+
     private func properties(
         onboardingStep: OnboardingAnalyticsStep? = nil,
         authMethod: OnboardingAnalyticsAuthMethod? = nil,

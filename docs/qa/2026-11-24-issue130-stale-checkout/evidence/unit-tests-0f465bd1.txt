@@ -1,0 +1,16 @@
+StaleWorktreeAfterPullTests testAppStateRebasePullSurfacesCheckoutAttentionInsteadOfSuccess passed (0.007 seconds).
+StaleWorktreeAfterPullTests testAppStateUpToDatePlanWithPendingCheckoutOffersFinishUpdate passed (0.576 seconds).
+StaleWorktreeAfterPullTests testCleanPullLeavesIndexAndWorktreeEqualToHEAD passed (0.094 seconds).
+StaleWorktreeAfterPullTests testCommitIsRefusedWhileIndexHoldsPrePullVersions passed (0.055 seconds).
+StaleWorktreeAfterPullTests testDirtyFileNotTouchedByIncomingDoesNotBlockCheckout passed (0.053 seconds).
+StaleWorktreeAfterPullTests testDirtyWorkspaceAtPlanTimeIsStillReportedAsBlocked passed (0.048 seconds).
+StaleWorktreeAfterPullTests testEditingAFileBackToAnOlderVersionIsNotMistakenForAStaleCheckout passed (0.075 seconds).
+StaleWorktreeAfterPullTests testExternalRefMoveIsReportedAsUnfinishedNotUpToDate passed (0.054 seconds).
+StaleWorktreeAfterPullTests testFinishUpdateAfterExternalRefMoveRestoresHEADAndClearsTheReport passed (0.058 seconds).
+StaleWorktreeAfterPullTests testFinishUpdateKeepsALocalEditToAnIncomingFile passed (0.067 seconds).
+StaleWorktreeAfterPullTests testInterruptedGitSyncCheckoutLeavesAMarkerThatTheNextPullFinds passed (0.056 seconds).
+StaleWorktreeAfterPullTests testOneConflictingIncomingFileNoLongerHoldsBackTheRest passed (0.062 seconds).
+StaleWorktreeAfterPullTests testRepositoryAlreadyStuckBeforeThisFixIsFoundFromTheReflog passed (0.061 seconds).
+Test Suite 'StaleWorktreeAfterPullTests' passed at 2026-11-24 10:44:44.194.
+	 Executed 598 tests, with 0 failures (0 unexpected) in 54.199 (54.355) seconds
+** TEST SUCCEEDED **

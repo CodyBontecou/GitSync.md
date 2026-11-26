@@ -1,0 +1,14 @@
+argent e2e run qa-android-pull-stale-commit-guard --platform android --device emulator-5554
+Device: pool emulator whereday-priority-20261111-api35 (API 35), debug build of f17538aa
+Before pass 1: argent run stop-all-simulator-servers --devices emulator-5554
+
+First streak (YAML without the idle after open-url): step 5 (M / hello.md) failed
+twice; the screenshot showed the correct vault screen, the runner's tree was still
+Home (Argent tree freeze). Added `await: { idle: true }` after open-url; streak reset.
+
+Pass 1: PASS — 18 passed, 0 failed, 0 errored, 0 skipped (11.6s)
+Pass 2 (immediately, no reset): PASS — 18 passed, 0 failed, 0 errored, 0 skipped (10.7s)
+
+On-device check after pass 2:
+  refs/heads/main == refs/remotes/origin/main (no commit was written)
+  notes/hello.md still ends "Base note." (stale until Finish update, as expected)

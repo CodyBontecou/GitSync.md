@@ -128,6 +128,7 @@ struct FileDiffView: View {
     @State private var isLoading = true
     @State private var isReverting = false
     @State private var showRevertModal = false
+    @State private var showStopTracking = false
     @State private var editorDestination: FileEditorDestination?
     @State private var fileText: String?
 
@@ -259,8 +260,17 @@ struct FileDiffView: View {
                 )
                 .transition(.opacity.combined(with: .move(edge: .bottom)))
             }
+            if showStopTracking {
+                StopTrackingPathSheet(repoID: repoID, path: path) { stopped in
+                    showStopTracking = false
+                    // Once untracked, the file has left the changes list.
+                    if stopped { if embedded { onClose?() } else { dismiss() } }
+                }
+                .transition(.opacity.combined(with: .move(edge: .bottom)))
+            }
         }
         .animation(.easeOut(duration: 0.18), value: showRevertModal)
+        .animation(.easeOut(duration: 0.18), value: showStopTracking)
         .task(id: path) { await load() }
     }
 
@@ -542,6 +552,27 @@ struct FileDiffView: View {
             .disabled(isLoading || isReverting || entry == nil)
             .accessibilityLabel(String(localized: "Revert Changes"))
             .accessibilityHint(String(localized: "Discard local edits to this file"))
+
+            if let entry, VaultView.canStopTracking(entry) {
+                Menu {
+                    Button {
+                        showStopTracking = true
+                    } label: {
+                        Label(String(localized: "Stop Tracking…"), systemImage: "eye.slash")
+                    }
+                    .accessibilityIdentifier("diff.stopTracking")
+                } label: {
+                    Image(systemName: "ellipsis")
+                        .font(.system(size: 17, weight: .semibold))
+                        .foregroundStyle(Tide.ink)
+                        .frame(width: 56, height: 56)
+                        .background(Circle().strokeBorder(Tide.line, lineWidth: 1))
+                        .contentShape(Circle())
+                }
+                .disabled(isLoading || isReverting || state.isSyncing)
+                .accessibilityLabel(String(localized: "More file actions"))
+                .accessibilityIdentifier("diff.more")
+            }
 
             if let fileURL {
                 BPrimaryButton(title: embedded ? String(localized: "Edit") : String(localized: "Open in editor")) {

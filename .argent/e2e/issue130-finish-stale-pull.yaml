@@ -1,0 +1,101 @@
+# Issue #130 regression: Pull said "Already up to date" while the vault still held
+# pre-pull files, because another Git client (Obsidian Git <= 2.41 on mobile)
+# moved the branch and then failed its checkout. Expects "Pull didn't finish"
+# with Finish Update, and Finish Update to bring the files up to date.
+# Prerequisites: a DEBUG build of GitSync.md installed on an iOS simulator. The
+# `-UITestGitToolsFixture stale-worktree` launch argument seeds a local-only vault
+# (file:// remote under /tmp/syncmd-uitest-fixtures) whose refs/heads/main was
+# moved to origin/main without a checkout; no network, accounts or personal data.
+# Side effects: resets /tmp/syncmd-uitest-fixtures and the app's
+# Documents/git-tools-fixture folder and repo list on the simulator.
+version: 1
+requires:
+  platform: ios
+steps:
+  - echo: Launch with the stale-worktree fixture (branch moved to origin/main
+      without checkout). Expect Home with the fixture vault
+  - launch:
+      native: bontecou.Sync-md
+      ios:
+        app: bontecou.Sync-md
+        args:
+          - -UITestGitToolsFixture
+          - stale-worktree
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: home.vault.git-tools-fixture
+      timeoutMs: 15000
+  - await: { idle: true }
+  - echo: Home shows the fixture vault. Open it; expect the vault screen with the
+      Pull button
+  # Coordinate exception: the SwiftUI id home.vault.git-tools-fixture is in the
+  # accessibility tree (the raw wait above uses it) but not in the runner's
+  # native tree, so `tap: { id }` cannot resolve it. The fixture is the only row
+  # on Home; the next wait proves the vault opened.
+  - tool: gesture-tap
+    args:
+      x: 0.5
+      y: 0.36
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: vault.hero.primary
+      timeoutMs: 10000
+  - await: { idle: true }
+  - echo: Vault open; branch equals origin/main but notes/hello.md still has the old
+      text. Tap the primary pull button. Before the fix this said Already up to
+      date; expect the Pull didn't finish banner with Finish Update
+  # Coordinate exception: vault.hero.primary (proven visible above) is only in the
+  # accessibility tree; the recorder fell back to a role-only AXScrollArea
+  # selector, which is not this button. The banner wait below proves the tap.
+  - tool: gesture-tap
+    args:
+      x: 0.5
+      y: 0.462
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Pull didn't finish
+      timeoutMs: 15000
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: pull.finishUpdate
+      timeoutMs: 5000
+  # Banner buttons stay disabled until the pull's 1 s progress delay ends
+  # (AppState.pullOnly showsProgressDelay); a tap right after the banner appears
+  # is ignored. Require 1.5 s of stillness before tapping Finish Update.
+  - await: { idle: true, stableFor: 1500, timeout: 9000 }
+  - echo: Banner offers Finish Update and hello.md shows as a staged change. Tap
+      Finish Update; expect the banner to go away, the change to clear and the
+      vault to read In sync
+  # Coordinate exception: pull.finishUpdate (proven visible above) is only in the
+  # accessibility tree; the recorder fell back to a role-only selector. The
+  # hidden wait on the same id and the result text below prove the tap.
+  - tool: gesture-tap
+    args:
+      x: 0.328
+      y: 0.669
+  - tool: await-ui-element
+    args:
+      condition: hidden
+      selector:
+        identifier: pull.finishUpdate
+      timeoutMs: 10000
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: to the latest version
+      timeoutMs: 10000
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: No changes on this iPhone
+      timeoutMs: 10000

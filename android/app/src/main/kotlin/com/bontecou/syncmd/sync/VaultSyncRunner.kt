@@ -58,11 +58,17 @@ data class SyncStep(val id: SyncStepId, val state: SyncStepState = SyncStepState
 
 /** How a sync ended. */
 sealed interface VaultSyncResult {
-    data class Done(val message: UiText) : VaultSyncResult
+    /** [attention]: the pull finished but left something to look at (e.g. LFS files not downloaded). */
+    data class Done(val message: UiText, val attention: Boolean = false) : VaultSyncResult
     /** The remote refused the push: show the inline Push rejected state. */
     data class Rejected(val divergence: RemoteDivergence?, val gitLine: String) : VaultSyncResult
     /** Pull needs the local changes committed first (the existing resolve flow). */
     data object LocalChangesBlocked : VaultSyncResult
+    /**
+     * An earlier update moved the branch but [stale] files still hold their pre-update versions
+     * (issue #130). Offers Finish update; committing is refused until then.
+     */
+    data class PullNotFinished(val stale: Int) : VaultSyncResult
     data class Failed(val message: UiText) : VaultSyncResult
     data object Cancelled : VaultSyncResult
 }
@@ -142,7 +148,7 @@ class VaultSyncRunner @Inject constructor(
         val result = withContext(sink) { pullService.pull(path).getOrThrow() }
         if (!result.success) throw IllegalStateException(result.message.ifBlank { "Pull did not complete" })
         done(SyncStepId.UPDATE, result.commitsApplied.takeIf { it > 0 }?.let { "↓$it" }, none = result.commitsApplied == 0)
-        VaultSyncResult.Done(result.attention?.let(UiText::Raw) ?: UiText.res(R.string.vault_m3_pulled, run().target))
+        VaultSyncResult.Done(result.attention?.let(UiText::Raw) ?: UiText.res(R.string.vault_m3_pulled, run().target), attention = result.attention != null)
     }
 
     /**
@@ -158,7 +164,7 @@ class VaultSyncRunner @Inject constructor(
         val inTheWay = when {
             behind == 0 -> null
             (before.ahead ?: 0) > 0 -> R.plurals.files_m3_sync_diverged
-            !pullService.isClean(path).getOrThrow() ->
+            pullService.hasBlockingLocalChanges(path).getOrThrow() ->
                 R.plurals.files_m3_sync_local_changes
             else -> null
         }
@@ -166,12 +172,28 @@ class VaultSyncRunner @Inject constructor(
             done(SyncStepId.UPDATE, none = true)
             return@start VaultSyncResult.Done(UiText.res(R.string.vault_m3_pulled, run().target))
         }
+        withContext(sink) { pullService.inspectPendingCheckout(path).getOrThrow() }
+            ?.let { return@start VaultSyncResult.PullNotFinished(it.stalePaths.size) }
         if (inTheWay != null) return@start VaultSyncResult.Failed(UiText.plural(inTheWay, behind, behind, run().target))
         begin(SyncStepId.UPDATE)
         val result = withContext(sink) { pullService.pull(path).getOrThrow() }
         if (!result.success) throw IllegalStateException(result.message.ifBlank { "Pull did not complete" })
         done(SyncStepId.UPDATE, result.commitsApplied.takeIf { it > 0 }?.let { "↓$it" }, none = result.commitsApplied == 0)
-        VaultSyncResult.Done(result.attention?.let(UiText::Raw) ?: UiText.res(R.string.vault_m3_pulled, run().target))
+        VaultSyncResult.Done(result.attention?.let(UiText::Raw) ?: UiText.res(R.string.vault_m3_pulled, run().target), attention = result.attention != null)
+    }
+
+    /** Finish update: check out files an earlier update left behind HEAD, keeping local edits. */
+    fun finishUpdate(path: String) = start(path, VaultSyncKind.PULL, listOf(SyncStepId.UPDATE)) {
+        begin(SyncStepId.UPDATE)
+        val completion = withContext(sink) { pullService.finishPendingCheckout(path).getOrThrow() }
+        done(SyncStepId.UPDATE, completion.restoredPaths.size.takeIf { it > 0 }?.toString())
+        when {
+            completion.remainingStalePaths.isNotEmpty() -> VaultSyncResult.Failed(
+                UiText.plural(R.plurals.pending_checkout_remaining, completion.remainingStalePaths.size, completion.remainingStalePaths.size))
+            completion.keptLocalPaths.isNotEmpty() -> VaultSyncResult.Done(
+                UiText.res(R.string.pending_checkout_kept, completion.keptLocalPaths.take(3).joinToString(", ")), attention = true)
+            else -> VaultSyncResult.Done(UiText.plural(R.plurals.pending_checkout_done, completion.restoredPaths.size, completion.restoredPaths.size))
+        }
     }
 
     fun pullThenPush(path: String) = start(path, VaultSyncKind.PULL_THEN_PUSH,
@@ -301,13 +323,21 @@ class VaultSyncRunner @Inject constructor(
                 session.block()
             } catch (cancelled: CancellationException) {
                 VaultSyncResult.Cancelled
+            } catch (inTheWay: com.bontecou.syncmd.data.models.OverwriteBlockedException) {
+                // Committing can't clear an ignored file in the way; say which file (issue #137).
+                VaultSyncResult.Failed(UiText.Raw(inTheWay.message ?: inTheWay.path))
             } catch (blocked: DirtyRepoException) {
                 VaultSyncResult.LocalChangesBlocked
+            } catch (unfinished: com.bontecou.syncmd.services.git.PullNotFinishedException) {
+                VaultSyncResult.PullNotFinished(unfinished.report.stalePaths.size)
             } catch (failure: Exception) {
                 if (jobs[path]?.isCancelled == true) VaultSyncResult.Cancelled
                 else VaultSyncResult.Failed(failure.gitOpsText(R.string.gitops_action_failed))
             }
             withContext(NonCancellable) { session.update { it.copy(result = result, transfer = null) } }
+            // Every caller is a vault screen button the person pressed: Rejected, LocalChangesBlocked,
+            // Failed (diverged, conflicts, local edits in the way) and Cancelled never count or prompt.
+            if (result is VaultSyncResult.Done && !result.attention) com.bontecou.syncmd.review.ReviewPrompts.shared?.userSyncSucceeded(path)
         }
         jobs[path] = job
         job.invokeOnCompletion { jobs.remove(path, job) }

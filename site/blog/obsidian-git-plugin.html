@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../favicon-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<title>Obsidian Git Plugin: Commands, Settings and Errors Explained — GitSync.md</title>
+<meta name="description" content="Obsidian Git plugin reference: what each command and view does, settings grouped by job, desktop vs mobile limits, and a lookup table for common errors such as Cannot run Git command.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Cody Bontecou">
+<meta name="theme-color" content="#ffffff">
+<link rel="canonical" href="https://gitsync.md/blog/obsidian-git-plugin">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="GitSync.md">
+<meta property="og:title" content="Obsidian Git Plugin: Commands, Settings and Errors Explained — GitSync.md">
+<meta property="og:description" content="Commands, settings by job, a desktop vs mobile table and an error lookup for the Obsidian Git plugin, checked against the plugin docs.">
+<meta property="og:url" content="https://gitsync.md/blog/obsidian-git-plugin">
+<meta property="og:image" content="https://gitsync.md/social/blog/obsidian-git-plugin.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:alt" content="GitSync.md guide card: Obsidian Git plugin commands, settings and errors">
+<meta property="article:published_time" content="2026-11-25">
+<meta property="article:modified_time" content="2026-11-25">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Obsidian Git Plugin: Commands, Settings and Errors Explained — GitSync.md">
+<meta name="twitter:description" content="Commands, settings by job, desktop vs mobile limits and an error lookup for the Obsidian Git plugin.">
+<meta name="twitter:image" content="https://gitsync.md/social/blog/obsidian-git-plugin.png">
+<meta name="twitter:image:alt" content="GitSync.md guide card: Obsidian Git plugin commands, settings and errors">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Obsidian Git plugin: commands, settings and errors explained",
+  "description": "Obsidian Git plugin reference: what each command and view does, settings grouped by job, desktop vs mobile limits, and a lookup table for common errors such as Cannot run Git command.",
+  "image": [
+    "https://gitsync.md/social/blog/obsidian-git-plugin.png"
+  ],
+  "datePublished": "2026-11-25",
+  "dateModified": "2026-11-25",
+  "author": {
+    "@type": "Person",
+    "name": "Cody Bontecou",
+    "url": "https://gitsync.md/about"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Cody Bontecou"
+  },
+  "mainEntityOfPage": "https://gitsync.md/blog/obsidian-git-plugin"
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../site.css">
+<link rel="stylesheet" href="../content.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://gitsync.md/"},
+    {"@type": "ListItem", "position": 2, "name": "Guides", "item": "https://gitsync.md/blog/"},
+    {"@type": "ListItem", "position": 3, "name": "Obsidian Git plugin", "item": "https://gitsync.md/blog/obsidian-git-plugin"}
+  ]
+}
+</script>
+</head>
+<body id="top">
+<a class="skip-link" href="#main">Skip to content</a>
+<svg class="icon-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 5l7 7-7 7"/></symbol>
+  <symbol id="i-branch" viewBox="0 0 24 24"><circle cx="6" cy="5" r="2.5"/><circle cx="6" cy="19" r="2.5"/><circle cx="18" cy="5" r="2.5"/><path d="M6 7.5v9M18 7.5v1a5 5 0 0 1-5 5H6"/></symbol>
+  <symbol id="i-external" viewBox="0 0 24 24"><path d="M6 18 18 6M6 6h12v12"/></symbol>
+</svg>
+
+<header class="site-header">
+  <nav class="shell navigation" aria-label="Main navigation">
+    <a class="brand" href="/" aria-label="GitSync.md home">gitsync<span class="brand-extension">.md</span></a>
+    <div class="nav-links"><a href="/#app">The app</a><a href="/#workflow">How it works</a><a href="/blog/" class="is-active">Guides</a><a href="/compare/obsidian-sync-vs-git">Compare</a><a href="/#faq">FAQ</a></div>
+    <a class="button button-small" href="/#download">Get the app</a>
+  </nav>
+</header>
+
+<main id="main">
+<div class="container guide-layout">
+      <header class="article-hero">
+        <div class="article-title">
+        <nav class="eyebrow article-breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li><a href="/blog/">Guides</a></li><li aria-current="page">Obsidian Git plugin</li></ol></nav>
+        <h1>Obsidian Git plugin: commands, settings and errors explained<span class="accent">.</span></h1>
+        <p class="subtitle">The Obsidian Git plugin by Vinzent03 commits, pulls and pushes your vault from inside Obsidian. This is a reference for what its commands and views do, which settings matter, what changes on a phone, and what to do about the errors its documentation lists.</p>
+        <div class="meta-line"><span>By <a href="/about" rel="author">Cody Bontecou</a></span>
+          <span>November 25, 2026</span>
+          <span>Guide</span>
+          <span>Plugin reference</span>
+        </div>
+      </div>
+      </header>
+      <aside class="guide-aside" aria-label="Guide sidebar">
+        <section class="side-note" aria-label="Article notes">
+        <h2>Details checked</h2>
+        <p>Checked on November 25, 2026:</p>
+        <ul>
+          <li>Plugin: latest GitHub release listed was 2.44.0 (published November 23)</li>
+          <li>Command and setting names: the plugin’s source code on its main branch</li>
+          <li>Errors and mobile limits: the plugin’s <a href="https://publish.obsidian.md/git-doc/Common+issues" target="_blank" rel="noopener">Common issues</a> and <a href="https://publish.obsidian.md/git-doc/Getting+Started" target="_blank" rel="noopener">Getting Started</a> docs and its <a href="https://github.com/Vinzent03/obsidian-git#mobile-support-experimental" target="_blank" rel="noopener">README</a></li>
+          <li>Names can change between releases. If a label differs in your version, search the settings pane for it.</li>
+        </ul>
+      </section>
+        <div class="guide-aside-sticky">
+        <nav class="toc-card" aria-label="Article outline">
+        <div class="toc-title">What this covers</div>
+        <ol>
+          <li><a href="#what">What the plugin does</a></li>
+          <li><a href="#install">Install and first repo</a></li>
+          <li><a href="#commands">Commands</a></li>
+          <li><a href="#views">Views</a></li>
+          <li><a href="#settings">Settings by job</a></li>
+          <li><a href="#mobile">Desktop vs mobile</a></li>
+          <li><a href="#errors">Error messages and fixes</a></li>
+          <li><a href="#native">When to use a native Git app</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#checked">Details checked</a></li>
+        </ol>
+      </nav>
+        <div class="aside-cta aside-cta-wide">
+          <p class="aside-cta-title">Real Git on your phone.</p>
+          <p class="aside-cta-price">iPhone + iPad: $9.99 once · No subscription</p>
+          <a class="aside-cta-button" href="/v/web-homepage-134" target="_blank" rel="noopener">Download on the App Store</a>
+        </div>
+        </div>
+      </aside>
+      <article class="article-body">
+        <div class="tldr">
+          <div class="tldr-title">Short version</div>
+          <ol>
+            <li>Day to day you need three commands: <strong>Git: Commit-and-sync</strong>, <strong>Git: Pull</strong> and <strong>Git: Open source control view</strong>.</li>
+            <li>Most errors on desktop are Git not being found (set <strong>Custom Git binary path</strong>) or authentication.</li>
+            <li>On a phone the plugin uses a different Git implementation with no SSH and a documented crash risk. It suits small HTTPS vaults.</li>
+          </ol>
+        </div>
+
+        <h2 id="what">What the Obsidian Git plugin does</h2>
+        <p>The <a href="https://github.com/Vinzent03/obsidian-git" target="_blank" rel="noopener">Obsidian Git</a> community plugin runs Git for your vault: commit, pull and push, plus a source control view, a history view and a diff view. Its docs use <strong>commit-and-sync</strong> for the whole routine: stage, commit, pull, then push. The older name for it was “backup”, which the docs now mark as no longer in use.</p>
+        <p>Git suits asynchronous editing: you change a note on one device, commit, and pick the change up on another. It isn’t live co-editing, so two devices editing the same lines between syncs produce a conflict.</p>
+
+        <h2 id="install">Install and first repo</h2>
+        <p>Install it from <strong>Settings → Community plugins → Browse</strong>, as described in <a href="https://obsidian.md/help/community-plugins" target="_blank" rel="noopener">Obsidian’s help</a>. There are three ways to start, from the plugin’s <a href="https://publish.obsidian.md/git-doc/Getting+Started" target="_blank" rel="noopener">Getting Started</a> page:</p>
+        <ul>
+          <li><strong>You already have a repository.</strong> If the vault folder is a Git repository, the plugin uses it.</li>
+          <li><strong>New repository.</strong> Run <strong>Git: Initialize a new repo</strong>, make a first commit with <strong>Git: Commit all changes</strong>, set up authentication, then push to a remote named <code>origin</code>.</li>
+          <li><strong>Clone.</strong> <strong>Git: Clone an existing remote repo</strong> exists, but the docs note that Git can only clone into a new folder. Clone into a subfolder of the vault and move the files up, open the subfolder as its own vault, or run <code>git clone</code> in a terminal where you want the vault.</li>
+        </ul>
+        <p>For the full walkthrough with GitHub, including the repository, authentication and phone setup, follow <a href="/blog/sync-obsidian-github">Sync Obsidian with GitHub on every device</a>. This page doesn’t repeat it.</p>
+
+        <h2 id="commands">Commands you’ll actually use</h2>
+        <p>Open the command palette and type <strong>Git</strong>. These names come from the plugin’s source:</p>
+        <div class="comparison-scroll" role="region" aria-label="Obsidian Git commands" tabindex="0"><table class="comparison-table">
+          <caption>Obsidian Git command palette entries</caption>
+          <thead><tr><th scope="col">Command</th><th scope="col">What it does</th></tr></thead><tbody>
+          <tr><th scope="row">Commit-and-sync</th><td>Stages and commits, then pulls and pushes, depending on your <strong>Pull on commit-and-sync</strong> and <strong>Push on commit-and-sync</strong> settings.</td></tr>
+          <tr><th scope="row">Commit-and-sync with specific message</th><td>The same routine, but you type the commit message.</td></tr>
+          <tr><th scope="row">Pull</th><td>Brings in remote changes.</td></tr>
+          <tr><th scope="row">Push</th><td>Pushes your commits without committing first.</td></tr>
+          <tr><th scope="row">Commit all changes</th><td>Commits everything, with no pull or push.</td></tr>
+          <tr><th scope="row">Commit staged</th><td>Commits only what you staged.</td></tr>
+          <tr><th scope="row">Open source control view</th><td>Opens the panel for staging, committing and viewing changes.</td></tr>
+          <tr><th scope="row">Open history view</th><td>Opens the commit log.</td></tr>
+          <tr><th scope="row">Open diff view</th><td>Shows the changes in the current file.</td></tr>
+          <tr><th scope="row">Initialize a new repo</th><td>Runs <code>git init</code> in the vault.</td></tr>
+          <tr><th scope="row">Clone an existing remote repo</th><td>Clones a remote. See the empty-folder note above.</td></tr>
+          <tr><th scope="row">Edit .gitignore</th><td>Opens the vault’s <code>.gitignore</code>. See <a href="/blog/obsidian-gitignore">what to put in it</a>.</td></tr>
+          <tr><th scope="row">Add file to .gitignore</th><td>Adds the current file to <code>.gitignore</code>.</td></tr>
+          <tr><th scope="row">Pause/Resume automatic routines</th><td>Stops or restarts the scheduled commit, pull and push.</td></tr>
+          </tbody></table></div>
+        <p>There are more, including branch commands, <strong>Edit remotes</strong>, <strong>Fetch</strong> and two marked CAUTION (<strong>Delete repository</strong> and <strong>Discard all changes</strong>). Read those names twice before running them.</p>
+
+        <h2 id="views">Views: source control, history, diff and line authoring</h2>
+        <ul>
+          <li><strong>Source control view</strong> lists changed files so you can stage, unstage, discard and commit them.</li>
+          <li><strong>History view</strong> shows the commit log. Its settings let you show the author as full name or initials and show the date.</li>
+          <li><strong>Diff view</strong> compares versions of a file. The settings offer split or unified style (marked desktop in the plugin’s settings).</li>
+          <li><strong>Line authoring</strong> shows who last changed each line, based on <code>git blame</code>. The <a href="https://publish.obsidian.md/git-doc/Line+Authoring" target="_blank" rel="noopener">docs</a> say only Obsidian on desktop is supported, and it works in Live Preview and Source mode, not Reading mode. Toggle it with <strong>Git: Toggle line author information</strong>.</li>
+        </ul>
+
+        <h2 id="settings">Settings explained by job</h2>
+        <p>Instead of every toggle, here are the ones that decide how the plugin behaves, grouped by what you want. The names follow the plugin’s current settings code. For recommended values, see the <a href="/blog/sync-obsidian-github#plugin">settings table in the GitHub guide</a>.</p>
+        <h3>Sync on a schedule</h3>
+        <ul>
+          <li><strong>Auto commit interval (minutes)</strong>: commits on a timer. <code>0</code> turns it off. With separate intervals off, the label reads “commit-and-sync”, and the timer also pulls and pushes.</li>
+          <li><strong>Auto commit-and-sync after stopping file edits</strong>: waits until you stop typing. It needs a non-zero interval.</li>
+          <li><strong>Use separate commit and push intervals</strong>: adds <strong>Auto push interval (minutes)</strong>.</li>
+          <li><strong>Pause/Resume automatic routines</strong>: a command, for when you want a quiet hour.</li>
+        </ul>
+        <h3>Pulling</h3>
+        <ul>
+          <li><strong>Pull on startup</strong>: pulls when Obsidian opens.</li>
+          <li><strong>Auto pull interval (minutes)</strong>: pulls on its own timer.</li>
+          <li><strong>Pull on commit-and-sync</strong> and <strong>Push on commit-and-sync</strong>: turn off pushing and commit-and-sync becomes a local commit.</li>
+          <li><strong>Merge strategy</strong>: Merge, Rebase, or Other sync service (update HEAD only). Marked desktop in the settings, and the README lists no rebase on mobile.</li>
+          <li><strong>Merge strategy on conflicts</strong>: None (Git default), Our changes or Their changes.</li>
+        </ul>
+        <h3>Commit messages</h3>
+        <ul>
+          <li><strong>Commit message on auto commit-and-sync</strong> and <strong>Commit message on manual commit</strong> accept placeholders such as <code>{{date}}</code> and <code>{{hostname}}</code>.</li>
+          <li><strong>{{date}} placeholder format</strong> takes a Moment.js format; <strong>{{hostname}} placeholder replacement</strong> sets a short name for this device.</li>
+          <li><strong>Preview commit message</strong> shows the result before you rely on it.</li>
+        </ul>
+        <h3>Per device (Advanced)</h3>
+        <ul>
+          <li><strong>Disable on this device</strong>: turns the plugin off on one device. The setting is not synced, so other devices keep their own.</li>
+          <li><strong>Custom Git binary path</strong> (desktop): where to find Git if it isn’t on your PATH. See the error table below.</li>
+          <li><strong>Additional PATH environment variable paths</strong> (desktop): extra folders for Git to search.</li>
+          <li><strong>Repository folder within the vault</strong>: use it if the repository isn’t at the vault root.</li>
+          <li><strong>Username on your Git server</strong> and <strong>Git server password or access token</strong> appear on mobile.</li>
+        </ul>
+
+        <h2 id="mobile">Desktop vs mobile</h2>
+        <p>The README calls mobile support experimental and says the Git implementation on mobile is very unstable. On mobile the plugin can’t run a native Git program. It uses <a href="https://isomorphic-git.org/" target="_blank" rel="noopener">isomorphic-git</a>, a JavaScript implementation, so some features are missing.</p>
+        <div class="comparison-scroll" role="region" aria-label="Obsidian Git on desktop and mobile" tabindex="0"><table class="comparison-table">
+          <caption>Obsidian Git plugin: desktop vs mobile</caption>
+          <thead><tr><th scope="col">Capability</th><th scope="col">Desktop</th><th scope="col">Mobile</th></tr></thead><tbody>
+          <tr><th scope="row">Git implementation</th><td>Your installed Git</td><td>isomorphic-git (JavaScript)</td></tr>
+          <tr><th scope="row">SSH authentication</th><td>Yes, through your Git setup</td><td>No</td></tr>
+          <tr><th scope="row">Authentication</th><td>Credential helper or SSH key; see the <a href="https://publish.obsidian.md/git-doc/Authentication" target="_blank" rel="noopener">authentication page</a></td><td>Username and personal access token in the plugin’s settings</td></tr>
+          <tr><th scope="row">Rebase merge strategy</th><td>Yes</td><td>No</td></tr>
+          <tr><th scope="row">Submodules</th><td>Opt-in</td><td>No</td></tr>
+          <tr><th scope="row">Repository size</th><td>No plugin limit documented</td><td>Limited by memory</td></tr>
+          <tr><th scope="row">Line authoring</th><td>Yes</td><td>No (desktop only)</td></tr>
+          <tr><th scope="row">Stability</th><td>Normal</td><td>Docs warn of crashes on clone or pull, buffer overflow errors, or running indefinitely, depending on device and free RAM</td></tr>
+          </tbody></table></div>
+        <p>On a phone, authenticate with a GitHub personal access token. The <a href="/tools/github-token-generator">GitHub token link builder</a> pre-fills a least-privilege one, and <a href="/blog/obsidian-git-ios-setup">Obsidian Git on iPhone: token setup</a> covers the iPhone steps.</p>
+
+        <h2 id="errors">Error messages and fixes</h2>
+        <p>These are the problems the plugin’s <a href="https://publish.obsidian.md/git-doc/Common+issues" target="_blank" rel="noopener">Common issues</a> page lists, with strings quoted as it gives them.</p>
+        <div class="comparison-scroll" role="region" aria-label="Obsidian Git error lookup" tabindex="0"><table class="comparison-table">
+          <caption>Obsidian Git errors and fixes</caption>
+          <thead><tr><th scope="col">What you see</th><th scope="col">Cause</th><th scope="col">Fix</th></tr></thead><tbody>
+          <tr><th scope="row"><code>xcrun: error: invalid developer path</code></th><td>macOS without the command line developer tools.</td><td>Run <code>xcode-select --install</code> in Terminal.</td></tr>
+          <tr><th scope="row"><code>Cannot run Git command</code>, or an error ending in <code>git ENOENT</code></th><td>The plugin can’t find Git.</td><td>Check Git is installed. If it is, set <strong>Custom Git binary path</strong> in the plugin’s Advanced settings. Find the path with <code>where git</code> on Windows or <code>which git</code> on Linux and macOS.</td></tr>
+          <tr><th scope="row">Pulling or pushing never finishes, with no error</th><td>Usually authentication.</td><td>See the plugin’s <a href="https://publish.obsidian.md/git-doc/Authentication" target="_blank" rel="noopener">Authentication</a> page. On a phone, check the token first.</td></tr>
+          <tr><th scope="row"><code>Bad owner or permissions on /home/&lt;user&gt;/.ssh/config</code></th><td>SSH rejects the config file’s permissions.</td><td>Run <code>chmod 600 ~/.ssh/config</code>.</td></tr>
+          <tr><th scope="row">Files in <code>.gitignore</code> are still tracked</th><td>Already committed or staged files stay tracked.</td><td>Run <code>git rm --cached &lt;file&gt;</code>, check <code>git status</code> lists it as deleted, then commit. See <a href="/blog/obsidian-gitignore">the .gitignore guide</a> and the <a href="/tools/obsidian-gitignore-generator">.gitignore generator</a>.</td></tr>
+          <tr><th scope="row"><code>error: cannot run gpg: No such file or directory</code>, <code>error: gpg failed to sign the data</code>, <code>fatal: failed to write commit object</code></th><td>Commit signing is on, but gpg can’t run.</td><td>See the GPG Signing section of <a href="https://publish.obsidian.md/git-doc/Integration+with+other+tools" target="_blank" rel="noopener">Integration with other tools</a>.</td></tr>
+          <tr><th scope="row"><code>This repository is configured for Git LFS but 'git-lfs' was not found on your path.</code></th><td>The repository uses Git LFS and the plugin’s Git can’t find <code>git-lfs</code>.</td><td>See the Git Large File Storage section of the same <a href="https://publish.obsidian.md/git-doc/Integration+with+other+tools" target="_blank" rel="noopener">integration page</a>. For LFS on iPhone, see <a href="/blog/git-lfs-ios">Git LFS on iPhone and iPad</a>.</td></tr>
+          <tr><th scope="row">Merge conflicts</th><td>Two devices changed the same lines.</td><td>The plugin’s <a href="https://publish.obsidian.md/git-doc/Conflict+resolution" target="_blank" rel="noopener">Conflict resolution</a> page explains how to finish a merge in Obsidian. See also <a href="/blog/obsidian-git-merge-conflicts-iphone">resolving conflicts on iPhone</a> and the <a href="/tools/markdown-diff">Markdown diff tool</a>.</td></tr>
+          </tbody></table></div>
+        <p>Phone-specific problems, such as a missing repository or token errors, are in <a href="/blog/obsidian-git-not-working-iphone">Obsidian Git not working on iPhone</a>.</p>
+
+        <h2 id="native">When to use a native Git app on your phone instead</h2>
+        <p>The plugin is the right tool on desktop. On a phone it can be enough for a small vault over HTTPS. A native Git client is the better choice when the vault is large, the remote needs SSH, or Obsidian crashes during clone or pull. The plugin’s own docs say that if mobile crashes happen to you, the plugin won’t work for you.</p>
+        <p><a href="/blog/obsidian-git-iphone-ipad">GitSync.md on iPhone and iPad</a> (iOS and iPadOS 17 or later) and <a href="/blog/obsidian-git-android">on Android</a> (Android 9 or later) does Git natively over HTTPS or SSH, in the folder Obsidian opens. <a href="/blog/gitsync-connect-obsidian-git">GitSync.md Connect</a> (needs GitSync.md 2.8.0 or later) passes a GitHub sign-in to the plugin for HTTPS vaults. It doesn’t lift the plugin’s mobile limits.</p>
+        <p>If GitSync.md handles Git on the phone, turn on <strong>Disable on this device</strong> in the plugin there, so two Git clients don’t work on the same folder. GitSync.md is not the open-source “GitSync” app the plugin’s README may mention; see <a href="/compare/gitsync-vs-gitsync-md">GitSync vs GitSync.md</a>. To weigh Git against Obsidian’s own service, read <a href="/compare/obsidian-sync-vs-git">Obsidian Sync vs Git</a>.</p>
+        <p>GitSync.md costs $9.99 once (local prices vary): <a href="/v/web-homepage-134" target="_blank" rel="noopener">App Store</a> · <a href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener">Google Play</a>.</p>
+
+        <h2 id="faq">FAQ</h2>
+        <h3>Is the Obsidian Git plugin free?</h3>
+        <p>The plugin is a free community plugin, and Git itself is free. Your Git host’s plans are separate.</p>
+        <h3>Does it work on iPhone?</h3>
+        <p>Yes, with limits. The README marks mobile support experimental. It can work for a small vault over HTTPS and may crash on larger ones.</p>
+        <h3>Does it support SSH on mobile?</h3>
+        <p>No. The README lists no SSH authentication on mobile. Use HTTPS with a personal access token, or a native Git client.</p>
+        <h3>Why does it keep pulling or pushing forever?</h3>
+        <p>The docs say infinite pulling or pushing with no error is usually an authentication problem. On mobile, the docs also list running indefinitely among the performance problems.</p>
+        <h3>Can I use it with GitLab?</h3>
+        <p>Git works with any remote, so yes. See <a href="/blog/obsidian-gitlab-sync">Sync Obsidian with GitLab</a> for tokens and host keys.</p>
+
+        <h2 id="checked">Details checked</h2>
+        <p>Checked November 25, 2026. The newest plugin release listed on <a href="https://github.com/Vinzent03/obsidian-git/releases" target="_blank" rel="noopener">GitHub</a> was 2.44.0. Command and setting names come from the plugin’s source code on its main branch, which may be ahead of your installed version, and the error strings and mobile limits from the plugin’s README and documentation. The recommended values in <a href="/blog/sync-obsidian-github">the GitHub guide</a> were written against release 2.43.0. Plugin behavior is the plugin author’s to change, so check the <a href="https://publish.obsidian.md/git-doc/Start+here" target="_blank" rel="noopener">plugin docs</a> if something differs.</p>
+
+        <div class="related-card">
+          <h2>Related guides</h2>
+          <ul>
+            <li><a href="/blog/sync-obsidian-github">Sync Obsidian with GitHub on every device</a></li>
+            <li><a href="/blog/obsidian-git-not-working-iphone">Obsidian Git not working on iPhone</a></li>
+            <li><a href="/blog/gitsync-connect-obsidian-git">Connect Obsidian Git with your GitSync.md sign-in</a></li>
+          </ul>
+        </div>
+      </article>
+    </div>
+
+  <section class="content-download" aria-labelledby="download-heading">
+    <div class="shell content-download-layout">
+      <div>
+        <p class="eyebrow"><span class="blue-square" aria-hidden="true"></span>Take your work with you.</p>
+        <h2 id="download-heading">REAL GIT.<br>WITHIN REACH.</h2>
+        <p class="content-download-description">Your files. Your commits. Your remote.<br>Get GitSync.md for iPhone, iPad, and Android.</p>
+      </div>
+      <div>
+        <div class="store-links" role="group" aria-label="Download GitSync.md">
+          <a class="store-badge store-badge-apple" href="/v/web-homepage-134" target="_blank" rel="noopener"><img src="../assets/store-badges/download-on-app-store.svg" width="120" height="40" alt="Download GitSync.md on the App Store" decoding="async"></a>
+          <a class="store-badge store-badge-google" href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener"><img src="../assets/store-badges/get-it-on-google-play.png" width="646" height="250" alt="Get GitSync.md on Google Play" decoding="async"></a>
+        </div>
+        <p class="purchase-note"><span>iPhone + iPad: $9.99 once. Unlimited repositories.</span><span>Android: $9.99 once. All features included.</span><span>No subscriptions.</span></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="shell footer-layout">
+    <a class="brand" href="/" aria-label="GitSync.md home">gitsync<span class="brand-extension">.md</span></a>
+    <p>Independently built by <a href="https://codybontecou.com" target="_blank" rel="noopener">Cody Bontecou</a>.<br>© 2026 GitSync.md</p>
+    <div class="footer-links"><a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener">Source</a><a href="/blog/">Guides</a><a href="/compare/obsidian-sync-vs-git">Compare</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
+    <a class="back-top" href="#top" aria-label="Back to top">↑</a>
+  </div>
+</footer>
+<!-- Cloudflare Web Analytics -->
+<script>
+(function () {
+  var productionHosts = {
+    'instareply.isolated.tech': true,
+    'voxboard.isolated.tech': true,
+    'healthmd.isolated.tech': true,
+    'isome.isolated.tech': true,
+    'gitsyncmd.app': true,
+    'gitsync.md': true,
+    'timemd.isolated.tech': true,
+    'imghost.isolated.tech': true
+  };
+
+  if (!productionHosts[window.location.hostname]) {
+    return;
+  }
+
+  function loadCloudflareBeacon() {
+    if (document.querySelector('script[src="https://static.cloudflareinsights.com/beacon.min.js"]')) {
+      return;
+    }
+
+    var script = document.createElement('script');
+    script.defer = true;
+    script.src = 'https://static.cloudflareinsights.com/beacon.min.js';
+    script.setAttribute('data-cf-beacon', '{"token":"090f363070334cddad5c5cc1509b8807"}');
+    document.head.appendChild(script);
+  }
+
+  fetch('https://img-host.costream.workers.dev/analytics-gate', {
+    cache: 'no-store',
+    mode: 'cors',
+    credentials: 'omit'
+  })
+    .then(function (response) {
+      return response.ok ? response.json() : { track: false };
+    })
+    .then(function (gate) {
+      if (gate && gate.track) {
+        loadCloudflareBeacon();
+      }
+    })
+    .catch(function () {
+      // Fail closed so excluded IPs are not accidentally tracked.
+    });
+})();
+</script>
+<!-- End Cloudflare Web Analytics -->
+</body>
+</html>

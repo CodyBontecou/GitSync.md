@@ -67,10 +67,20 @@ struct RepositoryPullRunner: Sendable {
                 return result.updated
                     ? .updated(branch: plan.branch, commitSHA: result.newCommitSHA)
                     : .upToDate(branch: plan.branch, commitSHA: result.newCommitSHA)
-            case .upToDate:
-                return .upToDate(branch: plan.branch, commitSHA: plan.localCommitSHA)
-            case .blockedByLocalChanges:
-                return .blockedByLocalChanges(branch: plan.branch)
+            case .upToDate, .blockedByLocalChanges:
+                // Equal OIDs (or "local changes") can hide files that an earlier
+                // update never checked out. Never report that as up to date or
+                // as user edits (issue #130).
+                if let pending = plan.pendingCheckout, pending.needsFinishing {
+                    return .updatedWithAttention(
+                        branch: plan.branch,
+                        commitSHA: plan.localCommitSHA,
+                        attention: .workingTreeNotUpdated(pending)
+                    )
+                }
+                return plan.action == .upToDate
+                    ? .upToDate(branch: plan.branch, commitSHA: plan.localCommitSHA)
+                    : .blockedByLocalChanges(branch: plan.branch)
             case .diverged:
                 return .diverged(branch: plan.branch, aheadBy: plan.aheadBy, behindBy: plan.behindBy)
             case .remoteBranchMissing:
@@ -86,7 +96,7 @@ struct RepositoryPullRunner: Sendable {
             switch error {
             case .authenticationFailed:
                 return .authenticationOrTrustRequired(message: error.localizedDescription, trustError: nil)
-            case .pullBlockedByLocalChanges, .lfsHydrationBlockedByLocalChanges:
+            case .pullBlockedByLocalChanges, .lfsHydrationBlockedByLocalChanges, .pullNotFinished:
                 return .blockedByLocalChanges(branch: expectedBranch ?? "HEAD")
             case .pullDiverged:
                 // A second ancestry check immediately before checkout protects

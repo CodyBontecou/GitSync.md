@@ -1,0 +1,2 @@
+• Corrige un plantage lors du pull d'un coffre qui n'est sur aucune branche (HEAD détachée). Le pull explique désormais comment corriger la situation.
+• Si GitSync.md se ferme pendant la synchronisation automatique, le lancement suivant met la synchronisation automatique en pause et vous demande quoi faire, pour éviter un plantage à chaque lancement.

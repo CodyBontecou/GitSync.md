@@ -270,7 +270,10 @@ enum MarketingDemoSeeder {
     /// Exercise a real post-ref SAFE-checkout race through the normal foreground
     /// runner. The fixture has no credentials/network and never loads user repos.
     static func checkoutRaceAppStateIfRequested() -> AppState? {
-        guard MarketingCapture.gitToolsUITestScenario == "checkout-incomplete" else { return nil }
+        // "checkout-partial" (issue #130): two incoming files, one of which is
+        // written concurrently; the other must still be checked out.
+        guard MarketingCapture.gitToolsUITestScenario == "checkout-incomplete"
+                || MarketingCapture.gitToolsUITestScenario == "checkout-partial" else { return nil }
         let inventoryURL = FileManager.default.temporaryDirectory.appendingPathComponent("pr45-qa/repos.json")
         // Every launch starts from one fixture inventory, rather than merging
         // random IDs from prior runs into the persistence store after Pull.
@@ -616,6 +619,18 @@ enum MarketingDemoSeeder {
             files[".gitignore"] = Data("*.tmp\n".utf8)
             files[".obsidian/app.json"] = Data("{\n  \"livePreview\": true\n}\n".utf8)
         }
+        // Issue #137: another device stopped tracking Obsidian's workspace file
+        // (deleted it and added it to .gitignore) while this vault, one commit
+        // behind, has a local edit to it.
+        let isIncomingUntrack = scenario == "incoming-untrack"
+        // Issue #132: a tracked device-specific Obsidian layout file with a
+        // local edit, as Obsidian leaves it after opening the vault.
+        let isWorkspaceFile = scenario == "workspace-file"
+        let workspacePath = ".obsidian/workspace-mobile.json"
+        if isIncomingUntrack || isWorkspaceFile {
+            files[".obsidian/app.json"] = Data("{}\n".utf8)
+            files[workspacePath] = Data("{\n  \"active\": \"README.md\"\n}\n".utf8)
+        }
 
         do {
             try UITestGitFixtures.resetFixtureArea()
@@ -630,10 +645,22 @@ enum MarketingDemoSeeder {
                     message: "Local note"
                 )
             }
-            if scenario == "behind" || scenario == "diverged" || scenario == "checkout-incomplete" {
+            if scenario == "behind" || scenario == "diverged" || scenario == "checkout-incomplete"
+                || scenario == "detached-head" || scenario == "stale-worktree" || scenario == "checkout-partial" {
                 files["notes/hello.md"] = Data("# Hello\n\nUpdated remote note.\n".utf8)
+                if scenario == "checkout-partial" {
+                    files["README.md"] = Data("# Git Tools Fixture\n\nUpdated remote readme.\n".utf8)
+                }
                 try UITestGitFixtures.commitToBare(atPath: remotePath, files: files, message: "Remote note")
                 try UITestGitFixtures.fetchOrigin(atPath: vaultURL.path)
+            }
+            if isIncomingUntrack {
+                files[workspacePath] = nil
+                files[".gitignore"] = Data("/.obsidian/workspace*.json\n".utf8)
+                try UITestGitFixtures.commitToBare(atPath: remotePath, files: files, message: "Stop tracking .obsidian/workspace*.json")
+                try UITestGitFixtures.fetchOrigin(atPath: vaultURL.path)
+                try Data("{\n  \"active\": \"notes/hello.md\"\n}\n".utf8)
+                    .write(to: vaultURL.appendingPathComponent(workspacePath))
             }
             if isIssueQA {
                 files["notes/hello.md"] = Data("# Hello\n\nUnfetched remote note.\n".utf8)
@@ -644,9 +671,16 @@ enum MarketingDemoSeeder {
                     [.modificationDate: Date().addingTimeInterval(-600)], ofItemAtPath: lockURL.path
                 )
             }
+            if scenario == "stale-worktree" {
+                try UITestGitFixtures.moveBranchToOriginWithoutCheckout(atPath: vaultURL.path)
+            }
             if isDirty {
                 try Data("# Git Tools Fixture\n\nUnstaged local note.\n".utf8)
                     .write(to: vaultURL.appendingPathComponent("README.md"))
+            }
+            if isWorkspaceFile {
+                try Data("{\n  \"active\": \"notes/hello.md\"\n}\n".utf8)
+                    .write(to: vaultURL.appendingPathComponent(workspacePath))
             }
 
             let headSHA = try UITestGitFixtures.headHexSHA(atPath: vaultURL.path)
@@ -675,14 +709,16 @@ enum MarketingDemoSeeder {
                 )
             )
             state.repos = [repo]
-            state.changeCounts = [repo.id: isDirty ? 1 : 0]
+            state.changeCounts = [repo.id: isDirty || isIncomingUntrack || isWorkspaceFile ? 1 : 0]
             state.statusEntriesByRepo = [repo.id: isDirty ? [
                 GitStatusEntry(path: "README.md", indexStatus: nil, workTreeStatus: .modified)
+            ] : isIncomingUntrack || isWorkspaceFile ? [
+                GitStatusEntry(path: workspacePath, indexStatus: nil, workTreeStatus: .modified)
             ] : []]
             let syncState: RepoSyncState
             switch scenario {
             case "ahead": syncState = .ahead
-            case "behind", "checkout-incomplete": syncState = .behind
+            case "behind", "checkout-incomplete", "checkout-partial", "detached-head", "incoming-untrack": syncState = .behind
             case "diverged": syncState = .diverged
             default: syncState = .upToDate
             }
@@ -699,6 +735,8 @@ enum MarketingDemoSeeder {
                 )
             } else if scenario == "external-branch" {
                 try UITestGitFixtures.selectExistingFeatureHEAD(atPath: vaultURL.path)
+            } else if scenario == "detached-head" {
+                try UITestGitFixtures.detachHEAD(atPath: vaultURL.path)
             }
             if scenario == "syncing" {
                 state.isSyncing = true
@@ -1015,6 +1053,33 @@ enum UITestGitFixtures {
         try check(makeSignature(&signature), "stash signature")
         var stashOID = git_oid()
         try check(git_stash_save(&stashOID, repo, signature, "Saved Git Tools note", 0), "save fixture stash")
+    }
+
+    /// Issue #111: points HEAD straight at its commit (detached), the state an
+    /// interrupted rebase leaves behind. The clone's symbolic
+    /// `refs/remotes/origin/HEAD` stays, which is what pull used to crash on.
+    /// Issue #130: what Obsidian Git <= 2.41 left behind on mobile. The branch
+    /// moves to origin/main, but the index and files keep the old commit.
+    static func moveBranchToOriginWithoutCheckout(atPath path: String) throws {
+        var repo: OpaquePointer?
+        defer { if let repo { git_repository_free(repo) } }
+        try check(git_repository_open(&repo, path), "open stale-worktree fixture")
+        var origin: OpaquePointer?
+        defer { if let origin { git_reference_free(origin) } }
+        try check(git_reference_lookup(&origin, repo, "refs/remotes/origin/main"), "lookup origin/main")
+        guard let target = git_reference_target(origin) else {
+            throw NSError(domain: "UITestGitFixtures", code: -1)
+        }
+        var moved: OpaquePointer?
+        defer { if let moved { git_reference_free(moved) } }
+        try check(git_reference_create(&moved, repo, "refs/heads/main", target, 1, nil), "move main without checkout")
+    }
+
+    static func detachHEAD(atPath path: String) throws {
+        var repo: OpaquePointer?
+        defer { if let repo { git_repository_free(repo) } }
+        try check(git_repository_open(&repo, path), "open detached-head fixture")
+        try check(git_repository_detach_head(repo), "detach HEAD")
     }
 
     /// Both branches already name the same tree. Changing symbolic HEAD is an

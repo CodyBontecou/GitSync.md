@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../favicon-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<title>Obsidian and Google Drive: iPhone, Android and Desktop</title>
+<meta name="description" content="Does Obsidian work with Google Drive? A per-device answer for Windows, Mac, Android and iPhone, plus Remotely Save, Git and how to move a vault.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Cody Bontecou">
+<meta name="theme-color" content="#ffffff">
+<link rel="canonical" href="https://gitsync.md/blog/obsidian-google-drive-sync">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="GitSync.md">
+<meta property="og:title" content="Obsidian and Google Drive: iPhone, Android and Desktop">
+<meta property="og:description" content="Which Obsidian sync routes work with Google Drive on desktop, Android and iPhone, what Remotely Save costs, and when Git is the better fit.">
+<meta property="og:url" content="https://gitsync.md/blog/obsidian-google-drive-sync">
+<meta property="og:image" content="https://gitsync.md/social/blog/obsidian-google-drive-sync.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:alt" content="GitSync.md guide card: Obsidian and Google Drive">
+<meta property="article:published_time" content="2026-11-23">
+<meta property="article:modified_time" content="2026-11-23">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Obsidian and Google Drive: iPhone, Android and Desktop">
+<meta name="twitter:description" content="Per-device answers for Obsidian with Google Drive, OneDrive and Dropbox.">
+<meta name="twitter:image" content="https://gitsync.md/social/blog/obsidian-google-drive-sync.png">
+<meta name="twitter:image:alt" content="GitSync.md guide card: Obsidian and Google Drive">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Obsidian and Google Drive: iPhone, Android and Desktop",
+  "description": "Does Obsidian work with Google Drive? A per-device answer for Windows, Mac, Android and iPhone, plus Remotely Save, Git and how to move a vault.",
+  "image": ["https://gitsync.md/social/blog/obsidian-google-drive-sync.png"],
+  "datePublished": "2026-11-23",
+  "dateModified": "2026-11-23",
+  "author": {"@type": "Person", "name": "Cody Bontecou", "url": "https://gitsync.md/about"},
+  "publisher": {"@type": "Person", "name": "Cody Bontecou"},
+  "mainEntityOfPage": "https://gitsync.md/blog/obsidian-google-drive-sync"
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../site.css">
+<link rel="stylesheet" href="../content.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem","position": 1,"name": "Home","item": "https://gitsync.md/"},
+    {"@type": "ListItem","position": 2,"name": "Guides","item": "https://gitsync.md/blog/"},
+    {"@type": "ListItem","position": 3,"name": "Obsidian and Google Drive","item": "https://gitsync.md/blog/obsidian-google-drive-sync"}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Can I open a Google Drive vault in Obsidian on iPhone?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not officially. Obsidian's help page says Google Drive is not officially supported for syncing vaults on iOS. The iOS app opens vaults stored on the device or in iCloud, and any Drive workaround relies on plugins or other tools whose results may vary."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Remotely Save Google Drive free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The Remotely Save README marks Google Drive as a PRO feature. Dropbox, OneDrive for personal (App Folder), S3-compatible storage, WebDAV and Webdis are listed as free."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I keep my vault in OneDrive on Windows and use it on iPhone?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Obsidian's help page says OneDrive isn't officially supported on iOS and has limitations on Android. On Windows the vault itself can sit in OneDrive, but to reach it on iPhone you need a different route, such as Remotely Save with the OneDrive App Folder, iCloud, Obsidian Sync, or Git."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Will Git work with my existing Google Drive vault folder?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Copy the vault to a normal local folder first. A Git working copy shouldn't live inside a Drive, OneDrive or Dropbox synced folder, because two tools would rewrite the same files. See the move checklist above."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body id="top">
+<a class="skip-link" href="#main">Skip to content</a>
+<svg class="icon-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 5l7 7-7 7"/></symbol>
+  <symbol id="i-branch" viewBox="0 0 24 24"><circle cx="6" cy="5" r="2.5"/><circle cx="6" cy="19" r="2.5"/><circle cx="18" cy="5" r="2.5"/><path d="M6 7.5v9M18 7.5v1a5 5 0 0 1-5 5H6"/></symbol>
+  <symbol id="i-external" viewBox="0 0 24 24"><path d="M6 18 18 6M6 6h12v12"/></symbol>
+</svg>
+
+<header class="site-header">
+  <nav class="shell navigation" aria-label="Main navigation">
+    <a class="brand" href="/" aria-label="GitSync.md home">gitsync<span class="brand-extension">.md</span></a>
+    <div class="nav-links"><a href="/#app">The app</a><a href="/#workflow">How it works</a><a href="/blog/" class="is-active">Guides</a><a href="/compare/obsidian-sync-vs-git">Compare</a><a href="/#faq">FAQ</a></div>
+    <a class="button button-small" href="/#download">Get the app</a>
+  </nav>
+</header>
+
+<main id="main">
+<div class="container guide-layout">
+      <header class="article-hero">
+        <div class="article-title">
+        <nav class="eyebrow article-breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li><a href="/blog/">Guides</a></li><li aria-current="page">Obsidian and Google Drive</li></ol></nav>
+        <h1>Obsidian and Google Drive<span class="accent">.</span></h1>
+        <p class="subtitle">Which devices can use a vault in Google Drive, what works on iPhone, and the routes that do, with the trade-offs.</p>
+        <div class="meta-line"><span>By <a href="/about" rel="author">Cody Bontecou</a></span>
+          <span>November 23, 2026</span>
+          <span>Guide</span>
+          <span>iPhone, Android + desktop</span>
+        </div>
+      </div>
+      </header>
+      <aside class="guide-aside" aria-label="Guide sidebar">
+        <section class="side-note" aria-label="Article notes">
+        <h2>Details checked</h2>
+        <p>Third-party facts link to their source and were checked 2026-11-23.</p>
+      </section>
+        <div class="guide-aside-sticky">
+        <nav class="toc-card" aria-label="Article outline">
+        <div class="toc-title">What this covers</div>
+        <ol><li><a href="#short-answer">Short answer</a></li><li><a href="#why-ios">Why not on iPhone</a></li><li><a href="#options">Options compared</a></li><li><a href="#remotely-save">Remotely Save</a></li><li><a href="#android-apps">Android folder-sync apps</a></li><li><a href="#git">Git</a></li><li><a href="#one-sync">One sync per vault</a></li><li><a href="#move">Move to Git</a></li><li><a href="#faq">FAQ</a></li></ol>
+      </nav>
+        <div class="aside-cta aside-cta-wide">
+          <p class="aside-cta-title">Real Git on your iPhone.</p>
+          <p class="aside-cta-price">iPhone + iPad: $9.99 once · No subscription</p>
+          <a class="aside-cta-button" href="/v/web-homepage-129" target="_blank" rel="noopener">Download on the App Store</a>
+        </div>
+        </div>
+      </aside>
+            <article class="article-body">
+        <div class="tldr">
+          <div class="tldr-title">Short answer</div>
+          <p>On Windows and Mac you can open a vault stored in a Google Drive folder. On Android it can work. On iPhone and iPad Obsidian doesn't officially support Google Drive, Dropbox or OneDrive vaults. If you need one vault on a phone and a computer, pick one of the routes below, and use only one sync method per vault.</p>
+        </div>
+        <h2 id="short-answer">Short answer: does Obsidian work with Google Drive?</h2>
+        <p>It depends on the device. Source: <a href="https://obsidian.md/help/sync-notes" target="_blank" rel="noopener">Obsidian Help: Sync your notes across devices</a> (checked 2026-11-23).</p>
+        <div class="comparison-scroll" role="region" aria-label="Does Google Drive work with Obsidian, by platform" tabindex="0"><table class="comparison-table"><thead><tr><th>Platform</th><th>Google Drive directly?</th><th>What to do instead</th></tr></thead><tbody><tr><th scope="row" style="min-width:8rem">Windows and Mac</th><td>Generally yes. Google Drive Help says synced files appear in the Google Drive folder in File Explorer (Windows) or Finder (Mac), which is a normal folder you can open as a vault.</td><td>Fine if you only use desktop. Add a second device and you need a route from the list below.</td></tr><tr><th scope="row" style="min-width:8rem">Android</th><td>Obsidian's help page lists Google Drive among its Android options. It says OneDrive has limitations on Android.</td><td>A folder-sync app, Remotely Save, or Git with GitSync.md. Don't put a Git repository inside Drive.</td></tr><tr><th scope="row" style="min-width:8rem">iPhone and iPad</th><td>No. Google Drive, Dropbox and OneDrive are not officially supported on iOS.</td><td>Obsidian Sync or iCloud, Remotely Save, or Git with GitSync.md.</td></tr></tbody></table></div>
+
+        <h2 id="why-ios">Why it works on desktop and not on iPhone</h2>
+        <p>A desktop vault is just a folder, and any program that syncs folders can sit underneath it. On iPhone and iPad, Obsidian opens vaults stored on the device or in iCloud. Obsidian's help page recommends Obsidian Sync and iCloud on iOS and says: “Google Drive is not officially supported for syncing Obsidian vaults on iOS.” It describes Dropbox, OneDrive and Syncthing the same way and points to plugins such as Remotely Save or LiveSync as workarounds that “aren't officially supported, and results may vary.” (<a href="https://obsidian.md/help/sync-notes" target="_blank" rel="noopener">Obsidian Help: Sync your notes across devices</a>, checked 2026-11-23.)</p>
+        <p>If Syncthing is the tool you already run, see <a href="/blog/obsidian-syncthing-iphone">Obsidian with Syncthing on iPhone and iPad</a>.</p>
+        <p>The same page says OneDrive has limitations on Android and advises avoiding OneDrive's Files On-Demand feature for vaults.</p>
+
+        <h2 id="options">Your options, compared</h2>
+        <div class="comparison-scroll" role="region" aria-label="Obsidian sync options compared" tabindex="0"><table class="comparison-table"><thead><tr><th>Method</th><th>Platforms</th><th>Cost model</th><th>Runs in background?</th><th>Conflicts</th><th>History</th></tr></thead><tbody><tr><th scope="row" style="min-width:8rem">Google Drive for desktop only</th><td>Windows, Mac</td><td>Your Drive storage</td><td>Handled by the Drive app</td><td>Depends on Drive; check for duplicate copies</td><td>Not as notes history</td></tr><tr><th scope="row" style="min-width:8rem">Android folder-sync app</th><td>Android with a desktop Drive folder</td><td>Varies by app; check the app's own page</td><td>Depends on the app</td><td>Depends on the app</td><td>No</td></tr><tr><th scope="row" style="min-width:8rem">Remotely Save</th><td>Desktop, Android, iOS</td><td>Free for Dropbox, OneDrive (App Folder), S3, WebDAV; Google Drive is PRO</td><td>Auto sync only works when Obsidian is open</td><td>Per the README: free version keeps the newer or larger file</td><td>No</td></tr><tr><th scope="row" style="min-width:8rem">Git with a private repository</th><td>Desktop, iPhone, iPad, Android</td><td>Hosting plan of your Git host; GitSync.md is $9.99 once per platform</td><td>Pulls and pushes when you run them, not in the background on iOS</td><td>You see and resolve them in Git</td><td>Yes, every commit</td></tr><tr><th scope="row" style="min-width:8rem">Obsidian Sync or iCloud</th><td>Obsidian Sync on all; iCloud on Apple devices</td><td>Obsidian Sync is a paid plan; iCloud uses your Apple storage</td><td>Handled by the service</td><td>Handled by the service</td><td>Versions vary by service</td></tr></tbody></table></div>
+        <p>Costs and behavior of third-party tools come from their own pages; check them before you commit. For Obsidian Sync, iCloud and Git side by side, see <a href="/compare/obsidian-sync-alternatives">Obsidian Sync alternatives</a>, <a href="/compare/icloud-vs-git-obsidian">iCloud vs Git</a> and <a href="/compare/obsidian-sync-vs-git">Obsidian Sync vs Git</a>. The <a href="/tools/obsidian-sync-cost-calculator">sync cost calculator</a> adds up the yearly numbers.</p>
+        <p><strong>Desktop only.</strong> If you only use Windows or Mac, keep the vault in a Google Drive for desktop folder (see <a href="https://support.google.com/drive/answer/10838124" target="_blank" rel="noopener">Google Drive Help</a>, checked 2026-11-23). There's no phone in that setup.</p>
+        <p><strong>Skip Drive entirely.</strong> Keep the vault outside Drive, Dropbox and OneDrive and use iCloud or Obsidian Sync; the comparison pages above cover both.</p>
+
+        <h2 id="remotely-save">Option: Remotely Save with Google Drive, Dropbox or OneDrive</h2>
+        <p>The <a href="https://github.com/remotely-save/remotely-save" target="_blank" rel="noopener">Remotely Save README</a> (checked 2026-11-23) lists Amazon S3 or S3-compatible storage, Dropbox, OneDrive for personal (App Folder), WebDAV and Webdis as free. Google Drive, OneDrive for personal (Full), Box, pCloud, Yandex Disk, Koofr and Azure Blob Storage are marked PRO features. It supports Obsidian Mobile, and it says auto sync only works when Obsidian is open. That's the main trade-off: nothing syncs while Obsidian is closed. For how it compares with other plugins and services, including Dropbox and OneDrive, see <a href="/compare/obsidian-sync-alternatives#remotely-save">Obsidian Sync alternatives</a>.</p>
+
+        <h2 id="android-apps">Option: Android folder-sync apps</h2>
+        <p>On Android the vault lives in a normal folder, so a folder-sync app such as Autosync or FolderSync can mirror a local phone folder with a Google Drive folder, while Google Drive for desktop mirrors the same Drive folder to your computer. Pricing, schedule and conflict handling differ per app, so read the app's own page. The vault should still be opened by Obsidian from the local folder, not from Drive itself. This route is Android only; iPhone has no equivalent.</p>
+
+        <h2 id="git">Option: Sync the vault with Git instead</h2>
+        <p>Git keeps a commit history of every note, works with a private repository, and has setup guides for each device. GitSync.md is a Git client for iPhone, iPad and Android; on desktop you use Git or the Obsidian Git plugin. The trade-off is that you push and pull yourself rather than having a service run silently. Setup guides, which I don't repeat here:</p>
+        <ul>
+          <li><a href="/blog/sync-obsidian-github">Sync Obsidian with GitHub on every device</a></li>
+          <li><a href="/blog/obsidian-git-iphone-ipad">Obsidian Git on iPhone and iPad</a></li>
+          <li><a href="/blog/obsidian-git-android">Obsidian Git on Android</a></li>
+          <li><a href="/blog/sync-obsidian-windows-iphone-github">Windows and iPhone walkthrough</a></li>
+        </ul>
+        <div class="related-card">
+          <p>Already have a vault in a Git repository?</p>
+          <a href="/v/web-homepage-129" target="_blank" rel="noopener">Clone your vault on iPhone or iPad with GitSync.md →</a>
+        </div>
+        <p>On Android, get it on <a href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener">Google Play</a>.</p>
+
+        <h2 id="one-sync">Don't run two syncs on one vault</h2>
+        <ul>
+          <li><strong>Use exactly one sync method per vault.</strong></li>
+          <li><strong>Don't put a Git working copy inside a Google Drive, OneDrive or Dropbox synced folder.</strong> Two tools rewriting the same files cause duplicates and conflicts, as <a href="/blog/sync-obsidian-github">the GitHub sync guide</a> also says.</li>
+          <li><strong>GitSync.md on Android refuses cloud folders.</strong> In the app's words: “Phone storage and SD cards work. Cloud folders such as Google Drive can’t hold a Git repository.” See <a href="/blog/obsidian-git-android">Obsidian Git on Android</a>.</li>
+          <li><strong>For a Drive copy, make it one-way.</strong> A scheduled zip or export of the vault folder is a backup, not a second sync. For the Git version, read <a href="/blog/obsidian-backup-git">backing up an Obsidian vault with Git</a>.</li>
+        </ul>
+
+        <h2 id="move">Move a vault from Google Drive to Git</h2>
+        <ol>
+          <li>Copy the vault folder to a local, non-synced folder.</li>
+          <li>Stop Drive syncing the old location.</li>
+          <li>Open the new folder in Obsidian and confirm all your notes are there.</li>
+          <li>Create a private repository: see <a href="/blog/create-git-repository-iphone">creating a Git repository</a> or <a href="/blog/sync-obsidian-github">the GitHub sync guide</a>.</li>
+          <li>Add a <code>.gitignore</code> with the <a href="/tools/obsidian-gitignore-generator">Obsidian .gitignore generator</a>.</li>
+          <li>Clone the vault on your phone with GitSync.md.</li>
+          <li>Make a two-way test edit: change a note on each device and confirm both appear on the other after sync.</li>
+        </ol>
+
+        <h2 id="faq">FAQ</h2>
+        <h3>Can I open a Google Drive vault in Obsidian on iPhone?</h3>
+        <p>Not officially. Obsidian's help page says Google Drive is not officially supported for syncing vaults on iOS. The iOS app opens vaults stored on the device or in iCloud, and any Drive workaround relies on plugins or other tools whose results may vary.</p>
+        <h3>Is Remotely Save Google Drive free?</h3>
+        <p>No. The Remotely Save README marks Google Drive as a PRO feature. Dropbox, OneDrive for personal (App Folder), S3-compatible storage, WebDAV and Webdis are listed as free.</p>
+        <h3>Can I keep my vault in OneDrive on Windows and use it on iPhone?</h3>
+        <p>Obsidian's help page says OneDrive isn't officially supported on iOS and has limitations on Android. On Windows the vault itself can sit in OneDrive, but to reach it on iPhone you need a different route, such as Remotely Save with the OneDrive App Folder, iCloud, Obsidian Sync, or Git.</p>
+        <h3>Will Git work with my existing Google Drive vault folder?</h3>
+        <p>Copy the vault to a normal local folder first. A Git working copy shouldn't live inside a Drive, OneDrive or Dropbox synced folder, because two tools would rewrite the same files. See the move checklist above.</p>
+
+        <h2>Related guides</h2>
+        <div class="related-card">
+          <p>Ready to set up Git sync?</p>
+          <a href="/blog/sync-obsidian-github">Sync Obsidian with GitHub on every device →</a>
+        </div>
+      </article>
+    </div>
+
+  <section class="content-download" aria-labelledby="download-heading">
+    <div class="shell content-download-layout">
+      <div>
+        <p class="eyebrow"><span class="blue-square" aria-hidden="true"></span>Take your work with you.</p>
+        <h2 id="download-heading">REAL GIT.<br>WITHIN REACH.</h2>
+        <p class="content-download-description">Your files. Your commits. Your remote.<br>Get GitSync.md for iPhone, iPad, and Android.</p>
+      </div>
+      <div>
+        <div class="store-links" role="group" aria-label="Download GitSync.md">
+          <a class="store-badge store-badge-apple" href="/v/web-homepage-129" target="_blank" rel="noopener"><img src="../assets/store-badges/download-on-app-store.svg" width="120" height="40" alt="Download GitSync.md on the App Store" decoding="async"></a>
+          <a class="store-badge store-badge-google" href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener"><img src="../assets/store-badges/get-it-on-google-play.png" width="646" height="250" alt="Get GitSync.md on Google Play" decoding="async"></a>
+        </div>
+        <p class="purchase-note"><span>iPhone + iPad: $9.99 once. Unlimited repositories.</span><span>Android: $9.99 once. All features included.</span><span>No subscriptions.</span></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="shell footer-layout">
+    <a class="brand" href="/" aria-label="GitSync.md home">gitsync<span class="brand-extension">.md</span></a>
+    <p>Independently built by <a href="https://codybontecou.com" target="_blank" rel="noopener">Cody Bontecou</a>.<br>© 2026 GitSync.md</p>
+    <div class="footer-links"><a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener">Source</a><a href="/blog/">Guides</a><a href="/compare/obsidian-sync-vs-git">Compare</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
+    <a class="back-top" href="#top" aria-label="Back to top">↑</a>
+  </div>
+</footer>
+<!-- Cloudflare Web Analytics -->
+<script>
+(function () {
+  var productionHosts = {
+    'instareply.isolated.tech': true,
+    'voxboard.isolated.tech': true,
+    'healthmd.isolated.tech': true,
+    'isome.isolated.tech': true,
+    'gitsyncmd.app': true,
+    'gitsync.md': true,
+    'timemd.isolated.tech': true,
+    'imghost.isolated.tech': true
+  };
+
+  if (!productionHosts[window.location.hostname]) {
+    return;
+  }
+
+  function loadCloudflareBeacon() {
+    if (document.querySelector('script[src="https://static.cloudflareinsights.com/beacon.min.js"]')) {
+      return;
+    }
+
+    var script = document.createElement('script');
+    script.defer = true;
+    script.src = 'https://static.cloudflareinsights.com/beacon.min.js';
+    script.setAttribute('data-cf-beacon', '{"token":"090f363070334cddad5c5cc1509b8807"}');
+    document.head.appendChild(script);
+  }
+
+  fetch('https://img-host.costream.workers.dev/analytics-gate', {
+    cache: 'no-store',
+    mode: 'cors',
+    credentials: 'omit'
+  })
+    .then(function (response) {
+      return response.ok ? response.json() : { track: false };
+    })
+    .then(function (gate) {
+      if (gate && gate.track) {
+        loadCloudflareBeacon();
+      }
+    })
+    .catch(function () {
+      // Fail closed so excluded IPs are not accidentally tracked.
+    });
+})();
+</script>
+<!-- End Cloudflare Web Analytics -->
+</body>
+</html>

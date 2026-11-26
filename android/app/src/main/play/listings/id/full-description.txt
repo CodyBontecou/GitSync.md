@@ -1,4 +1,4 @@
-Gitsync.md menghadirkan alur kerja Git sungguhan ke Android. Hubungkan GitHub, clone repositori ke penyimpanan aplikasi, periksa perubahan, dan sinkronkan kode atau markdown dengan aman dari ponsel Anda.
+GitSync.md menghadirkan alur kerja Git sungguhan ke Android. Hubungkan GitHub, clone repositori ke penyimpanan aplikasi, periksa perubahan, dan sinkronkan kode atau markdown dengan aman dari ponsel Anda.
 
 DIBUAT UNTUK REPO SUNGGUHAN
 - Jelajahi repositori GitHub setelah masuk dengan OAuth atau personal access token
@@ -24,4 +24,4 @@ DIRANCANG UNTUK PERANGKAT SELULER
 - Unduh gratis dengan pembelian dalam aplikasi Full Access sekali bayar melalui Google Play
 - Tanpa iklan dan tanpa langganan
 
-Gitsync.md dibuat untuk developer, penulis, dan siapa pun yang mengelola file berbasis GitHub di Android. Untuk repositori privat, masuk dengan GitHub atau berikan personal access token. Token disimpan secara lokal di perangkat Anda.
+GitSync.md dibuat untuk developer, penulis, dan siapa pun yang mengelola file berbasis GitHub di Android. Untuk repositori privat, masuk dengan GitHub atau berikan personal access token. Token disimpan secara lokal di perangkat Anda.

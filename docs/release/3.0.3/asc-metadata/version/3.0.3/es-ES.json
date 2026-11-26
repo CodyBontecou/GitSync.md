@@ -1,0 +1,3 @@
+{
+  "whatsNew": "• Corrige un cierre inesperado al hacer pull de una bóveda que no está en una rama (HEAD separado). Ahora pull explica cómo solucionarlo.\n• Si GitSync.md se cierra durante la sincronización automática, el siguiente inicio pausa la sincronización automática y te pregunta qué hacer, para que no vuelva a cerrarse en cada inicio."
+}

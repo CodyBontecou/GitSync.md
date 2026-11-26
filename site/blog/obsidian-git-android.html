@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../favicon-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<title>Sync an Obsidian Vault with Git on Android (No Termux) — GitSync.md</title>
+<meta name="description" content="Sync an Obsidian vault with GitHub or any Git host on Android without Termux. Compare the Obsidian Git plugin, Termux and a native Git client, then set up the vault folder and verify both directions.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Cody Bontecou">
+<meta name="theme-color" content="#ffffff">
+<link rel="canonical" href="https://gitsync.md/blog/obsidian-git-android">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="GitSync.md">
+<meta property="og:title" content="Sync an Obsidian Vault with Git on Android (No Termux) — GitSync.md">
+<meta property="og:description" content="Sync an Obsidian vault with GitHub or any Git host on Android without Termux. Compare the Obsidian Git plugin, Termux and a native Git client, then set up the vault folder and verify both directions.">
+<meta property="og:url" content="https://gitsync.md/blog/obsidian-git-android">
+<meta property="og:image" content="https://gitsync.md/social/blog/obsidian-git-android.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:alt" content="GitSync.md guide card: Sync an Obsidian Vault with Git on Android (No Termux)">
+<meta property="article:published_time" content="2026-11-18">
+<meta property="article:modified_time" content="2026-11-18">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Sync an Obsidian Vault with Git on Android (No Termux) — GitSync.md">
+<meta name="twitter:description" content="Sync an Obsidian vault with GitHub or any Git host on Android without Termux. Compare the Obsidian Git plugin, Termux and a native Git client, then set up the vault folder and verify both directions.">
+<meta name="twitter:image" content="https://gitsync.md/social/blog/obsidian-git-android.png">
+<meta name="twitter:image:alt" content="GitSync.md guide card: Sync an Obsidian Vault with Git on Android (No Termux)">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Sync an Obsidian vault with Git on Android",
+  "description": "Sync an Obsidian vault with GitHub or any Git host on Android without Termux. Compare the Obsidian Git plugin, Termux and a native Git client, then set up the vault folder and verify both directions.",
+  "image": [
+    "https://gitsync.md/blog/obsidian-git-android/save-clones-in.png",
+    "https://gitsync.md/blog/obsidian-git-android/vault-changes.png",
+    "https://gitsync.md/blog/obsidian-git-android/background-sync.png"
+  ],
+  "datePublished": "2026-11-18",
+  "dateModified": "2026-11-18",
+  "author": {
+    "@type": "Person",
+    "name": "Cody Bontecou",
+    "url": "https://gitsync.md/about"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Cody Bontecou"
+  },
+  "mainEntityOfPage": "https://gitsync.md/blog/obsidian-git-android"
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../site.css">
+<link rel="stylesheet" href="../content.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://gitsync.md/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Guides",
+      "item": "https://gitsync.md/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Obsidian Git on Android",
+      "item": "https://gitsync.md/blog/obsidian-git-android"
+    }
+  ]
+}
+</script>
+</head>
+<body id="top">
+<a class="skip-link" href="#main">Skip to content</a>
+<svg class="icon-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 5l7 7-7 7"/></symbol>
+  <symbol id="i-branch" viewBox="0 0 24 24"><circle cx="6" cy="5" r="2.5"/><circle cx="6" cy="19" r="2.5"/><circle cx="18" cy="5" r="2.5"/><path d="M6 7.5v9M18 7.5v1a5 5 0 0 1-5 5H6"/></symbol>
+  <symbol id="i-external" viewBox="0 0 24 24"><path d="M6 18 18 6M6 6h12v12"/></symbol>
+</svg>
+
+<header class="site-header">
+  <nav class="shell navigation" aria-label="Main navigation">
+    <a class="brand" href="/" aria-label="GitSync.md home">gitsync<span class="brand-extension">.md</span></a>
+    <div class="nav-links"><a href="/#app">The app</a><a href="/#workflow">How it works</a><a href="/blog/" class="is-active">Guides</a><a href="/compare/obsidian-sync-vs-git">Compare</a><a href="/#faq">FAQ</a></div>
+    <a class="button button-small" href="/#download">Get the app</a>
+  </nav>
+</header>
+
+<main id="main">
+<div class="container guide-layout">
+      <header class="article-hero">
+        <div class="article-title">
+        <nav class="eyebrow article-breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li><a href="/blog/">Guides</a></li><li aria-current="page">Obsidian Git on Android</li></ol></nav>
+        <h1>Sync an Obsidian vault with Git on Android<span class="accent">.</span></h1>
+        <p class="subtitle">To sync an Obsidian vault with Git on Android without Termux, keep the vault as a Git working copy in a normal device folder, such as <code>Documents/Obsidian/MyVault</code>. Open that folder in Obsidian, and use a native Git client such as GitSync.md to pull, commit and push. You can sync by hand at any time. Optional background sync runs only when Android schedules it, so it is never real time.</p>
+        <div class="meta-line"><span>By <a href="/about" rel="author">Cody Bontecou</a></span>
+          <time datetime="2026-11-18">November 18, 2026</time>
+          <span>Guide</span>
+          <span>Android</span>
+        </div>
+      </div>
+      </header>
+      <aside class="guide-aside" aria-label="Guide sidebar">
+        <section class="side-note" aria-label="Article notes">
+        <h2>Details checked</h2>
+        <p>Screens come from the Android app on an Android 15 emulator, with a sample vault and an example remote. Checked in the app:</p>
+        <ul>
+          <li>choosing a device folder for clones</li>
+          <li>the all-files storage access prompt</li>
+          <li>GitHub, token and SSH sign-in choices</li>
+          <li>finding an existing vault, its diff and the commit sheet</li>
+          <li>Background Sync settings</li>
+        </ul>
+        <p>Clone and push steps were traced through the app’s source.</p>
+      </section>
+        <div class="guide-aside-sticky">
+        <nav class="toc-card" aria-label="Article outline">
+        <div class="toc-title">What this covers</div>
+        <ol>
+          <li><a href="#three-ways">Three ways to use Git with Obsidian on Android</a></li>
+          <li><a href="#storage">Where the vault has to live</a></li>
+          <li><a href="#setup">Set up GitSync.md step by step</a></li>
+          <li><a href="#keep-in-sync">Keep it in sync</a></li>
+          <li><a href="#verify">Verify it worked</a></li>
+          <li><a href="#troubleshooting">Troubleshooting</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ol>
+      </nav>
+        <div class="aside-cta aside-cta-wide">
+          <p class="aside-cta-title">Real Git on your Android phone.</p>
+          <p class="aside-cta-price">Android: $9.99 once on Google Play · No subscription · Local store prices may vary</p>
+          <a class="aside-cta-button" href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener">Get it on Google Play</a>
+          <p class="aside-cta-price">On iPhone or iPad? <a href="/blog/obsidian-git-iphone-ipad">Read the iPhone guide</a>.</p>
+        </div>
+        </div>
+      </aside>
+      <article class="article-body">
+        <div class="tldr">
+          <div class="tldr-title">Short version</div>
+          <ol>
+            <li>Commit and push the vault to a GitHub, GitLab, Gitea or self-hosted repository from your computer.</li>
+            <li>Turn off any other sync tool (Google Drive, FolderSync, Syncthing, Obsidian Sync) for this vault on the phone.</li>
+            <li><a href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener">Install GitSync.md from Google Play</a> and sign in to GitHub, or add a token or SSH key for another host.</li>
+            <li>Allow storage access and choose a device folder, such as <code>Documents/Obsidian</code>, as the clone location.</li>
+            <li>Clone the vault, then open that folder in Obsidian with <strong>Open folder as vault</strong>.</li>
+            <li>Write in Obsidian. In GitSync.md, review the changes, then use <strong>Commit &amp; push</strong> and <strong>Pull</strong>.</li>
+          </ol>
+        </div>
+
+        <p>GitSync.md is a different app from the open-source Android app called “GitSync”. The two apps are not related; see <a href="/compare/gitsync-vs-gitsync-md">GitSync vs GitSync.md</a>.</p>
+
+        <h2 id="three-ways">Three ways to use Git with Obsidian on Android</h2>
+        <p>There are three common ways to do this. All three can work. They differ in how much setup you do and what you have to maintain yourself. If you haven’t settled on Git yet, compare it with Syncthing, Remotely Save and the other <a href="/compare/obsidian-sync-alternatives">Obsidian Sync alternatives</a> first.</p>
+        <div class="comparison-scroll" role="region" aria-label="Compare Git options for Obsidian on Android" tabindex="0"><table class="comparison-table"><thead><tr><th></th><th>Obsidian Git plugin on mobile</th><th>Termux plus a script</th><th>Native Git client (GitSync.md)</th></tr></thead><tbody>
+<tr><td>Setup</td><td>Install a community plugin in Obsidian and add HTTPS credentials</td><td>Install Termux, install Git, grant storage access, write and test a script</td><td>Install an app, sign in, choose the vault folder</td></tr>
+<tr><td>SSH remotes</td><td>No: the README lists “No SSH authentication” on mobile</td><td>Yes, with OpenSSH in Termux</td><td>Yes, with a key made on the phone or an imported key</td></tr>
+<tr><td>Large vaults</td><td>Limited by memory; the README warns that clone or pull can crash or run indefinitely</td><td>Uses command-line Git</td><td>Git runs in the app (JGit), outside Obsidian. For GitHub, the vault check shows the repository size before you clone</td></tr>
+<tr><td>Runs in the background</td><td>While Obsidian is open</td><td>Only if you set it up, for example with Termux:Widget or a task app</td><td>Optional Background Sync. Android decides when it runs</td></tr>
+<tr><td>What you maintain</td><td>Plugin settings and credentials in each vault</td><td>Packages, scripts, keys and the scheduling you build</td><td>App settings; Git rules stay in the repository</td></tr>
+<tr><td>Cost</td><td>Free</td><td>Free</td><td>$9.99 once on Google Play (local store prices may vary), after a free vault check</td></tr>
+</tbody></table></div>
+        <p>For more apps, see <a href="/compare/best-git-client-android">every Android Git client compared</a>.</p>
+        <p><strong>Obsidian Git plugin.</strong> The plugin works on mobile through isomorphic-git, a JavaScript implementation of Git. Its <a href="https://github.com/Vinzent03/obsidian-git" target="_blank" rel="noopener">README</a> marks mobile support as experimental and lists the limits: no SSH authentication, limited repository size because of memory, no rebase merge strategy and no submodules. It also says Obsidian may crash on clone or pull, depending on the device and free memory. Choose this route if your vault is small, uses an HTTPS remote, and you want everything inside Obsidian.</p>
+        <p><strong>Termux plus a script.</strong> Termux gives you a Linux shell with real Git. You grant it storage access, clone the vault into a shared folder, and write a script that pulls, commits and pushes. To run the script with one tap, the <a href="https://github.com/termux/termux-widget" target="_blank" rel="noopener">Termux:Widget plugin</a> runs scripts from <code>~/.shortcuts/</code> as a home-screen widget. Choose this route if you are comfortable in a terminal and want full control. You will maintain the scripts and keys yourself.</p>
+        <p><strong>A native Git client.</strong> A Git app writes the working copy into the same folder Obsidian opens. You see diffs and conflicts in its interface, and you don’t need a terminal. The rest of this guide uses GitSync.md for this route.</p>
+
+        <h2 id="storage">Where the vault has to live on Android</h2>
+        <p>Obsidian treats a vault as <a href="https://obsidian.md/help/data-storage" target="_blank" rel="noopener">a folder on your local file system</a>. On Android, both Obsidian and the Git client have to be able to read and write that same folder. In practice, that means a folder in the phone’s shared storage, such as <code>Documents/Obsidian/MyVault</code>, or one on an SD card.</p>
+        <p>A Git working copy also needs a real, writable folder with a hidden <code>.git</code> directory inside it. A cloud document provider such as Google Drive doesn’t expose its files as a normal folder, so it can’t hold the repository. GitSync.md rejects those locations. In the app’s words: “Phone storage and SD cards work. Cloud folders such as Google Drive can’t hold a Git repository.” For other ways to use Drive with Obsidian, see <a href="/blog/obsidian-google-drive-sync">Obsidian and Google Drive</a>.</p>
+        <p>To manage Git folders outside its own storage, GitSync.md asks for Android’s <a href="https://developer.android.com/training/data-storage/manage-all-files" target="_blank" rel="noopener">all-files access</a>. Android grants it on a system settings page with the switch <strong>Allow access to manage all files</strong>. Git needs it because it creates, renames and deletes many small files inside <code>.git</code> on every commit and pull. If you skip it, GitSync.md can still clone into its own app storage, but Obsidian can’t open a vault there. The app says so on its Obsidian screen: “Vaults in app storage can’t be opened by Obsidian.”</p>
+
+        <div class="screenshot-band" aria-label="GitSync.md storage screenshots on Android">
+          <div class="screenshot-grid">
+            <figure class="shot-card">
+              <div class="phone-frame">
+                <img src="obsidian-git-android/folder-access.png" alt="GitSync.md dialog titled Allow local folder access, explaining that shared storage access is needed for Git working copies in device folders, with Cancel and Enable access buttons" width="540" height="1200" loading="lazy" decoding="async">
+              </div>
+              <figcaption class="shot-caption"><strong>Allow folder access.</strong> GitSync.md sends you to Android Settings to turn on all-files access. Without it, you can still use app storage.</figcaption>
+            </figure>
+            <figure class="shot-card">
+              <div class="phone-frame">
+                <img src="obsidian-git-android/save-clones-in.png" alt="GitSync.md Save new clones in screen with the default set to /storage/emulated/0/Documents/Obsidian and a note that cloud folders such as Google Drive can't hold a Git repository" width="540" height="1200" loading="lazy" decoding="async">
+              </div>
+              <figcaption class="shot-caption"><strong>Pick a default folder.</strong> Settings → Save new clones in. Here new clones go to <code>Documents/Obsidian</code>.</figcaption>
+            </figure>
+            <figure class="shot-card">
+              <div class="phone-frame">
+                <img src="obsidian-git-android/clone-location.png" alt="GitSync.md Any Git host form with a sample HTTPS remote URL, sign-in choices SSH key, Token and None, and the clone location Documents / Obsidian" width="540" height="1200" loading="lazy" decoding="async">
+              </div>
+              <figcaption class="shot-caption"><strong>Review the location.</strong> Each clone shows its destination folder before anything downloads.</figcaption>
+            </figure>
+          </div>
+        </div>
+
+        <h2 id="before-you-start">Before you start</h2>
+        <ul>
+          <li><strong>The vault is already in a Git repository.</strong> Commit and push it from your computer first. The repository root should be the vault root, the folder that contains <code>.obsidian</code>. For the desktop side, see <a href="/blog/sync-obsidian-windows-iphone-github">the Windows and GitHub workflow</a>. Its desktop steps apply to Android too.</li>
+          <li><strong>Only one sync method.</strong> Turn off or exclude Google Drive, FolderSync, Syncthing, Obsidian Sync and any other folder-sync tool for this vault on the phone. Two tools rewriting the same files cause duplicate notes and confusing conflicts. Choose one of the routes above, not two. Not sure which method you want? Compare <a href="/compare/obsidian-sync-vs-git">Obsidian Sync and Git</a>. iCloud isn’t available on Android, but <a href="/compare/icloud-vs-git-obsidian">the iCloud and Git comparison</a> covers the same trade-offs.</li>
+          <li><strong>Keep workspace files out of Git.</strong> Obsidian rewrites <code>.obsidian/workspace.json</code> and <code>workspace-mobile.json</code> as you move around the app. Ignore them so every phone session doesn’t create a commit. See <a href="/blog/obsidian-gitignore">the Obsidian .gitignore guide</a>, or generate the file with the <a href="/tools/obsidian-gitignore-generator">Obsidian .gitignore generator</a>.</li>
+          <li><strong>A backup.</strong> Keep an independent copy of the vault before changing how it syncs.</li>
+        </ul>
+        <p>GitSync.md needs Android 9 or later.</p>
+
+        <h2 id="setup">Set up GitSync.md step by step</h2>
+        <div class="step-card" data-step="Step 1">
+          <h3>Install and sign in</h3>
+          <p><a href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener">Install GitSync.md from Google Play</a>. On the first screen, choose one of these:</p>
+          <ul>
+            <li><strong>Continue with GitHub</strong> signs in through GitHub in your browser. You can also paste a <a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens" target="_blank" rel="noopener">personal access token</a>. The app asks for the <code>repo</code> and <code>user:email</code> scopes.</li>
+            <li><strong>SSH, token or another host</strong> opens <strong>Any Git host</strong> for GitLab, Gitea, Codeberg or your own server. Paste the remote URL, then choose <strong>SSH key</strong>, <strong>Token</strong> or <strong>None</strong> (for public repositories). For SSH, the app can make a key on the phone: tap <strong>Copy public key</strong>, add it to your host once, or import an existing key file. GitSync.md asks you to confirm the server’s SSH host key the first time. The ideas in <a href="/blog/self-hosted-git-ssh-ios">the self-hosted SSH guide for iPhone</a> apply here too, although its screens are from iOS.</li>
+          </ul>
+          <p>Credentials are encrypted and stored on the phone.</p>
+        </div>
+
+        <div class="step-card" data-step="Step 2">
+          <h3>Choose the vault’s device folder</h3>
+          <p>Before cloning, choose the device folder that new clones go into: <strong>Settings → Save new clones in → Choose a device folder</strong>. For a clone by URL, you can also choose a folder for that clone only, under <strong>Name, branch and folder → Clone location → Choose another folder</strong>. The first time, GitSync.md shows <strong>Allow local folder access</strong>. Tap <strong>Enable access</strong>, turn on <strong>Allow access to manage all files</strong>, and go back.</p>
+          <p>Android’s folder picker then opens. Pick or create the folder where your Obsidian vaults live, for example <code>Documents/Obsidian</code>. Tap <strong>Use this folder</strong>, then <strong>Allow</strong>, then <strong>Use for new clones</strong>.</p>
+        </div>
+
+        <div class="step-card" data-step="Step 3">
+          <h3>Pick the repository and run the free vault check</h3>
+          <p>Go to <strong>Add a vault → Clone from GitHub</strong> and tap <strong>Clone</strong> next to your vault repository. For another host, use <strong>Test &amp; clone</strong> on the <strong>Any Git host</strong> screen. Before you pay, GitSync.md runs a <strong>Vault check</strong>. It confirms that it can reach the repository and branch. For supported GitHub connections, it can also check write access, size and file count, Git LFS use, and whether there is an <code>.obsidian</code> folder. Only metadata is read and no notes are downloaded. If the repository passes, Full Access is a one-time purchase through Google Play with no subscription. It costs $9.99 in the US, and Google Play shows the price in your currency before you confirm.</p>
+        </div>
+
+        <div class="step-card" data-step="Step 4">
+          <h3>Clone</h3>
+          <p>Confirm the clone. GitSync.md downloads the files and the full <code>.git</code> history into a new folder inside the folder you chose. Nothing downloads until you confirm.</p>
+          <ul>
+            <li>A GitHub clone goes into <code>&lt;owner&gt;/&lt;repository&gt;</code>, for example <code>Documents/Obsidian/me/MyVault</code>.</li>
+            <li>A clone by URL goes into a folder under <code>custom/</code> with a name the app generates.</li>
+          </ul>
+          <p>To see the exact folder of each vault, open <strong>Settings → Save new clones in</strong>. Each vault is listed with its folder under <strong>Move a vault you already have</strong>.</p>
+        </div>
+
+        <div class="step-card" data-step="Step 5">
+          <h3>Open the same folder in Obsidian</h3>
+          <p>In Obsidian’s vault picker, choose <strong>Open folder as vault</strong> and select the cloned folder, for example <code>Documents/Obsidian/me/MyVault</code>. Select the repository root itself, the folder that contains <code>.obsidian</code>, not a parent folder. Obsidian names the vault after that folder. If your <code>.obsidian</code> settings are committed, your themes and plugin settings come with the vault.</p>
+        </div>
+
+        <div class="step-card" data-step="Already on the phone?">
+          <h3>Link a working copy you already have</h3>
+          <p>If a Git working copy is already in a device folder, for example one you cloned with Termux, don’t clone it again. Use <strong>Add a vault → Find clones on this phone → Scan a device folder</strong>, pick the folder, and tap <strong>Add selected repositories</strong>. Removing an entry from GitSync.md later keeps its files.</p>
+        </div>
+
+        <h2 id="daily-workflow">Edit, commit and push</h2>
+        <p>Write in Obsidian as usual. When you open the vault in GitSync.md, the vault screen shows what changed on the phone. Tap a file to see a line-by-line diff. Tap <strong>Commit &amp; push</strong>, choose which files to include, write a message or tap a suggested one, and leave <strong>Push right after</strong> on. Tap <strong>Pull</strong> to fetch changes from your other devices.</p>
+        <div class="screenshot-band" aria-label="GitSync.md vault screenshots on Android">
+          <div class="screenshot-grid">
+            <figure class="shot-card">
+              <div class="phone-frame">
+                <img src="obsidian-git-android/vault-changes.png" alt="GitSync.md vault screen for a sample vault named MyVault with 2 changes on this phone, Commit and push and Pull buttons, and the changed files listed" width="540" height="1200" loading="lazy" decoding="async">
+              </div>
+              <figcaption class="shot-caption"><strong>See what changed.</strong> Edits made in Obsidian appear on the vault’s Changes tab.</figcaption>
+            </figure>
+            <figure class="shot-card">
+              <div class="phone-frame">
+                <img src="obsidian-git-android/commit-and-push.png" alt="GitSync.md commit sheet for 2 files with a message, suggested messages, included files and the Push right after switch turned on" width="540" height="1200" loading="lazy" decoding="async">
+              </div>
+              <figcaption class="shot-caption"><strong>Commit and push.</strong> Pick the files and the message. Turn off Push right after to commit locally only.</figcaption>
+            </figure>
+            <figure class="shot-card">
+              <div class="phone-frame">
+                <img src="obsidian-git-android/find-existing-vault.png" alt="GitSync.md Local repositories screen after scanning Documents/Obsidian, listing the sample vault MyVault on branch main as clean, with an Add selected repositories button" width="540" height="1200" loading="lazy" decoding="async">
+              </div>
+              <figcaption class="shot-caption"><strong>Find existing clones.</strong> Scan a device folder to add a working copy that is already on the phone.</figcaption>
+            </figure>
+          </div>
+        </div>
+        <p>On the phone, pull before you start writing and push when you finish. If both devices changed the same lines, GitSync.md stops and shows the conflict. You can keep either version or edit the file by hand. The conflict concepts in <a href="/blog/obsidian-git-merge-conflicts-iphone">the iPhone conflict recovery guide</a> apply here too.</p>
+
+        <h2 id="keep-in-sync">Keep it in sync</h2>
+        <ul>
+          <li><strong>By hand:</strong> <strong>Pull</strong> and <strong>Commit &amp; push</strong> on the vault screen. This is the most predictable option.</li>
+          <li><strong>Quick Settings tiles:</strong> add the <strong>Pull all</strong> tile to fetch and fast-forward every vault on the phone. Pull all never stages, commits or pushes. A <strong>Background Sync</strong> tile turns background checks on or off.</li>
+          <li><strong>Home-screen widgets:</strong> a <strong>Pull all</strong> widget and <strong>Vaults</strong> and <strong>Vault</strong> widgets. See <strong>Settings → Widget &amp; launcher shortcuts</strong>.</li>
+          <li><strong>Background Sync (optional):</strong> in <strong>Settings → Background Sync</strong>, turn on <strong>Automatically pull remote changes</strong> (fast-forward only). If you want, also turn on <strong>Automatically commit and push local changes</strong>, which is off by default. Then limit it to <strong>On Wi-Fi</strong> or <strong>Charging</strong> and include each vault. Each vault is bound to its branch, and a branch, folder or account change needs a fresh review.</li>
+        </ul>
+        <div class="callout warning">
+          <span class="callout-label">Background sync is not real time</span>
+          <p>Android decides when background work runs. In the app’s words: “Android schedules checks about every 15 minutes or later, depending on connectivity, battery and system restrictions. Best effort, never real time.” Battery saver and app restrictions can delay it further. See Android’s <a href="https://developer.android.com/develop/background-work/background-tasks" target="_blank" rel="noopener">background work documentation</a>. Background Sync never force-pushes, merges, switches branches or resolves conflicts. Anything unusual waits for you to open the app.</p>
+        </div>
+        <figure class="shot-card" style="max-width:300px;margin-inline:auto">
+          <div class="phone-frame">
+            <img src="obsidian-git-android/background-sync.png" alt="GitSync.md Background Sync screen with automatic pull on, automatic commit and push off, and the On Wi-Fi condition turned on" width="540" height="1200" loading="lazy" decoding="async">
+          </div>
+          <figcaption class="shot-caption"><strong>Background Sync.</strong> Pull is fast-forward only. Push is off unless you turn it on.</figcaption>
+        </figure>
+
+        <h2 id="verify">Verify it worked</h2>
+        <ol>
+          <li>In Obsidian on the phone, create a note such as <code>Phone test.md</code> with one line of text.</li>
+          <li>In GitSync.md, open the vault, check that the new file appears under Changes, and tap <strong>Commit &amp; push</strong>.</li>
+          <li>Open the repository on GitHub or your Git host in a browser. Confirm the new commit and the note’s exact contents.</li>
+          <li>On your computer, pull and open the note in Obsidian.</li>
+          <li>Now reverse the direction. Edit the note on the computer, commit and push, then tap <strong>Pull</strong> in GitSync.md and check the change in Obsidian on the phone.</li>
+        </ol>
+        <p>Only turn on Background Sync after both directions work by hand.</p>
+
+        <h2 id="troubleshooting">Troubleshooting</h2>
+        <h3>Obsidian doesn’t show the notes</h3>
+        <p>Obsidian is probably open on a different folder. In GitSync.md, check the vault’s folder in <strong>Settings → Save new clones in</strong> (for example <code>Documents / Obsidian / me / MyVault</code>), then open exactly that folder in Obsidian. If the repository has the vault inside a subfolder, open that subfolder instead. If the vault was cloned into app storage, Obsidian can’t open it. Move it under <strong>Settings → Save new clones in → Move a vault you already have</strong>.</p>
+        <h3>The folder picker rejects a cloud folder</h3>
+        <p>That is expected. Choose a folder on the phone or an SD card. Google Drive and other cloud document providers can’t hold a Git working copy.</p>
+        <h3>Sign-in or push fails</h3>
+        <p>For GitHub, check that the account or token has access to the repository and that the vault check showed write access. For other hosts, check the token or that the phone’s public key was added to the host, and confirm the SSH host key when asked.</p>
+        <h3>A conflict after editing on two devices</h3>
+        <p>Pull before editing on each device. If a conflict happens, keep either version or edit the file by hand in GitSync.md. Don’t force-push to clear it. See <a href="/blog/obsidian-git-merge-conflicts-iphone">the conflict recovery guide</a> for the concepts.</p>
+        <h3>A commit every time you open Obsidian</h3>
+        <p>That is usually <code>.obsidian/workspace.json</code> or <code>workspace-mobile.json</code>. Add them to <code>.gitignore</code> and remove them from tracking once. See <a href="/blog/obsidian-gitignore">the .gitignore guide</a>.</p>
+
+        <h2 id="faq">FAQ</h2>
+        <h3>Does the Obsidian Git plugin work on Android?</h3>
+        <p>Yes, with limits. On mobile it uses a JavaScript Git implementation without SSH. Its <a href="https://github.com/Vinzent03/obsidian-git" target="_blank" rel="noopener">README</a> calls mobile support experimental and warns about crashes on larger repositories. For small HTTPS vaults it can be enough.</p>
+        <h3>Do I need Termux?</h3>
+        <p>No. Termux works if you want to maintain a shell setup. A native Git client like GitSync.md does the same Git operations without a terminal.</p>
+        <h3>Does it sync in the background?</h3>
+        <p>Optionally. Background Sync can pull, and if you allow it, commit and push. Android controls when it runs, often every 15 minutes or later, so it is best effort, not real time.</p>
+        <h3>Can I use GitLab, Gitea or self-hosted Git?</h3>
+        <p>Yes. Use <strong>Any Git host</strong> with the remote URL and an HTTPS token or an SSH key. For GitLab token scopes, SSH host-key checks and protected-branch errors, see <a href="/blog/obsidian-gitlab-sync">Sync Obsidian with GitLab</a>.</p>
+        <h3>Is GitSync.md the same app as “GitSync”?</h3>
+        <p>No. GitSync.md is an independent app by Cody Bontecou. The open-source Android app called “GitSync” is a separate project.</p>
+        <h3>Is the Android app the same as the iPhone app?</h3>
+        <p>Not feature for feature. This guide only describes what the Android app does. iPhone-only features, such as Apple Shortcuts, are not part of it. For iPhone and iPad, follow <a href="/blog/obsidian-git-iphone-ipad">the iPhone and iPad guide</a>.</p>
+
+        <div class="related-card">
+          <h2>Choose your next step</h2>
+          <p><a href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener">Get GitSync.md on Google Play →</a></p>
+          <ul><li><a href="/blog/sync-obsidian-github">Set up GitHub sync on your computer and every other device</a></li><li><a href="/blog/obsidian-gitignore">Keep Obsidian workspace files out of Git</a></li><li><a href="/tools/obsidian-gitignore-generator">Generate a commented .gitignore for your vault</a></li><li><a href="/blog/obsidian-git-merge-conflicts-iphone">Understand and recover from Git conflicts</a></li><li><a href="/compare/obsidian-sync-vs-git">Compare Obsidian Sync and Git</a></li><li><a href="/blog/sync-obsidian-windows-iphone-github">Set up the desktop side with GitHub</a></li></ul>
+        </div>
+      </article>
+    </div>
+
+  <section class="content-download" aria-labelledby="download-heading">
+    <div class="shell content-download-layout">
+      <div>
+        <p class="eyebrow"><span class="blue-square" aria-hidden="true"></span>Take your work with you.</p>
+        <h2 id="download-heading">REAL GIT.<br>WITHIN REACH.</h2>
+        <p class="content-download-description">Your files. Your commits. Your remote.<br>Get GitSync.md for iPhone, iPad, and Android.</p>
+      </div>
+      <div>
+        <div class="store-links" role="group" aria-label="Download GitSync.md">
+          <a class="store-badge store-badge-apple" href="https://apps.apple.com/us/app/gitsync-md/id6758960270" target="_blank" rel="noopener"><img src="../assets/store-badges/download-on-app-store.svg" width="120" height="40" alt="Download GitSync.md on the App Store" decoding="async"></a>
+          <a class="store-badge store-badge-google" href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener"><img src="../assets/store-badges/get-it-on-google-play.png" width="646" height="250" alt="Get GitSync.md on Google Play" decoding="async"></a>
+        </div>
+        <p class="purchase-note"><span>iPhone + iPad: $9.99 once. Unlimited repositories.</span><span>Android: $9.99 once. All features included.</span><span>No subscriptions.</span></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="shell footer-layout">
+    <a class="brand" href="/" aria-label="GitSync.md home">gitsync<span class="brand-extension">.md</span></a>
+    <p>Independently built by <a href="https://codybontecou.com" target="_blank" rel="noopener">Cody Bontecou</a>.<br>© 2026 GitSync.md</p>
+    <div class="footer-links"><a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener">Source</a><a href="/blog/">Guides</a><a href="/compare/obsidian-sync-vs-git">Compare</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
+    <a class="back-top" href="#top" aria-label="Back to top">↑</a>
+  </div>
+</footer>
+<!-- Cloudflare Web Analytics -->
+<script>
+(function () {
+  var productionHosts = {
+    'instareply.isolated.tech': true,
+    'voxboard.isolated.tech': true,
+    'healthmd.isolated.tech': true,
+    'isome.isolated.tech': true,
+    'gitsyncmd.app': true,
+    'gitsync.md': true,
+    'timemd.isolated.tech': true,
+    'imghost.isolated.tech': true
+  };
+
+  if (!productionHosts[window.location.hostname]) {
+    return;
+  }
+
+  function loadCloudflareBeacon() {
+    if (document.querySelector('script[src="https://static.cloudflareinsights.com/beacon.min.js"]')) {
+      return;
+    }
+
+    var script = document.createElement('script');
+    script.defer = true;
+    script.src = 'https://static.cloudflareinsights.com/beacon.min.js';
+    script.setAttribute('data-cf-beacon', '{"token":"090f363070334cddad5c5cc1509b8807"}');
+    document.head.appendChild(script);
+  }
+
+  fetch('https://img-host.costream.workers.dev/analytics-gate', {
+    cache: 'no-store',
+    mode: 'cors',
+    credentials: 'omit'
+  })
+    .then(function (response) {
+      return response.ok ? response.json() : { track: false };
+    })
+    .then(function (gate) {
+      if (gate && gate.track) {
+        loadCloudflareBeacon();
+      }
+    })
+    .catch(function () {
+      // Fail closed so excluded IPs are not accidentally tracked.
+    });
+})();
+</script>
+<!-- End Cloudflare Web Analytics -->
+</body>
+</html>

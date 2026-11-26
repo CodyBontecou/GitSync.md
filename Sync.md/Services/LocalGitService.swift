@@ -18,9 +18,15 @@ enum LocalGitError: LocalizedError {
     case stashNotFound(Int)
     case stashApplyConflict
     case pullBlockedByLocalChanges
+    /// A commit would record pre-pull file versions over HEAD (issue #130).
+    case pullNotFinished(paths: [String])
     case pullDiverged
     case pullRemoteBranchMissing(String)
     case wrongBranch(expected: String, actual: String)
+    /// HEAD points at a commit instead of a branch (an interrupted rebase,
+    /// or a commit checked out in another Git app). Pull has no branch to
+    /// fast-forward until the person switches back to one.
+    case detachedHead
     case checkoutBlockedByLocalChanges
     case branchAlreadyExists(String)
     case branchNotFound(String)
@@ -67,12 +73,18 @@ enum LocalGitError: LocalizedError {
             return String(localized: "Applying stash would overwrite local changes. Commit, stash, or discard local edits first.")
         case .pullBlockedByLocalChanges:
             return String(localized: "Pull blocked to protect local edits. Commit, stash, or discard local changes first.")
+        case .pullNotFinished(let paths):
+            return paths.count == 1
+                ? String(localized: "The last pull didn't finish updating 1 file, so committing now would undo that incoming change. Pull again and tap Finish Update first.")
+                : String(localized: "The last pull didn't finish updating \(paths.count) files, so committing now would undo those incoming changes. Pull again and tap Finish Update first.")
         case .pullDiverged:
             return String(localized: "Pull requires a merge because local and remote have diverged.")
         case .pullRemoteBranchMissing(let branch):
             return String(localized: "Remote branch '\(branch)' was not found on origin.")
         case .wrongBranch(let expected, let actual):
             return String(localized: "Background Sync expected branch '\(expected)', but '\(actual)' is checked out.")
+        case .detachedHead:
+            return String(localized: "This vault isn't on a branch (detached HEAD), so there is nothing to pull into. Open Git Tools, switch to a branch, then pull again.")
         case .checkoutBlockedByLocalChanges:
             return String(localized: "Switching branches is blocked to protect local edits. Commit, stash, or discard changes first.")
         case .branchAlreadyExists(let name):
@@ -162,6 +174,11 @@ enum PullPostUpdateAttention: Sendable, Equatable, LocalizedError {
     case lfsHydrationFailed(message: String)
     case lfsAuthenticationOrTrustRequired(message: String)
     case checkoutIncomplete(message: String)
+    /// The branch is current, but files still hold their pre-update versions.
+    case workingTreeNotUpdated(PendingCheckoutReport)
+    /// The update landed, except for files that were also changed on this
+    /// device; those keep the local version.
+    case localEditsKept(paths: [String])
     case cancelledAfterUpdate
 
     var errorDescription: String? {
@@ -174,9 +191,26 @@ enum PullPostUpdateAttention: Sendable, Equatable, LocalizedError {
             return String(localized: "Git updated, but Git LFS authentication or trust needs attention: \(message)")
         case .checkoutIncomplete(let message):
             return String(localized: "Git references updated, but the working tree checkout needs attention. Concurrent local bytes were preserved: \(message)")
+        case .workingTreeNotUpdated(let report):
+            let count = report.stalePaths.count
+            var text = count == 1
+                ? String(localized: "1 file still has its version from before the last pull. Tap Finish Update to bring it up to date. Committing now would undo that incoming change.")
+                : String(localized: "\(count) files still have their versions from before the last pull. Tap Finish Update to bring them up to date. Committing now would undo those incoming changes.")
+            if !report.localEditPaths.isEmpty {
+                text += " " + PullPostUpdateAttention.keptLocalSentence(report.localEditPaths)
+            }
+            return text
+        case .localEditsKept(let paths):
+            return String(localized: "Pulled the latest changes.") + " " + PullPostUpdateAttention.keptLocalSentence(paths)
         case .cancelledAfterUpdate:
             return String(localized: "Git updated before cancellation completed. Verify the working tree before the next sync.")
         }
+    }
+
+    static func keptLocalSentence(_ paths: [String]) -> String {
+        let shown = paths.prefix(3).joined(separator: ", ")
+        let more = paths.count > 3 ? String(localized: " and \(paths.count - 3) more") : ""
+        return String(localized: "These files changed on this device and kept your version: \(shown)\(more)")
     }
 }
 
@@ -235,6 +269,16 @@ private func git2ErrorMessage(fallback: String? = nil) -> String {
     }
 
     return String(localized: "Unknown git error")
+}
+
+/// The commit a direct reference points at. A symbolic reference (such as
+/// `refs/remotes/origin/HEAD`) has no direct target, and force-unwrapping
+/// `git_reference_target` for one crashed every pull (issue #111).
+nonisolated private func directTarget(of reference: OpaquePointer?, name: String) throws -> UnsafePointer<git_oid> {
+    guard let reference, let oid = git_reference_target(reference) else {
+        throw LocalGitError.libgit2(String(localized: "Git reference '\(name)' does not point at a commit."))
+    }
+    return oid
 }
 
 /// Call a libgit2 function and throw if it returns an error code.
@@ -1269,7 +1313,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                 branch = "main"
             }
 
-            let commitSHA = oidToHex(git_reference_target(head)!)
+            let commitSHA = try oidToHex(directTarget(of: head, name: "HEAD"))
             let fileCount = Self.countFiles(in: localURL)
 
             return LocalCloneResult(commitSHA: commitSHA, branch: branch, fileCount: fileCount)
@@ -1345,8 +1389,11 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             var head: OpaquePointer?
             defer { if let head { git_reference_free(head) } }
             try git2Check(git_repository_head(&head, repo), context: "Read HEAD")
+            // A detached HEAD's shorthand is "HEAD", which would select the
+            // symbolic refs/remotes/origin/HEAD below (issue #111).
+            if git_repository_head_detached(repo) == 1 { throw LocalGitError.detachedHead }
 
-            let localOidPtr = git_reference_target(head)!
+            let localOidPtr = try directTarget(of: head, name: "HEAD")
             let localCommitSHA = oidToHex(localOidPtr)
             let branch: String
             if let name = git_reference_shorthand(head) {
@@ -1377,7 +1424,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             }
             try git2Check(remoteLookupCode, context: "Lookup \(remoteRefName)")
 
-            let remoteOidPtr = git_reference_target(remoteRef)!
+            let remoteOidPtr = try directTarget(of: remoteRef, name: remoteRefName)
             let remoteCommitSHA = oidToHex(remoteOidPtr)
 
             // Fast path for unchanged repositories: when local and remote
@@ -1388,6 +1435,10 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             // meaningful when the OIDs differ; no consumer reads it for an
             // up-to-date plan.
             if git_oid_equal(localOidPtr, remoteOidPtr) != 0 {
+                // Equal OIDs only prove the *refs* agree. An earlier update can
+                // have moved the branch without finishing its checkout (issue
+                // #130). The inspector checks just the paths of the last update,
+                // not the whole vault, and is cached per HEAD.
                 return PullPlan(
                     action: .upToDate,
                     branch: branch,
@@ -1396,11 +1447,19 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                     hasLocalChanges: false,
                     aheadBy: 0,
                     behindBy: 0,
-                    remoteIdentity: plannedRemoteIdentity
+                    remoteIdentity: plannedRemoteIdentity,
+                    pendingCheckout: try? PendingCheckoutInspector.inspect(repo: repo)
                 )
             }
 
-            let hasLocalChanges = try Self.hasUncommittedChanges(repo: repo)
+            // Edits to files the incoming commits stop tracking don't block:
+            // the fast-forward carries them over as ignored files (issue #137).
+            let hasLocalChanges = try Self.hasBlockingLocalChanges(
+                repo: repo, localOID: localOidPtr, remoteOID: remoteOidPtr
+            )
+            // Stale pre-update files also look like local changes; tell them apart
+            // so the user is offered Finish Update instead of commit/discard.
+            let pendingCheckout = hasLocalChanges ? (try? PendingCheckoutInspector.inspect(repo: repo)) : nil
 
             var ahead: Int = 0
             var behind: Int = 0
@@ -1423,7 +1482,8 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                     hasLocalChanges: hasLocalChanges,
                     aheadBy: ahead,
                     behindBy: behind,
-                    remoteIdentity: plannedRemoteIdentity
+                    remoteIdentity: plannedRemoteIdentity,
+                    pendingCheckout: pendingCheckout
                 )
             }.value
             try cancellationSignal.checkCancellation()
@@ -1502,7 +1562,23 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
         )
     }
 
+    /// Fast-forward that first sets aside local edits to files the incoming
+    /// commits stop tracking (deleted there and ignored by the incoming root
+    /// `.gitignore`), then puts them back as ignored, untracked files. On any
+    /// failure the edits are restored as they were (issue #137).
     private func performSafeFastForward(branch: String, pat: String, refetch: Bool, isPullOnly: Bool) async throws -> LocalPullResult {
+        let carried = try await setAsideIncomingUntrackedChanges(branch: branch)
+        do {
+            let result = try await performSafeFastForwardCore(branch: branch, pat: pat, refetch: refetch, isPullOnly: isPullOnly)
+            Self.restoreIncomingUntrackedChanges(carried, root: localURL)
+            return result
+        } catch {
+            Self.restoreIncomingUntrackedChanges(carried, root: localURL)
+            throw error
+        }
+    }
+
+    private func performSafeFastForwardCore(branch: String, pat: String, refetch: Bool, isPullOnly: Bool) async throws -> LocalPullResult {
         let path = self.localURL.path
         let localURL = self.localURL
         let pullOnlyBeforeCheckout = self.pullOnlyBeforeCheckout
@@ -1542,6 +1618,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             var head: OpaquePointer?
             defer { if let head { git_reference_free(head) } }
             try git2Check(git_repository_head(&head, repo), context: "Read HEAD")
+            if git_repository_head_detached(repo) == 1 { throw LocalGitError.detachedHead }
 
             // HEAD can be changed by another process after fetch/planning.
             // Re-read and verify it immediately before any checkout so the
@@ -1551,8 +1628,8 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                 throw LocalGitError.wrongBranch(expected: branch, actual: actualBranch)
             }
 
-            let localOidPtr = git_reference_target(head)!
-            let remoteOidPtr = git_reference_target(remoteRef)!
+            let localOidPtr = try directTarget(of: head, name: "HEAD")
+            let remoteOidPtr = try directTarget(of: remoteRef, name: remoteRefName)
             var expectedLocalOid = localOidPtr.pointee
 
             if git_oid_equal(localOidPtr, remoteOidPtr) != 0 {
@@ -1725,6 +1802,14 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                     paths: changedPaths
                 )
                 if isPullOnly { try self.pullOnlyBeforeIndexPublication?() }
+                // Record the update before the branch moves. If checkout does not
+                // finish (conflict, crash, file provider error), the next pull
+                // still knows which files are behind HEAD (issue #130).
+                PendingCheckoutInspector.writeMarker(
+                    repo: repo,
+                    oldOID: oidToHex(&expectedLocalOid),
+                    newOID: oidToHex(&remoteOidCopy)
+                )
                 try indexLock.publishPreparedIndexRetainingLock()
                 try git2Check(git_transaction_commit(refTransaction), context: "Commit branch ref update")
 
@@ -1733,7 +1818,24 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                 // write; preserve it and return an explicit updated-with-attention
                 // outcome instead of force-overwriting or reporting no update.
                 if isPullOnly { self.pullOnlyBeforeFinalCheckout?() }
-                let checkoutCode = git_checkout_tree(repo, remoteTree, &checkoutOpts)
+                var checkoutCode = git_checkout_tree(repo, remoteTree, &checkoutOpts)
+                var retriedReport: PendingCheckoutReport?
+                if checkoutCode == GIT_ECONFLICT.rawValue {
+                    // SAFE checkout writes nothing when any file conflicts, so a
+                    // single rewritten file (e.g. .obsidian/workspace-mobile.json)
+                    // would hold back every other note. Write the files that are
+                    // safe to write and keep the conflicting ones as local edits.
+                    checkoutOpts.checkout_strategy = GIT_CHECKOUT_SAFE.rawValue
+                        | GIT_CHECKOUT_ALLOW_CONFLICTS.rawValue
+                    checkoutCode = git_checkout_tree(repo, remoteTree, &checkoutOpts)
+                    if checkoutCode == 0 {
+                        var baseOID = expectedLocalOid
+                        var targetOID = remoteOidCopy
+                        retriedReport = try? PendingCheckoutInspector.classify(
+                            repo: repo, baseOID: &baseOID, headOID: &targetOID, index: nil
+                        )
+                    }
+                }
                 let indexLockReleased = indexLock.finalizePublishedIndex()
                 if checkoutCode != 0 {
                     GitLFSService.rollbackHydratedFilesAfterFailedCheckout(lfsNormalizations)
@@ -1761,7 +1863,30 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
                         changedPaths: changedPaths
                     )
                 }
+                if let retriedReport, retriedReport.needsFinishing {
+                    return (
+                        result: LocalPullResult(
+                            updated: true,
+                            newCommitSHA: oidToHex(&remoteOidCopy),
+                            attention: .workingTreeNotUpdated(retriedReport)
+                        ),
+                        changedPaths: changedPaths
+                    )
+                }
+                PendingCheckoutInspector.clearMarker(repo: repo)
+                PendingCheckoutInspector.markVerified(repo: repo, headOID: oidToHex(&remoteOidCopy))
+                if let kept = retriedReport?.localEditPaths, !kept.isEmpty {
+                    return (
+                        result: LocalPullResult(
+                            updated: true,
+                            newCommitSHA: oidToHex(&remoteOidCopy),
+                            attention: .localEditsKept(paths: kept)
+                        ),
+                        changedPaths: changedPaths
+                    )
+                }
             } catch {
+                PendingCheckoutInspector.clearMarker(repo: repo)
                 // No operation after a successful ref commit throws. Therefore
                 // this path still has the old ref; lock release swaps the old
                 // index back, and LFS rollback is compare-and-atomic.
@@ -1778,7 +1903,14 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
         // The ref transaction has committed before this point. Preserve an
         // explicit checkout attention outcome and do not attempt LFS hydration
         // against a worktree whose SAFE checkout did not fully complete.
-        if fastForward.result.attention != nil { return fastForward.result }
+        switch fastForward.result.attention {
+        case nil, .localEditsKept:
+            // The working tree is coherent apart from kept local edits; LFS
+            // hydration still has to run for the files that were written.
+            break
+        default:
+            return fastForward.result
+        }
 
         // Every later cancellation or hydration failure must return the new SHA
         // with attention instead of implying HEAD did not move.
@@ -3058,6 +3190,11 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             defer { if let index { git_index_free(index) } }
             try git2Check(git_repository_index(&index, repo), context: "Get index")
             try Self.ensureNoActiveConflict(repo: repo, index: index)
+            // Never record pre-pull file versions over HEAD: that silently
+            // reverts the incoming changes on the remote (issue #130).
+            if let pending = try? PendingCheckoutInspector.inspect(repo: repo), !pending.staleIndexPaths.isEmpty {
+                throw LocalGitError.pullNotFinished(paths: pending.staleIndexPaths)
+            }
             let baselineIndexChecksum = try Self.indexChecksumHex(index)
 
             guard try Self.hasStagedChanges(repo: repo, index: index) else {
@@ -3473,6 +3610,23 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
 
     func discardChanges(path: String) async throws {
         try await performDiscardChanges(path: path)
+    }
+
+    /// Brings files that a previous update left behind HEAD up to date, without
+    /// touching files changed on this device (issue #130).
+    func finishPendingCheckout() async throws -> PendingCheckoutCompletion {
+        let repoPath = self.localURL.path
+        return try await Task.detached {
+            var repo: OpaquePointer?
+            defer { if let repo { git_repository_free(repo) } }
+            try git2Check(git_repository_open(&repo, repoPath), context: "Open repo")
+            Self.setPrecomposeUnicode(repo: repo)
+            var index: OpaquePointer?
+            defer { if let index { git_index_free(index) } }
+            try git2Check(git_repository_index(&index, repo), context: "Get index")
+            try Self.ensureNoActiveConflict(repo: repo, index: index)
+            return try PendingCheckoutInspector.finish(repo: repo)
+        }.value
     }
 
     func discardAllChanges() async throws {
@@ -4006,6 +4160,11 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             try Self.ensureNoActiveConflict(repo: repo, index: index)
             if expectedBranch != nil {
                 try Self.ensureNoUnstagedWorktreeChanges(repo: repo)
+            }
+            // Never record pre-pull file versions over HEAD: that silently
+            // reverts the incoming changes on the remote (issue #130).
+            if let pending = try? PendingCheckoutInspector.inspect(repo: repo), !pending.staleIndexPaths.isEmpty {
+                throw LocalGitError.pullNotFinished(paths: pending.staleIndexPaths)
             }
             let baselineIndexChecksum = try Self.indexChecksumHex(index)
 
@@ -4765,7 +4924,7 @@ final class LocalGitService: GitRepositoryProtocol, @unchecked Sendable {
             } else {
                 branch = "main"
             }
-            let commitSHA = oidToHex(git_reference_target(head)!)
+            let commitSHA = try oidToHex(directTarget(of: head, name: "HEAD"))
 
             let entries = (try? Self.statusEntries(repo: repo)) ?? []
             let changeCount = entries.count
@@ -6052,5 +6211,368 @@ extension LocalGitService {
                 authoredDate: Self.dateFromSignature(author)
             )
         }.value
+    }
+}
+
+// MARK: - Local edits to files the incoming commits stop tracking (issue #137)
+
+/// A local edit set aside during a fast-forward. `data` is nil when the edit
+/// was a deletion.
+struct IncomingUntrackCarry: Sendable, Equatable {
+    let path: String
+    let data: Data?
+}
+
+extension LocalGitService {
+    /// Local changes to paths that the commits between `localOID` and
+    /// `remoteOID` delete and that the incoming root `.gitignore` ignores.
+    /// Another device stopped tracking those files; the edits never need a
+    /// commit, so they must not block the pull or turn into a modify/delete
+    /// conflict.
+    fileprivate static func incomingUntrackedPaths(
+        repo: OpaquePointer?,
+        entries: [GitStatusEntry],
+        localOID: UnsafePointer<git_oid>,
+        remoteOID: UnsafePointer<git_oid>
+    ) throws -> Set<String> {
+        let editKinds: Set<GitFileStatusKind> = [.modified, .deleted, .typeChanged]
+        let candidates = entries.filter { entry in
+            guard entry.oldPath == nil, !entry.isConflicted else { return false }
+            let kinds = [entry.indexStatus, entry.workTreeStatus].compactMap { $0 }
+            return !kinds.isEmpty && kinds.allSatisfy(editKinds.contains)
+        }.map(\.path)
+        guard !candidates.isEmpty else { return [] }
+
+        func tree(_ oid: UnsafePointer<git_oid>) throws -> OpaquePointer? {
+            var oidCopy = oid.pointee
+            var commit: OpaquePointer?
+            defer { if let commit { git_commit_free(commit) } }
+            try git2Check(git_commit_lookup(&commit, repo, &oidCopy), context: "Lookup commit")
+            var tree: OpaquePointer?
+            try git2Check(git_commit_tree(&tree, commit), context: "Lookup tree")
+            return tree
+        }
+        let localTree = try tree(localOID)
+        defer { if let localTree { git_tree_free(localTree) } }
+        let remoteTree = try tree(remoteOID)
+        defer { if let remoteTree { git_tree_free(remoteTree) } }
+
+        func contains(_ tree: OpaquePointer?, _ path: String) -> Bool {
+            var entry: OpaquePointer?
+            defer { if let entry { git_tree_entry_free(entry) } }
+            return git_tree_entry_bypath(&entry, tree, path) == 0
+        }
+
+        // The incoming root .gitignore decides; without one nothing is ignored.
+        var ignoreEntry: OpaquePointer?
+        defer { if let ignoreEntry { git_tree_entry_free(ignoreEntry) } }
+        guard git_tree_entry_bypath(&ignoreEntry, remoteTree, ".gitignore") == 0,
+              let blobOID = git_tree_entry_id(ignoreEntry) else { return [] }
+        var blob: OpaquePointer?
+        defer { if let blob { git_blob_free(blob) } }
+        try git2Check(git_blob_lookup(&blob, repo, blobOID), context: "Read incoming .gitignore")
+        let size = Int(git_blob_rawsize(blob))
+        guard size > 0, let raw = git_blob_rawcontent(blob) else { return [] }
+        let incomingRules = String(decoding: Data(bytes: raw, count: size), as: UTF8.self)
+
+        let deleted = candidates.filter { contains(localTree, $0) && !contains(remoteTree, $0) }
+        guard !deleted.isEmpty, let workdir = git_repository_workdir(repo) else { return [] }
+
+        // A separate handle so the in-memory rules never leak into the
+        // caller's repository object.
+        var rulesRepo: OpaquePointer?
+        defer { if let rulesRepo { git_repository_free(rulesRepo) } }
+        try git2Check(git_repository_open(&rulesRepo, workdir), context: "Open repo for ignore rules")
+        try git2Check(git_ignore_add_rule(rulesRepo, incomingRules), context: "Load incoming .gitignore")
+
+        var result = Set<String>()
+        for path in deleted {
+            var ignored: Int32 = 0
+            try git2Check(git_ignore_path_is_ignored(&ignored, rulesRepo, path), context: "Check ignore rules")
+            if ignored == 1 { result.insert(path) }
+        }
+        return result
+    }
+
+    /// Whether any local change other than an edit to a file the incoming
+    /// commits stop tracking is present.
+    fileprivate static func hasBlockingLocalChanges(
+        repo: OpaquePointer?,
+        localOID: UnsafePointer<git_oid>,
+        remoteOID: UnsafePointer<git_oid>
+    ) throws -> Bool {
+        let entries = try statusEntries(repo: repo)
+        guard !entries.isEmpty else { return false }
+        let carried = try incomingUntrackedPaths(repo: repo, entries: entries, localOID: localOID, remoteOID: remoteOID)
+        return entries.contains { !carried.contains($0.path) }
+    }
+
+    /// Saves and resets local edits to files the incoming fast-forward stops
+    /// tracking, but only when those are the only local changes. Returns what
+    /// it set aside; `restoreIncomingUntrackedChanges` puts it back.
+    func setAsideIncomingUntrackedChanges(branch: String) async throws -> [IncomingUntrackCarry] {
+        let path = self.localURL.path
+        let root = self.localURL
+        return try await Task.detached {
+            var repo: OpaquePointer?
+            defer { if let repo { git_repository_free(repo) } }
+            try git2Check(git_repository_open(&repo, path), context: "Open repo")
+            Self.setPrecomposeUnicode(repo: repo)
+            guard git_repository_head_detached(repo) != 1 else { return [] }
+
+            var head: OpaquePointer?
+            defer { if let head { git_reference_free(head) } }
+            try git2Check(git_repository_head(&head, repo), context: "Read HEAD")
+            var remoteRef: OpaquePointer?
+            defer { if let remoteRef { git_reference_free(remoteRef) } }
+            guard git_reference_lookup(&remoteRef, repo, "refs/remotes/origin/\(branch)") == 0,
+                  let localOID = git_reference_target(head),
+                  let remoteOID = git_reference_target(remoteRef),
+                  git_oid_equal(localOID, remoteOID) == 0 else { return [] }
+            var ahead = 0
+            var behind = 0
+            guard git_graph_ahead_behind(&ahead, &behind, repo, localOID, remoteOID) == 0,
+                  ahead == 0, behind > 0 else { return [] }
+
+            let entries = try Self.statusEntries(repo: repo)
+            guard !entries.isEmpty else { return [] }
+            let carriedPaths = try Self.incomingUntrackedPaths(
+                repo: repo, entries: entries, localOID: localOID, remoteOID: remoteOID
+            )
+            // Any other change blocks the pull as before; touch nothing.
+            guard !carriedPaths.isEmpty,
+                  entries.allSatisfy({ carriedPaths.contains($0.path) }) else { return [] }
+
+            let paths = carriedPaths.sorted()
+            let carried = paths.map { relative in
+                IncomingUntrackCarry(path: relative, data: try? Data(contentsOf: root.appendingPathComponent(relative)))
+            }
+
+            let cStrings = paths.map { strdup($0)! }
+            let storage = UnsafeMutablePointer<UnsafeMutablePointer<CChar>?>.allocate(capacity: cStrings.count)
+            defer {
+                for cString in cStrings { free(cString) }
+                storage.deallocate()
+            }
+            for (index, cString) in cStrings.enumerated() { storage.advanced(by: index).pointee = cString }
+            var pathspec = git_strarray(strings: storage, count: cStrings.count)
+
+            do {
+                // Index and working tree back to HEAD for just these paths.
+                var headObject: OpaquePointer?
+                defer { if let headObject { git_object_free(headObject) } }
+                try git2Check(git_object_lookup(&headObject, repo, localOID, GIT_OBJECT_COMMIT), context: "Lookup HEAD")
+                try git2Check(git_reset_default(repo, headObject, &pathspec), context: "Reset carried paths")
+                var options = git_checkout_options()
+                git_checkout_options_init(&options, UInt32(GIT_CHECKOUT_OPTIONS_VERSION))
+                options.checkout_strategy = GIT_CHECKOUT_FORCE.rawValue | GIT_CHECKOUT_DISABLE_PATHSPEC_MATCH.rawValue
+                options.paths = pathspec
+                try git2Check(git_checkout_head(repo, &options), context: "Check out carried paths")
+            } catch {
+                Self.restoreIncomingUntrackedChanges(carried, root: root)
+                throw error
+            }
+            return carried
+        }.value
+    }
+
+    /// Writes set-aside edits back (or re-deletes files that were deleted).
+    nonisolated static func restoreIncomingUntrackedChanges(_ carried: [IncomingUntrackCarry], root: URL) {
+        let fm = FileManager.default
+        for item in carried {
+            let url = root.appendingPathComponent(item.path)
+            if let data = item.data {
+                try? fm.createDirectory(at: url.deletingLastPathComponent(), withIntermediateDirectories: true)
+                try? data.write(to: url, options: .atomic)
+            } else if fm.fileExists(atPath: url.path) {
+                try? fm.removeItem(at: url)
+            }
+        }
+    }
+}
+
+// MARK: - Stop tracking one path
+
+extension LocalGitService {
+    /// Index paths (tracked or staged) that `target` would stop tracking.
+    func trackedPaths(matching target: GitUntrackTarget) async throws -> [String] {
+        try target.validate()
+        let repoPath = self.localURL.path
+        return try await Task.detached {
+            var repo: OpaquePointer?
+            defer { if let repo { git_repository_free(repo) } }
+            try git2Check(git_repository_open(&repo, repoPath), context: "Open repo")
+            var index: OpaquePointer?
+            defer { if let index { git_index_free(index) } }
+            try git2Check(git_repository_index(&index, repo), context: "Get index")
+            return Self.untrackIndexPaths(index).filter(target.matches).sorted()
+        }.value
+    }
+
+    /// `git rm --cached` for `target`, plus a root `.gitignore` entry, committed
+    /// together so the next push stops tracking it on every device. Files stay
+    /// on disk. Only the removal and `.gitignore` go into the commit: anything
+    /// else that is staged stays staged. The working `.gitignore` is committed
+    /// as it is on disk, so its uncommitted rules go along.
+    func stopTracking(
+        _ target: GitUntrackTarget,
+        authorName: String,
+        authorEmail: String
+    ) async throws -> GitUntrackResult {
+        try target.validate()
+        let repoPath = self.localURL.path
+        let ignoreURL = self.localURL.appendingPathComponent(GitIgnoreFile.name)
+
+        return try await Task.detached {
+            var repo: OpaquePointer?
+            defer { if let repo { git_repository_free(repo) } }
+            try git2Check(git_repository_open(&repo, repoPath), context: "Open repo")
+
+            var index: OpaquePointer?
+            defer { if let index { git_index_free(index) } }
+            try git2Check(git_repository_index(&index, repo), context: "Get index")
+            try Self.ensureNoActiveConflict(repo: repo, index: index)
+            let baselineIndexChecksum = try Self.indexChecksumHex(index)
+
+            // HEAD (absent on an unborn branch).
+            var headRef: OpaquePointer?
+            defer { if let headRef { git_reference_free(headRef) } }
+            var headCommit: OpaquePointer?
+            defer { if let headCommit { git_commit_free(headCommit) } }
+            var headTree: OpaquePointer?
+            defer { if let headTree { git_tree_free(headTree) } }
+            let headCode = git_repository_head(&headRef, repo)
+            if headCode == 0 {
+                guard let headOid = git_reference_target(headRef) else {
+                    throw LocalGitError.repositoryCorrupted(String(localized: "Could not resolve HEAD for commit"))
+                }
+                var oid = headOid.pointee
+                try git2Check(git_commit_lookup(&headCommit, repo, &oid), context: "Lookup HEAD commit")
+                try git2Check(git_commit_tree(&headTree, headCommit), context: "Lookup HEAD tree")
+            } else if headCode != GIT_EUNBORNBRANCH.rawValue && headCode != GIT_ENOTFOUND.rawValue {
+                try git2Check(headCode, context: "Read HEAD")
+            }
+
+            // The commit is built from HEAD's tree, not the shared index, so
+            // unrelated staged changes stay out of it.
+            var commitIndex: OpaquePointer?
+            defer { if let commitIndex { git_index_free(commitIndex) } }
+            try git2Check(git_index_new(&commitIndex), context: "Create stop-tracking index")
+            if let headTree {
+                try git2Check(git_index_read_tree(commitIndex, headTree), context: "Read HEAD tree")
+            }
+
+            let removed = Set(Self.untrackIndexPaths(index).filter(target.matches))
+                .union(Self.untrackIndexPaths(commitIndex).filter(target.matches))
+                .sorted()
+
+            // Does `.gitignore` (or any other ignore rule) already cover it?
+            let originalIgnore: String? = FileManager.default.fileExists(atPath: ignoreURL.path)
+                ? try String(contentsOf: ignoreURL, encoding: .utf8)
+                : nil
+            let entry = target.ignoreEntry
+            var covered = GitIgnoreFile.contains(entry, in: originalIgnore ?? "")
+            if !covered {
+                let probes: [String]
+                switch target {
+                case .file: probes = [target.path]
+                case .folder: probes = [target.path + "/"]
+                case .pattern: probes = removed
+                }
+                covered = try !probes.isEmpty && probes.allSatisfy { probe in
+                    var ignored: Int32 = 0
+                    try git2Check(git_ignore_path_is_ignored(&ignored, repo, probe), context: "Check ignore rules")
+                    return ignored == 1
+                }
+            }
+            guard !removed.isEmpty || !covered else {
+                throw GitUntrackError.notTracked(target.displayName)
+            }
+
+            let indexLock = try Self.lockUnchangedIndex(
+                repo: repo,
+                index: index,
+                baselineChecksum: baselineIndexChecksum
+            )
+            defer { indexLock.release() }
+
+            var wroteIgnore = false
+            var committed = false
+            do {
+                if !covered {
+                    try GitIgnoreFile.appending(entry, to: originalIgnore ?? "")
+                        .write(to: ignoreURL, atomically: true, encoding: .utf8)
+                    wroteIgnore = true
+                }
+
+                for path in removed {
+                    for target in [index, commitIndex] {
+                        let code = path.withCString { git_index_remove_bypath(target, $0) }
+                        if code != 0 && code != GIT_ENOTFOUND.rawValue {
+                            try git2Check(code, context: "Stop tracking \(path)")
+                        }
+                    }
+                }
+                if FileManager.default.fileExists(atPath: ignoreURL.path) {
+                    try git2Check(git_index_add_bypath(index, GitIgnoreFile.name), context: "Stage .gitignore")
+                    guard let ignoreEntry = git_index_get_bypath(index, GitIgnoreFile.name, 0) else {
+                        throw LocalGitError.repositoryCorrupted(String(localized: "Could not read the Git index."))
+                    }
+                    try git2Check(git_index_add(commitIndex, ignoreEntry), context: "Add .gitignore to commit")
+                }
+
+                try indexLock.prepare(index: index)
+
+                var treeOid = git_oid()
+                try git2Check(git_index_write_tree_to(&treeOid, commitIndex, repo), context: "Write tree")
+                var commitSHA: String?
+                let unchanged = headTree.map { git_oid_equal(git_tree_id($0), &treeOid) == 1 } ?? false
+                if !unchanged {
+                    var tree: OpaquePointer?
+                    defer { if let tree { git_tree_free(tree) } }
+                    try git2Check(git_tree_lookup(&tree, repo, &treeOid), context: "Lookup tree")
+                    var sig: UnsafeMutablePointer<git_signature>?
+                    defer { if let sig { git_signature_free(sig) } }
+                    try createGitSignature(&sig, authorName: authorName, authorEmail: authorEmail)
+                    var commitOid = git_oid()
+                    var parents: [OpaquePointer?] = headCommit.map { [$0] } ?? []
+                    try parents.withUnsafeMutableBufferPointer { buffer in
+                        try git2Check(
+                            git_commit_create(
+                                &commitOid, repo, "HEAD", sig, sig, nil,
+                                target.commitMessage, tree,
+                                buffer.count, buffer.count == 0 ? nil : buffer.baseAddress
+                            ),
+                            context: "Create stop-tracking commit"
+                        )
+                    }
+                    commitSHA = oidToHex(&commitOid)
+                    committed = true
+                }
+
+                try indexLock.commitPreparedIndex()
+                return GitUntrackResult(
+                    removedPaths: removed,
+                    addedIgnoreEntry: covered ? nil : entry,
+                    commitSHA: commitSHA
+                )
+            } catch {
+                // Once the commit exists the new rule belongs to it; keep it.
+                if wroteIgnore, !committed {
+                    if let originalIgnore {
+                        try? originalIgnore.write(to: ignoreURL, atomically: true, encoding: .utf8)
+                    } else {
+                        try? FileManager.default.removeItem(at: ignoreURL)
+                    }
+                }
+                throw error
+            }
+        }.value
+    }
+
+    private static func untrackIndexPaths(_ index: OpaquePointer?) -> [String] {
+        (0..<git_index_entrycount(index)).compactMap { position in
+            git_index_get_byindex(index, position).map { String(cString: $0.pointee.path) }
+        }
     }
 }

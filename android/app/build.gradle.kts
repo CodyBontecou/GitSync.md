@@ -34,8 +34,8 @@ android {
         applicationId = "com.bontecou.syncmd"
         minSdk = 28
         targetSdk = 36
-        versionCode = 14
-        versionName = "1.1.3"
+        versionCode = 15
+        versionName = "1.1.4"
         
         // Free download, one-time unlock before the first vault (mirrors iOS
         // FeatureFlags.hardPaywallEnabled). False treats every install as unlocked.
@@ -161,6 +161,7 @@ dependencies {
     implementation(project(":core"))
     implementation(libs.gson)
     implementation(libs.billing)
+    implementation(libs.play.review.ktx)
     implementation("com.google.firebase:firebase-messaging:25.0.1")
     implementation("androidx.work:work-runtime-ktx:2.9.1")
     // Foldable posture and hinge bounds (FoldingFeature) for the adaptive layouts.

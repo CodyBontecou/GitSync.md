@@ -1,0 +1,2 @@
+• Sửa lỗi ứng dụng bị dừng khi pull một kho không nằm trên nhánh nào (detached HEAD). Giờ đây pull sẽ giải thích cách khắc phục.
+• Nếu GitSync.md bị đóng trong khi đồng bộ tự động, lần mở tiếp theo sẽ tạm dừng đồng bộ tự động và hỏi bạn muốn làm gì, để ứng dụng không bị dừng mỗi lần mở.

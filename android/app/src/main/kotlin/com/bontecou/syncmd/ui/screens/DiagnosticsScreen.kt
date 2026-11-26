@@ -246,6 +246,7 @@ private fun DiagnosticOperation.label(): String = stringResource(when (this) {
     DiagnosticOperation.STASH -> R.string.stash_screen
     DiagnosticOperation.TAG -> R.string.diagnostics_operation_tag
     DiagnosticOperation.REVERT -> R.string.diagnostics_operation_revert
+    DiagnosticOperation.UNTRACK -> R.string.stop_tracking_confirm
 })
 
 @Composable

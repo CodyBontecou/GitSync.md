@@ -126,6 +126,7 @@
           <li><strong>Windows and iPhone:</strong> consider Git if you want commits and can manage pulls, pushes, and conflicts. For integrated syncing, compare <a href="/compare/obsidian-sync-vs-git">Obsidian Sync with Git</a>.</li>
           <li><strong>Already using iCloud successfully?</strong> Adding GitSync.md is not required to keep using that setup.</li>
         </ul></div>
+        <p>Comparing more than two options? See <a href="/compare/obsidian-sync-alternatives">all Obsidian Sync alternatives</a>, including Syncthing, Self-hosted LiveSync and Remotely Save.</p>
         <p><strong>Disclosure:</strong> this comparison is published by GitSync.md’s developer. It compares documented workflows, not measured sync speed or reliability. Sources were checked October 26, 2026. GitSync.md is independent of Obsidian and Apple.</p>
 
         <h2 id="choice">Start with the devices you actually use</h2>
@@ -153,12 +154,12 @@
         <h2 id="history">Git history records what you commit</h2>
         <p>Git records selected versions of files so you can inspect earlier states. It does not save every keystroke. If you write a note but never commit it, that edit is not in commit history. A commit saved only on the phone also has not reached your remote until you push. See <a href="https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control">Git’s explanation of version control</a>.</p>
         <p>When devices make different changes, Git may need a merge. It does not guarantee conflict-free notes. The <a href="/blog/obsidian-git-merge-conflicts-iphone">conflict recovery guide</a> covers preserving edits and reviewing the result. Pull before starting on a second device, and push before leaving the first.</p>
-        <p>Keep a separate recoverable copy with either method. A sync system can propagate an unwanted change; a Git remote contains only the history and files you actually sent. <a href="https://obsidian.md/help/backup">Obsidian’s backup guide</a> explains choosing a separate backup location and checking that your vault can be recovered.</p>
+        <p>Keep a separate recoverable copy with either method (see <a href="/blog/obsidian-backup-git">how to set up a separate backup with Git</a>). A sync system can propagate an unwanted change; a Git remote contains only the history and files you actually sent. <a href="https://obsidian.md/help/backup">Obsidian’s backup guide</a> explains choosing a separate backup location and checking that your vault can be recovered.</p>
 
         <h2 id="privacy">Compare privacy settings and the whole cost</h2>
         <p>Apple distinguishes standard iCloud protection from optional Advanced Data Protection. Its security table lists iCloud Drive as encrypted in transit and on the server under standard protection, and end-to-end encrypted with Advanced Data Protection. Review <a href="https://support.apple.com/en-us/102651">Apple’s security overview</a>, including recovery requirements and applicable limitations, for your account.</p>
         <p>An ordinary private GitHub repository restricts access, but that does not make the notes end-to-end encrypted. Choosing HTTPS or SSH protects the connection; it does not by itself encrypt the Markdown for only your devices. Consider what you store and who can access your remote.</p>
-        <p>For cost, check whether your vault fits your available iCloud storage and whether you would need a storage plan. For the documented Git route, GitSync.md costs $9.99 once on the US App Store; local prices differ. Git hosting and any backup service have their own terms. A one-time app purchase does not include unlimited storage from a Git host.</p>
+        <p>For cost, check whether your vault fits your available iCloud storage and whether you would need a storage plan. For the documented Git route, GitSync.md costs $9.99 once on the US App Store; local prices differ. Git hosting and any backup service have their own terms. A one-time app purchase does not include unlimited storage from a Git host. To put numbers on your own vault, try the <a href="/tools/obsidian-sync-cost-calculator">Obsidian Sync cost calculator</a>, which compares iCloud, Git and both Sync plans over several years.</p>
 
         <h2 id="switch">Move to a new method in a separate copy</h2>
         <ol>
@@ -182,6 +183,7 @@
         <div class="related-card"><h2>Take the next step</h2><ul>
           <li><a href="/blog/obsidian-git-iphone-ipad">Set up a local Git vault on iPhone or iPad</a></li>
           <li><a href="/blog/sync-obsidian-windows-iphone-github">Connect Windows and iPhone through GitHub</a></li>
+          <li><a href="/blog/obsidian-vault-location">Find or move your Obsidian vault</a></li>
           <li><a href="/compare/obsidian-sync-vs-git">Compare Obsidian Sync with Git</a></li>
         </ul></div>
       </article>

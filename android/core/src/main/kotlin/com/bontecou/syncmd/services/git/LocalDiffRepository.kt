@@ -125,6 +125,10 @@ class LocalDiffRepository : DiffRepository {
                     }
                     check(status.conflicting.isEmpty()) { "Resolve conflicts before committing" }
                     check((status.changed + status.added + status.removed).isNotEmpty()) { "Stage at least one change before committing" }
+                    // Never record pre-pull versions over HEAD: that silently reverts the incoming
+                    // changes on the remote (issue #130).
+                    PendingCheckoutInspector.inspect(git.repository)?.takeIf { it.staleIndexPaths.isNotEmpty() }
+                        ?.let { throw PullNotFinishedException(it) }
                     com.bontecou.syncmd.services.git.lfs.LfsTracking.requireReviewed(git.repository, status.changed + status.added)
                     com.bontecou.syncmd.services.git.lfs.LfsTracking.validateIndexSizes(git.repository)
                     git.commit()

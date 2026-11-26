@@ -104,6 +104,10 @@ class PullAllViewModel(private val snapshot: () -> List<PullAllTarget>, private 
                 runner.run(targets, onStart = { target ->
                     mutable.value = mutable.value.copy(current = target.path)
                 }, onResult = { result ->
+                    // Pull All also runs for widgets, tiles and shortcuts: it counts but never prompts.
+                    if (result.outcome == com.bontecou.syncmd.services.automation.PullAllOutcome.UPDATED ||
+                        result.outcome == com.bontecou.syncmd.services.automation.PullAllOutcome.UP_TO_DATE)
+                        com.bontecou.syncmd.review.ReviewPrompts.shared?.countSuccess()
                     mutable.value = mutable.value.copy(results = mutable.value.results + result, current = null)
                 })
             } catch (_: CancellationException) { mutable.value = mutable.value.copy(stopped = true)

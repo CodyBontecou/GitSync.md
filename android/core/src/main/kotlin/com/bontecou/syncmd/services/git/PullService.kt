@@ -32,6 +32,10 @@ class PullService(private val pullRepository: PullRepository) {
         return pullRepository.getStatus(repoPath).map { it.isClean }
     }
 
+    /** Whether local changes would block a fast-forward to the fetched upstream (issue #137). */
+    suspend fun hasBlockingLocalChanges(repoPath: String): Result<Boolean> =
+        pullRepository.hasBlockingLocalChanges(repoPath)
+
     /**
      * Get number of uncommitted changes
      */
@@ -45,6 +49,15 @@ class PullService(private val pullRepository: PullRepository) {
     suspend fun pull(repoPath: String): Result<SafePullResult> {
         return pullRepository.executePull(repoPath)
     }
+
+    /**
+     * Check out files an earlier update left behind HEAD, keeping local edits (issue #130).
+     */
+    suspend fun inspectPendingCheckout(repoPath: String): Result<PendingCheckoutReport?> =
+        pullRepository.inspectPendingCheckout(repoPath)
+
+    suspend fun finishPendingCheckout(repoPath: String): Result<PendingCheckoutCompletion> =
+        pullRepository.finishPendingCheckout(repoPath)
 
     /**
      * Fetch from remote without merging (safe with dirty tree)

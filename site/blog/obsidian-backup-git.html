@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../favicon-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<title>Back Up an Obsidian Vault with Git and Restore Notes</title>
+<meta name="description" content="Back up your Obsidian vault with Git, including notes written on iPhone, then restore an old note, a deleted note or a folder. Tested commands and a checklist.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Cody Bontecou">
+<meta name="theme-color" content="#ffffff">
+<link rel="canonical" href="https://gitsync.md/blog/obsidian-backup-git">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="GitSync.md">
+<meta property="og:title" content="Back Up an Obsidian Vault with Git and Restore Notes">
+<meta property="og:description" content="Back up your Obsidian vault with Git, including notes written on iPhone, then restore an old note, a deleted note or a folder. Tested commands and a checklist.">
+<meta property="og:url" content="https://gitsync.md/blog/obsidian-backup-git">
+<meta property="og:image" content="https://gitsync.md/social/blog/obsidian-backup-git.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:alt" content="GitSync.md guide card: Back Up an Obsidian Vault with Git and Restore Notes">
+<meta property="article:published_time" content="2026-11-20">
+<meta property="article:modified_time" content="2026-11-20">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Back Up an Obsidian Vault with Git and Restore Notes">
+<meta name="twitter:description" content="Back up your Obsidian vault with Git, including notes written on iPhone, then restore an old note, a deleted note or a folder. Tested commands and a checklist.">
+<meta name="twitter:image" content="https://gitsync.md/social/blog/obsidian-backup-git.png">
+<meta name="twitter:image:alt" content="GitSync.md guide card: Back Up an Obsidian Vault with Git and Restore Notes">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Back Up an Obsidian Vault with Git and Restore Notes",
+  "description": "Back up your Obsidian vault with Git, including notes written on iPhone, then restore an old note, a deleted note or a folder. Tested commands and a checklist.",
+  "image": [
+    "https://gitsync.md/social/blog/obsidian-backup-git.png"
+  ],
+  "datePublished": "2026-11-20",
+  "dateModified": "2026-11-20",
+  "author": {
+    "@type": "Person",
+    "name": "Cody Bontecou",
+    "url": "https://gitsync.md/about"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Cody Bontecou"
+  },
+  "mainEntityOfPage": "https://gitsync.md/blog/obsidian-backup-git"
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../site.css">
+<link rel="stylesheet" href="../content.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://gitsync.md/"},
+    {"@type": "ListItem", "position": 2, "name": "Guides", "item": "https://gitsync.md/blog/"},
+    {"@type": "ListItem", "position": 3, "name": "Obsidian backup with Git", "item": "https://gitsync.md/blog/obsidian-backup-git"}
+  ]
+}
+</script>
+</head>
+<body id="top">
+<a class="skip-link" href="#main">Skip to content</a>
+<svg class="icon-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 5l7 7-7 7"/></symbol>
+  <symbol id="i-branch" viewBox="0 0 24 24"><circle cx="6" cy="5" r="2.5"/><circle cx="6" cy="19" r="2.5"/><circle cx="18" cy="5" r="2.5"/><path d="M6 7.5v9M18 7.5v1a5 5 0 0 1-5 5H6"/></symbol>
+  <symbol id="i-external" viewBox="0 0 24 24"><path d="M6 18 18 6M6 6h12v12"/></symbol>
+</svg>
+
+<header class="site-header">
+  <nav class="shell navigation" aria-label="Main navigation">
+    <a class="brand" href="/" aria-label="GitSync.md home">gitsync<span class="brand-extension">.md</span></a>
+    <div class="nav-links"><a href="/#app">The app</a><a href="/#workflow">How it works</a><a href="/blog/" class="is-active">Guides</a><a href="/compare/obsidian-sync-vs-git">Compare</a><a href="/#faq">FAQ</a></div>
+    <a class="button button-small" href="/#download">Get the app</a>
+  </nav>
+</header>
+
+<main id="main">
+<div class="container guide-layout">
+      <header class="article-hero">
+        <div class="article-title">
+        <nav class="eyebrow article-breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li><a href="/blog/">Guides</a></li><li aria-current="page">Obsidian backup with Git</li></ol></nav>
+        <h1>Back up an Obsidian vault with Git, and get old notes back<span class="accent">.</span></h1>
+        <p class="subtitle">Sync copies your mistakes to every device. A backup keeps older versions you can return to. This guide makes Git the backup layer for a vault, including the notes you write on your phone, then shows how to restore a changed note, a deleted note or a whole folder.</p>
+        <div class="meta-line"><span>By <a href="/about" rel="author">Cody Bontecou</a></span>
+          <span>November 20, 2026</span>
+          <span>Guide</span>
+          <span>Backup + restore</span>
+        </div>
+      </div>
+      </header>
+      <aside class="guide-aside" aria-label="Guide sidebar">
+        <section class="side-note" aria-label="Article notes">
+        <h2>Details checked</h2>
+        <p>Reviewed on November 20, 2026:</p>
+        <ul>
+          <li>Restore commands run on a throwaway repository with Git 2.39.5</li>
+          <li>Retention periods (File recovery 7 days, Sync 1 month or 12 months), the File recovery menu path and the backup page wording read from the linked Obsidian help pages on that date</li>
+          <li>GitSync.md claims limited to commit history, diffs, commit and push</li>
+        </ul>
+      </section>
+        <div class="guide-aside-sticky">
+        <nav class="toc-card" aria-label="Article outline">
+        <div class="toc-title">What this covers</div>
+        <ol>
+          <li><a href="#layers">Sync, backup and version history</a></li>
+          <li><a href="#setup">Set up Git as the backup layer</a></li>
+          <li><a href="#phone">Back up notes written on your phone</a></li>
+          <li><a href="#restore">Restore a note, a deleted note or a folder</a></li>
+          <li><a href="#second-copy">Keep a second copy outside Git</a></li>
+          <li><a href="#checklist">Backup checklist</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ol>
+      </nav>
+        <div class="aside-cta aside-cta-wide">
+          <p class="aside-cta-title">Real Git on your iPhone.</p>
+          <p class="aside-cta-price">iPhone + iPad: $9.99 once · No subscription</p>
+          <a class="aside-cta-button" href="/v/web-homepage-122" target="_blank" rel="noopener">Download on the App Store</a>
+        </div>
+        </div>
+      </aside>
+      <article class="article-body">
+        <div class="tldr">
+          <div class="tldr-title">Short answer</div>
+          <p>Sync copies your current files between devices, including mistakes and deletions. A backup keeps older states you can go back to. Git with a private remote gives you a history and an off-device copy, as long as every device commits and pushes. Keep one non-Git copy as well, such as Time Machine or a zip, because that is what Obsidian’s own backup guidance recommends.</p>
+        </div>
+
+        <h2 id="layers">Sync, backup and version history: which one you have now</h2>
+        <p>Obsidian’s help page “Back up your Obsidian files” says <a href="https://obsidian.md/help/backup" target="_blank" rel="noopener">syncing is not a backup</a>. Sync makes the files match on every device. A backup is a copy kept somewhere else so you can recover after loss or corruption. Version history sits between the two: it lets you open an earlier state of one note. The table shows what each common option gives you, as checked on November 20, 2026.</p>
+        <div class="comparison-scroll" role="region" aria-label="Sync, backup and version history compared" tabindex="0"><table class="comparison-table">
+          <caption>What each layer protects, checked November 20, 2026</caption>
+          <thead><tr><th scope="col">Option</th><th scope="col">Off-device copy?</th><th scope="col">Protects against accidental delete?</th><th scope="col">How far back?</th><th scope="col">Works on iPhone?</th></tr></thead><tbody>
+          <tr><th scope="row"><a href="https://obsidian.md/help/plugins/file-recovery" target="_blank" rel="noopener">File recovery</a> core plugin</th><td>No. Snapshots are device-specific and stay local.</td><td>Yes, on the device where the edit was made.</td><td>7 days by default. You can change it in settings.</td><td>Not stated on the help page.</td></tr>
+          <tr><th scope="row"><a href="https://obsidian.md/help/sync/version-history" target="_blank" rel="noopener">Obsidian Sync</a> version history</th><td>Yes, on Obsidian’s servers.</td><td>Yes. Obsidian documents restoring a deleted file.</td><td>1 month on Standard, 12 months on Plus.</td><td>Yes.</td></tr>
+          <tr><th scope="row">iCloud Drive</th><td>Yes, in iCloud.</td><td>Not as a backup. Obsidian lists iCloud among the services that sync notes between devices, and says syncing is not a backup.</td><td>Not documented by Obsidian as a history source.</td><td>Yes.</td></tr>
+          <tr><th scope="row">Git with a remote</th><td>Yes, once you push.</td><td>Yes, for anything that was committed.</td><td>Every pushed commit, until you delete the history.</td><td>Yes, with a Git client such as GitSync.md.</td></tr>
+          </tbody></table></div>
+        <p>Two limits apply to Git. It records only what you commit, so an edit you never committed is not in history. And it protects only what reached the remote. For the full comparison of sync methods, see <a href="/compare/obsidian-sync-alternatives">Obsidian Sync alternatives by device</a> and <a href="/compare/icloud-vs-git-obsidian">iCloud vs Git for Obsidian</a>. If you are weighing a subscription, the <a href="/tools/obsidian-sync-cost-calculator">Obsidian Sync cost calculator</a> compares the cost with Git.</p>
+
+        <h2 id="setup">Set up Git as the backup layer</h2>
+        <p>This is the short version. <a href="/blog/sync-obsidian-github">Sync Obsidian with GitHub on every device</a> has the full setup, and <a href="/blog/obsidian-git-iphone-ipad">Obsidian Git on iPhone and iPad</a> covers the phone side.</p>
+        <ol>
+          <li><strong>Use a private repository.</strong> Create it on GitHub or your own Git server and push the vault to it. A private repository is <a href="https://docs.github.com/en/repositories/creating-and-managing-repositories/about-repositories" target="_blank" rel="noopener">only accessible to you and people you share it with</a>, but your notes still live on the host’s servers. Keep secrets out of the vault.</li>
+          <li><strong>Add a <code>.gitignore</code>.</strong> Window layouts change on every device and create noise in history. <a href="/blog/obsidian-gitignore">Choose what your .gitignore shares</a> shows a starter file. Ignored files are never backed up, so do not ignore notes or attachments.</li>
+          <li><strong>Commit on a schedule on the desktop.</strong> In the <a href="https://github.com/Vinzent03/obsidian-git" target="_blank" rel="noopener">Obsidian Git</a> plugin, turn on its automatic commit-and-sync (commit, pull and push on a schedule) and set the interval in its settings. Without it, nothing is backed up until you run a command.</li>
+        </ol>
+
+        <h2 id="phone">Back up notes written on your phone</h2>
+        <p>A note you write on iPhone or iPad is backed up only once it is <strong>committed and pushed</strong>. Saving it in Obsidian is not enough, and neither is a local commit. Phone-only edits are the ones most often missed.</p>
+        <ol>
+          <li>Open the vault’s repository in GitSync.md.</li>
+          <li>Review the changed files and the diff.</li>
+          <li><a href="/v/web-homepage-122" target="_blank" rel="noopener">Commit and push from your iPhone with GitSync.md</a>, or <a href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener">get it on Google Play</a> if you use Android.</li>
+          <li><strong>Check the remote.</strong> Open the repository on GitHub and confirm the latest commit contains the phone edit.</li>
+        </ol>
+        <p>You can reduce the manual steps. A Shortcuts <code>sync</code> action can pull, commit and push in one go; see <a href="/blog/shortcuts-automation-ios">Shortcuts automation for Git on iOS</a>. GitSync.md also offers optional Background Sync, but iOS decides when background work runs, so it is not continuous and not guaranteed. <a href="/blog/obsidian-git-background-sync-iphone">What works for Obsidian Git background sync on iPhone</a> explains the limits. Treat the remote check above as the proof.</p>
+
+        <h2 id="restore">Restore a note, a deleted note or a folder</h2>
+        <p>The examples use a synthetic vault with <code>Projects/Plan.md</code>. Run the commands in a terminal inside the vault folder. They were tested on a throwaway repository. Quote paths that contain spaces.</p>
+
+        <h3 id="restore-version">Get an earlier version of a note</h3>
+        <ol>
+          <li><strong>Find the commit.</strong> List the commits that changed the file. See <a href="https://git-scm.com/docs/git-log" target="_blank" rel="noopener">git log</a>.
+<pre tabindex="0" role="region" aria-label="List commits that changed a note"><code>git log --oneline -- "Projects/Plan.md"</code></pre></li>
+          <li><strong>Check it.</strong> Compare the old version with the current one: <code>git diff &lt;commit&gt; -- "Projects/Plan.md"</code>. Without a terminal, paste both versions into the <a href="/tools/markdown-diff">free Markdown diff tool</a>, which compares them word by word in your browser.</li>
+          <li><strong>Restore it.</strong> This overwrites the file in your working folder with the old version, so make sure the current content is committed or copied first. See <a href="https://git-scm.com/docs/git-restore" target="_blank" rel="noopener">git restore</a>.
+<pre tabindex="0" role="region" aria-label="Restore an earlier version of a note"><code>git restore --source=&lt;commit&gt; -- "Projects/Plan.md"
+git add "Projects/Plan.md"
+git commit -m "Restore Projects/Plan.md"</code></pre></li>
+        </ol>
+
+        <h3 id="restore-deleted">Get back a deleted note</h3>
+        <ol>
+          <li><strong>Find the deleting commit.</strong>
+<pre tabindex="0" role="region" aria-label="Find the commit that deleted a note"><code>git log --diff-filter=D --oneline -- "Projects/Idea.md"</code></pre></li>
+          <li><strong>Restore it from that commit’s parent</strong>, which still had the file (<code>^</code> means the parent).
+<pre tabindex="0" role="region" aria-label="Restore a deleted note"><code>git restore --source=&lt;commit&gt;^ -- "Projects/Idea.md"
+git add "Projects/Idea.md"
+git commit -m "Restore Projects/Idea.md"</code></pre></li>
+        </ol>
+
+        <h3 id="restore-folder">Roll back a folder</h3>
+        <p>Pick the commit that had the folder as you want it, then restore the folder path from it:</p>
+<pre tabindex="0" role="region" aria-label="Restore a whole folder from a commit"><code>git restore --source=&lt;commit&gt; --staged --worktree -- Projects/
+git status
+git commit -m "Roll back Projects to &lt;commit&gt;"</code></pre>
+        <p>The folder then matches that commit exactly. Notes you added to it after that commit are removed from the working folder and staged as deletions, so read <code>git status</code> before you commit. They stay in history and can be restored with the steps above.</p>
+        <div class="callout">
+          <span class="callout-label">Avoid git reset --hard on a vault with unsaved work</span>
+          <p><code>git reset --hard</code> discards uncommitted edits with no undo. If you need to roll back the whole vault, copy the vault folder somewhere safe first, or commit your current state, then restore paths as above.</p>
+        </div>
+
+        <h3 id="restore-no-desktop">Without a desktop</h3>
+        <ul>
+          <li><strong>GitHub in a browser.</strong> Open the file in your repository and choose <strong>History</strong> (the commit list for that file). Open the commit you want, view the file at that commit, and copy its text back into the note. For a deleted file, open the commit that removed it: its diff shows the old text in full, which you can copy. GitHub documents <a href="https://docs.github.com/en/repositories/working-with-files/using-files/viewing-a-file" target="_blank" rel="noopener">viewing a file</a>.</li>
+          <li><strong>GitSync.md.</strong> Use its commit history, with the files changed in each commit and their diffs, to find the commit and the old text. Copy the old content back into the note in Obsidian. This guide does not rely on an in-app restore button; confirm the result by reviewing the diff before you commit.</li>
+        </ul>
+
+        <h3 id="restore-finish">Finish: commit, push, pull</h3>
+        <p>After restoring, commit and push so your other devices get the restored note, then pull on them. If a pull stops because the same note changed on two devices, follow <a href="/blog/obsidian-git-merge-conflicts-iphone">the merge conflict guide</a>.</p>
+
+        <h3 id="restore-uncommitted">When Git cannot help</h3>
+        <p>Git cannot return an edit that was never committed. For that, open Obsidian on the device where you made the edit and use the <a href="https://obsidian.md/help/plugins/file-recovery" target="_blank" rel="noopener">File recovery</a> core plugin: <strong>Settings → Core plugins → File recovery → Snapshots → View</strong>. Snapshots are kept per device, for 7 days by default, so act before they expire. If the note is missing on another device rather than lost, see the <a href="/blog/obsidian-git-not-working-iphone#missing-note">missing-note checklist</a>.</p>
+
+        <h2 id="second-copy">Keep a second copy outside Git</h2>
+        <p>Obsidian’s <a href="https://obsidian.md/help/backup" target="_blank" rel="noopener">backup help</a> recommends a one-way backup to a separate location, such as a computer backup like Time Machine or a periodic copy of the vault folder to a drive. It also lists Obsidian Git among popular backup plugins. A second copy protects you if you lose access to the Git host or push something wrong. GitSync.md does not make this copy for you.</p>
+
+        <h2 id="checklist">Backup checklist</h2>
+        <ul class="checklist" style="list-style:none;padding-left:0">
+          <li>☐ The vault is pushed to a <strong>private</strong> remote, and secrets are kept out of the vault.</li>
+          <li>☐ A <code>.gitignore</code> excludes workspace files but not your notes.</li>
+          <li>☐ Desktop auto commit-and-sync is on.</li>
+          <li>☐ Your phone commits and pushes, and the latest commit on the remote shows a phone edit.</li>
+          <li>☐ You restored a test note once, so the steps are not new to you in a panic.</li>
+          <li>☐ A second copy exists outside Git.</li>
+        </ul>
+
+        <h2 id="faq">FAQ</h2>
+        <h3>Is Obsidian Sync a backup?</h3>
+        <p>Not by Obsidian’s own definition. Its backup page says sync services such as Obsidian Sync are “not designed for backups.” Sync does keep version history, for 1 month on Standard and 12 months on Plus, which helps you restore a note, but it is not a separate copy.</p>
+        <h3>Does iCloud keep old versions of my notes?</h3>
+        <p>Obsidian’s backup page lists iCloud among the services that sync notes across devices, which is not the same as a backup, and this guide does not rely on iCloud for old versions. Use Git history, File recovery or a separate backup for old versions.</p>
+        <h3>Can I back up Obsidian from my iPhone?</h3>
+        <p>Yes, if the phone commits and pushes. In GitSync.md, review the changes, commit and push, then check the commit on the remote. See <a href="/blog/obsidian-git-iphone-ipad">the iPhone and iPad setup</a>.</p>
+        <h3>How do I recover a note I deleted?</h3>
+        <p>If it was committed, find the deleting commit with <code>git log --diff-filter=D -- &lt;path&gt;</code> and restore from its parent with <code>git restore --source=&lt;commit&gt;^ -- &lt;path&gt;</code>. If it was never committed, try the File recovery plugin on that device.</p>
+        <h3>Is a GitHub backup private?</h3>
+        <p>GitHub says private repositories are only accessible to you and people you explicitly share access with, but the files are still hosted on GitHub’s servers. Do not store secrets in the vault.</p>
+
+        <h2>Related guides</h2>
+        <div class="related-card">
+          <ul>
+            <li><a href="/blog/sync-obsidian-github">Sync Obsidian with GitHub on every device</a></li>
+            <li><a href="/blog/obsidian-git-iphone-ipad">Obsidian Git on iPhone and iPad</a></li>
+            <li><a href="/compare/obsidian-sync-alternatives">Obsidian Sync alternatives by device</a></li>
+          </ul>
+        </div>
+      </article>
+    </div>
+
+  <section class="content-download" aria-labelledby="download-heading">
+    <div class="shell content-download-layout">
+      <div>
+        <p class="eyebrow"><span class="blue-square" aria-hidden="true"></span>Take your work with you.</p>
+        <h2 id="download-heading">REAL GIT.<br>WITHIN REACH.</h2>
+        <p class="content-download-description">Your files. Your commits. Your remote.<br>Get GitSync.md for iPhone, iPad, and Android.</p>
+      </div>
+      <div>
+        <div class="store-links" role="group" aria-label="Download GitSync.md">
+          <a class="store-badge store-badge-apple" href="/v/web-homepage-122" target="_blank" rel="noopener"><img src="../assets/store-badges/download-on-app-store.svg" width="120" height="40" alt="Download GitSync.md on the App Store" decoding="async"></a>
+          <a class="store-badge store-badge-google" href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener"><img src="../assets/store-badges/get-it-on-google-play.png" width="646" height="250" alt="Get GitSync.md on Google Play" decoding="async"></a>
+        </div>
+        <p class="purchase-note"><span>iPhone + iPad: $9.99 once. Unlimited repositories.</span><span>Android: $9.99 once. All features included.</span><span>No subscriptions.</span></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="shell footer-layout">
+    <a class="brand" href="/" aria-label="GitSync.md home">gitsync<span class="brand-extension">.md</span></a>
+    <p>Independently built by <a href="https://codybontecou.com" target="_blank" rel="noopener">Cody Bontecou</a>.<br>© 2026 GitSync.md</p>
+    <div class="footer-links"><a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener">Source</a><a href="/blog/">Guides</a><a href="/compare/obsidian-sync-vs-git">Compare</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
+    <a class="back-top" href="#top" aria-label="Back to top">↑</a>
+  </div>
+</footer>
+<!-- Cloudflare Web Analytics -->
+<script>
+(function () {
+  var productionHosts = {
+    'instareply.isolated.tech': true,
+    'voxboard.isolated.tech': true,
+    'healthmd.isolated.tech': true,
+    'isome.isolated.tech': true,
+    'gitsyncmd.app': true,
+    'gitsync.md': true,
+    'timemd.isolated.tech': true,
+    'imghost.isolated.tech': true
+  };
+
+  if (!productionHosts[window.location.hostname]) {
+    return;
+  }
+
+  function loadCloudflareBeacon() {
+    if (document.querySelector('script[src="https://static.cloudflareinsights.com/beacon.min.js"]')) {
+      return;
+    }
+
+    var script = document.createElement('script');
+    script.defer = true;
+    script.src = 'https://static.cloudflareinsights.com/beacon.min.js';
+    script.setAttribute('data-cf-beacon', '{"token":"090f363070334cddad5c5cc1509b8807"}');
+    document.head.appendChild(script);
+  }
+
+  fetch('https://img-host.costream.workers.dev/analytics-gate', {
+    cache: 'no-store',
+    mode: 'cors',
+    credentials: 'omit'
+  })
+    .then(function (response) {
+      return response.ok ? response.json() : { track: false };
+    })
+    .then(function (gate) {
+      if (gate && gate.track) {
+        loadCloudflareBeacon();
+      }
+    })
+    .catch(function () {
+      // Fail closed so excluded IPs are not accidentally tracked.
+    });
+})();
+</script>
+<!-- End Cloudflare Web Analytics -->
+</body>
+</html>

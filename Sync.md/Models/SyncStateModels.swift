@@ -335,7 +335,22 @@ struct BackgroundRunSummary: Codable, Equatable, Sendable {
     var pushedRuns = 0
     var lastRunAt: Date = .distantPast
     var dismissed = false
+    /// A run in this summary ended in attention or failure.
+    var needsAttention = false
 
     var vaultCount: Int { vaultIDs.count }
     var isMeaningful: Bool { !dismissed && (pulledCommits > 0 || pushedRuns > 0) }
+
+    init() {}
+
+    // Summaries saved before `needsAttention` existed still decode.
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        vaultIDs = try container.decodeIfPresent(Set<UUID>.self, forKey: .vaultIDs) ?? []
+        pulledCommits = try container.decodeIfPresent(Int.self, forKey: .pulledCommits) ?? 0
+        pushedRuns = try container.decodeIfPresent(Int.self, forKey: .pushedRuns) ?? 0
+        lastRunAt = try container.decodeIfPresent(Date.self, forKey: .lastRunAt) ?? .distantPast
+        dismissed = try container.decodeIfPresent(Bool.self, forKey: .dismissed) ?? false
+        needsAttention = try container.decodeIfPresent(Bool.self, forKey: .needsAttention) ?? false
+    }
 }

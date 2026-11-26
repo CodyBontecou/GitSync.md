@@ -148,6 +148,7 @@
         </div>
       </aside>
       <article class="article-body">
+        <p>On Android? See <a href="/blog/obsidian-git-android">how to sync an Obsidian vault with Git on Android</a>.</p>
         <div class="tldr">
           <div class="tldr-title">Short version</div>
           <ol>
@@ -243,7 +244,7 @@ ssh://git@git.example.com:2222/team/notes.git</code></pre>
         </div>
 
         <h2 id="open-in-obsidian">2. Open the cloned folder in Obsidian</h2>
-        <p>Open Obsidian on your iPhone or iPad. If you are at the vault picker, choose <strong>Open folder as vault</strong>. Navigate to the folder GitSync.md cloned, usually inside <strong>On My iPhone/iPad &rarr; Obsidian</strong>, and open it.</p>
+        <p>Open Obsidian on your iPhone or iPad. If you are at the vault picker, choose <strong>Open folder as vault</strong>. Navigate to the folder GitSync.md cloned, usually inside <strong>On My iPhone/iPad &rarr; Obsidian</strong>, and open it. Not sure where the vault is, or want to move it first? See <a href="/blog/obsidian-vault-location">where your Obsidian vault is stored and how to move it</a>.</p>
         <p>Your notes should appear like they do on desktop. If your <code>.obsidian</code> configuration is committed to the repo, themes, snippets, and plugin settings may already be present. If not, configure the mobile vault normally.</p>
 
         <h2 id="configure-obsidian-git">3. Configure Obsidian Git for mobile sync</h2>
@@ -283,7 +284,7 @@ syncmd://x-callback-url/status?repo=MyVault</code></pre>
 
         <h2 id="github-self-hosted">GitHub and self-hosted remotes both work</h2>
         <p>GitHub is the fastest setup because GitSync.md can browse your account repositories after sign-in. Self-hosted Git is still supported: paste the remote URL manually, choose HTTPS token/password or SSH private key, and clone into the same Obsidian Files location.</p>
-        <p>After the repository exists locally, Obsidian does not need to know whether the remote is GitHub, GitLab, Gitea, Bitbucket, or a private server. It edits files in the local vault folder; GitSync.md handles the remote protocol when you sync.</p>
+        <p>After the repository exists locally, Obsidian does not need to know whether the remote is GitHub, GitLab, Gitea, Bitbucket, or a private server. It edits files in the local vault folder; GitSync.md handles the remote protocol when you sync. For GitLab tokens, scopes and host-key checks, see <a href="/blog/obsidian-gitlab-sync">Sync Obsidian with GitLab on iPhone, iPad and Android</a>.</p>
 
         <h2 id="troubleshooting">Troubleshooting</h2>
         <p>For a symptom checklist covering authentication, missing vaults, conflicts, and delayed automation, see <a href="/blog/obsidian-git-not-working-iphone">Obsidian Git not working on iPhone</a>.</p>
@@ -306,8 +307,9 @@ syncmd://x-callback-url/status?repo=MyVault</code></pre>
           <h2>Choose your next step</h2>
           <p>Compare <a href="/compare/obsidian-sync-vs-git">Obsidian Sync and Git</a>, learn <a href="/blog/obsidian-git-background-sync-iphone">how background Git sync works on iPhone</a>, or follow <a href="/blog/obsidian-git-merge-conflicts-iphone">the conflict recovery guide</a>.</p>
           <p>Choosing a sync method first? Compare <a href="/compare/icloud-vs-git-obsidian">iCloud and Git for your Obsidian vault</a>.</p>
+          <p>Want to publish some of your notes as a website? <a href="/blog/publish-obsidian-quartz-iphone">Publish Obsidian notes with Quartz from your iPhone</a> uses this same clone-and-push setup.</p>
           <p>Using a PC? Follow the <a href="/blog/sync-obsidian-windows-iphone-github">Windows and iPhone GitHub workflow</a>. Choosing an iOS Git client? Read <a href="/compare/gitsync-vs-working-copy">GitSync.md vs Working Copy</a>.</p>
-          <ul><li><a href="/blog/gitsync-connect-obsidian-git">Connect Obsidian Git with your existing GitHub sign-in</a></li><li><a href="/blog/obsidian-git-ios-setup">Configure a GitHub token manually</a></li><li><a href="/blog/shortcuts-automation-ios">Trigger Git actions with Apple Shortcuts</a></li><li><a href="/blog/self-hosted-git-ssh-ios">Use a self-hosted remote with GitSync.md</a></li></ul>
+          <ul><li><a href="/blog/sync-obsidian-github">Set up GitHub sync on your computer and every device</a></li><li><a href="/tools/obsidian-gitignore-generator">Generate a .gitignore that keeps workspace files out of Git</a></li><li><a href="/blog/gitsync-connect-obsidian-git">Connect Obsidian Git with your existing GitHub sign-in</a></li><li><a href="/blog/obsidian-git-ios-setup">Configure a GitHub token manually</a></li><li><a href="/blog/shortcuts-automation-ios">Trigger Git actions with Apple Shortcuts</a></li><li><a href="/blog/self-hosted-git-ssh-ios">Use a self-hosted remote with GitSync.md</a></li><li><a href="/blog/obsidian-gitlab-sync">Keep your vault in GitLab</a></li></ul>
         </div>
       </article>
     </div>

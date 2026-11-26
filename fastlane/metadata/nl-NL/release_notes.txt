@@ -1,0 +1,2 @@
+• Lost een crash op bij het pullen van een kluis die niet op een branch staat (detached HEAD). Pull legt nu uit hoe je dit oplost.
+• Als GitSync.md sluit tijdens automatische synchronisatie, pauzeert de volgende start de automatische synchronisatie en vraagt wat je wilt doen, zodat de app niet bij elke start crasht.

@@ -148,6 +148,7 @@
         <p>Starting from scratch? Follow <a href="/blog/obsidian-git-iphone-ipad">how to sync Obsidian with Git on iPhone and iPad</a>. GitSync.md costs $9.99 once on the US App Store; regional prices vary. If you already own it, work through the matching symptom below.</p>
 
         <h2 id="missing-vault">Obsidian does not show the cloned vault</h2>
+        <p>To find or move the vault folder, see <a href="/blog/obsidian-vault-location">where your Obsidian vault is stored and how to move it</a>.</p>
         <p>Confirm the clone destination in GitSync.md. For the documented local setup, the repository belongs under <strong>On My iPhone → Obsidian</strong> or <strong>On My iPad → Obsidian</strong>. Check that the clone completed and the folder contains your notes.</p>
         <ol>
           <li>Fully close and reopen Obsidian after cloning.</li>
@@ -163,6 +164,7 @@
           <li>Open the repository root as your Obsidian vault, rather than a subfolder or its parent.</li>
           <li>For Connect, use a regular <code>.git</code> directory at the vault root. Custom Git directory paths, base paths, and alternate push destinations are outside that connection flow.</li>
         </ul>
+        <p>Errors on a computer, such as <strong>Cannot run Git command</strong>, are in the <a href="/blog/obsidian-git-plugin#errors">Obsidian Git error lookup</a>.</p>
         <p>If your notes have never been in Git, <a href="/blog/create-git-repository-iphone">publish the local vault with GitSync.md</a> or create and push the repository on desktop first. Preserve unsynced edits before replacing a working copy. Deleting <code>.git</code> is not a setup repair.</p>
 
         <h2 id="authentication">Pull or push fails even though GitSync.md is signed in</h2>
@@ -205,7 +207,7 @@
         <p>For an explicit trigger, follow <a href="/blog/shortcuts-automation-ios">the Apple Shortcuts guide</a>. Avoid overlapping timers from multiple Git clients on the same folder while diagnosing the problem.</p>
 
         <h2 id="missing-note">Sync finished, but a note is missing on the other device</h2>
-        <p>Trace one note from its local folder to the remote repository, then to the receiving device. A saved note, a local commit, and a published commit are different checkpoints. A clean working copy alone does not prove the other device has your edit.</p>
+        <p>Trace one note from its local folder to the remote repository, then to the receiving device. A saved note, a local commit, and a published commit are different checkpoints. A clean working copy alone does not prove the other device has your edit. If the note was deleted rather than never sent, <a href="/blog/obsidian-backup-git#restore-deleted">restore a deleted note</a> from Git history.</p>
         <p>Use a disposable note such as <code>sync-check.md</code> containing <code>Test from phone, October 31</code>. These are synthetic examples; do not put private notes or credentials into a support report. Keep separate copies of unsynced work before changing folders or branches.</p>
         <ol>
           <li><strong>Find the saved file.</strong> In Obsidian, confirm which vault contains the note. In GitSync.md, inspect that same repository folder and the note’s relative path. Two folders with the same vault name can contain different files.</li>

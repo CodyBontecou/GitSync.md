@@ -14,9 +14,12 @@ struct VaultGitTab: View {
     let onOpenSettings: () -> Void
     /// Opens the Git Tools sheet (staging, conflicts, merge, rebase).
     let onOpenGitTools: () -> Void
+    /// Opens the "stop tracking Obsidian workspace files" confirmation.
+    var onStopTrackingWorkspace: () -> Void = {}
 
     @State private var showBranchPicker = false
     @State private var showStopTracking = false
+    @State private var trackedWorkspaceFiles: [String] = []
     @State private var lfsLockCount: Int?
     @State private var usesLFS = false
 
@@ -31,6 +34,10 @@ struct VaultGitTab: View {
             IndexLockRecoveryCard(repoID: repoID)
                 .padding(.bottom, 18)
             currentBranchCard
+
+            if !trackedWorkspaceFiles.isEmpty {
+                workspaceSuggestionCard.padding(.top, 18)
+            }
 
             TideSectionLabel(title: String(localized: "Workspace"))
                 .padding(.horizontal, 4)
@@ -89,7 +96,7 @@ struct VaultGitTab: View {
                 .accessibilityLabel(String(localized: "Git Tools"))
                 TideRowDivider()
                 Button {
-                    Task { await state.pullWithRebase(repoID: repoID) }
+                    Task { await ReviewPromptContext.userStarted { await state.pullWithRebase(repoID: repoID) } }
                 } label: {
                     TideValueRow(title: String(localized: "Pull with Rebase"),
                                  value: String(localized: "replay mine on top"), mono: true)
@@ -99,7 +106,7 @@ struct VaultGitTab: View {
                 if !hasChanges && state.syncStateByRepo[repoID] == .ahead {
                     TideRowDivider()
                     Button {
-                        Task { await state.pushCurrentBranch(repoID: repoID) }
+                        Task { await ReviewPromptContext.userStarted { await state.pushCurrentBranch(repoID: repoID) } }
                     } label: {
                         TideValueRow(title: String(localized: "Push Current Branch"),
                                      value: String(localized: "committed work"), mono: true)
@@ -149,6 +156,49 @@ struct VaultGitTab: View {
             await state.loadTags(repoID: repoID)
             await state.refreshVaultMeta(repoID: repoID, forceLFS: true)
             await loadLFSLocks()
+        }
+        .task(id: TrackedWorkspaceKey(sha: repo?.gitState.commitSHA, changes: state.statusEntriesByRepo[repoID]?.count ?? 0)) {
+            trackedWorkspaceFiles = await state.trackedPaths(repoID: repoID, matching: .obsidianWorkspace)
+        }
+    }
+
+    private struct TrackedWorkspaceKey: Hashable {
+        let sha: String?
+        let changes: Int
+    }
+
+    // MARK: Suggestion
+
+    /// Obsidian rewrites `.obsidian/workspace*.json` on every device, so a
+    /// tracked copy conflicts between devices.
+    private var workspaceSuggestionCard: some View {
+        TideCard(padding: 18) {
+            VStack(alignment: .leading, spacing: 10) {
+                TideSectionLabel(title: String(localized: "Suggestion"))
+                Text(trackedWorkspaceFiles.count == 1
+                     ? String(localized: "Obsidian's workspace file is tracked")
+                     : String(localized: "\(trackedWorkspaceFiles.count) Obsidian workspace files are tracked"))
+                    .font(TideFont.sans(16, .semibold, relativeTo: .headline))
+                    .foregroundStyle(Tide.ink)
+                Text(trackedWorkspaceFiles.count == 1
+                     ? String(localized: "Each device saves its own window layout there, so it often conflicts. Stop tracking it to keep it on each device only.")
+                     : String(localized: "Each device saves its own window layout in these files, so they often conflict. Stop tracking them to keep them on each device only."))
+                    .font(TideFont.sans(14, relativeTo: .subheadline))
+                    .foregroundStyle(Tide.inkMid)
+                    .fixedSize(horizontal: false, vertical: true)
+                Button(action: onStopTrackingWorkspace) {
+                    Text(String(localized: "Stop tracking workspace files…"))
+                        .font(TideFont.sans(14, .medium))
+                        .foregroundStyle(Tide.ink)
+                        .padding(.horizontal, 16)
+                        .frame(minHeight: 44)
+                        .overlay(Capsule().strokeBorder(Tide.line, lineWidth: 1))
+                        .contentShape(Capsule())
+                }
+                .buttonStyle(.plain)
+                .disabled(state.isSyncing)
+                .accessibilityIdentifier("git.stopTrackingWorkspace")
+            }
         }
     }
 

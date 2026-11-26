@@ -1,0 +1,22 @@
+E2E test "issue111-automatic-sync-crash-pause"
+  › Launch with Background Sync on and the automatic-pass in-flight marker set, as if the last launch died mid automatic sync. Expect the Automatic sync paused alert
+  ✓  1 launch (1.7s)
+  ✓  2 tool await-ui-element (0.5s)
+  ✓  3 idle (0.7s)
+  ✓  4 tool gesture-tap (0.1s)
+  ✓  5 tool await-ui-element (0.5s)
+  ✓  6 tool await-ui-element (0.0s)
+  ✓  7 idle (0.5s)
+  ✓  8 tool gesture-tap (0.1s)
+  ✓  9 tool await-ui-element (0.6s)
+  ✓ 10 tool await-ui-element (0.1s)
+  ✓ 11 idle (0.5s)
+  ✓ 12 tool gesture-tap (0.1s)
+  ✓ 13 tool await-ui-element (0.2s)
+  ✓ 14 idle (0.9s)
+  › Background Sync settings show the paused card. Tap Resume Automatic Sync; expect the card to disappear
+  ✓ 15 tool gesture-tap (0.1s)
+  ✓ 16 tool await-ui-element (0.3s)
+  ✓ 17 tool await-ui-element (0.1s)
+
+PASS (started on <job simulator>) — 17 passed, 0 failed, 0 errored, 0 skipped (7.0s)

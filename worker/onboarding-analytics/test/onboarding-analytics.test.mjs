@@ -189,7 +189,51 @@ test("scheduled cleanup defaults invalid retention to 90 days", async () => {
   assert.deepEqual(db.runValues, [["-90 days"]]);
 });
 
-test("rejects removed paywall and purchase analytics", async () => {
+test("stores paywall events in the paywall columns", async () => {
+  const events = [
+    ["00000000-0000-4000-8000-000000000501", "sync_paywall_viewed", { errorCategory: "product_unavailable" }],
+    ["00000000-0000-4000-8000-000000000502", "sync_paywall_purchase_started", {}],
+    ["00000000-0000-4000-8000-000000000503", "sync_paywall_purchase_completed", { purchaseOutcome: "cancelled" }],
+    ["00000000-0000-4000-8000-000000000504", "sync_paywall_restore_completed", { purchaseOutcome: "not_found" }],
+  ].map(([eventId, eventName, extra]) => ({
+    eventId,
+    eventName,
+    properties: baseProperties({ paywallContext: "vault_check", productId: "gitsync.md.lifetime", ...extra }),
+  }));
+
+  const { db, response, json } = await postEvents({ installId, events });
+
+  assert.equal(response.status, 200);
+  assert.deepEqual(json, { ok: true, accepted: events.length });
+
+  // Columns: ... paywall_context(10), free_repo_slots_used, free_repo_slots_remaining,
+  // product_id(13), purchase_outcome(14), error_category(15), payload_json.
+  const [viewed, , completed] = db.statements.map((statement) => statement.values);
+  assert.equal(viewed[10], "vault_check");
+  assert.equal(viewed[13], "gitsync.md.lifetime");
+  assert.equal(viewed[15], "product_unavailable");
+  assert.equal(completed[14], "cancelled");
+});
+
+test("rejects paywall values outside the allowlist", async () => {
+  for (const [key, value] of [
+    ["paywallContext", "settings"],
+    ["productId", "com.example.other"],
+    ["purchaseOutcome", "refunded"],
+  ]) {
+    const { response, json } = await postEvents({
+      installId,
+      eventId: "00000000-0000-4000-8000-000000000601",
+      eventName: "sync_paywall_purchase_completed",
+      properties: baseProperties({ [key]: value }),
+    });
+
+    assert.equal(response.status, 400);
+    assert.equal(json.error, `unknown_property_value:${key}`);
+  }
+});
+
+test("rejects retired paid-upfront purchase event names", async () => {
   const { response, json } = await postEvents({
     installId,
     eventId: "00000000-0000-4000-8000-000000000401",

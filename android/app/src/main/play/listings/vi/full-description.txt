@@ -1,4 +1,4 @@
-Gitsync.md mang quy trình Git thực thụ lên Android. Kết nối GitHub, clone repository vào bộ nhớ ứng dụng, xem lại thay đổi và đồng bộ code hoặc markdown an toàn ngay từ điện thoại.
+GitSync.md mang quy trình Git thực thụ lên Android. Kết nối GitHub, clone repository vào bộ nhớ ứng dụng, xem lại thay đổi và đồng bộ code hoặc markdown an toàn ngay từ điện thoại.
 
 DÀNH CHO REPO THỰC TẾ
 - Duyệt repository GitHub sau khi đăng nhập bằng OAuth hoặc personal access token
@@ -24,4 +24,4 @@ THIẾT KẾ CHO DI ĐỘNG
 - Tải miễn phí, mua Full Access một lần trong ứng dụng qua Google Play
 - Không quảng cáo, không gói đăng ký
 
-Gitsync.md được xây dựng cho lập trình viên, người viết và bất kỳ ai quản lý file lưu trên GitHub trên Android. Với repository riêng tư, hãy đăng nhập bằng GitHub hoặc cung cấp personal access token. Token được lưu cục bộ trên thiết bị của bạn.
+GitSync.md được xây dựng cho lập trình viên, người viết và bất kỳ ai quản lý file lưu trên GitHub trên Android. Với repository riêng tư, hãy đăng nhập bằng GitHub hoặc cung cấp personal access token. Token được lưu cục bộ trên thiết bị của bạn.

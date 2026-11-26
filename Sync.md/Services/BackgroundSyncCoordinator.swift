@@ -389,7 +389,7 @@ final class BackgroundSyncCoordinator {
             kind = .lfsHydration
         case .lfsAuthenticationOrTrustRequired:
             kind = .authenticationOrTrust
-        case .checkoutIncomplete:
+        case .checkoutIncomplete, .workingTreeNotUpdated, .localEditsKept:
             kind = .localChanges
         }
         return .init(

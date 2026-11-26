@@ -41,6 +41,7 @@ struct AddRepoView: View {
     @State private var vaultCheck: VaultPreflight? = nil
     /// Action waiting on the one-time unlock.
     @State private var pendingUnlock: (() -> Void)? = nil
+    @State private var unlockContext: OnboardingAnalyticsPaywallContext = .discoverRepos
 
     // Local repo selection
     @State private var localRepoURL: URL? = nil
@@ -183,7 +184,7 @@ struct AddRepoView: View {
                     performAddAndClone(identifier: selectedRepoURL.trimmingCharacters(in: .whitespacesAndNewlines).lowercased(), checkedBranch: check.resolvedBranch)
                 }
             }
-            .unlockGate($pendingUnlock)
+            .unlockGate($pendingUnlock, context: $unlockContext)
             // Follow the account's identity (sign-in, account switch) unless
             // the user typed their own value: replace empty or prefilled text.
             .onChange(of: state.defaultAuthorName) { oldValue, newValue in
@@ -222,7 +223,7 @@ struct AddRepoView: View {
 
     private func resumePublicationCard(_ record: FolderPublicationRecord) -> some View {
         Button {
-            requireUnlock { showFolderPublication = true }
+            requireUnlock(.publishFolder) { showFolderPublication = true }
         } label: {
             HStack(spacing: 10) {
                 Circle().fill(Tide.behind).frame(width: 8, height: 8)
@@ -281,7 +282,7 @@ struct AddRepoView: View {
 
             AddVaultCard {
                 Button {
-                    requireUnlock { showDiscovery = true }
+                    requireUnlock(.discoverRepos) { showDiscovery = true }
                 } label: {
                     AddVaultChoiceRow(
                         systemImage: "magnifyingglass",
@@ -318,7 +319,7 @@ struct AddRepoView: View {
                 AddVaultHairline()
 
                 Button {
-                    requireUnlock { showFolderPublication = true }
+                    requireUnlock(.publishFolder) { showFolderPublication = true }
                 } label: {
                     AddVaultChoiceRow(
                         systemImage: "arrow.up.to.line",
@@ -1076,8 +1077,14 @@ struct AddRepoView: View {
         return "\(parent) › \(folder.isEmpty ? "vault" : folder)"
     }
 
-    private func requireUnlock(_ action: @escaping () -> Void) {
-        if unlock.isUnlocked { action() } else { pendingUnlock = action }
+    private func requireUnlock(
+        _ context: OnboardingAnalyticsPaywallContext,
+        _ action: @escaping () -> Void
+    ) {
+        if unlock.isUnlocked { action() } else {
+            unlockContext = context
+            pendingUnlock = action
+        }
     }
 
     // MARK: - Validation
@@ -1276,7 +1283,7 @@ struct AddRepoView: View {
         if let authorIdentityIssue { showValidation(authorIdentityIssue); return }
 
         let identifier = url.standardizedFileURL.path.lowercased()
-        requireUnlock {
+        requireUnlock(.linkLocalRepo) {
             performAddLocalRepo(url: url, bookmarkData: bookmarkData, identifier: identifier)
         }
     }

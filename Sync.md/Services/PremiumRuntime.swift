@@ -8,10 +8,14 @@ final class PremiumBackgroundProcessingExecution {
     private var operation: Task<Void, Never>?
     private weak var coordinator: BackgroundSyncCoordinator?
     private var completed = false
+    private let onExpire: @MainActor () -> Void
 
-    init(task: any PremiumBackgroundProcessingTask, coordinator: BackgroundSyncCoordinator) {
+    init(task: any PremiumBackgroundProcessingTask,
+         coordinator: BackgroundSyncCoordinator,
+         onExpire: @escaping @MainActor () -> Void = {}) {
         backgroundTask = task
         self.coordinator = coordinator
+        self.onExpire = onExpire
         task.expirationHandler = { [weak self] in self?.expire() }
     }
 
@@ -24,6 +28,7 @@ final class PremiumBackgroundProcessingExecution {
 
     private func expire() {
         guard !completed else { return }
+        onExpire()
         operation?.cancel()
         coordinator?.cancelProcessingReconciliation()
         finish(success: false)
@@ -53,6 +58,13 @@ final class PremiumRuntime {
     /// Separate publishing consent. New and migrated installations default off.
     private(set) var automaticallyPushLocalChanges: Bool
     private(set) var isReconcilingAutomaticSync = false
+    /// The app stopped while an automatic pass was running (issue #111).
+    /// Automatic sync stays paused, so a repository state that crashes the
+    /// app cannot crash it again on every launch, until the person resumes
+    /// it or turns Background Sync off.
+    private(set) var automaticSyncPausedAfterCrash: Bool
+    /// Set on the launch that detected the crash, so the UI can explain once.
+    var showsAutomaticSyncPausedNotice = false
 
     var automaticSyncSummary: PremiumAssistSummary {
         let repos = repositoryProvider?.assistRepositories() ?? []
@@ -86,10 +98,16 @@ final class PremiumRuntime {
     /// the product; this only kills bounce churn.
     let foregroundReconciliationCooldown: TimeInterval
     private let assistFeatureIsEnabled: () -> Bool
+    /// Nesting depth of automatic passes holding the in-flight marker.
+    private var automaticPassDepth = 0
 
     private static let automaticSyncKey = "premium.automatic-sync.v1"
     private static let automaticPullKey = "premium.automatic-pull.v1"
     private static let automaticPushKey = "premium.automatic-push.v1"
+    /// Written before an automatic pass starts Git work and removed when it
+    /// returns. Still present at launch means the process died mid-pass.
+    static let automaticPassInFlightKey = "premium.automatic-sync.pass-in-flight.v1"
+    static let automaticSyncPausedAfterCrashKey = "premium.automatic-sync.paused-after-crash.v1"
     /// Historical subscription-era installations scoped their automatic-sync
     /// preferences to a per-installation UUID. This migration adopts those
     /// values under the modern fixed keys exactly once.
@@ -113,6 +131,20 @@ final class PremiumRuntime {
         let storedAutomaticPull = defaults.object(forKey: Self.automaticPullKey) as? NSNumber
         automaticallyPullRemoteChanges = storedAutomaticPull?.boolValue ?? restoredAutomaticSync
         automaticallyPushLocalChanges = defaults.bool(forKey: Self.automaticPushKey)
+        let crashedDuringAutomaticPass = defaults.bool(forKey: Self.automaticPassInFlightKey)
+        defaults.removeObject(forKey: Self.automaticPassInFlightKey)
+        if crashedDuringAutomaticPass && restoredAutomaticSync {
+            defaults.set(true, forKey: Self.automaticSyncPausedAfterCrashKey)
+        }
+        automaticSyncPausedAfterCrash = restoredAutomaticSync
+            && defaults.bool(forKey: Self.automaticSyncPausedAfterCrashKey)
+        showsAutomaticSyncPausedNotice = crashedDuringAutomaticPass && automaticSyncPausedAfterCrash
+        if crashedDuringAutomaticPass {
+            DebugLogger.shared.error(
+                "background-sync",
+                "The app stopped during the last automatic sync; automatic sync is paused until you resume it."
+            )
+        }
         if restoredAutomaticSync && storedAutomaticPull == nil {
             // Historical Background Sync was pull-only. Materialize that
             // behavior as the new independent installation preference.
@@ -163,6 +195,7 @@ final class PremiumRuntime {
         guard assistFeatureIsEnabled() else { return }
         automaticallySyncAllRepositories = true
         defaults.set(true, forKey: Self.automaticSyncKey)
+        clearAutomaticSyncCrashPause()
         if !automaticallyPullRemoteChanges && !automaticallyPushLocalChanges {
             // A fresh activation starts in the historical safe pull-only mode;
             // the two controls can then be changed independently.
@@ -215,6 +248,7 @@ final class PremiumRuntime {
     private func disableAutomaticSync() async {
         automaticallySyncAllRepositories = false
         defaults.set(false, forKey: Self.automaticSyncKey)
+        clearAutomaticSyncCrashPause()
         automaticallyPullRemoteChanges = false
         defaults.set(false, forKey: Self.automaticPullKey)
         coordinator.setAutomaticallyPullRemoteChanges(false)
@@ -239,7 +273,45 @@ final class PremiumRuntime {
     }
 
     func cancelForegroundReconciliation() {
+        clearAutomaticPassMarker()
         coordinator.cancelForegroundReconciliation()
+    }
+
+    // MARK: - Crash-loop guard (issue #111)
+
+    /// Resumes automatic sync after a crash pause and runs a pass now.
+    func resumeAutomaticSyncAfterCrash() async {
+        guard automaticSyncPausedAfterCrash else { return }
+        clearAutomaticSyncCrashPause()
+        await reconcileNow()
+    }
+
+    private func clearAutomaticSyncCrashPause() {
+        showsAutomaticSyncPausedNotice = false
+        guard automaticSyncPausedAfterCrash || defaults.bool(forKey: Self.automaticSyncPausedAfterCrashKey) else { return }
+        automaticSyncPausedAfterCrash = false
+        defaults.removeObject(forKey: Self.automaticSyncPausedAfterCrashKey)
+        updateBackgroundProcessingSchedule()
+    }
+
+    /// A pass interrupted on purpose (the scene went to the background, the
+    /// BGTask or push-wake budget ran out) may not unwind before iOS suspends
+    /// and later kills the process. That is not a crash, so the next launch
+    /// must not pause automatic sync for it.
+    private func clearAutomaticPassMarker() {
+        defaults.removeObject(forKey: Self.automaticPassInFlightKey)
+    }
+
+    /// Runs automatic Git work with the in-flight marker persisted, so a
+    /// crash inside `body` pauses automatic sync on the next launch.
+    private func withAutomaticPassMarker<T>(_ body: () async -> T) async -> T {
+        automaticPassDepth += 1
+        if automaticPassDepth == 1 { defaults.set(true, forKey: Self.automaticPassInFlightKey) }
+        defer {
+            automaticPassDepth -= 1
+            if automaticPassDepth == 0 { defaults.removeObject(forKey: Self.automaticPassInFlightKey) }
+        }
+        return await body()
     }
 
     /// Handles an APNs wake as a targeted, consent-gated reconciliation. The
@@ -253,7 +325,9 @@ final class PremiumRuntime {
         let repoIDs = repositoryIDs(matching: event)
         guard !repoIDs.isEmpty else { return .ignored }
         let startedAt = Date()
-        let results = await coordinator.reconcilePushResults(repoIDs: repoIDs, hintID: event.hintID)
+        let results = await withAutomaticPassMarker {
+            await coordinator.reconcilePushResults(repoIDs: repoIDs, hintID: event.hintID)
+        }
         recordRun(trigger: .push, results: results, startedAt: startedAt, budget: 30)
         return BackgroundSyncCoordinator.summarize(results)
     }
@@ -265,6 +339,7 @@ final class PremiumRuntime {
         // Cancel by the ownership hint captured when work began. Recomputing
         // repository matches here could miss a flight if its branch or local
         // inclusion changed while the notification was running.
+        clearAutomaticPassMarker()
         coordinator.cancelPush(hintID: event.hintID)
     }
 
@@ -291,7 +366,11 @@ final class PremiumRuntime {
 
     private func handleBackgroundProcessing(_ task: any PremiumBackgroundProcessingTask) {
         updateBackgroundProcessingSchedule()
-        let execution = PremiumBackgroundProcessingExecution(task: task, coordinator: coordinator)
+        let execution = PremiumBackgroundProcessingExecution(
+            task: task,
+            coordinator: coordinator,
+            onExpire: { [weak self] in self?.clearAutomaticPassMarker() }
+        )
         let budget = task.kind?.approximateBudget
         execution.start { [weak self] in
             guard let self else { return false }
@@ -308,7 +387,7 @@ final class PremiumRuntime {
         await reconcileAutomaticRepositories()
         guard automaticOperationsAllowed else { return false }
         let startedAt = Date()
-        let results = await coordinator.reconcileProcessing()
+        let results = await withAutomaticPassMarker { await coordinator.reconcileProcessing() }
         recordRun(trigger: .scheduled, results: results, startedAt: startedAt, budget: budget)
         guard !Task.isCancelled else { return false }
         return !results.values.contains(where: \.isFailure)
@@ -317,6 +396,7 @@ final class PremiumRuntime {
     private func updateBackgroundProcessingSchedule() {
         let gatesAllowScheduling = assistFeatureIsEnabled()
             && automaticallySyncAllRepositories
+            && !automaticSyncPausedAfterCrash
             && (automaticallyPullRemoteChanges || automaticallyPushLocalChanges)
         guard gatesAllowScheduling else {
             backgroundScheduler.cancel()
@@ -361,7 +441,7 @@ final class PremiumRuntime {
         await reconcileAutomaticRepositories()
         guard automaticOperationsAllowed else { coordinator.cancelAll(); return }
         let startedAt = Date()
-        let results = await coordinator.reconcileForeground()
+        let results = await withAutomaticPassMarker { await coordinator.reconcileForeground() }
         recordRun(trigger: .foreground, results: results, startedAt: startedAt, budget: nil)
         passFinished = !Task.isCancelled
     }
@@ -453,6 +533,7 @@ final class PremiumRuntime {
     private var automaticOperationsAllowed: Bool {
         !Task.isCancelled && assistFeatureIsEnabled()
             && automaticallySyncAllRepositories
+            && !automaticSyncPausedAfterCrash
     }
 
     private func repositoryWillBeRemoved(_ repo: RepoConfig) {

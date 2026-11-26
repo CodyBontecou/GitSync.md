@@ -9,6 +9,7 @@ struct RepoListView: View {
     @Environment(AppState.self) private var state
     @Environment(AppUnlock.self) private var unlock
     @State private var pendingUnlock: (() -> Void)? = nil
+    @State private var unlockContext: OnboardingAnalyticsPaywallContext = .discoverRepos
     @Environment(PremiumRuntime.self) private var premiumRuntime
     @ObservedObject private var repositoryHistory = RepositoryHistoryStore.shared
     @State private var showAddRepo = false
@@ -227,7 +228,7 @@ struct RepoListView: View {
                 }
             }
             .sheet(isPresented: $showAddRepo) { AddRepoView(initialURL: addRepoInitialURL) }
-            .unlockGate($pendingUnlock)
+            .unlockGate($pendingUnlock, context: $unlockContext)
             .sheet(isPresented: $showAppSettings) { AppSettingsView() }
             .sheet(item: $settingsRepoID) { repoID in SettingsView(repoID: repoID) }
             .navigationDestination(for: UUID.self) { repoID in VaultView(repoID: repoID) }
@@ -526,10 +527,12 @@ struct RepoListView: View {
                     }
             }
             .accessibilityAddTraits(selected ? .isSelected : [])
+            .accessibilityIdentifier("home.vault.\(repo.vaultFolderName)")
         } else {
             NavigationLink(value: repo.id) {
                 label()
             }
+            .accessibilityIdentifier("home.vault.\(repo.vaultFolderName)")
         }
     }
 
@@ -578,13 +581,13 @@ struct RepoListView: View {
                         emptyStartRow(
                             title: String(localized: "Find clones on this iPhone").forThisDevice,
                             detail: String(localized: "Obsidian, Working Copy…"),
-                            action: { requireUnlock { showEmptyDiscovery = true } }
+                            action: { requireUnlock(.discoverRepos) { showEmptyDiscovery = true } }
                         )
                         Rectangle().fill(Tide.line).frame(height: 1)
                         emptyStartRow(
                             title: String(localized: "Publish an existing folder"),
                             detail: String(localized: "creates a private repo"),
-                            action: { requireUnlock { showEmptyFolderPublication = true } }
+                            action: { requireUnlock(.publishFolder) { showEmptyFolderPublication = true } }
                         )
                     }
                     .padding(.horizontal, 18)
@@ -982,7 +985,7 @@ struct RepoListView: View {
                     : String(localized: "Sync all"),
                 badge: running ? nil : "↓\(counts.down) ↑\(counts.up)"
             ) {
-                Task { await state.syncAllVaults() }
+                Task { await ReviewPromptContext.userStarted { await state.syncAllVaults() } }
             }
             .lineLimit(1)
             .disabled(disabled)
@@ -1436,11 +1439,17 @@ struct RepoListView: View {
 
     /// Tapping a ghost card triggers an immediate clone using stored defaults.
     private func cloneGhostRepo(_ identifier: String) {
-        requireUnlock { performGhostClone(identifier) }
+        requireUnlock(.suggestedRepo) { performGhostClone(identifier) }
     }
 
-    private func requireUnlock(_ action: @escaping () -> Void) {
-        if unlock.isUnlocked { action() } else { pendingUnlock = action }
+    private func requireUnlock(
+        _ context: OnboardingAnalyticsPaywallContext,
+        _ action: @escaping () -> Void
+    ) {
+        if unlock.isUnlocked { action() } else {
+            unlockContext = context
+            pendingUnlock = action
+        }
     }
 
     private func performGhostClone(_ identifier: String) {

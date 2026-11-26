@@ -17,6 +17,8 @@ struct VaultView: View {
     @State private var showRevertAllConfirm = false
     @State private var revertFilePath: String? = nil
     @State private var showRevertFileModal = false
+    @State private var stopTrackingPath: String? = nil
+    @State private var showStopTrackingWorkspace = false
     @State private var showResolveLocalSheet = false
     @State private var resolveLocalMessage = ""
     @State private var showReconnectFolder = false
@@ -251,9 +253,19 @@ struct VaultView: View {
                 )
                 .transition(.opacity.combined(with: .scale(scale: 0.96)))
             }
+            if let path = stopTrackingPath {
+                StopTrackingPathSheet(repoID: repoID, path: path) { _ in stopTrackingPath = nil }
+                    .transition(.opacity.combined(with: .scale(scale: 0.96)))
+            }
+            if showStopTrackingWorkspace {
+                StopTrackingPathSheet(repoID: repoID, path: nil) { _ in showStopTrackingWorkspace = false }
+                    .transition(.opacity.combined(with: .scale(scale: 0.96)))
+            }
         }
         .animation(.easeOut(duration: 0.18), value: showRevertAllConfirm)
         .animation(.easeOut(duration: 0.18), value: showRevertFileModal)
+        .animation(.easeOut(duration: 0.18), value: stopTrackingPath)
+        .animation(.easeOut(duration: 0.18), value: showStopTrackingWorkspace)
 
         #if DEBUG
         .onReceive(NotificationCenter.default.publisher(for: MarketingCapture.showGitSheetNotification)) { _ in
@@ -279,7 +291,7 @@ struct VaultView: View {
         // The spinner still waits for it to finish.
         .refreshable {
             let id = repoID
-            await Task { @MainActor in _ = await state.pull(repoID: id) }.value
+            await Task { @MainActor in _ = await ReviewPromptContext.userStarted { await state.pull(repoID: id) } }.value
         }
     }
 
@@ -704,27 +716,27 @@ struct VaultView: View {
             switch tideState {
             case .ahead where changeCount > 0:
                 heroPrimary(String(localized: "Commit & push"), icon: "arrow.up") { showCommitSheet = true }
-                heroSecondary(String(localized: "Pull")) { Task { await state.pull(repoID: repoID, cancellationFeedback: .warning) } }
+                heroSecondary(String(localized: "Pull")) { Task { await ReviewPromptContext.userStarted { await state.pull(repoID: repoID, cancellationFeedback: .warning) } } }
             case .ahead:
                 heroPrimary(String(localized: "Push"), icon: "arrow.up") {
-                    Task { await state.pushCurrentBranch(repoID: repoID) }
+                    Task { await ReviewPromptContext.userStarted { await state.pushCurrentBranch(repoID: repoID) } }
                 }
-                heroSecondary(String(localized: "Pull")) { Task { await state.pull(repoID: repoID, cancellationFeedback: .warning) } }
+                heroSecondary(String(localized: "Pull")) { Task { await ReviewPromptContext.userStarted { await state.pull(repoID: repoID, cancellationFeedback: .warning) } } }
             case .behind:
                 heroPrimary(String(localized: "Pull"), icon: "arrow.down") {
-                    Task { await state.pull(repoID: repoID, cancellationFeedback: .warning) }
+                    Task { await ReviewPromptContext.userStarted { await state.pull(repoID: repoID, cancellationFeedback: .warning) } }
                 }
             case .diverged where changeCount > 0:
                 heroPrimary(String(localized: "Commit & push"), icon: "arrow.up") { showCommitSheet = true }
-                heroSecondary(String(localized: "Pull")) { Task { await state.pull(repoID: repoID, cancellationFeedback: .warning) } }
+                heroSecondary(String(localized: "Pull")) { Task { await ReviewPromptContext.userStarted { await state.pull(repoID: repoID, cancellationFeedback: .warning) } } }
             case .diverged:
                 heroPrimary(String(localized: "Bring theirs in"), icon: "arrow.triangle.merge") {
-                    Task { await state.mergeWithRemote(repoID: repoID) }
+                    Task { await ReviewPromptContext.userStarted { await state.mergeWithRemote(repoID: repoID) } }
                 }
-                heroSecondary(String(localized: "Rebase")) { Task { await state.pullWithRebase(repoID: repoID) } }
+                heroSecondary(String(localized: "Rebase")) { Task { await ReviewPromptContext.userStarted { await state.pullWithRebase(repoID: repoID) } } }
             case .inSync:
                 heroPrimary(String(localized: "Check for changes"), icon: "arrow.clockwise") {
-                    Task { await state.pull(repoID: repoID, cancellationFeedback: .warning) }
+                    Task { await ReviewPromptContext.userStarted { await state.pull(repoID: repoID, cancellationFeedback: .warning) } }
                 }
             }
         }
@@ -746,6 +758,7 @@ struct VaultView: View {
             .contentShape(Capsule())
         }
         .buttonStyle(.plain)
+        .accessibilityIdentifier("vault.hero.primary")
     }
 
     private func heroSecondary(_ title: String, action: @escaping () -> Void) -> some View {
@@ -842,13 +855,19 @@ struct VaultView: View {
                     showResolveLocalSheet = true
                 }
                 .padding(.leading, 38)
+            } else if outcome.kind == .workingTreeBehind {
+                bannerButton(String(localized: "Finish Update"), tint: Tide.behind) {
+                    Task { await state.finishPendingCheckout(repoID: repoID) }
+                }
+                .accessibilityIdentifier("pull.finishUpdate")
+                .padding(.leading, 38)
             } else if outcome.kind == .diverged, activeConflict == nil {
                 HStack(spacing: 8) {
                     bannerButton(String(localized: "Merge"), tint: Tide.ahead) {
-                        Task { await state.mergeWithRemote(repoID: repoID) }
+                        Task { await ReviewPromptContext.userStarted { await state.mergeWithRemote(repoID: repoID) } }
                     }
                     bannerButton(String(localized: "Rebase"), tint: Tide.behind) {
-                        Task { await state.pullWithRebase(repoID: repoID) }
+                        Task { await ReviewPromptContext.userStarted { await state.pullWithRebase(repoID: repoID) } }
                     }
                 }
                 .padding(.leading, 38)
@@ -864,6 +883,7 @@ struct VaultView: View {
         case .rebaseConflicts:       String(localized: "Rebase stopped on conflicts")
         case .blockedByLocalChanges: String(localized: "Local edits block this pull")
         case .checkoutIncomplete:    String(localized: "Working tree needs attention")
+        case .workingTreeBehind:     String(localized: "Pull didn't finish")
         case .lfsHydrationBlocked:   String(localized: "Large files couldn't download")
         case .diverged:              String(localized: "Needs a decision")
         case .remoteBranchMissing:   String(localized: "Remote branch missing")
@@ -878,7 +898,7 @@ struct VaultView: View {
         case .fastForwarded:         return "arrow.down"
         case .rebased:               return "arrow.triangle.2.circlepath"
         case .rebaseConflicts:       return "exclamationmark.triangle.fill"
-        case .blockedByLocalChanges, .checkoutIncomplete: return "exclamationmark.triangle.fill"
+        case .blockedByLocalChanges, .checkoutIncomplete, .workingTreeBehind: return "exclamationmark.triangle.fill"
         case .lfsHydrationBlocked:   return "externaldrive.badge.exclamationmark"
         case .diverged:              return "arrow.triangle.branch"
         case .remoteBranchMissing:   return "questionmark"
@@ -891,7 +911,7 @@ struct VaultView: View {
         switch kind {
         case .upToDate, .rebased:    return Tide.synced
         case .fastForwarded:         return Tide.behind
-        case .rebaseConflicts, .blockedByLocalChanges, .checkoutIncomplete, .lfsHydrationBlocked,
+        case .rebaseConflicts, .blockedByLocalChanges, .checkoutIncomplete, .workingTreeBehind, .lfsHydrationBlocked,
              .diverged, .remoteBranchMissing, .cancelled:
             return Tide.ahead
         case .failed:                return Tide.danger
@@ -1064,11 +1084,27 @@ struct VaultView: View {
             } label: {
                 Label(String(localized: "Revert Changes"), systemImage: "arrow.uturn.backward")
             }
+            if Self.canStopTracking(entry) {
+                Button {
+                    stopTrackingPath = entry.path
+                } label: {
+                    Label(String(localized: "Stop Tracking…"), systemImage: "eye.slash")
+                }
+            }
         }
         .accessibilityAction(named: String(localized: "Revert Changes")) {
             revertFilePath = entry.path
             showRevertFileModal = true
         }
+        .accessibilityAction(named: String(localized: "Stop Tracking")) {
+            if Self.canStopTracking(entry) { stopTrackingPath = entry.path }
+        }
+    }
+
+    /// Files Git already tracks or has staged; untracked and conflicted files
+    /// have nothing to stop tracking.
+    static func canStopTracking(_ entry: GitStatusEntry) -> Bool {
+        !entry.isConflicted && entry.workTreeStatus != .untracked && entry.path != GitIgnoreFile.name
     }
 
     private func changedFileRowContent(_ entry: GitStatusEntry) -> some View {
@@ -1427,7 +1463,8 @@ struct VaultView: View {
             repoID: repoID,
             onDiscardChanges: { showRevertAllConfirm = true },
             onOpenSettings: { showSettings = true },
-            onOpenGitTools: { showGitTools = true }
+            onOpenGitTools: { showGitTools = true },
+            onStopTrackingWorkspace: { showStopTrackingWorkspace = true }
         )
     }
 

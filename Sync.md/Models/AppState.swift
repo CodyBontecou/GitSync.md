@@ -233,8 +233,12 @@ final class AppState {
 
     // MARK: - Review Prompt
 
-    /// Set to `true` after the user's first successful clone, so the UI can trigger a review request.
-    var shouldRequestReview: Bool = false
+    /// Counted syncs and prompt history (see `ReviewPromptPolicy`).
+    @ObservationIgnored var reviewPromptPolicy = ReviewPromptPolicy()
+    /// A good moment for the rating prompt, waiting for the screen to be
+    /// clear. `ContentView` watches `reviewPromptRequestID` and presents it.
+    var pendingReviewMoment: ReviewPromptMoment? = nil
+    var reviewPromptRequestID: Int = 0
 
     // MARK: - Errors & Confirmations
 
@@ -558,6 +562,7 @@ final class AppState {
         defaultAuthorEmail = defaults.string(forKey: "authorEmail") ?? ""
         hasCompletedOnboarding = defaults.bool(forKey: "hasCompletedOnboarding")
         hasSeenOnboarding = defaults.bool(forKey: "hasSeenOnboarding")
+        reviewPromptPolicy.migrateLegacyKeyIfNeeded()
 
         if let accountData = defaults.data(forKey: "gitHubAccounts"),
            let decodedAccounts = try? JSONDecoder().decode([GitHubAccount].self, from: accountData) {
@@ -2412,6 +2417,10 @@ final class AppState {
             detectChanges(repoID: repoID)
             await loadBranches(repoID: repoID)
             await loadConflictSession(repoID: repoID)
+            if execution.pushErrorMessage == nil, conflictSessionByRepo[repoID]?.isActive != true {
+                recordReviewSuccess()
+                requestReviewIfNeeded(.userSync)
+            }
         } catch LocalGitError.mergeConflictsDetected {
             markRepositoryMutated(repoID: repoID)
             await loadConflictSession(repoID: repoID)
@@ -2522,6 +2531,10 @@ final class AppState {
             }
             detectChanges(repoID: repoID)
             await loadConflictSession(repoID: repoID)
+            if execution.pushErrorMessage == nil, conflictSessionByRepo[repoID]?.isActive != true {
+                recordReviewSuccess()
+                requestReviewIfNeeded(.conflictResolved)
+            }
         } catch {
             await loadConflictSession(repoID: repoID)
             showError(message: error.localizedDescription)
@@ -3106,6 +3119,79 @@ final class AppState {
         syncingRepoID = nil
     }
 
+    /// Maps a post-update attention to the progress line and banner outcome.
+    func applyPostUpdateAttention(repoID: UUID, attention: PullPostUpdateAttention) {
+        let outcomeKind: PullOutcomeKind
+        switch attention {
+        case .checkoutIncomplete:
+            syncProgress = String(localized: "Pull updated Git, but working tree checkout needs attention")
+            outcomeKind = .checkoutIncomplete
+        case .workingTreeNotUpdated:
+            syncProgress = String(localized: "Some files weren't updated by the last pull")
+            outcomeKind = .workingTreeBehind
+        case .localEditsKept:
+            syncProgress = String(localized: "Pull complete!")
+            outcomeKind = .checkoutIncomplete
+        case .lfsHydrationBlockedByLocalChanges, .lfsHydrationFailed,
+             .lfsAuthenticationOrTrustRequired, .cancelledAfterUpdate:
+            syncProgress = String(localized: "Pull updated Git, but Git LFS needs attention")
+            outcomeKind = .lfsHydrationBlocked
+        }
+        setPullOutcome(
+            repoID: repoID,
+            kind: outcomeKind,
+            message: attention.localizedDescription
+        )
+    }
+
+    /// "Finish Update": check out the files an earlier update left behind HEAD,
+    /// keeping anything changed on this device (issue #130).
+    @discardableResult
+    func finishPendingCheckout(repoID: UUID) async -> Bool {
+        guard repoIndex(id: repoID) != nil, !isDemoMode else { return false }
+        isSyncing = true
+        syncingRepoID = repoID
+        syncProgress = String(localized: "Finishing update...")
+        defer { isSyncing = false; syncingRepoID = nil }
+        do {
+            let serialized = try serializedRepository(repoID: repoID)
+            let completion = try await serialized.withLease { repository in
+                try await repository.finishPendingCheckout()
+            }
+            markRepositoryMutated(repoID: repoID)
+            if !completion.remainingStalePaths.isEmpty {
+                let message = completion.remainingStalePaths.count == 1
+                    ? String(localized: "1 file still couldn't be updated. Close other apps that may be editing the vault and try again.")
+                    : String(localized: "\(completion.remainingStalePaths.count) files still couldn't be updated. Close other apps that may be editing the vault and try again.")
+                setPullOutcome(repoID: repoID, kind: .workingTreeBehind, message: message)
+            } else if !completion.keptLocalPaths.isEmpty {
+                setPullOutcome(
+                    repoID: repoID,
+                    kind: .checkoutIncomplete,
+                    message: (completion.restoredPaths.count == 1
+                        ? String(localized: "Updated 1 file.")
+                        : String(localized: "Updated \(completion.restoredPaths.count) files.")) + " "
+                        + PullPostUpdateAttention.keptLocalSentence(completion.keptLocalPaths)
+                )
+            } else {
+                setPullOutcome(
+                    repoID: repoID,
+                    kind: .fastForwarded,
+                    message: completion.restoredPaths.count == 1
+                        ? String(localized: "Updated 1 file to the latest version.")
+                        : String(localized: "Updated \(completion.restoredPaths.count) files to the latest version.")
+                )
+            }
+            syncProgress = String(localized: "Update finished")
+            detectChanges(repoID: repoID)
+            return completion.remainingStalePaths.isEmpty
+        } catch {
+            setPullOutcome(repoID: repoID, kind: .failed, message: error.localizedDescription)
+            showError(message: error.localizedDescription, category: "pull")
+            return false
+        }
+    }
+
     @discardableResult
     func pull(
         repoID: UUID,
@@ -3213,7 +3299,7 @@ final class AppState {
             clearCommitHistoryCache(for: repoID)
             syncProgress = String(localized: "Pull complete!")
             setPullOutcome(repoID: repoID, kind: .fastForwarded, message: String(localized: "Pulled latest changes (fast-forward)"))
-            requestReviewIfNeeded()
+            requestReviewIfNeeded(.userSync)
 
         case .updatedWithAttention(_, let commitSHA, let attention):
             markRepositoryMutated(repoID: repoID)
@@ -3222,25 +3308,12 @@ final class AppState {
                 saveRepos()
             }
             clearCommitHistoryCache(for: repoID)
-            let outcomeKind: PullOutcomeKind
-            switch attention {
-            case .checkoutIncomplete:
-                syncProgress = String(localized: "Pull updated Git, but working tree checkout needs attention")
-                outcomeKind = .checkoutIncomplete
-            case .lfsHydrationBlockedByLocalChanges, .lfsHydrationFailed,
-                 .lfsAuthenticationOrTrustRequired, .cancelledAfterUpdate:
-                syncProgress = String(localized: "Pull updated Git, but Git LFS needs attention")
-                outcomeKind = .lfsHydrationBlocked
-            }
-            setPullOutcome(
-                repoID: repoID,
-                kind: outcomeKind,
-                message: attention.localizedDescription
-            )
+            applyPostUpdateAttention(repoID: repoID, attention: attention)
 
         case .upToDate:
             syncProgress = String(localized: "Already up to date!")
             setPullOutcome(repoID: repoID, kind: .upToDate, message: String(localized: "Already up to date"))
+            requestReviewIfNeeded(.userSync)
 
         case .blockedByLocalChanges:
             syncProgress = String(localized: "Pull blocked by local changes")
@@ -3377,6 +3450,7 @@ final class AppState {
         }
 
         detectChanges(repoID: repoID)
+        if result.didPush { requestReviewIfNeeded(.userSync) }
         return result
     }
 
@@ -3462,6 +3536,12 @@ final class AppState {
             clearCommitHistoryCache(for: repoID)
         }
         detectChanges(repoID: repoID)
+        switch result.outcome {
+        case .upToDate, .pulled, .pushed, .pulledAndPushed:
+            requestReviewIfNeeded(.userSync)
+        default:
+            break
+        }
         return Self.syncResult(from: result)
     }
 
@@ -3541,6 +3621,11 @@ final class AppState {
                 }
             }
             let plan = execution.plan
+            if plan.action == .upToDate || plan.action == .blockedByLocalChanges,
+               let pending = plan.pendingCheckout, pending.needsFinishing {
+                applyPostUpdateAttention(repoID: repoID, attention: .workingTreeNotUpdated(pending))
+                return false
+            }
             switch plan.action {
             case .upToDate:
                 setPullOutcome(repoID: repoID, kind: .upToDate, message: String(localized: "Already up to date"))
@@ -3560,18 +3645,23 @@ final class AppState {
                     saveRepos()
                     clearCommitHistoryCache(for: repoID)
                 }
-                setPullOutcome(
-                    repoID: repoID,
-                    kind: result.updated ? (plan.action == .diverged ? .rebased : .fastForwarded) : .upToDate,
-                    message: result.updated
-                        ? (plan.action == .diverged
-                            ? String(localized: "Rebased local commits onto origin/\(plan.branch)")
-                            : String(localized: "Pulled latest changes (fast-forward)"))
-                        : String(localized: "Already up to date")
-                )
+                if let attention = result.attention {
+                    applyPostUpdateAttention(repoID: repoID, attention: attention)
+                } else {
+                    setPullOutcome(
+                        repoID: repoID,
+                        kind: result.updated ? (plan.action == .diverged ? .rebased : .fastForwarded) : .upToDate,
+                        message: result.updated
+                            ? (plan.action == .diverged
+                                ? String(localized: "Rebased local commits onto origin/\(plan.branch)")
+                                : String(localized: "Pulled latest changes (fast-forward)"))
+                            : String(localized: "Already up to date")
+                    )
+                }
                 detectChanges(repoID: repoID)
                 await loadBranches(repoID: repoID)
-                requestReviewIfNeeded()
+                recordReviewSuccess()
+                requestReviewIfNeeded(.userSync)
                 if showsProgressDelay { try? await Task.sleep(for: .seconds(1)) }
                 return true
             }
@@ -3725,7 +3815,7 @@ final class AppState {
             await loadBranches(repoID: repoID)
             syncProgress = String(localized: "Push complete!")
             didFinishPush(repoID: repoID, commitSHA: info?.commitSHA ?? repo.gitState.commitSHA, commits: sentCommits)
-            requestReviewIfNeeded()
+            requestReviewIfNeeded(.userSync)
             return true
         } catch is CancellationError {
             finishSyncActivity(repoID: repoID, success: false)
@@ -3819,7 +3909,7 @@ final class AppState {
             syncProgress = String(localized: "Push complete!")
             DebugLogger.shared.info("push", "Push complete", detail: "SHA: \(result.commitSHA)", repo: repo.displayName)
             didFinishPush(repoID: repoID, commitSHA: result.commitSHA, commits: sentCommits)
-            requestReviewIfNeeded()
+            requestReviewIfNeeded(.userSync)
 
             try? await Task.sleep(for: .seconds(1))
             return true
@@ -3847,25 +3937,45 @@ final class AppState {
 
     // MARK: - Review Prompt
 
-    private static let reviewRequestedKey = "hasRequestedReview"
-
-    private func requestReviewIfNeeded() {
-        // The one-time key is spent only when the prompt is actually shown
-        // (`markReviewRequested`), so a skipped moment can retry later.
-        if !UserDefaults.standard.bool(forKey: Self.reviewRequestedKey),
-           callbackNavigateToRepoID == nil, callbackResult == nil {
-            shouldRequestReview = true
-        }
+    /// Queues `moment` for the rating prompt when the policy allows it. Only
+    /// work the person started from the app's UI (`ReviewPromptContext`)
+    /// qualifies; the prompt itself waits in `ContentView` for a clear screen.
+    func requestReviewIfNeeded(_ moment: ReviewPromptMoment) {
+        guard ReviewPromptContext.isUserStarted || moment == .backgroundSummaryDismissed,
+              !isDemoMode,
+              callbackNavigateToRepoID == nil, callbackResult == nil,
+              reviewPromptPolicy.isEligible() else { return }
+        pendingReviewMoment = moment
+        reviewPromptRequestID &+= 1
     }
 
-    /// The rating prompt must not cover an x-callback run, its result
-    /// banner, an error alert, or work still in progress.
+    /// Counts a successful sync toward the rating prompt. Never prompts by
+    /// itself, so background runs count without showing anything.
+    func recordReviewSuccess() {
+        guard !isDemoMode else { return }
+        reviewPromptPolicy.recordSuccess()
+    }
+
+    /// The rating prompt must not cover an x-callback run, its result banner,
+    /// a toast (Undo push), an error alert, onboarding, or work in progress.
+    /// `ContentView` also checks for presented sheets and the foreground.
     var canPresentReviewPrompt: Bool {
-        callbackNavigateToRepoID == nil && callbackResult == nil && !showError && !isSyncing
+        pendingReviewMoment != nil
+            && !isDemoMode
+            && callbackNavigateToRepoID == nil && callbackResult == nil
+            && currentToast == nil
+            && !showError
+            && pendingSSHHostKeyTrustRequest == nil
+            && pendingLFSAutoTrackingConfirmation == nil
+            && !isSyncing && !isSyncingAllVaults
+            && !isBackgroundSyncing
+            && (hasCompletedOnboarding || !repos.isEmpty)
+            && reviewPromptPolicy.isEligible()
     }
 
     func markReviewRequested() {
-        UserDefaults.standard.set(true, forKey: Self.reviewRequestedKey)
+        pendingReviewMoment = nil
+        reviewPromptPolicy.markPrompted()
     }
 
     // MARK: - Repo Management
@@ -3952,6 +4062,14 @@ final class AppState {
         }
     }
 
+    /// Says how to recover: the folder name can't change once a vault is
+    /// added, so the way out is to add the vault again and pick its location.
+    nonisolated static func cloneTargetOutsideLocationMessage(folderName: String, usesChosenLocation: Bool) -> String {
+        usesChosenLocation
+            ? String(localized: "GitSync.md couldn't confirm that the folder “\(folderName)” is inside the location you chose. Remove this vault, add it again and choose the location again under Clone To.")
+            : String(localized: "The folder “\(folderName)” is outside this vault's location. Remove this vault and add it again with a different folder name.")
+    }
+
     func cloneTargetAssessment(_ vaultDir: URL, repoID: UUID, anchor: URL? = nil) -> CloneTargetAssessment {
         switch cloneTargetConflictIgnoringOwnWorkingCopy(vaultDir, repoID: repoID, anchor: anchor) {
         case .some(let message): return .conflict(message)
@@ -3963,14 +4081,21 @@ final class AppState {
 
     private func cloneTargetConflictIgnoringOwnWorkingCopy(_ vaultDir: URL, repoID: UUID, anchor: URL?) -> String? {
         let name = vaultDir.lastPathComponent
-        let unsafe = String(localized: "The folder “\(name)” is outside this vault's location. Choose a different folder name.")
-        guard !vaultDir.pathComponents.contains(where: { $0 == "." || $0 == ".." }) else { return unsafe }
         let anchor = anchor ?? resolvedCustomURLs[repoID] ?? Self.appDocumentsDirectory
+        let unsafe = Self.cloneTargetOutsideLocationMessage(
+            folderName: name, usesChosenLocation: resolvedCustomURLs[repoID] != nil)
+        func refuse() -> String {
+            // Paths only, so a report of this error can be diagnosed (issue #85).
+            DebugLogger.shared.warning("clone", "Clone target is outside its location",
+                                       detail: "\(Self.canonicalFilePath(for: vaultDir)) not in \(Self.canonicalFilePath(for: anchor))")
+            return unsafe
+        }
+        guard !vaultDir.pathComponents.contains(where: { $0 == "." || $0 == ".." }) else { return refuse() }
         if Self.canonicalFilePath(for: vaultDir) == Self.canonicalFilePath(for: anchor) {
             // Only a bookmark that is itself the working copy may equal its anchor.
-            guard resolvedCustomURLs[repoID] != nil, repo(id: repoID)?.customLocationIsParent == false else { return unsafe }
+            guard resolvedCustomURLs[repoID] != nil, repo(id: repoID)?.customLocationIsParent == false else { return refuse() }
         } else if !VaultFolderName.isContained(vaultDir, in: anchor) {
-            return unsafe
+            return refuse()
         }
 
         let path = Self.canonicalFilePath(for: vaultDir).lowercased()

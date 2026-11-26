@@ -121,6 +121,8 @@ class PushSyncBackend(val store: PushStateStore, private val api: PushRelayApi, 
         if (event.finished && !explicit) return emptyList()
         authorize(event.generation)
         val results = PushHintRunner(actions, catalog::snapshot).run(event.hint) { authorize(event.generation) }
+        // Push-hint pulls (background or a notification tap) count toward the review prompt but never show it.
+        if (results.any { it.result.outcome in com.bontecou.syncmd.review.syncedOutcomes }) com.bontecou.syncmd.review.ReviewPrompts.shared?.countSuccess()
         if (results.none { it.result.outcome == RepositoryActionOutcome.FAILED }) store.finish(id, event.generation)
         else error("Pull needs retry")
         return results

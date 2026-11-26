@@ -1,0 +1,2 @@
+• Retter et krasj ved pull av et hvelv som ikke er på en gren (detached HEAD). Pull forklarer nå i stedet hvordan du løser det.
+• Hvis GitSync.md lukkes under automatisk synkronisering, setter neste oppstart automatisk synkronisering på pause og spør hva du vil gjøre, så appen ikke krasjer ved hver oppstart.

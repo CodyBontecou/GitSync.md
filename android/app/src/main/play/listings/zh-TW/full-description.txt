@@ -1,4 +1,4 @@
-Gitsync.md 將真正的 Git 工作流程帶到 Android。連結 GitHub，將儲存庫複製到 App 儲存空間，檢視變更，並在手機上安全同步程式碼或 markdown。
+GitSync.md 將真正的 Git 工作流程帶到 Android。連結 GitHub，將儲存庫複製到 App 儲存空間，檢視變更，並在手機上安全同步程式碼或 markdown。
 
 為真實儲存庫打造
 - 透過 OAuth 或個人存取權杖登入後瀏覽 GitHub 儲存庫
@@ -24,4 +24,4 @@ Gitsync.md 將真正的 Git 工作流程帶到 Android。連結 GitHub，將儲�
 - 免費下載，透過 Google Play 一次性 App 內購買解鎖完整功能
 - 無廣告、無訂閱
 
-Gitsync.md 專為開發者、寫作者，以及所有在 Android 上管理 GitHub 檔案的人打造。若要存取私人儲存庫，請使用 GitHub 登入或提供個人存取權杖。權杖僅儲存在你的裝置本機。
+GitSync.md 專為開發者、寫作者，以及所有在 Android 上管理 GitHub 檔案的人打造。若要存取私人儲存庫，請使用 GitHub 登入或提供個人存取權杖。權杖僅儲存在你的裝置本機。

@@ -23,6 +23,10 @@ struct PremiumSettingsView: View {
                 VStack(alignment: .leading, spacing: 0) {
                     if isOn {
                         enabledHeader
+                        if runtime.automaticSyncPausedAfterCrash {
+                            crashPausedCard
+                                .padding(.top, 18)
+                        }
                         actionsCard
                             .padding(.top, 18)
                         actionsFinePrint
@@ -490,6 +494,33 @@ struct PremiumSettingsView: View {
             .padding(.top, 4)
         }
         .padding(.top, 24)
+    }
+
+    // MARK: - Paused after a crash (issue #111)
+
+    private var crashPausedCard: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Label(String(localized: "Automatic sync paused"), systemImage: "pause.circle.fill")
+                .font(TideFont.sans(15, .semibold, relativeTo: .subheadline))
+                .foregroundStyle(Tide.ahead)
+            Text(String(localized: "GitSync.md stopped unexpectedly during the last automatic sync, so automatic sync is paused. Pull a vault yourself to see what went wrong, then resume automatic sync or turn off Background Sync."))
+                .font(TideFont.sans(13, relativeTo: .footnote))
+                .foregroundStyle(Tide.inkMid)
+                .fixedSize(horizontal: false, vertical: true)
+            BSecondaryButton(
+                title: String(localized: "Resume Automatic Sync"),
+                isDisabled: isWorking || runtime.isReconcilingAutomaticSync
+            ) {
+                Task { await runtime.resumeAutomaticSyncAfterCrash() }
+            }
+            .accessibilityIdentifier("backgroundSync.resumeAfterCrash")
+        }
+        .padding(18)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(RoundedRectangle(cornerRadius: Tide.radiusCard, style: .continuous).fill(Tide.card))
+        .accessibilityElement(children: .contain)
+        .accessibilityIdentifier("backgroundSync.pausedAfterCrash")
+        .padding(.horizontal, Tide.gutter)
     }
 
     // MARK: - Data & privacy

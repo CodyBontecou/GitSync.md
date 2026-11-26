@@ -46,6 +46,7 @@ protocol GitRepositoryProtocol: Sendable {
     func executePullOnly(pat: String, expectedBranch: String?) async throws -> PullExecutionResult
     /// Apply a fast-forward after `pullPlan` has already fetched origin.
     func pullFastForward(branch: String, pat: String) async throws -> LocalPullResult
+    func finishPendingCheckout() async throws -> PendingCheckoutCompletion
     /// Rebase local commits onto origin/<branch> after `pullPlan` has already fetched origin.
     func pullRebase(branch: String, pat: String, authorName: String, authorEmail: String) async throws -> LocalPullResult
     func unifiedDiff(path: String?) async throws -> UnifiedDiffResult
@@ -81,6 +82,8 @@ protocol GitRepositoryProtocol: Sendable {
     func unstage(path: String, oldPath: String?) async throws
     func discardChanges(path: String) async throws
     func discardAllChanges() async throws
+    func trackedPaths(matching target: GitUntrackTarget) async throws -> [String]
+    func stopTracking(_ target: GitUntrackTarget, authorName: String, authorEmail: String) async throws -> GitUntrackResult
     func commitAndPush(
         message: String,
         authorName: String,
@@ -105,6 +108,19 @@ protocol GitRepositoryProtocol: Sendable {
 }
 
 extension GitRepositoryProtocol {
+    /// Test doubles that never leave a checkout behind HEAD have nothing to finish.
+    func finishPendingCheckout() async throws -> PendingCheckoutCompletion {
+        PendingCheckoutCompletion(restoredPaths: [], keptLocalPaths: [], remainingStalePaths: [])
+    }
+
+    func trackedPaths(matching target: GitUntrackTarget) async throws -> [String] {
+        throw LocalGitError.notCloned
+    }
+
+    func stopTracking(_ target: GitUntrackTarget, authorName: String, authorEmail: String) async throws -> GitUntrackResult {
+        throw LocalGitError.notCloned
+    }
+
     func clone(remoteURL: String, pat: String) async throws -> LocalCloneResult {
         try await clone(remoteURL: remoteURL, pat: pat, branch: nil)
     }

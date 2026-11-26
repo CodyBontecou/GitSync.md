@@ -334,6 +334,57 @@ final class SyncMDTests: XCTestCase {
         XCTAssertEqual(try String(contentsOf: destination.appendingPathComponent("README.md"), encoding: .utf8), "selected branch")
     }
 
+    /// Issue #85: on a fresh install (no default save location) a new vault
+    /// clones into the app's own Documents folder (Files › On My iPhone ›
+    /// GitSync.md), and cloning again after the local vault was deleted, or
+    /// emptied in Files, works too.
+    @MainActor
+    func testFreshCloneIntoAppDocumentsSucceedsAndRepeatsAfterLocalVaultIsDeleted() async throws {
+        let fm = FileManager.default
+        let source = try makeTemporaryGitRepository(prefix: "fresh-docs-source")
+        defer { try? fm.removeItem(at: source) }
+        let service = LocalGitService(localURL: source)
+        try "# Notes".write(to: source.appendingPathComponent("Welcome.md"), atomically: true, encoding: .utf8)
+        try await service.stage(path: "Welcome.md")
+        let sha = try await service.commitLocal(message: "Base", authorName: "Tests", authorEmail: "tests@example.com")
+
+        let state = AppState(loadPersistedState: false)
+        XCTAssertNil(state.defaultSaveLocationBookmarkData, "A fresh install has no default save location")
+        let config = RepoConfig(repoURL: source.absoluteString, branch: "", authorName: "Tests",
+                                authorEmail: "tests@example.com", vaultFolderName: "fresh-docs-\(UUID().uuidString.prefix(8))")
+        state.repos = [config]
+        let destination = try XCTUnwrap(state.vaultURL(for: config.id))
+        defer { try? fm.removeItem(at: destination) }
+        XCTAssertTrue(VaultFolderName.isContained(destination, in: AppState.appDocumentsDirectory))
+        XCTAssertFalse(fm.fileExists(atPath: destination.path), "The vault folder does not exist before the first clone")
+
+        func assertCloned(_ step: String) throws {
+            XCTAssertFalse(state.showError, "\(step): \(state.lastError ?? "")")
+            XCTAssertNil(state.lastError, step)
+            XCTAssertEqual(state.repo(id: config.id)?.gitState.commitSHA, sha, step)
+            XCTAssertEqual(try String(contentsOf: destination.appendingPathComponent("Welcome.md"), encoding: .utf8), "# Notes", step)
+            XCTAssertTrue(fm.fileExists(atPath: destination.appendingPathComponent(".git").path), step)
+        }
+
+        await state.clone(repoID: config.id)
+        try assertCloned("first clone")
+
+        // The user deletes the local vault folder, then clones again.
+        try fm.removeItem(at: destination)
+        state.repos[0].gitState = .empty
+        await state.clone(repoID: config.id)
+        try assertCloned("clone after deleting the vault folder")
+
+        // The user deletes the vault's contents (as Files or Obsidian does),
+        // leaving an empty folder behind.
+        for item in try fm.contentsOfDirectory(atPath: destination.path) {
+            try fm.removeItem(at: destination.appendingPathComponent(item))
+        }
+        state.repos[0].gitState = .empty
+        await state.clone(repoID: config.id)
+        try assertCloned("clone into the emptied vault folder")
+    }
+
     @MainActor
     func testVaultPreflightRejectsMissingBranchInsteadOfPassingIt() async throws {
         let source = try makeTemporaryGitRepository(prefix: "missing-branch-source")
@@ -2063,6 +2114,7 @@ final class SyncMDTests: XCTestCase {
             "NSPrivacyCollectedDataTypePurposeAnalytics"
         ])
         XCTAssertEqual(purposes["NSPrivacyCollectedDataTypePurchaseHistory"], [
+            "NSPrivacyCollectedDataTypePurposeAnalytics",
             "NSPrivacyCollectedDataTypePurposeAppFunctionality"
         ])
         XCTAssertEqual(purposes["NSPrivacyCollectedDataTypeUserID"], [
@@ -3671,6 +3723,205 @@ final class SyncMDTests: XCTestCase {
                        "Overlapping activations coalesce into the running pass instead of cancelling and restarting")
     }
 
+    // MARK: Issue #111: crash-loop guard for automatic sync
+
+    @MainActor
+    func testAutomaticSyncPausesAfterLaunchFollowingCrashDuringAutomaticPass() async {
+        let defaultsSuite = "premium-runtime-crash-pause-\(UUID().uuidString)"
+        let defaults = UserDefaults(suiteName: defaultsSuite)!
+        defaults.set(true, forKey: "premium.automatic-sync.v1")
+        defaults.set(true, forKey: "premium.automatic-pull.v1")
+        // The previous process died while an automatic pass was running.
+        defaults.set(true, forKey: PremiumRuntime.automaticPassInFlightKey)
+        var repo = RepoConfig(repoURL: "owner/repo", branch: "main", authorName: "One",
+                              authorEmail: "one@example.com", vaultFolderName: "one")
+        repo.gitState.commitSHA = String(repeating: "1", count: 40)
+        repo.assist = RepoAssistSettings(enabled: true, channel: "channel_12345678", selectedBranch: "main")
+        let scheduler = RecordingBackgroundProcessingScheduler()
+
+        let harness = await PremiumRuntimeTestHarness.make(
+            defaultsSuite: defaultsSuite,
+            repo: repo,
+            backgroundScheduler: scheduler
+        )
+        defer { harness.cleanup() }
+
+        XCTAssertTrue(harness.runtime.automaticSyncPausedAfterCrash)
+        XCTAssertTrue(harness.runtime.showsAutomaticSyncPausedNotice)
+        XCTAssertFalse(defaults.bool(forKey: PremiumRuntime.automaticPassInFlightKey))
+        XCTAssertEqual(scheduler.scheduleCount, 0, "A paused installation must not schedule background work")
+        XCTAssertTrue(harness.runtime.automaticallySyncAllRepositories, "The person's preference is kept")
+
+        await harness.runtime.reconcileForeground()
+        XCTAssertEqual(harness.repository.pullPlanCallCount, 0)
+        XCTAssertEqual(harness.repository.executePullOnlyCallCount, 0)
+
+        // A second launch while still paused stays paused without re-announcing.
+        let relaunch = await PremiumRuntimeTestHarness.make(
+            defaultsSuite: defaultsSuite,
+            repo: repo,
+            backgroundScheduler: NoopPremiumBackgroundProcessingScheduler()
+        )
+        XCTAssertTrue(relaunch.runtime.automaticSyncPausedAfterCrash)
+        XCTAssertFalse(relaunch.runtime.showsAutomaticSyncPausedNotice)
+        await relaunch.runtime.reconcileForeground()
+        XCTAssertEqual(relaunch.repository.pullPlanCallCount, 0)
+    }
+
+    @MainActor
+    func testResumingAfterCrashPauseRunsAutomaticSyncAndClearsMarker() async {
+        let defaultsSuite = "premium-runtime-crash-resume-\(UUID().uuidString)"
+        let defaults = UserDefaults(suiteName: defaultsSuite)!
+        defaults.set(true, forKey: "premium.automatic-sync.v1")
+        defaults.set(true, forKey: "premium.automatic-pull.v1")
+        defaults.set(true, forKey: PremiumRuntime.automaticPassInFlightKey)
+        var repo = RepoConfig(repoURL: "owner/repo", branch: "main", authorName: "One",
+                              authorEmail: "one@example.com", vaultFolderName: "one")
+        repo.gitState.commitSHA = String(repeating: "1", count: 40)
+        repo.assist = RepoAssistSettings(enabled: true, channel: "channel_12345678", selectedBranch: "main")
+        let scheduler = RecordingBackgroundProcessingScheduler()
+        let harness = await PremiumRuntimeTestHarness.make(
+            defaultsSuite: defaultsSuite,
+            repo: repo,
+            backgroundScheduler: scheduler
+        )
+        defer { harness.cleanup() }
+        XCTAssertTrue(harness.runtime.automaticSyncPausedAfterCrash)
+
+        await harness.runtime.resumeAutomaticSyncAfterCrash()
+
+        XCTAssertFalse(harness.runtime.automaticSyncPausedAfterCrash)
+        XCTAssertFalse(harness.runtime.showsAutomaticSyncPausedNotice)
+        XCTAssertFalse(defaults.bool(forKey: PremiumRuntime.automaticSyncPausedAfterCrashKey))
+        XCTAssertGreaterThanOrEqual(harness.repository.pullPlanCallCount, 1)
+        XCTAssertGreaterThanOrEqual(scheduler.scheduleCount, 1)
+        XCTAssertFalse(defaults.bool(forKey: PremiumRuntime.automaticPassInFlightKey),
+                       "A pass that returns removes its in-flight marker")
+
+        // A normal launch after a completed pass is not paused.
+        let relaunch = await PremiumRuntimeTestHarness.make(
+            defaultsSuite: defaultsSuite,
+            repo: repo,
+            backgroundScheduler: NoopPremiumBackgroundProcessingScheduler()
+        )
+        XCTAssertFalse(relaunch.runtime.automaticSyncPausedAfterCrash)
+        XCTAssertFalse(relaunch.runtime.showsAutomaticSyncPausedNotice)
+    }
+
+    /// A pass the scene cancelled by going to the background can stay stuck in
+    /// libgit2 until iOS suspends and kills the app. That is not a crash.
+    @MainActor
+    func testBackgroundedAutomaticPassDoesNotPauseNextLaunch() async {
+        let defaultsSuite = "premium-runtime-crash-backgrounded-\(UUID().uuidString)"
+        let defaults = UserDefaults(suiteName: defaultsSuite)!
+        var repo = RepoConfig(repoURL: "owner/repo", branch: "main", authorName: "One",
+                              authorEmail: "one@example.com", vaultFolderName: "one")
+        repo.gitState.commitSHA = String(repeating: "1", count: 40)
+        let harness = await PremiumRuntimeTestHarness.make(
+            defaultsSuite: defaultsSuite,
+            repo: repo,
+            backgroundScheduler: NoopPremiumBackgroundProcessingScheduler()
+        )
+        defer { harness.cleanup() }
+        let lifecycle = ForegroundSyncLifecycle(runtime: harness.runtime)
+        await harness.runtime.setAutomaticallySyncAllRepositories(true)
+        let gate = AsyncGate()
+        harness.repository.executePullOnlyGate = gate
+
+        lifecycle.scenePhaseChanged(to: .active)
+        await waitUntil { harness.repository.executePullOnlyCallCount == 1 }
+        XCTAssertTrue(defaults.bool(forKey: PremiumRuntime.automaticPassInFlightKey),
+                      "A running automatic pass holds the marker")
+
+        // Backgrounded while Git work is still blocked: iOS may now suspend
+        // and later kill the process before the pass returns.
+        lifecycle.scenePhaseChanged(to: .background)
+        XCTAssertFalse(defaults.bool(forKey: PremiumRuntime.automaticPassInFlightKey))
+
+        let relaunch = await PremiumRuntimeTestHarness.make(
+            defaultsSuite: defaultsSuite,
+            repo: repo,
+            backgroundScheduler: NoopPremiumBackgroundProcessingScheduler()
+        )
+        XCTAssertFalse(relaunch.runtime.automaticSyncPausedAfterCrash)
+        XCTAssertFalse(relaunch.runtime.showsAutomaticSyncPausedNotice)
+        await gate.open()
+    }
+
+    @MainActor
+    func testExpiredBackgroundProcessingPassDoesNotPauseNextLaunch() async {
+        let defaultsSuite = "premium-runtime-crash-bgtask-\(UUID().uuidString)"
+        let defaults = UserDefaults(suiteName: defaultsSuite)!
+        var repo = RepoConfig(repoURL: "owner/repo", branch: "main", authorName: "One",
+                              authorEmail: "one@example.com", vaultFolderName: "one")
+        repo.gitState.commitSHA = String(repeating: "1", count: 40)
+        let scheduler = RecordingBackgroundProcessingScheduler()
+        let harness = await PremiumRuntimeTestHarness.make(
+            defaultsSuite: defaultsSuite,
+            repo: repo,
+            backgroundScheduler: scheduler
+        )
+        defer { harness.cleanup() }
+        await harness.runtime.setAutomaticallySyncAllRepositories(true)
+        let gate = AsyncGate()
+        harness.repository.executePullOnlyGate = gate
+
+        let task = RecordingBackgroundProcessingTask()
+        scheduler.invoke(task)
+        await waitUntil { harness.repository.executePullOnlyCallCount == 1 }
+        XCTAssertTrue(defaults.bool(forKey: PremiumRuntime.automaticPassInFlightKey))
+
+        task.expirationHandler?()
+        XCTAssertFalse(defaults.bool(forKey: PremiumRuntime.automaticPassInFlightKey),
+                       "An expired BGTask is an interruption, not a crash")
+
+        let relaunch = await PremiumRuntimeTestHarness.make(
+            defaultsSuite: defaultsSuite,
+            repo: repo,
+            backgroundScheduler: NoopPremiumBackgroundProcessingScheduler()
+        )
+        XCTAssertFalse(relaunch.runtime.automaticSyncPausedAfterCrash)
+        await gate.open()
+    }
+
+    @MainActor
+    func testTurningOffBackgroundSyncClearsCrashPause() async {
+        let defaultsSuite = "premium-runtime-crash-off-\(UUID().uuidString)"
+        let defaults = UserDefaults(suiteName: defaultsSuite)!
+        defaults.set(true, forKey: "premium.automatic-sync.v1")
+        defaults.set(true, forKey: "premium.automatic-pull.v1")
+        defaults.set(true, forKey: PremiumRuntime.automaticPassInFlightKey)
+        let harness = await PremiumRuntimeTestHarness.make(
+            defaultsSuite: defaultsSuite,
+            backgroundScheduler: NoopPremiumBackgroundProcessingScheduler()
+        )
+        defer { harness.cleanup() }
+        XCTAssertTrue(harness.runtime.automaticSyncPausedAfterCrash)
+
+        await harness.runtime.setAutomaticallySyncAllRepositories(false)
+
+        XCTAssertFalse(harness.runtime.automaticSyncPausedAfterCrash)
+        XCTAssertFalse(harness.runtime.showsAutomaticSyncPausedNotice)
+        XCTAssertFalse(defaults.bool(forKey: PremiumRuntime.automaticSyncPausedAfterCrashKey))
+    }
+
+    @MainActor
+    func testInFlightMarkerDoesNotPauseWhenBackgroundSyncIsOff() async {
+        let defaultsSuite = "premium-runtime-crash-disabled-\(UUID().uuidString)"
+        let defaults = UserDefaults(suiteName: defaultsSuite)!
+        defaults.set(false, forKey: "premium.automatic-sync.v1")
+        defaults.set(true, forKey: PremiumRuntime.automaticPassInFlightKey)
+        let harness = await PremiumRuntimeTestHarness.make(
+            defaultsSuite: defaultsSuite,
+            backgroundScheduler: NoopPremiumBackgroundProcessingScheduler()
+        )
+        defer { harness.cleanup() }
+
+        XCTAssertFalse(harness.runtime.automaticSyncPausedAfterCrash)
+        XCTAssertFalse(harness.runtime.showsAutomaticSyncPausedNotice)
+        XCTAssertFalse(defaults.bool(forKey: PremiumRuntime.automaticPassInFlightKey))
+    }
+
     @MainActor
     func testForegroundReconciliationCooldownSuppressesBouncesButExplicitSyncBypasses() async {
         var repo = RepoConfig(repoURL: "owner/repo", branch: "main", authorName: "One",
@@ -4687,6 +4938,64 @@ final class SyncMDTests: XCTestCase {
         let finalInfo = try await setup.repoInfo()
         XCTAssertEqual(finalInfo.commitSHA, remoteSHA)
         XCTAssertFalse(fm.fileExists(atPath: indexLockURL.path))
+    }
+
+    /// Issue #111: a detached HEAD made pull look up the symbolic
+    /// refs/remotes/origin/HEAD and force-unwrap its missing direct target,
+    /// crashing the app on every manual and automatic pull.
+    func testLocalGitPullOnDetachedHeadThrowsInsteadOfCrashing() async throws {
+        let fm = FileManager.default
+        let repoURL = try makeTemporaryGitRepository(prefix: "SyncMD-DetachedHeadPull")
+        defer { try? fm.removeItem(at: repoURL) }
+        let originURL = fm.temporaryDirectory.appendingPathComponent(
+            "SyncMD-DetachedHeadPull-Origin-\(UUID().uuidString)",
+            isDirectory: true
+        )
+        defer { try? fm.removeItem(at: originURL) }
+        let setup = LocalGitService(localURL: repoURL)
+        try "base\n".write(to: repoURL.appendingPathComponent("README.md"), atomically: true, encoding: .utf8)
+        try await setup.stage(path: "README.md")
+        let baseSHA = try await setup.commitLocal(message: "Base", authorName: "Tests", authorEmail: "tests@example.com")
+        try "remote\n".write(to: repoURL.appendingPathComponent("README.md"), atomically: true, encoding: .utf8)
+        try await setup.stage(path: "README.md")
+        let remoteSHA = try await setup.commitLocal(message: "Remote", authorName: "Tests", authorEmail: "tests@example.com")
+        try makeBareOrigin(at: originURL, copyingObjectsFrom: repoURL, headSHA: remoteSHA)
+        try setLocalAndRemoteTrackingRefs(repoURL: repoURL, localSHA: baseSHA, remoteSHA: baseSHA)
+        try checkoutHeadTree(repoURL: repoURL)
+        try await setup.setRemoteURL(name: "origin", url: "file://localhost\(originURL.path)")
+
+        // What `git clone` leaves behind, plus a detached HEAD (for example
+        // after an interrupted rebase or a commit checked out elsewhere).
+        do {
+            var repo: OpaquePointer?
+            defer { if let repo { git_repository_free(repo) } }
+            XCTAssertEqual(git_repository_open(&repo, repoURL.path), 0)
+            var symbolic: OpaquePointer?
+            defer { if let symbolic { git_reference_free(symbolic) } }
+            XCTAssertEqual(git_reference_symbolic_create(
+                &symbolic, repo, "refs/remotes/origin/HEAD", "refs/remotes/origin/main", 1, "test clone"
+            ), 0)
+            var baseOID = git_oid()
+            XCTAssertEqual(baseSHA.withCString { git_oid_fromstr(&baseOID, $0) }, 0)
+            XCTAssertEqual(git_repository_set_head_detached(repo, &baseOID), 0)
+        }
+
+        let service = LocalGitService(localURL: repoURL)
+        do {
+            _ = try await service.pullPlan(pat: "")
+            XCTFail("Pull planning on a detached HEAD must throw")
+        } catch LocalGitError.detachedHead {
+        }
+        do {
+            _ = try await service.executePullOnly(pat: "", expectedBranch: "main")
+            XCTFail("Pull on a detached HEAD must throw")
+        } catch LocalGitError.detachedHead {
+        }
+
+        let result = await RepositoryPullRunner().run(repository: service, credentials: "", expectedBranch: "main")
+        XCTAssertEqual(result, .failed(message: LocalGitError.detachedHead.localizedDescription))
+        let info = try await service.repoInfo()
+        XCTAssertEqual(info.commitSHA, baseSHA, "A refused pull leaves the checkout untouched")
     }
 
     func testLocalGitPullOnlyCancellationBeforeMutationPreventsCheckoutAndReleasesLease() async throws {
@@ -9915,9 +10224,9 @@ final class SyncMDTests: XCTestCase {
 
         XCTAssertEqual(execution.plan.action, .fastForward)
         XCTAssertEqual(execution.pullResult?.newCommitSHA, remoteSHA)
-        guard case .checkoutIncomplete = execution.pullResult?.attention else {
-            return XCTFail("Expected explicit post-update checkout attention")
-        }
+        // The conflicting file keeps its local bytes and is named explicitly
+        // (issue #130); other incoming files would still be written.
+        XCTAssertEqual(execution.pullResult?.attention, .localEditsKept(paths: ["Note.md"]))
         XCTAssertEqual(try String(contentsOf: fileURL, encoding: .utf8), "external write\n")
         let finalInfo = try await setup.repoInfo()
         XCTAssertEqual(finalInfo.commitSHA, remoteSHA)
@@ -12049,6 +12358,31 @@ final class OnboardingAnalyticsEventModelTests: XCTestCase {
 
         XCTAssertTrue(properties.encodedProperties().isEmpty)
     }
+
+    func testPaywallPropertiesEncodeContextProductAndOutcome() {
+        let event = OnboardingAnalyticsEvent(
+            name: .paywallPurchaseCompleted,
+            properties: OnboardingAnalyticsProperties(
+                errorCategory: .productUnavailable,
+                paywallContext: .vaultCheck,
+                productId: .lifetime,
+                purchaseOutcome: .failed
+            )
+        )
+
+        let payload = event.encodedPayload()
+
+        XCTAssertEqual(payload.eventName, "sync_paywall_purchase_completed")
+        XCTAssertEqual(payload.properties[.paywallContext], .string("vault_check"))
+        XCTAssertEqual(payload.properties[.productId], .string("gitsync.md.lifetime"))
+        XCTAssertEqual(payload.properties[.purchaseOutcome], .string("failed"))
+        XCTAssertEqual(payload.properties[.errorCategory], .string("product_unavailable"))
+    }
+
+    @MainActor
+    func testPaywallProductIDMatchesStoreProduct() {
+        XCTAssertEqual(OnboardingAnalyticsProductID.lifetime.rawValue, AppUnlock.productID)
+    }
 }
 
 final class OnboardingAnalyticsClientTests: XCTestCase {
@@ -13463,6 +13797,128 @@ final class NameValidationTests: XCTestCase {
                        AppState.canonicalFilePath(for: URL(fileURLWithPath: "/tmp/\(name)/myself.md-vault")))
     }
 
+    /// Issue #85: a fresh clone into a picked location (e.g. On My iPhone ›
+    /// Obsidian or iCloud Drive › Obsidian) must pass the containment check
+    /// whichever way the `/private` prefix, trailing slashes and missing
+    /// folders fall on either side.
+    func testVaultFolderContainmentNormalizesPrivatePrefixesAndTrailingSlashes() throws {
+        let name = "containment-\(UUID().uuidString)"
+        let shortParent = "/tmp/\(name)"
+        let longParent = "/private/tmp/\(name)"
+        try FileManager.default.createDirectory(atPath: longParent, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(atPath: longParent) }
+
+        for parentPath in [shortParent, longParent, shortParent + "/", longParent + "/", longParent + "//"] {
+            let parent = URL(fileURLWithPath: parentPath, isDirectory: true)
+            for childBase in [shortParent, longParent] {
+                for suffix in ["/Vault", "/Vault/", "/Vault/nested/deeper", "/./Vault"] {
+                    let child = URL(fileURLWithPath: childBase + suffix)
+                    XCTAssertTrue(VaultFolderName.isContained(child, in: parent), "\(child.path) in \(parentPath)")
+                }
+                XCTAssertFalse(VaultFolderName.isContained(URL(fileURLWithPath: childBase), in: parent), parentPath)
+                XCTAssertFalse(VaultFolderName.isContained(URL(fileURLWithPath: childBase + "/"), in: parent), parentPath)
+                XCTAssertFalse(VaultFolderName.isContained(URL(fileURLWithPath: childBase + "X/Vault"), in: parent), parentPath)
+                XCTAssertFalse(VaultFolderName.isContained(URL(fileURLWithPath: childBase + "/../Vault"), in: parent), parentPath)
+                XCTAssertFalse(VaultFolderName.isContained(URL(fileURLWithPath: childBase + "/Vault/../.."), in: parent), parentPath)
+            }
+        }
+
+        // An existing vault folder (cloning again after the files were
+        // deleted) must still count as inside, under either spelling.
+        try FileManager.default.createDirectory(atPath: longParent + "/Vault", withIntermediateDirectories: true)
+        XCTAssertTrue(VaultFolderName.isContained(URL(fileURLWithPath: longParent + "/Vault"),
+                                                  in: URL(fileURLWithPath: shortParent + "/")))
+        XCTAssertTrue(VaultFolderName.isContained(URL(fileURLWithPath: shortParent + "/Vault/"),
+                                                  in: URL(fileURLWithPath: longParent)))
+        XCTAssertEqual(AppState.canonicalFilePath(for: URL(fileURLWithPath: longParent + "/Vault/")),
+                       AppState.canonicalFilePath(for: URL(fileURLWithPath: shortParent + "/Vault")))
+    }
+
+    /// Neither the picked location nor the vault folder has to exist for the
+    /// check (another app's container can be unreadable until its scope is
+    /// started); `/private/var` and `/var` still compare equal.
+    func testVaultFolderContainmentAcceptsMissingParentUnderEitherVarSpelling() {
+        let container = "var/mobile/Containers/Data/Application/\(UUID().uuidString)/Documents"
+        for parentPath in ["/\(container)", "/private/\(container)", "/\(container)/"] {
+            let parent = URL(fileURLWithPath: parentPath, isDirectory: true)
+            XCTAssertTrue(VaultFolderName.isContained(URL(fileURLWithPath: "/private/\(container)/Vault"), in: parent))
+            XCTAssertTrue(VaultFolderName.isContained(URL(fileURLWithPath: "/\(container)/Vault/"), in: parent))
+            XCTAssertFalse(VaultFolderName.isContained(URL(fileURLWithPath: "/private/\(container)"), in: parent))
+            XCTAssertFalse(VaultFolderName.isContained(URL(fileURLWithPath: "/\(container)Other/Vault"), in: parent))
+        }
+        XCTAssertEqual(AppState.canonicalFilePath(for: URL(fileURLWithPath: "/private/\(container)/Vault")),
+                       "/\(container)/Vault")
+    }
+
+    func testPrivatePrefixIsOnlyStrippedFromSystemFirmlinks() {
+        XCTAssertEqual(VaultFolderName.withoutPrivatePrefix("/private/var/mobile"), "/var/mobile")
+        XCTAssertEqual(VaultFolderName.withoutPrivatePrefix("/private/var"), "/var")
+        XCTAssertEqual(VaultFolderName.withoutPrivatePrefix("/private/tmp/a"), "/tmp/a")
+        XCTAssertEqual(VaultFolderName.withoutPrivatePrefix("/private/etc/hosts"), "/etc/hosts")
+        XCTAssertEqual(VaultFolderName.withoutPrivatePrefix("/private/variable/a"), "/private/variable/a")
+        XCTAssertEqual(VaultFolderName.withoutPrivatePrefix("/private"), "/private")
+        XCTAssertEqual(VaultFolderName.withoutPrivatePrefix("/Users/private/var"), "/Users/private/var")
+    }
+
+    /// Fresh setup (issue #85): a new vault cloned into a picked parent whose
+    /// bookmark resolves with the other `/private` spelling and a trailing
+    /// slash is not reported as outside its location.
+    @MainActor
+    func testFreshCloneIntoPickedLocationIsNotOutsideItsLocation() throws {
+        let state = AppState(loadPersistedState: false)
+        let name = "fresh-\(UUID().uuidString.prefix(8))"
+        let pickedPath = "/private/tmp/\(name)/Obsidian"
+        try FileManager.default.createDirectory(atPath: pickedPath, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(atPath: "/private/tmp/\(name)") }
+        let vault = RepoConfig(repoURL: "https://github.com/Owner/Notes.git", branch: "main", authorName: "A",
+                               authorEmail: "a@example.com", vaultFolderName: "Notes", customLocationIsParent: true)
+        state.repos = [vault]
+        let anchor = URL(fileURLWithPath: "/tmp/\(name)/Obsidian/", isDirectory: true)
+        let target = URL(fileURLWithPath: pickedPath, isDirectory: true).appendingPathComponent("Notes", isDirectory: true)
+        XCTAssertNil(state.cloneTargetConflict(target, repoID: vault.id, anchor: anchor))
+        XCTAssertEqual(state.cloneTargetAssessment(target, repoID: vault.id, anchor: anchor), .replaceable)
+
+        // Cloning again after the vault's files were deleted in Files or
+        // Obsidian leaves an empty folder behind; it is still replaceable.
+        try FileManager.default.createDirectory(at: target, withIntermediateDirectories: true)
+        XCTAssertEqual(state.cloneTargetAssessment(target, repoID: vault.id, anchor: anchor), .replaceable)
+
+        let elsewhere = URL(fileURLWithPath: "/private/tmp/\(name)/Other/Notes", isDirectory: true)
+        XCTAssertEqual(state.cloneTargetConflict(elsewhere, repoID: vault.id, anchor: anchor),
+                       AppState.cloneTargetOutsideLocationMessage(folderName: "Notes", usesChosenLocation: false))
+    }
+
+    /// The recovery messages ship translated in every language the app ships,
+    /// under the keys `String(localized:)` looks up.
+    func testOutsideLocationMessagesAreTranslatedInEveryShippedLanguage() throws {
+        let keys = [
+            "GitSync.md couldn't confirm that the folder “%@” is inside the location you chose. Remove this vault, add it again and choose the location again under Clone To.",
+            "The folder “%@” is outside this vault's location. Remove this vault and add it again with a different folder name.",
+        ]
+        let appBundle = Bundle(for: AppState.self)
+        let languages = appBundle.localizations.filter { $0 != "en" && $0 != "Base" }
+        XCTAssertGreaterThanOrEqual(languages.count, 25, "\(appBundle.localizations)")
+        for language in languages {
+            let path = try XCTUnwrap(appBundle.path(forResource: language, ofType: "lproj"), language)
+            let bundle = try XCTUnwrap(Bundle(path: path), language)
+            for key in keys {
+                let value = bundle.localizedString(forKey: key, value: "<missing>", table: nil)
+                XCTAssertNotEqual(value, "<missing>", "\(language): \(key)")
+                XCTAssertNotEqual(value, key, "\(language) falls back to English")
+                XCTAssertEqual(value.components(separatedBy: "%@").count, 2, "\(language) keeps the folder placeholder")
+            }
+        }
+    }
+
+    func testOutsideLocationMessageSaysHowToRecover() {
+        let chosen = AppState.cloneTargetOutsideLocationMessage(folderName: "Notes", usesChosenLocation: true)
+        XCTAssertTrue(chosen.contains("Notes"))
+        XCTAssertTrue(chosen.contains("choose the location again"))
+        let fallback = AppState.cloneTargetOutsideLocationMessage(folderName: "Notes", usesChosenLocation: false)
+        XCTAssertTrue(fallback.contains("add it again"))
+        XCTAssertFalse(fallback.contains("Choose a different folder name"))
+    }
+
     func testGitHubShorthandRejectsDotSegments() {
         XCTAssertNil(GitRemoteURL.parse("../.."))
         XCTAssertNil(GitRemoteURL.parse("owner/.."))
@@ -13619,5 +14075,386 @@ final class NameValidationTests: XCTestCase {
         guard case .conflict = state.cloneTargetAssessment(dir, repoID: vault.id) else {
             return XCTFail("A different repository is never this vault's working copy")
         }
+    }
+}
+
+// MARK: - Issue #130: HEAD ahead of the working tree after a pull
+// Real libgit2, no mocks. A pull must never report "Already up to date" over
+// files that an earlier update never checked out, and must never commit them.
+
+private func blobText(repoURL: URL, spec: String) throws -> String? {
+    var repo: OpaquePointer?
+    defer { if let repo { git_repository_free(repo) } }
+    guard git_repository_open(&repo, repoURL.path) == 0 else { return nil }
+    var object: OpaquePointer?
+    defer { if let object { git_object_free(object) } }
+    guard git_revparse_single(&object, repo, spec) == 0 else { return nil }
+    guard let raw = git_blob_rawcontent(object) else { return nil }
+    let size = Int(git_blob_rawsize(object))
+    return String(data: Data(bytes: raw, count: size), encoding: .utf8)
+}
+
+/// Moves refs/heads/main with a reflog message and replaces the index with the
+/// target tree, leaving the working tree untouched.
+private func moveBranchAndIndexLeavingWorktree(repoURL: URL, sha: String, reflogMessage: String) throws {
+    var repo: OpaquePointer?
+    defer { if let repo { git_repository_free(repo) } }
+    XCTAssertEqual(git_repository_open(&repo, repoURL.path), 0)
+    var oid = git_oid()
+    XCTAssertEqual(sha.withCString { git_oid_fromstr(&oid, $0) }, 0)
+    var ref: OpaquePointer?
+    defer { if let ref { git_reference_free(ref) } }
+    XCTAssertEqual(git_reference_create(&ref, repo, "refs/heads/main", &oid, 1, reflogMessage), 0)
+    var commit: OpaquePointer?, tree: OpaquePointer?, index: OpaquePointer?
+    defer {
+        if let index { git_index_free(index) }
+        if let tree { git_tree_free(tree) }
+        if let commit { git_commit_free(commit) }
+    }
+    XCTAssertEqual(git_commit_lookup(&commit, repo, &oid), 0)
+    XCTAssertEqual(git_commit_tree(&tree, commit), 0)
+    XCTAssertEqual(git_repository_index(&index, repo), 0)
+    XCTAssertEqual(git_index_read_tree(index, tree), 0)
+    XCTAssertEqual(git_index_write(index), 0)
+}
+
+final class StaleWorktreeAfterPullTests: XCTestCase {
+    private struct Fixture {
+        let repoURL: URL
+        let originURL: URL
+        let baseSHA: String
+        let remoteSHA: String
+        func url(_ path: String) -> URL { repoURL.appendingPathComponent(path) }
+        func read(_ path: String) throws -> String { try String(contentsOf: url(path), encoding: .utf8) }
+        func exists(_ path: String) -> Bool { FileManager.default.fileExists(atPath: url(path).path) }
+        var service: LocalGitService { LocalGitService(localURL: repoURL) }
+    }
+
+    /// base: Note.md="base", Gone.md="gone", .obsidian/workspace-mobile.json="w0"
+    /// remote (one commit ahead): Note.md="remote", Added.md="added", Gone.md
+    /// deleted and, optionally, workspace-mobile.json="w1".
+    private func makeFixture(remoteTouchesWorkspace: Bool) async throws -> Fixture {
+        let fm = FileManager.default
+        let repoURL = try makeTemporaryGitRepository(prefix: "SyncMD-StaleWorktree")
+        let originURL = fm.temporaryDirectory.appendingPathComponent("SyncMD-StaleWorktree-Origin-\(UUID().uuidString)", isDirectory: true)
+        try fm.createDirectory(at: repoURL.appendingPathComponent(".obsidian"), withIntermediateDirectories: true)
+        let setup = LocalGitService(localURL: repoURL)
+        try "base\n".write(to: repoURL.appendingPathComponent("Note.md"), atomically: true, encoding: .utf8)
+        try "gone\n".write(to: repoURL.appendingPathComponent("Gone.md"), atomically: true, encoding: .utf8)
+        try "w0\n".write(to: repoURL.appendingPathComponent(".obsidian/workspace-mobile.json"), atomically: true, encoding: .utf8)
+        try await setup.stageAll()
+        let baseSHA = try await setup.commitLocal(message: "Base", authorName: "Tests", authorEmail: "tests@example.com")
+        try "remote\n".write(to: repoURL.appendingPathComponent("Note.md"), atomically: true, encoding: .utf8)
+        try "added\n".write(to: repoURL.appendingPathComponent("Added.md"), atomically: true, encoding: .utf8)
+        try fm.removeItem(at: repoURL.appendingPathComponent("Gone.md"))
+        if remoteTouchesWorkspace {
+            try "w1\n".write(to: repoURL.appendingPathComponent(".obsidian/workspace-mobile.json"), atomically: true, encoding: .utf8)
+        }
+        try await setup.stageAll()
+        let remoteSHA = try await setup.commitLocal(message: "Remote edit from desktop", authorName: "Tests", authorEmail: "tests@example.com")
+        try makeBareOrigin(at: originURL, copyingObjectsFrom: repoURL, headSHA: remoteSHA)
+        try setLocalAndRemoteTrackingRefs(repoURL: repoURL, localSHA: baseSHA, remoteSHA: baseSHA)
+        try checkoutHeadTree(repoURL: repoURL)
+        try? fm.removeItem(at: repoURL.appendingPathComponent("Added.md"))
+        try await setup.setRemoteURL(name: "origin", url: "file://localhost\(originURL.path)")
+        return Fixture(repoURL: repoURL, originURL: originURL, baseSHA: baseSHA, remoteSHA: remoteSHA)
+    }
+
+    private func cleanup(_ f: Fixture) {
+        try? FileManager.default.removeItem(at: f.repoURL)
+        try? FileManager.default.removeItem(at: f.originURL)
+    }
+
+    private func assertCoherentAtRemote(_ f: Fixture, file: StaticString = #filePath, line: UInt = #line) async throws {
+        XCTAssertEqual(try f.read("Note.md"), "remote\n", file: file, line: line)
+        XCTAssertEqual(try f.read("Added.md"), "added\n", file: file, line: line)
+        XCTAssertFalse(f.exists("Gone.md"), file: file, line: line)
+        let info = try await f.service.repoInfo()
+        XCTAssertEqual(info.commitSHA, f.remoteSHA, file: file, line: line)
+        XCTAssertEqual(info.statusEntries, [], "index and working tree must equal HEAD", file: file, line: line)
+    }
+
+    /// Obsidian Git <= 2.41.x mobile pull: `git.merge` moved the branch, then
+    /// `git.checkout` threw. Branch and tracking ref are at the remote commit;
+    /// index and files are not. isomorphic-git writes no reflog.
+    private func simulateOldObsidianGitPullWithFailedCheckout(_ f: Fixture) throws {
+        try setLocalAndRemoteTrackingRefs(repoURL: f.repoURL, localSHA: f.remoteSHA, remoteSHA: f.remoteSHA)
+    }
+
+    // MARK: Mechanism A: another client moved the branch
+
+    func testExternalRefMoveIsReportedAsUnfinishedNotUpToDate() async throws {
+        let f = try await makeFixture(remoteTouchesWorkspace: false)
+        defer { cleanup(f) }
+        try simulateOldObsidianGitPullWithFailedCheckout(f)
+
+        let execution = try await f.service.executePullOnly(pat: "", expectedBranch: "main")
+        XCTAssertEqual(execution.plan.action, .upToDate)
+        let pending = try XCTUnwrap(execution.plan.pendingCheckout)
+        XCTAssertEqual(pending.baseCommitSHA, f.baseSHA)
+        XCTAssertEqual(pending.staleWorktreePaths, ["Added.md", "Gone.md", "Note.md"])
+        XCTAssertEqual(pending.staleIndexPaths, ["Added.md", "Gone.md", "Note.md"])
+        XCTAssertEqual(pending.localEditPaths, [])
+
+        let result = await RepositoryPullRunner().run(repository: f.service, credentials: "")
+        guard case .updatedWithAttention(_, let sha, .workingTreeNotUpdated(let report)) = result else {
+            return XCTFail("expected workingTreeNotUpdated, got \(result)")
+        }
+        XCTAssertEqual(sha, f.remoteSHA)
+        XCTAssertEqual(report, pending)
+        let callback = await MainActor.run { CallbackURLHandler.mapPullResult(result) }
+        XCTAssertEqual(callback.params["updated"], "false")
+        XCTAssertEqual(try f.read("Note.md"), "base\n", "detection alone never rewrites files")
+    }
+
+    func testFinishUpdateAfterExternalRefMoveRestoresHEADAndClearsTheReport() async throws {
+        let f = try await makeFixture(remoteTouchesWorkspace: false)
+        defer { cleanup(f) }
+        try simulateOldObsidianGitPullWithFailedCheckout(f)
+
+        let completion = try await f.service.finishPendingCheckout()
+        XCTAssertEqual(completion.restoredPaths, ["Added.md", "Gone.md", "Note.md"])
+        XCTAssertEqual(completion.keptLocalPaths, [])
+        XCTAssertEqual(completion.remainingStalePaths, [])
+        try await assertCoherentAtRemote(f)
+
+        let next = try await f.service.executePullOnly(pat: "", expectedBranch: "main")
+        XCTAssertEqual(next.plan.action, .upToDate)
+        XCTAssertNil(next.plan.pendingCheckout)
+    }
+
+    func testCommitIsRefusedWhileIndexHoldsPrePullVersions() async throws {
+        let f = try await makeFixture(remoteTouchesWorkspace: false)
+        defer { cleanup(f) }
+        try simulateOldObsidianGitPullWithFailedCheckout(f)
+
+        do {
+            try await f.service.stageAll()
+            _ = try await f.service.commitLocal(message: "vault backup", authorName: "Tests", authorEmail: "tests@example.com")
+            XCTFail("committing pre-pull versions must be refused")
+        } catch LocalGitError.pullNotFinished(let paths) {
+            XCTAssertTrue(paths.contains("Note.md"))
+        }
+        XCTAssertEqual(try referenceTargetSHA(repositoryURL: f.repoURL, name: "refs/heads/main"), f.remoteSHA)
+        XCTAssertEqual(try blobText(repoURL: f.repoURL, spec: "HEAD:Note.md"), "remote\n")
+    }
+
+    func testFinishUpdateKeepsALocalEditToAnIncomingFile() async throws {
+        let f = try await makeFixture(remoteTouchesWorkspace: false)
+        defer { cleanup(f) }
+        try simulateOldObsidianGitPullWithFailedCheckout(f)
+        try "phone edit\n".write(to: f.url("Note.md"), atomically: true, encoding: .utf8)
+
+        let plan = try await f.service.executePullOnly(pat: "", expectedBranch: "main").plan
+        let pending = try XCTUnwrap(plan.pendingCheckout)
+        XCTAssertEqual(pending.localEditPaths, ["Note.md"])
+        XCTAssertTrue(pending.staleIndexPaths.contains("Note.md"), "index still holds the pre-pull blob")
+
+        let completion = try await f.service.finishPendingCheckout()
+        XCTAssertEqual(completion.keptLocalPaths, ["Note.md"])
+        XCTAssertEqual(completion.remainingStalePaths, [])
+        XCTAssertEqual(try f.read("Note.md"), "phone edit\n", "a real local edit is never overwritten")
+        XCTAssertEqual(try f.read("Added.md"), "added\n")
+        let note = try await f.service.repoInfo().statusEntries.first { $0.path == "Note.md" }
+        XCTAssertNil(note?.indexStatus, "stale index entry reset to HEAD")
+        XCTAssertEqual(note?.workTreeStatus, .modified)
+
+        // Committing the edit is now an ordinary change on top of HEAD.
+        try await f.service.stageAll()
+        _ = try await f.service.commitLocal(message: "phone edit", authorName: "Tests", authorEmail: "tests@example.com")
+        XCTAssertEqual(try blobText(repoURL: f.repoURL, spec: "HEAD:Note.md"), "phone edit\n")
+        XCTAssertEqual(try blobText(repoURL: f.repoURL, spec: "HEAD:Added.md"), "added\n")
+    }
+
+    // MARK: Mechanism B: GitSync's own fast-forward
+
+    func testOneConflictingIncomingFileNoLongerHoldsBackTheRest() async throws {
+        let f = try await makeFixture(remoteTouchesWorkspace: true)
+        defer { cleanup(f) }
+        let wsURL = f.url(".obsidian/workspace-mobile.json")
+        let service = LocalGitService(localURL: f.repoURL, pullOnlyBeforeFinalCheckout: {
+            // Obsidian rewrites workspace-mobile.json while the pull is running.
+            try? "phone layout\n".write(to: wsURL, atomically: true, encoding: .utf8)
+        })
+
+        let first = try await service.executePullOnly(pat: "", expectedBranch: "main")
+        XCTAssertEqual(first.pullResult?.attention, .localEditsKept(paths: [".obsidian/workspace-mobile.json"]))
+        XCTAssertEqual(try f.read("Note.md"), "remote\n", "non-conflicting files are written")
+        XCTAssertEqual(try f.read("Added.md"), "added\n")
+        XCTAssertFalse(f.exists("Gone.md"))
+        XCTAssertEqual(try f.read(".obsidian/workspace-mobile.json"), "phone layout\n", "local bytes preserved")
+        XCTAssertFalse(f.exists(".git/\(PendingCheckoutInspector.markerFileName)"))
+
+        let second = try await f.service.executePullOnly(pat: "", expectedBranch: "main")
+        XCTAssertEqual(second.plan.action, .upToDate)
+        XCTAssertNil(second.plan.pendingCheckout, "a kept local edit is not a pending checkout")
+    }
+
+    func testInterruptedGitSyncCheckoutLeavesAMarkerThatTheNextPullFinds() async throws {
+        let f = try await makeFixture(remoteTouchesWorkspace: false)
+        defer { cleanup(f) }
+        // State a crash between the ref commit and checkout leaves behind:
+        // marker written, branch + index at remote, files at base.
+        try moveBranchAndIndexLeavingWorktree(repoURL: f.repoURL, sha: f.remoteSHA, reflogMessage: "test: no hint")
+        try setLocalAndRemoteTrackingRefs(repoURL: f.repoURL, localSHA: f.remoteSHA, remoteSHA: f.remoteSHA)
+        try "\(f.baseSHA) \(f.remoteSHA)\n".write(
+            to: f.url(".git/\(PendingCheckoutInspector.markerFileName)"), atomically: true, encoding: .utf8
+        )
+
+        let plan = try await f.service.executePullOnly(pat: "", expectedBranch: "main").plan
+        let pending = try XCTUnwrap(plan.pendingCheckout)
+        XCTAssertEqual(pending.staleWorktreePaths, ["Added.md", "Gone.md", "Note.md"])
+        XCTAssertEqual(pending.staleIndexPaths, [], "index already published at HEAD")
+
+        _ = try await f.service.finishPendingCheckout()
+        try await assertCoherentAtRemote(f)
+        XCTAssertFalse(f.exists(".git/\(PendingCheckoutInspector.markerFileName)"))
+    }
+
+    func testRepositoryAlreadyStuckBeforeThisFixIsFoundFromTheReflog() async throws {
+        let f = try await makeFixture(remoteTouchesWorkspace: false)
+        defer { cleanup(f) }
+        // Older GitSync: ref + index moved by "pull: fast-forward", checkout
+        // aborted, no marker. Every later pull said "Already up to date".
+        try moveBranchAndIndexLeavingWorktree(repoURL: f.repoURL, sha: f.remoteSHA, reflogMessage: "pull: fast-forward")
+        var repo: OpaquePointer?
+        XCTAssertEqual(git_repository_open(&repo, f.repoURL.path), 0)
+        var remoteOID = git_oid()
+        XCTAssertEqual(f.remoteSHA.withCString { git_oid_fromstr(&remoteOID, $0) }, 0)
+        var remoteRef: OpaquePointer?
+        XCTAssertEqual(git_reference_create(&remoteRef, repo, "refs/remotes/origin/main", &remoteOID, 1, "fetch"), 0)
+        git_reference_free(remoteRef)
+        git_repository_free(repo)
+
+        let plan = try await f.service.executePullOnly(pat: "", expectedBranch: "main").plan
+        let pending = try XCTUnwrap(plan.pendingCheckout)
+        XCTAssertEqual(pending.baseCommitSHA, f.baseSHA)
+        XCTAssertEqual(pending.staleWorktreePaths, ["Added.md", "Gone.md", "Note.md"])
+
+        // Stage-all + commit is refused once the stale files reach the index.
+        do {
+            try await f.service.stageAll()
+            _ = try await f.service.commitLocal(message: "vault backup", authorName: "Tests", authorEmail: "tests@example.com")
+            XCTFail("committing pre-pull versions must be refused")
+        } catch LocalGitError.pullNotFinished {}
+
+        _ = try await f.service.finishPendingCheckout()
+        try await assertCoherentAtRemote(f)
+    }
+
+    // MARK: Controls
+
+    func testCleanPullLeavesIndexAndWorktreeEqualToHEAD() async throws {
+        let f = try await makeFixture(remoteTouchesWorkspace: true)
+        defer { cleanup(f) }
+        let result = try await f.service.executePullOnly(pat: "", expectedBranch: "main")
+        XCTAssertNil(result.pullResult?.attention)
+        XCTAssertEqual(try f.read(".obsidian/workspace-mobile.json"), "w1\n")
+        try await assertCoherentAtRemote(f)
+        XCTAssertFalse(f.exists(".git/\(PendingCheckoutInspector.markerFileName)"))
+    }
+
+    func testDirtyFileNotTouchedByIncomingDoesNotBlockCheckout() async throws {
+        let f = try await makeFixture(remoteTouchesWorkspace: false)
+        defer { cleanup(f) }
+        let wsURL = f.url(".obsidian/workspace-mobile.json")
+        let service = LocalGitService(localURL: f.repoURL, pullOnlyBeforeFinalCheckout: {
+            try? "phone layout\n".write(to: wsURL, atomically: true, encoding: .utf8)
+        })
+        let result = try await service.executePullOnly(pat: "", expectedBranch: "main")
+        XCTAssertNil(result.pullResult?.attention)
+        XCTAssertEqual(try f.read("Note.md"), "remote\n")
+        XCTAssertEqual(try f.read(".obsidian/workspace-mobile.json"), "phone layout\n")
+    }
+
+    func testDirtyWorkspaceAtPlanTimeIsStillReportedAsBlocked() async throws {
+        let f = try await makeFixture(remoteTouchesWorkspace: false)
+        defer { cleanup(f) }
+        try "phone layout\n".write(to: f.url(".obsidian/workspace-mobile.json"), atomically: true, encoding: .utf8)
+        let result = try await f.service.executePullOnly(pat: "", expectedBranch: "main")
+        XCTAssertEqual(result.plan.action, .blockedByLocalChanges)
+        XCTAssertNil(result.plan.pendingCheckout)
+        XCTAssertEqual(try f.read("Note.md"), "base\n")
+    }
+
+    func testEditingAFileBackToAnOlderVersionIsNotMistakenForAStaleCheckout() async throws {
+        let f = try await makeFixture(remoteTouchesWorkspace: false)
+        defer { cleanup(f) }
+        _ = try await f.service.executePullOnly(pat: "", expectedBranch: "main")
+        try await assertCoherentAtRemote(f)
+        // The user commits on top, then edits Note.md back to the exact
+        // pre-pull text. The latest branch update is a commit, so this is a
+        // local edit, not an unfinished pull.
+        try "new\n".write(to: f.url("New.md"), atomically: true, encoding: .utf8)
+        try await f.service.stageAll()
+        let commitSHA = try await f.service.commitLocal(message: "phone", authorName: "Tests", authorEmail: "tests@example.com")
+        try setLocalAndRemoteTrackingRefs(repoURL: f.repoURL, localSHA: commitSHA, remoteSHA: commitSHA)
+        try "base\n".write(to: f.url("Note.md"), atomically: true, encoding: .utf8)
+
+        let plan = try await f.service.executePullOnly(pat: "", expectedBranch: "main").plan
+        XCTAssertEqual(plan.action, .upToDate)
+        XCTAssertNil(plan.pendingCheckout)
+        try await f.service.stageAll()
+        _ = try await f.service.commitLocal(message: "deliberate revert", authorName: "Tests", authorEmail: "tests@example.com")
+        XCTAssertEqual(try blobText(repoURL: f.repoURL, spec: "HEAD:Note.md"), "base\n")
+    }
+
+    // MARK: AppState presentation
+
+    @MainActor
+    func testAppStateRebasePullSurfacesCheckoutAttentionInsteadOfSuccess() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        let newCommit = "abababababababababababababababababababab"
+        let attention = PullPostUpdateAttention.checkoutIncomplete(message: "Inbox.md changed during checkout")
+        fixture.repository.pullPlanResult = PullPlan(
+            action: .fastForward, branch: "main",
+            localCommitSHA: fixture.repoConfig.gitState.commitSHA, remoteCommitSHA: newCommit,
+            hasLocalChanges: false, aheadBy: 0, behindBy: 1
+        )
+        fixture.repository.pullResult = .success(LocalPullResult(updated: true, newCommitSHA: newCommit, attention: attention))
+        let state = AppState(
+            gitRepositoryFactory: { _ in fixture.repository },
+            reposFileURL: fixture.rootURL.appendingPathComponent("repos.json"),
+            loadPersistedState: false
+        )
+        state.repos = [fixture.repoConfig]
+
+        _ = await state.pullWithRebase(repoID: fixture.repoConfig.id, showsProgressDelay: false)
+
+        XCTAssertEqual(state.pullOutcomeByRepo[fixture.repoConfig.id]?.kind, .checkoutIncomplete)
+        XCTAssertEqual(state.pullOutcomeByRepo[fixture.repoConfig.id]?.message, attention.localizedDescription)
+    }
+
+    @MainActor
+    func testAppStateUpToDatePlanWithPendingCheckoutOffersFinishUpdate() async throws {
+        let fixture = try GitFixtureFactory.make(state: .clean)
+        defer { fixture.cleanup() }
+        let sha = fixture.repoConfig.gitState.commitSHA
+        let report = PendingCheckoutReport(
+            baseCommitSHA: "cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd", headCommitSHA: sha,
+            staleWorktreePaths: ["Inbox.md"], staleIndexPaths: [], localEditPaths: []
+        )
+        fixture.repository.pullPlanResult = PullPlan(
+            action: .upToDate, branch: "main", localCommitSHA: sha, remoteCommitSHA: sha,
+            hasLocalChanges: false, aheadBy: 0, behindBy: 0, pendingCheckout: report
+        )
+        let state = AppState(
+            gitRepositoryFactory: { _ in fixture.repository },
+            reposFileURL: fixture.rootURL.appendingPathComponent("repos.json"),
+            loadPersistedState: false
+        )
+        state.repos = [fixture.repoConfig]
+
+        let result = await state.pullOnly(repoID: fixture.repoConfig.id, showsProgressDelay: false)
+        XCTAssertEqual(result, .updatedWithAttention(branch: "main", commitSHA: sha, attention: .workingTreeNotUpdated(report)))
+        XCTAssertEqual(state.pullOutcomeByRepo[fixture.repoConfig.id]?.kind, .workingTreeBehind)
+        XCTAssertNotEqual(state.syncProgress, String(localized: "Already up to date!"))
+        // No "Pulled N changes" toast: nothing was pulled (found in Argent QA).
+        try await Task.sleep(for: .milliseconds(500))
+        XCTAssertNil(state.currentToast)
+
+        _ = await state.pullWithRebase(repoID: fixture.repoConfig.id, showsProgressDelay: false)
+        XCTAssertEqual(state.pullOutcomeByRepo[fixture.repoConfig.id]?.kind, .workingTreeBehind)
     }
 }

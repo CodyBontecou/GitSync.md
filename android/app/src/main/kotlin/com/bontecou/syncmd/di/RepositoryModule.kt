@@ -7,6 +7,7 @@ import com.bontecou.syncmd.domain.repository.GitRepository
 import com.bontecou.syncmd.domain.repository.HistoryRepository
 import com.bontecou.syncmd.domain.repository.PullRepository
 import com.bontecou.syncmd.domain.repository.RemoteRepository
+import com.bontecou.syncmd.domain.repository.UntrackRepository
 import com.bontecou.syncmd.services.git.LocalBranchRepository
 import com.bontecou.syncmd.services.git.LocalConflictRepository
 import com.bontecou.syncmd.services.git.LocalDiffRepository
@@ -14,6 +15,7 @@ import com.bontecou.syncmd.services.git.LocalGitRepository
 import com.bontecou.syncmd.services.git.LocalHistoryRepository
 import com.bontecou.syncmd.services.git.LocalPullRepository
 import com.bontecou.syncmd.services.git.LocalRemoteRepository
+import com.bontecou.syncmd.services.git.LocalUntrackRepository
 import com.bontecou.syncmd.services.github.GitHubAuthManager
 import com.bontecou.syncmd.security.RepositoryCredentialStore
 import dagger.Module
@@ -69,6 +71,10 @@ object RepositoryModule {
     fun provideDiffRepository(): DiffRepository {
         return LocalDiffRepository()
     }
+
+    @Provides
+    @Singleton
+    fun provideUntrackRepository(): UntrackRepository = LocalUntrackRepository()
 
     @Provides
     @Singleton

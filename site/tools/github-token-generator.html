@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../favicon-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<title>GitHub Token Link Builder: Pre-filled Fine-Grained Token</title>
+<meta name="description" content="Build a pre-filled GitHub fine-grained personal access token link with only the permissions Obsidian Git or your Git app needs. Runs in your browser and never sees your token.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Cody Bontecou">
+<meta name="theme-color" content="#ffffff">
+<link rel="canonical" href="https://gitsync.md/tools/github-token-generator">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="GitSync.md">
+<meta property="og:title" content="GitHub Token Link Builder: Pre-filled Fine-Grained Token">
+<meta property="og:description" content="Build a pre-filled GitHub fine-grained personal access token link with only the permissions Obsidian Git or your Git app needs. Runs in your browser and never sees your token.">
+<meta property="og:url" content="https://gitsync.md/tools/github-token-generator">
+<meta property="og:image" content="https://gitsync.md/social/tools/github-token-generator.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:alt" content="GitSync.md free tool card: GitHub Token Link Builder">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="GitHub Token Link Builder: Pre-filled Fine-Grained Token">
+<meta name="twitter:description" content="Build a pre-filled GitHub fine-grained personal access token link with only the permissions Obsidian Git or your Git app needs. Runs in your browser and never sees your token.">
+<meta name="twitter:image" content="https://gitsync.md/social/tools/github-token-generator.png">
+<meta name="twitter:image:alt" content="GitSync.md free tool card: GitHub Token Link Builder">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "GitHub token link builder",
+  "description": "Build a pre-filled GitHub fine-grained personal access token link with only the permissions Obsidian Git or your Git app needs. Runs in your browser and never sees your token.",
+  "url": "https://gitsync.md/tools/github-token-generator",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Any (runs in a web browser)",
+  "browserRequirements": "Requires JavaScript",
+  "isAccessibleForFree": true,
+  "inLanguage": "en",
+  "datePublished": "2026-11-22",
+  "dateModified": "2026-11-22",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Person",
+    "name": "Cody Bontecou",
+    "url": "https://gitsync.md/about"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Cody Bontecou"
+  }
+}
+</script>
+<link rel="stylesheet" href="../site.css">
+<link rel="stylesheet" href="../content.css">
+<link rel="stylesheet" href="../comparison.css">
+<style>
+.calc { background: var(--surface); border: 2px solid var(--line); padding: 25px 28px; margin-bottom: 39px; }
+.calc fieldset { border: 0; padding: 0; margin: 0 0 22px; min-width: 0; }
+.calc legend, .calc .field-label { display: block; font-weight: 650; font-size: 16px; line-height: 24px; margin-bottom: 8px; padding: 0; }
+.calc .checks { display: flex; flex-direction: column; gap: 2px; }
+.calc .checks label { display: flex; align-items: flex-start; gap: 10px; font-size: 16px; line-height: 24px; min-height: 44px; padding-block: 10px 0; }
+.calc .checks label span small { display: block; font-size: 14px; line-height: 20px; color: var(--muted); }
+.calc input[type="checkbox"], .calc input[type="radio"] { flex: none; width: 20px; height: 20px; margin: 2px 0 0; accent-color: var(--blue-deep); }
+.calc input[type="text"], .calc textarea { width: 100%; min-height: 44px; padding: 8px 12px; font: inherit; font-size: 16px; color: var(--ink); background: var(--paper); border: 2px solid var(--line); border-radius: 8px; box-sizing: border-box; }
+.calc textarea { font-family: var(--mono); min-height: 88px; resize: vertical; }
+.calc .hint { display: block; font-size: 14px; line-height: 20px; color: var(--muted); margin-top: 6px; }
+.calc .field { margin-bottom: 22px; }
+.calc .secret-warning { background: var(--ahead-wash); color: var(--ahead-text); padding: 12px 16px; margin: 8px 0 0 30px; font-size: 15px; line-height: 22px; }
+.calc .secret-warning[hidden] { display: none; }
+.calc .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-block: 16px 8px; }
+.calc .tool-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 22px; border: 0; border-radius: 999px; background: var(--ink); color: var(--paper); font: 600 16px/1.2 var(--sans); cursor: pointer; }
+.calc .tool-btn.secondary { background: var(--paper); color: var(--ink); border: 2px solid var(--ink); }
+.calc .tool-btn:focus-visible, .calc input:focus-visible, .calc textarea:focus-visible { outline: 3px solid var(--blue-deep); outline-offset: 2px; }
+.calc .status { min-height: 24px; font-size: 15px; color: var(--muted); }
+.calc-results { border-top: 2px solid var(--line); padding-top: 22px; }
+.calc-results h3 { margin-top: 0; }
+.calc-results pre { margin-top: 12px; max-height: 480px; overflow: auto; }
+.calc-warnings { background: var(--ahead-wash); color: var(--ahead-text); padding: 14px 18px; margin-block: 16px; }
+.calc-warnings ul { margin: 0; }
+.calc-warnings li { color: var(--ahead-text); }
+.keeps { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0 28px; }
+@media (max-width: 960px) { .tool-layout > .guide-aside { order: 3; margin-block: 32px 0; } .calc { padding: 20px 16px; } .calc .secret-warning { margin-left: 0; } }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://gitsync.md/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Guides",
+      "item": "https://gitsync.md/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "GitHub token link builder",
+      "item": "https://gitsync.md/tools/github-token-generator"
+    }
+  ]
+}
+</script>
+</head>
+<body id="top">
+<a class="skip-link" href="#main">Skip to content</a>
+<svg class="icon-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 5l7 7-7 7"/></symbol>
+  <symbol id="i-branch" viewBox="0 0 24 24"><circle cx="6" cy="5" r="2.5"/><circle cx="6" cy="19" r="2.5"/><circle cx="18" cy="5" r="2.5"/><path d="M6 7.5v9M18 7.5v1a5 5 0 0 1-5 5H6"/></symbol>
+  <symbol id="i-external" viewBox="0 0 24 24"><path d="M6 18 18 6M6 6h12v12"/></symbol>
+</svg>
+
+<header class="site-header">
+  <nav class="shell navigation" aria-label="Main navigation">
+    <a class="brand" href="/" aria-label="GitSync.md home">gitsync<span class="brand-extension">.md</span></a>
+    <div class="nav-links"><a href="/#app">The app</a><a href="/#workflow">How it works</a><a href="/blog/" class="is-active">Guides</a><a href="/compare/obsidian-sync-vs-git">Compare</a><a href="/#faq">FAQ</a></div>
+    <a class="button button-small" href="/#download">Get the app</a>
+  </nav>
+</header>
+
+<main id="main">
+  <div class="container guide-layout tool-layout">
+      <header class="article-hero">
+        <div class="article-title"><nav class="eyebrow article-breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li><a href="/blog/">Guides</a></li><li aria-current="page">GitHub token link builder</li></ol></nav>
+      <h1>GitHub token link builder<span class="accent">.</span></h1>
+      <p class="subtitle">Build a pre-filled fine-grained GitHub token link with only the permissions your notes or Git workflow needs. It runs in your browser and never touches your token.</p>
+      <div class="meta-line"><time datetime="2026-11-22">November 22, 2026</time><span>By <a href="/about" rel="author">Cody Bontecou</a></span><span>Free tool · Runs in your browser</span></div>
+    </div>
+      </header>
+      <aside class="guide-aside" aria-label="Tool sidebar">
+        <div class="guide-aside-sticky">
+        <nav class="toc-card" aria-label="Page outline"><div class="toc-title">On this page</div><ol><li><a href="#generator">Link builder</a></li><li><a href="#after">After you open the link</a></li><li><a href="#paste">Where to paste it</a></li><li><a href="#safe">Keep the token safe</a></li><li><a href="#types">Fine-grained vs classic</a></li><li><a href="#faq">FAQ</a></li></ol></nav>
+        <div class="aside-cta aside-cta-wide">
+          <p class="aside-cta-title">Clone and sync that repo on iPhone or iPad with GitSync.md.</p>
+          <p class="aside-cta-price">iPhone + iPad: free to download, $9.99 once to unlock · No subscription</p>
+          <a class="aside-cta-button" href="/v/web-homepage-127" target="_blank" rel="noopener">Download on the App Store</a>
+          <p class="aside-cta-price">On Android? <a href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener">Get it on Google Play</a>.</p>
+        </div>
+        </div>
+      </aside>
+      <article class="article-body">
+        <p><strong>Short answer:</strong> pick what the token is for, tap <strong>Open on GitHub</strong>, and GitHub’s own “New fine-grained token” form opens already filled in with the minimum permissions. The one thing GitHub can’t pre-fill is the repository: on the form, choose <strong>Only select repositories</strong> and pick your vault repo. This page only builds a link. It never sees, creates or stores a token.</p>
+
+        <section class="calc" id="generator" aria-labelledby="generator-heading">
+          <h2 id="generator-heading" style="margin-top:0">Build your token link</h2>
+          <fieldset>
+            <legend>What is the token for?</legend>
+            <div class="checks" id="presets"></div>
+          </fieldset>
+          <fieldset id="custom-perms" hidden>
+            <legend>Repository permissions</legend>
+            <div class="checks" id="custom-list"></div>
+          </fieldset>
+          <div class="field">
+            <label class="field-label" for="t-name">Token name</label>
+            <input type="text" id="t-name" value="Obsidian iPhone" autocomplete="off" aria-describedby="name-hint">
+            <span class="hint" id="name-hint">GitHub allows up to 40 characters.</span>
+            <div class="calc-warnings" id="name-error" role="alert" hidden></div>
+          </div>
+          <div class="field">
+            <label class="field-label" for="t-desc">Description</label>
+            <textarea id="t-desc" aria-describedby="desc-hint"></textarea>
+            <span class="hint" id="desc-hint">Up to 1024 characters. It changes with the preset until you edit it.</span>
+          </div>
+          <div class="field">
+            <label class="field-label" for="t-owner">Owner (optional)</label>
+            <input type="text" id="t-owner" autocomplete="off" autocapitalize="off" spellcheck="false" aria-describedby="owner-hint">
+            <span class="hint" id="owner-hint">A user or organization name. Leave empty to use the account you are signed in with.</span>
+          </div>
+          <fieldset>
+            <legend>Expiration</legend>
+            <div class="checks" id="expiry-list"></div>
+            <div class="field" id="custom-days-field" hidden>
+              <label class="field-label" for="t-days">Days (1–366)</label>
+              <input type="text" inputmode="numeric" id="t-days" value="60" autocomplete="off">
+            </div>
+            <div class="calc-warnings" id="expiry-warning" hidden>GitHub recommends setting an expiration. A token with no expiration stays valid until you revoke it, so a leaked one keeps working. An organization policy can also limit the lifetime.</div>
+            <div class="calc-warnings" id="expiry-error" role="alert" hidden></div>
+          </fieldset>
+
+          <div class="calc-results" aria-live="polite">
+            <h3>Your link</h3>
+            <div class="field">
+              <label class="field-label" for="t-url">Generated URL</label>
+              <textarea id="t-url" readonly rows="5"></textarea>
+            </div>
+            <div class="actions">
+              <button type="button" class="tool-btn" id="copy-btn">Copy link</button>
+              <a class="tool-btn secondary" id="open-btn" href="#" target="_blank" rel="noopener">Open on GitHub</a>
+            </div>
+            <p class="status" id="status" role="status"></p>
+            <h3>What this token allows</h3>
+            <ul id="perm-list"></ul>
+            <p><strong>One step left on GitHub:</strong> under <strong>Repository access</strong> choose <strong>Only select repositories</strong> and pick your vault repository. The link can’t do that for you.</p>
+          </div>
+        </section>
+
+        <p class="hint"><strong>Last checked:</strong> November 22, 2026, against <a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens" target="_blank" rel="noopener">GitHub Docs: Managing your personal access tokens</a> and the <a href="https://github.blog/changelog/2025-08-26-template-urls-for-fine-grained-pats-and-updated-permissions-ui" target="_blank" rel="noopener">GitHub changelog on template URLs for fine-grained tokens</a>. Parameters used here: <code>name</code> (40 characters or fewer), <code>description</code> (1024 or fewer), <code>target_name</code>, <code>expires_in</code> (1–366 or <code>none</code>; GitHub’s default is 30 days) and permission names with <code>read</code> or <code>write</code>. <code>write</code> includes <code>read</code>, <code>metadata</code> is read-only and <code>workflows</code> is write-only.</p>
+
+        <h2 id="presets-explained">Which preset?</h2>
+        <ul>
+          <li><strong>Obsidian Git plugin:</strong> <code>contents=write</code>, <code>statuses=write</code>, <code>metadata=read</code>. The <a href="https://publish.obsidian.md/git-doc/Getting%20Started" target="_blank" rel="noopener">Obsidian Git docs</a> list read access to metadata and read/write access to contents and commit status as the minimum for mobile.</li>
+          <li><strong>Sync a repo in a Git app:</strong> <code>contents=write</code> (plus <code>metadata=read</code>, which GitHub grants anyway). Enough to fetch, pull and push over HTTPS.</li>
+          <li><strong>Read-only clone or backup:</strong> <code>contents=read</code>. Pushes will be refused.</li>
+          <li><strong>Publish a site with GitHub Actions:</strong> adds <code>workflows=write</code>. You only need it if you edit files in <code>.github/workflows/</code>; for ordinary note edits, the Obsidian Git preset is enough. See <a href="/blog/publish-obsidian-quartz-iphone">publishing Obsidian notes with Quartz from your iPhone</a>.</li>
+        </ul>
+
+        <h2 id="after">After you open the link</h2>
+        <ol>
+          <li>Check the pre-filled name, description, owner and expiration on GitHub’s form.</li>
+          <li>Under <strong>Repository access</strong>, choose <strong>Only select repositories</strong> and pick your vault repository.</li>
+          <li>Check the permissions list matches what you chose here, then tap <strong>Generate token</strong>.</li>
+          <li>Copy the token right away. GitHub shows it once.</li>
+        </ol>
+
+        <h2 id="paste">Where to paste it</h2>
+        <ul>
+          <li><strong>Obsidian Git plugin:</strong> the <strong>Password/Personal access token</strong> field in the plugin’s settings. <a href="/blog/obsidian-git-ios-setup#github-token">Step-by-step on iPhone</a>.</li>
+          <li><strong>GitSync.md:</strong> choose the personal access token option when you add GitHub. The app also supports GitHub sign-in, so a token is optional there. See <a href="/blog/clone-github-repository-iphone">cloning a GitHub repository on iPhone</a> and <a href="/blog/sync-obsidian-github">syncing Obsidian with GitHub</a>.</li>
+        </ul>
+
+        <div class="related-card">
+          <h2 id="cta">Clone and sync that repo on iPhone or iPad with GitSync.md</h2>
+          <p><a href="/v/web-homepage-127" target="_blank" rel="noopener">Download on the App Store</a> · <a href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener">Get it on Google Play</a></p>
+        </div>
+
+        <h2 id="safe">Keep the token safe</h2>
+        <ul>
+          <li>Never paste it into a note: the note gets committed and pushed.</li>
+          <li>Exclude plugin data from Git before you enter it. The <a href="/tools/obsidian-gitignore-generator">.gitignore generator</a> and <a href="/blog/obsidian-gitignore">the .gitignore guide</a> show how.</li>
+          <li>If it is exposed, revoke it on GitHub and create a replacement.</li>
+          <li>GitHub removes tokens that go unused for a year, according to its docs.</li>
+          <li>If a token expires, generate a new one with this page and enter it again. See <a href="/blog/obsidian-git-not-working-iphone">Obsidian Git not working on iPhone</a>.</li>
+        </ul>
+
+        <h2 id="types">Fine-grained vs classic</h2>
+        <table>
+          <thead><tr><th scope="col"></th><th scope="col">Fine-grained</th><th scope="col">Classic</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Repository scope</th><td>Chosen repositories only</td><td>Every repository your account can reach, by scope</td></tr>
+            <tr><th scope="row">Link pre-fill</th><td>Yes, via URL parameters</td><td>Not documented, so this tool doesn’t offer it</td></tr>
+            <tr><th scope="row">Organizations</th><td>Owner must allow them; approval may apply</td><td>Organization SSO authorization may apply</td></tr>
+          </tbody>
+        </table>
+        <p>Source: <a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens" target="_blank" rel="noopener">GitHub Docs</a>.</p>
+
+        <h2 id="faq">Frequently asked questions</h2>
+        <h3>Does this tool see my token?</h3>
+        <p>No. It only assembles a URL in your browser. The token is created on github.com after you open the link. The page makes no network requests and stores nothing.</p>
+        <h3>Why can’t it pick my repository?</h3>
+        <p>GitHub’s documented URL parameters cover the name, description, owner, expiration and permissions, not the repository selection. Choose <strong>Only select repositories</strong> on the form yourself.</p>
+        <h3>Which permissions does Obsidian Git need?</h3>
+        <p>Read access to metadata and read/write access to contents and commit statuses, per the <a href="https://publish.obsidian.md/git-doc/Getting%20Started" target="_blank" rel="noopener">plugin’s docs</a>. That is the first preset.</p>
+        <h3>Can I use SSH instead?</h3>
+        <p>Yes, if your Git client supports SSH keys, which avoids tokens. See <a href="/blog/self-hosted-git-ssh-ios">SSH Git on iPhone</a>. Note the Obsidian Git plugin’s mobile limits in <a href="/blog/obsidian-git-ios-setup">its setup guide</a>.</p>
+
+        <div class="related-card"><h2 id="next">Related guides</h2><ul>
+          <li><a href="/blog/obsidian-git-ios-setup">Set up a GitHub token in Obsidian Git on iPhone</a></li>
+          <li><a href="/blog/sync-obsidian-github">Sync Obsidian with GitHub on every device</a></li>
+          <li><a href="/blog/obsidian-git-not-working-iphone">Obsidian Git not working on iPhone</a></li>
+          <li><a href="/tools/obsidian-gitignore-generator">Obsidian .gitignore generator</a></li>
+          <li><a href="/blog/publish-obsidian-quartz-iphone">Publish Obsidian notes with Quartz</a></li>
+          <li><a href="/blog/self-hosted-git-ssh-ios">Self-hosted Git over SSH on iOS</a></li>
+          <li><a href="/blog/clone-github-repository-iphone">Clone a GitHub repository on iPhone</a></li>
+        </ul></div>
+  </article>
+    </div>
+  <section class="content-download" aria-labelledby="download-heading">
+    <div class="shell content-download-layout">
+      <div>
+        <p class="eyebrow"><span class="blue-square" aria-hidden="true"></span>Take your work with you.</p>
+        <h2 id="download-heading">REAL GIT.<br>WITHIN REACH.</h2>
+        <p class="content-download-description">Your files. Your commits. Your remote.<br>Get GitSync.md for iPhone, iPad, and Android.</p>
+      </div>
+      <div>
+        <div class="store-links" role="group" aria-label="Download GitSync.md">
+          <a class="store-badge store-badge-apple" href="/v/web-homepage-127" target="_blank" rel="noopener"><img src="../assets/store-badges/download-on-app-store.svg" width="120" height="40" alt="Download GitSync.md on the App Store" decoding="async"></a>
+          <a class="store-badge store-badge-google" href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener"><img src="../assets/store-badges/get-it-on-google-play.png" width="646" height="250" alt="Get GitSync.md on Google Play" decoding="async"></a>
+        </div>
+        <p class="purchase-note"><span>iPhone + iPad: free to download, $9.99 once to unlock.</span><span>Android: $9.99 once. All features included.</span><span>No subscriptions.</span></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="shell footer-layout">
+    <a class="brand" href="/" aria-label="GitSync.md home">gitsync<span class="brand-extension">.md</span></a>
+    <p>Independently built by <a href="https://codybontecou.com" target="_blank" rel="noopener">Cody Bontecou</a>.<br>© 2026 GitSync.md</p>
+    <div class="footer-links"><a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener">Source</a><a href="/blog/">Guides</a><a href="/compare/obsidian-sync-vs-git">Compare</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
+    <a class="back-top" href="#top" aria-label="Back to top">↑</a>
+  </div>
+</footer>
+<script>
+/* GitHub token link builder. Runs locally: no network requests, nothing stored.
+   Builds a URL for GitHub's fine-grained token form from its documented query parameters. */
+var GithubTokenLink = (function () {
+  var BASE = 'https://github.com/settings/personal-access-tokens/new';
+  var PERMS = {
+    contents: { label: 'Contents', levels: ['read', 'write'], read: 'Read the files, commits and branches of the selected repositories.', write: 'Read and write files and commits: fetch, pull and push.' },
+    metadata: { label: 'Metadata', levels: ['read'], read: 'Read basic repository information. GitHub always grants this.' },
+    statuses: { label: 'Commit statuses', levels: ['read', 'write'], read: 'Read commit statuses.', write: 'Read and set commit statuses.' },
+    workflows: { label: 'Workflows', levels: ['write'], write: 'Create and change files in .github/workflows/.' },
+    pull_requests: { label: 'Pull requests', levels: ['read', 'write'], read: 'Read pull requests.', write: 'Read and write pull requests.' },
+    issues: { label: 'Issues', levels: ['read', 'write'], read: 'Read issues.', write: 'Read and write issues.' }
+  };
+  var PRESETS = {
+    obsidian: { label: 'Obsidian Git plugin (desktop or mobile)', desc: 'Obsidian Git plugin token', perms: { contents: 'write', statuses: 'write', metadata: 'read' } },
+    gitapp: { label: 'Sync a repo in a Git app (GitSync.md, other HTTPS Git clients)', desc: 'Git app sync token', perms: { contents: 'write', metadata: 'read' } },
+    readonly: { label: 'Read-only clone or backup copy', desc: 'Read-only clone or backup token', perms: { contents: 'read', metadata: 'read' } },
+    actions: { label: 'Publish site with GitHub Actions (e.g. Quartz)', desc: 'Site publishing token', perms: { contents: 'write', workflows: 'write', metadata: 'read' } },
+    custom: { label: 'Custom', desc: 'Custom token', perms: {} }
+  };
+  function defaultDescription(key) {
+    return PRESETS[key].desc + ', fine-grained. Created with the GitSync.md token link builder.';
+  }
+  function build(o) {
+    var errors = [];
+    var name = (o.name || '').trim();
+    if (!name) errors.push('Enter a token name.');
+    if (name.length > 40) errors.push('Token name is ' + name.length + ' characters. GitHub allows up to 40.');
+    var desc = o.description || '';
+    if (desc.length > 1024) errors.push('Description is over 1024 characters.');
+    var exp = String(o.expiresIn == null ? '' : o.expiresIn).trim();
+    if (exp !== 'none') {
+      if (!/^\d+$/.test(exp) || +exp < 1 || +exp > 366) errors.push('Expiration must be a whole number from 1 to 366 days.');
+    }
+    var p = new URLSearchParams();
+    p.set('name', name);
+    if (desc) p.set('description', desc);
+    var owner = (o.owner || '').trim();
+    if (owner) {
+      if (!/^[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?$/.test(owner)) errors.push('Owner must be a GitHub user or organization name.');
+      p.set('target_name', owner);
+    }
+    p.set('expires_in', exp === 'none' ? 'none' : String(+exp));
+    var perms = o.permissions || {};
+    Object.keys(perms).forEach(function (k) {
+      var def = PERMS[k];
+      if (!def || def.levels.indexOf(perms[k]) < 0) { errors.push('Unsupported permission: ' + k + '.'); return; }
+      p.set(k, perms[k]);
+    });
+    if (!Object.keys(perms).length) errors.push('Choose at least one permission.');
+    return { url: errors.length ? '' : BASE + '?' + p.toString(), errors: errors };
+  }
+  function selfTest() {
+    var f = [];
+    var r = build({ name: 'Obsidian iPhone', description: 'd', expiresIn: '90', permissions: PRESETS.obsidian.perms });
+    if (r.url !== BASE + '?name=Obsidian+iPhone&description=d&expires_in=90&contents=write&statuses=write&metadata=read') f.push('preset 1 url: ' + r.url);
+    if (!build({ name: new Array(42).join('a'), expiresIn: '90', permissions: PRESETS.readonly.perms }).errors.length) f.push('long name allowed');
+    if (!build({ name: 'a', expiresIn: '0', permissions: PRESETS.readonly.perms }).errors.length) f.push('0 days allowed');
+    if (!build({ name: 'a', expiresIn: '367', permissions: PRESETS.readonly.perms }).errors.length) f.push('367 days allowed');
+    if (build({ name: 'a', expiresIn: 'none', permissions: PRESETS.readonly.perms }).url.indexOf('expires_in=none') < 0) f.push('none');
+    if (!build({ name: 'a', expiresIn: '5', permissions: { metadata: 'write' } }).errors.length) f.push('metadata write allowed');
+    if (build({ name: 'a', expiresIn: '5', owner: 'my-org', permissions: PRESETS.readonly.perms }).url.indexOf('target_name=my-org') < 0) f.push('owner');
+    return f;
+  }
+  return { BASE: BASE, PERMS: PERMS, PRESETS: PRESETS, build: build, defaultDescription: defaultDescription, selfTest: selfTest };
+})();
+
+(function () {
+  if (typeof document === 'undefined') return;
+  var G = GithubTokenLink;
+  var $ = function (id) { return document.getElementById(id); };
+  var presetKey = 'obsidian', expiry = '90', descEdited = false, nameDefault = 'Obsidian iPhone';
+  var custom = { contents: 'write', metadata: 'read' };
+
+  function radios(container, group, items, checked, onchange) {
+    items.forEach(function (it) {
+      var l = document.createElement('label');
+      var i = document.createElement('input');
+      i.type = 'radio'; i.name = group; i.value = it.value; i.checked = it.value === checked;
+      i.addEventListener('change', function () { onchange(it.value); });
+      var s = document.createElement('span'); s.textContent = it.label;
+      l.appendChild(i); l.appendChild(s); container.appendChild(l);
+    });
+  }
+  radios($('presets'), 'preset', Object.keys(G.PRESETS).map(function (k) { return { value: k, label: G.PRESETS[k].label }; }), presetKey, function (v) {
+    presetKey = v; $('custom-perms').hidden = v !== 'custom';
+    if (!descEdited) $('t-desc').value = G.defaultDescription(v);
+    update();
+  });
+  radios($('expiry-list'), 'expiry', [
+    { value: '30', label: '30 days' }, { value: '90', label: '90 days' }, { value: '180', label: '180 days' },
+    { value: '366', label: '366 days' }, { value: 'custom', label: 'Custom number of days' }, { value: 'none', label: 'No expiration' }
+  ], expiry, function (v) { expiry = v; $('custom-days-field').hidden = v !== 'custom'; update(); });
+
+  Object.keys(G.PERMS).forEach(function (k) {
+    var d = G.PERMS[k], row = document.createElement('div');
+    row.style.cssText = 'display:flex;flex-wrap:wrap;align-items:center;gap:10px;min-height:44px';
+    var l = document.createElement('label');
+    l.style.cssText = 'display:flex;gap:10px;align-items:center;min-width:170px';
+    var cb = document.createElement('input'); cb.type = 'checkbox'; cb.checked = !!custom[k];
+    cb.setAttribute('aria-label', d.label);
+    var s = document.createElement('span'); s.textContent = d.label;
+    l.appendChild(cb); l.appendChild(s); row.appendChild(l);
+    var sel = document.createElement('select');
+    sel.setAttribute('aria-label', d.label + ' access level');
+    d.levels.forEach(function (lv) { var o = document.createElement('option'); o.value = lv; o.textContent = lv === 'read' ? 'Read-only' : 'Read and write'; sel.appendChild(o); });
+    sel.value = custom[k] || d.levels[d.levels.length - 1];
+    if (d.levels.length === 1) sel.disabled = true;
+    sel.style.cssText = 'min-height:44px;font:inherit;font-size:16px';
+    function sync() { if (cb.checked) custom[k] = sel.value; else delete custom[k]; update(); }
+    cb.addEventListener('change', sync); sel.addEventListener('change', sync);
+    row.appendChild(sel); $('custom-list').appendChild(row);
+  });
+
+  function perms() { return presetKey === 'custom' ? custom : G.PRESETS[presetKey].perms; }
+  function show(el, msgs) { el.hidden = !msgs.length; el.textContent = msgs.join(' '); }
+
+  function update() {
+    var exp = expiry === 'custom' ? $('t-days').value : expiry;
+    var r = G.build({ name: $('t-name').value, description: $('t-desc').value, owner: $('t-owner').value, expiresIn: exp, permissions: perms() });
+    var nameErr = r.errors.filter(function (e) { return /name|Owner|Description/.test(e); });
+    var expErr = r.errors.filter(function (e) { return /Expiration/.test(e); });
+    show($('name-error'), nameErr);
+    show($('expiry-error'), expErr);
+    $('expiry-warning').hidden = expiry !== 'none';
+    $('t-url').value = r.url || (r.errors[0] || '');
+    var open = $('open-btn');
+    if (r.url) { open.href = r.url; open.removeAttribute('aria-disabled'); } else { open.href = '#'; open.setAttribute('aria-disabled', 'true'); }
+    $('copy-btn').disabled = !r.url;
+    var ul = $('perm-list'); ul.textContent = '';
+    var p = perms();
+    Object.keys(p).forEach(function (k) {
+      var li = document.createElement('li'), d = G.PERMS[k];
+      var b = document.createElement('strong'); b.textContent = d.label + ' (' + k + '=' + p[k] + '): ';
+      li.appendChild(b); li.appendChild(document.createTextNode(d[p[k]] || '')); ul.appendChild(li);
+    });
+    if (presetKey === 'actions') {
+      var li = document.createElement('li'); li.textContent = 'Workflows is only needed if you edit files in .github/workflows/.'; ul.appendChild(li);
+    }
+  }
+
+  $('t-desc').value = G.defaultDescription(presetKey);
+  $('t-desc').addEventListener('input', function () { descEdited = true; update(); });
+  ['t-name', 't-owner', 't-days'].forEach(function (id) { $(id).addEventListener('input', update); });
+  $('open-btn').addEventListener('click', function (e) { if (this.getAttribute('aria-disabled') === 'true') e.preventDefault(); });
+  $('t-url').addEventListener('focus', function () { this.select(); });
+  $('copy-btn').addEventListener('click', function () {
+    var ta = $('t-url'), st = $('status');
+    function ok() { st.textContent = 'Link copied.'; }
+    function fallback() { ta.focus(); ta.select(); try { document.execCommand('copy') ? ok() : (st.textContent = 'Select the link and copy it manually.'); } catch (e) { st.textContent = 'Select the link and copy it manually.'; } }
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(ta.value).then(ok, fallback); else fallback();
+  });
+  update();
+  if (location.hash === '#selftest') console.log('selftest failures:', G.selfTest());
+})();
+</script>
+</body>
+</html>

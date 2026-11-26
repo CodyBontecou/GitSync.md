@@ -1,0 +1,2 @@
+• Behebt einen Absturz beim Pull eines Tresors, der auf keinem Branch ist (Detached HEAD). Pull erklärt jetzt stattdessen, wie du das behebst.
+• Wird GitSync.md während der automatischen Synchronisierung beendet, pausiert der nächste Start die automatische Synchronisierung und fragt dich, wie es weitergehen soll. So stürzt die App nicht bei jedem Start erneut ab.

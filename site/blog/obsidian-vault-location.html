@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../favicon-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<title>Where your Obsidian vault is stored and how to move it — GitSync.md</title>
+<meta name="description" content="Find your Obsidian vault on desktop, iPhone, iPad and Android, move or rename it safely, and move a Git-backed vault without losing .git or .obsidian.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Cody Bontecou">
+<meta name="theme-color" content="#ffffff">
+<link rel="canonical" href="https://gitsync.md/blog/obsidian-vault-location">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="GitSync.md">
+<meta property="og:title" content="Where your Obsidian vault is stored and how to move it — GitSync.md">
+<meta property="og:description" content="A vault is an ordinary folder. Where it lives on each platform, how to move it, and how to move a Git repository vault safely.">
+<meta property="og:url" content="https://gitsync.md/blog/obsidian-vault-location">
+<meta property="og:image" content="https://gitsync.md/social/blog/obsidian-vault-location.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:alt" content="GitSync.md guide card: Where your Obsidian vault is stored and how to move it">
+<meta property="article:published_time" content="2026-11-26">
+<meta property="article:modified_time" content="2026-11-26">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Where your Obsidian vault is stored and how to move it — GitSync.md">
+<meta name="twitter:description" content="Find, move, rename and remove an Obsidian vault on desktop, iPhone, iPad and Android.">
+<meta name="twitter:image" content="https://gitsync.md/social/blog/obsidian-vault-location.png">
+<meta name="twitter:image:alt" content="GitSync.md guide card: Where your Obsidian vault is stored and how to move it">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Where your Obsidian vault is stored and how to move it",
+  "description": "Find your Obsidian vault on desktop, iPhone, iPad and Android, move or rename it safely, and move a Git-backed vault without losing .git or .obsidian.",
+  "image": [
+    "https://gitsync.md/social/blog/obsidian-vault-location.png"
+  ],
+  "datePublished": "2026-11-26",
+  "dateModified": "2026-11-26",
+  "author": {
+    "@type": "Person",
+    "name": "Cody Bontecou",
+    "url": "https://gitsync.md/about"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Cody Bontecou"
+  },
+  "mainEntityOfPage": "https://gitsync.md/blog/obsidian-vault-location"
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../site.css">
+<link rel="stylesheet" href="../content.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://gitsync.md/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Guides",
+      "item": "https://gitsync.md/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Obsidian vault location",
+      "item": "https://gitsync.md/blog/obsidian-vault-location"
+    }
+  ]
+}
+</script>
+</head>
+<body id="top">
+<a class="skip-link" href="#main">Skip to content</a>
+<svg class="icon-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 5l7 7-7 7"/></symbol>
+  <symbol id="i-branch" viewBox="0 0 24 24"><circle cx="6" cy="5" r="2.5"/><circle cx="6" cy="19" r="2.5"/><circle cx="18" cy="5" r="2.5"/><path d="M6 7.5v9M18 7.5v1a5 5 0 0 1-5 5H6"/></symbol>
+  <symbol id="i-external" viewBox="0 0 24 24"><path d="M6 18 18 6M6 6h12v12"/></symbol>
+</svg>
+
+<header class="site-header">
+  <nav class="shell navigation" aria-label="Main navigation">
+    <a class="brand" href="/" aria-label="GitSync.md home">gitsync<span class="brand-extension">.md</span></a>
+    <div class="nav-links"><a href="/#app">The app</a><a href="/#workflow">How it works</a><a href="/blog/" class="is-active">Guides</a><a href="/compare/obsidian-sync-vs-git">Compare</a><a href="/#faq">FAQ</a></div>
+    <a class="button button-small" href="/#download">Get the app</a>
+  </nav>
+</header>
+
+<main id="main">
+<div class="container guide-layout">
+      <header class="article-hero">
+        <div class="article-title">
+        <nav class="eyebrow article-breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li><a href="/blog/">Guides</a></li><li aria-current="page">Obsidian vault location</li></ol></nav>
+        <h1>Where your Obsidian vault is stored and how to move it<span class="accent">.</span></h1>
+        <p class="subtitle">A vault is an ordinary folder you chose. This guide shows where to find it on desktop, iPhone, iPad and Android, how to move, rename or remove it, and how to move a vault that is a Git repository without losing the hidden folders.</p>
+        <div class="meta-line"><span>By <a href="/about" rel="author">Cody Bontecou</a></span>
+          <span>November 26, 2026</span>
+          <span>Guide</span>
+          <span>Desktop + iPhone + Android</span>
+        </div>
+      </div>
+      </header>
+      <aside class="guide-aside" aria-label="Guide sidebar">
+        <section class="side-note" aria-label="Article notes">
+        <h2>Sources</h2>
+        <p>Paths and menu names come from:</p>
+        <ul>
+          <li><a href="https://obsidian.md/help/manage-vaults">Obsidian Help: Manage vaults</a></li>
+          <li><a href="https://obsidian.md/help/data-storage">Obsidian Help: How Obsidian stores data</a></li>
+          <li><a href="https://obsidian.md/help/sync-notes">Obsidian Help: Sync your notes across devices</a></li>
+          <li><a href="https://support.apple.com/guide/iphone/welcome/ios">Apple Support: Files on iPhone</a></li>
+          <li><a href="https://git-scm.com/docs/git-status">Git: git status</a></li>
+        </ul>
+      </section>
+        <div class="guide-aside-sticky">
+        <nav class="toc-card" aria-label="Article outline">
+        <div class="toc-title">What this covers</div>
+        <ol>
+          <li><a href="#short-answer">Short answer</a></li>
+          <li><a href="#locations">Where vaults and settings live</a></li>
+          <li><a href="#hidden">Show hidden folders</a></li>
+          <li><a href="#move-desktop">Move a vault on desktop</a></li>
+          <li><a href="#rename-remove">Rename and remove a vault</a></li>
+          <li><a href="#new-computer">Move a vault to another computer</a></li>
+          <li><a href="#iphone">iPhone and iPad: local vs iCloud</a></li>
+          <li><a href="#android">Android</a></li>
+          <li><a href="#git-vault">Move a Git-backed vault safely</a></li>
+          <li><a href="#troubleshooting">Troubleshooting</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ol>
+      </nav>
+        <div class="aside-cta aside-cta-wide">
+          <p class="aside-cta-title">Keep a local iPhone vault in sync with Git.</p>
+          <p class="aside-cta-price">iPhone + iPad: $9.99 once · No subscription</p>
+          <a class="aside-cta-button" href="/v/web-homepage-136" target="_blank" rel="noopener">Download on the App Store</a>
+        </div>
+        </div>
+      </aside>
+      <article class="article-body">
+        <div class="tldr">
+          <div class="tldr-title">Short answer</div>
+          <ol>
+            <li>A vault is a normal folder. Its name is the vault name, and the <code>.obsidian</code> folder inside it holds that vault's settings.</li>
+            <li>Obsidian keeps the global vault list in a separate system folder, not inside your vault.</li>
+            <li>To move a vault on desktop, use <strong>Manage vaults &rarr; More options &rarr; Move vault</strong>.</li>
+            <li>For a Git vault, move the whole folder, including the hidden <code>.git</code> and <code>.obsidian</code> folders.</li>
+          </ol>
+        </div>
+
+        <h2 id="short-answer">Short answer</h2>
+        <p>Obsidian does not store your notes in a database. A vault is an ordinary folder that you chose when you created or opened it, and your notes are plain files in it. Inside that folder, <code>.obsidian</code> holds the preferences for that vault, such as hotkeys, themes and community plugins. The list of vaults Obsidian knows about is kept elsewhere, in a global settings folder on desktop (see the table below). That is why a vault can sit anywhere, and why moving the folder by hand can leave Obsidian pointing at the old place until you open the new one.</p>
+        <p>The examples use a made-up vault called <code>second-brain</code>.</p>
+
+        <h2 id="locations">Where vaults and settings live, by platform</h2>
+        <div class="comparison-scroll" role="region" aria-label="Where Obsidian stores vaults and settings" tabindex="0"><table class="comparison-table">
+          <thead><tr><th>Platform</th><th>Where the vault folder is</th><th>Global settings and vault list</th></tr></thead>
+          <tbody>
+            <tr><td>macOS</td><td>The folder you chose, for example <code>~/Documents/second-brain</code></td><td><code>/Users/yourusername/Library/Application Support/obsidian</code></td></tr>
+            <tr><td>Windows</td><td>The folder you chose, for example <code>C:\Users\you\Documents\second-brain</code></td><td><code>%APPDATA%\Obsidian\</code></td></tr>
+            <tr><td>Linux</td><td>The folder you chose, for example <code>~/Documents/second-brain</code></td><td><code>$XDG_CONFIG_HOME/obsidian/</code> or <code>~/.config/obsidian/</code></td></tr>
+            <tr><td>iPhone and iPad</td><td>In the Files app: <strong>On My iPhone/iPad &rarr; Obsidian</strong> (local) or <strong>iCloud Drive &rarr; Obsidian</strong> (iCloud)</td><td>Managed by the app</td></tr>
+            <tr><td>Android</td><td>The folder you picked when you created or opened the vault. It differs by device, so check inside Obsidian</td><td>Managed by the app</td></tr>
+          </tbody>
+        </table></div>
+        <p>The example folders on desktop are only examples. Obsidian puts a vault wherever you told it to.</p>
+        <p><strong>Find the exact path from inside Obsidian.</strong> Open <strong>Manage vaults</strong> from the vault profile menu at the bottom left to see your vault list. On desktop, you can also right-click a file in the file explorer and choose the option that reveals it in Finder or File Explorer. On a phone, the Files app shows iPhone and iPad vaults directly; on Android, the vault is in the folder you picked.</p>
+
+        <h2 id="hidden">Show hidden folders</h2>
+        <p><code>.obsidian</code> and <code>.git</code> start with a period, so most file managers hide them. You need to see them when you move a Git vault.</p>
+        <ul>
+          <li><strong>macOS Finder:</strong> press <strong>Cmd+Shift+.</strong> to show or hide hidden files.</li>
+          <li><strong>Windows File Explorer:</strong> use <strong>View</strong> and turn on <strong>Hidden items</strong>.</li>
+          <li><strong>Linux:</strong> most file managers have a "show hidden files" option; in a terminal, <code>ls -a</code> lists them.</li>
+        </ul>
+
+        <h2 id="move-desktop">Move a vault on desktop</h2>
+        <p>Follow Obsidian's order:</p>
+        <ol>
+          <li>Open <strong>Manage vaults</strong> from the vault profile menu at the bottom left.</li>
+          <li>Close the current vault window and leave the <strong>Manage vaults</strong> window open.</li>
+          <li>In the vault list, select <strong>More options</strong> next to <code>second-brain</code>, choose <strong>Move vault</strong>, then pick the new location.</li>
+        </ol>
+        <p>Obsidian warns that some operating systems do not allow a vault to be moved with the vault switcher. If yours doesn't, use the manual way:</p>
+        <ol>
+          <li>Close Obsidian.</li>
+          <li>Move the <code>second-brain</code> folder to the new location in your file manager.</li>
+          <li>Reopen Obsidian, open <strong>Manage vaults</strong>, and next to <strong>Open folder as vault</strong> click <strong>Open</strong>.</li>
+          <li>Select the moved folder and click <strong>Open</strong>. Check that the vault contents are unchanged.</li>
+        </ol>
+        <p>Afterwards, check that your plugins are still on. If community plugins are off, go to <strong>Settings &rarr; Community plugins</strong> and turn restricted mode off.</p>
+        <p><strong>Where not to put it.</strong> Move the vault to a place that no other sync service manages; Obsidian tells you to avoid folders synced by other services. And don't put a vault in Obsidian's global settings folder, because that may lead to corrupted data or data loss.</p>
+
+        <h2 id="rename-remove">Rename and remove a vault</h2>
+        <ul>
+          <li><strong>Rename:</strong> the vault name and the folder name are the same thing, so renaming a vault also renames the folder. In <strong>Manage vaults</strong>, choose <strong>More options &rarr; Rename vault</strong>, type the new name and press <strong>Enter</strong>.</li>
+          <li><strong>Remove:</strong> <strong>More options &rarr; Remove from list</strong> only removes the vault from the list. The files stay where they are, and you can add the folder again with <strong>Open folder as vault</strong>.</li>
+        </ul>
+
+        <h2 id="new-computer">Move a vault to another computer</h2>
+        <p>Copy the whole <code>second-brain</code> folder to the other computer, including hidden folders, then open it there with <strong>Open folder as vault</strong>. Copying only the notes leaves your settings behind.</p>
+        <p>A better way, if you want the vault on more than one machine, is to make it a Git repository and clone it on the new computer. You get history, and the same repository can be cloned on a phone. See <a href="/blog/sync-obsidian-github">how to sync Obsidian with GitHub</a>, and <a href="/blog/obsidian-backup-git">back up an Obsidian vault with Git</a> for the backup side.</p>
+
+        <h2 id="iphone">iPhone and iPad: local vs iCloud vaults</h2>
+        <h3>Which one do you have?</h3>
+        <p>Open the Files app and tap <strong>Browse</strong>. A local vault is a folder inside <strong>On My iPhone</strong> (or <strong>On My iPad</strong>) &rarr; <strong>Obsidian</strong>. An iCloud vault is inside <strong>iCloud Drive &rarr; Obsidian</strong>. Obsidian's sync guide says an iCloud vault should be at <code>iCloud Drive/Obsidian/[Your Vault Name]</code>, inside the Obsidian folder that has the app icon, not in a plain folder with the same name. When you create a vault in the app, the <strong>Store in iCloud</strong> toggle decides which one you get.</p>
+        <h3>Why a vault you copied in doesn't show up</h3>
+        <p>Obsidian only offers vaults that sit in a folder it can open. A folder copied somewhere else in Files won't appear in the vault picker. Put it in the Obsidian folder, or in the vault picker choose <strong>Open folder as vault</strong> and browse to it.</p>
+        <h3>Move a vault from iCloud Drive to On My iPhone</h3>
+        <ol>
+          <li>In the Files app, open <strong>iCloud Drive &rarr; Obsidian</strong>. Files that show a cloud icon are not on the phone yet; download them first by tapping them, and wait until nothing is waiting to download. A copy of placeholder files is not a copy of your notes.</li>
+          <li>Touch and hold the <code>second-brain</code> folder, choose <strong>Move</strong> (or <strong>Copy</strong> to be safe), and pick <strong>On My iPhone &rarr; Obsidian</strong>.</li>
+          <li>Open Obsidian, choose <strong>Open folder as vault</strong> in the vault picker, and select the moved folder.</li>
+          <li>Check a few notes, then delete the iCloud copy only once you're sure nothing is missing.</li>
+        </ol>
+        <h3>Then sync the local vault with Git</h3>
+        <p>A local vault does not sync by itself. With GitSync.md you can put it in a Git repository. The steps match the <a href="/blog/obsidian-git-iphone-ipad">Obsidian Git on iPhone and iPad guide</a>:</p>
+        <ol>
+          <li>Commit and push the vault to a remote repository first, from a computer or from GitSync.md's publish flow.</li>
+          <li>In GitSync.md, set the save location to <strong>On My iPhone/iPad &rarr; Obsidian</strong> and clone the repository.</li>
+          <li>In Obsidian, choose <strong>Open folder as vault</strong> and open the cloned folder.</li>
+        </ol>
+        <p>If you cloned into the same place as the copied vault, remove or rename one of them so there is only one working copy. For the trade-offs, see <a href="/compare/icloud-vs-git-obsidian">iCloud vs Git for Obsidian</a>.</p>
+
+        <h2 id="android">Android</h2>
+        <p>On Android, a vault is the folder you picked when you created or opened it, and where that is differs by device. Obsidian's help pages don't give a fixed path, so check the vault's folder from inside the app rather than guessing. To use an existing folder, use <strong>Open folder as vault</strong> and select it.</p>
+        <p>To keep that vault in a Git repository, see <a href="/blog/obsidian-git-android">Obsidian Git on Android</a>. GitSync.md is on <a href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener">Google Play</a>; the same guide explains that the repository folder and Obsidian's vault must be the same folder in shared storage.</p>
+
+        <h2 id="git-vault">Move a Git-backed vault safely</h2>
+        <ol>
+          <li><strong>Commit and push first.</strong> That gives you a copy on the remote before you touch anything.</li>
+          <li><strong>Move the whole repo folder.</strong> Include <code>.git</code> (your history and remote settings) and <code>.obsidian</code> (your vault settings). Show hidden folders first, and don't copy only the notes.</li>
+          <li><strong>Check the working tree afterwards.</strong> On desktop, run <code>git status</code> in the moved folder. It should report <code>nothing to commit, working tree clean</code>. See <a href="https://git-scm.com/docs/git-status">git status</a>. On a phone, check the repository's status in GitSync.md.</li>
+          <li><strong>Don't create a second clone inside the old folder.</strong> Two working copies of one vault cause duplicate notes and confusion about which one Obsidian has open.</li>
+          <li><strong>Ignore <code>workspace.json</code>.</strong> Obsidian rewrites <code>.obsidian/workspace.json</code> whenever you open a file, so it shows up as a change every time. See <a href="/blog/obsidian-gitignore">the Obsidian .gitignore guide</a> or the <a href="/tools/obsidian-gitignore-generator">.gitignore generator</a>.</li>
+        </ol>
+        <p>On a phone, the safest route to a new location is to push, then clone the repository again into the folder you want, as described above, rather than dragging a repository around in Files.</p>
+
+        <h2 id="troubleshooting">Troubleshooting</h2>
+        <ul>
+          <li><strong>Vault missing from the picker.</strong> Use <strong>Open folder as vault</strong> and select the folder. Make sure you pick the vault root, the folder that holds <code>.obsidian</code>, not its parent.</li>
+          <li><strong>Plugins are off after a move.</strong> Go to <strong>Settings &rarr; Community plugins</strong> and turn restricted mode off. If <code>.obsidian</code> didn't come along, reinstall them.</li>
+          <li><strong>iCloud vault not detected, or files not downloaded.</strong> In Files, check the vault is inside <strong>iCloud Drive &rarr; Obsidian</strong>, in the folder with the Obsidian icon. Tap files with a cloud icon to download them. If it still fails, move the vault to <strong>On My iPhone &rarr; Obsidian</strong> as above.</li>
+          <li><strong>Duplicate vault after a move.</strong> You probably have the old and new folders in the list. Remove the old one with <strong>More options &rarr; Remove from list</strong>; that keeps the files. Then check which folder still has your latest notes before you delete anything.</li>
+          <li><strong>Git can't find the repository.</strong> The hidden <code>.git</code> folder didn't move with the notes. See <a href="/blog/obsidian-git-not-working-iphone">Obsidian Git not working on iPhone</a>.</li>
+        </ul>
+
+        <h2 id="faq">FAQ</h2>
+        <p><strong>Where is my Obsidian vault?</strong><br>In the folder you chose when you created or opened it. Open <strong>Manage vaults</strong> to see your vaults. On iPhone, look in the Files app under On My iPhone or iCloud Drive.</p>
+        <p><strong>Does Remove vault delete my notes?</strong><br>No. It only removes the vault from the list, and the files stay in the folder.</p>
+        <p><strong>Where does Obsidian keep its global settings?</strong><br>On macOS, <code>~/Library/Application Support/obsidian</code>; on Windows, <code>%APPDATA%\Obsidian\</code>; on Linux, <code>$XDG_CONFIG_HOME/obsidian/</code> or <code>~/.config/obsidian/</code>.</p>
+        <p><strong>Can I move a vault into a Dropbox or iCloud folder on desktop?</strong><br>Obsidian advises against folders synced by other services when you move a vault. Git is a cleaner way to sync.</p>
+        <p><strong>Do I need the .obsidian folder?</strong><br>It holds that vault's hotkeys, themes and plugins. Without it your notes are fine, but your settings are gone.</p>
+
+        <h2>Related guides</h2>
+        <div class="related-card">
+          <p>Put the vault in Git and keep it in sync:</p>
+          <a href="/blog/obsidian-git-iphone-ipad">Obsidian Git on iPhone and iPad →</a>
+        </div>
+      </article>
+    </div>
+
+  <section class="content-download" aria-labelledby="download-heading">
+    <div class="shell content-download-layout">
+      <div>
+        <p class="eyebrow"><span class="blue-square" aria-hidden="true"></span>Take your work with you.</p>
+        <h2 id="download-heading">REAL GIT.<br>WITHIN REACH.</h2>
+        <p class="content-download-description">Your files. Your commits. Your remote.<br>Get GitSync.md for iPhone, iPad, and Android.</p>
+      </div>
+      <div>
+        <div class="store-links" role="group" aria-label="Download GitSync.md">
+          <a class="store-badge store-badge-apple" href="/v/web-homepage-108" target="_blank" rel="noopener"><img src="../assets/store-badges/download-on-app-store.svg" width="120" height="40" alt="Download GitSync.md on the App Store" decoding="async"></a>
+          <a class="store-badge store-badge-google" href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener"><img src="../assets/store-badges/get-it-on-google-play.png" width="646" height="250" alt="Get GitSync.md on Google Play" decoding="async"></a>
+        </div>
+        <p class="purchase-note"><span>iPhone + iPad: $9.99 once. Unlimited repositories.</span><span>Android: $9.99 once. All features included.</span><span>No subscriptions.</span></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="shell footer-layout">
+    <a class="brand" href="/" aria-label="GitSync.md home">gitsync<span class="brand-extension">.md</span></a>
+    <p>Independently built by <a href="https://codybontecou.com" target="_blank" rel="noopener">Cody Bontecou</a>.<br>© 2026 GitSync.md</p>
+    <div class="footer-links"><a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener">Source</a><a href="/blog/">Guides</a><a href="/compare/obsidian-sync-vs-git">Compare</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
+    <a class="back-top" href="#top" aria-label="Back to top">↑</a>
+  </div>
+</footer>
+<!-- Cloudflare Web Analytics -->
+<script>
+(function () {
+  var productionHosts = {
+    'instareply.isolated.tech': true,
+    'voxboard.isolated.tech': true,
+    'healthmd.isolated.tech': true,
+    'isome.isolated.tech': true,
+    'gitsyncmd.app': true,
+    'gitsync.md': true,
+    'timemd.isolated.tech': true,
+    'imghost.isolated.tech': true
+  };
+
+  if (!productionHosts[window.location.hostname]) {
+    return;
+  }
+
+  function loadCloudflareBeacon() {
+    if (document.querySelector('script[src="https://static.cloudflareinsights.com/beacon.min.js"]')) {
+      return;
+    }
+
+    var script = document.createElement('script');
+    script.defer = true;
+    script.src = 'https://static.cloudflareinsights.com/beacon.min.js';
+    script.setAttribute('data-cf-beacon', '{"token":"090f363070334cddad5c5cc1509b8807"}');
+    document.head.appendChild(script);
+  }
+
+  fetch('https://img-host.costream.workers.dev/analytics-gate', {
+    cache: 'no-store',
+    mode: 'cors',
+    credentials: 'omit'
+  })
+    .then(function (response) {
+      return response.ok ? response.json() : { track: false };
+    })
+    .then(function (gate) {
+      if (gate && gate.track) {
+        loadCloudflareBeacon();
+      }
+    })
+    .catch(function () {
+      // Fail closed so excluded IPs are not accidentally tracked.
+    });
+})();
+</script>
+<!-- End Cloudflare Web Analytics -->
+</body>
+</html>

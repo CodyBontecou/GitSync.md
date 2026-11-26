@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Stop tracking a file, folder or Obsidian workspace files (#149). Wording from the iOS catalog. -->
+<resources>
+    <string name="stop_tracking_menu" formatted="false">"Ngừng theo dõi…"</string>
+    <string name="stop_tracking_title" formatted="false">"Ngừng theo dõi trong Git?"</string>
+    <string name="stop_tracking_body" formatted="false">"GitSync.md sẽ gỡ nó khỏi Git, thêm vào .gitignore rồi commit. Nó vẫn ở trên thiết bị này."</string>
+    <string name="stop_tracking_option_file" formatted="false">"Tệp này"</string>
+    <string name="stop_tracking_option_folder" formatted="false">"Thư mục chứa nó"</string>
+    <string name="stop_tracking_option_workspace" formatted="false">"Tất cả tệp workspace của Obsidian"</string>
+    <string name="stop_tracking_one_file" formatted="false">"1 tệp"</string>
+    <string name="stop_tracking_files">"%1$d tệp"</string>
+    <string name="stop_tracking_note_workspace" formatted="false">"Khi thiết bị khác pull commit này, Git sẽ xóa bản sao trên đó. Obsidian sẽ tạo bản mới vào lần mở kho tiếp theo."</string>
+    <string name="stop_tracking_note_file" formatted="false">"Khi thiết bị khác pull commit này, Git sẽ xóa bản sao trên đó. Hãy lưu lại ở đó trước nếu cần. Nó vẫn còn trong lịch sử Git."</string>
+    <string name="stop_tracking_confirm" formatted="false">"Ngừng theo dõi"</string>
+    <string name="stop_tracking_done" formatted="false">"Đã ngừng theo dõi"</string>
+    <string name="stop_tracking_suggestion" formatted="false">"Gợi ý"</string>
+    <string name="stop_tracking_suggestion_title_one" formatted="false">"Tệp workspace của Obsidian đang được theo dõi"</string>
+    <string name="stop_tracking_suggestion_title_many">"%1$d tệp workspace của Obsidian đang được theo dõi"</string>
+    <string name="stop_tracking_suggestion_body_one" formatted="false">"Mỗi thiết bị lưu bố cục cửa sổ riêng ở đó nên thường xảy ra xung đột. Ngừng theo dõi để chỉ giữ nó trên từng thiết bị."</string>
+    <string name="stop_tracking_suggestion_body_many" formatted="false">"Mỗi thiết bị lưu bố cục cửa sổ riêng trong các tệp này nên chúng thường xung đột. Ngừng theo dõi để chỉ giữ chúng trên từng thiết bị."</string>
+    <string name="stop_tracking_suggestion_action" formatted="false">"Ngừng theo dõi tệp workspace…"</string>
+    <string name="stop_tracking_error_invalid">"GitSync.md không thể ngừng theo dõi “%1$s”."</string>
+    <string name="stop_tracking_error_not_tracked">"“%1$s” không được Git theo dõi và đã bị bỏ qua."</string>
+    <string name="stop_tracking_error_busy" formatted="false">"Hãy chờ thao tác Git hiện tại hoàn tất."</string>
+    <string name="stop_tracking_error_conflicts" formatted="false">"Hãy giải quyết xung đột trước"</string>
+</resources>

@@ -1,0 +1,2 @@
+• Naprawiono awarię podczas pobierania (pull) sejfu, który nie jest na żadnej gałęzi (odłączony HEAD). Pull wyjaśnia teraz, jak to naprawić.
+• Jeśli GitSync.md zamknie się podczas automatycznej synchronizacji, przy następnym uruchomieniu automatyczna synchronizacja zostanie wstrzymana, a aplikacja zapyta, co zrobić, więc nie będzie się zawieszać przy każdym uruchomieniu.

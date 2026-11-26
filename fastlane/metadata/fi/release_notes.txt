@@ -1,0 +1,2 @@
+• Korjaa kaatumisen, kun haet (pull) holvia, joka ei ole haaralla (irrotettu HEAD). Pull kertoo nyt sen sijaan, miten tilanne korjataan.
+• Jos GitSync.md sulkeutuu automaattisen synkronoinnin aikana, seuraava käynnistys keskeyttää automaattisen synkronoinnin ja kysyy, mitä tehdään, joten sovellus ei kaadu joka käynnistyksellä.

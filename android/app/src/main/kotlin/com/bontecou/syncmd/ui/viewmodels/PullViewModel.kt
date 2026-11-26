@@ -175,10 +175,15 @@ class PullViewModel @Inject constructor(private val pullService: PullService) : 
                     updated?.let { _status.value = it }
                     if (pull) _attention.value = attention
                     _fetchResult.value = fetched
-                    val blocked = pull && failure is com.bontecou.syncmd.data.models.DirtyRepoException
+                    // An ignored or untracked file in the way can't be resolved by committing: show
+                    // its path instead of the "Resolve local changes" commit flow (issue #137).
+                    val blocked = pull && failure is com.bontecou.syncmd.data.models.DirtyRepoException &&
+                        failure !is com.bontecou.syncmd.data.models.OverwriteBlockedException
                     _localChangesBlock.value = blocked
                     operationNotice = failure?.takeUnless { blocked }?.notice(R.string.gitops_action_failed, "Git could not complete this action")
                     showError(operationNotice)
+                    // The Pull screen's button: a clean pull (no attention, not blocked by local edits) may prompt.
+                    if (pull && failure == null && attention == null) com.bontecou.syncmd.review.ReviewPrompts.shared?.userSyncSucceeded(expected.path)
                 }
             } catch (cancelled: CancellationException) { throw cancelled
             } catch (error: Exception) {

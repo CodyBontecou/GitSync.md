@@ -1,0 +1,24 @@
+E2E test "issue137-pull-after-remote-stops-tracking"
+  › Launch with the incoming-untrack fixture: one commit behind a remote that stopped tracking .obsidian/workspace-mobile.json, with a local edit to that file. Expect Home with the fixture vault
+  ✓  1 launch (2.0s)
+  ✓  2 tool await-ui-element (0.5s)
+  ✓  3 idle (1.2s)
+  ✓  4 tap (0.5, 0.44) (0.3s)
+  ✓  5 tool await-ui-element (0.4s)
+  ✓  6 idle (4.0s)
+  ✓  7 tool await-ui-element (0.1s)
+  ✓  8 idle (0.9s)
+  › Vault behind with the workspace file edited locally. Tap Pull; expect it to go through (no local-changes block, no conflict) and leave no changes
+  ✓  9 tap (0.833, 0.475) (0.8s)
+  ✗ 10 tool await-ui-element (20.0s) — await-ui-element condition not met: no element matched the selector before timeout
+  · 11 idle
+  · 12 tool
+  · 13 tool
+  · 14 tool
+  tool (step 10):
+       screen: /var/folders/vh/t562rzcx5dx1w0j01ky690rm0000gn/T/simserver-57JpLE/media/535771000-1795540755546.png
+
+  ✗ step 10 tool await-ui-element
+    await-ui-element condition not met: no element matched the selector before timeout
+
+FAIL (started on <iPhone 18 Pro sim>) — 9 passed, 1 failed, 0 errored, 4 skipped (30.5s)

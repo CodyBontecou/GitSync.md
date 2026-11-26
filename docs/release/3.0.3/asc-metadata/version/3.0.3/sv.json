@@ -1,0 +1,3 @@
+{
+  "whatsNew": "• Åtgärdar en krasch vid pull av ett valv som inte är på en gren (detached HEAD). Pull förklarar nu i stället hur du löser det.\n• Om GitSync.md stängs under automatisk synkronisering pausar nästa start den automatiska synkroniseringen och frågar vad du vill göra, så att appen inte kraschar vid varje start."
+}

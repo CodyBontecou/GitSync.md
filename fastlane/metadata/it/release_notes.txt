@@ -1,0 +1,2 @@
+• Risolto un arresto anomalo durante il pull di un vault che non si trova su un ramo (HEAD scollegato). Ora il pull spiega come risolvere il problema.
+• Se GitSync.md si chiude durante la sincronizzazione automatica, all'avvio successivo la sincronizzazione automatica viene sospesa e l'app ti chiede cosa fare, così non si blocca a ogni avvio.

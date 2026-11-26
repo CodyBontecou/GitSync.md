@@ -1,0 +1,7 @@
+issue130-finish-stale-pull: PASS — 14 passed, 0 failed, 0 errored, 0 skipped, 1 warning (8.0s)
+qa-pull-conflict-keeps-local: PASS — 40 passed, 0 failed, 0 errored, 0 skipped (25.6s)
+qa-pull-stale-finish-update: PASS — 27 passed, 0 failed, 0 errored, 0 skipped (10.9s)
+issue111-detached-head-pull: FAIL — 3 passed, 1 failed, 0 errored, 9 skipped (12.3s)
+qa-pull-stale-commit-guard: FAIL — 21 passed, 1 failed, 0 errored, 3 skipped (16.1s)
+origin/main issue111-detached-head-pull: FAIL — 3 passed, 1 failed, 0 errored, 9 skipped (12.2s)
+origin/main qa-pull-stale-commit-guard: FAIL — 21 passed, 1 failed, 0 errored, 3 skipped (16.2s)

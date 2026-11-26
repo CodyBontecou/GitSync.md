@@ -29,10 +29,40 @@ For automation on a user's device, consult the Shortcuts guide and agent instruc
 - [Troubleshooting](https://gitsync.md/blog/obsidian-git-not-working-iphone): Authentication, folder selection, and sync problems.
 - [Conflict recovery](https://gitsync.md/blog/obsidian-git-merge-conflicts-iphone): Preserve work and resolve divergent edits.
 
+## Android workflows
+
+- [Obsidian Git on Android](https://gitsync.md/blog/obsidian-git-android): Plugin, Termux and native-client options, vault folder and storage access, and Android background limits.
+
+## Cross-device
+
+- [Sync Obsidian with GitHub on every device](https://gitsync.md/blog/sync-obsidian-github): Private repository, desktop Git and Obsidian Git plugin settings, then iPhone, iPad and Android routes and a two-way verification.
+- [Sync Obsidian with GitLab on iPhone, iPad and Android](https://gitsync.md/blog/obsidian-gitlab-sync): gitlab.com and self-managed GitLab with an HTTPS personal access token (read_repository and write_repository) or an SSH key, host-key checks, cloning with GitSync.md, and GitLab-specific push and token errors.
+- [Obsidian with Syncthing on iPhone and iPad](https://gitsync.md/blog/obsidian-syncthing-iphone): Third-party iOS clients (Synctrain, Möbius Sync), pairing, folder and Obsidian limits, .stignore example, conflict files, and when Git is simpler for the phone.
+- [Obsidian and Google Drive](https://gitsync.md/blog/obsidian-google-drive-sync): Per-device verdicts for Google Drive, OneDrive and Dropbox on desktop, Android and iPhone, Remotely Save free vs PRO, one sync method per vault, and moving a vault to Git.
+- [Obsidian Git plugin: commands, settings and errors](https://gitsync.md/blog/obsidian-git-plugin): Reference for the Obsidian Git community plugin: command palette names, settings grouped by job, a desktop vs mobile table, an error lookup (Cannot run Git command, xcrun, gpg, LFS) and when a native Git app is better on a phone.
+- [Where your Obsidian vault is stored and how to move it](https://gitsync.md/blog/obsidian-vault-location): Vault folder vs global settings by platform (desktop, iPhone/iPad Files app, Android), show hidden folders, Move/Rename/Remove vault, iCloud to local on iPhone, and moving a Git-backed vault with .git and .obsidian intact.
+- [Back up an Obsidian vault with Git](https://gitsync.md/blog/obsidian-backup-git): Sync vs backup vs version history, a backup routine that includes notes written on iPhone, tested commands to restore a changed note, a deleted note or a folder, and a checklist.
+
+## Publish
+
+- [Publish Obsidian notes with Quartz from your iPhone](https://gitsync.md/blog/publish-obsidian-quartz-iphone): Quartz 5 and GitHub Pages set up once on a computer, then publish from a phone with a commit and push; what stays public and what stays private.
+
 ## Compare syncing methods
 
+- [GitSync vs GitSync.md: two different apps](https://gitsync.md/compare/gitsync-vs-gitsync-md): Two unrelated apps with similar names, compared by platform, license, price, auth and Obsidian workflow, with sources and a checked date.
+- [Best Git clients for Android (2026)](https://gitsync.md/compare/best-git-client-android): GitSync.md, MGit, Gitling, PuppyGit, GitJournal, Termux and GitHub Mobile compared by job, SSH, folder access and last release date, with sources and a checked date.
+- [Best Git clients for iPhone and iPad (2026)](https://gitsync.md/compare/best-git-client-ios): GitSync.md, Working Copy, Phogit, GitHub Mobile, a-Shell and iSH compared by job, push pricing, Files access, authentication and Android, with sources and a checked date.
+- [Obsidian Sync alternatives](https://gitsync.md/compare/obsidian-sync-alternatives): iCloud, Git, Syncthing, Self-hosted LiveSync, Remotely Save and Obsidian Sync compared by device, cost model, history, conflicts and iPhone caveats.
 - [iCloud vs Git for Obsidian](https://gitsync.md/compare/icloud-vs-git-obsidian): Device compatibility, folder locations, history, privacy, and switching methods.
 - [Obsidian Sync vs Git](https://gitsync.md/compare/obsidian-sync-vs-git): Integrated sync compared with explicit Git commits.
+
+## Tools
+
+- [Obsidian Sync cost calculator](https://gitsync.md/tools/obsidian-sync-cost-calculator): Client-side calculator for whether a vault fits Sync Standard or Plus, and its multi-year cost next to Git and iCloud. Prices and limits are dated on the page.
+- [Obsidian .gitignore generator](https://gitsync.md/tools/obsidian-gitignore-generator): Client-side generator for a commented .gitignore for an Obsidian vault: notes-only, shared-settings or everything-except-device-state presets, custom config folder name, and rules that never ignore a parent directory before negating a child.
+- [Markdown diff](https://gitsync.md/tools/markdown-diff): Client-side tool that compares two versions of a Markdown note line by line and word by word, and resolves Git conflict markers (default and diff3/zdiff3 styles) by keeping ours, theirs or both.
+- [Markdown table generator](https://gitsync.md/tools/markdown-table-generator): Client-side tool that builds or edits Markdown tables for GitHub and Obsidian: imports Markdown tables, CSV and spreadsheet TSV, escapes pipes (including wikilink aliases), and writes aligned or compact output for smaller Git diffs.
+- [GitHub token link builder](https://gitsync.md/tools/github-token-generator): Client-side builder for a pre-filled GitHub fine-grained personal access token link with least-privilege presets for Obsidian Git, Git apps, read-only clones and GitHub Actions publishing. It cannot pre-select the repository.
 
 ## Reading this site
 

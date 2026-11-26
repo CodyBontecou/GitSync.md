@@ -1,0 +1,2 @@
+• Memperbaiki crash saat melakukan pull vault yang tidak berada di branch (detached HEAD). Pull kini menjelaskan cara memperbaikinya.
+• Jika GitSync.md tertutup saat sinkronisasi otomatis, peluncuran berikutnya akan menjeda sinkronisasi otomatis dan menanyakan apa yang harus dilakukan, sehingga aplikasi tidak crash setiap kali dibuka.

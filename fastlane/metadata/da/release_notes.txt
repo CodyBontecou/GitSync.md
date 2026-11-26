@@ -1,0 +1,2 @@
+• Retter et nedbrud ved pull af en boks, der ikke er på en gren (detached HEAD). Pull forklarer nu i stedet, hvordan du løser det.
+• Hvis GitSync.md lukker under automatisk synkronisering, sætter næste start den automatiske synkronisering på pause og spørger, hvad du vil, så appen ikke går ned ved hver start.

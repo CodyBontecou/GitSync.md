@@ -65,7 +65,7 @@ struct PushRejectedView: View {
             .foregroundStyle(Tide.heroMeta)
 
             Button {
-                Task { await state.bringTheirsInThenPush(repoID: rejection.repoID) }
+                Task { await ReviewPromptContext.userStarted { await state.bringTheirsInThenPush(repoID: rejection.repoID) } }
             } label: {
                 HStack(spacing: 8) {
                     if busy {
@@ -251,7 +251,7 @@ struct IncomingChangesSheet: View {
                 ToolbarItem(placement: .confirmationAction) {
                     Button(String(localized: "Bring in")) {
                         dismiss()
-                        Task { await state.bringTheirsInThenPush(repoID: repoID) }
+                        Task { await ReviewPromptContext.userStarted { await state.bringTheirsInThenPush(repoID: repoID) } }
                     }
                 }
             }

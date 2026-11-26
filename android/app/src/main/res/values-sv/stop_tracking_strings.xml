@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Stop tracking a file, folder or Obsidian workspace files (#149). Wording from the iOS catalog. -->
+<resources>
+    <string name="stop_tracking_menu" formatted="false">"Sluta spåra…"</string>
+    <string name="stop_tracking_title" formatted="false">"Sluta spåra i Git?"</string>
+    <string name="stop_tracking_body" formatted="false">"GitSync.md tar bort det från Git, lägger till det i .gitignore och committar det. Det finns kvar på den här enheten."</string>
+    <string name="stop_tracking_option_file" formatted="false">"Den här filen"</string>
+    <string name="stop_tracking_option_folder" formatted="false">"Dess mapp"</string>
+    <string name="stop_tracking_option_workspace" formatted="false">"Alla Obsidian-arbetsytefiler"</string>
+    <string name="stop_tracking_one_file" formatted="false">"1 fil"</string>
+    <string name="stop_tracking_files">"%1$d filer"</string>
+    <string name="stop_tracking_note_workspace" formatted="false">"När andra enheter pullar den här committen tar Git bort deras kopia. Obsidian skapar en ny nästa gång valvet öppnas."</string>
+    <string name="stop_tracking_note_file" formatted="false">"När andra enheter pullar den här committen tar Git bort deras kopia. Spara den där först om de behöver den. Den finns kvar i Git-historiken."</string>
+    <string name="stop_tracking_confirm" formatted="false">"Sluta spåra"</string>
+    <string name="stop_tracking_done" formatted="false">"Spårning stoppad"</string>
+    <string name="stop_tracking_suggestion" formatted="false">"Förslag"</string>
+    <string name="stop_tracking_suggestion_title_one" formatted="false">"Obsidians arbetsytefil spåras"</string>
+    <string name="stop_tracking_suggestion_title_many">"%1$d Obsidian-arbetsytefiler spåras"</string>
+    <string name="stop_tracking_suggestion_body_one" formatted="false">"Varje enhet sparar sin egen fönsterlayout där, så det blir ofta konflikter. Sluta spåra den så stannar den bara på varje enhet."</string>
+    <string name="stop_tracking_suggestion_body_many" formatted="false">"Varje enhet sparar sin egen fönsterlayout i de här filerna, så det blir ofta konflikter. Sluta spåra dem så stannar de bara på varje enhet."</string>
+    <string name="stop_tracking_suggestion_action" formatted="false">"Sluta spåra arbetsytefiler…"</string>
+    <string name="stop_tracking_error_invalid">"GitSync.md kan inte sluta spåra ”%1$s”."</string>
+    <string name="stop_tracking_error_not_tracked">"”%1$s” spåras inte av Git och ignoreras redan."</string>
+    <string name="stop_tracking_error_busy" formatted="false">"Vänta tills den pågående Git-åtgärden är klar."</string>
+    <string name="stop_tracking_error_conflicts" formatted="false">"Lös konflikterna först"</string>
+</resources>

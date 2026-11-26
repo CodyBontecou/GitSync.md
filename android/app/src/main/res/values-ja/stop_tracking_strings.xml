@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Stop tracking a file, folder or Obsidian workspace files (#149). Wording from the iOS catalog. -->
+<resources>
+    <string name="stop_tracking_menu" formatted="false">"追跡を解除…"</string>
+    <string name="stop_tracking_title" formatted="false">"Git での追跡を停止しますか？"</string>
+    <string name="stop_tracking_body" formatted="false">"GitSync.md が Git から外して .gitignore に追加し、コミットします。このデバイスには残ります。"</string>
+    <string name="stop_tracking_option_file" formatted="false">"このファイル"</string>
+    <string name="stop_tracking_option_folder" formatted="false">"そのフォルダ"</string>
+    <string name="stop_tracking_option_workspace" formatted="false">"Obsidian のすべてのワークスペースファイル"</string>
+    <string name="stop_tracking_one_file" formatted="false">"1 個のファイル"</string>
+    <string name="stop_tracking_files">"%1$d 個のファイル"</string>
+    <string name="stop_tracking_note_workspace" formatted="false">"ほかのデバイスがこのコミットをプルすると、Git はそこにあるコピーを削除します。Obsidian は次に保管庫を開いたときに新しく作成します。"</string>
+    <string name="stop_tracking_note_file" formatted="false">"ほかのデバイスがこのコミットをプルすると、Git はそこにあるコピーを削除します。必要なら先にそちらで保存してください。Git の履歴には残ります。"</string>
+    <string name="stop_tracking_confirm" formatted="false">"追跡を解除"</string>
+    <string name="stop_tracking_done" formatted="false">"追跡を停止しました"</string>
+    <string name="stop_tracking_suggestion" formatted="false">"提案"</string>
+    <string name="stop_tracking_suggestion_title_one" formatted="false">"Obsidian のワークスペースファイルが追跡されています"</string>
+    <string name="stop_tracking_suggestion_title_many">"Obsidian のワークスペースファイル %1$d 件が追跡されています"</string>
+    <string name="stop_tracking_suggestion_body_one" formatted="false">"各デバイスが自分のウインドウレイアウトをそこに保存するため、よく競合します。追跡を停止すると、各デバイスにだけ残ります。"</string>
+    <string name="stop_tracking_suggestion_body_many" formatted="false">"各デバイスがこれらのファイルに自分のウインドウレイアウトを保存するため、よく競合します。追跡を停止すると、各デバイスにだけ残ります。"</string>
+    <string name="stop_tracking_suggestion_action" formatted="false">"ワークスペースファイルの追跡を停止…"</string>
+    <string name="stop_tracking_error_invalid">"GitSync.md は「%1$s」の追跡を停止できません。"</string>
+    <string name="stop_tracking_error_not_tracked">"「%1$s」は Git で追跡されておらず、すでに無視されています。"</string>
+    <string name="stop_tracking_error_busy" formatted="false">"現在の Git 操作が終わるまでお待ちください。"</string>
+    <string name="stop_tracking_error_conflicts" formatted="false">"先にコンフリクトを解決してください"</string>
+</resources>

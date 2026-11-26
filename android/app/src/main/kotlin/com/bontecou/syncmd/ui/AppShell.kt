@@ -151,7 +151,7 @@ private fun List<com.bontecou.syncmd.ui.viewmodels.SavedRepository>.subtitleFor(
  *                    →  settings
  *   repos  →  login  →  repo_picker  →  clone
  *
- * Gitsync.md is now a paid-up-front app on Google Play, so every installed
+ * GitSync.md is now a paid-up-front app on Google Play, so every installed
  * copy has full access. No in-app purchase SDK or repository-limit gate is enforced here.
  */
 @Composable
@@ -209,6 +209,17 @@ fun AppShell(settingsViewModel: SettingsViewModel) {
             GuideTarget.SAMPLE -> settingsViewModel.openSampleRepository { navController.navigateSafe(Routes.VAULT) }
         }
         guide.consumeTarget()
+    }
+
+    LaunchedEffect(Unit) {
+        // DEBUG Argent QA fixture: open the rebuilt sample vault (see debug/QaFixtures). Collected
+        // in one coroutine so clearing the request cannot cancel the open in progress.
+        com.bontecou.syncmd.debug.QaFixtures.openSample.collect { requested ->
+            if (!requested) return@collect
+            com.bontecou.syncmd.debug.QaFixtures.openSample.value = false
+            navController.awaitResumedNavigationEntry()
+            settingsViewModel.openSampleRepository { navController.navigateSafe(Routes.VAULT) }
+        }
     }
 
     LaunchedEffect(pullAllRequest) {

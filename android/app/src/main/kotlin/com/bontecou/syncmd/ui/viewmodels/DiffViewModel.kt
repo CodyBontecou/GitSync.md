@@ -243,6 +243,7 @@ class DiffViewModel @Inject constructor(
                     }
                     throw e
                 }
+                com.bontecou.syncmd.review.ReviewPrompts.shared?.userSyncSucceeded(path)
                 withContext(Dispatchers.Main.immediate) { if (generation == requestGeneration) _operationMessage.value = UiText.res(R.string.gitops_committed_pushed) }
             }
         }
@@ -255,6 +256,8 @@ class DiffViewModel @Inject constructor(
         mutate(push = true) { path ->
             gitOpsCheck(branchService.getCurrentBranch(path).getOrThrow().name == branch, R.string.gitops_branch_changed_push)
             pushService.push(path, PushConfig(branch = branch, remote = remote)).getOrThrow()
+            // The Remote and Rebase screens' Push button (after a finished rebase this is the conflict-resolved moment).
+            com.bontecou.syncmd.review.ReviewPrompts.shared?.userSyncSucceeded(path)
             withContext(Dispatchers.Main.immediate) { if (generation == requestGeneration) _operationMessage.value = UiText.res(R.string.gitops_branch_pushed) }
         }
     }

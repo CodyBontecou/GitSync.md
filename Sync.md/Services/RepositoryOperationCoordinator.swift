@@ -272,6 +272,10 @@ final class SerializedGitRepository: GitRepositoryProtocol, @unchecked Sendable 
         try await run { try await $0.pullFastForward(branch: branch, pat: pat) }
     }
 
+    func finishPendingCheckout() async throws -> PendingCheckoutCompletion {
+        try await run { try await $0.finishPendingCheckout() }
+    }
+
     func pullRebase(branch: String, pat: String, authorName: String, authorEmail: String) async throws -> LocalPullResult {
         try await run { try await $0.pullRebase(branch: branch, pat: pat, authorName: authorName, authorEmail: authorEmail) }
     }
@@ -383,6 +387,14 @@ final class SerializedGitRepository: GitRepositoryProtocol, @unchecked Sendable 
     }
 
     func discardAllChanges() async throws { try await run { try await $0.discardAllChanges() } }
+
+    func trackedPaths(matching target: GitUntrackTarget) async throws -> [String] {
+        try await run { try await $0.trackedPaths(matching: target) }
+    }
+
+    func stopTracking(_ target: GitUntrackTarget, authorName: String, authorEmail: String) async throws -> GitUntrackResult {
+        try await run { try await $0.stopTracking(target, authorName: authorName, authorEmail: authorEmail) }
+    }
 
     func commitAndPush(
         message: String,

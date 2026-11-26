@@ -256,8 +256,11 @@ final class CallbackURLHandler {
         case .upToDate(_, let commitSHA):
             return .init(params: ["sha": commitSHA, "updated": "false"], errorMessage: nil)
         case .updatedWithAttention(_, let commitSHA, let attention):
+            // A checkout left behind HEAD means the vault files did not change.
+            let filesUpdated: Bool
+            if case .workingTreeNotUpdated = attention { filesUpdated = false } else { filesUpdated = true }
             return .init(
-                params: ["sha": commitSHA, "updated": "true"],
+                params: ["sha": commitSHA, "updated": filesUpdated ? "true" : "false"],
                 errorMessage: attention.localizedDescription
             )
         case .blockedByLocalChanges:

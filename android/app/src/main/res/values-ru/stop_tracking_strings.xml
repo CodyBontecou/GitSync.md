@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Stop tracking a file, folder or Obsidian workspace files (#149). Wording from the iOS catalog. -->
+<resources>
+    <string name="stop_tracking_menu" formatted="false">"Прекратить отслеживание…"</string>
+    <string name="stop_tracking_title" formatted="false">"Прекратить отслеживание в Git?"</string>
+    <string name="stop_tracking_body" formatted="false">"GitSync.md удалит его из Git, добавит в .gitignore и сделает коммит. На этом устройстве он останется."</string>
+    <string name="stop_tracking_option_file" formatted="false">"Этот файл"</string>
+    <string name="stop_tracking_option_folder" formatted="false">"Его папка"</string>
+    <string name="stop_tracking_option_workspace" formatted="false">"Все файлы рабочей области Obsidian"</string>
+    <string name="stop_tracking_one_file" formatted="false">"1 файл"</string>
+    <string name="stop_tracking_files">"Файлов: %1$d"</string>
+    <string name="stop_tracking_note_workspace" formatted="false">"Когда другие устройства получат этот коммит, Git удалит их копию. Obsidian создаст новую при следующем открытии хранилища."</string>
+    <string name="stop_tracking_note_file" formatted="false">"Когда другие устройства получат этот коммит, Git удалит их копию. Если она там нужна, сначала сохраните её. В истории Git она останется."</string>
+    <string name="stop_tracking_confirm" formatted="false">"Прекратить отслеживание"</string>
+    <string name="stop_tracking_done" formatted="false">"Отслеживание прекращено"</string>
+    <string name="stop_tracking_suggestion" formatted="false">"Совет"</string>
+    <string name="stop_tracking_suggestion_title_one" formatted="false">"Файл рабочей области Obsidian отслеживается"</string>
+    <string name="stop_tracking_suggestion_title_many">"Отслеживаемых файлов рабочей области Obsidian: %1$d"</string>
+    <string name="stop_tracking_suggestion_body_one" formatted="false">"Каждое устройство сохраняет туда свою раскладку окон, поэтому часто возникают конфликты. Прекратите отслеживание, чтобы файл оставался только на каждом устройстве."</string>
+    <string name="stop_tracking_suggestion_body_many" formatted="false">"Каждое устройство сохраняет в эти файлы свою раскладку окон, поэтому часто возникают конфликты. Прекратите их отслеживание, чтобы они оставались только на каждом устройстве."</string>
+    <string name="stop_tracking_suggestion_action" formatted="false">"Прекратить отслеживание файлов рабочей области…"</string>
+    <string name="stop_tracking_error_invalid">"GitSync.md не может прекратить отслеживание «%1$s»."</string>
+    <string name="stop_tracking_error_not_tracked">"«%1$s» не отслеживается Git и уже игнорируется."</string>
+    <string name="stop_tracking_error_busy" formatted="false">"Дождитесь завершения текущей операции Git."</string>
+    <string name="stop_tracking_error_conflicts" formatted="false">"Сначала разрешите конфликты"</string>
+</resources>

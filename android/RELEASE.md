@@ -1,4 +1,4 @@
-# Gitsync.md Android — Release Notes
+# GitSync.md Android — Release Notes
 
 ## Version 1.1.0 (free download, one-time unlock)
 
@@ -24,7 +24,7 @@ original free listing, which Google Play keeps free permanently:
 
 ### Move to `md.gitsync.md` — new paid listing
 
-The original listing (`com.bontecou.syncmd`) shipped as a free app, and Google Play does not permit converting a free listing to paid. Gitsync.md therefore relaunches under a new package name:
+The original listing (`com.bontecou.syncmd`) shipped as a free app, and Google Play does not permit converting a free listing to paid. GitSync.md therefore relaunches under a new package name:
 
 - **New applicationId:** `md.gitsync.md` (code namespace stays `com.bontecou.syncmd`)
 - **Model:** paid up-front, **USD $9.99 one-time**, matching the iOS app
@@ -37,7 +37,7 @@ The original listing (`com.bontecou.syncmd`) shipped as a free app, and Google P
 
 ### Release Overview
 
-**Gitsync.md** is a pure Kotlin git client for managing GitHub repositories on Android. With a focus on safety and performance, it provides a modern Jetpack Compose interface for core git workflows.
+**GitSync.md** is a pure Kotlin git client for managing GitHub repositories on Android. With a focus on safety and performance, it provides a modern Jetpack Compose interface for core git workflows.
 
 ### What's New in 1.0.0
 
@@ -186,7 +186,7 @@ Bug reports, feature requests, and feedback can be submitted via the GitHub Issu
 ### Play Store Listing
 
 **App Title** (50 char max)
-- Gitsync.md - Git Client for Android
+- GitSync.md - Git Client for Android
 
 **Short Description** (80 char max)
 - Manage GitHub repos safely on Android

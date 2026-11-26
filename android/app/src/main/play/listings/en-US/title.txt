@@ -1,1 +1,1 @@
-Gitsync.md
+GitSync.md: Git Markdown Notes

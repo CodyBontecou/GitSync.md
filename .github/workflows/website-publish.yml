@@ -102,7 +102,7 @@ jobs:
       - name: Verify preview before production
         env:
           PREVIEW_URL: ${{ steps.preview.outputs.url }}
-        run: python3 .github/scripts/check-pages-release.py --site "$RUNNER_TEMP/site" --base-url "$PREVIEW_URL" --canonical-origin https://gitsync.md --preview
+        run: python3 .github/scripts/check-pages-release.py --site "$RUNNER_TEMP/site" --base-url "$PREVIEW_URL" --canonical-origin https://gitsync.md --preview --retry-seconds 180
       - name: Recheck main before production promotion
         env:
           GH_TOKEN: ${{ github.token }}
@@ -115,7 +115,10 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
         run: npx --yes wrangler@4.156.0 pages deploy "$RUNNER_TEMP/site" --project-name syncmd --branch main --commit-hash "$GITHUB_SHA" --commit-dirty=false
       - name: Verify production
-        run: python3 .github/scripts/check-pages-release.py --site "$RUNNER_TEMP/site" --base-url https://gitsync.md
+        # `wrangler pages deploy --branch main` returns before the production alias
+        # serves the new deployment, so the first seconds can still return the
+        # previous HTML. Retry the unchanged byte-for-byte check for a bounded time.
+        run: python3 .github/scripts/check-pages-release.py --site "$RUNNER_TEMP/site" --base-url https://gitsync.md --retry-seconds 180
       - name: Record verified release
         env:
           PREVIEW_URL: ${{ steps.preview.outputs.url }}

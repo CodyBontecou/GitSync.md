@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../favicon-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<title>Obsidian .gitignore Generator: Copy a Commented File</title>
+<meta name="description" content="Pick what syncs between your devices and copy a commented .gitignore for your Obsidian vault. Ignores workspace.json, handles plugins and themes, works with any config folder name.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Cody Bontecou">
+<meta name="theme-color" content="#ffffff">
+<link rel="canonical" href="https://gitsync.md/tools/obsidian-gitignore-generator">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="GitSync.md">
+<meta property="og:title" content="Obsidian .gitignore Generator: Copy a Commented File">
+<meta property="og:description" content="Pick what syncs between your devices and copy a commented .gitignore for your Obsidian vault. Ignores workspace.json, handles plugins and themes, works with any config folder name.">
+<meta property="og:url" content="https://gitsync.md/tools/obsidian-gitignore-generator">
+<meta property="og:image" content="https://gitsync.md/social/blog/obsidian-gitignore-generator.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:alt" content="GitSync.md free tool card: Obsidian .gitignore Generator">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Obsidian .gitignore Generator: Copy a Commented File">
+<meta name="twitter:description" content="Pick what syncs between your devices and copy a commented .gitignore for your Obsidian vault. Ignores workspace.json, handles plugins and themes, works with any config folder name.">
+<meta name="twitter:image" content="https://gitsync.md/social/blog/obsidian-gitignore-generator.png">
+<meta name="twitter:image:alt" content="GitSync.md free tool card: Obsidian .gitignore Generator">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Obsidian .gitignore generator",
+  "description": "Pick what syncs between your devices and copy a commented .gitignore for your Obsidian vault. Ignores workspace.json, handles plugins and themes, works with any config folder name.",
+  "url": "https://gitsync.md/tools/obsidian-gitignore-generator",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Any (runs in a web browser)",
+  "browserRequirements": "Requires JavaScript",
+  "isAccessibleForFree": true,
+  "inLanguage": "en",
+  "datePublished": "2026-11-20",
+  "dateModified": "2026-11-20",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Person",
+    "name": "Cody Bontecou",
+    "url": "https://gitsync.md/about"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Cody Bontecou"
+  }
+}
+</script>
+<link rel="stylesheet" href="../site.css">
+<link rel="stylesheet" href="../content.css">
+<link rel="stylesheet" href="../comparison.css">
+<style>
+.calc { background: var(--surface); border: 2px solid var(--line); padding: 25px 28px; margin-bottom: 39px; }
+.calc fieldset { border: 0; padding: 0; margin: 0 0 22px; min-width: 0; }
+.calc legend, .calc .field-label { display: block; font-weight: 650; font-size: 16px; line-height: 24px; margin-bottom: 8px; padding: 0; }
+.calc .checks { display: flex; flex-direction: column; gap: 2px; }
+.calc .checks label { display: flex; align-items: flex-start; gap: 10px; font-size: 16px; line-height: 24px; min-height: 44px; padding-block: 10px 0; }
+.calc .checks label span small { display: block; font-size: 14px; line-height: 20px; color: var(--muted); }
+.calc input[type="checkbox"], .calc input[type="radio"] { flex: none; width: 20px; height: 20px; margin: 2px 0 0; accent-color: var(--blue-deep); }
+.calc input[type="text"], .calc textarea { width: 100%; min-height: 44px; padding: 8px 12px; font: inherit; font-size: 16px; color: var(--ink); background: var(--paper); border: 2px solid var(--line); border-radius: 8px; box-sizing: border-box; }
+.calc textarea { font-family: var(--mono); min-height: 88px; resize: vertical; }
+.calc .hint { display: block; font-size: 14px; line-height: 20px; color: var(--muted); margin-top: 6px; }
+.calc .field { margin-bottom: 22px; }
+.calc .secret-warning { background: var(--ahead-wash); color: var(--ahead-text); padding: 12px 16px; margin: 8px 0 0 30px; font-size: 15px; line-height: 22px; }
+.calc .secret-warning[hidden] { display: none; }
+.calc .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-block: 16px 8px; }
+.calc .tool-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 22px; border: 0; border-radius: 999px; background: var(--ink); color: var(--paper); font: 600 16px/1.2 var(--sans); cursor: pointer; }
+.calc .tool-btn.secondary { background: var(--paper); color: var(--ink); border: 2px solid var(--ink); }
+.calc .tool-btn:focus-visible, .calc input:focus-visible, .calc textarea:focus-visible { outline: 3px solid var(--blue-deep); outline-offset: 2px; }
+.calc .status { min-height: 24px; font-size: 15px; color: var(--muted); }
+.calc-results { border-top: 2px solid var(--line); padding-top: 22px; }
+.calc-results h3 { margin-top: 0; }
+.calc-results pre { margin-top: 12px; max-height: 480px; overflow: auto; }
+.calc-warnings { background: var(--ahead-wash); color: var(--ahead-text); padding: 14px 18px; margin-block: 16px; }
+.calc-warnings ul { margin: 0; }
+.calc-warnings li { color: var(--ahead-text); }
+.keeps { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0 28px; }
+@media (max-width: 960px) { .tool-layout > .guide-aside { order: 3; margin-block: 32px 0; } .calc { padding: 20px 16px; } .calc .secret-warning { margin-left: 0; } }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://gitsync.md/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Guides",
+      "item": "https://gitsync.md/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Obsidian .gitignore generator",
+      "item": "https://gitsync.md/tools/obsidian-gitignore-generator"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Should I commit .obsidian at all?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Only if you want the same themes, snippets, hotkeys or plugins on every device. Ignoring the whole folder is the simplest policy, and you configure each device yourself. Sharing selected files keeps your setup consistent, but never share workspace.json, and review plugin data.json files for tokens before you commit them."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Will plugins work on a fresh clone if I ignore plugins/?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. A fresh clone only has the files Git tracks, so ignored plugin code is not there and each plugin has to be installed again on that device. To bring plugins along, sync plugin code and keep the plugin settings (data.json) ignored unless you have checked them for secrets."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does Obsidian Sync use .gitignore?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Obsidian Sync is separate from Git and has its own selective sync settings that choose which vault settings and file types to sync. A .gitignore file only affects Git. If you use both on one vault, keep them from fighting over the same files, or use one sync method per vault."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "My config folder isn't called .obsidian. Does this work?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Obsidian lets you rename the configuration folder, so the generator has a field for its name and writes every rule with that name. Type the exact folder name, such as .config, and check the result with git check-ignore."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body id="top">
+<a class="skip-link" href="#main">Skip to content</a>
+<svg class="icon-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 5l7 7-7 7"/></symbol>
+  <symbol id="i-branch" viewBox="0 0 24 24"><circle cx="6" cy="5" r="2.5"/><circle cx="6" cy="19" r="2.5"/><circle cx="18" cy="5" r="2.5"/><path d="M6 7.5v9M18 7.5v1a5 5 0 0 1-5 5H6"/></symbol>
+  <symbol id="i-external" viewBox="0 0 24 24"><path d="M6 18 18 6M6 6h12v12"/></symbol>
+</svg>
+
+<header class="site-header">
+  <nav class="shell navigation" aria-label="Main navigation">
+    <a class="brand" href="/" aria-label="GitSync.md home">gitsync<span class="brand-extension">.md</span></a>
+    <div class="nav-links"><a href="/#app">The app</a><a href="/#workflow">How it works</a><a href="/blog/" class="is-active">Guides</a><a href="/compare/obsidian-sync-vs-git">Compare</a><a href="/#faq">FAQ</a></div>
+    <a class="button button-small" href="/#download">Get the app</a>
+  </nav>
+</header>
+
+<main id="main">
+  <div class="container guide-layout tool-layout">
+      <header class="article-hero">
+        <div class="article-title"><nav class="eyebrow article-breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li><a href="/blog/">Guides</a></li><li aria-current="page">Obsidian .gitignore generator</li></ol></nav>
+      <h1>Obsidian .gitignore generator<span class="accent">.</span></h1>
+      <p class="subtitle">Pick what syncs between your devices; copy a commented .gitignore for your vault.</p>
+      <div class="meta-line"><time datetime="2026-11-20">November 20, 2026</time><span>By <a href="/about" rel="author">Cody Bontecou</a></span><span>Free tool · Runs in your browser</span></div>
+    </div>
+      </header>
+      <aside class="guide-aside" aria-label="Tool sidebar">
+        <div class="guide-aside-sticky">
+        <nav class="toc-card" aria-label="Page outline"><div class="toc-title">On this page</div><ol><li><a href="#generator">Generator</a></li><li><a href="#check">Check it before you push</a></li><li><a href="#preset">Which preset?</a></li><li><a href="#parent-dirs">Why .obsidian/ plus ! fails</a></li><li><a href="#secrets">Plugin data and secrets</a></li><li><a href="#mobile">iPhone and iPad</a></li><li><a href="#faq">FAQ</a></li></ol></nav>
+        <div class="aside-cta aside-cta-wide">
+          <p class="aside-cta-title">Same .gitignore, every device.</p>
+          <p class="aside-cta-price">iPhone + iPad: free to download, $9.99 once to unlock · No subscription</p>
+          <a class="aside-cta-button" href="/v/web-homepage-124" target="_blank" rel="noopener">Download on the App Store</a>
+          <p class="aside-cta-price">On Android? <a href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener">Get it on Google Play</a>.</p>
+        </div>
+        </div>
+      </aside>
+      <article class="article-body">
+        <p><strong>Short answer:</strong> choose a preset, adjust the boxes, then copy the file into the root of your vault’s repository. Every line is commented with why it is there. When some of the config folder syncs and some doesn’t, the file uses <code>.obsidian/*</code> followed by <code>!</code> rules, which is the form Git honours. For a longer explanation, see <a href="/blog/obsidian-gitignore">the Obsidian .gitignore guide</a>.</p>
+
+        <section class="calc" id="generator" aria-labelledby="generator-heading">
+          <h2 id="generator-heading" style="margin-top:0">Build your .gitignore</h2>
+          <noscript><p><strong>Turn on JavaScript to generate your file.</strong> The generator runs entirely in your browser. The <a href="/blog/obsidian-gitignore#notes-only">notes-only</a> and <a href="/blog/obsidian-gitignore#selected-settings">selected-settings</a> starters in the guide work without it.</p></noscript>
+          <form id="gi-form" hidden onsubmit="return false">
+            <fieldset>
+              <legend>Preset</legend>
+              <div class="checks">
+                <label><input type="radio" name="preset" value="notes"> <span>Notes only<small>The whole config folder stays on each device.</small></span></label>
+                <label><input type="radio" name="preset" value="shared" checked> <span>Notes + shared settings<small>Themes, snippets, hotkeys and plugin code sync. Layout and plugin settings stay local.</small></span></label>
+                <label><input type="radio" name="preset" value="everything"> <span>Everything except device state<small>Syncs plugin settings too. Only the workspace layout stays local.</small></span></label>
+              </div>
+            </fieldset>
+
+            <div class="field">
+              <label class="field-label" for="config">Config folder name</label>
+              <input type="text" id="config" name="config" value=".obsidian" autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false" aria-describedby="config-hint">
+              <span class="hint" id="config-hint">Obsidian lets you rename this folder (Settings → Files and links). Every rule uses this name.</span>
+              <span class="hint" id="config-error" role="alert" hidden></span>
+            </div>
+
+            <fieldset>
+              <legend>What to do with each part</legend>
+              <div class="checks">
+                <label><input type="checkbox" name="ws" checked> <span>Ignore workspace layout<small><code>workspace.json</code>, <code>workspace-mobile.json</code>. Obsidian rewrites them whenever you open a note.</small></span></label>
+                <label><input type="checkbox" name="themes"> <span>Sync themes<small><code>themes/</code></small></span></label>
+                <label><input type="checkbox" name="snippets"> <span>Sync CSS snippets<small><code>snippets/</code></small></span></label>
+                <label><input type="checkbox" name="settings"> <span>Sync hotkeys, appearance and core settings<small><code>app.json</code>, <code>appearance.json</code>, <code>hotkeys.json</code>, <code>core-plugins.json</code>, <code>community-plugins.json</code></small></span></label>
+                <label><input type="checkbox" name="code"> <span>Sync community plugin code<small><code>plugins/*/main.js</code>, <code>manifest.json</code>, <code>styles.css</code></small></span></label>
+                <label><input type="checkbox" name="data"> <span>Sync plugin settings<small><code>plugins/*/data.json</code></small></span></label>
+              </div>
+              <p class="secret-warning" id="data-warning" role="note"><strong>Plugin settings can hold secrets.</strong> Some plugins store tokens or API keys in <code>data.json</code>, including the sync plugin you use for Git. Leave this unticked unless you have opened each file and checked it.</p>
+            </fieldset>
+
+            <fieldset>
+              <legend>Also keep out</legend>
+              <div class="checks">
+                <label><input type="checkbox" name="trash" checked> <span>Trash folder<small><code>.trash/</code>, where Obsidian can move deleted notes.</small></span></label>
+                <label><input type="checkbox" name="junk" checked> <span>OS junk<small><code>.DS_Store</code>, <code>Thumbs.db</code>, <code>desktop.ini</code></small></span></label>
+                <label><input type="checkbox" name="large"> <span>Large attachments<small>Git stores every version of a binary file. <a href="/blog/git-lfs-ios">Git LFS</a> is the alternative if you want them synced.</small></span></label>
+              </div>
+              <div class="field" style="margin:8px 0 0 30px">
+                <label class="field-label" for="large-exts">File types</label>
+                <input type="text" id="large-exts" name="largeExts" value="mp4, mov, zip" autocapitalize="off" autocomplete="off" spellcheck="false" aria-describedby="large-hint">
+                <span class="hint" id="large-hint">Separate extensions with commas or spaces. Used only when the box above is ticked.</span>
+              </div>
+            </fieldset>
+
+            <div class="field">
+              <label class="field-label" for="folders">Your own folders to keep local</label>
+              <textarea id="folders" name="folders" rows="3" placeholder="Private/&#10;Journal/Work" autocapitalize="off" autocomplete="off" spellcheck="false" aria-describedby="folders-hint"></textarea>
+              <span class="hint" id="folders-hint">One folder per line. Names are matched literally; <code>Private</code> becomes <code>Private/</code>, which matches a folder with that name anywhere in the vault. A path such as <code>Journal/Work</code> is matched from the repository root.</span>
+            </div>
+          </form>
+
+          <div class="calc-results" id="results" aria-live="polite" hidden>
+            <h3 id="out-heading">Your .gitignore</h3>
+            <div class="calc-warnings" id="warnings" hidden><ul id="warnings-list"></ul></div>
+            <pre id="out" tabindex="0" role="region" aria-labelledby="out-heading"><code id="out-code"></code></pre>
+            <div class="actions">
+              <button type="button" class="tool-btn" id="copy">Copy</button>
+              <button type="button" class="tool-btn secondary" id="download">Download .gitignore</button>
+            </div>
+            <p class="status" id="status" role="status"></p>
+            <p class="hint" style="font-size:14px;color:var(--muted)">If your browser renames the download, rename it to <code>.gitignore</code> (a leading dot, no extension) and put it in the vault’s repository root.</p>
+
+            <h3>What this keeps out</h3>
+            <div class="keeps">
+              <ul id="keeps-out"></ul>
+              <div><p style="margin:0 0 4px;font-weight:650">What still syncs</p><ul id="keeps-in"></ul></div>
+            </div>
+          </div>
+        </section>
+
+        <h2 id="check">Check it before you push</h2>
+        <p>Save the file in the vault’s repository root, then ask Git which rule matches a path. It prints the file, line and pattern, or nothing if no rule matches:</p>
+        <pre tabindex="0" role="region" aria-label="Check a path against .gitignore"><code>git check-ignore -v .obsidian/workspace.json</code></pre>
+        <p>Run it for one file you expect to be ignored and one you expect to sync (use <code>-v --no-index</code> if the file is already tracked). If a result surprises you, see <a href="/blog/obsidian-gitignore#diagnose">when .gitignore seems not to work</a>. Command reference: <a href="https://git-scm.com/docs/git-check-ignore">git check-ignore</a>.</p>
+        <p><strong>A .gitignore does not untrack files that are already committed.</strong> If <code>workspace.json</code> is already in your repository, remove it from the index once with <code>git rm --cached .obsidian/workspace.json</code> and commit. Steps are in <a href="/blog/obsidian-gitignore#tracked">the guide’s tracked-files section</a>.</p>
+
+        <h2 id="preset">Which preset should I pick?</h2>
+        <p><strong>Notes only</strong> is the safest default. Your Markdown and attachments sync; the whole config folder stays on each device, so nothing private can leak through a plugin and there is nothing to merge. You set up themes and plugins again on each device. Details: <a href="/blog/obsidian-gitignore#notes-only">the notes-only policy</a>.</p>
+        <p><strong>Notes + shared settings</strong> adds the things you want identical everywhere: themes, snippets, hotkeys and the plugins themselves. Window layout and plugin settings stay local. This is the preset most people with a desktop and a phone want. See <a href="/blog/obsidian-gitignore#selected-settings">sharing selected settings</a>.</p>
+        <p><strong>Everything except device state</strong> also syncs plugin settings, so a fresh clone is configured. Use it only for a private repository you have audited, because those files can contain tokens.</p>
+
+        <h2 id="parent-dirs">Why <code>.obsidian/</code> plus <code>!</code> doesn’t work</h2>
+        <p>A common tip is to ignore the config folder and then re-include a piece of it:</p>
+        <pre tabindex="0" role="region" aria-label="A gitignore that does not work"><code># Does NOT work: snippets/ stays ignored
+.obsidian/
+!.obsidian/snippets/</code></pre>
+        <p>Git’s documentation says: “It is not possible to re-include a file if a parent directory of that file is excluded. Git doesn’t list excluded directories for performance reasons, so any patterns on contained files have no effect, no matter where they are defined.” Once <code>.obsidian/</code> is ignored, Git never looks inside it, so the <code>!</code> line is silently dead. The fix is to ignore the folder’s <em>contents</em> instead, which leaves the folder itself visible to Git:</p>
+        <pre tabindex="0" role="region" aria-label="A gitignore that works"><code># Works: the folder is traversed, snippets/ is re-included
+.obsidian/*
+!.obsidian/snippets/</code></pre>
+        <p>The generator writes this form whenever you mix ignored and synced items under the config folder, and never emits a parent ignore followed by a child negation. Source: <a href="https://git-scm.com/docs/gitignore">gitignore pattern format</a> in the Git documentation.</p>
+
+        <h2 id="secrets">Plugin data can hold secrets</h2>
+        <p>A plugin’s <code>data.json</code> is whatever that plugin chooses to save, and some plugins save API keys, access tokens or sync credentials there. The generator ignores these files unless you tick the box. If a token was already committed, ignoring the file is not enough: the token stays in history, so revoke or rotate it first, then follow <a href="/blog/obsidian-gitignore#secrets">the guide’s steps for previously committed secrets</a>.</p>
+
+        <h2 id="mobile">Use it on iPhone and iPad</h2>
+        <p>On iPhone and iPad, GitSync.md stages changes with libgit2’s add-all, which leaves out files your repository’s <code>.gitignore</code> matches. The file travels with the repository, so the policy you generate here applies once you pull it. Like any Git client it does not untrack files that are already committed, so run the <code>git rm --cached</code> step on your computer first. Setup walkthroughs: <a href="/blog/obsidian-git-iphone-ipad">Obsidian Git on iPhone and iPad</a>; if sync misbehaves, <a href="/blog/obsidian-git-not-working-iphone">Obsidian Git not working on iPhone</a>.</p>
+        <div class="callout tip"><span class="callout-label">Same .gitignore, every device</span>
+          <p>GitSync.md syncs your vault with real Git on iPhone, iPad and Android. Free to download, $9.99 once to unlock on iPhone and iPad.</p>
+          <p><a href="/v/web-homepage-124" target="_blank" rel="noopener">Download on the App Store</a> · <a href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener">Get it on Google Play</a></p>
+        </div>
+
+        <h2 id="faq">Frequently asked questions</h2>
+        <h3>Should I commit .obsidian at all?</h3>
+        <p>Only if you want the same themes, snippets, hotkeys or plugins on every device. Ignoring the whole folder is the simplest policy, and you configure each device yourself. Sharing selected files keeps your setup consistent, but never share <code>workspace.json</code>, and review plugin <code>data.json</code> files for tokens before you commit them.</p>
+        <h3>Will plugins work on a fresh clone if I ignore plugins/?</h3>
+        <p>No. A fresh clone only has the files Git tracks, so ignored plugin code is not there and each plugin has to be installed again on that device. To bring plugins along, sync plugin code and keep the plugin settings (<code>data.json</code>) ignored unless you have checked them for secrets.</p>
+        <h3>Does Obsidian Sync use .gitignore?</h3>
+        <p>No. Obsidian Sync is separate from Git and has its own selective sync settings that choose which vault settings and file types to sync; see <a href="https://help.obsidian.md/sync/settings">Obsidian’s Sync settings and selective sync</a>. A <code>.gitignore</code> only affects Git. If you use both on one vault, keep them from fighting over the same files, or use one sync method per vault.</p>
+        <h3>My config folder isn’t called .obsidian. Does this work?</h3>
+        <p>Yes. Obsidian lets you rename the configuration folder (<a href="https://help.obsidian.md/configuration-folder">Obsidian Help: configuration folder</a>), so the generator has a field for its name and writes every rule with that name. Type the exact folder name and check the result with <code>git check-ignore</code>.</p>
+        <p>The generator makes no network requests and saves nothing: what you type stays in this page.</p>
+
+        <div class="related-card"><h2 id="next">Related guides</h2><ul>
+          <li><a href="/blog/obsidian-gitignore">Obsidian .gitignore: choose what to sync</a>: the explanation, diagnostics and secrets clean-up.</li>
+          <li><a href="/blog/sync-obsidian-github">Sync Obsidian with GitHub on every device</a></li>
+          <li><a href="/blog/obsidian-git-iphone-ipad">Obsidian Git on iPhone and iPad</a></li>
+          <li><a href="/blog/git-lfs-ios">Large files and Git LFS on iPhone</a></li>
+          <li><a href="/blog/obsidian-git-not-working-iphone">Obsidian Git not working on iPhone</a></li>
+          <li><a href="/tools/obsidian-sync-cost-calculator">Obsidian Sync cost calculator</a></li>
+        </ul></div>
+
+  </article>
+    </div>
+  <section class="content-download" aria-labelledby="download-heading">
+    <div class="shell content-download-layout">
+      <div>
+        <p class="eyebrow"><span class="blue-square" aria-hidden="true"></span>Take your work with you.</p>
+        <h2 id="download-heading">REAL GIT.<br>WITHIN REACH.</h2>
+        <p class="content-download-description">Your files. Your commits. Your remote.<br>Get GitSync.md for iPhone, iPad, and Android.</p>
+      </div>
+      <div>
+        <div class="store-links" role="group" aria-label="Download GitSync.md">
+          <a class="store-badge store-badge-apple" href="/v/web-homepage-124" target="_blank" rel="noopener"><img src="../assets/store-badges/download-on-app-store.svg" width="120" height="40" alt="Download GitSync.md on the App Store" decoding="async"></a>
+          <a class="store-badge store-badge-google" href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener"><img src="../assets/store-badges/get-it-on-google-play.png" width="646" height="250" alt="Get GitSync.md on Google Play" decoding="async"></a>
+        </div>
+        <p class="purchase-note"><span>iPhone + iPad: free to download, $9.99 once to unlock.</span><span>Android: $9.99 once. All features included.</span><span>No subscriptions.</span></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="shell footer-layout">
+    <a class="brand" href="/" aria-label="GitSync.md home">gitsync<span class="brand-extension">.md</span></a>
+    <p>Independently built by <a href="https://codybontecou.com" target="_blank" rel="noopener">Cody Bontecou</a>.<br>© 2026 GitSync.md</p>
+    <div class="footer-links"><a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener">Source</a><a href="/blog/">Guides</a><a href="/compare/obsidian-sync-vs-git">Compare</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
+    <a class="back-top" href="#top" aria-label="Back to top">↑</a>
+  </div>
+</footer>
+<script>
+/* Obsidian .gitignore generator. Runs locally: no network requests, nothing stored.
+
+   Rule form: when only part of the config folder syncs, we emit "<config>/*" plus "!" lines,
+   never "<config>/" followed by a "!" child, because Git cannot re-include a file whose parent
+   directory is excluded (https://git-scm.com/docs/gitignore).
+
+   Sanity cases (run automatically with #selftest in the URL; results go to the console):
+   1. Default preset ("shared"): output ignores <config>/workspace.json, does not ignore
+      <config>/snippets/ and has no "!" lines; plugin data.json is ignored.
+   2. Notes only + snippets synced: output has "<config>/*" and "!<config>/snippets/" and no
+      bare "<config>/" line.
+   3. Changing the config folder name rewrites every config rule (no ".obsidian" left).
+   4. Invariant over all 64 combinations of the six config options: no "!" line sits under an
+      earlier ignored directory. */
+var GitignoreGen = (function () {
+  var DEFAULT_CONFIG = ".obsidian";
+  var WORKSPACE_FILES = ["workspace.json", "workspace-mobile.json"];
+  var SETTINGS_FILES = ["app.json", "appearance.json", "hotkeys.json", "core-plugins.json", "community-plugins.json"];
+  var CODE_FILES = ["main.js", "manifest.json", "styles.css"];
+  var PRESETS = {
+    notes:      { ws: true, themes: false, snippets: false, settings: false, code: false, data: false },
+    shared:     { ws: true, themes: true,  snippets: true,  settings: true,  code: true,  data: false },
+    everything: { ws: true, themes: true,  snippets: true,  settings: true,  code: true,  data: true }
+  };
+
+  // Escape characters that gitignore treats as pattern syntax, so names match literally.
+  function escapeName(s) {
+    s = s.replace(/[\\*?\[\]]/g, "\\$&");
+    if (/^[#!]/.test(s)) s = "\\" + s;
+    return s;
+  }
+
+  // Returns { value, error }. Falls back to the default name when the input is unusable.
+  function normalizeConfig(raw) {
+    var v = String(raw == null ? "" : raw).trim().replace(/\\/g, "/").replace(/^(\.\/)+/, "").replace(/\/+/g, "/").replace(/^\/+|\/+$/g, "");
+    if (!v) return { value: DEFAULT_CONFIG, error: "Enter a folder name. Using " + DEFAULT_CONFIG + " for now." };
+    var parts = v.split("/");
+    for (var i = 0; i < parts.length; i++) {
+      var p = parts[i];
+      if (p === "." || p === ".." || p.toLowerCase() === ".git" || /[\u0000-\u001f]/.test(p)) {
+        return { value: DEFAULT_CONFIG, error: "That folder name can't be used in a .gitignore rule. Using " + DEFAULT_CONFIG + " for now." };
+      }
+    }
+    return { value: v, error: "" };
+  }
+
+  // One custom folder line -> "Private/" (escaped); null when unusable.
+  function normalizeFolder(line) {
+    var v = String(line).trim().replace(/\\/g, "/").replace(/^(\.\/)+/, "").replace(/\/+/g, "/");
+    if (!v || /[\u0000-\u001f]/.test(v)) return null;
+    var anchored = v.charAt(0) === "/";
+    var parts = v.replace(/^\/+|\/+$/g, "").split("/");
+    for (var i = 0; i < parts.length; i++) {
+      if (!parts[i] || parts[i] === "." || parts[i] === ".." || parts[i].toLowerCase() === ".git") return null;
+    }
+    return (anchored ? "/" : "") + escapeName(parts.join("/")) + "/";
+  }
+
+  function normalizeExts(raw) {
+    var seen = {}, out = [];
+    String(raw || "").split(/[\s,]+/).forEach(function (t) {
+      t = t.replace(/^\*?\.?/, "").toLowerCase();
+      if (t && /^[a-z0-9_+-]+$/.test(t) && !seen[t]) { seen[t] = 1; out.push(t); }
+    });
+    return out;
+  }
+
+  function generate(o) {
+    var cfg = normalizeConfig(o.config);
+    var C = escapeName(cfg.value);
+    var P = C + "/";
+    var out = [], keptOut = [], stillSyncs = ["Your notes and attachments"], warnings = [];
+    if (cfg.error) warnings.push(cfg.error);
+
+    function comment(t) { out.push("# " + t); }
+    function rule(why, pattern) { comment(why); out.push(pattern); }
+    function section(title) { if (out.length) out.push(""); comment("== " + title + " =="); }
+
+    comment("Generated at https://gitsync.md/tools/obsidian-gitignore-generator");
+    comment("Check any path with: git check-ignore -v <path>");
+
+    var wsIgnored = !!o.ws;
+    var items = ["themes", "snippets", "settings", "code", "data"];
+    var anySynced = !wsIgnored || items.some(function (k) { return o[k]; });
+    var allCore = o.themes && o.snippets && o.settings && o.code;
+    var mode = !anySynced ? "none" : (allCore ? "blacklist" : "whitelist");
+
+    section("Obsidian config folder (" + cfg.value + ")");
+    if (mode === "none") {
+      rule("Notes only: keep the whole config folder on each device. Obsidian recreates it, and nothing private can leak from it.", P);
+      keptOut.push("The whole " + cfg.value + "/ folder: workspace layout, themes, snippets, hotkeys and plugins");
+    } else if (mode === "blacklist") {
+      comment("Everything in " + cfg.value + "/ syncs except the files below.");
+      if (wsIgnored) {
+        rule("Window layout: Obsidian rewrites it whenever you open a note, so it causes a change on every session.", P + "workspace.json");
+        rule("Mobile window layout: the same churn on a phone or tablet.", P + "workspace-mobile.json");
+      }
+      if (!o.data) rule("Plugin settings can hold API keys and tokens. Remove this line only after you have checked each file.", P + "plugins/*/data.json");
+    } else {
+      rule("Ignore what is directly inside the config folder (not the folder itself), because Git cannot re-include a file whose parent directory is ignored. The ! lines below add items back.", P + "*");
+      if (!wsIgnored) {
+        WORKSPACE_FILES.forEach(function (f) { rule("Sync the window layout. Expect a change every time you open a note.", "!" + P + f); });
+      }
+      if (o.themes) rule("Sync themes so every device looks the same.", "!" + P + "themes/");
+      if (o.snippets) rule("Sync CSS snippets.", "!" + P + "snippets/");
+      if (o.settings) SETTINGS_FILES.forEach(function (f) { rule("Sync " + f + " (hotkeys, appearance or core settings).", "!" + P + f); });
+      if (o.code || o.data) rule("Re-include the plugins folder so plugin files can sync. The rules after it narrow it down.", "!" + P + "plugins/");
+      if (wsIgnored) {
+        rule("Window layout: already ignored by the " + P + "* rule above; listed so it stays out if that rule changes.", P + "workspace.json");
+        rule("Mobile window layout: same reason.", P + "workspace-mobile.json");
+      }
+      if (o.code || o.data) {
+        if (!o.data) rule("Plugin settings can hold API keys and tokens. Remove this line only after you have checked each file.", P + "plugins/*/data.json");
+        if (!o.code) CODE_FILES.forEach(function (f) { rule("Keep plugin code off Git: plugins are installed per device (" + f + ").", P + "plugins/*/" + f); });
+      }
+    }
+
+    // Summaries and warnings for the config items.
+    if (mode !== "none") {
+      var names = { themes: "Themes", snippets: "CSS snippets", settings: "Hotkeys, appearance and core settings", code: "Community plugin code", data: "Plugin settings (data.json)" };
+      items.forEach(function (k) {
+        if (o[k]) stillSyncs.push(names[k]); else keptOut.push(names[k]);
+      });
+      if (wsIgnored) keptOut.push("Workspace layout (workspace.json, workspace-mobile.json)"); else stillSyncs.push("Workspace layout (changes every session)");
+      if (mode === "whitelist") keptOut.push("Any other file directly inside " + cfg.value + "/ that you haven't chosen to sync");
+      if (mode === "blacklist") stillSyncs.push("Other files inside " + cfg.value + "/");
+    }
+    if (o.data) warnings.push("Plugin settings sync is on: some plugins keep tokens or API keys in data.json. Open each file and check it before you commit.");
+
+    if (o.trash) {
+      section("Obsidian trash");
+      rule("Deleted notes Obsidian moves to its own trash; they are not worth syncing.", ".trash/");
+      keptOut.push("Obsidian's trash folder (.trash/)");
+    }
+    if (o.junk) {
+      section("Operating system files");
+      rule("macOS folder metadata.", ".DS_Store");
+      rule("Windows thumbnail cache.", "Thumbs.db");
+      rule("Windows folder settings.", "desktop.ini");
+      keptOut.push("OS junk (.DS_Store, Thumbs.db, desktop.ini)");
+    }
+    if (o.large) {
+      var exts = normalizeExts(o.largeExts);
+      if (exts.length) {
+        section("Large attachments");
+        exts.forEach(function (e) { rule("Large " + e + " files bloat the repository, and Git keeps every version. Use Git LFS if you need them synced.", "*." + e); });
+        keptOut.push("Large attachments (" + exts.map(function (e) { return "*." + e; }).join(", ") + ")");
+      } else warnings.push("Large attachments is ticked but no valid file types were entered.");
+    }
+    var folders = [], skipped = 0, seenF = {};
+    String(o.folders || "").split(/\r?\n/).forEach(function (l) {
+      if (!l.trim()) return;
+      var f = normalizeFolder(l);
+      if (!f) skipped++; else if (!seenF[f]) { seenF[f] = 1; folders.push(f); }
+    });
+    if (skipped) warnings.push(skipped + " folder line" + (skipped === 1 ? " was" : "s were") + " skipped because it can't be used in a rule.");
+    if (folders.length) {
+      section("Your own local folders");
+      folders.forEach(function (f) { rule("You asked to keep " + f + " on this device only.", f); });
+      keptOut.push("Your folders: " + folders.join(", "));
+    }
+
+    return { text: out.join("\n") + "\n", mode: mode, config: cfg.value, keptOut: keptOut, stillSyncs: stillSyncs, warnings: warnings };
+  }
+
+  function rulesOf(text) {
+    return text.split("\n").filter(function (l) { return l && l.charAt(0) !== "#"; });
+  }
+
+  // True when a "!" rule sits under a directory ignored earlier (which Git would ignore).
+  function hasDeadNegation(text) {
+    var rules = rulesOf(text), dirs = [];
+    for (var i = 0; i < rules.length; i++) {
+      var r = rules[i];
+      if (r.charAt(0) === "!") {
+        var t = r.slice(1);
+        for (var j = 0; j < dirs.length; j++) if (t.indexOf(dirs[j]) === 0) return true;
+      } else if (r.charAt(r.length - 1) === "/") dirs.push(r);
+    }
+    return false;
+  }
+
+  function selfTest() {
+    var fails = [];
+    function check(name, cond) { if (!cond) fails.push(name); }
+    function opts(preset, extra) {
+      var o = { config: ".obsidian", trash: true, junk: true, large: false, largeExts: "mp4, mov, zip", folders: "" };
+      var p = PRESETS[preset];
+      for (var k in p) o[k] = p[k];
+      for (var e in (extra || {})) o[e] = extra[e];
+      return o;
+    }
+    var d = generate(opts("shared")), dr = rulesOf(d.text);
+    check("default ignores workspace.json", dr.indexOf(".obsidian/workspace.json") >= 0);
+    check("default keeps snippets/", dr.indexOf(".obsidian/snippets/") < 0 && dr.indexOf(".obsidian/") < 0 && !dr.some(function (r) { return r.indexOf("snippets") >= 0; }));
+    check("default ignores data.json", dr.indexOf(".obsidian/plugins/*/data.json") >= 0);
+    check("default has no ! lines", !dr.some(function (r) { return r.charAt(0) === "!"; }));
+    var m = generate(opts("notes", { snippets: true })), mr = rulesOf(m.text);
+    check("mixed uses config/*", mr.indexOf(".obsidian/*") >= 0);
+    check("mixed re-includes snippets", mr.indexOf("!.obsidian/snippets/") >= 0);
+    check("mixed has no bare config/", mr.indexOf(".obsidian/") < 0);
+    var n = generate(opts("notes")), nr = rulesOf(n.text);
+    check("notes only ignores the whole folder", nr.indexOf(".obsidian/") >= 0 && nr.indexOf(".obsidian/*") < 0);
+    var r = generate(opts("shared", { config: ".config-vault" }));
+    check("rename rewrites rules", r.text.indexOf(".obsidian") < 0 && rulesOf(r.text).indexOf(".config-vault/workspace.json") >= 0);
+    var r2 = generate(opts("notes", { snippets: true, config: "_cfg" })).text;
+    check("rename rewrites mixed rules", r2.indexOf(".obsidian") < 0 && r2.indexOf("!_cfg/snippets/") >= 0);
+    var keys = ["ws", "themes", "snippets", "settings", "code", "data"];
+    for (var i = 0; i < 64; i++) {
+      var o = opts("notes");
+      keys.forEach(function (k, b) { o[k] = !!((i >> b) & 1); });
+      check("no dead negation (combo " + i + ")", !hasDeadNegation(generate(o).text));
+    }
+    check("custom folders", rulesOf(generate(opts("notes", { folders: "Private\nJournal/Work/\n#odd\n..\n" })).text).join("|").indexOf("Private/|Journal/Work/|\\#odd/") >= 0);
+    return fails;
+  }
+
+  return { generate: generate, selfTest: selfTest, presets: PRESETS, normalizeConfig: normalizeConfig, hasDeadNegation: hasDeadNegation };
+})();
+
+(function () {
+  if (typeof document === "undefined") return;
+  if (/#selftest/.test(location.hash)) {
+    var fails = GitignoreGen.selfTest();
+    console.log(fails.length ? "gitignore generator self-test FAILED: " + fails.join("; ") : "gitignore generator self-test passed");
+  }
+  var form = document.getElementById("gi-form");
+  var results = document.getElementById("results");
+  if (!form || !results) return;
+  form.hidden = false;
+  results.hidden = false;
+
+  var el = function (id) { return document.getElementById(id); };
+  var boxes = ["ws", "themes", "snippets", "settings", "code", "data", "trash", "junk", "large"];
+  var lastText = "";
+
+  function applyPreset(name) {
+    var p = GitignoreGen.presets[name];
+    if (!p) return;
+    Object.keys(p).forEach(function (k) { form.elements[k].checked = p[k]; });
+  }
+
+  function listInto(ul, items) {
+    ul.textContent = "";
+    items.forEach(function (t) { var li = document.createElement("li"); li.textContent = t; ul.appendChild(li); });
+    if (!items.length) { var li = document.createElement("li"); li.textContent = "Nothing selected"; ul.appendChild(li); }
+  }
+
+  function render() {
+    var o = { config: form.elements.config.value, largeExts: form.elements.largeExts.value, folders: form.elements.folders.value };
+    boxes.forEach(function (k) { o[k] = form.elements[k].checked; });
+    var r = GitignoreGen.generate(o);
+    lastText = r.text;
+    el("out-code").textContent = r.text;
+    listInto(el("keeps-out"), r.keptOut);
+    listInto(el("keeps-in"), r.stillSyncs);
+    el("data-warning").hidden = false;
+    var cfg = GitignoreGen.normalizeConfig(o.config);
+    var err = el("config-error");
+    err.hidden = !cfg.error;
+    err.textContent = cfg.error;
+    var w = el("warnings");
+    listInto(el("warnings-list"), r.warnings);
+    w.hidden = !r.warnings.length;
+    if (!r.warnings.length) el("warnings-list").textContent = "";
+  }
+
+  form.addEventListener("change", function (e) {
+    if (e.target && e.target.name === "preset") applyPreset(e.target.value);
+    render();
+  });
+  form.addEventListener("input", render);
+
+  function status(msg) { el("status").textContent = msg; }
+
+  el("copy").addEventListener("click", function () {
+    function fallback() {
+      var ta = document.createElement("textarea");
+      ta.value = lastText; ta.setAttribute("readonly", ""); ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.select();
+      var ok = false;
+      try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+      document.body.removeChild(ta);
+      status(ok ? "Copied. Paste it into a file named .gitignore." : "Copy failed. Select the text above and copy it by hand.");
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(lastText).then(function () { status("Copied. Paste it into a file named .gitignore."); }, fallback);
+    } else fallback();
+  });
+
+  el("download").addEventListener("click", function () {
+    var blob = new Blob([lastText], { type: "text/plain;charset=utf-8" });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url; a.download = ".gitignore";
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+    status("Downloaded. Put .gitignore in the vault's repository root.");
+  });
+
+  applyPreset("shared");
+  render();
+})();
+</script>
+</body>
+</html>

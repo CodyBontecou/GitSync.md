@@ -11492,6 +11492,160 @@
         }
       }
     },
+    "%lld Obsidian workspace files are tracked": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld من ملفات مساحة عمل Obsidian متتبَّعة"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Obsidian-arbejdsområdefiler spores"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Obsidian-Workspace-Dateien werden verfolgt"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se rastrean %lld archivos de espacio de trabajo de Obsidian"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Obsidianin työtilatiedostoa on seurannassa"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld fichiers d’espace de travail Obsidian sont suivis"
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld קובצי סביבת עבודה של Obsidian במעקב"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Obsidian की %lld वर्कस्पेस फ़ाइलें ट्रैक हो रही हैं"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Obsidian-munkaterületfájl követve van"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld file workspace Obsidian sedang dilacak"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld file workspace di Obsidian sono tracciati"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Obsidian のワークスペースファイル %lld 件が追跡されています"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Obsidian 작업 공간 파일 %lld개가 추적되고 있습니다"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Obsidian-arbeidsområdefiler spores"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld werkruimtebestanden van Obsidian worden gevolgd"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Śledzone pliki obszaru roboczego Obsidian: %lld"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld arquivos de workspace do Obsidian estão sendo rastreados"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Отслеживаемых файлов рабочей области Obsidian: %lld"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Obsidian-arbetsytefiler spåras"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ไฟล์เวิร์กสเปซ Obsidian %lld ไฟล์ถูกติดตามอยู่"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Obsidian çalışma alanı dosyası izleniyor"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Відстежуваних файлів робочої області Obsidian: %lld"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld tệp workspace của Obsidian đang được theo dõi"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 个 Obsidian 工作区文件正被跟踪"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 個 Obsidian 工作區檔案正被追蹤"
+          }
+        }
+      }
+    },
     "%lld of %lld": {
       "localizations": {
         "ar": {
@@ -21560,6 +21714,160 @@
         }
       },
       "extractionState": "stale"
+    },
+    "All Obsidian workspace files": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "كل ملفات مساحة عمل Obsidian"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle Obsidian-arbejdsområdefiler"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle Obsidian-Workspace-Dateien"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Todos los archivos de espacio de trabajo de Obsidian"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kaikki Obsidianin työtilatiedostot"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tous les fichiers d’espace de travail Obsidian"
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "כל קובצי סביבת העבודה של Obsidian"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Obsidian की सभी वर्कस्पेस फ़ाइलें"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Az összes Obsidian-munkaterületfájl"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Semua file workspace Obsidian"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tutti i file workspace di Obsidian"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Obsidian のすべてのワークスペースファイル"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "모든 Obsidian 작업 공간 파일"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle Obsidian-arbeidsområdefiler"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle Obsidian-werkruimtebestanden"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wszystkie pliki obszaru roboczego Obsidian"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Todos os arquivos de workspace do Obsidian"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Все файлы рабочей области Obsidian"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alla Obsidian-arbetsytefiler"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ไฟล์เวิร์กสเปซ Obsidian ทั้งหมด"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tüm Obsidian çalışma alanı dosyaları"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Усі файли робочої області Obsidian"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tất cả tệp workspace của Obsidian"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "所有 Obsidian 工作区文件"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "所有 Obsidian 工作區檔案"
+          }
+        }
+      }
     },
     "ANY GIT REPO, SYNCED TO YOUR IPHONE": {
       "localizations": {
@@ -98167,6 +98475,314 @@
         }
       }
     },
+    "Each device saves its own window layout in these files, so they often conflict. Stop tracking them to keep them on each device only.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يحفظ كل جهاز تخطيط نوافذه الخاص في هذه الملفات، لذلك تتعارض كثيرًا. أوقف تتبعها لتبقى على كل جهاز فقط."
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hver enhed gemmer sit eget vindueslayout i disse filer, så de giver ofte konflikter. Stop sporingen, så de kun ligger på hver enkelt enhed."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jedes Gerät speichert in diesen Dateien sein eigenes Fensterlayout, deshalb gibt es oft Konflikte. Beende die Verfolgung, damit sie nur auf dem jeweiligen Gerät bleiben."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cada dispositivo guarda en estos archivos su propia disposición de ventanas, así que suelen causar conflictos. Deja de rastrearlos para que se queden solo en cada dispositivo."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jokainen laite tallentaa näihin tiedostoihin oman ikkunaasettelunsa, joten ne aiheuttavat usein ristiriitoja. Lopeta seuranta, niin ne pysyvät vain kullakin laitteella."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chaque appareil enregistre sa propre disposition de fenêtres dans ces fichiers, ce qui crée souvent des conflits. Arrêtez de les suivre pour les garder sur chaque appareil uniquement."
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "כל מכשיר שומר בקבצים האלה את פריסת החלונות שלו, ולכן נוצרות התנגשויות לעתים קרובות. הפסק לעקוב אחריהם כדי שיישארו רק בכל מכשיר."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "हर डिवाइस इन फ़ाइलों में अपना विंडो लेआउट सहेजता है, इसलिए अक्सर टकराव होता है। इन्हें हर डिवाइस पर ही रखने के लिए ट्रैक करना बंद करें।"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Minden eszköz a saját ablakelrendezését menti ezekbe a fájlokba, ezért gyakran ütköznek. Állítsa le a követésüket, hogy csak az egyes eszközökön maradjanak."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Setiap perangkat menyimpan tata letak jendelanya sendiri di file-file ini, jadi sering terjadi konflik. Berhenti melacaknya agar hanya tersimpan di tiap perangkat."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ogni dispositivo salva in questi file il proprio layout delle finestre, quindi creano spesso conflitti. Smetti di tracciarli per tenerli solo su ciascun dispositivo."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "各デバイスがこれらのファイルに自分のウインドウレイアウトを保存するため、よく競合します。追跡を停止すると、各デバイスにだけ残ります。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "각 기기가 이 파일들에 자체 창 레이아웃을 저장하므로 충돌이 자주 발생합니다. 추적을 중지하면 각 기기에만 남습니다."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hver enhet lagrer sitt eget vindusoppsett i disse filene, så de gir ofte konflikter. Slutt å spore dem for å beholde dem bare på hver enhet."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elk apparaat bewaart zijn eigen vensterindeling in deze bestanden, dus ze geven vaak conflicten. Volg ze niet meer om ze alleen op elk apparaat te houden."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Każde urządzenie zapisuje w tych plikach własny układ okien, więc często dochodzi do konfliktów. Przestań je śledzić, aby zostały tylko na każdym urządzeniu."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cada dispositivo salva nestes arquivos o próprio layout de janelas, então costumam gerar conflitos. Pare de rastreá-los para mantê-los só em cada dispositivo."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Каждое устройство сохраняет в эти файлы свою раскладку окон, поэтому часто возникают конфликты. Прекратите их отслеживание, чтобы они оставались только на каждом устройстве."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Varje enhet sparar sin egen fönsterlayout i de här filerna, så det blir ofta konflikter. Sluta spåra dem så stannar de bara på varje enhet."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "แต่ละอุปกรณ์บันทึกเลย์เอาต์หน้าต่างของตัวเองไว้ในไฟล์เหล่านี้ จึงมักเกิดความขัดแย้ง หยุดติดตามเพื่อเก็บไว้เฉพาะบนแต่ละอุปกรณ์"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Her cihaz kendi pencere düzenini bu dosyalara kaydeder, bu yüzden sık sık çakışırlar. Yalnızca her cihazda kalmaları için izlemeyi durdurun."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Кожен пристрій зберігає в ці файли власне розташування вікон, тож часто виникають конфлікти. Припиніть їх відстеження, щоб вони залишалися лише на кожному пристрої."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mỗi thiết bị lưu bố cục cửa sổ riêng trong các tệp này nên chúng thường xung đột. Ngừng theo dõi để chỉ giữ chúng trên từng thiết bị."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "每台设备都会在这些文件中保存自己的窗口布局，因此经常冲突。停止跟踪后，它们只保留在各台设备上。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "每台裝置都會在這些檔案中儲存自己的視窗配置，因此經常衝突。停止追蹤後，它們只會保留在各台裝置上。"
+          }
+        }
+      }
+    },
+    "Each device saves its own window layout there, so it often conflicts. Stop tracking it to keep it on each device only.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يحفظ كل جهاز تخطيط نوافذه الخاص هناك، لذلك يحدث تعارض كثيرًا. أوقف تتبعه ليبقى على كل جهاز فقط."
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hver enhed gemmer sit eget vindueslayout der, så det giver ofte konflikter. Stop sporingen, så det kun ligger på hver enkelt enhed."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jedes Gerät speichert dort sein eigenes Fensterlayout, deshalb gibt es oft Konflikte. Beende die Verfolgung, damit es nur auf dem jeweiligen Gerät bleibt."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cada dispositivo guarda ahí su propia disposición de ventanas, así que suele causar conflictos. Deja de rastrearlo para que se quede solo en cada dispositivo."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jokainen laite tallentaa sinne oman ikkunaasettelunsa, joten se aiheuttaa usein ristiriitoja. Lopeta seuranta, niin se pysyy vain kullakin laitteella."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chaque appareil y enregistre sa propre disposition de fenêtres, ce qui crée souvent des conflits. Arrêtez de le suivre pour le garder sur chaque appareil uniquement."
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "כל מכשיר שומר שם את פריסת החלונות שלו, ולכן נוצרות התנגשויות לעתים קרובות. הפסק לעקוב אחריו כדי שיישאר רק בכל מכשיר."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "हर डिवाइस वहाँ अपना विंडो लेआउट सहेजता है, इसलिए अक्सर टकराव होता है। इसे हर डिवाइस पर ही रखने के लिए ट्रैक करना बंद करें।"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Minden eszköz a saját ablakelrendezését menti ide, ezért gyakran ütközik. Állítsa le a követését, hogy csak az egyes eszközökön maradjon."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Setiap perangkat menyimpan tata letak jendelanya sendiri di sana, jadi sering terjadi konflik. Berhenti melacaknya agar hanya tersimpan di tiap perangkat."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ogni dispositivo vi salva il proprio layout delle finestre, quindi crea spesso conflitti. Smetti di tracciarlo per tenerlo solo su ciascun dispositivo."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "各デバイスが自分のウインドウレイアウトをそこに保存するため、よく競合します。追跡を停止すると、各デバイスにだけ残ります。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "각 기기가 자체 창 레이아웃을 여기에 저장하므로 충돌이 자주 발생합니다. 추적을 중지하면 각 기기에만 남습니다."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hver enhet lagrer sitt eget vindusoppsett der, så det gir ofte konflikter. Slutt å spore det for å beholde det bare på hver enhet."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elk apparaat bewaart daar zijn eigen vensterindeling, dus het geeft vaak conflicten. Volg het niet meer om het alleen op elk apparaat te houden."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Każde urządzenie zapisuje tam własny układ okien, więc często dochodzi do konfliktów. Przestań go śledzić, aby został tylko na każdym urządzeniu."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cada dispositivo salva ali o próprio layout de janelas, então costuma gerar conflitos. Pare de rastreá-lo para mantê-lo só em cada dispositivo."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Каждое устройство сохраняет туда свою раскладку окон, поэтому часто возникают конфликты. Прекратите отслеживание, чтобы файл оставался только на каждом устройстве."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Varje enhet sparar sin egen fönsterlayout där, så det blir ofta konflikter. Sluta spåra den så stannar den bara på varje enhet."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "แต่ละอุปกรณ์บันทึกเลย์เอาต์หน้าต่างของตัวเองไว้ที่นั่น จึงมักเกิดความขัดแย้ง หยุดติดตามเพื่อเก็บไว้เฉพาะบนแต่ละอุปกรณ์"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Her cihaz kendi pencere düzenini oraya kaydeder, bu yüzden sık sık çakışır. Yalnızca her cihazda kalması için izlemeyi durdurun."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Кожен пристрій зберігає туди власне розташування вікон, тож часто виникають конфлікти. Припиніть відстеження, щоб файл залишався лише на кожному пристрої."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mỗi thiết bị lưu bố cục cửa sổ riêng ở đó nên thường xảy ra xung đột. Ngừng theo dõi để chỉ giữ nó trên từng thiết bị."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "每台设备都会在其中保存自己的窗口布局，因此经常冲突。停止跟踪后，它只保留在各台设备上。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "每台裝置都會在其中儲存自己的視窗配置，因此經常衝突。停止追蹤後，它只會保留在各台裝置上。"
+          }
+        }
+      }
+    },
     "EDIT": {
       "localizations": {
         "ar": {
@@ -126542,6 +127158,314 @@
       },
       "shouldTranslate": false
     },
+    "GitSync.md can't stop tracking “%@”.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لا يمكن لـ GitSync.md إيقاف تتبع “%@”."
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md kan ikke stoppe sporing af “%@”."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md kann „%@“ nicht aus der Verfolgung nehmen."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md no puede dejar de rastrear «%@»."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md ei voi lopettaa kohteen ”%@” seurantaa."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md ne peut pas arrêter de suivre « %@ »."
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "‏GitSync.md לא יכול להפסיק לעקוב אחרי “%@”."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md “%@” को ट्रैक करना बंद नहीं कर सकता।"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A GitSync.md nem tudja leállítani a(z) „%@” követését."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md tidak dapat berhenti melacak “%@”."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md non può smettere di tracciare “%@”."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md は「%@」の追跡を停止できません。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md에서 “%@”의 추적을 중지할 수 없습니다."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md kan ikke slutte å spore «%@»."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md kan “%@” niet uit het volgen halen."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md nie może przestać śledzić „%@”."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O GitSync.md não pode parar de rastrear “%@”."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md не может прекратить отслеживание «%@»."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md kan inte sluta spåra ”%@”."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md หยุดติดตาม “%@” ไม่ได้"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md “%@” öğesini izlemeyi bırakamıyor."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md не може припинити відстеження «%@»."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md không thể ngừng theo dõi “%@”."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md 无法停止跟踪“%@”。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md 無法停止追蹤「%@」。"
+          }
+        }
+      }
+    },
+    "GitSync.md removes it from Git, adds it to .gitignore and commits that. It stays on this device.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يزيله GitSync.md من Git ويضيفه إلى .gitignore ثم ينشئ commit بذلك. يبقى على هذا الجهاز."
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md fjerner det fra Git, tilføjer det til .gitignore og committer det. Det bliver på denne enhed."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md entfernt es aus Git, trägt es in .gitignore ein und committet das. Auf diesem Gerät bleibt es erhalten."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md lo quita de Git, lo añade a .gitignore y hace commit de ello. Se queda en este dispositivo."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md poistaa sen Gitistä, lisää sen .gitignore-tiedostoon ja tekee siitä commitin. Se jää tälle laitteelle."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md le retire de Git, l’ajoute à .gitignore et crée un commit. Il reste sur cet appareil."
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md מסיר אותו מ-Git, מוסיף אותו ל-.gitignore ויוצר commit. הוא נשאר במכשיר הזה."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md इसे Git से हटाता है, .gitignore में जोड़ता है और इसे commit करता है। यह इसी डिवाइस पर रहता है।"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A GitSync.md eltávolítja a Gitből, hozzáadja a .gitignore fájlhoz, és commitolja. Ezen az eszközön megmarad."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md menghapusnya dari Git, menambahkannya ke .gitignore, lalu meng-commit-nya. File tetap ada di perangkat ini."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md lo rimuove da Git, lo aggiunge a .gitignore e ne fa il commit. Resta su questo dispositivo."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md が Git から外して .gitignore に追加し、コミットします。このデバイスには残ります。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md가 Git에서 제거하고 .gitignore에 추가한 뒤 커밋합니다. 이 기기에는 그대로 남습니다."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md fjerner det fra Git, legger det til i .gitignore og committer det. Det blir værende på denne enheten."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md haalt het uit Git, voegt het toe aan .gitignore en commit dat. Op dit apparaat blijft het staan."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md usuwa go z Git, dodaje do .gitignore i tworzy commit. Zostaje na tym urządzeniu."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O GitSync.md o remove do Git, adiciona ao .gitignore e faz o commit. Ele continua neste dispositivo."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md удалит его из Git, добавит в .gitignore и сделает коммит. На этом устройстве он останется."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md tar bort det från Git, lägger till det i .gitignore och committar det. Det finns kvar på den här enheten."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md จะนำออกจาก Git เพิ่มลงใน .gitignore แล้ว commit โดยยังคงอยู่บนอุปกรณ์นี้"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md onu Git'ten kaldırır, .gitignore'a ekler ve bunu commit'ler. Bu cihazda kalır."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md видалить його з Git, додасть до .gitignore і зробить коміт. На цьому пристрої він залишиться."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md sẽ gỡ nó khỏi Git, thêm vào .gitignore rồi commit. Nó vẫn ở trên thiết bị này."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md 会将其从 Git 中移除、添加到 .gitignore 并提交。它仍保留在此设备上。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md 會將其從 Git 中移除、加入 .gitignore 並提交。它仍保留在此裝置上。"
+          }
+        }
+      }
+    },
     "GitSync.md Storage": {
       "localizations": {
         "ar": {
@@ -135953,6 +136877,160 @@
           "stringUnit": {
             "state": "translated",
             "value": "它的變更、檔案和歷史記錄會在這裡打開。"
+          }
+        }
+      }
+    },
+    "Its folder": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "مجلده"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dens mappe"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ihr Ordner"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Su carpeta"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sen kansio"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Son dossier"
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "התיקייה שלו"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "इसका फ़ोल्डर"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A mappája"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Foldernya"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La sua cartella"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "そのフォルダ"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "해당 폴더"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mappen den ligger i"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De map"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jego folder"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A pasta dele"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Его папка"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dess mapp"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "โฟลเดอร์ของไฟล์"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Klasörü"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Його папка"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thư mục chứa nó"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "所在文件夹"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "所在資料夾"
           }
         }
       }
@@ -153438,6 +154516,160 @@
         }
       },
       "extractionState": "stale"
+    },
+    "More file actions": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إجراءات إضافية للملف"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Flere filhandlinger"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Weitere Dateiaktionen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Más acciones de archivo"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lisää tiedostotoimintoja"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plus d’actions sur le fichier"
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "פעולות קובץ נוספות"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "फ़ाइल की और कार्रवाइयाँ"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "További fájlműveletek"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tindakan file lainnya"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Altre azioni sul file"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ファイルのその他の操作"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "파일 작업 더 보기"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Flere filhandlinger"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Meer bestandsacties"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Więcej działań na pliku"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mais ações do arquivo"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Другие действия с файлом"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fler filåtgärder"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "การทำงานอื่นกับไฟล์"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diğer dosya işlemleri"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Інші дії з файлом"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thao tác tệp khác"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "更多文件操作"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "更多檔案操作"
+          }
+        }
+      }
     },
     "More file options": {
       "localizations": {
@@ -171269,6 +172501,160 @@
         }
       },
       "shouldTranslate": false
+    },
+    "Obsidian's workspace file is tracked": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ملف مساحة عمل Obsidian متتبَّع"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Obsidians arbejdsområdefil spores"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Workspace-Datei von Obsidian wird verfolgt"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El archivo de espacio de trabajo de Obsidian se rastrea"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Obsidianin työtilatiedostoa seurataan"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le fichier d’espace de travail d’Obsidian est suivi"
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "קובץ סביבת העבודה של Obsidian במעקב"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Obsidian की वर्कस्पेस फ़ाइल ट्रैक हो रही है"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Az Obsidian munkaterületfájlja követve van"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "File workspace Obsidian sedang dilacak"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Il file workspace di Obsidian è tracciato"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Obsidian のワークスペースファイルが追跡されています"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Obsidian 작업 공간 파일이 추적되고 있습니다"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Obsidians arbeidsområdefil spores"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Het werkruimtebestand van Obsidian wordt gevolgd"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plik obszaru roboczego Obsidian jest śledzony"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O arquivo de workspace do Obsidian está sendo rastreado"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Файл рабочей области Obsidian отслеживается"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Obsidians arbetsytefil spåras"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ไฟล์เวิร์กสเปซของ Obsidian ถูกติดตามอยู่"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Obsidian çalışma alanı dosyası izleniyor"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Файл робочої області Obsidian відстежується"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tệp workspace của Obsidian đang được theo dõi"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Obsidian 的工作区文件正被跟踪"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Obsidian 的工作區檔案正被追蹤"
+          }
+        }
+      }
     },
     "OK": {
       "comment": "Generic OK / dismiss button",
@@ -195035,6 +196421,1700 @@
           "stringUnit": {
             "state": "translated",
             "value": "拉取操作需進行閤併"
+          }
+        }
+      }
+    },
+    "Stop Tracking": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إيقاف التتبع"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stop sporing"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nicht mehr verfolgen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dejar de rastrear"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lopeta seuranta"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ne plus suivre"
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "הפסקת מעקב"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ट्रैक करना बंद करें"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Követés leállítása"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Berhenti melacak"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Smetti di tracciare"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "追跡を停止"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "추적 중지"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Slutt å spore"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Niet meer volgen"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Przestań śledzić"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Parar de rastrear"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Прекратить отслеживание"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sluta spåra"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "หยุดติดตาม"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İzlemeyi durdur"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Припинити відстеження"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ngừng theo dõi"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "停止跟踪"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "停止追蹤"
+          }
+        }
+      }
+    },
+    "Stop tracking in Git?": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إيقاف التتبع في Git؟"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stop sporing i Git?"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In Git nicht mehr verfolgen?"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Dejar de rastrear en Git?"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lopetetaanko seuranta Gitissä?"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ne plus suivre dans Git ?"
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "להפסיק מעקב ב-Git?"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git में ट्रैक करना बंद करें?"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leállítja a követést a Gitben?"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Berhenti melacak di Git?"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Smettere di tracciare in Git?"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git での追跡を停止しますか？"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git에서 추적을 중지할까요?"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Slutte å spore i Git?"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Niet meer volgen in Git?"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Przestać śledzić w Git?"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Parar de rastrear no Git?"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Прекратить отслеживание в Git?"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sluta spåra i Git?"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "หยุดติดตามใน Git ไหม"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git'te izleme durdurulsun mu?"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Припинити відстеження в Git?"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ngừng theo dõi trong Git?"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "停止在 Git 中跟踪？"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "停止在 Git 中追蹤？"
+          }
+        }
+      }
+    },
+    "Stop tracking workspace files…": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إيقاف تتبع ملفات مساحة العمل…"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stop sporing af arbejdsområdefiler…"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Workspace-Dateien nicht mehr verfolgen…"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dejar de rastrear archivos de espacio de trabajo…"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lopeta työtilatiedostojen seuranta…"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ne plus suivre les fichiers d’espace de travail…"
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "הפסקת מעקב אחר קובצי סביבת עבודה…"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "वर्कस्पेस फ़ाइलें ट्रैक करना बंद करें…"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Munkaterületfájlok követésének leállítása…"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Berhenti melacak file workspace…"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Smetti di tracciare i file workspace…"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ワークスペースファイルの追跡を停止…"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "작업 공간 파일 추적 중지…"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Slutt å spore arbeidsområdefiler…"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Werkruimtebestanden niet meer volgen…"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Przestań śledzić pliki obszaru roboczego…"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Parar de rastrear arquivos de workspace…"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Прекратить отслеживание файлов рабочей области…"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sluta spåra arbetsytefiler…"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "หยุดติดตามไฟล์เวิร์กสเปซ…"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Çalışma alanı dosyalarını izlemeyi durdur…"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Припинити відстеження файлів робочої області…"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ngừng theo dõi tệp workspace…"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "停止跟踪工作区文件…"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "停止追蹤工作區檔案…"
+          }
+        }
+      }
+    },
+    "Stop Tracking…": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إيقاف التتبع…"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stop sporing…"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nicht mehr verfolgen…"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dejar de rastrear…"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lopeta seuranta…"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ne plus suivre…"
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "הפסקת מעקב…"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ट्रैक करना बंद करें…"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Követés leállítása…"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Berhenti melacak…"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Smetti di tracciare…"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "追跡を停止…"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "추적 중지…"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Slutt å spore…"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Niet meer volgen…"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Przestań śledzić…"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Parar de rastrear…"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Прекратить отслеживание…"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sluta spåra…"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "หยุดติดตาม…"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İzlemeyi durdur…"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Припинити відстеження…"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ngừng theo dõi…"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "停止跟踪…"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "停止追蹤…"
+          }
+        }
+      }
+    },
+    "Stopped tracking": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تم إيقاف التتبع"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sporing stoppet"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nicht mehr verfolgt"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ya no se rastrea"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seuranta lopetettu"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suivi arrêté"
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "המעקב הופסק"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ट्रैकिंग बंद हुई"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Követés leállítva"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pelacakan dihentikan"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tracciamento interrotto"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "追跡を停止しました"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "추적을 중지함"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sporing stoppet"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wordt niet meer gevolgd"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zatrzymano śledzenie"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rastreamento parado"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Отслеживание прекращено"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spårning stoppad"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "หยุดติดตามแล้ว"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İzleme durduruldu"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Відстеження припинено"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đã ngừng theo dõi"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已停止跟踪"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已停止追蹤"
+          }
+        }
+      }
+    },
+    "Stopping tracking...": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "جارٍ إيقاف التتبع..."
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stopper sporing..."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verfolgung wird beendet..."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dejando de rastrear..."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lopetetaan seurantaa..."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Arrêt du suivi..."
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "מפסיק מעקב..."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ट्रैकिंग बंद हो रही है..."
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Követés leállítása..."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Menghentikan pelacakan..."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Interruzione del tracciamento..."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "追跡を停止中..."
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "추적 중지 중..."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Slutter å spore..."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Volgen stoppen..."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zatrzymywanie śledzenia..."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Parando de rastrear..."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Отключение отслеживания..."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Slutar spåra..."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "กำลังหยุดติดตาม..."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İzleme durduruluyor..."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Вимкнення відстеження..."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đang ngừng theo dõi..."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在停止跟踪..."
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在停止追蹤..."
+          }
+        }
+      }
+    },
+    "Suggestion": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اقتراح"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forslag"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vorschlag"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sugerencia"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ehdotus"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suggestion"
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "הצעה"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "सुझाव"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Javaslat"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Saran"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suggerimento"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "提案"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "제안"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forslag"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suggestie"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sugestia"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sugestão"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Совет"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Förslag"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "คำแนะนำ"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Öneri"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Порада"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gợi ý"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "建议"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "建議"
+          }
+        }
+      }
+    },
+    "This file": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "هذا الملف"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Denne fil"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese Datei"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este archivo"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tämä tiedosto"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ce fichier"
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "הקובץ הזה"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "यह फ़ाइल"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ez a fájl"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "File ini"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Questo file"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "このファイル"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이 파일"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Denne filen"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dit bestand"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ten plik"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este arquivo"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Этот файл"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Den här filen"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ไฟล์นี้"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu dosya"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Цей файл"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tệp này"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "此文件"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "此檔案"
+          }
+        }
+      }
+    },
+    "Wait for the current Git operation to finish.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "انتظر حتى تنتهي عملية Git الحالية."
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vent, til den aktuelle Git-handling er færdig."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Warte, bis der aktuelle Git-Vorgang abgeschlossen ist."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Espera a que termine la operación de Git en curso."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Odota, että nykyinen Git-toiminto valmistuu."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Attendez la fin de l’opération Git en cours."
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "המתן לסיום פעולת ה-Git הנוכחית."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "मौजूदा Git कार्रवाई पूरी होने तक प्रतीक्षा करें।"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Várja meg, amíg az aktuális Git-művelet befejeződik."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tunggu hingga operasi Git saat ini selesai."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Attendi che termini l’operazione Git in corso."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "現在の Git 操作が終わるまでお待ちください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "현재 Git 작업이 끝날 때까지 기다려 주세요."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vent til den pågående Git-operasjonen er ferdig."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wacht tot de huidige Git-bewerking klaar is."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Poczekaj, aż bieżąca operacja Git się zakończy."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aguarde a operação atual do Git terminar."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Дождитесь завершения текущей операции Git."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vänta tills den pågående Git-åtgärden är klar."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "รอให้การทำงาน Git ปัจจุบันเสร็จก่อน"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geçerli Git işleminin bitmesini bekleyin."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Дочекайтеся завершення поточної операції Git."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hãy chờ thao tác Git hiện tại hoàn tất."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "请等待当前 Git 操作完成。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "請等待目前的 Git 操作完成。"
+          }
+        }
+      }
+    },
+    "When other devices pull this commit, Git deletes their copy. Obsidian creates a new one the next time it opens the vault.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "عندما تسحب الأجهزة الأخرى هذا الـ commit، يحذف Git نسختها. ينشئ Obsidian نسخة جديدة في المرة التالية التي يفتح فيها الخزنة."
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Når andre enheder puller dette commit, sletter Git deres kopi. Obsidian opretter en ny, næste gang den åbner vaulten."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wenn andere Geräte diesen Commit pullen, löscht Git dort die Kopie. Obsidian legt beim nächsten Öffnen des Vaults eine neue an."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cuando otros dispositivos hagan pull de este commit, Git borrará su copia. Obsidian creará una nueva la próxima vez que abra la bóveda."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kun muut laitteet pullaavat tämän commitin, Git poistaa niiden kopion. Obsidian luo uuden, kun se seuraavan kerran avaa holvin."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quand d’autres appareils récupèrent ce commit, Git supprime leur copie. Obsidian en crée une nouvelle à la prochaine ouverture du coffre."
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "כשמכשירים אחרים מושכים את ה-commit הזה, Git מוחק את העותק שלהם. Obsidian יוצר עותק חדש בפעם הבאה שהוא פותח את הכספת."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "जब दूसरे डिवाइस यह commit pull करेंगे, Git उनकी कॉपी हटा देगा। अगली बार वॉल्ट खोलने पर Obsidian नई कॉपी बना देता है।"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Amikor más eszközök lehúzzák ezt a commitot, a Git törli az ottani példányt. Az Obsidian a széf következő megnyitásakor újat hoz létre."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Saat perangkat lain menarik commit ini, Git menghapus salinannya di sana. Obsidian membuat yang baru saat berikutnya membuka vault."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quando altri dispositivi fanno il pull di questo commit, Git elimina la loro copia. Obsidian ne crea una nuova alla prossima apertura del vault."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ほかのデバイスがこのコミットをプルすると、Git はそこにあるコピーを削除します。Obsidian は次に保管庫を開いたときに新しく作成します。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "다른 기기가 이 커밋을 풀하면 Git이 해당 기기의 사본을 삭제합니다. Obsidian은 다음에 보관소를 열 때 새로 만듭니다."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Når andre enheter puller denne commiten, sletter Git kopien deres. Obsidian lager en ny neste gang det åpner hvelvet."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Als andere apparaten deze commit pullen, verwijdert Git hun kopie. Obsidian maakt een nieuwe aan zodra het de kluis weer opent."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gdy inne urządzenia pobiorą ten commit, Git usunie ich kopię. Obsidian utworzy nową przy następnym otwarciu sejfu."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quando outros dispositivos fizerem pull deste commit, o Git apagará a cópia deles. O Obsidian cria uma nova na próxima vez que abrir o cofre."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Когда другие устройства получат этот коммит, Git удалит их копию. Obsidian создаст новую при следующем открытии хранилища."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "När andra enheter pullar den här committen tar Git bort deras kopia. Obsidian skapar en ny nästa gång valvet öppnas."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เมื่ออุปกรณ์อื่น pull commit นี้ Git จะลบสำเนาบนอุปกรณ์นั้น Obsidian จะสร้างใหม่เมื่อเปิดคลังครั้งถัดไป"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diğer cihazlar bu commit'i çektiğinde Git oradaki kopyayı siler. Obsidian kasayı bir sonraki açışında yenisini oluşturur."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Коли інші пристрої отримають цей коміт, Git видалить їхню копію. Obsidian створить нову під час наступного відкриття сховища."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Khi thiết bị khác pull commit này, Git sẽ xóa bản sao trên đó. Obsidian sẽ tạo bản mới vào lần mở kho tiếp theo."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "其他设备拉取此提交时，Git 会删除它们的副本。Obsidian 下次打开仓库时会重新创建。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "其他裝置拉取此提交時，Git 會刪除它們的副本。Obsidian 下次開啟保險庫時會重新建立。"
+          }
+        }
+      }
+    },
+    "When other devices pull this commit, Git deletes their copy. Save it there first if they need it. It stays in Git history.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "عندما تسحب الأجهزة الأخرى هذا الـ commit، يحذف Git نسختها. احفظه هناك أولًا إذا كانت تحتاج إليه. يبقى في سجل Git."
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Når andre enheder puller dette commit, sletter Git deres kopi. Gem den der først, hvis de skal bruge den. Den bliver i Git-historikken."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wenn andere Geräte diesen Commit pullen, löscht Git dort die Kopie. Sichere sie dort vorher, falls sie gebraucht wird. Im Git-Verlauf bleibt sie erhalten."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cuando otros dispositivos hagan pull de este commit, Git borrará su copia. Guárdala allí antes si la necesitan. Seguirá en el historial de Git."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kun muut laitteet pullaavat tämän commitin, Git poistaa niiden kopion. Tallenna se niillä ensin, jos sitä tarvitaan. Se säilyy Git-historiassa."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quand d’autres appareils récupèrent ce commit, Git supprime leur copie. Sauvegardez-la d’abord sur ces appareils si besoin. Elle reste dans l’historique Git."
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "כשמכשירים אחרים מושכים את ה-commit הזה, Git מוחק את העותק שלהם. שמור אותו שם קודם אם הם צריכים אותו. הוא נשאר בהיסטוריית Git."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "जब दूसरे डिवाइस यह commit pull करेंगे, Git उनकी कॉपी हटा देगा। अगर उन्हें इसकी ज़रूरत है, तो पहले वहाँ सहेज लें। यह Git इतिहास में रहता है।"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Amikor más eszközök lehúzzák ezt a commitot, a Git törli az ottani példányt. Ha szükség van rá, előbb mentse el ott. A Git-előzményekben megmarad."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Saat perangkat lain menarik commit ini, Git menghapus salinannya di sana. Simpan dulu di sana jika masih diperlukan. File tetap ada di riwayat Git."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quando altri dispositivi fanno il pull di questo commit, Git elimina la loro copia. Salvala prima lì se serve. Resta nella cronologia di Git."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ほかのデバイスがこのコミットをプルすると、Git はそこにあるコピーを削除します。必要なら先にそちらで保存してください。Git の履歴には残ります。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "다른 기기가 이 커밋을 풀하면 Git이 해당 기기의 사본을 삭제합니다. 필요하다면 먼저 그 기기에 저장해 두세요. Git 기록에는 남습니다."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Når andre enheter puller denne commiten, sletter Git kopien deres. Lagre den der først hvis de trenger den. Den ligger fortsatt i Git-historikken."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Als andere apparaten deze commit pullen, verwijdert Git hun kopie. Bewaar hem daar eerst als ze hem nodig hebben. Hij blijft in de Git-geschiedenis."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gdy inne urządzenia pobiorą ten commit, Git usunie ich kopię. Jeśli jest im potrzebna, najpierw ją tam zapisz. Zostaje w historii Git."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quando outros dispositivos fizerem pull deste commit, o Git apagará a cópia deles. Salve-a neles antes, se precisarem. Ela continua no histórico do Git."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Когда другие устройства получат этот коммит, Git удалит их копию. Если она там нужна, сначала сохраните её. В истории Git она останется."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "När andra enheter pullar den här committen tar Git bort deras kopia. Spara den där först om de behöver den. Den finns kvar i Git-historiken."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เมื่ออุปกรณ์อื่น pull commit นี้ Git จะลบสำเนาบนอุปกรณ์นั้น หากยังต้องใช้ ให้บันทึกไว้ที่นั่นก่อน ไฟล์ยังอยู่ในประวัติ Git"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diğer cihazlar bu commit'i çektiğinde Git oradaki kopyayı siler. Gerekiyorsa önce orada kaydedin. Git geçmişinde kalır."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Коли інші пристрої отримають цей коміт, Git видалить їхню копію. Якщо вона там потрібна, спершу збережіть її. В історії Git вона залишиться."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Khi thiết bị khác pull commit này, Git sẽ xóa bản sao trên đó. Hãy lưu lại ở đó trước nếu cần. Nó vẫn còn trong lịch sử Git."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "其他设备拉取此提交时，Git 会删除它们的副本。如有需要，请先在那些设备上保存。它仍保留在 Git 历史中。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "其他裝置拉取此提交時，Git 會刪除它們的副本。如有需要，請先在那些裝置上儲存。它仍保留在 Git 歷史中。"
           }
         }
       }
@@ -326057,6 +329137,160 @@
         }
       }
     },
+    "“%@” isn't tracked by Git and is already ignored.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "“%@” غير متتبَّع في Git وهو مُتجاهَل بالفعل."
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "“%@” spores ikke af Git og ignoreres allerede."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "„%@“ wird von Git nicht verfolgt und bereits ignoriert."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git no rastrea «%@» y ya se ignora."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git ei seuraa kohdetta ”%@”, ja se on jo ohitettu."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "« %@ » n’est pas suivi par Git et est déjà ignoré."
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "‏Git לא עוקב אחרי “%@” והוא כבר מוחרג."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "“%@” Git द्वारा ट्रैक नहीं है और पहले से अनदेखा है।"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A(z) „%@” elemet a Git nem követi, és már figyelmen kívül van hagyva."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "“%@” tidak dilacak oleh Git dan sudah diabaikan."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "“%@” non è tracciato da Git ed è già ignorato."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "「%@」は Git で追跡されておらず、すでに無視されています。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "“%@”은(는) Git에서 추적되지 않으며 이미 무시되고 있습니다."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "«%@» spores ikke av Git og ignoreres allerede."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "“%@” wordt niet door Git gevolgd en wordt al genegeerd."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "„%@” nie jest śledzony przez Git i jest już ignorowany."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "“%@” não é rastreado pelo Git e já é ignorado."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "«%@» не отслеживается Git и уже игнорируется."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "”%@” spåras inte av Git och ignoreras redan."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git ไม่ได้ติดตาม “%@” และถูกละเว้นอยู่แล้ว"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "“%@” Git tarafından izlenmiyor ve zaten yok sayılıyor."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "«%@» не відстежується Git і вже ігнорується."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "“%@” không được Git theo dõi và đã bị bỏ qua."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "“%@”未被 Git 跟踪，且已被忽略。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "「%@」未被 Git 追蹤，且已被忽略。"
+          }
+        }
+      }
+    },
     "“Check notes in GitSync.md”": {
       "localizations": {
         "ar": {
@@ -334990,6 +338224,1238 @@
           "stringUnit": {
             "state": "translated",
             "value": "The Git index is locked. Wait for other Git operations to finish, then try again. If nothing else is using this repository, tap Remove Lock in the vault's Git tab."
+          }
+        }
+      }
+    },
+    "GitSync.md couldn't confirm that the folder “%@” is inside the location you chose. Remove this vault, add it again and choose the location again under Clone To.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تعذّر على GitSync.md التأكد من أن المجلد “%@” داخل الموقع الذي اخترته. أزل هذا المخزن، ثم أضفه مرة أخرى واختر الموقع من جديد ضمن «استنساخ إلى»."
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md kunne ikke bekræfte, at mappen “%@” ligger i den placering, du valgte. Fjern denne vault, tilføj den igen, og vælg placeringen igen under Klon til."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md konnte nicht bestätigen, dass der Ordner „%@“ im gewählten Speicherort liegt. Entferne diesen Vault, füge ihn erneut hinzu und wähle den Speicherort unter „Klonen nach“ erneut."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md no pudo confirmar que la carpeta “%@” esté dentro de la ubicación que elegiste. Elimina este vault, vuelve a añadirlo y elige de nuevo la ubicación en Clonar en."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md ei voinut varmistaa, että kansio “%@” on valitsemassasi sijainnissa. Poista tämä holvi, lisää se uudelleen ja valitse sijainti uudelleen kohdassa Kloonaa kohteeseen."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md n’a pas pu confirmer que le dossier « %@ » se trouve dans l’emplacement choisi. Supprimez ce coffre, ajoutez-le à nouveau et choisissez de nouveau l’emplacement sous Cloner vers."
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md לא הצליחה לוודא שהתיקייה “%@” נמצאת בתוך המיקום שבחרת. יש להסיר את הכספת הזו, להוסיף אותה שוב ולבחור שוב את המיקום תחת „שכפול אל”."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md पुष्टि नहीं कर सका कि फ़ोल्डर “%@” आपके चुने गए स्थान के अंदर है। इस वॉल्ट को हटाएँ, इसे फिर से जोड़ें और क्लोन स्थान में स्थान दोबारा चुनें।"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A GitSync.md nem tudta megerősíteni, hogy a(z) „%@” mappa a kiválasztott helyen belül van. Távolítsd el ezt a tárolót, add hozzá újra, és válaszd ki újra a helyet a Klónozás ide résznél."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md tidak dapat memastikan bahwa folder “%@” berada di dalam lokasi yang Anda pilih. Hapus vault ini, tambahkan lagi, dan pilih lokasinya lagi di Clone Ke."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md non è riuscito a confermare che la cartella “%@” si trovi nella posizione scelta. Rimuovi questo vault, aggiungilo di nuovo e scegli di nuovo la posizione in Clona in."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md は、フォルダ「%@」が選択した場所の中にあることを確認できませんでした。このVaultを削除して追加し直し、「クローン先」で場所を選び直してください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md에서 “%@” 폴더가 선택한 위치 안에 있는지 확인할 수 없습니다. 이 볼트를 제거한 후 다시 추가하고 복제 위치에서 위치를 다시 선택하세요."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md kunne ikke bekrefte at mappen «%@» ligger i plasseringen du valgte. Fjern dette hvelvet, legg det til på nytt og velg plasseringen på nytt under Klon til."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md kon niet bevestigen dat de map ‘%@’ binnen de gekozen locatie staat. Verwijder deze vault, voeg hem opnieuw toe en kies de locatie opnieuw onder Klonen naar."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md nie może potwierdzić, że folder „%@” znajduje się w wybranej lokalizacji. Usuń ten sejf, dodaj go ponownie i wybierz lokalizację jeszcze raz w sekcji Klonuj do."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O GitSync.md não conseguiu confirmar que a pasta “%@” está dentro do local escolhido. Remova este cofre, adicione-o novamente e escolha o local de novo em Clonar Para."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md не удалось подтвердить, что папка «%@» находится в выбранном расположении. Удалите это хранилище, добавьте его снова и заново выберите расположение в разделе «Клонировать в»."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md kunde inte bekräfta att mappen ”%@” ligger i platsen du valde. Ta bort det här valvet, lägg till det igen och välj platsen igen under Klona till."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md ไม่สามารถยืนยันได้ว่าโฟลเดอร์ “%@” อยู่ภายในตำแหน่งที่คุณเลือก ให้ลบคลังนี้ เพิ่มใหม่อีกครั้ง แล้วเลือกตำแหน่งใหม่ใต้ โคลนไปยัง"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md, “%@” klasörünün seçtiğiniz konumun içinde olduğunu doğrulayamadı. Bu kasayı kaldırın, yeniden ekleyin ve Klonlama Konumu altında konumu yeniden seçin."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md не вдалося підтвердити, що папка «%@» розташована у вибраному місці. Видаліть це сховище, додайте його знову й повторно виберіть розташування в розділі «Клонувати до»."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md không thể xác nhận thư mục “%@” nằm trong vị trí bạn đã chọn. Hãy xóa kho này, thêm lại và chọn lại vị trí trong mục Sao chép về."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md 无法确认文件夹“%@”位于你选择的位置中。请移除此仓库，重新添加，并在“克隆到”中重新选择位置。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md 無法確認資料夾「%@」位於你選擇的位置中。請移除此儲存庫，重新加入，並在「複製至」中重新選擇位置。"
+          }
+        }
+      }
+    },
+    "The folder “%@” is outside this vault's location. Remove this vault and add it again with a different folder name.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "المجلد “%@” خارج موقع هذا المخزن. أزل هذا المخزن ثم أضفه مرة أخرى باسم مجلد مختلف."
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mappen “%@” ligger uden for denne vaults placering. Fjern denne vault, og tilføj den igen med et andet mappenavn."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Ordner „%@“ liegt außerhalb des Speicherorts dieses Vaults. Entferne diesen Vault und füge ihn mit einem anderen Ordnernamen erneut hinzu."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La carpeta “%@” está fuera de la ubicación de este vault. Elimina este vault y vuelve a añadirlo con otro nombre de carpeta."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kansio “%@” on tämän holvin sijainnin ulkopuolella. Poista tämä holvi ja lisää se uudelleen eri kansionimellä."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le dossier « %@ » se trouve en dehors de l’emplacement de ce coffre. Supprimez ce coffre et ajoutez-le à nouveau avec un autre nom de dossier."
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "התיקייה “%@” נמצאת מחוץ למיקום של הכספת הזו. יש להסיר את הכספת הזו ולהוסיף אותה שוב עם שם תיקייה אחר."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "फ़ोल्डर “%@” इस वॉल्ट के स्थान से बाहर है। इस वॉल्ट को हटाएँ और किसी दूसरे फ़ोल्डर नाम के साथ इसे फिर से जोड़ें।"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A(z) „%@” mappa ennek a tárolónak a helyén kívül van. Távolítsd el ezt a tárolót, és add hozzá újra egy másik mappanévvel."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folder “%@” berada di luar lokasi vault ini. Hapus vault ini dan tambahkan lagi dengan nama folder lain."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La cartella “%@” si trova fuori dalla posizione di questo vault. Rimuovi questo vault e aggiungilo di nuovo con un altro nome di cartella."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "フォルダ「%@」はこのVaultの場所の外にあります。このVaultを削除し、別のフォルダ名で追加し直してください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "“%@” 폴더가 이 볼트의 위치 밖에 있습니다. 이 볼트를 제거한 후 다른 폴더 이름으로 다시 추가하세요."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mappen «%@» ligger utenfor plasseringen til dette hvelvet. Fjern hvelvet og legg det til på nytt med et annet mappenavn."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De map ‘%@’ staat buiten de locatie van deze vault. Verwijder deze vault en voeg hem opnieuw toe met een andere mapnaam."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folder „%@” znajduje się poza lokalizacją tego sejfu. Usuń ten sejf i dodaj go ponownie z inną nazwą folderu."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A pasta “%@” está fora do local deste cofre. Remova este cofre e adicione-o novamente com outro nome de pasta."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Папка «%@» находится за пределами расположения этого хранилища. Удалите хранилище и добавьте его снова с другим именем папки."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mappen ”%@” ligger utanför det här valvets plats. Ta bort valvet och lägg till det igen med ett annat mappnamn."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "โฟลเดอร์ “%@” อยู่นอกตำแหน่งของคลังนี้ ให้ลบคลังนี้แล้วเพิ่มใหม่อีกครั้งโดยใช้ชื่อโฟลเดอร์อื่น"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "“%@” klasörü bu kasanın konumunun dışında. Bu kasayı kaldırın ve farklı bir klasör adıyla yeniden ekleyin."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Папка «%@» розташована поза місцем цього сховища. Видаліть сховище й додайте його знову з іншою назвою папки."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thư mục “%@” nằm ngoài vị trí của kho này. Hãy xóa kho này và thêm lại với tên thư mục khác."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "文件夹“%@”不在此仓库的位置中。请移除此仓库，并使用其他文件夹名称重新添加。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "資料夾「%@」不在此儲存庫的位置中。請移除此儲存庫，並使用其他資料夾名稱重新加入。"
+          }
+        }
+      }
+    },
+    "Automatic sync paused": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تم إيقاف المزامنة التلقائية مؤقتًا"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automatisk synkronisering er sat på pause"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automatische Synchronisierung pausiert"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sincronización automática en pausa"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automaattinen synkronointi on keskeytetty"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Synchronisation automatique en pause"
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "הסנכרון האוטומטי מושהה"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "स्वचालित सिंक रोका गया"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Az automatikus szinkronizálás szünetel"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sinkronisasi otomatis dijeda"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sincronizzazione automatica in pausa"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自動同期を一時停止しました"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "자동 동기화 일시 정지됨"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automatisk synkronisering er satt på pause"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automatische synchronisatie gepauzeerd"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automatyczna synchronizacja wstrzymana"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sincronização automática pausada"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Автоматическая синхронизация приостановлена"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automatisk synkronisering har pausats"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "หยุดการซิงค์อัตโนมัติชั่วคราว"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Otomatik eşitleme duraklatıldı"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Автоматичну синхронізацію призупинено"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đã tạm dừng đồng bộ tự động"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自动同步已暂停"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自動同步已暫停"
+          }
+        }
+      }
+    },
+    "Resume Automatic Sync": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "استئناف المزامنة التلقائية"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Genoptag automatisk synkronisering"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automatische Synchronisierung fortsetzen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reanudar sincronización automática"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jatka automaattista synkronointia"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reprendre la synchronisation automatique"
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "חידוש סנכרון אוטומטי"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "स्वचालित सिंक फिर से शुरू करें"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automatikus szinkronizálás folytatása"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lanjutkan sinkronisasi otomatis"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Riprendi sincronizzazione automatica"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自動同期を再開"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "자동 동기화 재개"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gjenoppta automatisk synkronisering"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automatische synchronisatie hervatten"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wznów automatyczną synchronizację"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Retomar sincronização automática"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Возобновить автоматическую синхронизацию"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Återuppta automatisk synkronisering"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ซิงค์อัตโนมัติต่อ"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Otomatik eşitlemeyi sürdür"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Відновити автоматичну синхронізацію"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tiếp tục đồng bộ tự động"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "恢复自动同步"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "恢復自動同步"
+          }
+        }
+      }
+    },
+    "Turn Off Background Sync": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إيقاف Background Sync"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Slå Background Sync fra"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Background Sync ausschalten"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desactivar Background Sync"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Poista Background Sync käytöstä"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Désactiver Background Sync"
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "כיבוי Background Sync"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Background Sync बंद करें"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Background Sync kikapcsolása"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Matikan Background Sync"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Disattiva Background Sync"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Background Syncをオフにする"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Background Sync 끄기"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Slå av Background Sync"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Background Sync uitschakelen"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wyłącz Background Sync"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desativar Background Sync"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Выключить Background Sync"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stäng av Background Sync"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ปิด Background Sync"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Background Sync’i kapat"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Вимкнути Background Sync"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tắt Background Sync"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "关闭 Background Sync"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "關閉 Background Sync"
+          }
+        }
+      }
+    },
+    "GitSync.md stopped unexpectedly during the last automatic sync, so automatic sync is paused. Pull a vault yourself to see what went wrong, then resume automatic sync or turn off Background Sync.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "توقف GitSync.md بشكل غير متوقع أثناء آخر مزامنة تلقائية، لذا تم إيقاف المزامنة التلقائية مؤقتًا. اسحب مخزنًا بنفسك لمعرفة ما حدث، ثم استأنف المزامنة التلقائية أو أوقف Background Sync."
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md stoppede uventet under den seneste automatiske synkronisering, så automatisk synkronisering er sat på pause. Lav selv et pull af en boks for at se, hvad der gik galt, og genoptag derefter automatisk synkronisering eller slå Background Sync fra."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md wurde während der letzten automatischen Synchronisierung unerwartet beendet, daher ist die automatische Synchronisierung pausiert. Führe selbst einen Pull für einen Vault aus, um zu sehen, was schiefgelaufen ist, und setze dann die automatische Synchronisierung fort oder schalte Background Sync aus."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md se detuvo inesperadamente durante la última sincronización automática, así que la sincronización automática está en pausa. Haz pull de una bóveda tú mismo para ver qué falló y luego reanuda la sincronización automática o desactiva Background Sync."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md pysähtyi odottamatta viimeisimmän automaattisen synkronoinnin aikana, joten automaattinen synkronointi on keskeytetty. Tee holvin pull itse nähdäksesi, mikä meni vikaan, ja jatka sitten automaattista synkronointia tai poista Background Sync käytöstä."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md s’est arrêté de façon inattendue pendant la dernière synchronisation automatique, qui est donc en pause. Faites vous-même un pull d’un coffre pour voir ce qui n’a pas marché, puis reprenez la synchronisation automatique ou désactivez Background Sync."
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md נעצר באופן בלתי צפוי במהלך הסנכרון האוטומטי האחרון, ולכן הסנכרון האוטומטי מושהה. בצעו pull לכספת בעצמכם כדי לראות מה השתבש, ולאחר מכן חדשו את הסנכרון האוטומטי או כבו את Background Sync."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "पिछले स्वचालित सिंक के दौरान GitSync.md अचानक बंद हो गया, इसलिए स्वचालित सिंक रोक दिया गया है। क्या गड़बड़ हुई यह देखने के लिए किसी वॉल्ट को खुद pull करें, फिर स्वचालित सिंक फिर से शुरू करें या Background Sync बंद करें।"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A GitSync.md váratlanul leállt a legutóbbi automatikus szinkronizálás közben, ezért az automatikus szinkronizálás szünetel. Végezz kézzel pullt egy tárolón, hogy lásd, mi romlott el, majd folytasd az automatikus szinkronizálást, vagy kapcsold ki a Background Syncet."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md berhenti secara tak terduga saat sinkronisasi otomatis terakhir, jadi sinkronisasi otomatis dijeda. Lakukan pull pada vault sendiri untuk melihat apa yang salah, lalu lanjutkan sinkronisasi otomatis atau matikan Background Sync."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md si è chiuso in modo imprevisto durante l’ultima sincronizzazione automatica, quindi la sincronizzazione automatica è in pausa. Esegui tu il pull di un vault per vedere cosa non ha funzionato, poi riprendi la sincronizzazione automatica o disattiva Background Sync."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "前回の自動同期中にGitSync.mdが予期せず終了したため、自動同期を一時停止しました。保管庫を手動でプルして原因を確認し、自動同期を再開するかBackground Syncをオフにしてください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "마지막 자동 동기화 중에 GitSync.md가 예기치 않게 종료되어 자동 동기화를 일시 정지했습니다. 보관함을 직접 Pull해서 무엇이 잘못되었는지 확인한 다음 자동 동기화를 재개하거나 Background Sync를 끄세요."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md stoppet uventet under den siste automatiske synkroniseringen, så automatisk synkronisering er satt på pause. Gjør en pull av et hvelv selv for å se hva som gikk galt, og gjenoppta deretter automatisk synkronisering eller slå av Background Sync."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md stopte onverwacht tijdens de laatste automatische synchronisatie, daarom is automatische synchronisatie gepauzeerd. Pull zelf een kluis om te zien wat er misging en hervat daarna de automatische synchronisatie of schakel Background Sync uit."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md nieoczekiwanie przestał działać podczas ostatniej automatycznej synchronizacji, więc automatyczna synchronizacja jest wstrzymana. Wykonaj samodzielnie pull sejfu, aby zobaczyć, co poszło nie tak, a potem wznów automatyczną synchronizację lub wyłącz Background Sync."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O GitSync.md parou inesperadamente durante a última sincronização automática, por isso a sincronização automática está pausada. Faça você mesmo o pull de um cofre para ver o que deu errado e depois retome a sincronização automática ou desative o Background Sync."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md неожиданно завершился во время последней автоматической синхронизации, поэтому автоматическая синхронизация приостановлена. Выполните pull хранилища вручную, чтобы увидеть, что пошло не так, а затем возобновите автоматическую синхронизацию или выключите Background Sync."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md stoppade oväntat under den senaste automatiska synkroniseringen, så automatisk synkronisering har pausats. Gör en pull av ett valv själv för att se vad som gick fel och återuppta sedan automatisk synkronisering eller stäng av Background Sync."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md หยุดทำงานโดยไม่คาดคิดระหว่างการซิงค์อัตโนมัติครั้งล่าสุด จึงหยุดการซิงค์อัตโนมัติไว้ชั่วคราว ลอง pull ห้องนิรภัยด้วยตัวเองเพื่อดูว่าเกิดอะไรขึ้น แล้วซิงค์อัตโนมัติต่อหรือปิด Background Sync"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md son otomatik eşitleme sırasında beklenmedik şekilde durdu, bu yüzden otomatik eşitleme duraklatıldı. Neyin ters gittiğini görmek için bir kasayı kendiniz pull edin, ardından otomatik eşitlemeyi sürdürün veya Background Sync’i kapatın."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md неочікувано зупинився під час останньої автоматичної синхронізації, тому автоматичну синхронізацію призупинено. Виконайте pull сховища вручну, щоб побачити, що пішло не так, а потім відновіть автоматичну синхронізацію або вимкніть Background Sync."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md đã dừng đột ngột trong lần đồng bộ tự động gần nhất, nên đồng bộ tự động đã được tạm dừng. Hãy tự pull một kho để xem lỗi là gì, rồi tiếp tục đồng bộ tự động hoặc tắt Background Sync."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md 在上一次自动同步时意外停止，因此自动同步已暂停。请手动拉取一个仓库查看出了什么问题，然后恢复自动同步或关闭 Background Sync。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitSync.md 在上一次自動同步時意外停止，因此自動同步已暫停。請手動拉取一個儲存庫查看出了什麼問題，然後恢復自動同步或關閉 Background Sync。"
+          }
+        }
+      }
+    },
+    "This vault isn't on a branch (detached HEAD), so there is nothing to pull into. Open Git Tools, switch to a branch, then pull again.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "هذا المخزن ليس على فرع (detached HEAD)، لذا لا يوجد ما يمكن السحب إليه. افتح أدوات Git، وانتقل إلى فرع، ثم اسحب مجددًا."
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Denne boks er ikke på en gren (detached HEAD), så der er intet at lave pull ind i. Åbn Git-værktøjer, skift til en gren, og lav pull igen."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieser Vault ist auf keinem Branch (detached HEAD), daher gibt es nichts, wohin gepullt werden kann. Öffne die Git-Werkzeuge, wechsle zu einem Branch und führe den Pull erneut aus."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esta bóveda no está en una rama (detached HEAD), así que no hay dónde hacer pull. Abre Herramientas de Git, cambia a una rama y vuelve a hacer pull."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tämä holvi ei ole haarassa (detached HEAD), joten pullille ei ole kohdetta. Avaa Git-työkalut, vaihda haaraan ja tee pull uudelleen."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ce coffre n’est sur aucune branche (detached HEAD) : le pull n’a nulle part où aller. Ouvrez Outils Git, passez sur une branche, puis refaites un pull."
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "הכספת הזו אינה על ענף (detached HEAD), כך שאין לאן לבצע pull. פתחו את כלי Git, עברו לענף ובצעו pull שוב."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "यह वॉल्ट किसी ब्रांच पर नहीं है (detached HEAD), इसलिए pull करने की कोई जगह नहीं है। Git उपकरण खोलें, किसी ब्रांच पर स्विच करें, फिर दोबारा pull करें।"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ez a tároló nincs ágon (detached HEAD), így nincs hová pullolni. Nyisd meg a Git-eszközöket, válts egy ágra, majd pullolj újra."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vault ini tidak berada di cabang (detached HEAD), jadi tidak ada tujuan pull. Buka Alat Git, beralih ke cabang, lalu pull lagi."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Questo vault non è su un branch (detached HEAD), quindi il pull non ha una destinazione. Apri Strumenti Git, passa a un branch e ripeti il pull."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "この保管庫はブランチ上にありません（detached HEAD）。そのためプルする先がありません。Gitツールを開いてブランチに切り替えてから、もう一度プルしてください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이 보관함은 브랜치에 있지 않아서(detached HEAD) Pull할 대상이 없습니다. Git 도구를 열고 브랜치로 전환한 다음 다시 Pull하세요."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dette hvelvet er ikke på en gren (detached HEAD), så det finnes ingenting å gjøre pull inn i. Åpne Git-verktøy, bytt til en gren og gjør pull på nytt."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deze kluis staat niet op een branch (detached HEAD), dus er is niets om in te pullen. Open Git-tools, schakel naar een branch en pull opnieuw."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ten sejf nie jest na gałęzi (detached HEAD), więc nie ma dokąd wykonać pull. Otwórz Narzędzia Git, przełącz się na gałąź i ponów pull."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este cofre não está em um branch (detached HEAD), então não há para onde fazer pull. Abra Ferramentas Git, mude para um branch e faça pull de novo."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Это хранилище не находится на ветке (detached HEAD), поэтому pull некуда выполнять. Откройте «Инструменты Git», переключитесь на ветку и повторите pull."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Det här valvet är inte på en gren (detached HEAD), så det finns inget att göra pull till. Öppna Git-verktyg, byt till en gren och gör pull igen."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ห้องนิรภัยนี้ไม่ได้อยู่บนสาขาใด (detached HEAD) จึงไม่มีที่ให้ pull เข้ามา เปิดเครื่องมือ Git สลับไปยังสาขา แล้ว pull อีกครั้ง"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu kasa bir dalda değil (detached HEAD), bu yüzden pull yapılacak bir yer yok. Git Araçları’nı açın, bir dala geçin ve tekrar pull yapın."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Це сховище не на гілці (detached HEAD), тому pull нікуди виконувати. Відкрийте «Інструменти Git», перейдіть на гілку й повторіть pull."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kho này không nằm trên nhánh nào (detached HEAD), nên không có chỗ để pull vào. Mở Công cụ Git, chuyển sang một nhánh rồi pull lại."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "此仓库不在任何分支上（detached HEAD），因此无处可拉取。请打开 Git 工具，切换到一个分支，然后重新拉取。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "此儲存庫不在任何分支上（detached HEAD），因此無處可拉取。請開啟 Git 工具，切換到一個分支，然後重新拉取。"
+          }
+        }
+      }
+    },
+    "Git reference '%@' does not point at a commit.": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "مرجع Git ‏'%@' لا يشير إلى commit."
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git-referencen '%@' peger ikke på en commit."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Git-Referenz '%@' zeigt auf keinen Commit."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La referencia de Git '%@' no apunta a un commit."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git-viite '%@' ei osoita committiin."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La référence Git '%@' ne pointe pas vers un commit."
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "הפניית ה-Git‏ '%@' אינה מצביעה על commit."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git संदर्भ '%@' किसी commit की ओर संकेत नहीं करता।"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A(z) '%@' Git-hivatkozás nem mutat commitra."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Referensi Git '%@' tidak menunjuk ke commit."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Il riferimento Git '%@' non punta a un commit."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git参照 '%@' はコミットを指していません。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git 참조 '%@'이(가) 커밋을 가리키지 않습니다."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git-referansen '%@' peker ikke på en commit."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git-referentie '%@' verwijst niet naar een commit."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Odwołanie Git '%@' nie wskazuje na commit."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A referência Git '%@' não aponta para um commit."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ссылка Git '%@' не указывает на коммит."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git-referensen '%@' pekar inte på en commit."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "การอ้างอิง Git '%@' ไม่ได้ชี้ไปที่ commit"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "'%@' Git referansı bir commit’i göstermiyor."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Посилання Git '%@' не вказує на коміт."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tham chiếu Git '%@' không trỏ tới commit nào."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git 引用“%@”没有指向提交。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git 參照「%@」沒有指向提交。"
           }
         }
       }

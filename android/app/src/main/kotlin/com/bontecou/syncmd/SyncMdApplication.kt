@@ -5,7 +5,7 @@ import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.launch
 
 /**
- * Gitsync.md application class with Hilt support.
+ * GitSync.md application class with Hilt support.
  */
 @HiltAndroidApp
 class SyncMdApplication : Application() {
@@ -25,6 +25,9 @@ class SyncMdApplication : Application() {
         com.bontecou.syncmd.services.publication.FolderPublicationGate.install(publications::requireAvailable)
         com.bontecou.syncmd.services.git.SshTrust.install(sshTrust::verify)
         com.bontecou.syncmd.services.git.lfs.LfsEndpointTrust.install(lfsEndpoints::verify, lfsEndpoints::headers, lfsEndpoints::verifySshHttp)
+        com.bontecou.syncmd.review.ReviewPrompts.install(com.bontecou.syncmd.review.ReviewPrompts(
+            com.bontecou.syncmd.review.ReviewPromptPolicy(com.bontecou.syncmd.review.PrefsReviewPromptStore(this)),
+            BuildConfig.VERSION_NAME))
         com.bontecou.syncmd.push.PushRuntime.ready.complete(Unit)
         // Installs that already hold vaults when the paywall arrives stay unlocked.
         val savedCount = getSharedPreferences("sync_md_prefs", MODE_PRIVATE).all["repository_count"]

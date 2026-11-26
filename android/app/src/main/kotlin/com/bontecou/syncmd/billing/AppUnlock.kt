@@ -50,6 +50,8 @@ class AppUnlock(
     private val store: UnlockStore,
     val paywallEnabled: Boolean,
     private val scope: CoroutineScope,
+    /** Play reported a completed unlock purchase (not a restore or a launch refresh); starts the review-prompt quiet period. */
+    private val onPurchased: () -> Unit = {},
 ) {
     private val _reason = MutableStateFlow(launchUnlockReason(store.reason, paywallEnabled, hasExistingVaults = false))
     val reason: StateFlow<UnlockReason?> = _reason.asStateFlow()
@@ -115,6 +117,7 @@ class AppUnlock(
         when (update) {
             is PurchaseUpdate.Owned -> if (update.products.any { it in UnlockProducts.OWNED }) {
                 _purchase.value = UnlockPurchase.Idle
+                if (_reason.value != UnlockReason.PURCHASED) runCatching(onPurchased)
                 setReason(UnlockReason.PURCHASED)
             } else scope.launch { refresh(); if (_purchase.value == UnlockPurchase.Purchasing) _purchase.value = UnlockPurchase.Idle }
             PurchaseUpdate.Pending -> _purchase.value = UnlockPurchase.Pending

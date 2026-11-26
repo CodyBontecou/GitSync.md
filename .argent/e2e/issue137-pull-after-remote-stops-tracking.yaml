@@ -1,0 +1,90 @@
+# Issue #137: the receiving side of "Stop tracking". Another device stopped
+# tracking .obsidian/workspace-mobile.json (deleted it and added it to
+# .gitignore) while this vault, one commit behind, has a local edit to that
+# file. Before the fix the pull was blocked by local changes, and resolving it
+# ended in a modify/delete conflict. Expects Pull to fast-forward and leave no
+# changes; the local copy stays on disk as an ignored file (checked in
+# IncomingUntrackPullTests).
+# Prerequisites: a DEBUG build of GitSync.md on an iOS SIMULATOR (recorded on an
+# iPhone 18 Pro). Never run it on a real phone: the
+# `-UITestGitToolsFixture incoming-untrack` launch argument replaces the app's
+# vault list. Local-only fixture (file:// remote under
+# /tmp/syncmd-uitest-fixtures); no network, accounts or personal data.
+# Side effects: resets the fixture area and the app's
+# Documents/git-tools-fixture folder and repo list on the simulator.
+#
+# Coordinate exceptions: SwiftUI ids and labels are in the accessibility tree
+# but not in the simulator runner's native tree (same constraint as
+# issue111-detached-head-pull.yaml). Each point is the element's frame centre
+# from `describe` on the iPhone 18 Pro; the wait after each tap proves it.
+version: 1
+requires:
+  platform: ios
+steps:
+  - echo: "Launch with the incoming-untrack fixture: one commit behind a remote that
+      stopped tracking .obsidian/workspace-mobile.json, with a local edit to
+      that file. Expect Home with the fixture vault"
+  - launch:
+      native: bontecou.Sync-md
+      ios:
+        app: bontecou.Sync-md
+        args:
+          - -UITestGitToolsFixture
+          - incoming-untrack
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: home.vault.git-tools-fixture
+      timeoutMs: 15000
+  - await: { idle: true }
+  # Coordinate exception: the fixture vault row (home.vault.git-tools-fixture).
+  - tap:
+      x: 0.5
+      y: 0.44
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        identifier: vault.title
+      timeoutMs: 10000
+  - await: { idle: true }
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: workspace-mobile.json, modified
+      timeoutMs: 10000
+  - await: { idle: true }
+  - echo: Vault behind with the workspace file edited locally. Tap Pull; expect it
+      to go through (no local-changes block, no conflict) and leave no changes
+  # Coordinate exception: the hero's Pull button (frame 0.755,0.447,0.156,0.057
+  # in `describe`); the "Pulled latest changes" wait proves the tap.
+  - tap:
+      x: 0.833
+      y: 0.475
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Pulled latest changes (fast-forward)
+      timeoutMs: 20000
+  - await: { idle: true }
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: Stop tracking .obsidian/workspace*.json
+      timeoutMs: 10000
+  - tool: await-ui-element
+    args:
+      condition: hidden
+      selector:
+        text: workspace-mobile.json, modified
+      timeoutMs: 10000
+  - tool: await-ui-element
+    args:
+      condition: visible
+      selector:
+        text: No changes on this iPhone
+      timeoutMs: 15000

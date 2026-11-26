@@ -99,6 +99,23 @@ class AppUnlockTest {
         assertEquals(UnlockPurchase.Idle, unlock.purchase.value)
     }
 
+    @Test fun onlyANewPurchaseStartsTheReviewPromptQuietPeriod() = runTest {
+        val play = FakePlay()
+        var purchases = 0
+        val unlock = AppUnlock(play, MemoryStore(), true, TestScope(UnconfinedTestDispatcher(testScheduler)), onPurchased = { purchases++ })
+        unlock.start(hasExistingVaults = false)
+        play.deliver(PurchaseUpdate.Pending)
+        assertEquals(0, purchases)
+        play.deliver(PurchaseUpdate.Owned(setOf("full_access")))
+        assertEquals(1, purchases)
+        // Play repeats the update (e.g. an acknowledgement): already purchased, not a new purchase.
+        play.deliver(PurchaseUpdate.Owned(setOf("full_access")))
+        assertEquals(1, purchases)
+        play.owned = setOf("full_access")
+        assertTrue(unlock.restore())
+        assertEquals("A restore is not a purchase", 1, purchases)
+    }
+
     @Test fun cancelAndFailureReportWithoutUnlocking() = runTest {
         val play = FakePlay()
         val unlock = unlock(play).apply { start(hasExistingVaults = false) }

@@ -1,3 +1,5 @@
+@file:OptIn(androidx.compose.ui.ExperimentalComposeUiApi::class)
+
 package com.bontecou.syncmd.ui.adaptive
 
 import com.bontecou.syncmd.ui.util.CountedPhrase
@@ -30,6 +32,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
@@ -290,7 +294,9 @@ fun VaultListPane(
 // ─── Changes pane ───────────────────────────────────────────────────────────
 
 /** One changed file in the Changes pane. */
-data class ChangeRowUi(val path: String, val letter: String, val tone: M3Tone, val added: Int?, val removed: Int?, val conflict: Boolean)
+/** [canStopTracking]: Git tracks or has staged the file, so long-press offers Stop tracking… (issue #149). */
+data class ChangeRowUi(val path: String, val letter: String, val tone: M3Tone, val added: Int?, val removed: Int?, val conflict: Boolean,
+    val canStopTracking: Boolean = false)
 
 /**
  * The Changes pane (boards Tablet / Fold*): "main · owner/repo", the vault name, the big count
@@ -312,6 +318,8 @@ fun ChangesPaneContent(
     modifier: Modifier = Modifier,
     notices: @Composable ColumnScope.() -> Unit = {},
     body: (@Composable ColumnScope.() -> Unit)? = null,
+    /** Long-press › Stop tracking… on rows that allow it; null hides the action. */
+    onStopTracking: ((String) -> Unit)? = null,
     footer: @Composable ColumnScope.() -> Unit,
 ) {
     val c = M3.colors
@@ -331,7 +339,9 @@ fun ChangesPaneContent(
             if (body != null) body()
             else if (rows.isEmpty()) Text(stringResource(R.string.adaptive_no_changes), Modifier.padding(horizontal = 20.dp, vertical = 8.dp),
                 style = M3Type.bodyMedium, color = c.onVar)
-            else rows.forEach { row -> ChangeRow(row, row.path == selected) { onOpen(row) } }
+            else rows.forEach { row ->
+                ChangeRow(row, row.path == selected, onStopTracking = onStopTracking?.takeIf { row.canStopTracking }?.let { { it(row.path) } }) { onOpen(row) }
+            }
         }
         Column(Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             if (banner != null) Text(banner,
@@ -344,12 +354,18 @@ fun ChangesPaneContent(
 }
 
 @Composable
-private fun ChangeRow(row: ChangeRowUi, on: Boolean, onClick: () -> Unit) {
+@OptIn(androidx.compose.foundation.ExperimentalFoundationApi::class)
+private fun ChangeRow(row: ChangeRowUi, on: Boolean, onStopTracking: (() -> Unit)? = null, onClick: () -> Unit) {
     val c = M3.colors
+    var menu by androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf(false) }
+    val actions = androidx.compose.ui.res.stringResource(R.string.files_m3_actions_for, nameOf(row.path))
+    androidx.compose.foundation.layout.Box(Modifier.semantics { testTagsAsResourceId = true }) {
     Row(
         Modifier.padding(horizontal = 8.dp).fillMaxWidth().heightIn(min = 60.dp).clip(RoundedCornerShape(16.dp))
-            .then(if (on) Modifier.background(c.sc) else Modifier)
-            .clickable(role = Role.Button, onClick = onClick).semantics { selected = on }
+            .then(if (on || menu) Modifier.background(c.sc) else Modifier)
+            .combinedClickable(role = Role.Button, onClick = onClick, onLongClick = onStopTracking?.let { { menu = true } },
+                onLongClickLabel = onStopTracking?.let { actions })
+            .semantics { selected = on }
             .padding(horizontal = 12.dp, vertical = 6.dp).testTag("vault-change:${row.path}"),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -360,5 +376,9 @@ private fun ChangeRow(row: ChangeRowUi, on: Boolean, onClick: () -> Unit) {
             Text(folderOf(row.path), style = M3Type.metaSmall.copy(textDirection = TextDirection.Ltr), color = c.onVar, maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
         ChangeDelta(row.added, row.removed, row.conflict)
+    }
+    if (onStopTracking != null) androidx.compose.foundation.layout.Box(Modifier.align(Alignment.TopEnd).padding(end = 16.dp)) {
+        com.bontecou.syncmd.ui.components.StopTrackingRowMenu(menu, { menu = false }, onStopTracking)
+    }
     }
 }

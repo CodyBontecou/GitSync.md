@@ -44,7 +44,7 @@ class ProjectSetupTest {
 
     @Test
     fun `app version is accessible`() {
-        assertThat(Version.APP_NAME).isEqualTo("Gitsync.md")
+        assertThat(Version.APP_NAME).isEqualTo("GitSync.md")
         assertThat(Version.APP_VERSION).isEqualTo("1.0.2")
     }
 
