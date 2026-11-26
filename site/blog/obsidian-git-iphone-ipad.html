@@ -8,42 +8,42 @@
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="192x192" href="../favicon-192x192.png">
 <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
-<title>How to Sync Obsidian with Git on iPhone &amp; iPad — GitSync.md</title>
-<meta name="description" content="Sync an Obsidian vault with Git on iPhone or iPad. Clone an existing GitHub vault or publish local notes, connect authentication, and verify pull and push.">
+<title>Obsidian Git on iOS: Sync a Vault on iPhone &amp; iPad — GitSync.md</title>
+<meta name="description" content="Use Obsidian Git on iOS: compare the plugin, GitSync.md, Working Copy and terminal apps, then clone, edit, pull and push a vault on iPhone or iPad.">
 <meta name="robots" content="index, follow">
 <meta name="author" content="Cody Bontecou">
 <meta name="theme-color" content="#ffffff">
 <link rel="canonical" href="https://gitsync.md/blog/obsidian-git-iphone-ipad">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="GitSync.md">
-<meta property="og:title" content="How to Sync Obsidian with Git on iPhone &amp; iPad — GitSync.md">
-<meta property="og:description" content="Sync an Obsidian vault with Git on iPhone or iPad. Clone an existing GitHub vault or publish local notes, connect authentication, and verify pull and push.">
+<meta property="og:title" content="Obsidian Git on iOS: Sync a Vault on iPhone &amp; iPad — GitSync.md">
+<meta property="og:description" content="Use Obsidian Git on iOS: compare the plugin, GitSync.md, Working Copy and terminal apps, then clone, edit, pull and push a vault on iPhone or iPad.">
 <meta property="og:url" content="https://gitsync.md/blog/obsidian-git-iphone-ipad">
 <meta property="og:image" content="https://gitsync.md/social/blog/obsidian-git-iphone-ipad.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:type" content="image/png">
-<meta property="og:image:alt" content="GitSync.md guide card: How to Sync Obsidian with Git on iPhone &amp; iPad">
+<meta property="og:image:alt" content="GitSync.md guide card: Obsidian Git on iOS: Sync a Vault on iPhone &amp; iPad">
 <meta property="article:published_time" content="2026-06-13">
-<meta property="article:modified_time" content="2026-10-26">
+<meta property="article:modified_time" content="2026-11-26">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="How to Sync Obsidian with Git on iPhone &amp; iPad — GitSync.md">
-<meta name="twitter:description" content="Sync an Obsidian vault with Git on iPhone or iPad. Clone an existing GitHub vault or publish local notes, connect authentication, and verify pull and push.">
+<meta name="twitter:title" content="Obsidian Git on iOS: Sync a Vault on iPhone &amp; iPad — GitSync.md">
+<meta name="twitter:description" content="Use Obsidian Git on iOS: compare the plugin, GitSync.md, Working Copy and terminal apps, then clone, edit, pull and push a vault on iPhone or iPad.">
 <meta name="twitter:image" content="https://gitsync.md/social/blog/obsidian-git-iphone-ipad.png">
-<meta name="twitter:image:alt" content="GitSync.md guide card: How to Sync Obsidian with Git on iPhone &amp; iPad">
+<meta name="twitter:image:alt" content="GitSync.md guide card: Obsidian Git on iOS: Sync a Vault on iPhone &amp; iPad">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "How to sync Obsidian with Git on iPhone and iPad",
-  "description": "Sync an Obsidian vault with Git on iPhone or iPad. Clone an existing GitHub vault or publish local notes, connect authentication, and verify pull and push.",
+  "headline": "How to use Obsidian Git on iOS (iPhone and iPad)",
+  "description": "Use Obsidian Git on iOS: compare the plugin, GitSync.md, Working Copy and terminal apps, then clone, edit, pull and push a vault on iPhone or iPad.",
   "image": [
     "https://gitsync.md/blog/obsidian-git-iphone-ipad/repo-list.png",
     "https://gitsync.md/blog/obsidian-git-iphone-ipad/vault-workflow.png",
     "https://gitsync.md/blog/obsidian-git-iphone-ipad/sync-actions.png"
   ],
   "datePublished": "2026-06-13",
-  "dateModified": "2026-10-26",
+  "dateModified": "2026-11-26",
   "author": {
     "@type": "Person",
     "name": "Cody Bontecou",
@@ -81,8 +81,56 @@
     {
       "@type": "ListItem",
       "position": 3,
-      "name": "Obsidian Git on iPhone",
+      "name": "Obsidian Git on iOS",
       "item": "https://gitsync.md/blog/obsidian-git-iphone-ipad"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Does Obsidian Git work on iOS?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, with mobile limits. The plugin’s docs say the mobile Git implementation is very unstable, doesn’t support SSH, and limits repository size by memory. See the options table for alternatives."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I need Working Copy for Obsidian Git on iPhone?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. You can use the plugin alone, GitSync.md, Working Copy, a terminal app such as a-Shell or iSH, or an in-Obsidian sync plugin. The options table compares them."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I use SSH for Obsidian Git on iOS?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not in the plugin: its mobile documentation says SSH authentication is not supported. GitSync.md supports SSH private keys for remotes it clones itself; see self-hosted Git over SSH on iOS."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does it sync automatically in the background?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Don’t count on it. iOS decides when background work runs, so treat sync as something you trigger. How background Git sync works on iPhone explains what to expect."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is it free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The Obsidian Git plugin is free. GitSync.md costs $9.99 once on the US App Store, with no subscription. Compare costs with the Obsidian sync cost calculator."
+      }
     }
   ]
 }
@@ -108,36 +156,39 @@
 <div class="container guide-layout">
       <header class="article-hero">
         <div class="article-title">
-        <nav class="eyebrow article-breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li><a href="/blog/">Guides</a></li><li aria-current="page">Obsidian Git on iPhone</li></ol></nav>
-        <h1>How to sync Obsidian with Git on iPhone and iPad<span class="accent">.</span></h1>
-        <p class="subtitle">To sync Obsidian with Git on iPhone or iPad, put the vault in a local Git working copy that both apps can open. GitSync.md can clone an existing repository or publish a local vault to GitHub. Write in Obsidian, then pull, commit, and push with GitSync.md or the separately configured Obsidian Git plugin.</p>
+        <nav class="eyebrow article-breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li><a href="/blog/">Guides</a></li><li aria-current="page">Obsidian Git on iOS</li></ol></nav>
+        <h1>How to use Obsidian Git on iOS (iPhone and iPad)<span class="accent">.</span></h1>
+        <p class="subtitle">On iOS the Obsidian Git plugin can’t run a native Git program, so you either rely on its built-in mobile implementation or let a native iOS Git app own the working copy that Obsidian opens. This guide compares the options, then clones a vault with GitSync.md, opens it in Obsidian, and verifies pull and push.</p>
         <div class="meta-line"><span>By <a href="/about" rel="author">Cody Bontecou</a></span>
-          <time datetime="2026-10-26">Updated October 26, 2026</time>
+          <time datetime="2026-11-26">Updated November 26, 2026</time>
           <span>Guide</span>
-          <span>iPhone + iPad</span>
+          <span>iOS: iPhone + iPad</span>
         </div>
       </div>
       </header>
       <aside class="guide-aside" aria-label="Guide sidebar">
         <section class="side-note" aria-label="Article notes">
         <h2>Details checked</h2>
-        <p>This guide matches the current GitSync.md positioning:</p>
+        <p>Checked November 26, 2026 against the GitSync.md app source and listing, and the sources linked in the options table:</p>
         <ul>
-          <li>iPhone and iPad support</li>
+          <li>iPhone and iPad support, iOS and iPadOS 17 or later</li>
           <li>real local Git operations via libgit2</li>
           <li>iOS Files integration</li>
-          <li>GitHub plus manual self-hosted remotes</li>
+          <li>GitHub sign-in plus manual remotes over HTTPS or SSH</li>
           <li><code>syncmd://</code> x-callback-url automation</li>
+          <li>$9.99 once on the US App Store (local prices vary)</li>
         </ul>
       </section>
         <div class="guide-aside-sticky">
         <nav class="toc-card" aria-label="Article outline">
         <div class="toc-title">What this covers</div>
         <ol>
+          <li><a href="#ios-options">Your options for Git on iOS</a></li>
           <li><a href="#clone-into-files">Clone an Obsidian vault into iOS Files</a></li>
           <li><a href="#github-self-hosted">Use GitHub or a self-hosted Git remote</a></li>
           <li><a href="#open-in-obsidian">Open the vault on iPhone or iPad</a></li>
           <li><a href="#configure-obsidian-git">Trigger pull, commit, and push from Obsidian</a></li>
+          <li><a href="#faq">FAQ</a></li>
         </ol>
       </nav>
         <div class="aside-cta aside-cta-wide">
@@ -161,9 +212,38 @@
           </ol>
         </div>
 
+
+        <h2 id="ios-options">Your options for Git on iOS</h2>
+        <p>Five routes come up when people search for Obsidian Git on iOS. They differ in what actually runs Git, so the table starts there. Details on each follow it, with sources.</p>
+        <div class="comparison-scroll" role="region" aria-label="Options for Git with Obsidian on iOS" tabindex="0">
+        <table class="comparison-table"><caption>Obsidian and Git on iOS: five methods, checked November 26, 2026</caption>
+          <thead><tr><th scope="col">Method</th><th scope="col">What runs Git</th><th scope="col">Auth</th><th scope="col">Local repo / offline</th><th scope="col">Main limits</th><th scope="col">Cost</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Obsidian Git plugin alone</th><td>isomorphic-git, a JavaScript implementation inside Obsidian</td><td>HTTPS with username and token; no SSH</td><td>Repository in the vault folder</td><td>No SSH, rebase or submodules; repo size limited by memory; docs warn of crashes</td><td>Free plugin</td></tr>
+            <tr><th scope="row">GitSync.md + Obsidian</th><td>Native libgit2 client in GitSync.md</td><td>GitHub sign-in, HTTPS token or password, or SSH key</td><td>Real <code>.git</code> folder in Files; works on the local copy</td><td>iOS 17 or later; it is a Git client, not a terminal; background work is best effort</td><td>$9.99 once (US)</td></tr>
+            <tr><th scope="row">Working Copy + Obsidian</th><td>Working Copy, a native iOS Git app</td><td>HTTPS or SSH, per its listing</td><td>Local repository; linking an Obsidian folder needs Pro</td><td>Pushing needs Pro; see the <a href="/compare/gitsync-vs-working-copy">full comparison</a></td><td>Free download; Pro unlock, $29.99 on the US listing when we checked</td></tr>
+            <tr><th scope="row">Terminal app (a-Shell or iSH)</th><td>Git run by you in the shell</td><td>Yours to set up</td><td>Depends on your setup; a-Shell lists <code>lg2</code> for repositories</td><td>Manual; neither official page documents a full Git workflow</td><td>Both free</td></tr>
+            <tr><th scope="row">In-Obsidian GitHub-API sync plugin (obsidian-easy-git-sync)</th><td>The plugin, inside Obsidian; its README says no git or other app is required</td><td>Access token pasted in settings; HTTPS only on phones</td><td>Syncs with the repository on your host; not described as a local Git working copy</td><td>Files over 100 MB are skipped</td><td>Not stated in its README</td></tr>
+          </tbody>
+        </table></div>
+        <p class="small-meta">Sources: Obsidian Git <a href="https://publish.obsidian.md/git-doc/Getting+Started" target="_blank" rel="noopener">mobile documentation</a> and <a href="https://github.com/Vinzent03/obsidian-git" target="_blank" rel="noopener">README</a>; GitSync.md <a href="/">product page</a> and <a href="https://apps.apple.com/us/app/id6758960270" target="_blank" rel="noopener">US App Store listing</a>; Working Copy <a href="https://apps.apple.com/us/app/git-client-working-copy/id896694807" target="_blank" rel="noopener">App Store listing</a> and <a href="https://workingcopy.app/manual/" target="_blank" rel="noopener">manual</a>; <a href="https://holzschu.github.io/a-Shell_iOS/" target="_blank" rel="noopener">a-Shell</a> and <a href="https://ish.app/" target="_blank" rel="noopener">iSH</a>; <a href="https://github.com/69Jesse/obsidian-easy-git-sync" target="_blank" rel="noopener">obsidian-easy-git-sync README</a>.</p>
+        <p><a href="/v/web-homepage-102" target="_blank" rel="noopener">Want real Git with SSH and a normal .git folder? Get GitSync.md for iPhone and iPad →</a></p>
+
+        <h3>Obsidian Git plugin alone</h3>
+        <p>The plugin’s documentation says the Git implementation on mobile is “very unstable”, that it uses isomorphic-git because native Git can’t be used on Android or iOS, that SSH authentication, the rebase merge strategy and submodules aren’t supported, and that repository size is limited by memory. It also says Obsidian may crash on clone or pull, or run indefinitely, depending on your device and free RAM. The full list is in <a href="/blog/obsidian-git-plugin#mobile">Obsidian Git on mobile</a>. It can still be enough for a small vault over HTTPS.</p>
+        <h3>GitSync.md + Obsidian</h3>
+        <p>This guide. GitSync.md is a native client built on libgit2 that keeps a real <code>.git</code> folder in a Files location Obsidian can open. It signs in with GitHub or takes an HTTPS token or SSH key, offers <code>syncmd://</code> automation, requires iOS 17 or iPadOS 17, and costs $9.99 once on the US App Store. You can use it alone, or <a href="/blog/gitsync-connect-obsidian-git">hand its GitHub sign-in to the plugin with Connect</a>.</p>
+        <h3>Working Copy + Obsidian</h3>
+        <p>Working Copy is another native iOS Git client. It can link an external folder such as an Obsidian vault and does its own Git operations. Its pricing, as the official <a href="https://apps.apple.com/us/app/git-client-working-copy/id896694807" target="_blank" rel="noopener">App Store listing</a> and <a href="https://workingcopy.app/" target="_blank" rel="noopener">site</a> show it, is a free download with a Pro unlock. For folder setup, authentication, automation and price side by side, read <a href="/compare/gitsync-vs-working-copy">GitSync.md vs Working Copy</a>.</p>
+        <h3>Terminal apps: a-Shell and iSH</h3>
+        <p>Running Git yourself is possible and manual. a-Shell’s <a href="https://apps.apple.com/us/app/a-shell/id1473805438" target="_blank" rel="noopener">App Store listing</a> says you can work with repositories using <code>lg2</code>, and its <a href="https://holzschu.github.io/a-Shell_iOS/" target="_blank" rel="noopener">project page</a> says it is compatible with Apple Shortcuts and uses iOS file sharing. iSH’s <a href="https://ish.app/" target="_blank" rel="noopener">project page</a> describes a Linux shell on iOS. Installing Git, handling credentials and pointing at the vault folder are your job; see <a href="/compare/best-git-client-ios">the best Git client for iOS</a> for how these apps compare.</p>
+        <h3>In-Obsidian GitHub-API sync plugins</h3>
+        <p><a href="https://github.com/69Jesse/obsidian-easy-git-sync" target="_blank" rel="noopener">obsidian-easy-git-sync</a> describes itself as running entirely inside Obsidian, phones included, with no git or other app required. Per its README, you paste an access token, choose a repository on GitHub, GitLab, Bitbucket, Codeberg or your own HTTPS server, and each sync creates a commit; phones can’t use SSH. It syncs through your Git host rather than being described as a local Git working copy. See <a href="/compare/obsidian-sync-alternatives">Obsidian sync alternatives</a> for other approaches.</p>
+        <p><strong>Which to pick:</strong> if you want the plugin’s commands inside Obsidian, configure Obsidian Git with <a href="/blog/gitsync-connect-obsidian-git">Connect</a> or a <a href="/blog/obsidian-git-ios-setup">token</a>. If you want reliable real Git, SSH or a self-hosted remote, let GitSync.md own the repository.</p>
+
         <h2 id="why-ios-needs-help">Why Obsidian Git needs help on iOS</h2>
-        <p>On desktop, Obsidian Git can use installed Git tools. On iPhone and iPad, the plugin uses a separate mobile implementation with its own limits. Apple’s app sandbox also makes the location of the local vault important.</p>
-        <p><strong>GitSync.md provides a native Git client for that shared folder.</strong> It uses libgit2 to clone, pull, commit, and push real Git repositories locally on iOS. The result is a normal folder with a real <code>.git</code> directory, not a proprietary notes database or an API-only mirror. Obsidian can edit the Markdown files, and GitSync.md can sync the same working copy.</p>
+        <p>On desktop, Obsidian Git can use installed Git tools. On iPhone and iPad it can’t, because, as the plugin’s <a href="https://publish.obsidian.md/git-doc/Getting+Started" target="_blank" rel="noopener">documentation</a> says, native Git can’t be used on iOS. It runs a JavaScript implementation with the limits above. <a href="/blog/obsidian-git-plugin">Obsidian Git: commands, settings and common errors</a> has the full list.</p>
+        <p>The second issue is where the vault lives. iOS apps are sandboxed, and another app can open your files only through locations the system exposes in Files, as Apple’s <a href="https://developer.apple.com/documentation/fileprovider" target="_blank" rel="noopener">file provider documentation</a> describes. So the repository has to sit in a folder both Obsidian and your Git app can reach, usually <strong>On My iPhone → Obsidian</strong>. GitSync.md uses libgit2 to clone, pull, commit and push a real repository in that folder: a normal <code>.git</code> directory, not a proprietary database or an API-only mirror.</p>
 
         <div class="flow-diagram" aria-label="Obsidian Git on iOS workflow">
           <div class="flow-node">GitHub or self-hosted Git</div>
@@ -299,6 +379,18 @@ syncmd://x-callback-url/status?repo=MyVault</code></pre>
 
         <h3>The sync URL does not find the repo</h3>
         <p>The <code>repo</code> query parameter must match the vault folder name in GitSync.md. If your folder is named <code>second-brain</code>, use <code>repo=second-brain</code>, not the remote repository title from your Git host.</p>
+
+        <h2 id="faq">FAQ</h2>
+        <h3>Does Obsidian Git work on iOS?</h3>
+        <p>Yes, with mobile limits. The plugin’s docs say the mobile Git implementation is very unstable, doesn’t support SSH, and limits repository size by memory. See the <a href="#ios-options">options table</a> for alternatives.</p>
+        <h3>Do I need Working Copy for Obsidian Git on iPhone?</h3>
+        <p>No. You can use the plugin alone, GitSync.md, Working Copy, a terminal app such as a-Shell or iSH, or an in-Obsidian sync plugin. The <a href="#ios-options">options table</a> compares them.</p>
+        <h3>Can I use SSH for Obsidian Git on iOS?</h3>
+        <p>Not in the plugin: its mobile documentation says SSH authentication is not supported. GitSync.md supports SSH private keys for remotes it clones itself; see <a href="/blog/self-hosted-git-ssh-ios">self-hosted Git over SSH on iOS</a>.</p>
+        <h3>Does it sync automatically in the background?</h3>
+        <p>Don’t count on it. iOS decides when background work runs, so treat sync as something you trigger. <a href="/blog/obsidian-git-background-sync-iphone">How background Git sync works on iPhone</a> explains what to expect.</p>
+        <h3>Is it free?</h3>
+        <p>The Obsidian Git plugin is free. GitSync.md costs $9.99 once on the US App Store, with no subscription. Compare costs with the <a href="/tools/obsidian-sync-cost-calculator">Obsidian sync cost calculator</a>.</p>
 
         <h2 id="recap">Recap</h2>
         <p>Obsidian Git on iPhone and iPad works best when you separate responsibilities: Obsidian edits Markdown, GitSync.md owns the real local Git working copy, and iOS Files is the bridge between them. Clone once, open the folder as a vault, then use <code>syncmd://</code> automation or GitSync.md's own controls to pull, commit, and push.</p>
