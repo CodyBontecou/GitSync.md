@@ -1,11 +1,13 @@
 ---
-status: active
+status: merged
 covers: [pr#150, issue#149]
 tested: b65fe5bf9cb9d7272797af888eb756db06bb13b8
-updated: 2026-11-25
+updated: 2026-11-26
 ---
 
 # Android: stop tracking a file, folder or Obsidian workspace files (issue #149, PR #150)
+
+Merged to main in #150 as `02fef61398cb058572f05ce899c065411037ab8c` on 2026-11-26.
 
 QA for the Android port of iOS "Stop Tracking…" (#132, PR #133), on the phone layout and on the tablet and foldable layouts. Stopping tracking removes the path from the Git index and keeps the file on disk. It adds a root-anchored entry to the root `.gitignore` and makes one commit holding only those two changes. Other staged changes stay staged.
 
