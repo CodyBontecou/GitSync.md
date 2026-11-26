@@ -1,4 +1,4 @@
-Commit cf3a91634b6ce91fdf0436efdebcd1a1b74c0b60, JDK 17, 2026-11-25.
+Commits cf3a9163 and b65fe5bf (same totals on both), JDK 17, 2026-11-25.
 JAVA_HOME=$(/usr/libexec/java_home -v 17) ./gradlew test  (BUILD SUCCESSFUL)
 core/build/test-results/test: 763 tests, 0 failures, 0 errors
 app/build/test-results/testDebugUnitTest: 219 tests, 0 failures, 0 errors

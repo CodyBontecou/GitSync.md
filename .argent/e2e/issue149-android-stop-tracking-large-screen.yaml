@@ -1,0 +1,92 @@
+# Issue #149 (PR #150), Android tablet and foldable layouts (list-detail vault:
+# rail, Changes pane, diff pane). Long-press notes/draft.md in the Changes pane ›
+# Stop tracking… › "This file"; then the diff pane beside it (.obsidian/
+# workspace-mobile.json) › More › Stop tracking… › "All Obsidian workspace files".
+# Expect both files to leave the Changes pane, "2 to push" and the empty detail.
+# Prerequisites: a window at least 600dp wide, so the vault opens in the adaptive
+# layout: a tablet, a foldable's inner display, or a phone with its density lowered
+# (QA ran the owner's Pixel 7 at `adb shell wm density 260` (664dp, Medium) and
+# `wm density 160` (1080dp, Expanded), then `wm density reset`). The debug build
+# (com.bontecou.syncmd.debug) with its sample vault registered, and the scenario
+# restored by docs/qa/2026-11-25-pr150-android-stop-tracking/pixel-scenario/
+# (make-scenario.sh once, then reset-scenario.sh <serial> before each run).
+# Run with `--platform android --device <serial>`.
+# Side effects: replaces the debug app's sample workspace; makes two local commits
+# there (nothing is pushed).
+# Outcome on disk: pixel-scenario/check-result.sh <serial> both.
+version: 1
+requires:
+  platform: android
+steps:
+  - echo: Relaunch the debug app on a large-screen window. Expect Home with the
+      Sample repository vault (2 local edits)
+  - launch: com.bontecou.syncmd.debug
+  - await:
+      visible: { text: 2 edited }
+      timeout: 15000
+  - await: { idle: true }
+  - tap:
+      text: Sample repository
+  - await:
+      visible: { id: "vault-change:notes/draft.md" }
+      timeout: 10000
+  - await: { idle: true }
+  - await:
+      visible: { id: diff-more }
+      timeout: 10000
+  - echo: Changes pane beside the workspace-mobile.json diff. Long-press
+      notes/draft.md; expect a menu with Stop tracking…
+  - long-press:
+      id: "vault-change:notes/draft.md"
+  - await:
+      visible: { id: vault-change-stop-tracking }
+      timeout: 5000
+  - tap:
+      id: vault-change-stop-tracking
+  - await:
+      visible: { id: stop-tracking-option-folder }
+      timeout: 5000
+  - await: { idle: true }
+  - await:
+      visible: { text: Save it there first if they need it }
+      timeout: 5000
+  - echo: Sheet open for notes/draft.md with This file preselected and the warning.
+      Tap Stop tracking; expect draft.md to leave the Changes pane
+  - tap:
+      id: stop-tracking-confirm
+  - await:
+      hidden: { id: "vault-change:notes/draft.md" }
+      timeout: 10000
+  - await:
+      visible: { text: 1 to push }
+      timeout: 10000
+  - await:
+      visible: { id: diff-more }
+      timeout: 5000
+  - await: { idle: true }
+  - echo: Diff pane shows workspace-mobile.json. Open its More menu; expect Stop
+      tracking…
+  - tap:
+      id: diff-more
+  - await:
+      visible: { id: diff-stop-tracking }
+      timeout: 5000
+  - tap:
+      id: diff-stop-tracking
+  - await:
+      visible: { id: stop-tracking-option-workspace }
+      timeout: 5000
+  - await: { idle: true }
+  - await:
+      visible: { text: Obsidian creates a new one the next time it opens the vault }
+      timeout: 5000
+  - echo: Sheet open with All Obsidian workspace files preselected and the info
+      note. Tap Stop tracking; expect no changes left
+  - tap:
+      id: stop-tracking-confirm
+  - await:
+      visible: { text: 2 to push }
+      timeout: 10000
+  - await:
+      visible: { text: Pick a file to see its changes. }
+      timeout: 5000

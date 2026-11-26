@@ -1,0 +1,23 @@
+E2E test "issue149-android-stop-tracking-git-suggestion"
+  › Relaunch the debug app. Expect Home with the Sample repository vault (2 local edits)
+  ✓  1 launch (2.3s)
+  ✓  2 await visible "2 edited" (0.1s)
+  ✓  3 idle (1.3s)
+  ✓  4 tap "Sample repository" (0.5s)
+  ✓  5 await visible id=vault-change:.obsidian/workspace-mobile.json (1.2s)
+  ✓  6 idle (0.8s)
+  › Vault open. Open the Git tab; expect the suggestion card for 2 tracked Obsidian workspace files
+  ✓  7 tap id=vault-tab-git (0.7s)
+  ✓  8 await id=git-workspace-suggestion-title equals "2 Obsidian workspace files are tracked" (0.7s)
+  ✓  9 idle (1.5s)
+  ✓ 10 await visible id=git-stop-tracking-workspace (0.4s)
+  › Git tab shows the workspace suggestion. Tap Stop tracking workspace files…; expect the sheet with only the workspace option
+  ✓ 11 tap id=git-stop-tracking-workspace (1.1s)
+  ✓ 12 await visible id=stop-tracking-option-workspace (1.1s)
+  ✓ 13 idle (1.8s)
+  › Sheet open with the workspace pattern. Tap Stop tracking; expect the suggestion card to go away
+  ✓ 14 tap id=stop-tracking-confirm (0.9s)
+  ✓ 15 await visible "1 ahead" (1.1s)
+  ✓ 16 await hidden id=git-workspace-suggestion-title (0.4s)
+
+PASS (started on 2C061FDH200CJN) — 16 passed, 0 failed, 0 errored, 0 skipped (16.4s)

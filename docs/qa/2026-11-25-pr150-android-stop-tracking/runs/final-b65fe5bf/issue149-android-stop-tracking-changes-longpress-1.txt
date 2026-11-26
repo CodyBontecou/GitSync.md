@@ -1,0 +1,23 @@
+E2E test "issue149-android-stop-tracking-changes-longpress"
+  › Relaunch the debug app. Expect Home with the Sample repository vault (2 local edits)
+  ✓  1 launch (2.4s)
+  ✓  2 await visible "2 edited" (0.1s)
+  ✓  3 idle (1.3s)
+  ✓  4 tap "Sample repository" (0.6s)
+  ✓  5 await visible id=vault-change:notes/draft.md (1.2s)
+  ✓  6 idle (0.9s)
+  › Vault open with notes/draft.md edited. Long-press its row; expect a menu with Stop tracking…
+  ✓  7 long-press id=vault-change:notes/draft.md (1.4s)
+  ✓  8 await visible id=vault-change-stop-tracking (0.3s)
+  ✓  9 tap id=vault-change-stop-tracking (1.2s)
+  ✓ 10 await visible id=stop-tracking-option-file (1.1s)
+  ✓ 11 idle (1.8s)
+  ✓ 12 await visible id=stop-tracking-option-folder (0.3s)
+  ✓ 13 await visible "Save it there first if they need it" (0.3s)
+  › Sheet open with This file preselected and the other-devices warning. Tap Stop tracking; expect the sheet to close and draft.md to leave the Changes list
+  ✓ 14 tap id=stop-tracking-confirm (1.0s)
+  ✓ 15 await visible "Stop tracking notes/draft.md" (1.1s)
+  ✓ 16 await hidden id=vault-change:notes/draft.md (0.3s)
+  ✓ 17 await visible id=vault-change:.obsidian/workspace-mobile.json (0.3s)
+
+PASS (started on 2C061FDH200CJN) — 17 passed, 0 failed, 0 errored, 0 skipped (16.1s)
