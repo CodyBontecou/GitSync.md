@@ -157,3 +157,16 @@ fun StopTrackingHost(
             onDismiss = { viewModel.dismiss(); onClose(false) })
     }
 }
+
+/**
+ * The long-press menu on a changed file's row, with the one action it offers (issue #149). Its
+ * test tags are exposed as resource ids; [tag] names the item.
+ */
+@Composable
+fun StopTrackingRowMenu(expanded: Boolean, onDismiss: () -> Unit, onStopTracking: () -> Unit, tag: String = "vault-change-stop-tracking") {
+    com.bontecou.syncmd.ui.theme.M3DropdownMenu(expanded = expanded, onDismissRequest = onDismiss,
+        modifier = Modifier.semantics { testTagsAsResourceId = true }) {
+        com.bontecou.syncmd.ui.theme.M3MenuItem(stringResource(R.string.stop_tracking_menu), { onDismiss(); onStopTracking() },
+            Modifier.testTag(tag), icon = R.drawable.ic_m3_visibility_off)
+    }
+}
