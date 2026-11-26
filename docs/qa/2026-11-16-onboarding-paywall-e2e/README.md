@@ -1,9 +1,11 @@
 ---
-status: active
+status: merged
 covers: [pr#83]
 tested: f446a2c44b4f178dc4a00fec59069bd33baa4feb
-updated: 2026-11-16
+updated: 2026-11-26
 ---
+
+Merged in PR #83 as da6315cc2d803a96cc376b4194658de681db0436 on 2026-11-26.
 
 # Fresh onboarding → GitHub → paywall purchase → Publish a Folder (iOS 3.0.1, physical iPhone)
 
