@@ -1,0 +1,9 @@
+Commit cf3a91634b6ce91fdf0436efdebcd1a1b74c0b60, JDK 17, 2026-11-25.
+JAVA_HOME=$(/usr/libexec/java_home -v 17) ./gradlew test  (BUILD SUCCESSFUL)
+core/build/test-results/test: 763 tests, 0 failures, 0 errors
+app/build/test-results/testDebugUnitTest: 219 tests, 0 failures, 0 errors
+app/build/test-results/testReleaseUnitTest: 219 tests, 0 failures, 0 errors
+New suites:
+TEST-com.bontecou.syncmd.services.git.StopTrackingPathTest.xml: 23 tests, 0 failures
+TEST-com.bontecou.syncmd.ui.viewmodels.StopTrackingViewModelTest.xml: 7 tests, 0 failures
+TEST-com.bontecou.syncmd.ui.viewmodels.StopTrackingViewModelTest.xml: 7 tests, 0 failures

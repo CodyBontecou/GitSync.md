@@ -1,0 +1,76 @@
+# Issue #149 (PR #150), Android: stop tracking from the diff screen's overflow menu.
+# Open the .obsidian/workspace-mobile.json diff › More › Stop tracking…. For a
+# workspace file the sheet preselects "All Obsidian workspace files" and shows
+# the info note (Obsidian recreates them). Stop tracking moves the diff on to the
+# next changed file; back on the vault, the latest commit is "Stop tracking
+# .obsidian/workspace*.json" and only notes/draft.md is left in Changes.
+# Prerequisites: the debug build (com.bontecou.syncmd.debug) installed with its
+# sample vault registered, and the scenario restored into the app's
+# files/sample-workspace by docs/qa/2026-11-25-pr150-android-stop-tracking/
+# pixel-scenario/ (make-scenario.sh once, then reset-scenario.sh <serial> before
+# each run). Run with `--platform android --device <serial>`.
+# Side effects: replaces the debug app's sample workspace; makes one local commit
+# there (nothing is pushed).
+# Outcome on disk: pixel-scenario/check-result.sh <serial> workspace.
+# Known Argent issue on the Pixel 7: while recording, the element tree stayed on
+# the vault screen after opening the diff until Argent's device services were
+# restarted. The idle gate after that navigation is there to refresh the tree.
+version: 1
+requires:
+  platform: android
+steps:
+  - echo: Relaunch the debug app. Expect Home with the Sample repository vault (2
+      local edits)
+  - launch: com.bontecou.syncmd.debug
+  - await:
+      visible: { text: 2 edited }
+      timeout: 15000
+  - await: { idle: true }
+  - tap:
+      text: Sample repository
+  - await:
+      visible: { id: "vault-change:.obsidian/workspace-mobile.json" }
+      timeout: 10000
+  - await: { idle: true }
+  - echo: Vault open. Open the workspace-mobile.json diff; expect the diff screen
+      with a More menu
+  - tap:
+      id: "vault-change:.obsidian/workspace-mobile.json"
+  - await:
+      visible: { id: diff-more }
+      timeout: 10000
+  - await: { idle: true }
+  - tap:
+      id: diff-more
+  - await:
+      visible: { id: diff-stop-tracking }
+      timeout: 5000
+  - tap:
+      id: diff-stop-tracking
+  - await:
+      visible: { id: stop-tracking-option-workspace }
+      timeout: 5000
+  - await: { idle: true }
+  - await:
+      visible: { text: Obsidian creates a new one the next time it opens the vault }
+      timeout: 5000
+  - echo: Sheet open with All Obsidian workspace files preselected and the info
+      note. Tap Stop tracking; expect the diff to move on to notes/draft.md
+  - tap:
+      id: stop-tracking-confirm
+  - await:
+      text: { in: { text: draft.md }, equals: draft.md }
+      timeout: 10000
+  - await: { idle: true }
+  - tap:
+      text: Back
+  - await:
+      visible: { text: Stop tracking .obsidian/workspace*.json }
+      timeout: 10000
+  - await: { idle: true }
+  - await:
+      hidden: { id: "vault-change:.obsidian/workspace-mobile.json" }
+      timeout: 5000
+  - await:
+      visible: { id: "vault-change:notes/draft.md" }
+      timeout: 5000
