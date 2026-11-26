@@ -20,7 +20,7 @@ For automation on a user's device, consult the Shortcuts guide and agent instruc
 ## iPhone and iPad workflows
 
 - [Guide index](https://gitsync.md/blog/): All setup and troubleshooting articles.
-- [Obsidian setup](https://gitsync.md/blog/obsidian-git-iphone-ipad): Choose the appropriate Git vault workflow.
+- [Obsidian Git on iOS](https://gitsync.md/blog/obsidian-git-iphone-ipad): Compare Git options for Obsidian on iPhone and iPad, then clone, edit, pull and push a vault.
 - [Obsidian Connect](https://gitsync.md/blog/gitsync-connect-obsidian-git): Companion plugin and credential handoff.
 - [Publish a local folder](https://gitsync.md/blog/create-git-repository-iphone): Review local files and create a private GitHub repository.
 - [Clone a GitHub repository](https://gitsync.md/blog/clone-github-repository-iphone): Clone and verify the working copy.
