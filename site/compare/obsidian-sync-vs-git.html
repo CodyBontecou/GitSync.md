@@ -8,37 +8,37 @@
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="192x192" href="../favicon-192x192.png">
 <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
-<title>Obsidian Sync vs Git: Privacy, Cost &amp; iPhone Setup</title>
-<meta name="description" content="Compare Obsidian Sync with a Git workflow for your vault: encryption, version history, conflicts, cost, and setup on iPhone, iPad, and Windows.">
+<title>Obsidian Sync vs Git (GitHub): Limits, Cost, Mobile</title>
+<meta name="description" content="Obsidian Sync vs Git: 1 GB or 10–100 GB storage, 1 or 12 months of history, conflicts, cost, and how each works on iPhone and Android.">
 <meta name="robots" content="index, follow">
 <meta name="author" content="Cody Bontecou">
 <meta name="theme-color" content="#ffffff">
 <link rel="canonical" href="https://gitsync.md/compare/obsidian-sync-vs-git">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="GitSync.md">
-<meta property="og:title" content="Obsidian Sync vs Git: Privacy, Cost &amp; iPhone Setup">
-<meta property="og:description" content="Compare Obsidian Sync with a Git workflow for your vault: encryption, version history, conflicts, cost, and setup on iPhone, iPad, and Windows.">
+<meta property="og:title" content="Obsidian Sync vs Git (GitHub): Limits, Cost, Mobile">
+<meta property="og:description" content="Obsidian Sync vs Git: 1 GB or 10–100 GB storage, 1 or 12 months of history, conflicts, cost, and how each works on iPhone and Android.">
 <meta property="og:url" content="https://gitsync.md/compare/obsidian-sync-vs-git">
 <meta property="og:image" content="https://gitsync.md/social/compare/obsidian-sync-vs-git.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:type" content="image/png">
-<meta property="og:image:alt" content="GitSync.md comparison card: Obsidian Sync vs Git: Privacy, Cost &amp; iPhone Setup">
+<meta property="og:image:alt" content="GitSync.md comparison card: Obsidian Sync vs Git (GitHub): Limits, Cost, Mobile">
 <meta property="article:published_time" content="2026-10-26">
-<meta property="article:modified_time" content="2026-10-26">
+<meta property="article:modified_time" content="2026-11-27">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Obsidian Sync vs Git: Privacy, Cost &amp; iPhone Setup">
-<meta name="twitter:description" content="Compare Obsidian Sync with a Git workflow for your vault: encryption, version history, conflicts, cost, and setup on iPhone, iPad, and Windows.">
+<meta name="twitter:title" content="Obsidian Sync vs Git (GitHub): Limits, Cost, Mobile">
+<meta name="twitter:description" content="Obsidian Sync vs Git: 1 GB or 10–100 GB storage, 1 or 12 months of history, conflicts, cost, and how each works on iPhone and Android.">
 <meta name="twitter:image" content="https://gitsync.md/social/compare/obsidian-sync-vs-git.png">
-<meta name="twitter:image:alt" content="GitSync.md comparison card: Obsidian Sync vs Git: Privacy, Cost &amp; iPhone Setup">
+<meta name="twitter:image:alt" content="GitSync.md comparison card: Obsidian Sync vs Git (GitHub): Limits, Cost, Mobile">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "Obsidian Sync vs Git",
-  "description": "Compare Obsidian Sync with a Git workflow for your vault: encryption, version history, conflicts, cost, and setup on iPhone, iPad, and Windows.",
+  "headline": "Obsidian Sync vs Git (GitHub): Limits, Cost, Mobile",
+  "description": "Obsidian Sync vs Git: 1 GB or 10–100 GB storage, 1 or 12 months of history, conflicts, cost, and how each works on iPhone and Android.",
   "datePublished": "2026-10-26",
-  "dateModified": "2026-10-26",
+  "dateModified": "2026-11-27",
   "author": {
     "@type": "Person",
     "name": "Cody Bontecou",
@@ -84,6 +84,46 @@
   ]
 }
 </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is Git a free replacement for Obsidian Sync?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Git hosting can be free, so you can trade money for setup. You manage authentication, decide when to commit, pull and push, and resolve conflicts yourself. A Git repository is also not end-to-end encrypted by default, unlike Obsidian Sync's default encryption option."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I use Obsidian Sync and Git on the same vault?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not as two sync systems on one folder. Obsidian's troubleshooting page lists double-syncing, where Sync runs alongside another syncing service, as a cause of files disappearing. Using Git only for occasional backup commits of a vault that Sync owns is still risky, so if you do it, never pull into the Sync-managed folder."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does Obsidian Sync work with GitHub?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Obsidian Sync syncs your vault to Obsidian's own servers, not to a Git repository. To store a vault on GitHub you use Git, through the Obsidian Git plugin or a Git app."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which is better on iPhone, Obsidian Sync or Git?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Obsidian Sync takes the least setup because it is built into the Obsidian app. Git on iPhone needs an iOS Git client and your own credentials; see the Obsidian Git on iPhone and iPad guide for the setup."
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body id="top">
 <a class="skip-link" href="#main">Skip to content</a>
@@ -106,13 +146,13 @@
       <header class="article-hero">
         <div class="article-title"><nav class="eyebrow article-breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li><a href="/blog/">Guides</a></li><li aria-current="page">Obsidian Sync vs Git</li></ol></nav>
       <h1>Obsidian Sync vs Git<span class="accent">.</span></h1>
-      <p class="subtitle">Obsidian Sync is the integrated service for keeping vaults in sync. Git gives you explicit commits and control over the remote. Choose based on privacy, maintenance, and how you want to recover changes.</p>
-      <div class="meta-line"><time datetime="2026-10-26">October 26, 2026</time><span>By <a href="/about" rel="author">Cody Bontecou</a></span><span>iPhone + iPad</span></div>
+      <p class="subtitle">Pick Obsidian Sync for the least setup and built-in encryption; pick Git if you want commits, your own remote, and unlimited history, and can handle conflicts yourself.</p>
+      <div class="meta-line"><time datetime="2026-10-26">October 26, 2026</time><span>Updated <time datetime="2026-11-27">November 27, 2026</time></span><span>By <a href="/about" rel="author">Cody Bontecou</a></span><span>iPhone + iPad</span></div>
     </div>
       </header>
       <aside class="guide-aside" aria-label="Guide sidebar">
         <div class="guide-aside-sticky">
-        <nav class="toc-card" aria-label="Article outline"><div class="toc-title">In this guide</div><ol><li><a href="#comparison">Compare the workflows</a></li><li><a href="#privacy">Privacy and encryption</a></li><li><a href="#history">History and conflicts</a></li><li><a href="#cost">Cost</a></li><li><a href="#mobile">Mobile setup</a></li><li><a href="#switch">Switching methods</a></li></ol></nav>
+        <nav class="toc-card" aria-label="Article outline"><div class="toc-title">In this guide</div><ol><li><a href="#comparison">Compare the workflows</a></li><li><a href="#obsidian-vs-github">Obsidian vs GitHub</a></li><li><a href="#privacy">Privacy and encryption</a></li><li><a href="#history">History and conflicts</a></li><li><a href="#cost">Cost</a></li><li><a href="#mobile">Mobile setup</a></li><li><a href="#switch">Switching methods</a></li><li><a href="#faq">FAQ</a></li></ol></nav>
         <div class="aside-cta aside-cta-wide">
           <p class="aside-cta-title">Real Git on your iPhone.</p>
           <p class="aside-cta-price">iPhone + iPad: $9.99 once · No subscription</p>
@@ -124,8 +164,9 @@
         <div class="tldr"><div class="tldr-title">Choose by workflow</div><ul>
           <li><strong>Choose Obsidian Sync</strong> if you want Obsidian’s supported sync service, built-in version history, and end-to-end encryption.</li>
           <li><strong>Choose Git</strong> if you want commits, diffs, branches, and your own Git remote, and are comfortable managing authentication and conflicts.</li>
+          <li><strong>Using both on the same vault: don’t.</strong> Obsidian warns that double-syncing can make files disappear.</li>
         </ul></div>
-        <p><strong>Disclosure:</strong> this comparison is published by GitSync.md’s developer. It describes Git using our documented iPhone workflow, alongside Obsidian’s official product, pricing, and security documentation checked October 26, 2026. It is not a performance benchmark. GitSync.md is independent of Obsidian.</p>
+        <p><strong>Disclosure:</strong> this comparison is published by GitSync.md’s developer. It describes Git using our documented iPhone workflow, alongside Obsidian’s official product, pricing, and security documentation checked November 27, 2026. It is not a performance benchmark. GitSync.md is independent of Obsidian.</p>
 
         <h2 id="comparison">What you are choosing</h2>
         <p>On a narrow screen, scroll the table sideways to compare both options.</p>
@@ -133,46 +174,70 @@
           <caption>Obsidian’s service compared with a GitSync.md and Git remote workflow</caption>
           <thead><tr><th scope="col">Decision</th><th scope="col">Obsidian Sync</th><th scope="col">Git workflow</th></tr></thead><tbody>
           <tr><th scope="row">Sync destination</th><td>Obsidian remote vault.</td><td>Your chosen Git repository, such as GitHub or a self-hosted server.</td></tr>
-          <tr><th scope="row">History</th><td>Integrated note version history.</td><td>History of committed changes, with commit messages and diffs.</td></tr>
+          <tr><th scope="row">Storage</th><td>Standard: <a href="https://obsidian.md/help/sync/plans" target="_blank" rel="noopener">1 GB</a>. Plus: <a href="https://obsidian.md/help/sync/plans" target="_blank" rel="noopener">10 GB to 100 GB</a>.</td><td>Whatever your Git host allows; check the host’s own documentation. GitHub <a href="https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-large-files-on-github" target="_blank" rel="noopener">warns about large files</a>. For big attachments, see <a href="/blog/git-lfs-ios">Git LFS on iOS</a>.</td></tr>
+          <tr><th scope="row">Max file size</th><td>Standard: <a href="https://obsidian.md/help/sync/plans" target="_blank" rel="noopener">5 MB</a>. Plus: <a href="https://obsidian.md/help/sync/plans" target="_blank" rel="noopener">200 MB</a>.</td><td>Your host’s limit. GitHub blocks files over 100 MiB unless you use Git LFS.</td></tr>
+          <tr><th scope="row">Version history</th><td>Standard: <a href="https://obsidian.md/help/sync/plans" target="_blank" rel="noopener">1 month</a>. Plus: <a href="https://obsidian.md/help/sync/plans" target="_blank" rel="noopener">12 months</a>.</td><td>Every commit you keep, for as long as the repository exists. Only committed changes are recorded.</td></tr>
+          <tr><th scope="row">Vaults</th><td>Standard: <a href="https://obsidian.md/help/sync/plans" target="_blank" rel="noopener">1</a>. Plus: <a href="https://obsidian.md/help/sync/plans" target="_blank" rel="noopener">10</a>.</td><td>One repository per vault, as many as your host allows.</td></tr>
+          <tr><th scope="row">Devices</th><td>Unlimited on both plans (<a href="https://obsidian.md/help/sync/plans" target="_blank" rel="noopener">plans page</a>).</td><td>Any device with a Git client.</td></tr>
+          <tr><th scope="row">Conflicts</th><td>Markdown changes are merged automatically; other files use last-modified wins (<a href="https://obsidian.md/help/sync/troubleshoot" target="_blank" rel="noopener">Obsidian docs</a>).</td><td>Git stops and asks you to resolve. See <a href="/blog/obsidian-git-merge-conflicts-iphone">resolving conflicts on iPhone</a> and the <a href="/tools/markdown-diff">Markdown diff tool</a>.</td></tr>
+          <tr><th scope="row">History type</th><td>Integrated note version history.</td><td>History of committed changes, with commit messages and diffs.</td></tr>
           <tr><th scope="row">Privacy</th><td>End-to-end encryption is the default setup option.</td><td>Private repo visibility and HTTPS/SSH do not create end-to-end encrypted notes.</td></tr>
           <tr><th scope="row">Setup</th><td>Connect Obsidian to its sync service.</td><td>Configure the remote, a local working copy, and each Git client’s credentials.</td></tr>
           <tr><th scope="row">Settings</th><td>Controls for which preferences and files sync.</td><td>Choose what Git tracks and ignores; some settings should remain device-specific.</td></tr>
           <tr><th scope="row">Payment</th><td>Recurring service plan.</td><td>GitSync.md’s iPhone app is a one-time purchase. Hosting terms are separate.</td></tr>
           </tbody></table></div>
-        <p>Sources: <a href="https://obsidian.md/sync">Obsidian Sync features</a>, <a href="https://obsidian.md/help/sync/security">encryption documentation</a>, and <a href="/blog/obsidian-git-iphone-ipad">our Git workflow</a>.</p>
+        <p>Obsidian figures are from <a href="https://obsidian.md/help/sync/plans" target="_blank" rel="noopener">Obsidian’s Sync plans page</a>, as checked November 27, 2026; see also <a href="https://obsidian.md/pricing" target="_blank" rel="noopener">Obsidian pricing</a>. Sources: <a href="https://obsidian.md/sync">Obsidian Sync features</a>, <a href="https://obsidian.md/help/sync/security">encryption documentation</a>, and <a href="/blog/obsidian-git-iphone-ipad">our Git workflow</a>.</p>
+
+        <h2 id="obsidian-vs-github">Obsidian vs GitHub: they do different jobs</h2>
+        <p>Obsidian is a Markdown editor that works on a folder of files. GitHub is a host for Git repositories. You don’t choose between them; you choose whether GitHub stores your vault’s history. Obsidian Sync is the alternative to that: it keeps the vault on Obsidian’s servers instead. To put a vault on GitHub, follow <a href="/blog/sync-obsidian-github">Sync Obsidian with GitHub on every device</a>.</p>
 
         <h2 id="privacy">Privacy: a private repository is not encrypted storage</h2>
         <p>Obsidian documents end-to-end encryption as the default option for Sync. It also documents a standard encryption option with different key handling; check the option you choose. Its security documentation explains who holds keys and how to verify encryption.</p>
         <p>In an ordinary GitHub private repository, access permissions limit who can open the repository. HTTPS or SSH protects transport. Neither makes your Markdown unreadable to the repository provider. A self-hosted remote changes who operates the server; it does not automatically encrypt the notes with a key only you hold.</p>
-        <p>GitSync.md performs Git operations on local files. It does not turn GitHub into an encrypted vault. Decide whether provider-readable storage fits your notes before uploading them, and keep credentials and sensitive plugin configuration out of commits.</p>
+        <p>GitSync.md performs Git operations on local files. It does not turn GitHub into an encrypted vault. Decide whether provider-readable storage fits your notes before uploading them, and keep credentials and sensitive plugin configuration out of commits. The <a href="/tools/obsidian-gitignore-generator">Obsidian .gitignore generator</a> helps keep <code>workspace.json</code> and plugin secrets out of commits.</p>
 
         <h2 id="history">Version history and conflicts</h2>
-        <p>Obsidian Sync provides history within Obsidian. Git records the snapshots you commit; an edit you never commit is not preserved in Git history just because the folder is a repository. Pull, commit, and push are separate parts of a Git workflow.</p>
-        <p>Git is useful when you want named commits, inspectable diffs, branches, or a repository shared with other tools. It also gives you conflict recovery work when two devices change the same content. For an example, see <a href="/blog/obsidian-git-merge-conflicts-iphone">resolving Obsidian Git conflicts on iPhone</a>.</p>
-        <p>Keep an independent backup with either option. Remote synchronization and revision history serve different purposes from a backup stored separately from your active working copies.</p>
+        <p>When two devices change the same note, the two systems behave differently. Per <a href="https://obsidian.md/help/sync/troubleshoot" target="_blank" rel="noopener">Obsidian’s troubleshooting page</a>, Sync merges Markdown changes with Google’s diff-match-patch algorithm, and other file types, including canvases, use last modified wins. Git stops and asks you to resolve the conflict. That is more work, but nothing is silently overwritten. For an example, see <a href="/blog/obsidian-git-merge-conflicts-iphone">resolving Obsidian Git conflicts on iPhone</a>, and compare the two versions with the <a href="/tools/markdown-diff">Markdown diff tool</a>.</p>
+        <p>For history, Obsidian Sync keeps versions within Obsidian for 1 month (Standard) or 12 months (Plus). Git records the snapshots you commit; an edit you never commit is not preserved in Git history just because the folder is a repository. Pull, commit, and push are separate parts of a Git workflow. A commit is a restore point: see <a href="/blog/obsidian-backup-git">backing up an Obsidian vault with Git</a> for how to restore a note.</p>
+        <p>Git is useful when you want named commits, inspectable diffs, branches, or a repository shared with other tools. Keep an independent backup with either option. Remote synchronization and revision history serve different purposes from a backup stored separately from your active working copies.</p>
 
         <h2 id="cost">Compare the actual cost</h2>
-        <p>As checked October 26, 2026, <a href="https://obsidian.md/pricing">Obsidian’s pricing page</a> advertises Sync from $4 USD per user per month billed annually, or $5 billed monthly. Check current plan capacities and eligibility before subscribing. Work out your own total with the <a href="/tools/obsidian-sync-cost-calculator">Obsidian Sync cost calculator</a>, which also tells you whether your vault fits Standard or needs Plus.</p>
+        <p>As checked November 27, 2026, <a href="https://obsidian.md/pricing">Obsidian’s pricing page</a> advertises Sync from $4 USD per user per month billed annually, or $5 billed monthly. Check current plan capacities and eligibility before subscribing. Work out your own total with the <a href="/tools/obsidian-sync-cost-calculator">Obsidian Sync cost calculator</a>, which also tells you whether your vault fits Standard or needs Plus.</p>
         <p>GitSync.md costs $9.99 once on the US App Store for iPhone and iPad, including manual Git and optional Background Sync. Desktop Git tooling and your Git host are separate. Repository storage, large-file usage, and provider plans can affect the full cost; GitSync.md’s purchase is not a hosting plan.</p>
         <p><a href="/v/web-homepage-112">View GitSync.md on the App Store →</a></p>
 
         <p>Comparing more than two options? See <a href="/compare/obsidian-sync-alternatives">all Obsidian Sync alternatives</a>, including Syncthing, Self-hosted LiveSync and Remotely Save, sorted by the devices you use.</p>
         <p>Considering Apple’s file syncing instead? Read <a href="/compare/icloud-vs-git-obsidian">iCloud vs Git for Obsidian</a>, including the Windows caveat and local-folder differences.</p>
         <h2 id="mobile">The mobile setup matters</h2>
-        <p>GitSync.md and the <a href="/blog/obsidian-git-plugin">Obsidian Git plugin</a> are separate Git clients. You can write in Obsidian while GitSync.md handles native Git operations, or configure the plugin separately. <a href="/blog/gitsync-connect-obsidian-git">Connect</a> can transfer credentials for a supported GitHub HTTPS vault; it does not change the plugin’s mobile implementation.</p>
+        <p>Obsidian Sync is built into the Obsidian app on iOS and Android. Git on a phone has two routes: the Obsidian Git community plugin, whose <a href="https://github.com/Vinzent03/obsidian-git" target="_blank" rel="noopener">README</a> lists mobile support as experimental and says “The Git implementation on mobile is very unstable!”, or a native Git app working on the same vault folder, such as GitSync.md on iPhone and iPad (and <a href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener">Android via Google Play</a>).</p>
+                <p>GitSync.md and the <a href="/blog/obsidian-git-plugin">Obsidian Git plugin</a> are separate Git clients. You can write in Obsidian while GitSync.md handles native Git operations, or configure the plugin separately. <a href="/blog/gitsync-connect-obsidian-git">Connect</a> can transfer credentials for a supported GitHub HTTPS vault; it does not change the plugin’s mobile implementation.</p>
         <p>For a Windows and iPhone setup, follow our <a href="/blog/sync-obsidian-windows-iphone-github">GitHub walkthrough</a>. For background expectations, read <a href="/blog/obsidian-git-background-sync-iphone">what automatic Git sync can do on iPhone</a>. GitSync.md cannot guarantee when iOS grants background execution.</p>
         <p>On Android, the vault has to be in a device folder that both Obsidian and the Git client can open. Follow <a href="/blog/obsidian-git-android">the Android Obsidian Git guide</a>.</p>
         <p>Chosen Git? <a href="/blog/sync-obsidian-github">Set up Git sync on every device</a>: the repository, the desktop plugin settings, then your phone.</p>
+        <p><a href="/v/web-homepage-112">Use Git on iPhone and iPad with GitSync.md →</a></p>
 
         <h2 id="switch">Before switching sync methods</h2>
         <ol>
+          <li>Turn off the old sync for that vault before turning on the new one. Obsidian documents <a href="https://obsidian.md/help/sync/troubleshoot" target="_blank" rel="noopener">double-syncing as a cause of missing files</a>.</li>
           <li>Wait for the current method to finish and check the notes on every device.</li>
           <li>Keep an independent copy of the vault, including files that have not synced.</li>
           <li>Try the new method with a separate working copy. Avoid two sync systems writing the same folder during migration.</li>
           <li>Verify a new note in both directions before relying on the new route. Keep the original copy until you have checked the result.</li>
         </ol>
         <p>If managing Git is the part you want to avoid, the official Sync service may be the better fit. If an ordinary Git repository is the goal, start with <a href="/blog/obsidian-git-iphone-ipad">our iPhone and iPad setup guide</a>.</p>
+        <h2 id="faq">FAQ</h2>
+        <h3>Is Git a free replacement for Obsidian Sync?</h3>
+        <p>Git hosting can be free, so you can trade money for setup. You manage authentication, decide when to commit, pull and push, and resolve conflicts yourself. A Git repository is also not end-to-end encrypted by default, unlike Obsidian Sync’s default encryption option.</p>
+        <h3>Can I use Obsidian Sync and Git on the same vault?</h3>
+        <p>Not as two sync systems on one folder. Obsidian’s <a href="https://obsidian.md/help/sync/troubleshoot" target="_blank" rel="noopener">troubleshooting page</a> lists double-syncing, where Sync runs alongside another syncing service, as a cause of files disappearing. Using Git only for occasional backup commits of a vault that Sync owns is still risky, so if you do it, never pull into the Sync-managed folder.</p>
+        <h3>Does Obsidian Sync work with GitHub?</h3>
+        <p>No. Obsidian Sync syncs your vault to Obsidian’s own servers, not to a Git repository. To store a vault on GitHub you use Git, through the Obsidian Git plugin or a Git app.</p>
+        <h3>Which is better on iPhone, Obsidian Sync or Git?</h3>
+        <p>Obsidian Sync takes the least setup because it is built into the Obsidian app. Git on iPhone needs an iOS Git client and your own credentials; see <a href="/blog/obsidian-git-iphone-ipad">Obsidian Git on iPhone and iPad</a> for the setup.</p>
+
         <div class="related-card"><h2>Keep comparing</h2><ul>
+          <li><a href="/compare/obsidian-sync-alternatives">Obsidian Sync alternatives by device</a></li>
+          <li><a href="/tools/obsidian-sync-cost-calculator">Obsidian Sync cost calculator</a></li>
           <li><a href="/compare/gitsync-vs-working-copy">GitSync.md vs Working Copy</a></li>
           <li><a href="/blog/obsidian-git-not-working-iphone">Troubleshoot Obsidian Git on iPhone</a></li>
           <li><a href="https://obsidian.md/help/sync-notes">Obsidian’s guide to sync options</a></li>
