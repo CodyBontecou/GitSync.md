@@ -23,6 +23,7 @@ For automation on a user's device, consult the Shortcuts guide and agent instruc
 - [Obsidian Git on iOS](https://gitsync.md/blog/obsidian-git-iphone-ipad): Compare Git options for Obsidian on iPhone and iPad, then clone, edit, pull and push a vault.
 - [Obsidian Connect](https://gitsync.md/blog/gitsync-connect-obsidian-git): Companion plugin and credential handoff.
 - [Publish a local folder](https://gitsync.md/blog/create-git-repository-iphone): Review local files and create a private GitHub repository.
+- [Share a vault with others on GitHub](https://gitsync.md/blog/share-obsidian-vault-github): Invite collaborators to a private repo, clone it on every device, and avoid token and conflict problems. Git is not live co-editing.
 - [Clone a GitHub repository](https://gitsync.md/blog/clone-github-repository-iphone): Clone and verify the working copy.
 - [Shortcuts automation](https://gitsync.md/blog/shortcuts-automation-ios): Native pull, push, and sync actions and their safety stops.
 - [Background sync](https://gitsync.md/blog/obsidian-git-background-sync-iphone): iOS scheduling limits and supported alternatives.
