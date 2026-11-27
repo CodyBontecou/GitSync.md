@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../favicon-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<title>Markdown cheat sheet for Obsidian and GitHub — GitSync.md</title>
+<meta name="description" content="A copyable Markdown cheat sheet that shows, row by row, what works in Obsidian, what works on GitHub, and what shows as plain text when you push a vault.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Cody Bontecou">
+<meta name="theme-color" content="#ffffff">
+<link rel="canonical" href="https://gitsync.md/blog/obsidian-github-markdown-cheat-sheet">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="GitSync.md">
+<meta property="og:title" content="Markdown cheat sheet for Obsidian and GitHub — GitSync.md">
+<meta property="og:description" content="Which Markdown syntax works in Obsidian, which works on GitHub, and what breaks when you push a vault. Copyable examples with a portable callout.">
+<meta property="og:url" content="https://gitsync.md/blog/obsidian-github-markdown-cheat-sheet">
+<meta property="og:image" content="https://gitsync.md/social/blog/obsidian-github-markdown-cheat-sheet.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:alt" content="GitSync.md guide card: Markdown cheat sheet for Obsidian and GitHub">
+<meta property="article:published_time" content="2026-11-27">
+<meta property="article:modified_time" content="2026-11-27">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Markdown cheat sheet for Obsidian and GitHub — GitSync.md">
+<meta name="twitter:description" content="Copyable Markdown syntax with Obsidian and GitHub support side by side.">
+<meta name="twitter:image" content="https://gitsync.md/social/blog/obsidian-github-markdown-cheat-sheet.png">
+<meta name="twitter:image:alt" content="GitSync.md guide card: Markdown cheat sheet for Obsidian and GitHub">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Markdown cheat sheet for Obsidian and GitHub",
+  "description": "A copyable Markdown cheat sheet that shows, row by row, what works in Obsidian, what works on GitHub, and what shows as plain text when you push a vault.",
+  "image": [
+    "https://gitsync.md/social/blog/obsidian-github-markdown-cheat-sheet.png"
+  ],
+  "datePublished": "2026-11-27",
+  "dateModified": "2026-11-27",
+  "author": {
+    "@type": "Person",
+    "name": "Cody Bontecou",
+    "url": "https://gitsync.md/about"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Cody Bontecou"
+  },
+  "mainEntityOfPage": "https://gitsync.md/blog/obsidian-github-markdown-cheat-sheet"
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../site.css">
+<link rel="stylesheet" href="../content.css">
+<link rel="stylesheet" href="../comparison.css">
+<style>.comparison-table code.cs{white-space:pre-wrap;overflow-wrap:anywhere}.comparison-table th[scope=row]{width:30%}</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://gitsync.md/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Guides",
+      "item": "https://gitsync.md/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Markdown cheat sheet for Obsidian and GitHub",
+      "item": "https://gitsync.md/blog/obsidian-github-markdown-cheat-sheet"
+    }
+  ]
+}
+</script>
+</head>
+<body id="top">
+<a class="skip-link" href="#main">Skip to content</a>
+<svg class="icon-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 5l7 7-7 7"/></symbol>
+  <symbol id="i-branch" viewBox="0 0 24 24"><circle cx="6" cy="5" r="2.5"/><circle cx="6" cy="19" r="2.5"/><circle cx="18" cy="5" r="2.5"/><path d="M6 7.5v9M18 7.5v1a5 5 0 0 1-5 5H6"/></symbol>
+  <symbol id="i-external" viewBox="0 0 24 24"><path d="M6 18 18 6M6 6h12v12"/></symbol>
+</svg>
+
+<header class="site-header">
+  <nav class="shell navigation" aria-label="Main navigation">
+    <a class="brand" href="/" aria-label="GitSync.md home">gitsync<span class="brand-extension">.md</span></a>
+    <div class="nav-links"><a href="/#app">The app</a><a href="/#workflow">How it works</a><a href="/blog/" class="is-active">Guides</a><a href="/compare/obsidian-sync-vs-git">Compare</a><a href="/#faq">FAQ</a></div>
+    <a class="button button-small" href="/#download">Get the app</a>
+  </nav>
+</header>
+
+<main id="main">
+<div class="container guide-layout">
+      <header class="article-hero">
+        <div class="article-title">
+        <nav class="eyebrow article-breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li><a href="/blog/">Guides</a></li><li aria-current="page">Markdown cheat sheet</li></ol></nav>
+        <h1>Markdown cheat sheet for Obsidian and GitHub<span class="accent">.</span></h1>
+        <p class="subtitle">Copyable Markdown syntax, with a column for what Obsidian does and a column for what GitHub does with a <code>.md</code> file. Use it if you write in Obsidian and keep the vault in a GitHub repository.</p>
+        <div class="meta-line"><span>By <a href="/about" rel="author">Cody Bontecou</a></span>
+          <span>November 27, 2026</span>
+          <span>Guide</span>
+          <span>Checked November 27, 2026</span>
+        </div>
+      </div>
+      </header>
+      <aside class="guide-aside" aria-label="Guide sidebar">
+        <section class="side-note" aria-label="Article notes">
+        <h2>How this was checked</h2>
+        <p>Every Obsidian row comes from Obsidian’s Help pages, and every GitHub row from GitHub Docs or the GFM spec, all read on November 27, 2026. Where a docs page doesn’t cover a syntax, the table says “Not in GitHub’s syntax docs” instead of guessing.</p>
+        </section>
+        <div class="guide-aside-sticky">
+        <nav class="toc-card" aria-label="Article outline">
+        <div class="toc-title">What this covers</div>
+        <ol>
+          <li><a href="#basics">Basics that work in both</a></li>
+          <li><a href="#tasks">Task lists and checkboxes</a></li>
+          <li><a href="#advanced">Tables, footnotes, math, diagrams</a></li>
+          <li><a href="#obsidian-only">Obsidian-only syntax on GitHub</a></li>
+          <li><a href="#callouts">Callouts vs GitHub alerts</a></li>
+          <li><a href="#github-only">GitHub extras</a></li>
+          <li><a href="#frontmatter">Properties and frontmatter</a></li>
+          <li><a href="#links">Links that work in both</a></li>
+          <li><a href="#checklist">Checklist for a GitHub-readable vault</a></li>
+          <li><a href="#phone">Edit and push from your phone</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ol>
+      </nav>
+        <div class="aside-cta aside-cta-wide">
+          <p class="aside-cta-title">Real Git on your iPhone.</p>
+          <p class="aside-cta-price">iPhone + iPad: $9.99 once · No subscription</p>
+          <a class="aside-cta-button" href="/v/web-homepage-137" target="_blank" rel="noopener">Download on the App Store</a>
+        </div>
+        </div>
+      </aside>
+      <article class="article-body">
+        <div class="tldr">
+          <div class="tldr-title">Short version</div>
+          <ol>
+            <li>Standard Markdown (headings, lists, links, tables, task lists, footnotes, math, Mermaid) works in both.</li>
+            <li>Obsidian-only syntax (<code>[[wikilinks]]</code>, <code>![[embeds]]</code>, <code>==highlights==</code>, <code>%%comments%%</code>, block references) isn't in GitHub's syntax docs. Expect plain text on github.com.</li>
+            <li>Callouts and GitHub alerts share <code>&gt; [!NOTE]</code>. Stick to the five GitHub types, with no title and no fold marker, and it works in both.</li>
+          </ol>
+        </div>
+
+        <p>Obsidian says it supports CommonMark, GitHub Flavored Markdown and LaTeX, then adds its own extensions (<a href="https://obsidian.md/help/obsidian-flavored-markdown" target="_blank" rel="noopener">Obsidian Flavored Markdown</a>). GitHub renders GitHub Flavored Markdown (<a href="https://github.github.com/gfm/" target="_blank" rel="noopener">GFM spec</a>), which does not include those extensions. Obsidian's own page warns that other Markdown apps may show internal links, comments and highlights as plain text. This page turns that warning into a lookup: the first column is the code to copy.</p>
+
+        <h2 id="basics">Basics that work in both</h2>
+        <p>Sources: Obsidian's <a href="https://obsidian.md/help/syntax" target="_blank" rel="noopener">Basic formatting syntax</a> and GitHub's <a href="https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax" target="_blank" rel="noopener">Basic writing and formatting syntax</a>.</p>
+<div class="comparison-scroll" role="region" aria-label="Basic Markdown syntax in Obsidian and GitHub" tabindex="0"><table class="comparison-table">
+<caption>Basic Markdown syntax</caption>
+<thead><tr><th scope="col">Syntax (copy this)</th><th scope="col">Obsidian</th><th scope="col">GitHub (.md files)</th></tr></thead><tbody>
+<tr><th scope="row"><code class="cs">## Heading</code></th><td>✓ Yes.</td><td>✓ Yes, <code>#</code> to <code>######</code>.</td></tr>
+<tr><th scope="row"><code class="cs">**bold**  *italic*  ***both***</code></th><td>✓ Yes.</td><td>✓ Yes.</td></tr>
+<tr><th scope="row"><code class="cs">~~strikethrough~~</code></th><td>✓ Yes (documented as standard).</td><td>✓ Yes.</td></tr>
+<tr><th scope="row"><code class="cs">- item
+- item</code></th><td>✓ Yes.</td><td>✓ Yes.</td></tr>
+<tr><th scope="row"><code class="cs">1. first
+2. second</code></th><td>✓ Yes.</td><td>✓ Yes.</td></tr>
+<tr><th scope="row"><code class="cs">&gt; quoted text</code></th><td>✓ Yes.</td><td>✓ Yes.</td></tr>
+<tr><th scope="row"><code class="cs">---</code></th><td>✓ Yes.</td><td>✓ Yes, a thematic break per the GFM spec.</td></tr>
+<tr><th scope="row"><code class="cs">`inline code`</code></th><td>✓ Yes.</td><td>✓ Yes.</td></tr>
+<tr><th scope="row"><code class="cs">[text](https://example.com)</code></th><td>✓ Yes.</td><td>✓ Yes.</td></tr>
+<tr><th scope="row"><code class="cs">![alt text](images/photo.png)</code></th><td>✓ Yes, with a path in the vault or an external URL.</td><td>✓ Yes. A relative path is resolved from the current file; a path that starts with <code>/</code> is resolved from the repository root.</td></tr>
+<tr><th scope="row"><code class="cs">\*not italic\*</code></th><td>✓ Backslash escapes <code>* _ # ` | ~</code>.</td><td>✓ Backslash shows the Markdown character literally.</td></tr>
+</tbody></table></div>
+        <h3 id="line-breaks">Line breaks</h3>
+        <p>A blank line starts a new paragraph in both. For a line break inside a paragraph, the sources differ:</p>
+        <ul>
+          <li><strong>GitHub, in <code>.md</code> files:</strong> end the line with two spaces, a backslash, or <code>&lt;br/&gt;</code>. (In issues, pull requests and discussions, a single newline is already a line break.)</li>
+          <li><strong>Obsidian:</strong> end the line with two spaces, or press <kbd>Shift</kbd>+<kbd>Enter</kbd>. With the <strong>Strict line breaks</strong> setting on, a single Enter joins lines unless the line ends with two spaces.</li>
+        </ul>
+        <p>The two-space break is the one both sources document, so use it when a note must read the same in both places.</p>
+        <pre tabindex="0" role="region" aria-label="Line break with two trailing spaces"><code>First line  
+Second line</code></pre>
+
+        <h2 id="tasks">Task lists and checkboxes</h2>
+        <p>The answer to “how do I make a checkbox in Markdown”: start a list item with <code>- [ ]</code> for an open box or <code>- [x]</code> for a checked one, with a space after the hyphen and inside the brackets.</p>
+        <pre tabindex="0" role="region" aria-label="Task list"><code>- [ ] Write the draft
+- [x] Outline the post</code></pre>
+<div class="comparison-scroll" role="region" aria-label="Task lists" tabindex="0"><table class="comparison-table">
+<caption>Task lists</caption>
+<thead><tr><th scope="col">Syntax (copy this)</th><th scope="col">Obsidian</th><th scope="col">GitHub (.md files)</th></tr></thead><tbody>
+<tr><th scope="row"><code class="cs">- [ ] to do
+- [x] done</code></th><td>✓ Yes. Click the box in Reading view.</td><td>✓ Yes. GitHub documents task lists in comments; the GFM spec defines them for any Markdown.</td></tr>
+<tr><th scope="row"><code class="cs">- [/] in progress</code></th><td>✓ Obsidian accepts any character in the brackets (the Help page shows <code>[?]</code> and <code>[-]</code>). How it looks depends on your theme or plugins.</td><td>✗ Not portable. GitHub’s documented task syntax is <code>[ ]</code> and <code>[x]</code>.</td></tr>
+</tbody></table></div>
+        <p>GitHub's <a href="https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/about-task-lists" target="_blank" rel="noopener">About task lists</a> describes tasklists in comments. Whether you can tick a box in a rendered repository file isn't covered there, so this guide makes no claim about it. If you tick boxes in Obsidian and push, the change is the <code>[ ]</code> to <code>[x]</code> text edit in your commit.</p>
+
+        <h2 id="advanced">Tables, footnotes, math and diagrams</h2>
+        <p>Need a bigger table? The <a href="/tools/markdown-table-generator">Markdown table generator</a> builds one in your browser and writes both the GitHub and the Obsidian flavor.</p>
+<div class="comparison-scroll" role="region" aria-label="Tables, footnotes, math and Mermaid" tabindex="0"><table class="comparison-table">
+<caption>Tables, footnotes, math and Mermaid</caption>
+<thead><tr><th scope="col">Syntax (copy this)</th><th scope="col">Obsidian</th><th scope="col">GitHub (.md files)</th></tr></thead><tbody>
+<tr><th scope="row"><code class="cs">| A | B |
+| --- | --- |
+| 1 | 2 |</code></th><td>✓ Yes.</td><td>✓ Yes. See GitHub’s “Organizing information with tables”.</td></tr>
+<tr><th scope="row"><code class="cs">a \| b</code></th><td>✓ Escape the bar to keep it in a cell. Inside a table, escape the bar of an alias or image size too.</td><td>✓ Same backslash escape.</td></tr>
+<tr><th scope="row"><code class="cs">Text[^1]
+
+[^1]: The note.</code></th><td>✓ Yes. Named labels are allowed.</td><td>✓ Yes. Definitions render at the bottom of the file.</td></tr>
+<tr><th scope="row"><code class="cs">Text^[inline note]</code></th><td>✓ Only in Reading view, not Live Preview.</td><td>✗ Not in GitHub’s syntax docs. Use <code>[^1]</code>.</td></tr>
+<tr><th scope="row"><code class="cs">$e^{i\pi}+1=0$</code></th><td>✓ Yes (LaTeX).</td><td>✓ Yes. GitHub’s math page lists Markdown files.</td></tr>
+<tr><th scope="row"><code class="cs">$$
+\int_0^1 x\,dx
+$$</code></th><td>✓ Yes.</td><td>✓ Yes.</td></tr>
+<tr><th scope="row"><code class="cs">```mermaid
+graph TD;
+  A--&gt;B;
+```</code></th><td>✓ Yes (flowcharts, sequence diagrams, timelines).</td><td>✓ Yes. GitHub’s diagrams page lists Markdown files.</td></tr>
+</tbody></table></div>
+        <p>Sources: Obsidian's <a href="https://obsidian.md/help/advanced-syntax" target="_blank" rel="noopener">Advanced formatting syntax</a>, GitHub's <a href="https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/writing-mathematical-expressions" target="_blank" rel="noopener">math</a> and <a href="https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/creating-diagrams" target="_blank" rel="noopener">diagrams</a> pages. GitHub's math page adds a <code>$`...`$</code> form for expressions that clash with Markdown characters, and a <code>```math</code> code block.</p>
+
+        <h2 id="obsidian-only">What changes when an Obsidian vault is viewed on GitHub</h2>
+        <p>These are the Obsidian extensions. None appears in GitHub's syntax docs, so push them knowing the file on github.com may show the raw characters. The Obsidian column cites <a href="https://obsidian.md/help/links" target="_blank" rel="noopener">Internal links</a>, <a href="https://obsidian.md/help/embeds" target="_blank" rel="noopener">Embed files</a>, <a href="https://obsidian.md/help/tags" target="_blank" rel="noopener">Tags</a> and the syntax page above.</p>
+<div class="comparison-scroll" role="region" aria-label="Obsidian-only syntax and GitHub" tabindex="0"><table class="comparison-table">
+<caption>Obsidian-only syntax and how it travels to GitHub</caption>
+<thead><tr><th scope="col">Syntax (copy this)</th><th scope="col">In Obsidian</th><th scope="col">On GitHub (.md files)</th></tr></thead><tbody>
+<tr><th scope="row"><code class="cs">[[Note]]</code></th><td>Internal link. Default for new links.</td><td>Not in GitHub’s syntax docs. Expect the brackets as text, not a link.</td></tr>
+<tr><th scope="row"><code class="cs">[[Note|alias]]</code></th><td>Link with display text.</td><td>Not in GitHub’s syntax docs.</td></tr>
+<tr><th scope="row"><code class="cs">[[Note#Heading]]</code></th><td>Link to a heading. <code>[[#Heading]]</code> for the same note.</td><td>Not in GitHub’s syntax docs.</td></tr>
+<tr><th scope="row"><code class="cs">[[Note#^block-id]]</code><br><code class="cs">paragraph text ^block-id</code></th><td>Block reference. The Help page says block links only work in Obsidian.</td><td>Not supported. The <code>^block-id</code> stays in the text.</td></tr>
+<tr><th scope="row"><code class="cs">![[image.png]]</code><br><code class="cs">![[image.png|300]]</code></th><td>Embeds the image, optional width.</td><td>Not in GitHub’s syntax docs. Use <code>![alt](image.png)</code>.</td></tr>
+<tr><th scope="row"><code class="cs">![[Other note]]</code></th><td>Embeds the note’s content.</td><td>Not in GitHub’s syntax docs. Use a normal link.</td></tr>
+<tr><th scope="row"><code class="cs">==highlighted==</code></th><td>Highlight.</td><td>Not in GitHub’s syntax docs.</td></tr>
+<tr><th scope="row"><code class="cs">%%hidden comment%%</code></th><td>Hidden in Reading view, visible while editing.</td><td>Not in GitHub’s syntax docs. Use <code>&lt;!-- comment --&gt;</code> to hide text on GitHub, which GitHub documents.</td></tr>
+<tr><th scope="row"><code class="cs">#project/alpha</code></th><td>Tag. No spaces; needs a non-numeric character, so <code>#1984</code> is not a tag.</td><td>Not a documented GitHub feature in files.</td></tr>
+</tbody></table></div>
+        <p>If you publish the vault as a website instead, a static-site tool can convert some of these. <a href="/blog/publish-obsidian-quartz-iphone">Quartz</a> turns <code>[[wikilinks]]</code> into normal links, which github.com does not.</p>
+
+        <h2 id="callouts">Callouts vs GitHub alerts</h2>
+        <p>Obsidian callouts and GitHub alerts both start a blockquote with <code>[!type]</code>. They are different features with different type lists. Obsidian's <a href="https://obsidian.md/help/callouts" target="_blank" rel="noopener">Callouts</a> page and GitHub's alerts section (in the <a href="https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax" target="_blank" rel="noopener">syntax docs</a>) say:</p>
+        <ul>
+          <li><strong>GitHub</strong> has five types: <code>NOTE</code>, <code>TIP</code>, <code>IMPORTANT</code>, <code>WARNING</code> and <code>CAUTION</code>. The marker goes on its own line, followed by the message in the blockquote. GitHub says alerts can't be nested in other elements.</li>
+          <li><strong>Obsidian</strong> has more: note, abstract, info, todo, tip, success, question, warning, failure, danger, bug, example and quote, plus aliases. Types are case-insensitive, and an unknown type falls back to <code>note</code>. It also supports a custom title after the marker (<code>&gt; [!tip] My title</code>), fold markers (<code>[!faq]-</code> collapsed, <code>[!faq]+</code> expanded) and nested callouts.</li>
+        </ul>
+        <div class="comparison-scroll" role="region" aria-label="Obsidian callouts and GitHub alerts, for the five GitHub types" tabindex="0"><table class="comparison-table">
+<caption>The five GitHub alert types in both apps</caption>
+<thead><tr><th scope="col">GitHub alert</th><th scope="col">In Obsidian</th><th scope="col">On GitHub</th></tr></thead><tbody>
+<tr><th scope="row"><code class="cs">[!NOTE]</code></th><td>✓ Same type, <code>note</code>.</td><td>✓ <code>[!NOTE]</code></td></tr>
+<tr><th scope="row"><code class="cs">[!TIP]</code></th><td>✓ Same type, <code>tip</code>.</td><td>✓ <code>[!TIP]</code></td></tr>
+<tr><th scope="row"><code class="cs">[!IMPORTANT]</code></th><td>Alias of <code>tip</code>.</td><td>✓ <code>[!IMPORTANT]</code> is its own type.</td></tr>
+<tr><th scope="row"><code class="cs">[!WARNING]</code></th><td>✓ Same type, <code>warning</code>.</td><td>✓ <code>[!WARNING]</code></td></tr>
+<tr><th scope="row"><code class="cs">[!CAUTION]</code></th><td>Alias of <code>warning</code>.</td><td>✓ <code>[!CAUTION]</code> is its own type.</td></tr>
+</tbody></table></div>
+        <p>Custom titles, fold markers and the other Obsidian types aren't part of GitHub's documented alert syntax, so don't count on them rendering as a callout on github.com. A callout with an Obsidian-only type is, at best, a plain blockquote there.</p>
+        <h3 id="portable-callout">A portable callout</h3>
+        <p>Use one of the five GitHub types, put the marker alone on its line, and skip the title and fold marker:</p>
+        <pre tabindex="0" role="region" aria-label="Portable callout"><code>&gt; [!NOTE]
+&gt; Plain text on the line below the marker.
+&gt; Add [a normal link](other-note.md) and **bold** if you like.</code></pre>
+        <p>On GitHub it is an alert. In Obsidian it is a callout. With <code>IMPORTANT</code> or <code>CAUTION</code>, Obsidian shows the tip or warning style instead.</p>
+
+        <h2 id="github-only">GitHub extras</h2>
+<div class="comparison-scroll" role="region" aria-label="GitHub extras and how Obsidian treats them" tabindex="0"><table class="comparison-table">
+<caption>GitHub extras</caption>
+<thead><tr><th scope="col">Syntax (copy this)</th><th scope="col">In Obsidian</th><th scope="col">On GitHub</th></tr></thead><tbody>
+<tr><th scope="row"><code class="cs">&gt; [!NOTE]
+&gt; Text</code></th><td>Renders as a callout (see below).</td><td>Alert. Five types.</td></tr>
+<tr><th scope="row"><code class="cs">:+1:</code></th><td>Not covered by Obsidian’s syntax pages.</td><td>Emoji shortcode, per GitHub’s syntax docs.</td></tr>
+<tr><th scope="row"><code class="cs">&lt;details&gt;
+
+&lt;summary&gt;Title&lt;/summary&gt;
+
+Hidden **Markdown**.
+
+&lt;/details&gt;</code></th><td>Obsidian’s Help says Markdown is not rendered inside HTML elements, so keep the content inside a <code>&lt;details&gt;</code> block plain.</td><td>Collapsed section. Keep the blank lines, as in GitHub’s example, so the Markdown inside renders.</td></tr>
+<tr><th scope="row"><code class="cs">#123</code></th><td>Not a tag: tags need a non-numeric character.</td><td>GitHub links it in issues, pull requests and other conversations, but the docs say autolinked references are not created in files in a repository.</td></tr>
+</tbody></table></div>
+        <p>GitHub's syntax docs also say the <code>&lt;picture&gt;</code> HTML element is supported, which is how repositories serve different images for light and dark mode. Everything on this page about GitHub applies to <code>.md</code> files in a repository unless stated; some features, like footnotes, are listed as unsupported in wikis. Sources: <a href="https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/organizing-information-with-collapsed-sections" target="_blank" rel="noopener">collapsed sections</a>, <a href="https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/autolinked-references-and-urls" target="_blank" rel="noopener">autolinked references</a>.</p>
+
+        <h2 id="frontmatter">Properties and frontmatter</h2>
+        <p>Obsidian stores <a href="https://obsidian.md/help/properties" target="_blank" rel="noopener">properties</a> as YAML at the top of the note, between <code>---</code> lines. In <strong>Settings → Editor → Properties in document</strong> you choose <strong>Visible</strong> (the default), <strong>Hidden</strong> or <strong>Source</strong>, which shows the raw YAML. Tags can be a property too: a <code>tags</code> list with one hyphenated item per line.</p>
+        <pre tabindex="0" role="region" aria-label="Frontmatter example"><code>---
+title: Trip notes
+tags:
+  - travel
+  - draft
+---
+
+# Trip notes</code></pre>
+        <p>To Git it is ordinary text at the top of the file, so it commits, diffs and merges like any other line. Use the <a href="/tools/markdown-diff">Markdown diff tool</a> to compare two versions of a note, and see <a href="/blog/obsidian-git-merge-conflicts-iphone">merge conflicts on iPhone</a> if both sides edited the same properties.</p>
+
+        <h2 id="links">Links that work in both</h2>
+        <p>Obsidian treats wikilinks and Markdown links as equivalent, and uses wikilinks by default. To write standard Markdown links instead, open <strong>Settings → Files and links</strong> and turn off <strong>Use [[Wikilinks]]</strong>. Typing <code>[[</code> still autocompletes, but inserts a Markdown link.</p>
+        <p>Spaces need handling: Obsidian's Help page says to write <code>%20</code> for each space, or wrap the destination in angle brackets. GitHub resolves relative paths from the current file, and <code>../</code> works.</p>
+        <pre tabindex="0" role="region" aria-label="Portable links"><code>[Meeting notes](Meeting%20notes.md)
+[Meeting notes](&lt;Meeting notes.md&gt;)
+[Plan](../Projects/Plan.md)
+![Diagram](attachments/diagram.png)</code></pre>
+        <p>The first two links point to the same file and differ only in how they handle the space: <code>%20</code> is the form Obsidian's Help page documents, and angle brackets are valid link-destination syntax in <a href="https://spec.commonmark.org/" target="_blank" rel="noopener">CommonMark</a>. Keep link text on one line, because GitHub's docs say so.</p>
+
+        <h2 id="checklist">Checklist: make a vault readable on GitHub</h2>
+        <ol>
+          <li>Turn off <strong>Use [[Wikilinks]]</strong> so new links are Markdown links.</li>
+          <li>Replace <code>![[image.png]]</code> with <code>![alt](attachments/image.png)</code>, and keep attachments in a folder inside the repository.</li>
+          <li>Skip <code>==highlights==</code> and <code>%%comments%%</code> in notes that GitHub readers will see, or accept the stray characters. Use <code>&lt;!-- --&gt;</code> for hidden text.</li>
+          <li>Use <code>[^1]</code> footnotes, not <code>^[inline]</code>.</li>
+          <li>Write callouts with the five GitHub types and no title.</li>
+          <li>Keep the <code>.obsidian</code> folder and private files out of a public repo with the <a href="/tools/obsidian-gitignore-generator">Obsidian .gitignore generator</a>.</li>
+        </ol>
+
+        <h2 id="phone">Edit and push from your phone</h2>
+        <p>GitSync.md is an independently developed Git client for iPhone, iPad and Android. Git runs on the device, so notes you write in Obsidian can be committed and pushed to GitHub from your phone. Commit and push the notes you write in Obsidian from your iPhone, iPad or Android phone: <a href="/v/web-homepage-137" target="_blank" rel="noopener">App Store</a> · <a href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener">Google Play</a>.</p>
+        <p>Set-up guides: <a href="/blog/sync-obsidian-github">Sync Obsidian with GitHub on every device</a>, <a href="/blog/obsidian-git-iphone-ipad">Obsidian Git on iPhone and iPad</a> and <a href="/blog/obsidian-git-android">Obsidian Git on Android</a>.</p>
+
+        <h2 id="faq">FAQ</h2>
+        <h3>Does GitHub support Obsidian wikilinks?</h3>
+        <p>Wikilinks are not in GitHub's syntax docs. Obsidian's Help warns that other Markdown apps may show internal links as plain text. Use Markdown links to be safe.</p>
+        <h3>Are Obsidian callouts the same as GitHub alerts?</h3>
+        <p>They share the <code>&gt; [!type]</code> start but are different features. GitHub documents five alert types. Obsidian has more types, custom titles and fold markers. The portable callout above works in both.</p>
+        <h3>How do I make a checkbox in Markdown?</h3>
+        <p>Write <code>- [ ] task</code> for an open box and <code>- [x] task</code> for a checked one. Both Obsidian and GitHub understand that syntax.</p>
+        <h3>Why do my images not show on GitHub?</h3>
+        <p>The usual cause in a vault is <code>![[image.png]]</code>, an Obsidian embed that isn't in GitHub's syntax docs. Use <code>![alt](attachments/image.png)</code> with a path relative to the note, and make sure the image file is committed and pushed.</p>
+
+        <h2>Sources</h2>
+        <ul>
+          <li><a href="https://obsidian.md/help/syntax" target="_blank" rel="noopener">Obsidian Help: Basic formatting syntax</a></li>
+          <li><a href="https://obsidian.md/help/advanced-syntax" target="_blank" rel="noopener">Obsidian Help: Advanced formatting syntax</a></li>
+          <li><a href="https://obsidian.md/help/obsidian-flavored-markdown" target="_blank" rel="noopener">Obsidian Help: Obsidian Flavored Markdown</a></li>
+          <li><a href="https://obsidian.md/help/callouts" target="_blank" rel="noopener">Obsidian Help: Callouts</a>, <a href="https://obsidian.md/help/links" target="_blank" rel="noopener">Internal links</a>, <a href="https://obsidian.md/help/embeds" target="_blank" rel="noopener">Embed files</a>, <a href="https://obsidian.md/help/properties" target="_blank" rel="noopener">Properties</a>, <a href="https://obsidian.md/help/tags" target="_blank" rel="noopener">Tags</a></li>
+          <li><a href="https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax" target="_blank" rel="noopener">GitHub Docs: Basic writing and formatting syntax</a></li>
+          <li><a href="https://github.github.com/gfm/" target="_blank" rel="noopener">GitHub Flavored Markdown spec</a> and <a href="https://commonmark.org/" target="_blank" rel="noopener">CommonMark</a></li>
+        </ul>
+
+        <h2>Related guides</h2>
+        <div class="related-card"><ul>
+          <li><a href="/tools/markdown-table-generator">Markdown table generator</a></li>
+          <li><a href="/tools/markdown-diff">Markdown diff</a></li>
+          <li><a href="/blog/sync-obsidian-github">Sync Obsidian with GitHub on every device</a></li>
+          <li><a href="/blog/obsidian-git-iphone-ipad">Obsidian Git on iPhone and iPad</a></li>
+          <li><a href="/blog/obsidian-git-android">Obsidian Git on Android</a></li>
+          <li><a href="/blog/publish-obsidian-quartz-iphone">Publish Obsidian notes with Quartz from your iPhone</a></li>
+          <li><a href="/tools/obsidian-gitignore-generator">Obsidian .gitignore generator</a></li>
+        </ul></div>
+      </article>
+    </div>
+
+  <section class="content-download" aria-labelledby="download-heading">
+    <div class="shell content-download-layout">
+      <div>
+        <p class="eyebrow"><span class="blue-square" aria-hidden="true"></span>Take your work with you.</p>
+        <h2 id="download-heading">REAL GIT.<br>WITHIN REACH.</h2>
+        <p class="content-download-description">Your files. Your commits. Your remote.<br>Get GitSync.md for iPhone, iPad, and Android.</p>
+      </div>
+      <div>
+        <div class="store-links" role="group" aria-label="Download GitSync.md">
+          <a class="store-badge store-badge-apple" href="/v/web-homepage-137" target="_blank" rel="noopener"><img src="../assets/store-badges/download-on-app-store.svg" width="120" height="40" alt="Download GitSync.md on the App Store" decoding="async"></a>
+          <a class="store-badge store-badge-google" href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener"><img src="../assets/store-badges/get-it-on-google-play.png" width="646" height="250" alt="Get GitSync.md on Google Play" decoding="async"></a>
+        </div>
+        <p class="purchase-note"><span>iPhone + iPad: $9.99 once. Unlimited repositories.</span><span>Android: $9.99 once. All features included.</span><span>No subscriptions.</span></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="shell footer-layout">
+    <a class="brand" href="/" aria-label="GitSync.md home">gitsync<span class="brand-extension">.md</span></a>
+    <p>Independently built by <a href="https://codybontecou.com" target="_blank" rel="noopener">Cody Bontecou</a>.<br>© 2026 GitSync.md</p>
+    <div class="footer-links"><a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener">Source</a><a href="/blog/">Guides</a><a href="/compare/obsidian-sync-vs-git">Compare</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
+    <a class="back-top" href="#top" aria-label="Back to top">↑</a>
+  </div>
+</footer>
+<!-- Cloudflare Web Analytics -->
+<script>
+(function () {
+  var productionHosts = {
+    'instareply.isolated.tech': true,
+    'voxboard.isolated.tech': true,
+    'healthmd.isolated.tech': true,
+    'isome.isolated.tech': true,
+    'gitsyncmd.app': true,
+    'gitsync.md': true,
+    'timemd.isolated.tech': true,
+    'imghost.isolated.tech': true
+  };
+
+  if (!productionHosts[window.location.hostname]) {
+    return;
+  }
+
+  function loadCloudflareBeacon() {
+    if (document.querySelector('script[src="https://static.cloudflareinsights.com/beacon.min.js"]')) {
+      return;
+    }
+
+    var script = document.createElement('script');
+    script.defer = true;
+    script.src = 'https://static.cloudflareinsights.com/beacon.min.js';
+    script.setAttribute('data-cf-beacon', '{"token":"090f363070334cddad5c5cc1509b8807"}');
+    document.head.appendChild(script);
+  }
+
+  fetch('https://img-host.costream.workers.dev/analytics-gate', {
+    cache: 'no-store',
+    mode: 'cors',
+    credentials: 'omit'
+  })
+    .then(function (response) {
+      return response.ok ? response.json() : { track: false };
+    })
+    .then(function (gate) {
+      if (gate && gate.track) {
+        loadCloudflareBeacon();
+      }
+    })
+    .catch(function () {
+      // Fail closed so excluded IPs are not accidentally tracked.
+    });
+})();
+</script>
+<!-- End Cloudflare Web Analytics -->
+</body>
+</html>
