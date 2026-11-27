@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../favicon-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<title>Share an Obsidian Vault with Others Using GitHub — GitSync.md</title>
+<meta name="description" content="Share one Obsidian vault with a partner, a group or a small team through a private GitHub repository: invite collaborators, clone on desktop and phones, avoid the fine-grained token trap, and cut conflicts.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Cody Bontecou">
+<meta name="theme-color" content="#ffffff">
+<link rel="canonical" href="https://gitsync.md/blog/share-obsidian-vault-github">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="GitSync.md">
+<meta property="og:title" content="Share an Obsidian Vault with Others Using GitHub — GitSync.md">
+<meta property="og:description" content="A private repo, invited collaborators and a clone on every device. What Git gives you, what it doesn’t, and the token trap for collaborators.">
+<meta property="og:url" content="https://gitsync.md/blog/share-obsidian-vault-github">
+<meta property="og:image" content="https://gitsync.md/social/blog/share-obsidian-vault-github.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:alt" content="GitSync.md guide card: Share an Obsidian Vault with Others Using GitHub">
+<meta property="article:published_time" content="2026-11-27">
+<meta property="article:modified_time" content="2026-11-27">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Share an Obsidian Vault with Others Using GitHub — GitSync.md">
+<meta name="twitter:description" content="Share an Obsidian vault through a private GitHub repo, with honest limits on conflicts and tokens.">
+<meta name="twitter:image" content="https://gitsync.md/social/blog/share-obsidian-vault-github.png">
+<meta name="twitter:image:alt" content="GitSync.md guide card: Share an Obsidian Vault with Others Using GitHub">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Share an Obsidian Vault with Others Using GitHub",
+  "description": "Share one Obsidian vault with a partner, a group or a small team through a private GitHub repository: invite collaborators, clone on desktop and phones, avoid the fine-grained token trap, and cut conflicts.",
+  "image": [
+    "https://gitsync.md/social/blog/share-obsidian-vault-github.png"
+  ],
+  "datePublished": "2026-11-27",
+  "dateModified": "2026-11-27",
+  "author": {
+    "@type": "Person",
+    "name": "Cody Bontecou",
+    "url": "https://gitsync.md/about"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Cody Bontecou"
+  },
+  "mainEntityOfPage": "https://gitsync.md/blog/share-obsidian-vault-github"
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../site.css">
+<link rel="stylesheet" href="../content.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://gitsync.md/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Guides",
+      "item": "https://gitsync.md/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Share a vault on GitHub",
+      "item": "https://gitsync.md/blog/share-obsidian-vault-github"
+    }
+  ]
+}
+</script>
+</head>
+<body id="top">
+<a class="skip-link" href="#main">Skip to content</a>
+<svg class="icon-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 5l7 7-7 7"/></symbol>
+  <symbol id="i-branch" viewBox="0 0 24 24"><circle cx="6" cy="5" r="2.5"/><circle cx="6" cy="19" r="2.5"/><circle cx="18" cy="5" r="2.5"/><path d="M6 7.5v9M18 7.5v1a5 5 0 0 1-5 5H6"/></symbol>
+  <symbol id="i-external" viewBox="0 0 24 24"><path d="M6 18 18 6M6 6h12v12"/></symbol>
+</svg>
+
+<header class="site-header">
+  <nav class="shell navigation" aria-label="Main navigation">
+    <a class="brand" href="/" aria-label="GitSync.md home">gitsync<span class="brand-extension">.md</span></a>
+    <div class="nav-links"><a href="/#app">The app</a><a href="/#workflow">How it works</a><a href="/blog/" class="is-active">Guides</a><a href="/compare/obsidian-sync-vs-git">Compare</a><a href="/#faq">FAQ</a></div>
+    <a class="button button-small" href="/#download">Get the app</a>
+  </nav>
+</header>
+
+<main id="main">
+<div class="container guide-layout">
+      <header class="article-hero">
+        <div class="article-title">
+        <nav class="eyebrow article-breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li><a href="/blog/">Guides</a></li><li aria-current="page">Share a vault on GitHub</li></ol></nav>
+        <h1>Share an Obsidian vault with others using GitHub<span class="accent">.</span></h1>
+        <p class="subtitle">Put the vault in a private GitHub repository, invite your partner, group or team, and have each person clone it on desktop, iPhone, iPad or Android. It is shared history, not live co-editing, so this guide also covers the token trap and the habits that prevent most conflicts.</p>
+        <div class="meta-line"><span>By <a href="/about" rel="author">Cody Bontecou</a></span>
+          <span>November 27, 2026</span>
+          <span>Guide</span>
+          <span>Desktop + mobile</span>
+        </div>
+      </div>
+      </header>
+      <aside class="guide-aside" aria-label="Guide sidebar">
+        <div class="guide-aside-sticky">
+        <nav class="toc-card" aria-label="Article outline">
+        <div class="toc-title">What this covers</div>
+        <ol>
+          <li><a href="#compare">Ways to share a vault</a></li>
+          <li><a href="#need">What you need</a></li>
+          <li><a href="#owner-repo">Step 1: Put the vault in a private repo</a></li>
+          <li><a href="#invite">Step 2: Add collaborators</a></li>
+          <li><a href="#clone">Step 3: Clone the vault</a></li>
+          <li><a href="#token-trap">The token trap</a></li>
+          <li><a href="#ignore">What to commit and ignore</a></li>
+          <li><a href="#rules">House rules</a></li>
+          <li><a href="#conflicts">When a conflict happens</a></li>
+          <li><a href="#read-only">Read-only sharing</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ol>
+      </nav>
+        <div class="aside-cta aside-cta-wide">
+          <p class="aside-cta-title">Give every collaborator the vault on their phone: clone it with GitSync.md.</p>
+          <p class="aside-cta-price">iPhone + iPad: $9.99 once · No subscription</p>
+          <a class="aside-cta-button" href="/v/web-homepage-137" target="_blank" rel="noopener">Download on the App Store</a>
+        </div>
+        </div>
+      </aside>
+      <article class="article-body">
+        <div class="tldr">
+          <div class="tldr-title">Quick answer</div>
+          <ol>
+            <li>Put the vault in a <strong>private GitHub repository</strong> and add each person under <strong>Settings → Collaborators → Add people</strong>. They accept the invitation.</li>
+            <li>Each person clones the repo: the <a href="/blog/obsidian-git-plugin">Obsidian Git plugin</a> on desktop, <a href="/blog/obsidian-git-iphone-ipad">GitSync.md on iPhone and iPad</a>, <a href="/blog/obsidian-git-android">GitSync.md on Android</a>.</li>
+            <li><strong>Collaborators should not use a fine-grained token</strong> on someone else’s personal repo. Sign in with GitHub, use a classic token, or move the repo into an organization.</li>
+            <li><strong>Git is not live co-editing.</strong> Two people can work in the same vault, but not type in the same note at the same moment. Pull before you edit, commit small and often.</li>
+          </ol>
+        </div>
+
+        <h2 id="compare">Ways to share a vault, compared</h2>
+        <p>Obsidian Sync is the official route and the only one with its own help page. Git is the route that needs no Sync subscription. The table keeps to what the sources say; for the other two options, see <a href="/compare/obsidian-sync-alternatives">the Obsidian Sync alternatives comparison</a>.</p>
+        <table>
+          <thead><tr><th scope="col"></th><th scope="col">Obsidian Sync shared vault</th><th scope="col">GitHub repository</th><th scope="col">Shared cloud folder</th><th scope="col">Syncthing</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Cost model</th><td>Every collaborator needs an active Sync subscription</td><td>Each person needs a GitHub account; a private repo is the setup in this guide</td><td>Whatever your storage provider charges</td><td>Peer-to-peer; no vault subscription</td></tr>
+            <tr><th scope="row">Simultaneous editing</th><td>No live co-editing on the same file</td><td>No live co-editing; changes merge when pushed and pulled</td><td>See comparison page</td><td>See comparison page</td></tr>
+            <tr><th scope="row">History / undo</th><td>Version history</td><td>Every commit is history</td><td>Depends on the provider</td><td>See comparison page</td></tr>
+            <tr><th scope="row">Mobile</th><td>Built into Obsidian</td><td>Via a Git client such as GitSync.md on iPhone, iPad and Android</td><td>Differs by provider and platform</td><td>Weak on iPhone per the comparison page</td></tr>
+            <tr><th scope="row">Permissions</th><td>Only the owner can invite; up to 20 users</td><td>Write access for personal-repo collaborators; finer roles need an organization</td><td>Per folder, set in the provider</td><td>Per device pairing</td></tr>
+          </tbody>
+        </table>
+        <p>Sources: <a href="https://obsidian.md/help/sync/collaborate" target="_blank" rel="noopener">Obsidian Help, Collaborate on a shared vault</a> says “All collaborators must have an active Sync subscription to access a shared vault”, “only the vault owner can invite collaborators”, “The maximum number of collaborators on a shared vault is 20 users” and “Obsidian does not yet support collaborative live editing on the same file.” It also says “Changes can be viewed and restored using Version history.” For Sync prices, use <a href="/tools/obsidian-sync-cost-calculator">the Obsidian Sync cost calculator</a> or Obsidian’s pricing page.</p>
+
+        <h2 id="need">What you need</h2>
+        <ul>
+          <li>A GitHub account for each person.</li>
+          <li>One private repository that holds the vault.</li>
+          <li>Obsidian on each device, plus a way to run Git on it (see step 3).</li>
+        </ul>
+
+        <h2 id="owner-repo">Step 1 (owner): put the vault in a private repo</h2>
+        <p>Create a private repository and push the vault to it. The full walkthrough, including the Obsidian Git plugin settings and adding a phone, is in <a href="/blog/sync-obsidian-github">Sync Obsidian with GitHub</a>, so it isn’t repeated here. Before the first push, set up the ignore rules in <a href="#ignore">the section below</a> so personal workspace files don’t land in the shared history.</p>
+
+        <h2 id="invite">Step 2 (owner): add collaborators</h2>
+        <ol>
+          <li>Open the repository on GitHub and go to <strong>Settings → Collaborators → Add people</strong>.</li>
+          <li>Enter each person’s GitHub username or email and send the invitation.</li>
+          <li>Each person accepts the invitation from the email or from GitHub’s notifications.</li>
+        </ol>
+        <p>GitHub documents the steps in <a href="https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-access-to-your-personal-repositories/inviting-collaborators-to-a-personal-repository" target="_blank" rel="noopener">Inviting collaborators to a personal repository</a>. Collaborators on a personal repository get read and write access; see <a href="https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-user-account-settings/permission-levels-for-a-personal-account-repository" target="_blank" rel="noopener">Permission levels for a personal account repository</a>. Finer roles, such as read-only, need the repository to live in a GitHub organization.</p>
+
+        <h2 id="clone">Step 3 (each collaborator): clone the vault</h2>
+        <h3>Desktop</h3>
+        <p>Clone the repository into a folder, open that folder as a vault in Obsidian, and install the Obsidian Git plugin. <a href="/blog/obsidian-git-plugin">The plugin guide</a> covers the settings.</p>
+        <h3>iPhone and iPad</h3>
+        <p>In GitSync.md, clone the repository into a folder that Obsidian can open. <a href="/blog/clone-github-repository-iphone">Clone a GitHub repository on iPhone</a> shows the steps, and <a href="/blog/obsidian-git-iphone-ipad">Obsidian Git on iPhone and iPad</a> explains how to open the folder as a vault.</p>
+        <h3>Android</h3>
+        <p>Follow <a href="/blog/obsidian-git-android">Sync an Obsidian vault with Git on Android</a>. GitSync.md is on <a href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener">Google Play</a>.</p>
+        <p>Teams on GitLab can do the same with <a href="/blog/obsidian-gitlab-sync">Obsidian and GitLab</a>. GitSync.md also supports Bitbucket, Gitea and Forgejo remotes.</p>
+
+        <h2 id="token-trap">The token trap for collaborators</h2>
+        <p>The owner’s setup usually works with a fine-grained token scoped to their own repository. A collaborator who copies that approach hits a wall. GitHub’s <a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens" target="_blank" rel="noopener">documentation on personal access tokens</a> lists this among the limitations of fine-grained tokens:</p>
+        <blockquote><p>“Using fine-grained personal access token to contribute to repositories where the user is an outside or repository collaborator.”</p></blockquote>
+        <p>In other words, on someone else’s personal repository, a fine-grained token isn’t the right tool. Pick one of these:</p>
+        <ul>
+          <li><strong>Sign in with GitHub</strong> in GitSync.md instead of pasting a token.</li>
+          <li><strong>Use a classic personal access token</strong> with repository access.</li>
+          <li><strong>Move the repo into a GitHub organization</strong> (the owner’s call), which also gives you finer roles.</li>
+        </ul>
+        <p><a href="/tools/github-token-generator">The token link generator</a> builds a fine-grained link for repositories <em>you own</em>; don’t use it for a repo someone else owns.</p>
+
+        <h2 id="ignore">What to commit and ignore in a shared vault</h2>
+        <p>Obsidian writes window layout to <code>.obsidian/workspace.json</code> and <code>.obsidian/workspace-mobile.json</code>. Every person’s copy differs, so committing them makes noise and conflicts. Add <code>.obsidian/workspace*.json</code> to <code>.gitignore</code>. Plugin settings that differ per person can be ignored too, while settings you want everyone to share can stay. Use <a href="/tools/obsidian-gitignore-generator">the .gitignore generator</a> and read <a href="/blog/obsidian-gitignore">the Obsidian .gitignore guide</a>. If a workspace file is already tracked, ignoring it doesn’t remove it; the guide covers that.</p>
+
+        <h2 id="rules">House rules that prevent conflicts</h2>
+        <p>Git can merge edits to different parts of a note. Per <a href="https://git-scm.com/docs/git-merge" target="_blank" rel="noopener">the git-merge documentation</a>, when two sides change the same lines, Git stops and leaves a conflict for a person to resolve. These habits keep that rare:</p>
+        <ul>
+          <li><strong>Pull before you edit</strong>, every time you open the vault.</li>
+          <li><strong>Commit and push small and often</strong>, so the window for overlap stays short.</li>
+          <li><strong>One folder per person for drafts.</strong> Move finished notes into the shared area.</li>
+          <li><strong>Keep <code>.obsidian/workspace*.json</code> out of the repo.</strong></li>
+          <li><strong>Don’t edit the same note at the same time.</strong> Say so in chat when you take a note.</li>
+          <li><strong>Resolve conflicts; don’t force-push</strong> over a teammate’s work.</li>
+        </ul>
+
+        <h2 id="conflicts">When a conflict happens</h2>
+        <p>Pull, find the files Git marks, and keep one version or combine both by hand. On iPhone and iPad, GitSync.md’s Conflict Center lets you choose ours, theirs or an edited result; <a href="/blog/obsidian-git-merge-conflicts-iphone">the conflict guide</a> walks through it. To compare two versions of a note, paste them into <a href="/tools/markdown-diff">the Markdown diff tool</a>.</p>
+
+        <h2 id="read-only">Read-only sharing</h2>
+        <p>If others only need to read the notes, you don’t need collaborators. <a href="/blog/publish-obsidian-quartz-iphone">Publish the vault as a website</a> instead.</p>
+
+        <h2 id="faq">FAQ</h2>
+        <h3>Can two people edit the same note at the same time?</h3>
+        <p>Not live. Git has no co-editing or presence. Each person edits a local copy and syncs through commits. Edits to different parts of a note usually merge; edits to the same lines need a manual resolution.</p>
+        <h3>Does everyone need Obsidian Sync?</h3>
+        <p>For Obsidian’s shared vaults, yes: Obsidian’s help says all collaborators must have an active Sync subscription. With a GitHub repository, they don’t; each person needs a GitHub account and a Git client.</p>
+        <h3>Can I share only one folder?</h3>
+        <p>Not with one repo. Git shares the whole repository, and collaborators on a personal repo can read and write all of it. Keep the shared part in a separate vault or repo.</p>
+        <h3>Is the repo private?</h3>
+        <p>Only if you make it so. Choose <strong>Private</strong> when creating it, and only invited people can see it.</p>
+        <h3>What if a collaborator can’t push?</h3>
+        <p>Check that they accepted the invitation and aren’t using a fine-grained token; see <a href="#token-trap">the token trap</a>.</p>
+
+        <div class="related-card">
+          <p>Weighing paid Sync against Git for your group?</p>
+          <a href="/compare/obsidian-sync-alternatives">Obsidian Sync alternatives compared →</a>
+        </div>
+      </article>
+    </div>
+
+  <section class="content-download" aria-labelledby="download-heading">
+    <div class="shell content-download-layout">
+      <div>
+        <p class="eyebrow"><span class="blue-square" aria-hidden="true"></span>Take your work with you.</p>
+        <h2 id="download-heading">REAL GIT.<br>WITHIN REACH.</h2>
+        <p class="content-download-description">Your files. Your commits. Your remote.<br>Get GitSync.md for iPhone, iPad, and Android.</p>
+      </div>
+      <div>
+        <div class="store-links" role="group" aria-label="Download GitSync.md">
+          <a class="store-badge store-badge-apple" href="/v/web-homepage-108" target="_blank" rel="noopener"><img src="../assets/store-badges/download-on-app-store.svg" width="120" height="40" alt="Download GitSync.md on the App Store" decoding="async"></a>
+          <a class="store-badge store-badge-google" href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener"><img src="../assets/store-badges/get-it-on-google-play.png" width="646" height="250" alt="Get GitSync.md on Google Play" decoding="async"></a>
+        </div>
+        <p class="purchase-note"><span>iPhone + iPad: $9.99 once. Unlimited repositories.</span><span>Android: $9.99 once. All features included.</span><span>No subscriptions.</span></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="shell footer-layout">
+    <a class="brand" href="/" aria-label="GitSync.md home">gitsync<span class="brand-extension">.md</span></a>
+    <p>Independently built by <a href="https://codybontecou.com" target="_blank" rel="noopener">Cody Bontecou</a>.<br>© 2026 GitSync.md</p>
+    <div class="footer-links"><a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener">Source</a><a href="/blog/">Guides</a><a href="/compare/obsidian-sync-vs-git">Compare</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
+    <a class="back-top" href="#top" aria-label="Back to top">↑</a>
+  </div>
+</footer>
+<!-- Cloudflare Web Analytics -->
+<script>
+(function () {
+  var productionHosts = {
+    'instareply.isolated.tech': true,
+    'voxboard.isolated.tech': true,
+    'healthmd.isolated.tech': true,
+    'isome.isolated.tech': true,
+    'gitsyncmd.app': true,
+    'gitsync.md': true,
+    'timemd.isolated.tech': true,
+    'imghost.isolated.tech': true
+  };
+
+  if (!productionHosts[window.location.hostname]) {
+    return;
+  }
+
+  function loadCloudflareBeacon() {
+    if (document.querySelector('script[src="https://static.cloudflareinsights.com/beacon.min.js"]')) {
+      return;
+    }
+
+    var script = document.createElement('script');
+    script.defer = true;
+    script.src = 'https://static.cloudflareinsights.com/beacon.min.js';
+    script.setAttribute('data-cf-beacon', '{"token":"090f363070334cddad5c5cc1509b8807"}');
+    document.head.appendChild(script);
+  }
+
+  fetch('https://img-host.costream.workers.dev/analytics-gate', {
+    cache: 'no-store',
+    mode: 'cors',
+    credentials: 'omit'
+  })
+    .then(function (response) {
+      return response.ok ? response.json() : { track: false };
+    })
+    .then(function (gate) {
+      if (gate && gate.track) {
+        loadCloudflareBeacon();
+      }
+    })
+    .catch(function () {
+      // Fail closed so excluded IPs are not accidentally tracked.
+    });
+})();
+</script>
+<!-- End Cloudflare Web Analytics -->
+</body>
+</html>
