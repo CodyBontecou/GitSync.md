@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../favicon-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<title>Obsidian Frontmatter Checker: Validate Properties and YAML</title>
+<meta name="description" content="Free Obsidian frontmatter checker that runs in your browser: paste a note to see each property’s type, find what makes properties invalid, and copy a corrected YAML block.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Cody Bontecou">
+<meta name="theme-color" content="#ffffff">
+<link rel="canonical" href="https://gitsync.md/tools/obsidian-frontmatter-checker">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="GitSync.md">
+<meta property="og:title" content="Obsidian Frontmatter Checker: Validate Properties and YAML">
+<meta property="og:description" content="Free Obsidian frontmatter checker that runs in your browser: paste a note to see each property’s type, find what makes properties invalid, and copy a corrected YAML block.">
+<meta property="og:url" content="https://gitsync.md/tools/obsidian-frontmatter-checker">
+<meta property="og:image" content="https://gitsync.md/social/blog/obsidian-frontmatter-checker.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:alt" content="GitSync.md free tool card: Obsidian frontmatter checker">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Obsidian Frontmatter Checker: Validate Properties and YAML">
+<meta name="twitter:description" content="Free Obsidian frontmatter checker that runs in your browser: paste a note to see each property’s type, find what makes properties invalid, and copy a corrected YAML block.">
+<meta name="twitter:image" content="https://gitsync.md/social/blog/obsidian-frontmatter-checker.png">
+<meta name="twitter:image:alt" content="GitSync.md free tool card: Obsidian frontmatter checker">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Obsidian frontmatter checker",
+  "description": "Free Obsidian frontmatter checker that runs in your browser: paste a note to see each property’s type, find what makes properties invalid, and copy a corrected YAML block.",
+  "url": "https://gitsync.md/tools/obsidian-frontmatter-checker",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Any (runs in a web browser)",
+  "browserRequirements": "Requires JavaScript",
+  "isAccessibleForFree": true,
+  "inLanguage": "en",
+  "datePublished": "2026-11-28",
+  "dateModified": "2026-11-28",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Person",
+    "name": "Cody Bontecou",
+    "url": "https://gitsync.md/about"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Cody Bontecou"
+  }
+}
+</script>
+<link rel="stylesheet" href="../site.css">
+<link rel="stylesheet" href="../content.css">
+<link rel="stylesheet" href="../comparison.css">
+<style>
+.calc { background: var(--surface); border: 2px solid var(--line); padding: 25px 28px; margin-bottom: 39px; }
+.calc .field-label { display: block; font-weight: 650; font-size: 16px; line-height: 24px; margin-bottom: 8px; }
+.calc textarea { width: 100%; padding: 8px 12px; font-family: var(--mono); font-size: 16px; line-height: 1.5; color: var(--ink); background: var(--paper); border: 2px solid var(--line); border-radius: 8px; box-sizing: border-box; resize: vertical; }
+.calc .hint { display: block; font-size: 14px; line-height: 20px; color: var(--muted); margin-top: 6px; }
+.calc .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-block: 12px 8px; align-items: center; }
+.calc .tool-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; min-width: 48px; padding: 0 22px; border: 0; border-radius: 999px; background: var(--ink); color: var(--paper); font: 600 16px/1.2 var(--sans); cursor: pointer; }
+.calc .tool-btn.secondary { background: var(--paper); color: var(--ink); border: 2px solid var(--ink); }
+.calc .tool-btn:focus-visible, .calc textarea:focus-visible, .calc [role=tab]:focus-visible, .calc input:focus-visible + .tool-btn, .calc .md-out:focus-visible, .calc .changes-scroll:focus-visible { outline: 3px solid var(--blue-deep); outline-offset: 2px; }
+.calc .status { min-height: 24px; font-size: 15px; color: var(--muted); margin: 4px 0; }
+.visually-hidden-input { position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; }
+.check-line { display: flex; align-items: center; gap: 10px; min-height: 44px; font-size: 16px; }
+.check-line input { width: 20px; height: 20px; accent-color: var(--blue-deep); }
+.changes-scroll { overflow-x: auto; border: 2px solid var(--line); border-radius: 8px; background: var(--paper); }
+.changes-scroll table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: 15px; line-height: 1.5; }
+.changes-scroll th, .changes-scroll td { text-align: left; vertical-align: top; padding: 8px 12px; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+.changes-scroll th { background: var(--surface); }
+.changes-scroll th:first-child, .changes-scroll td:first-child { white-space: nowrap; }
+.changes-scroll th:nth-child(2), .changes-scroll td:nth-child(2) { min-width: 150px; }
+.table-scroll { overflow-x: auto; margin-block: 16px 24px; }
+.table-scroll th[scope=row] { min-width: 170px; }
+.table-scroll table { border-collapse: collapse; min-width: 760px; font-size: 15px; line-height: 1.6; }
+.table-scroll th, .table-scroll td { border: 1px solid var(--line); padding: 8px 12px; text-align: left; vertical-align: top; }
+.table-scroll thead th { background: var(--surface); }
+@media (max-width: 960px) { .tool-layout > .guide-aside { order: 3; margin-block: 32px 0; } .calc { padding: 20px 14px; } }
+.problems { list-style: none; margin: 0 0 8px; padding: 0; }
+.problems li { border: 2px solid var(--line); border-left-width: 8px; border-radius: 8px; padding: 8px 12px; margin-bottom: 8px; font-size: 16px; line-height: 1.5; overflow-wrap: anywhere; background: var(--paper); }
+.problems li.sev-error { border-left-color: #c1121f; } .problems li.sev-warning { border-left-color: #b26a00; } .problems li.sev-info { border-left-color: var(--blue-deep); }
+.problems .sev { font-weight: 700; } .problems .meta { display: block; font-size: 14px; color: var(--muted); }
+.calc textarea.out { white-space: pre; overflow: auto; }
+.summary { font-weight: 650; }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://gitsync.md/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Guides",
+      "item": "https://gitsync.md/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Obsidian frontmatter checker",
+      "item": "https://gitsync.md/tools/obsidian-frontmatter-checker"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Does this upload my note?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The page has no external scripts and makes no network requests while you use it. Pasted text is read in your browser and is not saved."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I use JSON frontmatter in Obsidian?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Obsidian Help says JSON frontmatter is valid: Obsidian reads it and saves it as YAML. Paste it here to see the YAML equivalent."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why is my tag invalid?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Obsidian Help says a tag can’t contain spaces, needs at least one non-numeric character (1984 is invalid, y1984 is valid), and can use letters, numbers, underscores, hyphens and forward slashes for nesting."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does Obsidian support nested properties?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Obsidian Help lists nested properties under Not supported: they aren’t shown in the Properties view. The checker flags them as a warning, not an error."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body id="top">
+<a class="skip-link" href="#main">Skip to content</a>
+<svg class="icon-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 5l7 7-7 7"/></symbol>
+  <symbol id="i-branch" viewBox="0 0 24 24"><circle cx="6" cy="5" r="2.5"/><circle cx="6" cy="19" r="2.5"/><circle cx="18" cy="5" r="2.5"/><path d="M6 7.5v9M18 7.5v1a5 5 0 0 1-5 5H6"/></symbol>
+  <symbol id="i-external" viewBox="0 0 24 24"><path d="M6 18 18 6M6 6h12v12"/></symbol>
+</svg>
+
+<header class="site-header">
+  <nav class="shell navigation" aria-label="Main navigation">
+    <a class="brand" href="/" aria-label="GitSync.md home">gitsync<span class="brand-extension">.md</span></a>
+    <div class="nav-links"><a href="/#app">The app</a><a href="/#workflow">How it works</a><a href="/blog/" class="is-active">Guides</a><a href="/compare/obsidian-sync-vs-git">Compare</a><a href="/#faq">FAQ</a></div>
+    <a class="button button-small" href="/#download">Get the app</a>
+  </nav>
+</header>
+
+<main id="main">
+  <div class="container guide-layout tool-layout">
+      <header class="article-hero">
+        <div class="article-title"><nav class="eyebrow article-breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li><a href="/blog/">Guides</a></li><li aria-current="page">Obsidian frontmatter checker</li></ol></nav>
+      <h1>Obsidian frontmatter checker</h1>
+      <p class="subtitle">Paste a note, or just its <code>---</code> block, to check its properties the way Obsidian reads them. It shows each property’s type, explains what is wrong and gives you a corrected block. It is free, runs in your browser and uploads nothing.</p>
+      <div class="meta-line"><time datetime="2026-11-28">November 28, 2026</time><span>By <a href="/about" rel="author">Cody Bontecou</a></span><span>Free tool · Runs in your browser</span></div>
+    </div>
+      </header>
+      <aside class="guide-aside" aria-label="Tool sidebar">
+        <div class="guide-aside-sticky">
+        <nav class="toc-card" aria-label="Page outline"><div class="toc-title">On this page</div><ol><li><a href="#tool">The checker</a></li><li><a href="#syntax">Frontmatter syntax, in short</a></li><li><a href="#default">Default and deprecated properties</a></li><li><a href="#wrong-type">Why a property shows the wrong type</a></li><li><a href="#git">Frontmatter and Git sync</a></li><li><a href="#phone">Edit properties on iPhone and iPad</a></li><li><a href="#faq">FAQ</a></li><li><a href="#sources">Sources</a></li></ol></nav>
+        <div class="aside-cta aside-cta-wide">
+          <p class="aside-cta-title">Keep your Obsidian vault, properties included, in sync with Git on iPhone, iPad and Android with GitSync.md.</p>
+          <p class="aside-cta-price">iPhone + iPad: $9.99 once · No subscription</p>
+          <a class="aside-cta-button" href="/v/web-homepage-140" target="_blank" rel="noopener">Download on the App Store</a>
+          <p class="aside-cta-price">On Android? <a href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener">Get it on Google Play</a>.</p>
+        </div>
+        </div>
+      </aside>
+      <article class="article-body">
+        <p><strong>Short answer:</strong> paste your note below. The checker lists every property it finds with the type Obsidian would give it, then lists each problem with its line number and a one-sentence fix. <strong>Everything runs in this page. Nothing is uploaded, and your text is not saved.</strong></p>
+
+        <section class="calc" id="tool" aria-labelledby="tool-heading">
+          <h2 id="tool-heading" style="margin-top:0">Check a note</h2>
+          <label class="field-label" for="fm-src">Note or frontmatter block</label>
+          <textarea id="fm-src" rows="12" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" placeholder="---&#10;title: My note&#10;tags:&#10;  - journal&#10;---"></textarea>
+          <span class="hint">Paste the whole note or only the part between the <code>---</code> lines. Line numbers below count from the first line you pasted.</span>
+          <div class="actions">
+            <button type="button" class="tool-btn secondary" id="fm-example">Load example</button>
+            <button type="button" class="tool-btn secondary" id="fm-clear">Clear</button>
+          </div>
+          <p class="status summary" id="fm-summary" aria-live="polite"></p>
+
+          <h3>Properties found</h3>
+          <div class="changes-scroll" tabindex="0" role="region" aria-label="Properties found">
+            <table id="fm-table"><thead><tr><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Value</th></tr></thead><tbody id="fm-rows"></tbody></table>
+          </div>
+
+          <h3>Problems</h3>
+          <ol class="problems" id="fm-problems" aria-live="polite"></ol>
+
+          <h3>Corrected frontmatter</h3>
+          <textarea id="fm-out" class="out" readonly rows="10" spellcheck="false" aria-label="Corrected frontmatter"></textarea>
+          <p class="hint">Only the problems marked “fixed in the corrected block” are changed. Everything else stays exactly as you wrote it.</p>
+          <div class="actions"><button type="button" class="tool-btn" id="fm-copy">Copy</button></div>
+          <p class="status" id="fm-copy-status" aria-live="polite"></p>
+        </section>
+
+        <h2 id="syntax">Obsidian frontmatter syntax, in short</h2>
+        <p>Frontmatter is a block at the very top of the note: a <code>---</code> line on line 1, one <code>name: value</code> property per line, then a closing <code>---</code> line. Each property has a name, a colon and a space, then the value. Obsidian’s <a href="https://obsidian.md/help/properties" target="_blank" rel="noopener">Properties</a> help page lists seven types:</p>
+        <div class="table-scroll" tabindex="0" role="region" aria-label="Property types and examples">
+        <table>
+          <thead><tr><th scope="col">Type</th><th scope="col">Example</th><th scope="col">Notes</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Text</th><td><code>title: A new hope</code></td><td>Put an internal link in quotes: <code>link: "[[Note]]"</code>.</td></tr>
+            <tr><th scope="row">List</th><td><pre><code>cast:
+  - Mark Hamill
+  - "[[Carrie Fisher]]"</code></pre></td><td>One value per line, each starting with <code>- </code>. Quote links inside lists too.</td></tr>
+            <tr><th scope="row">Number</th><td><code>year: 1977</code></td><td></td></tr>
+            <tr><th scope="row">Checkbox</th><td><code>favorite: true</code></td><td>Write <code>true</code> or <code>false</code>.</td></tr>
+            <tr><th scope="row">Date</th><td><code>date: 2020-08-21</code></td><td>Format <code>YYYY-MM-DD</code>.</td></tr>
+            <tr><th scope="row">Date &amp; time</th><td><code>time: 2020-08-21T10:30:00</code></td><td>Format <code>YYYY-MM-DDTHH:mm:ss</code>.</td></tr>
+            <tr><th scope="row">Tags</th><td><pre><code>tags:
+  - journal
+  - project/alpha</code></pre></td><td>A list, with no <code>#</code> and no spaces. See the <a href="https://obsidian.md/help/tags" target="_blank" rel="noopener">Tags</a> help page.</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <p>Obsidian also accepts JSON frontmatter (a <code>{ … }</code> object) and saves it as YAML. Indent with spaces: the <a href="https://yaml.org/spec/1.2.2/" target="_blank" rel="noopener">YAML spec</a> doesn’t allow tabs for indentation, and it says a <code>#</code> starts a comment, which is why <code>- #tag</code> in a list is read as an empty item. Nested properties (a property inside a property) are listed under Not supported in the Properties help, so Obsidian doesn’t show them in the Properties view.</p>
+        <p>To see how a note’s Properties block looks once rendered, use the <a href="/tools/markdown-preview">Markdown preview</a>.</p>
+
+        <h2 id="default">Default and deprecated properties</h2>
+        <p>Obsidian gives three property names a special meaning: <code>tags</code>, <code>aliases</code> and <code>cssclasses</code>, and all three are lists. The older single-word names <code>tag</code>, <code>alias</code> and <code>cssclass</code> are deprecated: the Properties help page says support for them as default properties ends in Obsidian 1.9, so use <code>tags</code>, <code>aliases</code> and <code>cssclasses</code>.</p>
+        <p>Obsidian Publish reserves five names: <code>publish</code>, <code>permalink</code>, <code>description</code>, <code>image</code> and <code>cover</code>. The checker lists them as information only. If you publish with Quartz instead, it reads <code>draft</code> and <code>publish</code> from frontmatter: see <a href="/blog/publish-obsidian-quartz-iphone">publish an Obsidian vault as a website</a>.</p>
+
+        <h2 id="wrong-type">Why a property shows the wrong type</h2>
+        <p>In Obsidian, every property with the same name shares one type across the vault. If a note has a value that doesn’t fit that type, it looks wrong in the Properties view: a date written as <code>21/08/2020</code> is Text, not a Date, and <code>True</code> or <code>yes</code> may not be a checkbox. Check the shape of the value first: the checker flags the look-alikes. Then check whether another note already gave that property name a different type.</p>
+
+        <h2 id="git">Frontmatter and Git sync</h2>
+        <p>Properties are plain lines at the top of a <code>.md</code> file, so Git commits and diffs them like the rest of the note, line by line. That also means they conflict like any other line. Per the <a href="https://git-scm.com/docs/git-merge" target="_blank" rel="noopener">git merge documentation</a>, a conflict happens when both sides change the same lines. If two devices change the same property line, for example when a plugin rewrites a modified-date property on every edit, you get a merge conflict on that line.</p>
+        <p>To see exactly which property lines changed between two versions, paste both into the <a href="/tools/markdown-diff">Markdown diff</a>. To resolve a conflict that has already happened, follow <a href="/blog/obsidian-git-merge-conflicts-iphone">resolve Obsidian Git merge conflicts on iPhone</a>. If you want device-specific files out of the repository, the <a href="/tools/obsidian-gitignore-generator">Obsidian .gitignore generator</a> writes the rules.</p>
+
+        <h2 id="phone">Edit properties on iPhone and iPad</h2>
+        <p>A note is just a Markdown file, so a Git-backed vault on iPhone keeps the same frontmatter as on your computer. The setup is in <a href="/blog/obsidian-git-iphone-ipad">Obsidian Git on iPhone and iPad</a>.</p>
+        <p>Keep your Obsidian vault, properties included, in sync with Git on iPhone, iPad and Android with GitSync.md: <a href="/v/web-homepage-140" target="_blank" rel="noopener">Download on the App Store</a> · <a href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener">Get it on Google Play</a>.</p>
+
+        <h2 id="faq">Frequently asked questions</h2>
+        <h3>Does this upload my note?</h3>
+        <p>No. The page has no external scripts and makes no network requests while you use it. Pasted text is read in your browser and is not saved.</p>
+        <h3>Can I use JSON frontmatter in Obsidian?</h3>
+        <p>Yes. Obsidian Help says JSON frontmatter is valid: Obsidian reads it and saves it as YAML. Paste it here to see the YAML equivalent.</p>
+        <h3>Why is my tag invalid?</h3>
+        <p>Obsidian Help says a tag can’t contain spaces, needs at least one non-numeric character (1984 is invalid, y1984 is valid), and can use letters, numbers, underscores, hyphens and forward slashes for nesting.</p>
+        <h3>Does Obsidian support nested properties?</h3>
+        <p>Obsidian Help lists nested properties under Not supported: they aren’t shown in the Properties view. The checker flags them as a warning, not an error.</p>
+
+        <h2 id="sources">Sources</h2>
+        <p>Updated <time datetime="2026-11-28">November 28, 2026</time>. Every rule in the checker comes from one of these:</p>
+        <ul>
+          <li><a href="https://obsidian.md/help/properties" target="_blank" rel="noopener">Obsidian Help, Properties</a> (types, format examples, default, Publish and deprecated properties, Not supported)</li>
+          <li><a href="https://obsidian.md/help/tags" target="_blank" rel="noopener">Obsidian Help, Tags</a> (tag characters, the numbers-only rule, nesting, case-insensitivity, the YAML list form)</li>
+          <li><a href="https://yaml.org/spec/1.2.2/" target="_blank" rel="noopener">YAML 1.2 specification</a> (no tab indentation, <code>#</code> starts a comment, unique keys)</li>
+          <li><a href="https://git-scm.com/docs/git-merge" target="_blank" rel="noopener">Git documentation, git-merge</a> (conflicts happen when both sides change the same lines)</li>
+        </ul>
+
+        <div class="related-card"><h2 id="next">Related</h2><ul>
+          <li><a href="/tools/markdown-preview">Markdown preview for GitHub and Obsidian</a></li>
+          <li><a href="/tools/markdown-diff">Markdown diff: compare two versions of a note</a></li>
+          <li><a href="/blog/obsidian-git-merge-conflicts-iphone">Resolve Obsidian Git merge conflicts on iPhone</a></li>
+          <li><a href="/blog/publish-obsidian-quartz-iphone">Publish an Obsidian vault as a website</a></li>
+          <li><a href="/blog/obsidian-git-iphone-ipad">Obsidian Git on iPhone and iPad</a></li>
+          <li><a href="/tools/obsidian-gitignore-generator">Obsidian .gitignore generator</a></li>
+        </ul></div>
+
+        <div class="related-card">
+          <h2 style="margin-top:0">Keep your vault, properties included, in sync</h2>
+          <p><a href="/v/web-homepage-140" target="_blank" rel="noopener">Download on the App Store</a> · <a href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener">Get it on Google Play</a></p>
+        </div>
+  </article>
+    </div>
+  <section class="content-download" aria-labelledby="download-heading">
+    <div class="shell content-download-layout">
+      <div>
+        <p class="eyebrow"><span class="blue-square" aria-hidden="true"></span>Take your work with you.</p>
+        <h2 id="download-heading">REAL GIT.<br>WITHIN REACH.</h2>
+        <p class="content-download-description">Your files. Your commits. Your remote.<br>Get GitSync.md for iPhone, iPad, and Android.</p>
+      </div>
+      <div>
+        <div class="store-links" role="group" aria-label="Download GitSync.md">
+          <a class="store-badge store-badge-apple" href="/v/web-homepage-135" target="_blank" rel="noopener"><img src="../assets/store-badges/download-on-app-store.svg" width="120" height="40" alt="Download GitSync.md on the App Store" decoding="async"></a>
+          <a class="store-badge store-badge-google" href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener"><img src="../assets/store-badges/get-it-on-google-play.png" width="646" height="250" alt="Get GitSync.md on Google Play" decoding="async"></a>
+        </div>
+        <p class="purchase-note"><span>iPhone + iPad: free to download, $9.99 once to unlock.</span><span>Android: $9.99 once. All features included.</span><span>No subscriptions.</span></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="shell footer-layout">
+    <a class="brand" href="/" aria-label="GitSync.md home">gitsync<span class="brand-extension">.md</span></a>
+    <p>Independently built by <a href="https://codybontecou.com" target="_blank" rel="noopener">Cody Bontecou</a>.<br>© 2026 GitSync.md</p>
+    <div class="footer-links"><a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener">Source</a><a href="/blog/">Guides</a><a href="/compare/obsidian-sync-vs-git">Compare</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
+    <a class="back-top" href="#top" aria-label="Back to top">↑</a>
+  </div>
+</footer>
+
+<script>
+/* Obsidian frontmatter checker. Runs locally: no network requests, nothing stored.
+   Rules follow Obsidian Help (Properties, Tags), the YAML 1.2 spec (no tab indentation,
+   "#" starts a comment, unique keys) and nothing else. The parser is a narrow one for the
+   subset Obsidian documents: top-level "name: value" lines, "- item" lists, flow lists and JSON.
+   Tests: scripts/tests/obsidian-frontmatter-checker.test.mjs. */
+var FmCheck = (function () {
+  "use strict";
+
+  var LIST_PROPS = { tags: 1, aliases: 1, cssclasses: 1 };
+  var DEPRECATED = { tag: "tags", alias: "aliases", cssclass: "cssclasses" };
+  var PUBLISH = { publish: 1, permalink: 1, description: 1, image: 1, cover: 1 };
+  var SRC = {
+    props: "Obsidian Help: Properties",
+    tags: "Obsidian Help: Tags",
+    yaml: "YAML 1.2 spec"
+  };
+
+  var SAMPLE = [
+    "---",
+    "title:Weekly review",
+    "date: 21/08/2020",
+    "reviewed: 2020-08-21 10:30",
+    "published: yes",
+    "tag: project/alpha, my notes, 1984",
+    "related: [[Meeting notes]]",
+    "status: draft",
+    "status: done",
+    "aliases: Review",
+    "cssclasses:",
+    "\t- wide",
+    "---",
+    "",
+    "# Weekly review",
+    ""
+  ].join("\n");
+
+  function has(o, k) { return Object.prototype.hasOwnProperty.call(o, k); }
+  function isBlank(l) { return /^\s*$/.test(l); }
+  function isComment(l) { return /^\s*#/.test(l); }
+  function isFence(l) { return /^---[ \t]*$/.test(l); }
+
+  function validDate(y, m, d) {
+    if (m < 1 || m > 12 || d < 1) return false;
+    var dim = [31, (y % 4 === 0 && y % 100 !== 0) || y % 400 === 0 ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    return d <= dim[m - 1];
+  }
+  function pad(n, w) { n = String(n); while (n.length < w) n = "0" + n; return n; }
+
+  function stripComment(v) {
+    var q = null, i, c;
+    for (i = 0; i < v.length; i++) {
+      c = v.charAt(i);
+      if (q) {
+        if (c === "\\" && q === '"') i++;
+        else if (c === q) q = null;
+      } else if ((c === '"' || c === "'") && (i === 0 || /[\s\[{,]/.test(v.charAt(i - 1)))) q = c;
+      else if (c === "#" && (i === 0 || /\s/.test(v.charAt(i - 1)))) return v.slice(0, i).replace(/\s+$/, "");
+    }
+    return v.replace(/\s+$/, "");
+  }
+  function isQuoted(v) {
+    return v.length >= 2 && ((v.charAt(0) === '"' && v.charAt(v.length - 1) === '"') || (v.charAt(0) === "'" && v.charAt(v.length - 1) === "'"));
+  }
+  function unquote(v) {
+    if (!isQuoted(v)) return v;
+    var inner = v.slice(1, -1);
+    return v.charAt(0) === '"' ? inner.replace(/\\(["\\])/g, "$1") : inner.replace(/''/g, "'");
+  }
+  function dq(v) { return '"' + v.replace(/\\/g, "\\\\").replace(/"/g, '\\"') + '"'; }
+
+  function splitFlow(inner) {
+    var out = [], depth = 0, q = null, cur = "", i, c;
+    for (i = 0; i < inner.length; i++) {
+      c = inner.charAt(i);
+      if (q) { cur += c; if (c === "\\" && q === '"') { cur += inner.charAt(++i); } else if (c === q) q = null; continue; }
+      if (c === '"' || c === "'") { q = c; cur += c; continue; }
+      if (c === "[" || c === "{") depth++;
+      if (c === "]" || c === "}") depth--;
+      if (c === "," && depth === 0) { out.push(cur); cur = ""; continue; }
+      cur += c;
+    }
+    if (cur.trim() !== "" || out.length) out.push(cur);
+    return out.map(function (s) { return s.trim(); }).filter(function (s) { return s !== ""; });
+  }
+
+  // Date look-alikes. Returns {fix: string|null, kind}. Only exact documented shapes count as dates.
+  function classifyScalar(v) {
+    var m;
+    if (v === "true" || v === "false") return { type: "Checkbox" };
+    if (/^-?\d+(\.\d+)?$/.test(v)) return { type: "Number" };
+    if ((m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(v))) {
+      if (validDate(+m[1], +m[2], +m[3])) return { type: "Date" };
+      return { type: "Text", badDate: true };
+    }
+    if ((m = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})$/.exec(v))) {
+      if (validDate(+m[1], +m[2], +m[3]) && +m[4] < 24 && +m[5] < 60 && +m[6] < 60) return { type: "Date & time" };
+      return { type: "Text", badDate: true };
+    }
+    return { type: "Text", look: dateLookalike(v) };
+  }
+  function dateLookalike(v) {
+    var m, y, mo, d, a, b;
+    if ((m = /^(\d{1,2})([\/.-])(\d{1,2})\2(\d{4})$/.exec(v))) {
+      a = +m[1]; b = +m[3]; y = +m[4];
+      if (a > 12 && b <= 12) { d = a; mo = b; } else if (b > 12 && a <= 12) { mo = a; d = b; } else if (a === b && a <= 12) { d = a; mo = b; } else return { fix: null };
+      return validDate(y, mo, d) ? { fix: pad(y, 4) + "-" + pad(mo, 2) + "-" + pad(d, 2) } : { fix: null };
+    }
+    if ((m = /^(\d{4})([\/.-])(\d{1,2})\2(\d{1,2})$/.exec(v))) {
+      y = +m[1]; mo = +m[3]; d = +m[4];
+      return validDate(y, mo, d) ? { fix: pad(y, 4) + "-" + pad(mo, 2) + "-" + pad(d, 2) } : { fix: null };
+    }
+    if ((m = /^(\d{4})-(\d{2})-(\d{2})[ T](\d{2}):(\d{2})(?::(\d{2}))?$/.exec(v))) {
+      if (validDate(+m[1], +m[2], +m[3]) && +m[4] < 24 && +m[5] < 60 && (m[6] === undefined || +m[6] < 60)) {
+        return { fix: m[1] + "-" + m[2] + "-" + m[3] + "T" + m[4] + ":" + m[5] + ":" + (m[6] === undefined ? "00" : m[6]), time: true };
+      }
+    }
+    return null;
+  }
+
+  var KEY_RE = /^((?!-(?:\s|$))[^\s:#'"\[\]{}&*!|>%@`,?][^:]*?)[ \t]*:(?:[ \t]+(.*)|[ \t]*)$/;
+  var QKEY_RE = /^("(?:[^"\\]|\\.)*"|'(?:[^']|'')*')[ \t]*:(?:[ \t]+(.*)|[ \t]*)$/;
+  var NOSPACE_RE = /^((?!-(?:\s|$))[^\s:#'"\[\]{}&*!|>%@`,?][^:]*?)[ \t]*:(\S.*)$/;
+
+  function parseKeyLine(l) {
+    var m = KEY_RE.exec(l);
+    if (m) return { keyRaw: m[1], name: m[1], rest: m[2] === undefined ? "" : m[2] };
+    m = QKEY_RE.exec(l);
+    if (m) return { keyRaw: m[1], name: unquote(m[1]), rest: m[2] === undefined ? "" : m[2] };
+    return null;
+  }
+  function parseNoSpace(l) {
+    var m = NOSPACE_RE.exec(l);
+    return m ? { keyRaw: m[1], name: m[1], rest: m[2] } : null;
+  }
+  function fitsBlock(l) {
+    return isBlank(l) || isComment(l) || /^\s/.test(l) || /^-(\s|$)/.test(l) || !!parseKeyLine(l) || !!parseNoSpace(l);
+  }
+
+  function locate(lines) {
+    var first = -1, i, j, k;
+    for (i = 0; i < lines.length; i++) if (!isBlank(lines[i])) { first = i; break; }
+    if (first < 0) return null;
+    var start = -1, offTop = false;
+    if (isFence(lines[first])) { start = first; offTop = first > 0; }
+    else {
+      for (j = first; j < lines.length; j++) {
+        if (!isFence(lines[j])) continue;
+        var nxt = lines[j + 1];
+        if (nxt !== undefined && (parseKeyLine(nxt) || parseNoSpace(nxt) || /^\s*\{/.test(nxt))) {
+          for (k = j + 2; k < lines.length; k++) if (isFence(lines[k])) { start = j; offTop = true; break; }
+        }
+        break;
+      }
+    }
+    var end = -1, closed = false;
+    if (start >= 0) {
+      for (i = start + 1; i < lines.length; i++) if (isFence(lines[i])) { end = i; closed = true; break; }
+      if (!closed) {
+        end = lines.length;
+        for (i = start + 1; i < lines.length; i++) if (isBlank(lines[i]) || !fitsBlock(lines[i])) { end = i; break; }
+      }
+      return { start: start, end: end, closed: closed, fences: true, offTop: offTop, from: start + 1 };
+    }
+    // No fences at all: pasted properties or JSON only.
+    var t = lines.join("\n").trim();
+    if (/^\{[\s\S]*\}$/.test(t)) return { start: -1, end: lines.length, closed: false, fences: false, from: first, bare: true };
+    var seenKey = false;
+    for (i = first; i < lines.length; i++) {
+      if (!fitsBlock(lines[i])) return null;
+      if (parseKeyLine(lines[i]) || parseNoSpace(lines[i])) seenKey = true;
+    }
+    if (!seenKey || !(parseKeyLine(lines[first]) || parseNoSpace(lines[first]))) return null;
+    return { start: -1, end: lines.length, closed: false, fences: false, from: first, bare: true };
+  }
+
+  function yamlValue(v, indent) {
+    var pad2 = new Array(indent + 1).join(" ");
+    function scalar(x) {
+      if (x === null) return "";
+      if (typeof x === "number" || typeof x === "boolean") return String(x);
+      var str = String(x), c = classifyScalar(str);
+      if (c.type === "Date" || c.type === "Date & time") return str;
+      var safe = /^[A-Za-z_][A-Za-z0-9_ .\/-]*$/.test(str) && !/\s$/.test(str) && !/^(true|false|null|yes|no|on|off|y|n)$/i.test(str);
+      return safe ? str : JSON.stringify(str);
+    }
+    return { pad: pad2, scalar: scalar };
+  }
+  function toYamlLines(obj, indent) {
+    var y = yamlValue(null, indent), out = [], keys = Object.keys(obj);
+    keys.forEach(function (k) {
+      var v = obj[k], kk = /^[A-Za-z0-9_][A-Za-z0-9_ .\/-]*$/.test(k) ? k : JSON.stringify(k);
+      if (Array.isArray(v)) {
+        if (!v.length) out.push(y.pad + kk + ": []");
+        else {
+          out.push(y.pad + kk + ":");
+          v.forEach(function (it) {
+            if (it !== null && typeof it === "object") {
+              out.push(y.pad + "  - " + JSON.stringify(it));
+            } else out.push(y.pad + "  - " + y.scalar(it));
+          });
+        }
+      } else if (v !== null && typeof v === "object") {
+        if (!Object.keys(v).length) out.push(y.pad + kk + ": {}");
+        else { out.push(y.pad + kk + ":"); out = out.concat(toYamlLines(v, indent + 2)); }
+      } else {
+        var s = y.scalar(v);
+        out.push(y.pad + kk + ":" + (s === "" ? "" : " " + s));
+      }
+    });
+    return out;
+  }
+
+  function checkTags(items, add) {
+    var seen = Object.create(null);
+    items.forEach(function (it) {
+      var t = it.text.replace(/^#/, "");
+      if (t === "") return;
+      if (/\s/.test(t)) add("error", it.line, "Tag “" + t + "” has a space, and tags can’t contain spaces: join the words with _ or -, or use camelCase.", false, "tags");
+      else if (/^\d+$/.test(t)) add("error", it.line, "Tag “" + t + "” is only numbers, and a tag needs at least one non-numeric character: write it as y" + t + ", for example.", false, "tags");
+      else if (!/^[\p{L}\p{N}_\/-]+$/u.test(t)) add("error", it.line, "Tag “" + t + "” has a character tags can’t contain: use only letters, numbers, _, - and / for nesting.", false, "tags");
+      var low = t.toLowerCase();
+      if (has(seen, low)) {
+        if (seen[low] !== t) add("warning", it.line, "Tags are case-insensitive, so “" + t + "” and “" + seen[low] + "” are the same tag: pick one spelling.", false, "tags");
+      } else seen[low] = t;
+    });
+  }
+
+  function check(input) {
+    var text = String(input == null ? "" : input).replace(/^\uFEFF/, "");
+    var lines = text.split(/\r\n|\r|\n/);
+    var res = { found: false, props: [], problems: [], corrected: "", changed: false, json: false, note: "" };
+    function add(sev, line, msg, fixed, src) {
+      res.problems.push({ sev: sev, line: line + 1, msg: msg, fixed: !!fixed, src: SRC[src] || SRC.props });
+    }
+    var loc = locate(lines);
+    if (!loc) { res.note = "No frontmatter found. A block starts on line 1 with --- and ends with ---."; return res; }
+    res.found = true;
+    if (loc.bare) {
+      add("error", loc.from, "The block must start on line 1 with a --- line and end with a --- line, and neither is here: the corrected block adds both.", true, "props");
+    } else if (loc.offTop) {
+      add("error", loc.start, "The block starts on line " + (loc.start + 1) + ", but it must start on line 1 with ---: move it to the top of the note.", true, "props");
+    }
+    if (!loc.bare && !loc.closed) {
+      add("error", loc.start, "The block never closes: add a --- line after the last property.", true, "props");
+    }
+
+    // JSON frontmatter
+    var region = lines.slice(loc.from, loc.end);
+    var joined = region.join("\n").trim();
+    if (joined.charAt(0) === "{") {
+      return checkJson(res, lines, loc, joined, add);
+    }
+
+    // Segment the block into properties and pass-through lines.
+    var segs = [], cur = null, props = [], i, l;
+    function finalize() {
+      if (!cur) return;
+      var tail = [];
+      while (cur.lines.length > 1) {
+        var li = lines[cur.lines[cur.lines.length - 1]];
+        if (isBlank(li) || isComment(li)) tail.unshift(cur.lines.pop()); else break;
+      }
+      cur.fixed = cur.lines.map(function (ix) { return lines[ix]; });
+      tail.forEach(function (ix) { segs.push({ raw: ix }); });
+    }
+    for (i = loc.from; i < loc.end; i++) {
+      l = lines[i];
+      if (isBlank(l) || isComment(l)) { if (cur) cur.lines.push(i); else segs.push({ raw: i }); continue; }
+      if (/^\s/.test(l) || (/^-(\s|$)/.test(l) && cur && stripComment(cur.rest) === "")) {
+        if (cur) cur.lines.push(i);
+        else { segs.push({ raw: i }); add("error", i, "This line is indented but has no property name above it: start it with name: value.", false, "props"); }
+        continue;
+      }
+      var kl = parseKeyLine(l), ns = null;
+      if (!kl) ns = parseNoSpace(l);
+      if (kl || ns) {
+        finalize();
+        var info = kl || ns;
+        cur = { name: info.name, keyRaw: info.keyRaw, rest: info.rest, line: i, lines: [i], noSpace: !!ns, dirty: false };
+        segs.push(cur); props.push(cur);
+        continue;
+      }
+      finalize(); cur = null;
+      segs.push({ raw: i });
+      if (/^-(\s|$)/.test(l)) add("error", i, "This list item has no property name above it: put a name: line first, then the - items under it.", false, "props");
+      else add("error", i, "This line isn’t name: value: write a property name, a colon and a space, then the value.", false, "props");
+    }
+    finalize();
+
+    // Names, duplicates, deprecations.
+    var firstLine = Object.create(null), names = Object.create(null);
+    props.forEach(function (p) { names[p.name] = true; });
+    props.forEach(function (p) {
+      p.eff = has(DEPRECATED, p.name) ? DEPRECATED[p.name] : p.name;
+      if (has(firstLine, p.name)) {
+        add("error", p.line, "“" + p.name + "” already appears on line " + (firstLine[p.name] + 1) + ", and property names must be unique: merge the two into one and delete this line.", false, "yaml");
+      } else firstLine[p.name] = p.line;
+    });
+
+    props.forEach(function (p) { analyze(p, add, names, res); });
+
+    // Assemble the corrected block.
+    var out = [], changed = false;
+    segs.forEach(function (s) {
+      if (s.raw !== undefined) { out.push(lines[s.raw]); return; }
+      s.fixed.forEach(function (t) { out.push(t); });
+    });
+    while (out.length && isBlank(out[out.length - 1])) out.pop();
+    res.problems.sort(function (a, b) { return a.line - b.line; });
+    res.corrected = ["---"].concat(out, ["---"]).join("\n");
+    var orig = loc.fences && loc.closed ? lines.slice(loc.start, loc.end + 1).join("\n") : "";
+    res.changed = res.corrected !== orig;
+    return res;
+  }
+
+  function analyze(p, add, names, res) {
+    var eff = p.eff, listProp = has(LIST_PROPS, eff), isTags = eff === "tags";
+    var restFull = p.rest, val = stripComment(restFull), tail = restFull.slice(val.length);
+    p.curVal = val;
+    var typeLabel = "Text", display = "", i, ln, kidIdx = [];
+    var tagItems = [];
+    var convert = null; // items for same-line list conversion
+    var rec = { name: p.name, line: p.line + 1, type: "Text", value: "" };
+
+    // Missing space after the colon.
+    if (p.noSpace) {
+      add("error", p.line, "“" + p.name + ":” needs a space after the colon: write " + p.name + ": " + val + ".", true, "props");
+      p.dirty = true;
+    }
+    // Deprecated names.
+    if (has(DEPRECATED, p.name)) {
+      var target = DEPRECATED[p.name], can = !has(names, target);
+      add("warning", p.line, "“" + p.name + "” is deprecated: Obsidian Help says support for it as a default property ends in Obsidian 1.9, so use “" + target + "”" + (can ? "." : " (the note already has “" + target + "”, so merge them by hand)."), can, "props");
+      if (can) { p.keyRaw = target; p.dirty = true; }
+    }
+    if (has(PUBLISH, p.name)) {
+      add("info", p.line, "“" + p.name + "” is a name Obsidian Publish reserves; it is an ordinary property if you don’t use Publish.", false, "props");
+    }
+
+    // Children: tabs.
+    for (i = 1; i < p.lines.length; i++) {
+      ln = p.lines[i];
+      var raw = p.fixed[i];
+      if (isBlank(raw) || isComment(raw)) continue;
+      kidIdx.push(i);
+      if (/^[ \t]*\t/.test(raw)) {
+        add("error", ln, "This line is indented with a tab, and YAML doesn’t allow tabs for indentation: use spaces (two per level).", true, "yaml");
+        p.fixed[i] = raw.replace(/^[ \t]+/, function (ws) { return ws.replace(/\t/g, "  "); });
+      }
+    }
+
+    function link(whole) {
+      return /\[\[/.test(whole);
+    }
+
+    if (val === "") {
+      var hashRest = restFull.trim();
+      if (!kidIdx.length) {
+        if (listProp && hashRest.charAt(0) === "#") {
+          var toks = hashRest.split(/[\s,]+/).filter(Boolean);
+          var allTags = toks.length > 0 && toks.every(function (t) { return /^#[^\s#]+$/.test(t); });
+          add("warning", p.line, "A # starts a YAML comment, so “" + hashRest + "” is read as empty: write the tags without # as a list, one per line.", allTags, "yaml");
+          if (allTags) { convert = toks.map(function (t) { return t.slice(1); }); tail = ""; tagItems = convert.map(function (t) { return { text: t, line: p.line }; }); }
+        }
+        typeLabel = isTags ? "Tags" : listProp ? "List" : "Text";
+      } else if (kidIdx.every(function (k) { return /^\s*-(\s|$)/.test(p.fixed[k]); })) {
+        typeLabel = isTags ? "Tags" : "List";
+        var vals = [];
+        kidIdx.forEach(function (k) {
+          var m = /^(\s*-[ \t]+)(.*)$/.exec(p.fixed[k]), itemFull = m ? m[2] : "", item = stripComment(itemFull), at = p.lines[k];
+          if (itemFull.charAt(0) === "#" && listProp) {
+            var bare = itemFull.replace(/^#+/, "").replace(/\s.*$/, "");
+            add("warning", at, "In a YAML list an unquoted # starts a comment, so “" + itemFull + "” is read as an empty item: write the tag without the # (" + (bare || "name") + ").", !!bare && /^#[^\s#]+(\s|$)/.test(itemFull) && itemFull.replace(/^#\S+/, "").trim() === "", "yaml");
+            if (bare && itemFull.replace(/^#\S+/, "").trim() === "") { p.fixed[k] = m[1] + bare; tagItems.push({ text: bare, line: at }); vals.push(bare); }
+            return;
+          }
+          if (item.slice(0, 2) === "[[") {
+            add("error", at, "An internal link must be in quotes: write - " + dq(item) + ".", true, "props");
+            p.fixed[k] = m[1] + dq(item) + itemFull.slice(item.length);
+            vals.push(item);
+            return;
+          }
+          if (!isQuoted(item) && /^[^\s"'\[{][^:]*:(\s|$)/.test(item)) { p._nested = true; add("warning", at, "Nested properties like this one aren’t shown in Obsidian’s Properties view (Help lists them under Not supported).", false, "props"); vals.push(item); return; }
+          var tx = unquote(item);
+          vals.push(tx);
+          if (isTags) tagItems.push({ text: tx, line: at });
+        });
+        display = vals.join(", ");
+        if (p._nested) typeLabel = "Nested";
+      } else if (kidIdx.some(function (k) { return /^\s+[^\s\-][^:]*:(\s|$)/.test(p.fixed[k]); })) {
+        typeLabel = "Nested";
+        add("warning", p.line, "“" + p.name + "” holds nested properties, which Obsidian doesn’t show in the Properties view (Help lists them under Not supported).", false, "props");
+        display = "(nested)";
+      } else {
+        typeLabel = "Text";
+        display = kidIdx.map(function (k) { return p.fixed[k].trim(); }).join(" ");
+      }
+    } else if (/^[|>]/.test(val)) {
+      typeLabel = "Text";
+      display = kidIdx.map(function (k) { return p.fixed[k].trim(); }).join(" ");
+    } else if (!isQuoted(val) && /^\[\[/.test(val)) {
+      add("error", p.line, "An internal link must be in quotes: write " + p.name + ": " + dq(val) + ".", true, "props");
+      p.curVal = dq(val); p.dirty = true; display = val;
+    } else if (val.charAt(0) === "[" && val.charAt(val.length - 1) === "]") {
+      typeLabel = isTags ? "Tags" : "List";
+      var items = splitFlow(val.slice(1, -1));
+      display = items.map(unquote).join(", ");
+      if (isTags) items.forEach(function (t) { tagItems.push({ text: unquote(t), line: p.line }); });
+    } else if (val.charAt(0) === "{") {
+      typeLabel = "Nested";
+      display = "(nested)";
+      add("warning", p.line, "“" + p.name + "” holds nested properties, which Obsidian doesn’t show in the Properties view (Help lists them under Not supported).", false, "props");
+    } else if (listProp && !kidIdx.length) {
+      // tags / aliases / cssclasses on the same line.
+      var parts = isQuoted(val) ? [val] : val.split(",").map(function (s) { return s.trim(); }).filter(Boolean);
+      convert = parts.map(function (s) { return s.slice(0, 2) === "[[" ? dq(s) : s; });
+      add("error", p.line, "“" + eff + "” must be a list with one value per line, each starting with “- ”: the corrected block writes it that way.", true, "props");
+      typeLabel = "Text";
+      display = val;
+      if (isTags) parts.forEach(function (t) { tagItems.push({ text: unquote(t), line: p.line }); });
+    } else {
+      // Plain or quoted scalar.
+      if (isQuoted(val)) { typeLabel = "Text"; display = unquote(val); }
+      else if (/\[\[/.test(val)) {
+        add("warning", p.line, "An internal link must be in quotes: the corrected block wraps the whole value in quotes.", true, "props");
+        p.curVal = dq(val); p.dirty = true; typeLabel = "Text"; display = val;
+      } else if (/:(\s|$)/.test(val)) {
+        add("error", p.line, "This value contains a colon followed by a space, which YAML reads as a new key: put the value in quotes.", true, "yaml");
+        p.curVal = dq(val); p.dirty = true; typeLabel = "Text"; display = val;
+      } else {
+        var c = classifyScalar(val);
+        typeLabel = c.type; display = val;
+        if (c.badDate) add("warning", p.line, "“" + val + "” has the shape of a date but isn’t a real calendar date, so Obsidian would treat it as Text.", false, "props");
+        else if (c.look) {
+          var tgt = c.look.fix;
+          add("warning", p.line, "“" + val + "” isn’t in the format Obsidian reads as a " + (c.look.time ? "date and time (YYYY-MM-DDTHH:mm:ss)" : "date (YYYY-MM-DD)") + ", so it is treated as Text" + (tgt ? ": write " + tgt + "." : ": write it as YYYY-MM-DD, after checking whether the day or the month comes first."), !!tgt, "props");
+          if (tgt) { p.curVal = tgt; p.dirty = true; }
+        } else if (/^(true|false)$/i.test(val) && val !== val.toLowerCase()) {
+          add("warning", p.line, "“" + val + "” may not be read as a checkbox: Obsidian Help writes checkbox values as true or false, in lowercase.", true, "props");
+          p.curVal = val.toLowerCase(); p.dirty = true; typeLabel = "Checkbox"; display = p.curVal;
+        } else if (/^(yes|no|y|n|on|off)$/i.test(val)) {
+          add("warning", p.line, "“" + val + "” is Text, not a checkbox: Obsidian Help writes checkbox values as true or false.", false, "props");
+        }
+      }
+    }
+
+    if (isTags && tagItems.length) checkTags(tagItems, add);
+
+    rec.type = typeLabel; rec.value = display;
+    res.props.push(rec);
+
+    // Apply edits to the first line, or rewrite as a list.
+    if (convert) {
+      var key = p.keyRaw + ":" + tail;
+      p.fixed = [key].concat(convert.map(function (t) { return "  - " + t; }));
+    } else if (p.dirty) {
+      p.fixed[0] = p.keyRaw + ":" + (p.curVal === "" ? "" : " " + p.curVal) + tail;
+    }
+  }
+
+  function checkJson(res, lines, loc, joined, add) {
+    res.json = true;
+    var obj;
+    try { obj = JSON.parse(joined); } catch (e) {
+      add("error", loc.from, "The JSON in this block isn’t valid (" + e.message + "): fix it, or write the properties as YAML.", false, "props");
+      return res;
+    }
+    if (obj === null || typeof obj !== "object" || Array.isArray(obj)) {
+      add("error", loc.from, "JSON frontmatter must be one object in { }.", false, "props");
+      return res;
+    }
+    function lineOf(name) {
+      var needle = JSON.stringify(name);
+      for (var i = loc.from; i < loc.end; i++) if (lines[i].indexOf(needle) >= 0) return i;
+      return loc.from;
+    }
+    var names = Object.keys(obj);
+    names.forEach(function (name) {
+      var v = obj[name], eff = has(DEPRECATED, name) ? DEPRECATED[name] : name, at = lineOf(name), type, disp;
+      if (has(DEPRECATED, name)) add("warning", at, "“" + name + "” is deprecated: Obsidian Help says support for it as a default property ends in Obsidian 1.9, so use “" + DEPRECATED[name] + "”.", false, "props");
+      if (has(PUBLISH, name)) add("info", at, "“" + name + "” is a name Obsidian Publish reserves; it is an ordinary property if you don’t use Publish.", false, "props");
+      if (Array.isArray(v)) { type = eff === "tags" ? "Tags" : "List"; disp = v.map(function (x) { return typeof x === "object" && x ? JSON.stringify(x) : String(x); }).join(", "); }
+      else if (v !== null && typeof v === "object") { type = "Nested"; disp = "(nested)"; add("warning", at, "“" + name + "” holds nested properties, which Obsidian doesn’t show in the Properties view (Help lists them under Not supported).", false, "props"); }
+      else if (typeof v === "boolean") { type = "Checkbox"; disp = String(v); }
+      else if (typeof v === "number") { type = "Number"; disp = String(v); }
+      else if (v === null) { type = "Text"; disp = ""; }
+      else {
+        var c = classifyScalar(v);
+        type = c.type === "Number" || c.type === "Checkbox" ? "Text" : c.type; disp = v;
+        if (c.badDate) add("warning", at, "“" + v + "” has the shape of a date but isn’t a real calendar date, so Obsidian would treat it as Text.", false, "props");
+        else if (c.look) add("warning", at, "“" + v + "” isn’t in the format Obsidian reads as a date (YYYY-MM-DD) or a date and time (YYYY-MM-DDTHH:mm:ss), so it is treated as Text.", false, "props");
+      }
+      if (eff === "tags") {
+        var arr = Array.isArray(v) ? v : [v];
+        checkTags(arr.filter(function (x) { return typeof x === "string"; }).map(function (x) { return { text: x, line: at }; }), add);
+      }
+      res.props.push({ name: name, line: at + 1, type: type, value: disp });
+    });
+    res.problems.sort(function (a, b) { return a.line - b.line; });
+    res.corrected = ["---"].concat(toYamlLines(obj, 0), ["---"]).join("\n");
+    res.changed = true;
+    res.note = "JSON frontmatter is valid. Obsidian reads it and saves it as YAML; the YAML equivalent is below.";
+    return res;
+  }
+
+  return { check: check, SAMPLE: SAMPLE };
+})();
+</script>
+<script>
+(function () {
+  "use strict";
+  function $(id) { return document.getElementById(id); }
+  var src = $("fm-src"), rows = $("fm-rows"), list = $("fm-problems"), out = $("fm-out"), summary = $("fm-summary");
+  function td(tag, text) { var e = document.createElement(tag); e.textContent = text; return e; }
+  var LABEL = { error: "Error", warning: "Warning", info: "Note" };
+  function update() {
+    var r = FmCheck.check(src.value);
+    rows.textContent = ""; list.textContent = "";
+    r.props.forEach(function (p) {
+      var tr = document.createElement("tr");
+      tr.appendChild(td("th", p.name)); tr.firstChild.setAttribute("scope", "row");
+      tr.appendChild(td("td", p.type)); tr.appendChild(td("td", p.value === "" ? "(empty)" : p.value));
+      rows.appendChild(tr);
+    });
+    if (!r.props.length) { var tr0 = document.createElement("tr"), c = td("td", src.value.trim() ? (r.note || "No properties found.") : "Nothing to check yet."); c.colSpan = 3; tr0.appendChild(c); rows.appendChild(tr0); }
+    var counts = { error: 0, warning: 0, info: 0 }, fixed = 0;
+    r.problems.forEach(function (p) {
+      counts[p.sev]++; if (p.fixed) fixed++;
+      var li = document.createElement("li"); li.className = "sev-" + p.sev;
+      var s = document.createElement("span"); s.className = "sev"; s.textContent = LABEL[p.sev] + ", line " + p.line + ": ";
+      li.appendChild(s); li.appendChild(document.createTextNode(p.msg));
+      var m = document.createElement("span"); m.className = "meta"; m.textContent = (p.fixed ? "Fixed in the corrected block. " : "") + "Source: " + p.src;
+      li.appendChild(m); list.appendChild(li);
+    });
+    if (!src.value.trim()) summary.textContent = "";
+    else if (!r.found) summary.textContent = r.note;
+    else summary.textContent = counts.error + " error" + (counts.error === 1 ? "" : "s") + ", " + counts.warning + " warning" + (counts.warning === 1 ? "" : "s") + ", " + counts.info + " note" + (counts.info === 1 ? "" : "s") + (fixed ? ". " + fixed + " fixed in the corrected block." : ".") + (r.json ? " " + r.note : "");
+    if (r.found && !r.problems.length && !r.json) { var ok = document.createElement("li"); ok.className = "sev-info"; ok.textContent = "No problems found."; list.appendChild(ok); }
+    out.value = r.found ? r.corrected : "";
+  }
+  src.addEventListener("input", update);
+  $("fm-example").addEventListener("click", function () { src.value = FmCheck.SAMPLE; update(); });
+  $("fm-clear").addEventListener("click", function () { src.value = ""; update(); src.focus(); });
+  var cs = $("fm-copy-status");
+  $("fm-copy").addEventListener("click", function () {
+    function done(ok) { cs.textContent = ok ? "Copied." : "Copy failed. Select the text and copy it by hand."; }
+    if (!out.value) { cs.textContent = "Nothing to copy yet."; return; }
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(out.value).then(function () { done(true); }, function () { done(false); });
+    else { out.select(); var ok = false; try { ok = document.execCommand("copy"); } catch (e) { ok = false; } done(ok); }
+  });
+  update();
+})();
+</script>
+</body>
+</html>
