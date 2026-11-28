@@ -277,6 +277,7 @@
 
         <h2 id="github">Tables on GitHub</h2>
         <p>GitHub renders the <a href="https://github.github.com/gfm/#tables-extension-" target="_blank" rel="noopener">GFM tables extension</a>. GitHub Docs say to leave a blank line before the table, and that cells can hold formatting such as links, inline code and text styling. The spec says block-level elements can’t be inserted in a table, so a cell can’t hold a list or a code block, and a raw newline would end the row. For a line break inside a cell, use <code>&lt;br&gt;</code>: the spec’s raw HTML rules allow it, and its tag filter lists only <code>title</code>, <code>textarea</code>, <code>style</code>, <code>xmp</code>, <code>iframe</code>, <code>noembed</code>, <code>noframes</code>, <code>script</code> and <code>plaintext</code>.</p>
+        <p>To preview the whole note, tables included, the way GitHub and Obsidian each render it, paste it into the <a href="/tools/markdown-preview">Markdown preview</a>.</p>
 
         <h2 id="diffs">Keep table diffs small in Git</h2>
         <p>If your notes live in Git, the output style matters. In an aligned table every cell in a column is padded to the longest one. Change “Open” to “In progress” and the whole column gets wider, so every row changes:</p>

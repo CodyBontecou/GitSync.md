@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../favicon-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<title>Markdown Preview for GitHub and Obsidian</title>
+<meta name="description" content="Free Markdown preview that runs in your browser: paste a note and see it the way GitHub and Obsidian each render it, see what changes on GitHub, and copy or download the HTML.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Cody Bontecou">
+<meta name="theme-color" content="#ffffff">
+<link rel="canonical" href="https://gitsync.md/tools/markdown-preview">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="GitSync.md">
+<meta property="og:title" content="Markdown Preview for GitHub and Obsidian">
+<meta property="og:description" content="Free Markdown preview that runs in your browser: paste a note and see it the way GitHub and Obsidian each render it, see what changes on GitHub, and copy or download the HTML.">
+<meta property="og:url" content="https://gitsync.md/tools/markdown-preview">
+<meta property="og:image" content="https://gitsync.md/social/tools/markdown-preview.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:alt" content="GitSync.md free tool card: Markdown Preview for GitHub and Obsidian">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Markdown Preview for GitHub and Obsidian">
+<meta name="twitter:description" content="Free Markdown preview that runs in your browser: paste a note and see it the way GitHub and Obsidian each render it, see what changes on GitHub, and copy or download the HTML.">
+<meta name="twitter:image" content="https://gitsync.md/social/tools/markdown-preview.png">
+<meta name="twitter:image:alt" content="GitSync.md free tool card: Markdown Preview for GitHub and Obsidian">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Markdown preview for GitHub and Obsidian",
+  "description": "Free Markdown preview that runs in your browser: paste a note and see it the way GitHub and Obsidian each render it, see what changes on GitHub, and copy or download the HTML.",
+  "url": "https://gitsync.md/tools/markdown-preview",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Any (runs in a web browser)",
+  "browserRequirements": "Requires JavaScript",
+  "isAccessibleForFree": true,
+  "inLanguage": "en",
+  "datePublished": "2026-11-28",
+  "dateModified": "2026-11-28",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Person",
+    "name": "Cody Bontecou",
+    "url": "https://gitsync.md/about"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Cody Bontecou"
+  }
+}
+</script>
+<link rel="stylesheet" href="../site.css">
+<link rel="stylesheet" href="../content.css">
+<link rel="stylesheet" href="../comparison.css">
+<style>
+.calc { background: var(--surface); border: 2px solid var(--line); padding: 25px 28px; margin-bottom: 39px; }
+.calc .field-label { display: block; font-weight: 650; font-size: 16px; line-height: 24px; margin-bottom: 8px; }
+.calc textarea { width: 100%; padding: 8px 12px; font-family: var(--mono); font-size: 16px; line-height: 1.5; color: var(--ink); background: var(--paper); border: 2px solid var(--line); border-radius: 8px; box-sizing: border-box; resize: vertical; }
+.calc .hint { display: block; font-size: 14px; line-height: 20px; color: var(--muted); margin-top: 6px; }
+.calc .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-block: 12px 8px; align-items: center; }
+.calc .tool-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; min-width: 48px; padding: 0 22px; border: 0; border-radius: 999px; background: var(--ink); color: var(--paper); font: 600 16px/1.2 var(--sans); cursor: pointer; }
+.calc .tool-btn.secondary { background: var(--paper); color: var(--ink); border: 2px solid var(--ink); }
+.calc .tool-btn:focus-visible, .calc textarea:focus-visible, .calc [role=tab]:focus-visible, .calc input:focus-visible + .tool-btn, .calc .md-out:focus-visible, .calc .changes-scroll:focus-visible { outline: 3px solid var(--blue-deep); outline-offset: 2px; }
+.calc .status { min-height: 24px; font-size: 15px; color: var(--muted); margin: 4px 0; }
+.visually-hidden-input { position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; }
+.check-line { display: flex; align-items: center; gap: 10px; min-height: 44px; font-size: 16px; }
+.check-line input { width: 20px; height: 20px; accent-color: var(--blue-deep); }
+.tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; border-bottom: 2px solid var(--line); }
+.tabs [role=tab] { min-height: 44px; padding: 0 16px; border: 0; border-bottom: 4px solid transparent; background: none; font: 600 16px/1.2 var(--sans); color: var(--muted); cursor: pointer; }
+.tabs [role=tab][aria-selected=true] { color: var(--ink); border-bottom-color: var(--blue-deep); }
+.mp-panes { display: grid; gap: 16px; margin-top: 14px; }
+.mp-panes .pane { min-width: 0; }
+.pane-label { font-weight: 650; font-size: 14px; margin: 0 0 6px; color: var(--muted); }
+.mp-panes textarea { min-height: 280px; white-space: pre; overflow: auto; }
+.mp-panes[data-mode=github] .pane-obsidian, .mp-panes[data-mode=github] .pane-html,
+.mp-panes[data-mode=obsidian] .pane-github, .mp-panes[data-mode=obsidian] .pane-html,
+.mp-panes[data-mode=html] .pane-github, .mp-panes[data-mode=html] .pane-obsidian { display: none; }
+.mp-panes[data-mode=both] .pane-html { display: none; }
+@media (min-width: 1100px) { .mp-panes[data-mode=both] { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 1099px) { #tab-both { display: none; } }
+.md-out { border: 2px solid var(--line); border-radius: 8px; background: #fff; padding: 12px 16px; max-height: 520px; overflow: auto; font-size: 16px; line-height: 1.6; overflow-wrap: break-word; }
+.mp-panes[data-mode=both] .md-out { font-size: 14px; padding: 10px 12px; }
+.md-out th, .md-out td { overflow-wrap: normal; }
+.md-out > :first-child { margin-top: 0; }
+.md-out h1, .md-out h2, .md-out h3, .md-out h4, .md-out h5, .md-out h6 { margin: 1.2em 0 .5em; line-height: 1.25; letter-spacing: 0; font-weight: 700; }
+.md-out h1 { font-size: 28px; } .md-out h2 { font-size: 23px; } .md-out h3 { font-size: 19px; } .md-out h4, .md-out h5, .md-out h6 { font-size: 16px; }
+.md-gh h1, .md-gh h2 { padding-bottom: .3em; border-bottom: 1px solid #d0d7de; }
+.md-out p, .md-out ul, .md-out ol, .md-out pre, .md-out table, .md-out blockquote { margin: 0 0 14px; }
+.md-out li { margin-block: 3px; }
+.md-out ul, .md-out ol { padding-left: 28px; }
+.md-out .contains-task-list { list-style: none; padding-left: 4px; }
+.md-out .contains-task-list .contains-task-list { padding-left: 22px; }
+.md-out input[type=checkbox] { margin-right: 6px; }
+.md-out code { font-family: var(--mono); font-size: .9em; background: rgba(110,118,129,.15); padding: .15em .35em; border-radius: 4px; }
+.md-out pre { background: #f6f8fa; padding: 12px; overflow: auto; border-radius: 6px; }
+.md-out pre code { background: none; padding: 0; }
+.md-out table { border-collapse: collapse; display: block; overflow-x: auto; }
+.md-out th, .md-out td { border: 1px solid #d0d7de; padding: 6px 12px; }
+.md-out th { background: #f6f8fa; }
+.md-out blockquote { margin-inline: 0; padding: 0 1em; color: #59636e; border-left: .25em solid #d0d7de; }
+.md-out hr { border: 0; border-top: 1px solid #d0d7de; margin: 18px 0; }
+.md-out a { color: #0969da; }
+.md-out .imgph { display: inline-block; border: 1px dashed #8c959f; border-radius: 6px; padding: 6px 10px; background: #f6f8fa; font-size: 14px; }
+.md-out .imgph-label, .md-out .embed-label { font-weight: 700; }
+.md-out .notrendered { margin-bottom: 14px; }
+.md-out .notrendered pre { margin-bottom: 4px; }
+.md-out .nr-note { font-size: 13px; color: #59636e; margin: 0; }
+.md-out .footnotes { font-size: 14px; }
+.md-gh .markdown-alert { padding: 4px 16px; margin-bottom: 14px; border-left: .25em solid #0969da; }
+.md-gh .markdown-alert-title { font-weight: 600; color: #0969da; margin: 8px 0 4px; }
+.md-gh .markdown-alert-tip { border-color: #1a7f37; } .md-gh .markdown-alert-tip .markdown-alert-title { color: #1a7f37; }
+.md-gh .markdown-alert-important { border-color: #8250df; } .md-gh .markdown-alert-important .markdown-alert-title { color: #8250df; }
+.md-gh .markdown-alert-warning { border-color: #9a6700; } .md-gh .markdown-alert-warning .markdown-alert-title { color: #9a6700; }
+.md-gh .markdown-alert-caution { border-color: #cf222e; } .md-gh .markdown-alert-caution .markdown-alert-title { color: #cf222e; }
+.md-ob { background: #fbfbfb; font-family: var(--sans); }
+.md-ob h1, .md-ob h2 { border: 0; padding: 0; }
+.md-ob a.wikilink, .md-ob a.rel-link { color: #6c31e3; text-decoration: none; border-bottom: 1px solid currentColor; }
+.md-ob mark { background: #ffe97a; padding: 0 2px; }
+.md-ob .tag { text-transform: none; letter-spacing: 0; font-family: inherit; display: inline-block; line-height: 1.5; background: rgba(108,49,227,.12); color: #6c31e3; border-radius: 999px; padding: 1px 8px; font-size: .9em; }
+.md-ob .embed { display: block; border-left: 3px solid #6c31e3; background: rgba(108,49,227,.07); padding: 6px 12px; margin-bottom: 14px; }
+.md-ob .properties { border: 1px solid #d8d8d8; border-radius: 8px; padding: 8px 12px; margin-bottom: 16px; background: #fff; }
+.md-ob .properties-title { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+.md-ob .properties dl { margin: 0; } .md-ob .properties dl > div { display: flex; gap: 12px; margin: 2px 0; } .md-ob .properties dt { min-width: 80px; color: #666; } .md-ob .properties dd { margin: 0; }
+.md-ob .callout { --c: 8,109,221; border-radius: 6px; margin-bottom: 14px; padding: 10px 14px; background: rgba(var(--c), .1); border: 0; }
+.md-ob .callout-title { font-weight: 700; color: rgb(var(--c)); cursor: default; }
+.md-ob .callout-content { margin-top: 6px; } .md-ob .callout-content > :last-child { margin-bottom: 0; }
+.md-ob details.callout > summary { cursor: pointer; }
+.md-ob .callout-abstract, .md-ob .callout-tip { --c: 0,160,170; } .md-ob .callout-info, .md-ob .callout-todo { --c: 8,109,221; }
+.md-ob .callout-success { --c: 8,185,78; } .md-ob .callout-question, .md-ob .callout-warning, .md-ob .callout-example { --c: 224,133,0; }
+.md-ob .callout-failure, .md-ob .callout-danger, .md-ob .callout-bug { --c: 233,49,71; } .md-ob .callout-quote { --c: 158,158,158; } .md-ob .callout-example { --c: 120,82,238; }
+.changes-scroll { overflow-x: auto; border: 2px solid var(--line); border-radius: 8px; background: var(--paper); }
+.changes-scroll table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: 15px; line-height: 1.5; }
+.changes-scroll th, .changes-scroll td { text-align: left; vertical-align: top; padding: 8px 12px; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+.changes-scroll th { background: var(--surface); }
+.changes-scroll th:first-child, .changes-scroll td:first-child { white-space: nowrap; }
+.changes-scroll th:nth-child(2), .changes-scroll td:nth-child(2) { min-width: 150px; }
+.table-scroll { overflow-x: auto; margin-block: 16px 24px; }
+.table-scroll th[scope=row] { min-width: 170px; }
+.table-scroll table { border-collapse: collapse; min-width: 760px; font-size: 15px; line-height: 1.6; }
+.table-scroll th, .table-scroll td { border: 1px solid var(--line); padding: 8px 12px; text-align: left; vertical-align: top; }
+.table-scroll thead th { background: var(--surface); }
+@media (max-width: 960px) { .tool-layout > .guide-aside { order: 3; margin-block: 32px 0; } .calc { padding: 20px 14px; } }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://gitsync.md/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Guides",
+      "item": "https://gitsync.md/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Markdown preview",
+      "item": "https://gitsync.md/tools/markdown-preview"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Does this upload my note?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The page has no external scripts and makes no network requests while you use it. Pasted text and opened files are read in your browser and nothing is saved."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why do my wikilinks show as text on GitHub?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Wikilinks are Obsidian syntax and are not part of the GitHub Flavored Markdown spec, so GitHub shows the brackets as typed. Turn off Use [[Wikilinks]] in Obsidian under Files and links so new links are Markdown links."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does GitHub support Obsidian callouts?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Only five of them. GitHub alerts cover NOTE, TIP, IMPORTANT, WARNING and CAUTION. Other Obsidian callout types, fold markers and custom titles show as a plain block quote."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I convert Markdown to HTML offline?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Load the page once, and conversion, Copy HTML and Download .html all run in your browser without a connection."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body id="top">
+<a class="skip-link" href="#main">Skip to content</a>
+<svg class="icon-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 5l7 7-7 7"/></symbol>
+  <symbol id="i-branch" viewBox="0 0 24 24"><circle cx="6" cy="5" r="2.5"/><circle cx="6" cy="19" r="2.5"/><circle cx="18" cy="5" r="2.5"/><path d="M6 7.5v9M18 7.5v1a5 5 0 0 1-5 5H6"/></symbol>
+  <symbol id="i-external" viewBox="0 0 24 24"><path d="M6 18 18 6M6 6h12v12"/></symbol>
+</svg>
+
+<header class="site-header">
+  <nav class="shell navigation" aria-label="Main navigation">
+    <a class="brand" href="/" aria-label="GitSync.md home">gitsync<span class="brand-extension">.md</span></a>
+    <div class="nav-links"><a href="/#app">The app</a><a href="/#workflow">How it works</a><a href="/blog/" class="is-active">Guides</a><a href="/compare/obsidian-sync-vs-git">Compare</a><a href="/#faq">FAQ</a></div>
+    <a class="button button-small" href="/#download">Get the app</a>
+  </nav>
+</header>
+
+<main id="main">
+  <div class="container guide-layout tool-layout">
+      <header class="article-hero">
+        <div class="article-title"><nav class="eyebrow article-breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li><a href="/blog/">Guides</a></li><li aria-current="page">Markdown preview</li></ol></nav>
+      <h1>Markdown preview: see a note the way GitHub and Obsidian show it.</h1>
+      <p class="subtitle">Paste a note, or open a .md file, and see it rendered twice: once as GitHub shows it, once as Obsidian shows it. It is free, runs in your browser and uploads nothing.</p>
+      <div class="meta-line"><time datetime="2026-11-28">November 28, 2026</time><span>By <a href="/about" rel="author">Cody Bontecou</a></span><span>Free tool · Runs in your browser</span></div>
+    </div>
+      </header>
+      <aside class="guide-aside" aria-label="Tool sidebar">
+        <div class="guide-aside-sticky">
+        <nav class="toc-card" aria-label="Page outline"><div class="toc-title">On this page</div><ol><li><a href="#tool">The tool</a></li><li><a href="#changes">What changes on GitHub</a></li><li><a href="#syntax">Obsidian syntax GitHub doesn’t render</a></li><li><a href="#html">Convert Markdown to HTML</a></li><li><a href="#phone">Preview before you push</a></li><li><a href="#faq">FAQ</a></li><li><a href="#sources">Checked against</a></li></ol></nav>
+        <div class="aside-cta aside-cta-wide">
+          <p class="aside-cta-title">Edit and push Markdown from your phone with GitSync.md.</p>
+          <p class="aside-cta-price">iPhone + iPad: $9.99 once · No subscription</p>
+          <a class="aside-cta-button" href="/v/web-homepage-138" target="_blank" rel="noopener">Download on the App Store</a>
+          <p class="aside-cta-price">On Android? <a href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener">Get it on Google Play</a>.</p>
+        </div>
+        </div>
+      </aside>
+      <article class="article-body">
+        <p><strong>Short answer:</strong> paste your Markdown below. The GitHub preview shows how GitHub renders a <code>.md</code> file, the Obsidian preview shows the same note the Obsidian way, and the panel underneath lists every Obsidian-only construct with its line number and what GitHub shows instead. <strong>Everything runs in this page. Nothing is uploaded, and your text is not saved.</strong></p>
+
+        <section class="calc" id="tool" aria-labelledby="tool-heading">
+          <h2 id="tool-heading" style="margin-top:0">Preview a note</h2>
+
+          <label class="field-label" for="mp-src">Markdown</label>
+          <textarea id="mp-src" rows="10" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" placeholder="Paste Markdown here"></textarea>
+          <div class="actions">
+            <label class="tool-btn secondary file-btn" for="mp-file">Open a .md file</label>
+            <input type="file" id="mp-file" class="visually-hidden-input" accept=".md,.markdown,.txt,text/markdown,text/plain">
+            <button type="button" class="tool-btn secondary" id="mp-sample">Load sample note</button>
+            <button type="button" class="tool-btn secondary" id="mp-clear">Clear</button>
+          </div>
+          <p class="status" id="mp-status" aria-live="polite"></p>
+
+          <div class="tabs" id="mp-tabs" role="tablist" aria-label="Preview">
+            <button type="button" role="tab" id="tab-github" data-mode="github" aria-selected="true" aria-controls="mp-panes">GitHub</button>
+            <button type="button" role="tab" id="tab-obsidian" data-mode="obsidian" aria-selected="false" tabindex="-1" aria-controls="mp-panes">Obsidian</button>
+            <button type="button" role="tab" id="tab-both" data-mode="both" aria-selected="false" tabindex="-1" aria-controls="mp-panes">Side by side</button>
+            <button type="button" role="tab" id="tab-html" data-mode="html" aria-selected="false" tabindex="-1" aria-controls="mp-panes">HTML source</button>
+          </div>
+          <div class="mp-panes" id="mp-panes" data-mode="github" role="tabpanel">
+            <div class="pane pane-github"><p class="pane-label">GitHub preview</p><div class="md-out md-gh" id="mp-github" tabindex="0" role="region" aria-label="GitHub preview"></div></div>
+            <div class="pane pane-obsidian"><p class="pane-label">Obsidian preview</p><div class="md-out md-ob" id="mp-obsidian" tabindex="0" role="region" aria-label="Obsidian preview"></div></div>
+            <div class="pane pane-html"><p class="pane-label">HTML source (GitHub-flavored)</p><textarea id="mp-html" readonly rows="14" spellcheck="false" aria-label="HTML source"></textarea></div>
+          </div>
+          <p class="hint">These previews are drawn by this page, not by GitHub or Obsidian, so fonts and spacing differ. Images are shown as placeholders and never fetched. Mermaid diagrams, math (<code>$…$</code>, <code>$$…$$</code>) and HTML inside Markdown are shown as source: the real GitHub renders them, this preview does not.</p>
+
+          <h3>Copy or download the HTML</h3>
+          <div class="actions">
+            <button type="button" class="tool-btn" id="mp-copy">Copy HTML</button>
+            <button type="button" class="tool-btn" id="mp-download">Download .html</button>
+          </div>
+          <label class="check-line" for="mp-style"><input type="checkbox" id="mp-style"> Include a minimal style block</label>
+          <p class="status" id="mp-action-status" aria-live="polite"></p>
+
+          <h2 id="changes">What changes on GitHub</h2>
+          <p class="status" id="mp-changes-summary" aria-live="polite"></p>
+          <div id="mp-changes"></div>
+        </section>
+
+        <h2 id="syntax">Obsidian syntax that GitHub doesn’t render</h2>
+        <p>GitHub renders <a href="https://github.github.com/gfm/" target="_blank" rel="noopener">GitHub Flavored Markdown</a>, plus a few extras its docs describe: alerts, task lists and footnotes. Obsidian adds its own syntax on top of Markdown. When a vault is pushed to GitHub, that extra syntax shows as typed.</p>
+        <div class="table-scroll" tabindex="0" role="region" aria-label="Obsidian syntax and what GitHub shows">
+        <table>
+          <thead><tr><th scope="col">Obsidian syntax</th><th scope="col">GitHub shows</th><th scope="col">Fix if you publish the vault</th></tr></thead>
+          <tbody>
+            <tr><th scope="row"><code>[[Note]]</code>, <code>[[Note|display text]]</code>, <code>[[Note#Heading]]</code></th><td>The literal text, not a link.</td><td>Use Markdown links: <code>[Note](Note.md)</code>, with spaces in the file name written as <code>%20</code>. In Obsidian, open Settings → Files and links and turn off “Use [[Wikilinks]]” so new links are Markdown links. Obsidian’s Help doesn’t say whether existing wikilinks are converted, so check a note after you change it.</td></tr>
+            <tr><th scope="row"><code>![[image.png]]</code>, <code>![[Note]]</code></th><td>The literal text. Nothing is embedded.</td><td>For an image, use <code>![alt](image.png)</code>. A note embed has no Markdown equivalent, so replace it with a link to the note.</td></tr>
+            <tr><th scope="row">Callouts: <code>&gt; [!abstract]</code>, <code>&gt; [!tip]- Title</code></th><td>A plain block quote with the <code>[!…]</code> marker as text. GitHub only turns five types into alerts: <code>NOTE</code>, <code>TIP</code>, <code>IMPORTANT</code>, <code>WARNING</code> and <code>CAUTION</code>.</td><td>For those five, write the marker alone on the first line, as in <code>&gt; [!NOTE]</code>. Obsidian’s fold markers (<code>-</code>, <code>+</code>) and custom titles have no GitHub equivalent. Obsidian styles <code>[!important]</code> like <code>tip</code> and <code>[!caution]</code> like <code>warning</code>, so colors differ between the two.</td></tr>
+            <tr><th scope="row"><code>==highlight==</code></th><td>The literal text with the equals signs.</td><td>Remove the equals signs, or switch to <code>**bold**</code> or <code>*italic*</code>. The GitHub Docs page on formatting syntax doesn’t list a highlight syntax.</td></tr>
+            <tr><th scope="row"><code>%%comment%%</code></th><td>The comment text shows on the page.</td><td>Use <code>&lt;!-- comment --&gt;</code>. Obsidian’s Help recommends it for other apps, and GitHub Docs say it hides content from the rendered Markdown.</td></tr>
+            <tr><th scope="row"><code>#tag</code></th><td>Plain text.</td><td>Nothing breaks and the text stays readable, but GitHub doesn’t style it as a tag.</td></tr>
+            <tr><th scope="row">Front matter (Properties)</th><td>A table of the keys and values at the top of the file.</td><td>Keep it if the table is fine for readers, or remove it from notes you publish.</td></tr>
+          </tbody>
+        </table>
+        </div>
+
+        <h2 id="html">Convert Markdown to HTML</h2>
+        <p>The <strong>HTML source</strong> tab shows the GitHub-flavored output for your note. <strong>Copy HTML</strong> puts exactly that text on your clipboard. <strong>Download .html</strong> saves a complete page (with <code>&lt;!doctype html&gt;</code>, a <code>&lt;title&gt;</code> taken from the first H1, and the same body) from a Blob in your browser, so no server is involved.</p>
+        <p>By default the HTML has no styles, so it picks up the styles of wherever you paste it. Tick “Include a minimal style block” to add a short <code>&lt;style&gt;</code> block with readable defaults for text, tables, code and alerts. The output follows GitHub rather than Obsidian: tables, task lists, strikethrough, footnotes, alerts and front matter as a table. Obsidian-only syntax stays as typed, as in the GitHub preview. Images become <code>&lt;img&gt;</code> tags with the URL you wrote. Raw HTML, Mermaid and math are output as escaped code blocks, not rendered, so the converter never passes your HTML through.</p>
+
+        <h2 id="phone">Preview notes before you push from your phone</h2>
+        <p>With GitSync.md, you edit and commit Markdown in a repository on your iPhone, iPad or Android phone, then push to GitHub, GitLab, Bitbucket, Gitea or Forgejo. Paste a note into this page first if you want to know how it will look on GitHub. The setup guides: <a href="/blog/sync-obsidian-github">Sync Obsidian with GitHub on every device</a>, <a href="/blog/share-obsidian-vault-github">share an Obsidian vault with others using GitHub</a> and <a href="/blog/publish-obsidian-quartz-iphone">publish an Obsidian vault as a website</a>. To fix a table, use the <a href="/tools/markdown-table-generator">Markdown table generator</a>; to compare two versions of a note, use the <a href="/tools/markdown-diff">Markdown diff</a>.</p>
+        <p>Edit and push Markdown from your phone with GitSync.md: <a href="/v/web-homepage-138" target="_blank" rel="noopener">Download on the App Store</a> · <a href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener">Get it on Google Play</a>. iPhone + iPad: $9.99 once. Android: $9.99 once.</p>
+
+        <h2 id="faq">Frequently asked questions</h2>
+        <h3>Does this upload my note?</h3>
+        <p>No. The page has no external scripts and makes no network requests while you use it. Pasted text and opened files are read in your browser, nothing is saved, and the download is created locally. After the page has loaded, it keeps working offline.</p>
+        <h3>Why do my wikilinks show as text on GitHub?</h3>
+        <p><code>[[Note]]</code> is Obsidian syntax. It isn’t part of the GitHub Flavored Markdown spec, so GitHub shows the brackets as typed. Obsidian’s Help describes the Markdown form, <code>[Text](Note%20Name.md)</code>, and the setting Files and links → “Use [[Wikilinks]]” that makes Obsidian write that form.</p>
+        <h3>Does GitHub support Obsidian callouts?</h3>
+        <p>Only five of them. GitHub Docs list the alert types <code>NOTE</code>, <code>TIP</code>, <code>IMPORTANT</code>, <code>WARNING</code> and <code>CAUTION</code>, written as <code>&gt; [!NOTE]</code>. Other Obsidian types such as <code>abstract</code> or <code>question</code>, fold markers and custom titles show as a plain block quote.</p>
+        <h3>Can I convert Markdown to HTML offline?</h3>
+        <p>Yes. Load this page once, and conversion, Copy HTML and Download .html all run in your browser without a connection.</p>
+
+        <h2 id="sources">Checked against</h2>
+        <p>Updated <time datetime="2026-11-28">November 28, 2026</time>. Checked against:</p>
+        <ul>
+          <li><a href="https://github.github.com/gfm/" target="_blank" rel="noopener">GitHub Flavored Markdown spec</a></li>
+          <li><a href="https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax" target="_blank" rel="noopener">GitHub Docs, Basic writing and formatting syntax</a> (alerts, task lists, footnotes, hidden comments)</li>
+          <li><a href="https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/organizing-information-with-tables" target="_blank" rel="noopener">GitHub Docs, Organizing information with tables</a></li>
+          <li><a href="https://obsidian.md/help/syntax" target="_blank" rel="noopener">Obsidian Help, Basic formatting syntax</a> (highlights, comments, footnotes, task lists)</li>
+          <li><a href="https://obsidian.md/help/callouts" target="_blank" rel="noopener">Obsidian Help, Callouts</a></li>
+          <li><a href="https://obsidian.md/help/links" target="_blank" rel="noopener">Obsidian Help, Internal links</a></li>
+          <li><a href="https://obsidian.md/help/embeds" target="_blank" rel="noopener">Obsidian Help, Embed files</a></li>
+          <li><a href="https://obsidian.md/help/properties" target="_blank" rel="noopener">Obsidian Help, Properties</a> and <a href="https://obsidian.md/help/tags" target="_blank" rel="noopener">Tags</a></li>
+        </ul>
+
+        <div class="related-card"><h2 id="next">Related guides</h2><ul>
+          <li><a href="/tools/markdown-table-generator">Markdown table generator for GitHub and Obsidian</a></li>
+          <li><a href="/tools/markdown-diff">Markdown diff: compare two versions of a note</a></li>
+          <li><a href="/blog/sync-obsidian-github">Sync Obsidian with GitHub on every device</a></li>
+          <li><a href="/blog/share-obsidian-vault-github">Share an Obsidian vault with others using GitHub</a></li>
+          <li><a href="/blog/publish-obsidian-quartz-iphone">Publish an Obsidian vault as a website</a></li>
+        </ul></div>
+
+        <div class="related-card">
+          <h2 style="margin-top:0">Edit and push Markdown from your phone with GitSync.md</h2>
+          <p><a href="/v/web-homepage-138" target="_blank" rel="noopener">Download on the App Store</a> · <a href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener">Get it on Google Play</a></p>
+        </div>
+  </article>
+    </div>
+  <section class="content-download" aria-labelledby="download-heading">
+    <div class="shell content-download-layout">
+      <div>
+        <p class="eyebrow"><span class="blue-square" aria-hidden="true"></span>Take your work with you.</p>
+        <h2 id="download-heading">REAL GIT.<br>WITHIN REACH.</h2>
+        <p class="content-download-description">Your files. Your commits. Your remote.<br>Get GitSync.md for iPhone, iPad, and Android.</p>
+      </div>
+      <div>
+        <div class="store-links" role="group" aria-label="Download GitSync.md">
+          <a class="store-badge store-badge-apple" href="/v/web-homepage-135" target="_blank" rel="noopener"><img src="../assets/store-badges/download-on-app-store.svg" width="120" height="40" alt="Download GitSync.md on the App Store" decoding="async"></a>
+          <a class="store-badge store-badge-google" href="https://play.google.com/store/apps/details?id=com.bontecou.syncmd" target="_blank" rel="noopener"><img src="../assets/store-badges/get-it-on-google-play.png" width="646" height="250" alt="Get GitSync.md on Google Play" decoding="async"></a>
+        </div>
+        <p class="purchase-note"><span>iPhone + iPad: free to download, $9.99 once to unlock.</span><span>Android: $9.99 once. All features included.</span><span>No subscriptions.</span></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="shell footer-layout">
+    <a class="brand" href="/" aria-label="GitSync.md home">gitsync<span class="brand-extension">.md</span></a>
+    <p>Independently built by <a href="https://codybontecou.com" target="_blank" rel="noopener">Cody Bontecou</a>.<br>© 2026 GitSync.md</p>
+    <div class="footer-links"><a href="https://github.com/CodyBontecou/GitSync.md" target="_blank" rel="noopener">Source</a><a href="/blog/">Guides</a><a href="/compare/obsidian-sync-vs-git">Compare</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
+    <a class="back-top" href="#top" aria-label="Back to top">↑</a>
+  </div>
+</footer>
+
+<script>
+/* Markdown preview for GitHub and Obsidian. Runs locally: no network requests, nothing stored.
+   Rendering follows the GFM spec (github.github.com/gfm/), GitHub Docs (alerts, task lists, footnotes)
+   and Obsidian Help (callouts, links, embeds, highlights, comments, tags, properties).
+   Every piece of user text goes through esc() before it reaches the output.
+   Tests: scripts/tests/markdown-preview.test.mjs. */
+var MdPreview = (function () {
+  "use strict";
+
+  var ALERTS = { NOTE: "Note", TIP: "Tip", IMPORTANT: "Important", WARNING: "Warning", CAUTION: "Caution" };
+  var CALLOUT_KINDS = ["note", "abstract", "info", "todo", "tip", "success", "question", "warning", "failure", "danger", "bug", "example", "quote"];
+  var CALLOUT_ALIASES = { summary: "abstract", tldr: "abstract", hint: "tip", important: "tip", check: "success", done: "success", help: "question", faq: "question", caution: "warning", attention: "warning", fail: "failure", missing: "failure", error: "danger", cite: "quote" };
+
+  var SAMPLE = [
+    "---",
+    "title: Weekly review",
+    "tags:",
+    "  - meeting",
+    "  - project/alpha",
+    "status: draft",
+    "---",
+    "",
+    "# Weekly review",
+    "",
+    "Notes from [[Meeting notes]] and [[Roadmap#Q4|the Q4 plan]]. Filed under #planning, with ==one idea to keep== highlighted. %%Check the dates before sharing.%%",
+    "",
+    "![[floorplan.png]]",
+    "",
+    "> [!NOTE]",
+    "> GitHub and Obsidian both style this one.",
+    "",
+    "> [!abstract]- Summary with a custom title",
+    "> Only Obsidian styles this callout.",
+    "",
+    "## Common Markdown",
+    "",
+    "Some **bold**, *italic* and ~~struck~~ text, `inline code`, a [link](https://gitsync.md) and a bare URL: https://github.github.com/gfm/",
+    "",
+    "- [x] Write the note",
+    "- [ ] Push it",
+    "  - a nested item",
+    "",
+    "1. First",
+    "2. Second",
+    "",
+    "| Tool | Where | Done |",
+    "| :--- | :---: | ---: |",
+    "| Preview | Browser | yes |",
+    "",
+    "```js",
+    "const note = \"hello\";",
+    "```",
+    "",
+    "```mermaid",
+    "graph TD; A-->B",
+    "```",
+    "",
+    "$$E = mc^2$$",
+    "",
+    "A claim with a footnote.[^1]",
+    "",
+    "[^1]: GitHub renders footnotes at the bottom of the file.",
+    ""
+  ].join("\n");
+
+  function esc(s) {
+    return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+  }
+
+  // Only http(s), mailto and scheme-less (relative) targets become links.
+  function safeUrl(u) {
+    u = String(u).replace(/[\u0000-\u001f\u007f]/g, "").trim();
+    if (u.charAt(0) === "<" && u.charAt(u.length - 1) === ">") u = u.slice(1, -1).trim();
+    if (!u) return null;
+    if (/^(https?:|mailto:)/i.test(u)) return u;
+    if (/^[a-z][a-z0-9+.\-]*:/i.test(u)) return null;
+    return u;
+  }
+
+  function calloutKind(type) {
+    type = type.toLowerCase();
+    if (CALLOUT_ALIASES[type]) return CALLOUT_ALIASES[type];
+    return CALLOUT_KINDS.indexOf(type) >= 0 ? type : "note";
+  }
+  function titleCase(s) { return s.charAt(0).toUpperCase() + s.slice(1).toLowerCase(); }
+
+  var TAG_RE = /(^|\s)#([\p{L}\p{N}_\/-]*[\p{L}_\/-][\p{L}\p{N}_\/-]*)/gu;
+
+  /* ---------- inline ---------- */
+  function inline(text, o) {
+    var slots = [];
+    function put(html) { slots.push(html); return "\u0000" + (slots.length - 1) + "\u0001"; }
+    var s = String(text).replace(/[\u0000\u0001]/g, "");
+
+    // Backslash escapes and code spans first, so nothing inside them is interpreted.
+    s = s.replace(/\\([\\`*_{}\[\]()#+\-.!|~<>=%$^])|(`+)([^`]|[^`][\s\S]*?[^`])\2(?!`)/g, function (m, ch, ticks, code) {
+      if (ch) return put(esc(ch));
+      if (/^ [\s\S]*[^ ][\s\S]* $/.test(code)) code = code.slice(1, -1);
+      return put("<code>" + esc(code) + "</code>");
+    });
+
+    if (o.obsidian) {
+      s = s.replace(/%%[\s\S]*?%%/g, "");
+      s = s.replace(/!\[\[([^\]\n]+?)\]\]/g, function (m, t) {
+        return put('<span class="embed"><span class="embed-label">embedded:</span> ' + esc(t.split("|")[0]) + "</span>");
+      });
+      s = s.replace(/\[\[([^\]\n|#]*)(?:#([^\]\n|]*))?(?:\|([^\]\n]*))?\]\]/g, function (m, name, heading, alias) {
+        var label = alias || (name && heading ? name + " > " + heading : name || heading);
+        if (!label) return m;
+        return put('<a class="wikilink" href="#" data-target="' + esc(name + (heading ? "#" + heading : "")) + '">' + esc(label) + "</a>");
+      });
+    }
+
+    // Images: never fetched in the preview. The export uses a real <img>.
+    s = s.replace(/!\[([^\]]*)\]\(\s*(<[^>]*>|[^\s)]*)(?:\s+"[^"]*")?\s*\)/g, function (m, alt, url) {
+      var safe = safeUrl(url);
+      if (o.preview) {
+        return put('<span class="imgph" role="img" aria-label="Image placeholder: ' + esc(alt) + '"><span class="imgph-label">Image</span> ' +
+          (alt ? esc(alt) : "(no alt text)") + " <code>" + esc(url.replace(/^<|>$/g, "")) + "</code></span>");
+      }
+      return put(safe ? '<img src="' + esc(safe) + '" alt="' + esc(alt) + '">' : esc(alt));
+    });
+
+    if (o.fn) {
+      s = s.replace(/\[\^([^\]\s]+)\]/g, function (m, id) {
+        if (!Object.prototype.hasOwnProperty.call(o.fn.defs, id)) return m;
+        var n = o.fn.order.indexOf(id) + 1;
+        if (!n) { o.fn.order.push(id); n = o.fn.order.length; }
+        return put('<sup class="fnref"><a href="#' + o.prefix + "fn-" + n + '" id="' + o.prefix + "fnref-" + n + '">' + n + "</a></sup>");
+      });
+    }
+
+    s = s.replace(/\[([^\]]*)\]\(\s*(<[^>]*>|[^\s)]*)(?:\s+"[^"]*")?\s*\)/g, function (m, label, url) {
+      var safe = safeUrl(url);
+      if (!safe) return label;
+      var isAbs = /^(https?:|mailto:)/i.test(safe);
+      var open;
+      if (o.preview && !isAbs) open = '<a class="rel-link" href="#" data-target="' + esc(safe) + '">';
+      else open = '<a href="' + esc(safe) + '"' + (o.preview ? ' target="_blank" rel="noopener noreferrer"' : "") + ">";
+      return put(open) + label + put("</a>");
+    });
+
+    function autolink(url) {
+      var trail = "";
+      var t = /[.,:;!?'")\]*_~]+$/.exec(url);
+      if (t) { trail = t[0]; url = url.slice(0, -trail.length); }
+      var safe = safeUrl(url);
+      if (!safe) return url + trail;
+      return put('<a href="' + esc(safe) + '"' + (o.preview ? ' target="_blank" rel="noopener noreferrer"' : "") + ">" + esc(url) + "</a>") + trail;
+    }
+    s = s.replace(/<((?:https?:\/\/|mailto:)[^\s<>\u0000]+)>/g, function (m, url) { return put('<a href="' + esc(url) + '"' + (o.preview ? ' target="_blank" rel="noopener noreferrer"' : "") + ">" + esc(url) + "</a>"); });
+    s = s.replace(/(^|[\s(*_~])(https?:\/\/[^\s<\u0000]+)/g, function (m, pre, url) { return pre + autolink(url); });
+
+    if (o.obsidian) {
+      s = s.replace(/==(\S|\S[^\n]*?\S)==/g, function (m, t) { return put('<mark>') + t + put("</mark>"); });
+      s = s.replace(TAG_RE, function (m, pre, tag) { return pre + put('<span class="tag">#' + esc(tag) + "</span>"); });
+    }
+
+    s = esc(s);
+    s = s.replace(/\*\*(\S|\S[\s\S]*?\S)\*\*/g, "<strong>$1</strong>");
+    s = s.replace(/(^|[^\w])__(\S|\S[\s\S]*?\S)__(?!\w)/g, "$1<strong>$2</strong>");
+    s = s.replace(/\*(\S|\S[\s\S]*?\S)\*/g, "<em>$1</em>");
+    s = s.replace(/(^|[^\w])_(\S|\S[\s\S]*?\S)_(?!\w)/g, "$1<em>$2</em>");
+    s = s.replace(/~~(\S|\S[\s\S]*?\S)~~/g, "<del>$1</del>");
+    s = s.replace(/( {2,}|\\)\n/g, "<br>\n");
+    return s.replace(/\u0000(\d+)\u0001/g, function (m, i) { return slots[+i]; });
+  }
+
+  /* ---------- helpers ---------- */
+  var fenceRe = /^ {0,3}(`{3,}|~{3,})\s*([^\s`]*).*$/;
+  var hrRe = /^ {0,3}([-*_])(?: *\1){2,} *$/;
+  var headRe = /^ {0,3}(#{1,6})(?:[ \t]+(.*?))?(?:[ \t]+#+)?[ \t]*$/;
+  var listRe = /^( *)([-*+]|\d{1,9}[.)])[ \t]+(.*)$/;
+  var quoteRe = /^ {0,3}>/;
+  var htmlRe = /^ {0,3}<(?:[A-Za-z][\w-]*(?:[\s>\/]|$)|\/[A-Za-z]|!--)/;
+  var delimRe = /^ {0,3}\|?[ \t]*:?-+:?[ \t]*(?:\|[ \t]*:?-+:?[ \t]*)*\|?[ \t]*$/;
+  var fnDefRe = /^ {0,3}\[\^([^\]\s]+)\]:[ \t]*(.*)$/;
+
+  function splitRow(line) {
+    var s = line.trim(), cells = [], cur = "", k, c;
+    var endsPipe = /(^|[^\\])\|$/.test(s);
+    if (s.charAt(0) === "|") s = s.slice(1);
+    for (k = 0; k < s.length; k++) {
+      c = s.charAt(k);
+      if (c === "\\" && s.charAt(k + 1) === "|") { cur += "|"; k++; }
+      else if (c === "|") { cells.push(cur.trim()); cur = ""; }
+      else cur += c;
+    }
+    cells.push(cur.trim());
+    if (endsPipe && cells.length > 1) cells.pop();
+    return cells;
+  }
+
+  function parseFrontMatter(lines) {
+    if (lines[0] !== "---") return null;
+    var end = -1, i;
+    for (i = 1; i < lines.length; i++) { if (/^(---|\.\.\.)[ \t]*$/.test(lines[i])) { end = i; break; } }
+    if (end < 0) return null;
+    var items = [], cur = null, m;
+    for (i = 1; i < end; i++) {
+      var l = lines[i];
+      if ((m = /^([A-Za-z0-9_][A-Za-z0-9_ .-]*):[ \t]*(.*)$/.exec(l))) {
+        cur = { key: m[1], values: [] };
+        var v = m[2].trim().replace(/^(["'])(.*)\1$/, "$2");
+        if (v) cur.values.push(v);
+        items.push(cur);
+      } else if (cur && (m = /^[ \t]*-[ \t]+(.*)$/.exec(l))) {
+        cur.values.push(m[1].trim().replace(/^(["'])(.*)\1$/, "$2"));
+      } else if (cur && /^[ \t]+\S/.test(l)) {
+        cur.values.push(l.trim());
+      }
+    }
+    if (!items.length) return null;
+    return { end: end, items: items };
+  }
+
+  // Removes block comments (Obsidian) and footnote definitions, and leaves fenced code alone.
+  function prepare(lines, o) {
+    var out = [], i, l, m, fence = null, inComment = false;
+    for (i = 0; i < lines.length; i++) {
+      l = lines[i];
+      if (fence) {
+        out.push(l);
+        if (new RegExp("^ {0,3}" + (fence.ch === "`" ? "`" : "~") + "{" + fence.len + ",}[ \\t]*$").test(l)) fence = null;
+        continue;
+      }
+      if (inComment) { if (l.indexOf("%%") >= 0) inComment = false; continue; }
+      if ((m = fenceRe.exec(l))) { fence = { ch: m[1].charAt(0), len: m[1].length }; out.push(l); continue; }
+      if (o.obsidian && /^\s*%%/.test(l) && l.indexOf("%%", l.indexOf("%%") + 2) < 0) { inComment = true; continue; }
+      if (o.fn && (m = fnDefRe.exec(l))) {
+        var txt = m[2];
+        while (i + 1 < lines.length && /^(?: {2,}|\t)\S/.test(lines[i + 1])) { i++; txt += "\n" + lines[i].trim(); }
+        o.fn.defs[m[1]] = txt;
+        continue;
+      }
+      out.push(l);
+    }
+    return out;
+  }
+
+  function codeBlock(lang, code, o) {
+    var cls = /^[\w+#.-]+$/.test(lang) ? ' class="language-' + esc(lang) + '"' : "";
+    var pre = "<pre><code" + cls + ">" + esc(code) + "</code></pre>";
+    return pre;
+  }
+  function sourceBlock(lang, code, o, what) {
+    var pre = "<pre><code class=\"language-" + lang + "\">" + esc(code) + "</code></pre>";
+    if (!o.preview) return pre;
+    var who = o.obsidian ? "Obsidian" : "GitHub";
+    return '<div class="notrendered">' + pre + '<p class="nr-note">' + who + " renders this" + (what ? " (" + what + ")" : "") + "; this preview shows the source.</p></div>";
+  }
+
+  /* ---------- blocks ---------- */
+  function blocks(lines, o) {
+    var out = [], n = lines.length, i = 0;
+    function blank(l) { return /^\s*$/.test(l); }
+    function tableStart(k) {
+      return k + 1 < n && lines[k].indexOf("|") >= 0 && delimRe.test(lines[k + 1]) && lines[k + 1].indexOf("-") >= 0 &&
+        splitRow(lines[k]).length === splitRow(lines[k + 1]).length;
+    }
+    function startsBlock(k) {
+      var l = lines[k], m;
+      if (fenceRe.test(l) || hrRe.test(l) || quoteRe.test(l) || htmlRe.test(l)) return true;
+      if (/^ {0,3}\$\$/.test(l)) return true;
+      if ((m = headRe.exec(l)) && m) return true;
+      if ((m = listRe.exec(l)) && (!/\d/.test(m[2]) || parseInt(m[2], 10) === 1)) return true;
+      return tableStart(k);
+    }
+
+    while (i < n) {
+      var l = lines[i], m;
+      if (blank(l)) { i++; continue; }
+
+      if ((m = fenceRe.exec(l))) {
+        var marker = m[1], lang = m[2], code = [];
+        var closeRe = new RegExp("^ {0,3}" + (marker.charAt(0) === "`" ? "`" : "~") + "{" + marker.length + ",}[ \\t]*$");
+        i++;
+        while (i < n && !closeRe.test(lines[i])) { code.push(lines[i]); i++; }
+        i++;
+        var body = code.join("\n");
+        var lc = lang.toLowerCase();
+        if (lc === "mermaid") out.push(sourceBlock("mermaid", body, o, "as a diagram"));
+        else if (lc === "math") out.push(sourceBlock("math", body, o, "as math"));
+        else out.push(codeBlock(lang, body, o));
+        continue;
+      }
+
+      if (/^ {0,3}\$\$/.test(l)) {
+        var t = l.trim(), mathLines = [];
+        if (t.length > 4 && t.slice(-2) === "$$") { mathLines.push(t.slice(2, -2)); i++; }
+        else {
+          if (t.length > 2) mathLines.push(t.slice(2));
+          i++;
+          while (i < n && lines[i].indexOf("$$") < 0) { mathLines.push(lines[i]); i++; }
+          if (i < n) { var tail = lines[i].slice(0, lines[i].indexOf("$$")); if (tail.trim()) mathLines.push(tail); i++; }
+        }
+        out.push(sourceBlock("math", mathLines.join("\n"), o, "as math"));
+        continue;
+      }
+
+      if (htmlRe.test(l)) {
+        var html = [];
+        if (/^ {0,3}<!--/.test(l)) {
+          while (i < n && lines[i].indexOf("-->") < 0) i++;
+          i++;
+          continue; // HTML comments are hidden, as GitHub Docs describe
+        }
+        while (i < n && !blank(lines[i])) { html.push(lines[i]); i++; }
+        out.push(sourceBlock("html", html.join("\n"), o, "as HTML"));
+        continue;
+      }
+
+      if ((m = headRe.exec(l))) {
+        out.push("<h" + m[1].length + ">" + inline(m[2] || "", o) + "</h" + m[1].length + ">");
+        i++;
+        continue;
+      }
+      if (hrRe.test(l)) { out.push("<hr>"); i++; continue; }
+
+      if (quoteRe.test(l)) {
+        var inner = [];
+        while (i < n && quoteRe.test(lines[i])) { inner.push(lines[i].replace(/^ {0,3}> ?/, "")); i++; }
+        out.push(quote(inner, o));
+        continue;
+      }
+
+      if (tableStart(i)) {
+        var head = splitRow(lines[i]), aligns = splitRow(lines[i + 1]).map(function (d) {
+          var left = d.charAt(0) === ":", right = d.charAt(d.length - 1) === ":";
+          return left && right ? "center" : right ? "right" : left ? "left" : "";
+        });
+        var cols = head.length;
+        function cell(tag, text, k) { return "<" + tag + (aligns[k] ? ' align="' + aligns[k] + '"' : "") + ">" + inline(text || "", o) + "</" + tag + ">"; }
+        var tbl = "<table><thead><tr>" + head.map(function (c, k) { return cell("th", c, k); }).join("") + "</tr></thead><tbody>";
+        i += 2;
+        while (i < n && !blank(lines[i]) && !fenceRe.test(lines[i]) && !quoteRe.test(lines[i]) && !headRe.test(lines[i])) {
+          var cells = splitRow(lines[i]);
+          tbl += "<tr>";
+          for (var k = 0; k < cols; k++) tbl += cell("td", cells[k], k);
+          tbl += "</tr>";
+          i++;
+        }
+        out.push(tbl + "</tbody></table>");
+        continue;
+      }
+
+      if ((m = listRe.exec(l))) {
+        var items = [], j = i, lm;
+        while (j < n) {
+          var lj = lines[j];
+          if ((lm = listRe.exec(lj)) && !hrRe.test(lj)) {
+            items.push({ indent: lm[1].replace(/\t/g, "    ").length, ord: /\d/.test(lm[2]), num: parseInt(lm[2], 10), text: lm[3], kids: [] });
+            j++;
+          } else if (blank(lj)) {
+            var q = j + 1;
+            while (q < n && blank(lines[q])) q++;
+            if (q < n && (listRe.test(lines[q]) || /^ {2,}\S/.test(lines[q])) && !hrRe.test(lines[q])) j = q; else break;
+          } else if (items.length && (/^ {2,}\S/.test(lj) || !startsBlock(j))) {
+            items[items.length - 1].text += "\n" + lj.trim();
+            j++;
+          } else break;
+        }
+        var root = { indent: -1, kids: [] }, stack = [root];
+        items.forEach(function (it) {
+          while (stack.length > 1 && it.indent < stack[stack.length - 1].indent + 2) stack.pop();
+          stack[stack.length - 1].kids.push(it);
+          stack.push(it);
+        });
+        out.push(renderList(root.kids, o));
+        i = j;
+        continue;
+      }
+
+      // paragraph (with setext headings)
+      var para = [], done = false;
+      while (i < n && !blank(lines[i])) {
+        if (para.length) {
+          var sm = /^ {0,3}(=+|-+)[ \t]*$/.exec(lines[i]);
+          if (sm) {
+            var lvl = sm[1].charAt(0) === "=" ? 1 : 2;
+            out.push("<h" + lvl + ">" + inline(para.join("\n"), o) + "</h" + lvl + ">");
+            i++; done = true; break;
+          }
+          if (startsBlock(i)) break;
+        }
+        para.push(lines[i].trim() === "" ? "" : lines[i].replace(/^\s+/, ""));
+        i++;
+      }
+      if (!done) {
+        var ph = inline(para.join("\n"), o);
+        if (ph.trim()) out.push("<p>" + ph + "</p>");
+      }
+    }
+    return out.join("\n");
+  }
+
+  function renderList(kids, o) {
+    var html = "", k = 0;
+    while (k < kids.length) {
+      var ord = kids[k].ord, group = [];
+      while (k < kids.length && kids[k].ord === ord) group.push(kids[k++]);
+      var tag = ord ? "ol" : "ul";
+      var start = ord && group[0].num !== 1 ? ' start="' + group[0].num + '"' : "";
+      var hasTask = group.some(function (it) { return /^\[[ xX]\][ \t]+/.test(it.text); });
+      html += "<" + tag + start + (hasTask ? ' class="contains-task-list"' : "") + ">" + group.map(function (it) {
+        var tm = /^\[([ xX])\][ \t]+([\s\S]*)$/.exec(it.text), text = it.text, box = "";
+        if (tm) { box = '<input type="checkbox" disabled' + (tm[1] === " " ? "" : " checked") + "> "; text = tm[2]; }
+        return "<li" + (tm ? ' class="task-list-item"' : "") + ">" + box + inline(text, o) + (it.kids.length ? renderList(it.kids, o) : "") + "</li>";
+      }).join("") + "</" + tag + ">";
+    }
+    return html;
+  }
+
+  function quote(inner, o) {
+    var am = /^\[!([A-Za-z][\w-]*)\]([+-]?)[ \t]*(.*)$/.exec(inner[0] || "");
+    if (am) {
+      var rest = inner.slice(1);
+      if (!o.obsidian) {
+        var up = am[1].toUpperCase();
+        if (Object.prototype.hasOwnProperty.call(ALERTS, up) && !am[2] && !am[3]) {
+          return '<div class="markdown-alert markdown-alert-' + up.toLowerCase() + '"><p class="markdown-alert-title">' + ALERTS[up] + "</p>\n" + blocks(rest, o) + "</div>";
+        }
+      } else {
+        var kind = calloutKind(am[1]);
+        var title = am[3] ? inline(am[3], o) : esc(titleCase(am[1]));
+        var content = '<div class="callout-content">' + blocks(rest, o) + "</div>";
+        if (am[2]) {
+          return '<details class="callout callout-' + kind + '"' + (am[2] === "+" ? " open" : "") + '><summary class="callout-title">' + title + "</summary>" + content + "</details>";
+        }
+        return '<div class="callout callout-' + kind + '"><div class="callout-title">' + title + "</div>" + content + "</div>";
+      }
+    }
+    return "<blockquote>\n" + blocks(inner, o) + "</blockquote>";
+  }
+
+  /* ---------- public render ---------- */
+  function render(src, opts) {
+    opts = opts || {};
+    var o = { obsidian: !!opts.obsidian, preview: !!opts.preview, prefix: opts.prefix || "", fn: { defs: {}, order: [] } };
+    var lines = String(src).replace(/\r\n?/g, "\n").split("\n");
+    var front = "", fm = parseFrontMatter(lines);
+    if (fm) {
+      lines = lines.slice(fm.end + 1);
+      if (o.obsidian) {
+        front = '<div class="properties"><div class="properties-title">Properties</div><dl>' + fm.items.map(function (it) {
+          var val = it.key.toLowerCase() === "tags"
+            ? it.values.map(function (v) { return '<span class="tag">#' + esc(v.replace(/^#/, "")) + "</span>"; }).join(" ")
+            : esc(it.values.join(", "));
+          return "<div><dt>" + esc(it.key) + "</dt><dd>" + val + "</dd></div>";
+        }).join("") + "</dl></div>";
+      } else {
+        front = "<table><thead><tr>" + fm.items.map(function (it) { return "<th>" + esc(it.key) + "</th>"; }).join("") +
+          "</tr></thead><tbody><tr>" + fm.items.map(function (it) { return "<td>" + esc(it.values.join(", ")) + "</td>"; }).join("") + "</tr></tbody></table>";
+      }
+    }
+    var html = blocks(prepare(lines, o), o);
+    if (o.fn.order.length) {
+      html += '\n<section class="footnotes"><hr><ol>' + o.fn.order.map(function (id, k) {
+        var sub = { obsidian: o.obsidian, preview: o.preview, prefix: o.prefix };
+        return '<li id="' + o.prefix + "fn-" + (k + 1) + '">' + inline(o.fn.defs[id], sub) + ' <a href="#' + o.prefix + "fnref-" + (k + 1) + '">↩</a></li>';
+      }).join("") + "</ol></section>";
+    }
+    return front + html;
+  }
+
+  /* ---------- "what changes on GitHub" ---------- */
+  function clip(s) { s = String(s).replace(/\s+/g, " "); return s.length > 60 ? s.slice(0, 57) + "..." : s; }
+
+  function findings(src) {
+    var lines = String(src).replace(/\r\n?/g, "\n").split("\n"), rows = [], start = 0, fm = parseFrontMatter(lines);
+    var fence = null, inComment = false, i, l, m;
+    function add(line, kind, found, github) { rows.push({ line: line, kind: kind, found: clip(found), github: github }); }
+    if (fm) {
+      add(1, "front matter", "---…---", "A table of the keys and values at the top of the file, not an Obsidian Properties block.");
+      start = fm.end + 1;
+    }
+    for (i = start; i < lines.length; i++) {
+      l = lines[i];
+      if (fence) {
+        if (new RegExp("^ {0,3}" + (fence.ch === "`" ? "`" : "~") + "{" + fence.len + ",}[ \\t]*$").test(l)) fence = null;
+        continue;
+      }
+      if (inComment) { if (l.indexOf("%%") >= 0) inComment = false; continue; }
+      if ((m = fenceRe.exec(l))) { fence = { ch: m[1].charAt(0), len: m[1].length }; continue; }
+      var ln = i + 1;
+      var t = l.replace(/\\./g, "  ").replace(/(`+)[^`]([\s\S]*?[^`])?\1(?!`)/g, function (x) { return new Array(x.length + 1).join(" "); })
+        .replace(/https?:\/\/\S+/g, function (x) { return new Array(x.length + 1).join(" "); });
+      var cm = /^\s*(?:>\s*)+\[!([A-Za-z][\w-]*)\]([+-]?)[ \t]*(.*)$/.exec(t);
+      if (cm) {
+        var up = cm[1].toUpperCase(), isAlert = Object.prototype.hasOwnProperty.call(ALERTS, up);
+        if (!isAlert) add(ln, "callout", "[!" + cm[1] + "]" + cm[2] + (cm[3] ? " " + cm[3] : ""), "A plain block quote. The marker [!" + cm[1] + "] shows as text.");
+        else if (cm[2] || cm[3]) add(ln, "callout", "[!" + cm[1] + "]" + cm[2] + (cm[3] ? " " + cm[3] : ""), "A plain block quote, because an alert needs the marker alone on its line. The marker shows as text.");
+        continue;
+      }
+      if (/^\s*%%/.test(t) && t.indexOf("%%", t.indexOf("%%") + 2) < 0) {
+        add(ln, "comment", t.trim(), "The comment and everything up to the closing %% show as text.");
+        inComment = true;
+        continue;
+      }
+      var found = [];
+      t = t.replace(/%%[\s\S]*?%%/g, function (x, at) { found.push({ at: at, kind: "comment", text: x, github: "The comment shows as text; GitHub does not hide %% comments." }); return new Array(x.length + 1).join(" "); });
+      t = t.replace(/!\[\[([^\]\n]+?)\]\]/g, function (x, a, at) { found.push({ at: at, kind: "embed", text: x, github: "The literal text " + clip(x) + ". Nothing is embedded." }); return new Array(x.length + 1).join(" "); });
+      t = t.replace(/\[\[([^\]\n]+?)\]\]/g, function (x, a, at) { found.push({ at: at, kind: "wikilink", text: x, github: "The literal text " + clip(x) + ", not a link." }); return new Array(x.length + 1).join(" "); });
+      t = t.replace(/==(\S|\S[^\n]*?\S)==/g, function (x, a, at) { found.push({ at: at, kind: "highlight", text: x, github: "The literal text " + clip(x) + ", with no highlight." }); return new Array(x.length + 1).join(" "); });
+      t.replace(TAG_RE, function (x, pre, tag, at) { found.push({ at: at + pre.length, kind: "tag", text: "#" + tag, github: "Plain text #" + tag + ", not styled as a tag." }); return x; });
+      found.sort(function (a, b) { return a.at - b.at; }).forEach(function (f) { add(ln, f.kind, f.text, f.github); });
+    }
+    return rows;
+  }
+
+  function pageTitle(src) {
+    var m = /^ {0,3}#[ \t]+(.+?)(?:[ \t]+#+)?[ \t]*$/m.exec(String(src));
+    return m ? m[1].replace(/[`*_~\[\]]/g, "") : "Markdown preview";
+  }
+
+  var EXPORT_CSS = "body{max-width:48rem;margin:2rem auto;padding:0 1rem;font:16px/1.6 system-ui,sans-serif;color:#1f2328}pre,code{font-family:ui-monospace,Menlo,monospace}pre{background:#f6f8fa;padding:12px;overflow:auto}code{background:#f6f8fa;padding:.1em .3em}pre code{padding:0}table{border-collapse:collapse}th,td{border:1px solid #d0d7de;padding:6px 12px}blockquote{margin:0;padding:0 1em;color:#59636e;border-left:.25em solid #d0d7de}img{max-width:100%}.markdown-alert{padding:.5em 1em;margin:1em 0;border-left:.25em solid #0969da}.markdown-alert-title{font-weight:600;margin:0}";
+
+  function exportFragment(src, withStyle) {
+    var body = render(src, { obsidian: false, preview: false, prefix: "" });
+    return (withStyle ? "<style>" + EXPORT_CSS + "</style>\n" : "") + body + "\n";
+  }
+  function exportDocument(src, withStyle) {
+    return "<!doctype html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<title>" +
+      esc(pageTitle(src)) + "</title>\n" + (withStyle ? "<style>" + EXPORT_CSS + "</style>\n" : "") + "</head>\n<body>\n" +
+      render(src, { obsidian: false, preview: false, prefix: "" }) + "\n</body>\n</html>\n";
+  }
+
+  return { render: render, findings: findings, exportFragment: exportFragment, exportDocument: exportDocument, pageTitle: pageTitle, esc: esc, safeUrl: safeUrl, SAMPLE: SAMPLE };
+})();
+
+/* ---------- page wiring ---------- */
+(function () {
+  if (typeof document === "undefined") return;
+  var $ = function (id) { return document.getElementById(id); };
+  var src = $("mp-src"), gh = $("mp-github"), ob = $("mp-obsidian"), htmlOut = $("mp-html"), panes = $("mp-panes");
+  var styleBox = $("mp-style"), status = $("mp-status"), timer = null, mode = "github";
+
+  function fill(el, html) {
+    var doc = new DOMParser().parseFromString("<!doctype html><body>" + html, "text/html");
+    el.replaceChildren.apply(el, Array.prototype.slice.call(doc.body.childNodes));
+  }
+  function cellText(tag, text, cls) {
+    var c = document.createElement(tag);
+    c.textContent = text;
+    if (cls) c.className = cls;
+    return c;
+  }
+  function renderChanges(rows) {
+    var box = $("mp-changes"), sum = $("mp-changes-summary");
+    box.replaceChildren();
+    if (!rows.length) {
+      sum.textContent = "No Obsidian-only syntax found in this note, so GitHub should show the same content (styling differs).";
+      return;
+    }
+    sum.textContent = rows.length + (rows.length === 1 ? " Obsidian-only item" : " Obsidian-only items") + " found. Line numbers count from the top of your note.";
+    var table = document.createElement("table"), head = document.createElement("tr");
+    ["Line", "In your note", "What GitHub shows instead"].forEach(function (h) { var th = cellText("th", h); th.scope = "col"; head.appendChild(th); });
+    var thead = document.createElement("thead"); thead.appendChild(head); table.appendChild(thead);
+    var tbody = document.createElement("tbody");
+    rows.slice(0, 100).forEach(function (r) {
+      var tr = document.createElement("tr"), code = document.createElement("code");
+      code.textContent = r.found;
+      var td = document.createElement("td");
+      td.appendChild(code);
+      tr.appendChild(cellText("td", String(r.line)));
+      tr.appendChild(td);
+      tr.appendChild(cellText("td", r.github));
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);
+    var wrap = document.createElement("div");
+    wrap.className = "changes-scroll"; wrap.tabIndex = 0; wrap.setAttribute("role", "region"); wrap.setAttribute("aria-label", "Obsidian-only syntax found in the note");
+    wrap.appendChild(table);
+    box.appendChild(wrap);
+    if (rows.length > 100) { var more = document.createElement("p"); more.className = "hint"; more.textContent = "and " + (rows.length - 100) + " more."; box.appendChild(more); }
+  }
+
+  function update() {
+    var text = src.value;
+    fill(gh, MdPreview.render(text, { obsidian: false, preview: true, prefix: "gh-" }));
+    fill(ob, MdPreview.render(text, { obsidian: true, preview: true, prefix: "ob-" }));
+    htmlOut.value = MdPreview.exportFragment(text, styleBox.checked);
+    renderChanges(MdPreview.findings(text));
+    var count = text ? text.replace(/\r\n?/g, "\n").split("\n").length : 0;
+    status.textContent = count ? count + (count === 1 ? " line" : " lines") + " rendered in this page." : "Paste or type Markdown to see it rendered.";
+  }
+  function schedule() { clearTimeout(timer); timer = setTimeout(update, 150); }
+
+  function setMode(next) {
+    mode = next;
+    panes.setAttribute("data-mode", next);
+    Array.prototype.forEach.call(document.querySelectorAll("#mp-tabs [role=tab]"), function (t) {
+      var on = t.getAttribute("data-mode") === next;
+      t.setAttribute("aria-selected", on ? "true" : "false");
+      t.tabIndex = on ? 0 : -1;
+    });
+  }
+  var tabs = Array.prototype.slice.call(document.querySelectorAll("#mp-tabs [role=tab]"));
+  tabs.forEach(function (t, idx) {
+    t.addEventListener("click", function () { setMode(t.getAttribute("data-mode")); });
+    t.addEventListener("keydown", function (e) {
+      var d = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+      if (!d) return;
+      var visible = tabs.filter(function (x) { return x.offsetParent !== null; });
+      var next = visible[(visible.indexOf(t) + d + visible.length) % visible.length];
+      setMode(next.getAttribute("data-mode")); next.focus(); e.preventDefault();
+    });
+  });
+  var wide = window.matchMedia ? window.matchMedia("(min-width: 1100px)") : null;
+  setMode(wide && wide.matches ? "both" : "github");
+  if (wide && wide.addEventListener) wide.addEventListener("change", function () {
+    if (!wide.matches && mode === "both") setMode("github");
+  });
+
+  [gh, ob].forEach(function (el) {
+    el.addEventListener("click", function (e) {
+      var a = e.target.closest ? e.target.closest("a.wikilink, a.rel-link") : null;
+      if (a) e.preventDefault();
+    });
+  });
+
+  src.addEventListener("input", schedule);
+  styleBox.addEventListener("change", update);
+  $("mp-sample").addEventListener("click", function () { src.value = MdPreview.SAMPLE; update(); });
+  $("mp-clear").addEventListener("click", function () { src.value = ""; update(); src.focus(); });
+
+  $("mp-file").addEventListener("change", function () {
+    var f = this.files && this.files[0];
+    if (!f) return;
+    if (f.size > 2 * 1024 * 1024) { status.textContent = "That file is over 2 MB. Open a smaller note."; return; }
+    var r = new FileReader();
+    r.onload = function () { src.value = String(r.result); update(); status.textContent = "Opened " + f.name + " in this page. Nothing was uploaded."; };
+    r.onerror = function () { status.textContent = "Could not read that file."; };
+    r.readAsText(f);
+    this.value = "";
+  });
+
+  var actionStatus = $("mp-action-status");
+  $("mp-copy").addEventListener("click", function () {
+    var text = htmlOut.value;
+    function done(ok) { actionStatus.textContent = ok ? "HTML copied." : "Copy failed. Select the HTML source tab and copy it by hand."; }
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(function () { done(true); }, function () { done(false); });
+    else { htmlOut.select(); var ok = false; try { ok = document.execCommand("copy"); } catch (e) { ok = false; } done(ok); }
+  });
+  $("mp-download").addEventListener("click", function () {
+    var blob = new Blob([MdPreview.exportDocument(src.value, styleBox.checked)], { type: "text/html;charset=utf-8" });
+    var url = URL.createObjectURL(blob), a = document.createElement("a");
+    a.href = url; a.download = "markdown-preview.html";
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+    actionStatus.textContent = "Downloaded markdown-preview.html.";
+  });
+
+  src.value = MdPreview.SAMPLE;
+  update();
+})();
+</script>
+</body>
+</html>
