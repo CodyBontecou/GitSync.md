@@ -42,6 +42,7 @@ For automation on a user's device, consult the Shortcuts guide and agent instruc
 - [Obsidian and Google Drive](https://gitsync.md/blog/obsidian-google-drive-sync): Per-device verdicts for Google Drive, OneDrive and Dropbox on desktop, Android and iPhone, Remotely Save free vs PRO, one sync method per vault, and moving a vault to Git.
 - [Obsidian Git plugin: commands, settings and errors](https://gitsync.md/blog/obsidian-git-plugin): Reference for the Obsidian Git community plugin: command palette names, settings grouped by job, a desktop vs mobile table, an error lookup (Cannot run Git command, xcrun, gpg, LFS) and when a native Git app is better on a phone.
 - [Where your Obsidian vault is stored and how to move it](https://gitsync.md/blog/obsidian-vault-location): Vault folder vs global settings by platform (desktop, iPhone/iPad Files app, Android), show hidden folders, Move/Rename/Remove vault, iCloud to local on iPhone, and moving a Git-backed vault with .git and .obsidian intact.
+- [Obsidian iCloud sync: set up and fix it](https://gitsync.md/blog/obsidian-icloud-sync): Official iCloud steps for iPhone, iPad and Mac, Keep Downloaded and Optimize Mac Storage, a checklist for notes or a vault not showing up, and when to move to Git.
 - [Back up an Obsidian vault with Git](https://gitsync.md/blog/obsidian-backup-git): Sync vs backup vs version history, a backup routine that includes notes written on iPhone, tested commands to restore a changed note, a deleted note or a folder, and a checklist.
 
 ## Publish
